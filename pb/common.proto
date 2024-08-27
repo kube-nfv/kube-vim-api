@@ -2,6 +2,8 @@ syntax = "proto3";
 
 option go_package = "github.com/DiMalovanyy/kube-vim-api/pb/gs-nfv-ifa";
 
+import "google/protobuf/any.proto";
+
 message Identifier {
     // UUID Identifier representation
     string value = 1;
@@ -9,5 +11,10 @@ message Identifier {
 
 message Filter {
     string value = 1;
+}
+
+message KeyValuePair {
+    string key = 1;
+    google.protobuf.Any value = 2;
 }
 

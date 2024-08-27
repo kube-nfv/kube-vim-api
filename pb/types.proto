@@ -3,6 +3,7 @@ syntax = "proto3";
 option go_package = "github.com/DiMalovanyy/kube-vim-api/pb/gs-nfv-ifa";
 
 import "common.proto";
+import "google/protobuf/any.proto";
 
 // This information element represents Software Image Information
 message SoftwareImageInformation {
@@ -122,11 +123,21 @@ message VirtualNetworkInterfaceData {
     // typeConfiguration = 4;
     // Bandwidth of the virtual network interface (in Mbps).
     optional float bandwidth = 5;
-
+    // It specifies if the virtual network interface requires certain acceleration capabilities (e.g. RDMA, packet dispatch, TCP Chimney). 
+    // The cardinality can be 0, if no particular acceleration capability is requested.
+    repeated string accelerationCapabilityForVirtualNetworkInterface = 6;
+    // List of metadata key-value pairs used by the consumer to associate meaningful metadata to the related virtualised resource.
+    map<string, google.protobuf.Any> metaData = 7;
 }
 
+// This clause describes the attributes for the VirtualStorageData information element.
 message VirtualStorageData {
-
+    // Type of virtualised storage resource (e.g. volume, object).
+    string typeOfStorage = 1;
+    // Size of virtualised storage resource (e.g. size of volume, in GB).
+    float sizeOfStorage = 2;
+    // Indicates if the storage supports RDMA.
+    optional bool rdmaEnabled = 3;
 }
 
 // The VirtualComputeFlavour information element encapsulates information for compute flavours. A compute flavour includes information

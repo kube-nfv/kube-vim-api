@@ -4,6 +4,7 @@ option go_package = "github.com/DiMalovanyy/kube-vim-api/pb/gs-nfv-ifa";
 
 import "common.proto";
 import "types.proto";
+import "google/protobuf/any.proto";
 
 // Vi-Vnfm service definition.
 service vi_vnfm {
@@ -103,9 +104,8 @@ message AllocateComputeRequest {
     optional Identifier vcImageId = 5;
     // Data of network interfaces which are specific to a Virtual Compute Resource instance. See clause 8.4.3.7.
     repeated VirtualInterfaceData interfaceData = 6;
-
-    // metadata KeyValuePair = 7;
-
+    // List of metadata key-value pairs used by the consumer to associate meaningful metadata to the related virtualised resource.
+    map<string, google.protobuf.Any> metaData = 7;
     // Unique identifier of the "infrastructure resource group", logical grouping of virtual resources assigned to a tenant within an Infrastructure Domain.
     // Cardinality can be 0 if the consumer credentials are implicitly associated to a specific resource group.
     optional Identifier resourceGroupId = 8;
@@ -157,6 +157,10 @@ message DeleteComputeFlavourResponse {
 }
 
 message AllocateNetworkRequest {
+    // Name provided by the consumer for the virtualised network resource to be allocated. It can be used for identifying resources from consumer side.
+    optional string networkResourceName = 1;
+    // Identifier of the resource reservation applicable to this virtualised resource management operation.
+    optional Identifier reservationId = 2; 
 
 }
 
