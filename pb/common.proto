@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+option go_package = "github.com/DiMalovanyy/kube-vim-api/pb/gs-nfv-ifa";
+
+message Identifier {
+    // UUID Identifier representation
+    string value = 1;
+}
+
+message Filter {
+    string value = 1;
+}
+

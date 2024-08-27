@@ -1,0 +1,154 @@
+syntax = "proto3";
+
+option go_package = "github.com/DiMalovanyy/kube-vim-api/pb/gs-nfv-ifa";
+
+import "common.proto";
+
+// This information element represents Software Image Information
+message SoftwareImageInformation {
+    // Identifier of this software image.
+    Identifier softwareImageId = 1;
+    //TODO
+}
+
+enum TypeOfAffinityOrAntiAffinityConstraint {
+    AFFINITY = 0;
+    ANTI_AFFINITY = 1;
+}
+
+// The parameter used when giving resource affinity or anti-affinity constraints related to virtualised compute resources.
+// The parameter is an element with affinity or anti affinity information of the virtualised compute resource to be allocated ETSI GS NFV-IFA 005 and ETSI
+// GS NFV-IFA 006
+message AffinityOrAntiAffinityConstraintForCompute {
+    enum ScopeOfAffinityOrAntiAffinityConstraintForCompute {
+        NFVI_NODE = 0; // Default
+        NFVI_POP = 1;
+    }
+    // The AffinityOrAntiAffinityResourceList information element defines an explicit list of resources to
+    // express affinity or anti-affinity between these resources and a current resource. The scope of the affinity or anti-affinity can also be defined.
+    message AffinityOrAntiAffinityResourceList {
+        // List of identifiers of virtualised resources.
+        repeated Identifier resourceId = 1;
+    }
+    // Qualifies the scope of the constraint. In case of compute resource, the values are as follows
+    TypeOfAffinityOrAntiAffinityConstraint type = 1;
+    // Indicates whether this is an affinity or anti- affinity constraint.
+    optional ScopeOfAffinityOrAntiAffinityConstraintForCompute scope = 2;
+    // Either affinityOrAntiAffinityResourceList or affinityOrAntiAffinityResourceGroupId but not both shall be present.
+    oneof constraint {
+        // Consumer-managed list of identifiers of virtualised resources with which the actual resource is requested to be affine or anti- affine.
+        AffinityOrAntiAffinityResourceList affinityOrAntiAffinityResourceList = 3;
+        // Identifier of the producer-managed group of virtualised resources with which the actual resource is
+        // requested to be affine or anti-affine. Either affinityOrAntiAffinityResourceList or affinityOrAntiAffinityResourceGroupId but not both shall be present.
+        Identifier affinityOrAntiAffinityResourceGroupId = 4;
+    }
+}
+
+message VirtualInterfaceData {
+
+}
+
+message UserData {
+
+}
+
+message VirtualCompute {
+
+}
+
+// Information describing virtual memory.
+message VirtualMemoryData {
+    // Amount of virtual Memory (e.g. in MB).
+    float virtualMemSize = 1;
+    // Memory core oversubscription policy in terms of virtual memory to physical memory on the platform.
+    // The cardinality can be 0 during the allocation request, if no particular value is requested.
+    optional string virtualMemOversubscriptionPolicy = 2;
+    // Specifies the memory allocation to be cognisant of the relevant process/core allocation. The
+    // cardinality can be 0 during the allocation request, if no particular value is requested
+    optional bool numaEnabled = 3;
+}
+
+// Information describing a virtual CPU.
+message VirtualCpuData {
+    // CPU architecture type. Examples are x86, ARM. The cardinality can be 0 during the allocation request, if no particular CPU architecture type is requested.
+    optional string cpuArchitecture = 1;
+    // Number of virtual CPUs.
+    uint32 numVirtualCpu = 2;
+    // Minimum CPU clock rate
+    // (e.g. in MHz) available for the virtualised CPU resources. The cardinality can be 0 during the allocation request, if no particular value is requested.
+    optional float cpuClock = 3;
+    // The CPU core oversubscription policy, e.g. the relation of virtual CPU cores to physical CPU cores/threads.
+    // The cardinality can be 0 during the allocation request, if no particular value is requested.
+    // E.g. virtual CPU core : physical CPU core= 4:1
+    optional string virtualCpuOversubscriptionPolicy = 4;
+    // Information describing CPU pinning policy and rules for virtual CPU to physical CPU mapping of the virtualised compute resource.
+    message VirtualCpuPinningData {
+        // Indicates the policy for CPU pinning.
+        enum VirtualCpuPinningPolicy {
+            // In case of "STATIC" the virtual CPU cores are requested to be allocated to logical CPU cores according to the rules defined in virtualCpuPinningRules.
+            STATIC = 0;
+            // In case of "DYNAMIC" the allocation of virtual CPU cores to logical CPU cores is decided by the VIM (e.g. SMT (Simultaneous Multi-Threading) requirements).
+            DYNAMIC = 1;
+        }
+        message VirtualCpuPinningRule {
+            // The number of core in the virtual CPU.
+            float cores = 1;
+            // The number of socket in the virtual CPU.
+            float sockets = 2;
+            // The number of thread in the virtual CPU.
+            float threads = 3;
+        }
+        VirtualCpuPinningPolicy virtualCpuPinningPolicy = 1;
+        // A list of rules that should be considered during the allocation of the virtual CPU-s to logical CPU-s in case of "static" virtualCpuPinningPolicy.
+        repeated  VirtualCpuPinningRule virtualCpuPinningRules = 2;
+    }
+    // Virtual CPU pinning configuration for the virtualised compute resource.
+    optional VirtualCpuPinningData virtualCpuPinning = 5;
+    // Virtual CPU power (state) requirements for the virtualised compute resource.
+    optional string powerStateReqs = 6;
+}
+
+// A virtual network interface is a communication endpoint under a compute resource.
+message VirtualNetworkInterfaceData {
+    // In the case when the virtual network interface is attached to the network, it identifies such a network.
+    // The cardinality can be 0 in the case that a network interface is created without being attached to any specific network.
+    optional Identifier networkId = 1;
+    // If the virtual network interface is attached to a specific network port, it identifies such a network port. 
+    // The cardinality can be 0 in the case that a network interface is created without any specific network port attachment.
+    optional Identifier networkPortId = 2;
+    // Note: There is only part of flavour as specified in ETSI GS NFV-IFA 005 and ETSI GS NFV-IFA 006 are included in this version of the present document,
+    // the following are attributes not included: typeVirtualNic, typeConfiguration
+    // typeVirtualNic = 3;
+    // typeConfiguration = 4;
+    // Bandwidth of the virtual network interface (in Mbps).
+    optional float bandwidth = 5;
+
+}
+
+message VirtualStorageData {
+
+}
+
+// The VirtualComputeFlavour information element encapsulates information for compute flavours. A compute flavour includes information
+// about number of virtual CPUs, size of virtual memory, size of virtual storage, and virtual network interfaces.
+message VirtualComputeFlavour {
+    // Identifier given to the compute flavour. When the VirtualComputeFlavour is used as input in operations to request the creation
+    // of a compute flavour, the cardinality can be "0" if VIM assigns the identifier in order to avoid potential identifier assignment conflicts.
+    // The flavourId shall be present otherwise.
+    optional Identifier flavourId = 1;
+    // Scope of flavour accessibility. It indicates if the compute flavour is accessible and shared across clients.
+    // Default value is True (if not specified), which means public. False means private.
+    optional bool isPublic = 2;
+
+    // accelerationCapability = 3;
+
+    // Virtual memory of the virtualised compute.
+    VirtualMemoryData virtualMemory = 4;
+    // Virtual CPU(s) of the virtualised compute.
+    VirtualCpuData virtualCpu = 5;
+    // Contains information about the size of virtualised storage resource (e.g. size of volume, in GB), the type of storage (e.g. volume, object), and support for RDMA.
+    repeated VirtualStorageData storageAttributes = 6;
+    // Virtual network interfaces of the virtualised compute
+    repeated VirtualNetworkInterfaceData virtualNetworkInterface = 7;
+}
+
