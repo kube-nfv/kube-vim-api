@@ -4,7 +4,7 @@
 // - protoc             v4.25.1
 // source: vi-vnfm.proto
 
-package gs_nfv_ifa
+package nfv
 
 import (
 	context "context"

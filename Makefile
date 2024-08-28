@@ -6,7 +6,7 @@ help: ## Display available commands.
 
 .PHONY: proto-clean
 proto-clean: ## Clean generated proto.
-	rm -rf pb/gs-nfv-ifa
+	rm -rf pb/nfv
 
 .PHONY: proto-compile
 proto-compile: ## Compile message protobuf and gRPC service files.
