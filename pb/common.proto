@@ -18,3 +18,6 @@ message KeyValuePair {
     google.protobuf.Any value = 2;
 }
 
+message IpAddress {
+    string ip = 1;
+}
