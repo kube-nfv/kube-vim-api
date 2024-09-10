@@ -177,12 +177,6 @@ message NetworkQoS {
     string qosValue = 2;
 }
 
-// IP version of the network/subnetwork.
-enum IpVersion {
-    IPV4 = 0;
-    IPV6 = 1;
-}
-
 message VirtualNetworkData {
     // Minimum network bandwidth (in Mbps).
     float bandwidth = 1;
@@ -220,10 +214,20 @@ message NetworkSubnetData {
     // IP version of the network/subnetwork.
     // Cardinality can be 0 when NetworkSubnetData is part of Update Virtualised Network Resource
     // Note: In these cases, changing the parameter is such a fundamental change that a new virtualised network resource should be created instead of updating an existing network resource.
-    optional IpVersion ipVersion = 2;
+    optional IPVersion ipVersion = 2;
     // Specifies the IP address of the network/subnetwork gateway when the gateway is selected by the requestor.
-    optional IpAddress gatewayIp;
-
+    optional IPAddress gatewayIp = 3;
+    // CIDR of the network/subnetwork, i.e. network address and subnet mask.
+    // Cardinality can be 0 when NetworkSubnetData is part of Update Virtualised Network Resource
+    // In these cases, changing the parameter is such a fundamental change that a new virtualised network resource should be created instead of updating an existing network resource.
+    optional IPSubnetCIDR cidr = 4;
+    // True when DHCP is to be enabled for this network/subnetwork, or false otherwise.
+    optional bool isDhcpEnabled = 5;
+    // Address pools for the network/subnetwork. The cardinality can be 0 when VIM is allowed to allocate all addresses in the 
+    // CIDR except for the address of the network/subnetwork gateway.
+    optional IPAddressPool addressPool = 6;
+    // List of metadata key-value pairs used by the consumer to associate meaningful metadata to the related virtualised resource.
+    map<string, google.protobuf.Any> metaData = 7;
 }
 
 message VirtualNetworkPortData {

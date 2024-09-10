@@ -21,6 +21,53 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+// IP version of the network/subnetwork.
+type IPVersion int32
+
+const (
+	IPVersion_IPV4 IPVersion = 0
+	IPVersion_IPV6 IPVersion = 1
+)
+
+// Enum value maps for IPVersion.
+var (
+	IPVersion_name = map[int32]string{
+		0: "IPV4",
+		1: "IPV6",
+	}
+	IPVersion_value = map[string]int32{
+		"IPV4": 0,
+		"IPV6": 1,
+	}
+)
+
+func (x IPVersion) Enum() *IPVersion {
+	p := new(IPVersion)
+	*p = x
+	return p
+}
+
+func (x IPVersion) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (IPVersion) Descriptor() protoreflect.EnumDescriptor {
+	return file_common_proto_enumTypes[0].Descriptor()
+}
+
+func (IPVersion) Type() protoreflect.EnumType {
+	return &file_common_proto_enumTypes[0]
+}
+
+func (x IPVersion) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use IPVersion.Descriptor instead.
+func (IPVersion) EnumDescriptor() ([]byte, []int) {
+	return file_common_proto_rawDescGZIP(), []int{0}
+}
+
 type Identifier struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -171,6 +218,211 @@ func (x *KeyValuePair) GetValue() *anypb.Any {
 	return nil
 }
 
+type IPAddress struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Ip string `protobuf:"bytes,1,opt,name=ip,proto3" json:"ip,omitempty"`
+}
+
+func (x *IPAddress) Reset() {
+	*x = IPAddress{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_common_proto_msgTypes[3]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *IPAddress) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*IPAddress) ProtoMessage() {}
+
+func (x *IPAddress) ProtoReflect() protoreflect.Message {
+	mi := &file_common_proto_msgTypes[3]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use IPAddress.ProtoReflect.Descriptor instead.
+func (*IPAddress) Descriptor() ([]byte, []int) {
+	return file_common_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *IPAddress) GetIp() string {
+	if x != nil {
+		return x.Ip
+	}
+	return ""
+}
+
+type IPSubnet struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Ip   string `protobuf:"bytes,1,opt,name=ip,proto3" json:"ip,omitempty"`
+	Mask string `protobuf:"bytes,2,opt,name=mask,proto3" json:"mask,omitempty"`
+}
+
+func (x *IPSubnet) Reset() {
+	*x = IPSubnet{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_common_proto_msgTypes[4]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *IPSubnet) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*IPSubnet) ProtoMessage() {}
+
+func (x *IPSubnet) ProtoReflect() protoreflect.Message {
+	mi := &file_common_proto_msgTypes[4]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use IPSubnet.ProtoReflect.Descriptor instead.
+func (*IPSubnet) Descriptor() ([]byte, []int) {
+	return file_common_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *IPSubnet) GetIp() string {
+	if x != nil {
+		return x.Ip
+	}
+	return ""
+}
+
+func (x *IPSubnet) GetMask() string {
+	if x != nil {
+		return x.Mask
+	}
+	return ""
+}
+
+type IPSubnetCIDR struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Cidr string `protobuf:"bytes,1,opt,name=cidr,proto3" json:"cidr,omitempty"`
+}
+
+func (x *IPSubnetCIDR) Reset() {
+	*x = IPSubnetCIDR{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_common_proto_msgTypes[5]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *IPSubnetCIDR) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*IPSubnetCIDR) ProtoMessage() {}
+
+func (x *IPSubnetCIDR) ProtoReflect() protoreflect.Message {
+	mi := &file_common_proto_msgTypes[5]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use IPSubnetCIDR.ProtoReflect.Descriptor instead.
+func (*IPSubnetCIDR) Descriptor() ([]byte, []int) {
+	return file_common_proto_rawDescGZIP(), []int{5}
+}
+
+func (x *IPSubnetCIDR) GetCidr() string {
+	if x != nil {
+		return x.Cidr
+	}
+	return ""
+}
+
+// TODO: Might be few ranges specified in pool
+type IPAddressPool struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	StartIP *IPAddress `protobuf:"bytes,1,opt,name=startIP,proto3" json:"startIP,omitempty"`
+	EndIP   *IPAddress `protobuf:"bytes,2,opt,name=endIP,proto3" json:"endIP,omitempty"`
+}
+
+func (x *IPAddressPool) Reset() {
+	*x = IPAddressPool{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_common_proto_msgTypes[6]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *IPAddressPool) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*IPAddressPool) ProtoMessage() {}
+
+func (x *IPAddressPool) ProtoReflect() protoreflect.Message {
+	mi := &file_common_proto_msgTypes[6]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use IPAddressPool.ProtoReflect.Descriptor instead.
+func (*IPAddressPool) Descriptor() ([]byte, []int) {
+	return file_common_proto_rawDescGZIP(), []int{6}
+}
+
+func (x *IPAddressPool) GetStartIP() *IPAddress {
+	if x != nil {
+		return x.StartIP
+	}
+	return nil
+}
+
+func (x *IPAddressPool) GetEndIP() *IPAddress {
+	if x != nil {
+		return x.EndIP
+	}
+	return nil
+}
+
 var File_common_proto protoreflect.FileDescriptor
 
 var file_common_proto_rawDesc = []byte{
@@ -185,11 +437,25 @@ var file_common_proto_rawDesc = []byte{
 	0x03, 0x6b, 0x65, 0x79, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x03, 0x6b, 0x65, 0x79, 0x12,
 	0x2a, 0x0a, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x14,
 	0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66,
-	0x2e, 0x41, 0x6e, 0x79, 0x52, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x42, 0x2c, 0x5a, 0x2a, 0x67,
-	0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x44, 0x69, 0x4d, 0x61, 0x6c, 0x6f,
-	0x76, 0x61, 0x6e, 0x79, 0x79, 0x2f, 0x6b, 0x75, 0x62, 0x65, 0x2d, 0x76, 0x69, 0x6d, 0x2d, 0x61,
-	0x70, 0x69, 0x2f, 0x70, 0x62, 0x2f, 0x6e, 0x66, 0x76, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f,
-	0x33,
+	0x2e, 0x41, 0x6e, 0x79, 0x52, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x22, 0x1b, 0x0a, 0x09, 0x49,
+	0x50, 0x41, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x70, 0x18, 0x01,
+	0x20, 0x01, 0x28, 0x09, 0x52, 0x02, 0x69, 0x70, 0x22, 0x2e, 0x0a, 0x08, 0x49, 0x50, 0x53, 0x75,
+	0x62, 0x6e, 0x65, 0x74, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x70, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09,
+	0x52, 0x02, 0x69, 0x70, 0x12, 0x12, 0x0a, 0x04, 0x6d, 0x61, 0x73, 0x6b, 0x18, 0x02, 0x20, 0x01,
+	0x28, 0x09, 0x52, 0x04, 0x6d, 0x61, 0x73, 0x6b, 0x22, 0x22, 0x0a, 0x0c, 0x49, 0x50, 0x53, 0x75,
+	0x62, 0x6e, 0x65, 0x74, 0x43, 0x49, 0x44, 0x52, 0x12, 0x12, 0x0a, 0x04, 0x63, 0x69, 0x64, 0x72,
+	0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x63, 0x69, 0x64, 0x72, 0x22, 0x57, 0x0a, 0x0d,
+	0x49, 0x50, 0x41, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x50, 0x6f, 0x6f, 0x6c, 0x12, 0x24, 0x0a,
+	0x07, 0x73, 0x74, 0x61, 0x72, 0x74, 0x49, 0x50, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x0a,
+	0x2e, 0x49, 0x50, 0x41, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x52, 0x07, 0x73, 0x74, 0x61, 0x72,
+	0x74, 0x49, 0x50, 0x12, 0x20, 0x0a, 0x05, 0x65, 0x6e, 0x64, 0x49, 0x50, 0x18, 0x02, 0x20, 0x01,
+	0x28, 0x0b, 0x32, 0x0a, 0x2e, 0x49, 0x50, 0x41, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x52, 0x05,
+	0x65, 0x6e, 0x64, 0x49, 0x50, 0x2a, 0x1f, 0x0a, 0x09, 0x49, 0x50, 0x56, 0x65, 0x72, 0x73, 0x69,
+	0x6f, 0x6e, 0x12, 0x08, 0x0a, 0x04, 0x49, 0x50, 0x56, 0x34, 0x10, 0x00, 0x12, 0x08, 0x0a, 0x04,
+	0x49, 0x50, 0x56, 0x36, 0x10, 0x01, 0x42, 0x2c, 0x5a, 0x2a, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62,
+	0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x44, 0x69, 0x4d, 0x61, 0x6c, 0x6f, 0x76, 0x61, 0x6e, 0x79, 0x79,
+	0x2f, 0x6b, 0x75, 0x62, 0x65, 0x2d, 0x76, 0x69, 0x6d, 0x2d, 0x61, 0x70, 0x69, 0x2f, 0x70, 0x62,
+	0x2f, 0x6e, 0x66, 0x76, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -204,20 +470,28 @@ func file_common_proto_rawDescGZIP() []byte {
 	return file_common_proto_rawDescData
 }
 
-var file_common_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
+var file_common_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
+var file_common_proto_msgTypes = make([]protoimpl.MessageInfo, 7)
 var file_common_proto_goTypes = []interface{}{
-	(*Identifier)(nil),   // 0: Identifier
-	(*Filter)(nil),       // 1: Filter
-	(*KeyValuePair)(nil), // 2: KeyValuePair
-	(*anypb.Any)(nil),    // 3: google.protobuf.Any
+	(IPVersion)(0),        // 0: IPVersion
+	(*Identifier)(nil),    // 1: Identifier
+	(*Filter)(nil),        // 2: Filter
+	(*KeyValuePair)(nil),  // 3: KeyValuePair
+	(*IPAddress)(nil),     // 4: IPAddress
+	(*IPSubnet)(nil),      // 5: IPSubnet
+	(*IPSubnetCIDR)(nil),  // 6: IPSubnetCIDR
+	(*IPAddressPool)(nil), // 7: IPAddressPool
+	(*anypb.Any)(nil),     // 8: google.protobuf.Any
 }
 var file_common_proto_depIdxs = []int32{
-	3, // 0: KeyValuePair.value:type_name -> google.protobuf.Any
-	1, // [1:1] is the sub-list for method output_type
-	1, // [1:1] is the sub-list for method input_type
-	1, // [1:1] is the sub-list for extension type_name
-	1, // [1:1] is the sub-list for extension extendee
-	0, // [0:1] is the sub-list for field type_name
+	8, // 0: KeyValuePair.value:type_name -> google.protobuf.Any
+	4, // 1: IPAddressPool.startIP:type_name -> IPAddress
+	4, // 2: IPAddressPool.endIP:type_name -> IPAddress
+	3, // [3:3] is the sub-list for method output_type
+	3, // [3:3] is the sub-list for method input_type
+	3, // [3:3] is the sub-list for extension type_name
+	3, // [3:3] is the sub-list for extension extendee
+	0, // [0:3] is the sub-list for field type_name
 }
 
 func init() { file_common_proto_init() }
@@ -262,19 +536,68 @@ func file_common_proto_init() {
 				return nil
 			}
 		}
+		file_common_proto_msgTypes[3].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*IPAddress); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_common_proto_msgTypes[4].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*IPSubnet); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_common_proto_msgTypes[5].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*IPSubnetCIDR); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_common_proto_msgTypes[6].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*IPAddressPool); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_common_proto_rawDesc,
-			NumEnums:      0,
-			NumMessages:   3,
+			NumEnums:      1,
+			NumMessages:   7,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
 		GoTypes:           file_common_proto_goTypes,
 		DependencyIndexes: file_common_proto_depIdxs,
+		EnumInfos:         file_common_proto_enumTypes,
 		MessageInfos:      file_common_proto_msgTypes,
 	}.Build()
 	File_common_proto = out.File

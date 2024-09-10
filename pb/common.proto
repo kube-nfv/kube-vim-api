@@ -18,6 +18,27 @@ message KeyValuePair {
     google.protobuf.Any value = 2;
 }
 
-message IpAddress {
+// IP version of the network/subnetwork.
+enum IPVersion {
+    IPV4 = 0;
+    IPV6 = 1;
+}
+
+message IPAddress {
     string ip = 1;
+}
+
+message IPSubnet {
+    string ip = 1;
+    string mask = 2;
+}
+
+message IPSubnetCIDR {
+    string cidr = 1;
+}
+
+// TODO: Might be few ranges specified in pool
+message IPAddressPool {
+    IPAddress startIP = 1;
+    IPAddress endIP = 2;
 }
