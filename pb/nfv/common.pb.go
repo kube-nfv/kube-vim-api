@@ -68,6 +68,52 @@ func (IPVersion) EnumDescriptor() ([]byte, []int) {
 	return file_common_proto_rawDescGZIP(), []int{0}
 }
 
+type OperationalState int32
+
+const (
+	OperationalState_ENABLED  OperationalState = 0
+	OperationalState_DISABLED OperationalState = 1
+)
+
+// Enum value maps for OperationalState.
+var (
+	OperationalState_name = map[int32]string{
+		0: "ENABLED",
+		1: "DISABLED",
+	}
+	OperationalState_value = map[string]int32{
+		"ENABLED":  0,
+		"DISABLED": 1,
+	}
+)
+
+func (x OperationalState) Enum() *OperationalState {
+	p := new(OperationalState)
+	*p = x
+	return p
+}
+
+func (x OperationalState) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (OperationalState) Descriptor() protoreflect.EnumDescriptor {
+	return file_common_proto_enumTypes[1].Descriptor()
+}
+
+func (OperationalState) Type() protoreflect.EnumType {
+	return &file_common_proto_enumTypes[1]
+}
+
+func (x OperationalState) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use OperationalState.Descriptor instead.
+func (OperationalState) EnumDescriptor() ([]byte, []int) {
+	return file_common_proto_rawDescGZIP(), []int{1}
+}
+
 type Identifier struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -452,10 +498,13 @@ var file_common_proto_rawDesc = []byte{
 	0x28, 0x0b, 0x32, 0x0a, 0x2e, 0x49, 0x50, 0x41, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x52, 0x05,
 	0x65, 0x6e, 0x64, 0x49, 0x50, 0x2a, 0x1f, 0x0a, 0x09, 0x49, 0x50, 0x56, 0x65, 0x72, 0x73, 0x69,
 	0x6f, 0x6e, 0x12, 0x08, 0x0a, 0x04, 0x49, 0x50, 0x56, 0x34, 0x10, 0x00, 0x12, 0x08, 0x0a, 0x04,
-	0x49, 0x50, 0x56, 0x36, 0x10, 0x01, 0x42, 0x2c, 0x5a, 0x2a, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62,
-	0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x44, 0x69, 0x4d, 0x61, 0x6c, 0x6f, 0x76, 0x61, 0x6e, 0x79, 0x79,
-	0x2f, 0x6b, 0x75, 0x62, 0x65, 0x2d, 0x76, 0x69, 0x6d, 0x2d, 0x61, 0x70, 0x69, 0x2f, 0x70, 0x62,
-	0x2f, 0x6e, 0x66, 0x76, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x49, 0x50, 0x56, 0x36, 0x10, 0x01, 0x2a, 0x2d, 0x0a, 0x10, 0x4f, 0x70, 0x65, 0x72, 0x61, 0x74,
+	0x69, 0x6f, 0x6e, 0x61, 0x6c, 0x53, 0x74, 0x61, 0x74, 0x65, 0x12, 0x0b, 0x0a, 0x07, 0x45, 0x4e,
+	0x41, 0x42, 0x4c, 0x45, 0x44, 0x10, 0x00, 0x12, 0x0c, 0x0a, 0x08, 0x44, 0x49, 0x53, 0x41, 0x42,
+	0x4c, 0x45, 0x44, 0x10, 0x01, 0x42, 0x2c, 0x5a, 0x2a, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e,
+	0x63, 0x6f, 0x6d, 0x2f, 0x44, 0x69, 0x4d, 0x61, 0x6c, 0x6f, 0x76, 0x61, 0x6e, 0x79, 0x79, 0x2f,
+	0x6b, 0x75, 0x62, 0x65, 0x2d, 0x76, 0x69, 0x6d, 0x2d, 0x61, 0x70, 0x69, 0x2f, 0x70, 0x62, 0x2f,
+	0x6e, 0x66, 0x76, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -470,23 +519,24 @@ func file_common_proto_rawDescGZIP() []byte {
 	return file_common_proto_rawDescData
 }
 
-var file_common_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
+var file_common_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
 var file_common_proto_msgTypes = make([]protoimpl.MessageInfo, 7)
 var file_common_proto_goTypes = []interface{}{
 	(IPVersion)(0),        // 0: IPVersion
-	(*Identifier)(nil),    // 1: Identifier
-	(*Filter)(nil),        // 2: Filter
-	(*KeyValuePair)(nil),  // 3: KeyValuePair
-	(*IPAddress)(nil),     // 4: IPAddress
-	(*IPSubnet)(nil),      // 5: IPSubnet
-	(*IPSubnetCIDR)(nil),  // 6: IPSubnetCIDR
-	(*IPAddressPool)(nil), // 7: IPAddressPool
-	(*anypb.Any)(nil),     // 8: google.protobuf.Any
+	(OperationalState)(0), // 1: OperationalState
+	(*Identifier)(nil),    // 2: Identifier
+	(*Filter)(nil),        // 3: Filter
+	(*KeyValuePair)(nil),  // 4: KeyValuePair
+	(*IPAddress)(nil),     // 5: IPAddress
+	(*IPSubnet)(nil),      // 6: IPSubnet
+	(*IPSubnetCIDR)(nil),  // 7: IPSubnetCIDR
+	(*IPAddressPool)(nil), // 8: IPAddressPool
+	(*anypb.Any)(nil),     // 9: google.protobuf.Any
 }
 var file_common_proto_depIdxs = []int32{
-	8, // 0: KeyValuePair.value:type_name -> google.protobuf.Any
-	4, // 1: IPAddressPool.startIP:type_name -> IPAddress
-	4, // 2: IPAddressPool.endIP:type_name -> IPAddress
+	9, // 0: KeyValuePair.value:type_name -> google.protobuf.Any
+	5, // 1: IPAddressPool.startIP:type_name -> IPAddress
+	5, // 2: IPAddressPool.endIP:type_name -> IPAddress
 	3, // [3:3] is the sub-list for method output_type
 	3, // [3:3] is the sub-list for method input_type
 	3, // [3:3] is the sub-list for extension type_name
@@ -590,7 +640,7 @@ func file_common_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_common_proto_rawDesc,
-			NumEnums:      1,
+			NumEnums:      2,
 			NumMessages:   7,
 			NumExtensions: 0,
 			NumServices:   0,

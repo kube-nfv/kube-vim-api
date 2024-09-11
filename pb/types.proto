@@ -236,3 +236,34 @@ message VirtualNetworkPortData {
 message VirtualTrunkData {
 
 }
+
+// The information elements in this group encapsulates information of an instantiated virtualised network resource.
+// In the NFVI, a virtual network transports information among the network interfaces of VM instances and physical network interfaces, providing the necessary connectiv
+message VirtualNetwork {
+    // Identifier of the virtualised network resource.
+    Identifier networkResourceId = 1;
+    // Name of the virtualised network resource.
+    optional string networkResourceName = 2;
+    // References the network subnet.
+    // Only present if the network provides layer 3 connectivity.
+    repeated Identifier subnetId = 3;
+    
+    // Type of network that maps to the virtualised network. This list is extensible. Examples are:
+    //  • "local";
+    //  • "vlan";
+    //  • "vxlan";
+    //  • "gre";
+    //  • "l3-vpn";
+    //  • etc.
+    string networkType = 6;
+
+    // Operational state of the virtualised network.
+    OperationalState operationalState = 12; 
+    // List of metadata key-value pairs used by the consumer to associate meaningful metadata to the related virtualised resource.
+    map<string, google.protobuf.Any> metaData = 13;
+}
+
+message VirtualNetworkPort {
+
+
+}

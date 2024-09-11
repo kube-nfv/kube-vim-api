@@ -42,3 +42,8 @@ message IPAddressPool {
     IPAddress startIP = 1;
     IPAddress endIP = 2;
 }
+
+enum OperationalState {
+    ENABLED = 0;
+    DISABLED = 1;
+}
