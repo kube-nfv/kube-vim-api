@@ -1,4 +1,4 @@
-module github.com/DiMalovanyy/kube-vim-api/kubeovn
+module github.com/DiMalovanyy/kube-vim-api
 
 go 1.23.0
 
