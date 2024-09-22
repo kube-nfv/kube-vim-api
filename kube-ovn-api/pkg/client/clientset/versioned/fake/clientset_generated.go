@@ -3,10 +3,10 @@
 package fake
 
 import (
-	applyconfiguration "github.com/DiMalovanyy/kube-vim-api/kube-ovn-api/pkg/client/applyconfiguration"
-	clientset "github.com/DiMalovanyy/kube-vim-api/kube-ovn-api/pkg/client/clientset/versioned"
-	kubeovnv1 "github.com/DiMalovanyy/kube-vim-api/kube-ovn-api/pkg/client/clientset/versioned/typed/kubeovn/v1"
-	fakekubeovnv1 "github.com/DiMalovanyy/kube-vim-api/kube-ovn-api/pkg/client/clientset/versioned/typed/kubeovn/v1/fake"
+	applyconfiguration "github.com/kube-nfv/kube-vim-api/kube-ovn-api/pkg/client/applyconfiguration"
+	clientset "github.com/kube-nfv/kube-vim-api/kube-ovn-api/pkg/client/clientset/versioned"
+	kubeovnv1 "github.com/kube-nfv/kube-vim-api/kube-ovn-api/pkg/client/clientset/versioned/typed/kubeovn/v1"
+	fakekubeovnv1 "github.com/kube-nfv/kube-vim-api/kube-ovn-api/pkg/client/clientset/versioned/typed/kubeovn/v1/fake"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/watch"
 	"k8s.io/client-go/discovery"

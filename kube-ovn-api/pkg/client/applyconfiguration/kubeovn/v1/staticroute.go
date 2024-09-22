@@ -3,7 +3,7 @@
 package v1
 
 import (
-	kubeovnv1 "github.com/DiMalovanyy/kube-vim-api/kube-ovn-api/pkg/apis/kubeovn/v1"
+	kubeovnv1 "github.com/kube-nfv/kube-vim-api/kube-ovn-api/pkg/apis/kubeovn/v1"
 )
 
 // StaticRouteApplyConfiguration represents a declarative configuration of the StaticRoute type for use

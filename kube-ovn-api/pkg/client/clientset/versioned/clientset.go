@@ -6,7 +6,7 @@ import (
 	fmt "fmt"
 	http "net/http"
 
-	kubeovnv1 "github.com/DiMalovanyy/kube-vim-api/kube-ovn-api/pkg/client/clientset/versioned/typed/kubeovn/v1"
+	kubeovnv1 "github.com/kube-nfv/kube-vim-api/kube-ovn-api/pkg/client/clientset/versioned/typed/kubeovn/v1"
 	discovery "k8s.io/client-go/discovery"
 	rest "k8s.io/client-go/rest"
 	flowcontrol "k8s.io/client-go/util/flowcontrol"

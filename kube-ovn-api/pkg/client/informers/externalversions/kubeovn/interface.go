@@ -3,8 +3,8 @@
 package kubeovn
 
 import (
-	internalinterfaces "github.com/DiMalovanyy/kube-vim-api/kube-ovn-api/pkg/client/informers/externalversions/internalinterfaces"
-	v1 "github.com/DiMalovanyy/kube-vim-api/kube-ovn-api/pkg/client/informers/externalversions/kubeovn/v1"
+	internalinterfaces "github.com/kube-nfv/kube-vim-api/kube-ovn-api/pkg/client/informers/externalversions/internalinterfaces"
+	v1 "github.com/kube-nfv/kube-vim-api/kube-ovn-api/pkg/client/informers/externalversions/kubeovn/v1"
 )
 
 // Interface provides access to each of this group's versions.

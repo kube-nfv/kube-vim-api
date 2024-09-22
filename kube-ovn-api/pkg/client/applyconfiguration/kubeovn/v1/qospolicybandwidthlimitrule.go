@@ -3,7 +3,7 @@
 package v1
 
 import (
-	kubeovnv1 "github.com/DiMalovanyy/kube-vim-api/kube-ovn-api/pkg/apis/kubeovn/v1"
+	kubeovnv1 "github.com/kube-nfv/kube-vim-api/kube-ovn-api/pkg/apis/kubeovn/v1"
 )
 
 // QoSPolicyBandwidthLimitRuleApplyConfiguration represents a declarative configuration of the QoSPolicyBandwidthLimitRule type for use

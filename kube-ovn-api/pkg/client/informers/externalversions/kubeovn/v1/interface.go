@@ -3,7 +3,7 @@
 package v1
 
 import (
-	internalinterfaces "github.com/DiMalovanyy/kube-vim-api/kube-ovn-api/pkg/client/informers/externalversions/internalinterfaces"
+	internalinterfaces "github.com/kube-nfv/kube-vim-api/kube-ovn-api/pkg/client/informers/externalversions/internalinterfaces"
 )
 
 // Interface provides access to all the informers in this group version.

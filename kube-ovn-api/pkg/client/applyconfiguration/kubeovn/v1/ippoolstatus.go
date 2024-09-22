@@ -3,7 +3,7 @@
 package v1
 
 import (
-	internal "github.com/DiMalovanyy/kube-vim-api/kube-ovn-api/pkg/internal"
+	internal "github.com/kube-nfv/kube-vim-api/kube-ovn-api/pkg/internal"
 )
 
 // IPPoolStatusApplyConfiguration represents a declarative configuration of the IPPoolStatus type for use

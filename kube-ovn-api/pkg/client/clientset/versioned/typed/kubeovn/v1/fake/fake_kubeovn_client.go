@@ -3,7 +3,7 @@
 package fake
 
 import (
-	v1 "github.com/DiMalovanyy/kube-vim-api/kube-ovn-api/pkg/client/clientset/versioned/typed/kubeovn/v1"
+	v1 "github.com/kube-nfv/kube-vim-api/kube-ovn-api/pkg/client/clientset/versioned/typed/kubeovn/v1"
 	rest "k8s.io/client-go/rest"
 	testing "k8s.io/client-go/testing"
 )

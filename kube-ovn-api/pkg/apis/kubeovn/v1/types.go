@@ -6,8 +6,8 @@ import (
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
-	"github.com/DiMalovanyy/kube-vim-api/kube-ovn-api/pkg/internal"
-	"github.com/DiMalovanyy/kube-vim-api/kube-ovn-api/pkg/ovsdb/ovnnb"
+	"github.com/kube-nfv/kube-vim-api/kube-ovn-api/pkg/internal"
+	"github.com/kube-nfv/kube-vim-api/kube-ovn-api/pkg/ovsdb/ovnnb"
 )
 
 const (
