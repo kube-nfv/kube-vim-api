@@ -981,7 +981,8 @@ type VirtualNetworkData struct {
 	NetworkQoS []*NetworkQoS `protobuf:"bytes,4,rep,name=networkQoS,proto3" json:"networkQoS,omitempty"`
 	// Specifies whether the virtualised network is shared among consumers.
 	IsShared *bool `protobuf:"varint,5,opt,name=isShared,proto3,oneof" json:"isShared,omitempty"`
-	// layer3Attributes = 6;
+	// Attribute list allows setting up a network providing defined layer 3 connectivity.
+	Layer3Attributes []*NetworkSubnetData `protobuf:"bytes,6,rep,name=layer3Attributes,proto3" json:"layer3Attributes,omitempty"`
 	// List of metadata key-value pairs used by the consumer to associate meaningful metadata to the related virtualised resource.
 	MetaData map[string]*anypb.Any `protobuf:"bytes,7,rep,name=metaData,proto3" json:"metaData,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
 }
@@ -1051,6 +1052,13 @@ func (x *VirtualNetworkData) GetIsShared() bool {
 		return *x.IsShared
 	}
 	return false
+}
+
+func (x *VirtualNetworkData) GetLayer3Attributes() []*NetworkSubnetData {
+	if x != nil {
+		return x.Layer3Attributes
+	}
+	return nil
 }
 
 func (x *VirtualNetworkData) GetMetaData() map[string]*anypb.Any {
@@ -1759,7 +1767,7 @@ var file_types_proto_rawDesc = []byte{
 	0x6f, 0x72, 0x6b, 0x51, 0x6f, 0x53, 0x12, 0x18, 0x0a, 0x07, 0x71, 0x6f, 0x73, 0x4e, 0x61, 0x6d,
 	0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x71, 0x6f, 0x73, 0x4e, 0x61, 0x6d, 0x65,
 	0x12, 0x1a, 0x0a, 0x08, 0x71, 0x6f, 0x73, 0x56, 0x61, 0x6c, 0x75, 0x65, 0x18, 0x02, 0x20, 0x01,
-	0x28, 0x09, 0x52, 0x08, 0x71, 0x6f, 0x73, 0x56, 0x61, 0x6c, 0x75, 0x65, 0x22, 0x96, 0x03, 0x0a,
+	0x28, 0x09, 0x52, 0x08, 0x71, 0x6f, 0x73, 0x56, 0x61, 0x6c, 0x75, 0x65, 0x22, 0xd6, 0x03, 0x0a,
 	0x12, 0x56, 0x69, 0x72, 0x74, 0x75, 0x61, 0x6c, 0x4e, 0x65, 0x74, 0x77, 0x6f, 0x72, 0x6b, 0x44,
 	0x61, 0x74, 0x61, 0x12, 0x1c, 0x0a, 0x09, 0x62, 0x61, 0x6e, 0x64, 0x77, 0x69, 0x64, 0x74, 0x68,
 	0x18, 0x01, 0x20, 0x01, 0x28, 0x02, 0x52, 0x09, 0x62, 0x61, 0x6e, 0x64, 0x77, 0x69, 0x64, 0x74,
@@ -1773,7 +1781,11 @@ var file_types_proto_rawDesc = []byte{
 	0x6f, 0x72, 0x6b, 0x51, 0x6f, 0x53, 0x52, 0x0a, 0x6e, 0x65, 0x74, 0x77, 0x6f, 0x72, 0x6b, 0x51,
 	0x6f, 0x53, 0x12, 0x1f, 0x0a, 0x08, 0x69, 0x73, 0x53, 0x68, 0x61, 0x72, 0x65, 0x64, 0x18, 0x05,
 	0x20, 0x01, 0x28, 0x08, 0x48, 0x02, 0x52, 0x08, 0x69, 0x73, 0x53, 0x68, 0x61, 0x72, 0x65, 0x64,
-	0x88, 0x01, 0x01, 0x12, 0x3d, 0x0a, 0x08, 0x6d, 0x65, 0x74, 0x61, 0x44, 0x61, 0x74, 0x61, 0x18,
+	0x88, 0x01, 0x01, 0x12, 0x3e, 0x0a, 0x10, 0x6c, 0x61, 0x79, 0x65, 0x72, 0x33, 0x41, 0x74, 0x74,
+	0x72, 0x69, 0x62, 0x75, 0x74, 0x65, 0x73, 0x18, 0x06, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x12, 0x2e,
+	0x4e, 0x65, 0x74, 0x77, 0x6f, 0x72, 0x6b, 0x53, 0x75, 0x62, 0x6e, 0x65, 0x74, 0x44, 0x61, 0x74,
+	0x61, 0x52, 0x10, 0x6c, 0x61, 0x79, 0x65, 0x72, 0x33, 0x41, 0x74, 0x74, 0x72, 0x69, 0x62, 0x75,
+	0x74, 0x65, 0x73, 0x12, 0x3d, 0x0a, 0x08, 0x6d, 0x65, 0x74, 0x61, 0x44, 0x61, 0x74, 0x61, 0x18,
 	0x07, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x21, 0x2e, 0x56, 0x69, 0x72, 0x74, 0x75, 0x61, 0x6c, 0x4e,
 	0x65, 0x74, 0x77, 0x6f, 0x72, 0x6b, 0x44, 0x61, 0x74, 0x61, 0x2e, 0x4d, 0x65, 0x74, 0x61, 0x44,
 	0x61, 0x74, 0x61, 0x45, 0x6e, 0x74, 0x72, 0x79, 0x52, 0x08, 0x6d, 0x65, 0x74, 0x61, 0x44, 0x61,
@@ -1928,29 +1940,30 @@ var file_types_proto_depIdxs = []int32{
 	12, // 12: VirtualComputeFlavour.storageAttributes:type_name -> VirtualStorageData
 	11, // 13: VirtualComputeFlavour.virtualNetworkInterface:type_name -> VirtualNetworkInterfaceData
 	14, // 14: VirtualNetworkData.networkQoS:type_name -> NetworkQoS
-	25, // 15: VirtualNetworkData.metaData:type_name -> VirtualNetworkData.MetaDataEntry
-	28, // 16: NetworkSubnetData.networkId:type_name -> Identifier
-	29, // 17: NetworkSubnetData.ipVersion:type_name -> IPVersion
-	30, // 18: NetworkSubnetData.gatewayIp:type_name -> IPAddress
-	31, // 19: NetworkSubnetData.cidr:type_name -> IPSubnetCIDR
-	32, // 20: NetworkSubnetData.addressPool:type_name -> IPAddressPool
-	26, // 21: NetworkSubnetData.metaData:type_name -> NetworkSubnetData.MetaDataEntry
-	28, // 22: VirtualNetwork.networkResourceId:type_name -> Identifier
-	28, // 23: VirtualNetwork.subnetId:type_name -> Identifier
-	33, // 24: VirtualNetwork.operationalState:type_name -> OperationalState
-	27, // 25: VirtualNetwork.metaData:type_name -> VirtualNetwork.MetaDataEntry
-	28, // 26: AffinityOrAntiAffinityConstraintForCompute.AffinityOrAntiAffinityResourceList.resourceId:type_name -> Identifier
-	2,  // 27: VirtualCpuData.VirtualCpuPinningData.virtualCpuPinningPolicy:type_name -> VirtualCpuData.VirtualCpuPinningData.VirtualCpuPinningPolicy
-	23, // 28: VirtualCpuData.VirtualCpuPinningData.virtualCpuPinningRules:type_name -> VirtualCpuData.VirtualCpuPinningData.VirtualCpuPinningRule
-	34, // 29: VirtualNetworkInterfaceData.MetaDataEntry.value:type_name -> google.protobuf.Any
-	34, // 30: VirtualNetworkData.MetaDataEntry.value:type_name -> google.protobuf.Any
-	34, // 31: NetworkSubnetData.MetaDataEntry.value:type_name -> google.protobuf.Any
-	34, // 32: VirtualNetwork.MetaDataEntry.value:type_name -> google.protobuf.Any
-	33, // [33:33] is the sub-list for method output_type
-	33, // [33:33] is the sub-list for method input_type
-	33, // [33:33] is the sub-list for extension type_name
-	33, // [33:33] is the sub-list for extension extendee
-	0,  // [0:33] is the sub-list for field type_name
+	16, // 15: VirtualNetworkData.layer3Attributes:type_name -> NetworkSubnetData
+	25, // 16: VirtualNetworkData.metaData:type_name -> VirtualNetworkData.MetaDataEntry
+	28, // 17: NetworkSubnetData.networkId:type_name -> Identifier
+	29, // 18: NetworkSubnetData.ipVersion:type_name -> IPVersion
+	30, // 19: NetworkSubnetData.gatewayIp:type_name -> IPAddress
+	31, // 20: NetworkSubnetData.cidr:type_name -> IPSubnetCIDR
+	32, // 21: NetworkSubnetData.addressPool:type_name -> IPAddressPool
+	26, // 22: NetworkSubnetData.metaData:type_name -> NetworkSubnetData.MetaDataEntry
+	28, // 23: VirtualNetwork.networkResourceId:type_name -> Identifier
+	28, // 24: VirtualNetwork.subnetId:type_name -> Identifier
+	33, // 25: VirtualNetwork.operationalState:type_name -> OperationalState
+	27, // 26: VirtualNetwork.metaData:type_name -> VirtualNetwork.MetaDataEntry
+	28, // 27: AffinityOrAntiAffinityConstraintForCompute.AffinityOrAntiAffinityResourceList.resourceId:type_name -> Identifier
+	2,  // 28: VirtualCpuData.VirtualCpuPinningData.virtualCpuPinningPolicy:type_name -> VirtualCpuData.VirtualCpuPinningData.VirtualCpuPinningPolicy
+	23, // 29: VirtualCpuData.VirtualCpuPinningData.virtualCpuPinningRules:type_name -> VirtualCpuData.VirtualCpuPinningData.VirtualCpuPinningRule
+	34, // 30: VirtualNetworkInterfaceData.MetaDataEntry.value:type_name -> google.protobuf.Any
+	34, // 31: VirtualNetworkData.MetaDataEntry.value:type_name -> google.protobuf.Any
+	34, // 32: NetworkSubnetData.MetaDataEntry.value:type_name -> google.protobuf.Any
+	34, // 33: VirtualNetwork.MetaDataEntry.value:type_name -> google.protobuf.Any
+	34, // [34:34] is the sub-list for method output_type
+	34, // [34:34] is the sub-list for method input_type
+	34, // [34:34] is the sub-list for extension type_name
+	34, // [34:34] is the sub-list for extension extendee
+	0,  // [0:34] is the sub-list for field type_name
 }
 
 func init() { file_types_proto_init() }

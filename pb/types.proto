@@ -199,7 +199,8 @@ message VirtualNetworkData {
     repeated NetworkQoS networkQoS = 4;
     // Specifies whether the virtualised network is shared among consumers.
     optional bool isShared = 5;
-    // layer3Attributes = 6;
+    // Attribute list allows setting up a network providing defined layer 3 connectivity.
+    repeated NetworkSubnetData layer3Attributes = 6;
     // List of metadata key-value pairs used by the consumer to associate meaningful metadata to the related virtualised resource.
     map<string, google.protobuf.Any> metaData = 7;
 }
