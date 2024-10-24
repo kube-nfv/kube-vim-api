@@ -168,7 +168,7 @@ message VirtualComputeFlavour {
     repeated VirtualNetworkInterfaceData virtualNetworkInterface = 7;
 }
 
-// This clause describes the attributes for the NetworkQoS information element. This type gives QoS options to be supported on the 
+// This clause describes the attributes for the NetworkQoS information element. This type gives QoS options to be supported on the
 // virtualised network, e.g. latency, jitter, etc.
 message NetworkQoS {
     // Name given to the QoS parameter.
@@ -206,9 +206,9 @@ message VirtualNetworkData {
 }
 
 // The NetworkSubnetData information element encapsulates information to allocate or update virtualised sub-networks.
-message NetworkSubnetData { 
-    // Identifier of the virtualised network that the virtualised sub-network is attached to. 
-    // The cardinality can be 0 to cover the case where this type is used to describe the L3 attributes of a network rather 
+message NetworkSubnetData {
+    // Identifier of the virtualised network that the virtualised sub-network is attached to.
+    // The cardinality can be 0 to cover the case where this type is used to describe the L3 attributes of a network rather
     // than a subnetwork or when NetworkSubnetData is part of Update Virtualised Network Resource.
     // Note: In these cases, changing the parameter is such a fundamental change that a new virtualised network resource should be created instead of updating an existing network resource.
     optional Identifier networkId = 1;
@@ -224,7 +224,7 @@ message NetworkSubnetData {
     optional IPSubnetCIDR cidr = 4;
     // True when DHCP is to be enabled for this network/subnetwork, or false otherwise.
     optional bool isDhcpEnabled = 5;
-    // Address pools for the network/subnetwork. The cardinality can be 0 when VIM is allowed to allocate all addresses in the 
+    // Address pools for the network/subnetwork. The cardinality can be 0 when VIM is allowed to allocate all addresses in the
     // CIDR except for the address of the network/subnetwork gateway.
     optional IPAddressPool addressPool = 6;
     // List of metadata key-value pairs used by the consumer to associate meaningful metadata to the related virtualised resource.
@@ -248,7 +248,7 @@ message VirtualNetwork {
     // References the network subnet.
     // Only present if the network provides layer 3 connectivity.
     repeated Identifier subnetId = 3;
-    
+
     // Type of network that maps to the virtualised network. This list is extensible. Examples are:
     //  • "local";
     //  • "vlan";
@@ -259,7 +259,7 @@ message VirtualNetwork {
     string networkType = 6;
 
     // Operational state of the virtualised network.
-    OperationalState operationalState = 12; 
+    OperationalState operationalState = 12;
     // List of metadata key-value pairs used by the consumer to associate meaningful metadata to the related virtualised resource.
     map<string, google.protobuf.Any> metaData = 13;
 }
