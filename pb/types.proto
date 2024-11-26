@@ -51,7 +51,16 @@ message AffinityOrAntiAffinityConstraintForNetwork {
 }
 
 message VirtualInterfaceData {
-
+    // In the case when the virtual network interface is attached to the network, it references such a network. 
+    // The cardinality can be 0 in the case that a network interface is created without being attached to any specific network.
+    optional Identifier networkId = 1;
+    // The virtual network interface can be configured with specific IP address(es) associated to the network to be attached to. 
+    // The cardinality can be 0 in the case that a network interface is created without being attached to any specific network, 
+    // or when an IP address can be automatically configured, e.g. by DHCP.
+    optional IPAddress ipAddress = 2;
+    // MAC address desired for the virtual network interface. 
+    // The cardinality can be 0 to allow for network interface without specific MAC address configuration.
+    optional MacAddress macAddress = 3;
 }
 
 message UserData {

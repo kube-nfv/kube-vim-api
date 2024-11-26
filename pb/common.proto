@@ -28,6 +28,10 @@ message IPAddress {
     string ip = 1;
 }
 
+message MacAddress {
+    string mac = 2;
+}
+
 message IPSubnet {
     string ip = 1;
     string mask = 2;
