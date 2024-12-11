@@ -5,6 +5,7 @@ option go_package = "github.com/DiMalovanyy/kube-vim-api/pb/nfv";
 import "common.proto";
 import "google/protobuf/any.proto";
 import "google/protobuf/timestamp.proto";
+import "k8s.io/apimachinery/pkg/api/resource/generated.proto";
 
 // This information element represents Software Image Information
 message SoftwareImageInformation {
@@ -27,11 +28,11 @@ message SoftwareImageInformation {
     // Time this software image was last updated.
     google.protobuf.Timestamp updatedAt = 9;
     // Minimal disk size for this software image.
-    optional float minDisk = 10;
+    optional k8s.io.apimachinery.pkg.api.resource.Quantity minDisk = 10;
     // Minimal RAM size for this software image.
-    optional float minRam = 11;
+    optional k8s.io.apimachinery.pkg.api.resource.Quantity minRam = 11;
     // Size of this software image.
-    float size = 12;
+    k8s.io.apimachinery.pkg.api.resource.Quantity size = 12;
     // Status of this software image.
     string status = 13;
     // List of metadata key-value pairs used by the consumer to associate meaningful metadata to the related virtualised resource.
