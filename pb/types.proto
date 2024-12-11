@@ -4,12 +4,38 @@ option go_package = "github.com/DiMalovanyy/kube-vim-api/pb/nfv";
 
 import "common.proto";
 import "google/protobuf/any.proto";
+import "google/protobuf/timestamp.proto";
 
 // This information element represents Software Image Information
 message SoftwareImageInformation {
     // Identifier of this software image.
     Identifier softwareImageId = 1;
-    //TODO
+    // Name of this software image.
+    string name = 2;
+    // Provider of this software image.
+    optional string provider = 3;
+    // Version of the software image file.
+    optional string version = 4;
+    // Checksum of the software image file.
+    optional string checksum = 5;
+    // Container format indicates whether the software image is in a file format that also contains metadata about the actual software.
+    optional string containerFormat = 6;
+    // Disk format of a software image is the format of the underlying disk image.
+    optional string diskFormat = 7;
+    // Time this software image was created.
+    google.protobuf.Timestamp createdAt = 8;
+    // Time this software image was last updated.
+    google.protobuf.Timestamp updatedAt = 9;
+    // Minimal disk size for this software image.
+    optional float minDisk = 10;
+    // Minimal RAM size for this software image.
+    optional float minRam = 11;
+    // Size of this software image.
+    float size = 12;
+    // Status of this software image.
+    string status = 13;
+    // List of metadata key-value pairs used by the consumer to associate meaningful metadata to the related virtualised resource.
+    map<string, google.protobuf.Any> metaData = 14;
 }
 
 enum TypeOfAffinityOrAntiAffinityConstraint {
@@ -51,14 +77,14 @@ message AffinityOrAntiAffinityConstraintForNetwork {
 }
 
 message VirtualInterfaceData {
-    // In the case when the virtual network interface is attached to the network, it references such a network. 
+    // In the case when the virtual network interface is attached to the network, it references such a network.
     // The cardinality can be 0 in the case that a network interface is created without being attached to any specific network.
     optional Identifier networkId = 1;
-    // The virtual network interface can be configured with specific IP address(es) associated to the network to be attached to. 
-    // The cardinality can be 0 in the case that a network interface is created without being attached to any specific network, 
+    // The virtual network interface can be configured with specific IP address(es) associated to the network to be attached to.
+    // The cardinality can be 0 in the case that a network interface is created without being attached to any specific network,
     // or when an IP address can be automatically configured, e.g. by DHCP.
     optional IPAddress ipAddress = 2;
-    // MAC address desired for the virtual network interface. 
+    // MAC address desired for the virtual network interface.
     // The cardinality can be 0 to allow for network interface without specific MAC address configuration.
     optional MacAddress macAddress = 3;
 }

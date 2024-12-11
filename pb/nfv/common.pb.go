@@ -311,6 +311,53 @@ func (x *IPAddress) GetIp() string {
 	return ""
 }
 
+type MacAddress struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Mac string `protobuf:"bytes,2,opt,name=mac,proto3" json:"mac,omitempty"`
+}
+
+func (x *MacAddress) Reset() {
+	*x = MacAddress{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_common_proto_msgTypes[4]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *MacAddress) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*MacAddress) ProtoMessage() {}
+
+func (x *MacAddress) ProtoReflect() protoreflect.Message {
+	mi := &file_common_proto_msgTypes[4]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use MacAddress.ProtoReflect.Descriptor instead.
+func (*MacAddress) Descriptor() ([]byte, []int) {
+	return file_common_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *MacAddress) GetMac() string {
+	if x != nil {
+		return x.Mac
+	}
+	return ""
+}
+
 type IPSubnet struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -323,7 +370,7 @@ type IPSubnet struct {
 func (x *IPSubnet) Reset() {
 	*x = IPSubnet{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_common_proto_msgTypes[4]
+		mi := &file_common_proto_msgTypes[5]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -336,7 +383,7 @@ func (x *IPSubnet) String() string {
 func (*IPSubnet) ProtoMessage() {}
 
 func (x *IPSubnet) ProtoReflect() protoreflect.Message {
-	mi := &file_common_proto_msgTypes[4]
+	mi := &file_common_proto_msgTypes[5]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -349,7 +396,7 @@ func (x *IPSubnet) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use IPSubnet.ProtoReflect.Descriptor instead.
 func (*IPSubnet) Descriptor() ([]byte, []int) {
-	return file_common_proto_rawDescGZIP(), []int{4}
+	return file_common_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *IPSubnet) GetIp() string {
@@ -377,7 +424,7 @@ type IPSubnetCIDR struct {
 func (x *IPSubnetCIDR) Reset() {
 	*x = IPSubnetCIDR{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_common_proto_msgTypes[5]
+		mi := &file_common_proto_msgTypes[6]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -390,7 +437,7 @@ func (x *IPSubnetCIDR) String() string {
 func (*IPSubnetCIDR) ProtoMessage() {}
 
 func (x *IPSubnetCIDR) ProtoReflect() protoreflect.Message {
-	mi := &file_common_proto_msgTypes[5]
+	mi := &file_common_proto_msgTypes[6]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -403,7 +450,7 @@ func (x *IPSubnetCIDR) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use IPSubnetCIDR.ProtoReflect.Descriptor instead.
 func (*IPSubnetCIDR) Descriptor() ([]byte, []int) {
-	return file_common_proto_rawDescGZIP(), []int{5}
+	return file_common_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *IPSubnetCIDR) GetCidr() string {
@@ -426,7 +473,7 @@ type IPAddressPool struct {
 func (x *IPAddressPool) Reset() {
 	*x = IPAddressPool{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_common_proto_msgTypes[6]
+		mi := &file_common_proto_msgTypes[7]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -439,7 +486,7 @@ func (x *IPAddressPool) String() string {
 func (*IPAddressPool) ProtoMessage() {}
 
 func (x *IPAddressPool) ProtoReflect() protoreflect.Message {
-	mi := &file_common_proto_msgTypes[6]
+	mi := &file_common_proto_msgTypes[7]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -452,7 +499,7 @@ func (x *IPAddressPool) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use IPAddressPool.ProtoReflect.Descriptor instead.
 func (*IPAddressPool) Descriptor() ([]byte, []int) {
-	return file_common_proto_rawDescGZIP(), []int{6}
+	return file_common_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *IPAddressPool) GetStartIP() *IPAddress {
@@ -485,7 +532,9 @@ var file_common_proto_rawDesc = []byte{
 	0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66,
 	0x2e, 0x41, 0x6e, 0x79, 0x52, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x22, 0x1b, 0x0a, 0x09, 0x49,
 	0x50, 0x41, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x70, 0x18, 0x01,
-	0x20, 0x01, 0x28, 0x09, 0x52, 0x02, 0x69, 0x70, 0x22, 0x2e, 0x0a, 0x08, 0x49, 0x50, 0x53, 0x75,
+	0x20, 0x01, 0x28, 0x09, 0x52, 0x02, 0x69, 0x70, 0x22, 0x1e, 0x0a, 0x0a, 0x4d, 0x61, 0x63, 0x41,
+	0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x12, 0x10, 0x0a, 0x03, 0x6d, 0x61, 0x63, 0x18, 0x02, 0x20,
+	0x01, 0x28, 0x09, 0x52, 0x03, 0x6d, 0x61, 0x63, 0x22, 0x2e, 0x0a, 0x08, 0x49, 0x50, 0x53, 0x75,
 	0x62, 0x6e, 0x65, 0x74, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x70, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09,
 	0x52, 0x02, 0x69, 0x70, 0x12, 0x12, 0x0a, 0x04, 0x6d, 0x61, 0x73, 0x6b, 0x18, 0x02, 0x20, 0x01,
 	0x28, 0x09, 0x52, 0x04, 0x6d, 0x61, 0x73, 0x6b, 0x22, 0x22, 0x0a, 0x0c, 0x49, 0x50, 0x53, 0x75,
@@ -520,7 +569,7 @@ func file_common_proto_rawDescGZIP() []byte {
 }
 
 var file_common_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
-var file_common_proto_msgTypes = make([]protoimpl.MessageInfo, 7)
+var file_common_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
 var file_common_proto_goTypes = []interface{}{
 	(IPVersion)(0),        // 0: IPVersion
 	(OperationalState)(0), // 1: OperationalState
@@ -528,20 +577,21 @@ var file_common_proto_goTypes = []interface{}{
 	(*Filter)(nil),        // 3: Filter
 	(*KeyValuePair)(nil),  // 4: KeyValuePair
 	(*IPAddress)(nil),     // 5: IPAddress
-	(*IPSubnet)(nil),      // 6: IPSubnet
-	(*IPSubnetCIDR)(nil),  // 7: IPSubnetCIDR
-	(*IPAddressPool)(nil), // 8: IPAddressPool
-	(*anypb.Any)(nil),     // 9: google.protobuf.Any
+	(*MacAddress)(nil),    // 6: MacAddress
+	(*IPSubnet)(nil),      // 7: IPSubnet
+	(*IPSubnetCIDR)(nil),  // 8: IPSubnetCIDR
+	(*IPAddressPool)(nil), // 9: IPAddressPool
+	(*anypb.Any)(nil),     // 10: google.protobuf.Any
 }
 var file_common_proto_depIdxs = []int32{
-	9, // 0: KeyValuePair.value:type_name -> google.protobuf.Any
-	5, // 1: IPAddressPool.startIP:type_name -> IPAddress
-	5, // 2: IPAddressPool.endIP:type_name -> IPAddress
-	3, // [3:3] is the sub-list for method output_type
-	3, // [3:3] is the sub-list for method input_type
-	3, // [3:3] is the sub-list for extension type_name
-	3, // [3:3] is the sub-list for extension extendee
-	0, // [0:3] is the sub-list for field type_name
+	10, // 0: KeyValuePair.value:type_name -> google.protobuf.Any
+	5,  // 1: IPAddressPool.startIP:type_name -> IPAddress
+	5,  // 2: IPAddressPool.endIP:type_name -> IPAddress
+	3,  // [3:3] is the sub-list for method output_type
+	3,  // [3:3] is the sub-list for method input_type
+	3,  // [3:3] is the sub-list for extension type_name
+	3,  // [3:3] is the sub-list for extension extendee
+	0,  // [0:3] is the sub-list for field type_name
 }
 
 func init() { file_common_proto_init() }
@@ -599,7 +649,7 @@ func file_common_proto_init() {
 			}
 		}
 		file_common_proto_msgTypes[4].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*IPSubnet); i {
+			switch v := v.(*MacAddress); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -611,7 +661,7 @@ func file_common_proto_init() {
 			}
 		}
 		file_common_proto_msgTypes[5].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*IPSubnetCIDR); i {
+			switch v := v.(*IPSubnet); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -623,6 +673,18 @@ func file_common_proto_init() {
 			}
 		}
 		file_common_proto_msgTypes[6].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*IPSubnetCIDR); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_common_proto_msgTypes[7].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*IPAddressPool); i {
 			case 0:
 				return &v.state
@@ -641,7 +703,7 @@ func file_common_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_common_proto_rawDesc,
 			NumEnums:      2,
-			NumMessages:   7,
+			NumMessages:   8,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
