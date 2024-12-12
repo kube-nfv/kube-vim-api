@@ -16,7 +16,6 @@ proto-compile: proto-image-build ## Compile message protobuf and gRPC service fi
 	  -w "/source" \
 	  protogen-image \
 	  bash -c "protoc *.proto --proto_path=. \
-	  -I/usr/local/src \
 	  --go_out=. --go_opt=module=github.com/kube-nfv/kube-vim-api/pb \
 	  --go-grpc_out=. --go-grpc_opt=module=github.com/kube-nfv/kube-vim-api/pb"
 
