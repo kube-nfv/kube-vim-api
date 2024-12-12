@@ -189,9 +189,9 @@ type SoftwareImageInformation struct {
 	// Time this software image was last updated.
 	UpdatedAt *timestamppb.Timestamp `protobuf:"bytes,9,opt,name=updatedAt,proto3" json:"updatedAt,omitempty"`
 	// Minimal disk size for this software image.
-	MinDisk *float32 `protobuf:"fixed32,10,opt,name=minDisk,proto3,oneof" json:"minDisk,omitempty"`
+	MinDisk *resource.Quantity `protobuf:"bytes,10,opt,name=minDisk,proto3,oneof" json:"minDisk,omitempty"`
 	// Minimal RAM size for this software image.
-	MinRam *float32 `protobuf:"fixed32,11,opt,name=minRam,proto3,oneof" json:"minRam,omitempty"`
+	MinRam *resource.Quantity `protobuf:"bytes,11,opt,name=minRam,proto3,oneof" json:"minRam,omitempty"`
 	// Size of this software image.
 	Size *resource.Quantity `protobuf:"bytes,12,opt,name=size,proto3" json:"size,omitempty"`
 	// Status of this software image.
@@ -295,18 +295,18 @@ func (x *SoftwareImageInformation) GetUpdatedAt() *timestamppb.Timestamp {
 	return nil
 }
 
-func (x *SoftwareImageInformation) GetMinDisk() float32 {
-	if x != nil && x.MinDisk != nil {
-		return *x.MinDisk
+func (x *SoftwareImageInformation) GetMinDisk() *resource.Quantity {
+	if x != nil {
+		return x.MinDisk
 	}
-	return 0
+	return nil
 }
 
-func (x *SoftwareImageInformation) GetMinRam() float32 {
-	if x != nil && x.MinRam != nil {
-		return *x.MinRam
+func (x *SoftwareImageInformation) GetMinRam() *resource.Quantity {
+	if x != nil {
+		return x.MinRam
 	}
-	return 0
+	return nil
 }
 
 func (x *SoftwareImageInformation) GetSize() *resource.Quantity {
@@ -1731,7 +1731,7 @@ var file_types_proto_rawDesc = []byte{
 	0x70, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x34, 0x6b, 0x38, 0x73, 0x2e, 0x69, 0x6f, 0x2f,
 	0x61, 0x70, 0x69, 0x6d, 0x61, 0x63, 0x68, 0x69, 0x6e, 0x65, 0x72, 0x79, 0x2f, 0x70, 0x6b, 0x67,
 	0x2f, 0x61, 0x70, 0x69, 0x2f, 0x72, 0x65, 0x73, 0x6f, 0x75, 0x72, 0x63, 0x65, 0x2f, 0x67, 0x65,
-	0x6e, 0x65, 0x72, 0x61, 0x74, 0x65, 0x64, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x22, 0x9e, 0x06,
+	0x6e, 0x65, 0x72, 0x61, 0x74, 0x65, 0x64, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x22, 0xfe, 0x06,
 	0x0a, 0x18, 0x53, 0x6f, 0x66, 0x74, 0x77, 0x61, 0x72, 0x65, 0x49, 0x6d, 0x61, 0x67, 0x65, 0x49,
 	0x6e, 0x66, 0x6f, 0x72, 0x6d, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x12, 0x35, 0x0a, 0x0f, 0x73, 0x6f,
 	0x66, 0x74, 0x77, 0x61, 0x72, 0x65, 0x49, 0x6d, 0x61, 0x67, 0x65, 0x49, 0x64, 0x18, 0x01, 0x20,
@@ -1756,10 +1756,16 @@ var file_types_proto_rawDesc = []byte{
 	0x65, 0x64, 0x41, 0x74, 0x12, 0x38, 0x0a, 0x09, 0x75, 0x70, 0x64, 0x61, 0x74, 0x65, 0x64, 0x41,
 	0x74, 0x18, 0x09, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x1a, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65,
 	0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2e, 0x54, 0x69, 0x6d, 0x65, 0x73, 0x74,
-	0x61, 0x6d, 0x70, 0x52, 0x09, 0x75, 0x70, 0x64, 0x61, 0x74, 0x65, 0x64, 0x41, 0x74, 0x12, 0x1d,
-	0x0a, 0x07, 0x6d, 0x69, 0x6e, 0x44, 0x69, 0x73, 0x6b, 0x18, 0x0a, 0x20, 0x01, 0x28, 0x02, 0x48,
-	0x05, 0x52, 0x07, 0x6d, 0x69, 0x6e, 0x44, 0x69, 0x73, 0x6b, 0x88, 0x01, 0x01, 0x12, 0x1b, 0x0a,
-	0x06, 0x6d, 0x69, 0x6e, 0x52, 0x61, 0x6d, 0x18, 0x0b, 0x20, 0x01, 0x28, 0x02, 0x48, 0x06, 0x52,
+	0x61, 0x6d, 0x70, 0x52, 0x09, 0x75, 0x70, 0x64, 0x61, 0x74, 0x65, 0x64, 0x41, 0x74, 0x12, 0x4d,
+	0x0a, 0x07, 0x6d, 0x69, 0x6e, 0x44, 0x69, 0x73, 0x6b, 0x18, 0x0a, 0x20, 0x01, 0x28, 0x0b, 0x32,
+	0x2e, 0x2e, 0x6b, 0x38, 0x73, 0x2e, 0x69, 0x6f, 0x2e, 0x61, 0x70, 0x69, 0x6d, 0x61, 0x63, 0x68,
+	0x69, 0x6e, 0x65, 0x72, 0x79, 0x2e, 0x70, 0x6b, 0x67, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x72, 0x65,
+	0x73, 0x6f, 0x75, 0x72, 0x63, 0x65, 0x2e, 0x51, 0x75, 0x61, 0x6e, 0x74, 0x69, 0x74, 0x79, 0x48,
+	0x05, 0x52, 0x07, 0x6d, 0x69, 0x6e, 0x44, 0x69, 0x73, 0x6b, 0x88, 0x01, 0x01, 0x12, 0x4b, 0x0a,
+	0x06, 0x6d, 0x69, 0x6e, 0x52, 0x61, 0x6d, 0x18, 0x0b, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x2e, 0x2e,
+	0x6b, 0x38, 0x73, 0x2e, 0x69, 0x6f, 0x2e, 0x61, 0x70, 0x69, 0x6d, 0x61, 0x63, 0x68, 0x69, 0x6e,
+	0x65, 0x72, 0x79, 0x2e, 0x70, 0x6b, 0x67, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x72, 0x65, 0x73, 0x6f,
+	0x75, 0x72, 0x63, 0x65, 0x2e, 0x51, 0x75, 0x61, 0x6e, 0x74, 0x69, 0x74, 0x79, 0x48, 0x06, 0x52,
 	0x06, 0x6d, 0x69, 0x6e, 0x52, 0x61, 0x6d, 0x88, 0x01, 0x01, 0x12, 0x42, 0x0a, 0x04, 0x73, 0x69,
 	0x7a, 0x65, 0x18, 0x0c, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x2e, 0x2e, 0x6b, 0x38, 0x73, 0x2e, 0x69,
 	0x6f, 0x2e, 0x61, 0x70, 0x69, 0x6d, 0x61, 0x63, 0x68, 0x69, 0x6e, 0x65, 0x72, 0x79, 0x2e, 0x70,
@@ -2080,10 +2086,10 @@ var file_types_proto_rawDesc = []byte{
 	0x6e, 0x69, 0x74, 0x79, 0x43, 0x6f, 0x6e, 0x73, 0x74, 0x72, 0x61, 0x69, 0x6e, 0x74, 0x12, 0x0c,
 	0x0a, 0x08, 0x41, 0x46, 0x46, 0x49, 0x4e, 0x49, 0x54, 0x59, 0x10, 0x00, 0x12, 0x11, 0x0a, 0x0d,
 	0x41, 0x4e, 0x54, 0x49, 0x5f, 0x41, 0x46, 0x46, 0x49, 0x4e, 0x49, 0x54, 0x59, 0x10, 0x01, 0x42,
-	0x2c, 0x5a, 0x2a, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x44, 0x69,
-	0x4d, 0x61, 0x6c, 0x6f, 0x76, 0x61, 0x6e, 0x79, 0x79, 0x2f, 0x6b, 0x75, 0x62, 0x65, 0x2d, 0x76,
-	0x69, 0x6d, 0x2d, 0x61, 0x70, 0x69, 0x2f, 0x70, 0x62, 0x2f, 0x6e, 0x66, 0x76, 0x62, 0x06, 0x70,
-	0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x29, 0x5a, 0x27, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x6b, 0x75,
+	0x62, 0x65, 0x2d, 0x6e, 0x66, 0x76, 0x2f, 0x6b, 0x75, 0x62, 0x65, 0x2d, 0x76, 0x69, 0x6d, 0x2d,
+	0x61, 0x70, 0x69, 0x2f, 0x70, 0x62, 0x2f, 0x6e, 0x66, 0x76, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74,
+	0x6f, 0x33,
 }
 
 var (
@@ -2145,50 +2151,52 @@ var file_types_proto_depIdxs = []int32{
 	29, // 0: SoftwareImageInformation.softwareImageId:type_name -> Identifier
 	30, // 1: SoftwareImageInformation.createdAt:type_name -> google.protobuf.Timestamp
 	30, // 2: SoftwareImageInformation.updatedAt:type_name -> google.protobuf.Timestamp
-	31, // 3: SoftwareImageInformation.size:type_name -> k8s.io.apimachinery.pkg.api.resource.Quantity
-	21, // 4: SoftwareImageInformation.metaData:type_name -> SoftwareImageInformation.MetaDataEntry
-	0,  // 5: AffinityOrAntiAffinityConstraintForCompute.type:type_name -> TypeOfAffinityOrAntiAffinityConstraint
-	1,  // 6: AffinityOrAntiAffinityConstraintForCompute.scope:type_name -> AffinityOrAntiAffinityConstraintForCompute.ScopeOfAffinityOrAntiAffinityConstraintForCompute
-	22, // 7: AffinityOrAntiAffinityConstraintForCompute.affinityOrAntiAffinityResourceList:type_name -> AffinityOrAntiAffinityConstraintForCompute.AffinityOrAntiAffinityResourceList
-	29, // 8: AffinityOrAntiAffinityConstraintForCompute.affinityOrAntiAffinityResourceGroupId:type_name -> Identifier
-	29, // 9: VirtualInterfaceData.networkId:type_name -> Identifier
-	32, // 10: VirtualInterfaceData.ipAddress:type_name -> IPAddress
-	33, // 11: VirtualInterfaceData.macAddress:type_name -> MacAddress
-	23, // 12: VirtualCpuData.virtualCpuPinning:type_name -> VirtualCpuData.VirtualCpuPinningData
-	29, // 13: VirtualNetworkInterfaceData.networkId:type_name -> Identifier
-	29, // 14: VirtualNetworkInterfaceData.networkPortId:type_name -> Identifier
-	25, // 15: VirtualNetworkInterfaceData.metaData:type_name -> VirtualNetworkInterfaceData.MetaDataEntry
-	29, // 16: VirtualComputeFlavour.flavourId:type_name -> Identifier
-	9,  // 17: VirtualComputeFlavour.virtualMemory:type_name -> VirtualMemoryData
-	10, // 18: VirtualComputeFlavour.virtualCpu:type_name -> VirtualCpuData
-	12, // 19: VirtualComputeFlavour.storageAttributes:type_name -> VirtualStorageData
-	11, // 20: VirtualComputeFlavour.virtualNetworkInterface:type_name -> VirtualNetworkInterfaceData
-	14, // 21: VirtualNetworkData.networkQoS:type_name -> NetworkQoS
-	16, // 22: VirtualNetworkData.layer3Attributes:type_name -> NetworkSubnetData
-	26, // 23: VirtualNetworkData.metaData:type_name -> VirtualNetworkData.MetaDataEntry
-	29, // 24: NetworkSubnetData.networkId:type_name -> Identifier
-	34, // 25: NetworkSubnetData.ipVersion:type_name -> IPVersion
-	32, // 26: NetworkSubnetData.gatewayIp:type_name -> IPAddress
-	35, // 27: NetworkSubnetData.cidr:type_name -> IPSubnetCIDR
-	36, // 28: NetworkSubnetData.addressPool:type_name -> IPAddressPool
-	27, // 29: NetworkSubnetData.metaData:type_name -> NetworkSubnetData.MetaDataEntry
-	29, // 30: VirtualNetwork.networkResourceId:type_name -> Identifier
-	29, // 31: VirtualNetwork.subnetId:type_name -> Identifier
-	37, // 32: VirtualNetwork.operationalState:type_name -> OperationalState
-	28, // 33: VirtualNetwork.metaData:type_name -> VirtualNetwork.MetaDataEntry
-	38, // 34: SoftwareImageInformation.MetaDataEntry.value:type_name -> google.protobuf.Any
-	29, // 35: AffinityOrAntiAffinityConstraintForCompute.AffinityOrAntiAffinityResourceList.resourceId:type_name -> Identifier
-	2,  // 36: VirtualCpuData.VirtualCpuPinningData.virtualCpuPinningPolicy:type_name -> VirtualCpuData.VirtualCpuPinningData.VirtualCpuPinningPolicy
-	24, // 37: VirtualCpuData.VirtualCpuPinningData.virtualCpuPinningRules:type_name -> VirtualCpuData.VirtualCpuPinningData.VirtualCpuPinningRule
-	38, // 38: VirtualNetworkInterfaceData.MetaDataEntry.value:type_name -> google.protobuf.Any
-	38, // 39: VirtualNetworkData.MetaDataEntry.value:type_name -> google.protobuf.Any
-	38, // 40: NetworkSubnetData.MetaDataEntry.value:type_name -> google.protobuf.Any
-	38, // 41: VirtualNetwork.MetaDataEntry.value:type_name -> google.protobuf.Any
-	42, // [42:42] is the sub-list for method output_type
-	42, // [42:42] is the sub-list for method input_type
-	42, // [42:42] is the sub-list for extension type_name
-	42, // [42:42] is the sub-list for extension extendee
-	0,  // [0:42] is the sub-list for field type_name
+	31, // 3: SoftwareImageInformation.minDisk:type_name -> k8s.io.apimachinery.pkg.api.resource.Quantity
+	31, // 4: SoftwareImageInformation.minRam:type_name -> k8s.io.apimachinery.pkg.api.resource.Quantity
+	31, // 5: SoftwareImageInformation.size:type_name -> k8s.io.apimachinery.pkg.api.resource.Quantity
+	21, // 6: SoftwareImageInformation.metaData:type_name -> SoftwareImageInformation.MetaDataEntry
+	0,  // 7: AffinityOrAntiAffinityConstraintForCompute.type:type_name -> TypeOfAffinityOrAntiAffinityConstraint
+	1,  // 8: AffinityOrAntiAffinityConstraintForCompute.scope:type_name -> AffinityOrAntiAffinityConstraintForCompute.ScopeOfAffinityOrAntiAffinityConstraintForCompute
+	22, // 9: AffinityOrAntiAffinityConstraintForCompute.affinityOrAntiAffinityResourceList:type_name -> AffinityOrAntiAffinityConstraintForCompute.AffinityOrAntiAffinityResourceList
+	29, // 10: AffinityOrAntiAffinityConstraintForCompute.affinityOrAntiAffinityResourceGroupId:type_name -> Identifier
+	29, // 11: VirtualInterfaceData.networkId:type_name -> Identifier
+	32, // 12: VirtualInterfaceData.ipAddress:type_name -> IPAddress
+	33, // 13: VirtualInterfaceData.macAddress:type_name -> MacAddress
+	23, // 14: VirtualCpuData.virtualCpuPinning:type_name -> VirtualCpuData.VirtualCpuPinningData
+	29, // 15: VirtualNetworkInterfaceData.networkId:type_name -> Identifier
+	29, // 16: VirtualNetworkInterfaceData.networkPortId:type_name -> Identifier
+	25, // 17: VirtualNetworkInterfaceData.metaData:type_name -> VirtualNetworkInterfaceData.MetaDataEntry
+	29, // 18: VirtualComputeFlavour.flavourId:type_name -> Identifier
+	9,  // 19: VirtualComputeFlavour.virtualMemory:type_name -> VirtualMemoryData
+	10, // 20: VirtualComputeFlavour.virtualCpu:type_name -> VirtualCpuData
+	12, // 21: VirtualComputeFlavour.storageAttributes:type_name -> VirtualStorageData
+	11, // 22: VirtualComputeFlavour.virtualNetworkInterface:type_name -> VirtualNetworkInterfaceData
+	14, // 23: VirtualNetworkData.networkQoS:type_name -> NetworkQoS
+	16, // 24: VirtualNetworkData.layer3Attributes:type_name -> NetworkSubnetData
+	26, // 25: VirtualNetworkData.metaData:type_name -> VirtualNetworkData.MetaDataEntry
+	29, // 26: NetworkSubnetData.networkId:type_name -> Identifier
+	34, // 27: NetworkSubnetData.ipVersion:type_name -> IPVersion
+	32, // 28: NetworkSubnetData.gatewayIp:type_name -> IPAddress
+	35, // 29: NetworkSubnetData.cidr:type_name -> IPSubnetCIDR
+	36, // 30: NetworkSubnetData.addressPool:type_name -> IPAddressPool
+	27, // 31: NetworkSubnetData.metaData:type_name -> NetworkSubnetData.MetaDataEntry
+	29, // 32: VirtualNetwork.networkResourceId:type_name -> Identifier
+	29, // 33: VirtualNetwork.subnetId:type_name -> Identifier
+	37, // 34: VirtualNetwork.operationalState:type_name -> OperationalState
+	28, // 35: VirtualNetwork.metaData:type_name -> VirtualNetwork.MetaDataEntry
+	38, // 36: SoftwareImageInformation.MetaDataEntry.value:type_name -> google.protobuf.Any
+	29, // 37: AffinityOrAntiAffinityConstraintForCompute.AffinityOrAntiAffinityResourceList.resourceId:type_name -> Identifier
+	2,  // 38: VirtualCpuData.VirtualCpuPinningData.virtualCpuPinningPolicy:type_name -> VirtualCpuData.VirtualCpuPinningData.VirtualCpuPinningPolicy
+	24, // 39: VirtualCpuData.VirtualCpuPinningData.virtualCpuPinningRules:type_name -> VirtualCpuData.VirtualCpuPinningData.VirtualCpuPinningRule
+	38, // 40: VirtualNetworkInterfaceData.MetaDataEntry.value:type_name -> google.protobuf.Any
+	38, // 41: VirtualNetworkData.MetaDataEntry.value:type_name -> google.protobuf.Any
+	38, // 42: NetworkSubnetData.MetaDataEntry.value:type_name -> google.protobuf.Any
+	38, // 43: VirtualNetwork.MetaDataEntry.value:type_name -> google.protobuf.Any
+	44, // [44:44] is the sub-list for method output_type
+	44, // [44:44] is the sub-list for method input_type
+	44, // [44:44] is the sub-list for extension type_name
+	44, // [44:44] is the sub-list for extension extendee
+	0,  // [0:44] is the sub-list for field type_name
 }
 
 func init() { file_types_proto_init() }

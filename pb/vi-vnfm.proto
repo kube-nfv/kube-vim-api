@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-option go_package = "github.com/DiMalovanyy/kube-vim-api/pb/nfv";
+option go_package = "github.com/kube-nfv/kube-vim-api/pb/nfv";
 
 import "common.proto";
 import "types.proto";

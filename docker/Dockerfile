@@ -19,6 +19,6 @@ RUN export ZIP=x86_64 && \
                unzip -o protoc-${PROTOC_VERSION}-linux-${ZIP}.zip -d /usr/local bin/protoc && \
                unzip -o protoc-${PROTOC_VERSION}-linux-${ZIP}.zip -d /usr/local 'include/*'
 RUN wget --quiet https://github.com/kubernetes/apimachinery/archive/refs/tags/v${K8S_APIMACHINERY_VERSION}.zip && \
-               mkdir -p /usr/local/include/k8s.io && \
-               unzip -o v${K8S_APIMACHINERY_VERSION}.zip -d /usr/local/include/k8s.io '*.proto' && \
-               mv /usr/local/include/k8s.io/apimachinery-${K8S_APIMACHINERY_VERSION} /usr/local/include/k8s.io/apimachinery
+               mkdir -p /usr/local/src/k8s.io && \
+               unzip -o v${K8S_APIMACHINERY_VERSION}.zip -d /usr/local/src/k8s.io && \
+               mv /usr/local/src/k8s.io/apimachinery-${K8S_APIMACHINERY_VERSION} /usr/local/src/k8s.io/apimachinery
