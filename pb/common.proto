@@ -53,6 +53,7 @@ enum OperationalState {
 }
 
 // List of metadata key-value pairs used by the consumer to associate meaningful metadata to the related virtualised resource.
+// Note: metadata represent as a string, string map. Make value of pb.Any is not mianingfull since consumer won't be able to deserialize it.
 message Metadata {
-    map<string, google.protobuf.Any> fields = 1;
+    map<string, string> fields = 1;
 }
