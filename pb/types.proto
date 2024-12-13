@@ -3,7 +3,6 @@ syntax = "proto3";
 option go_package = "github.com/kube-nfv/kube-vim-api/pb/nfv";
 
 import "common.proto";
-import "google/protobuf/any.proto";
 import "google/protobuf/timestamp.proto";
 import "k8s.io/apimachinery/pkg/api/resource/generated.proto";
 
@@ -36,7 +35,7 @@ message SoftwareImageInformation {
     // Status of this software image.
     string status = 13;
     // List of metadata key-value pairs used by the consumer to associate meaningful metadata to the related virtualised resource.
-    map<string, google.protobuf.Any> metaData = 14;
+    Metadata metaData = 14;
 }
 
 enum TypeOfAffinityOrAntiAffinityConstraint {
@@ -168,7 +167,7 @@ message VirtualNetworkInterfaceData {
     // The cardinality can be 0, if no particular acceleration capability is requested.
     repeated string accelerationCapabilityForVirtualNetworkInterface = 6;
     // List of metadata key-value pairs used by the consumer to associate meaningful metadata to the related virtualised resource.
-    map<string, google.protobuf.Any> metaData = 7;
+    Metadata metaData = 7;
 }
 
 // This clause describes the attributes for the VirtualStorageData information element.
@@ -202,6 +201,8 @@ message VirtualComputeFlavour {
     repeated VirtualStorageData storageAttributes = 6;
     // Virtual network interfaces of the virtualised compute
     repeated VirtualNetworkInterfaceData virtualNetworkInterface = 7;
+    // List of metadata key-value pairs used by the consumer to associate meaningful metadata to the related virtualised resource.
+    Metadata metaData = 8;
 }
 
 // This clause describes the attributes for the NetworkQoS information element. This type gives QoS options to be supported on the
@@ -238,7 +239,7 @@ message VirtualNetworkData {
     // Attribute list allows setting up a network providing defined layer 3 connectivity.
     repeated NetworkSubnetData layer3Attributes = 6;
     // List of metadata key-value pairs used by the consumer to associate meaningful metadata to the related virtualised resource.
-    map<string, google.protobuf.Any> metaData = 7;
+    Metadata metaData = 7;
 }
 
 // The NetworkSubnetData information element encapsulates information to allocate or update virtualised sub-networks.
@@ -264,7 +265,7 @@ message NetworkSubnetData {
     // CIDR except for the address of the network/subnetwork gateway.
     optional IPAddressPool addressPool = 6;
     // List of metadata key-value pairs used by the consumer to associate meaningful metadata to the related virtualised resource.
-    map<string, google.protobuf.Any> metaData = 7;
+    Metadata metaData = 7;
 }
 
 message VirtualNetworkPortData {
@@ -297,7 +298,7 @@ message VirtualNetwork {
     // Operational state of the virtualised network.
     OperationalState operationalState = 12;
     // List of metadata key-value pairs used by the consumer to associate meaningful metadata to the related virtualised resource.
-    map<string, google.protobuf.Any> metaData = 13;
+    Metadata metaData = 13;
 }
 
 message VirtualNetworkPort {

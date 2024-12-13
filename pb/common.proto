@@ -51,3 +51,8 @@ enum OperationalState {
     ENABLED = 0;
     DISABLED = 1;
 }
+
+// List of metadata key-value pairs used by the consumer to associate meaningful metadata to the related virtualised resource.
+message Metadata {
+    map<string, google.protobuf.Any> fields = 1;
+}
