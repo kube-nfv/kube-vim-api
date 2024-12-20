@@ -1428,6 +1428,10 @@ type VirtualNetwork struct {
 	// References the network subnet.
 	// Only present if the network provides layer 3 connectivity.
 	SubnetId []*Identifier `protobuf:"bytes,3,rep,name=subnetId,proto3" json:"subnetId,omitempty"`
+	// Provides information on an instantiated virtual network port.
+	NetworkPort []*VirtualNetworkPort `protobuf:"bytes,4,rep,name=networkPort,proto3" json:"networkPort,omitempty"`
+	// Minimum network bandwidth (in Mbps)
+	Bandwidth float32 `protobuf:"fixed32,5,opt,name=bandwidth,proto3" json:"bandwidth,omitempty"`
 	// Type of network that maps to the virtualised network. This list is extensible. Examples are:
 	//   - "local";
 	//   - "vlan";
@@ -1436,10 +1440,30 @@ type VirtualNetwork struct {
 	//   - "l3-vpn";
 	//   - etc.
 	NetworkType string `protobuf:"bytes,6,opt,name=networkType,proto3" json:"networkType,omitempty"`
+	// Name of the infrastructure provider network used to realize the virtual network.
+	// Cardinality can be "0" to cover the case where virtual network is not based on infrastructure provider network.
+	ProviderNetwork *string `protobuf:"bytes,7,opt,name=providerNetwork,proto3,oneof" json:"providerNetwork,omitempty"`
+	// The segmentation identifier of the network that maps to the virtualised network, for which, the segmentation model is defined by
+	// the networkType attribute. For instance, for a "vlan" networkType, it corresponds to the vlan identifier;
+	// and for a "gre" networkType, it corresponds to a gre key.
+	// Cardinality can be "0" to cover the case where networkType is flat network without any specific segmentation.
+	SegmentationId *int64 `protobuf:"varint,8,opt,name=segmentationId,proto3,oneof" json:"segmentationId,omitempty"`
+	// Provides information about Quality of Service attributes that the network supports.
+	// Cardinality can be "0" for virtual network without any QoS requirements.
+	NetworkQoS []*NetworkQoS `protobuf:"bytes,9,rep,name=networkQoS,proto3" json:"networkQoS,omitempty"`
+	// Defines whether the virtualised network is shared among consumers.
+	IsShared bool `protobuf:"varint,10,opt,name=isShared,proto3" json:"isShared,omitempty"`
+	// Indicates the sharing criteria for this network. This criteria might be a list of authorized consumers.
+	// Only present for shared networks.
+	// optional sharingCriteria NotSpecified = 11;
+	// If present, it identifies the resource zone where the virtual network resources have been allocated.
+	ZoneId *Identifier `protobuf:"bytes,12,opt,name=zoneId,proto3,oneof" json:"zoneId,omitempty"`
 	// Operational state of the virtualised network.
-	OperationalState OperationalState `protobuf:"varint,12,opt,name=operationalState,proto3,enum=OperationalState" json:"operationalState,omitempty"`
+	OperationalState OperationalState `protobuf:"varint,13,opt,name=operationalState,proto3,enum=OperationalState" json:"operationalState,omitempty"`
 	// List of metadata key-value pairs used by the consumer to associate meaningful metadata to the related virtualised resource.
-	Metadata *Metadata `protobuf:"bytes,13,opt,name=metadata,proto3" json:"metadata,omitempty"`
+	Metadata *Metadata `protobuf:"bytes,14,opt,name=metadata,proto3" json:"metadata,omitempty"`
+	// Specifies the virtual network resources to which the newly created virtual network is intended to be explicitly interconnected.
+	ConnectedNetworks []*Identifier `protobuf:"bytes,15,rep,name=connectedNetworks,proto3" json:"connectedNetworks,omitempty"`
 }
 
 func (x *VirtualNetwork) Reset() {
@@ -1495,11 +1519,60 @@ func (x *VirtualNetwork) GetSubnetId() []*Identifier {
 	return nil
 }
 
+func (x *VirtualNetwork) GetNetworkPort() []*VirtualNetworkPort {
+	if x != nil {
+		return x.NetworkPort
+	}
+	return nil
+}
+
+func (x *VirtualNetwork) GetBandwidth() float32 {
+	if x != nil {
+		return x.Bandwidth
+	}
+	return 0
+}
+
 func (x *VirtualNetwork) GetNetworkType() string {
 	if x != nil {
 		return x.NetworkType
 	}
 	return ""
+}
+
+func (x *VirtualNetwork) GetProviderNetwork() string {
+	if x != nil && x.ProviderNetwork != nil {
+		return *x.ProviderNetwork
+	}
+	return ""
+}
+
+func (x *VirtualNetwork) GetSegmentationId() int64 {
+	if x != nil && x.SegmentationId != nil {
+		return *x.SegmentationId
+	}
+	return 0
+}
+
+func (x *VirtualNetwork) GetNetworkQoS() []*NetworkQoS {
+	if x != nil {
+		return x.NetworkQoS
+	}
+	return nil
+}
+
+func (x *VirtualNetwork) GetIsShared() bool {
+	if x != nil {
+		return x.IsShared
+	}
+	return false
+}
+
+func (x *VirtualNetwork) GetZoneId() *Identifier {
+	if x != nil {
+		return x.ZoneId
+	}
+	return nil
 }
 
 func (x *VirtualNetwork) GetOperationalState() OperationalState {
@@ -1516,6 +1589,52 @@ func (x *VirtualNetwork) GetMetadata() *Metadata {
 	return nil
 }
 
+func (x *VirtualNetwork) GetConnectedNetworks() []*Identifier {
+	if x != nil {
+		return x.ConnectedNetworks
+	}
+	return nil
+}
+
+// The NetworkSubnet information element encapsulates information of an instantiated virtualised sub-network.
+type NetworkSubnet struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+}
+
+func (x *NetworkSubnet) Reset() {
+	*x = NetworkSubnet{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_types_proto_msgTypes[17]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *NetworkSubnet) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*NetworkSubnet) ProtoMessage() {}
+
+func (x *NetworkSubnet) ProtoReflect() protoreflect.Message {
+	mi := &file_types_proto_msgTypes[17]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use NetworkSubnet.ProtoReflect.Descriptor instead.
+func (*NetworkSubnet) Descriptor() ([]byte, []int) {
+	return file_types_proto_rawDescGZIP(), []int{17}
+}
+
 type VirtualNetworkPort struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -1525,7 +1644,7 @@ type VirtualNetworkPort struct {
 func (x *VirtualNetworkPort) Reset() {
 	*x = VirtualNetworkPort{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_types_proto_msgTypes[17]
+		mi := &file_types_proto_msgTypes[18]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1538,7 +1657,7 @@ func (x *VirtualNetworkPort) String() string {
 func (*VirtualNetworkPort) ProtoMessage() {}
 
 func (x *VirtualNetworkPort) ProtoReflect() protoreflect.Message {
-	mi := &file_types_proto_msgTypes[17]
+	mi := &file_types_proto_msgTypes[18]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1551,7 +1670,83 @@ func (x *VirtualNetworkPort) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use VirtualNetworkPort.ProtoReflect.Descriptor instead.
 func (*VirtualNetworkPort) Descriptor() ([]byte, []int) {
-	return file_types_proto_rawDescGZIP(), []int{17}
+	return file_types_proto_rawDescGZIP(), []int{18}
+}
+
+type RoutingResource struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+}
+
+func (x *RoutingResource) Reset() {
+	*x = RoutingResource{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_types_proto_msgTypes[19]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *RoutingResource) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*RoutingResource) ProtoMessage() {}
+
+func (x *RoutingResource) ProtoReflect() protoreflect.Message {
+	mi := &file_types_proto_msgTypes[19]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use RoutingResource.ProtoReflect.Descriptor instead.
+func (*RoutingResource) Descriptor() ([]byte, []int) {
+	return file_types_proto_rawDescGZIP(), []int{19}
+}
+
+type VirtualTrunk struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+}
+
+func (x *VirtualTrunk) Reset() {
+	*x = VirtualTrunk{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_types_proto_msgTypes[20]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *VirtualTrunk) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*VirtualTrunk) ProtoMessage() {}
+
+func (x *VirtualTrunk) ProtoReflect() protoreflect.Message {
+	mi := &file_types_proto_msgTypes[20]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use VirtualTrunk.ProtoReflect.Descriptor instead.
+func (*VirtualTrunk) Descriptor() ([]byte, []int) {
+	return file_types_proto_rawDescGZIP(), []int{20}
 }
 
 // The AffinityOrAntiAffinityResourceList information element defines an explicit list of resources to
@@ -1568,7 +1763,7 @@ type AffinityOrAntiAffinityConstraintForCompute_AffinityOrAntiAffinityResourceLi
 func (x *AffinityOrAntiAffinityConstraintForCompute_AffinityOrAntiAffinityResourceList) Reset() {
 	*x = AffinityOrAntiAffinityConstraintForCompute_AffinityOrAntiAffinityResourceList{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_types_proto_msgTypes[18]
+		mi := &file_types_proto_msgTypes[21]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1582,7 +1777,7 @@ func (*AffinityOrAntiAffinityConstraintForCompute_AffinityOrAntiAffinityResource
 }
 
 func (x *AffinityOrAntiAffinityConstraintForCompute_AffinityOrAntiAffinityResourceList) ProtoReflect() protoreflect.Message {
-	mi := &file_types_proto_msgTypes[18]
+	mi := &file_types_proto_msgTypes[21]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1619,7 +1814,7 @@ type VirtualCpuData_VirtualCpuPinningData struct {
 func (x *VirtualCpuData_VirtualCpuPinningData) Reset() {
 	*x = VirtualCpuData_VirtualCpuPinningData{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_types_proto_msgTypes[19]
+		mi := &file_types_proto_msgTypes[22]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1632,7 +1827,7 @@ func (x *VirtualCpuData_VirtualCpuPinningData) String() string {
 func (*VirtualCpuData_VirtualCpuPinningData) ProtoMessage() {}
 
 func (x *VirtualCpuData_VirtualCpuPinningData) ProtoReflect() protoreflect.Message {
-	mi := &file_types_proto_msgTypes[19]
+	mi := &file_types_proto_msgTypes[22]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1678,7 +1873,7 @@ type VirtualCpuData_VirtualCpuPinningData_VirtualCpuPinningRule struct {
 func (x *VirtualCpuData_VirtualCpuPinningData_VirtualCpuPinningRule) Reset() {
 	*x = VirtualCpuData_VirtualCpuPinningData_VirtualCpuPinningRule{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_types_proto_msgTypes[20]
+		mi := &file_types_proto_msgTypes[23]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1691,7 +1886,7 @@ func (x *VirtualCpuData_VirtualCpuPinningData_VirtualCpuPinningRule) String() st
 func (*VirtualCpuData_VirtualCpuPinningData_VirtualCpuPinningRule) ProtoMessage() {}
 
 func (x *VirtualCpuData_VirtualCpuPinningData_VirtualCpuPinningRule) ProtoReflect() protoreflect.Message {
-	mi := &file_types_proto_msgTypes[20]
+	mi := &file_types_proto_msgTypes[23]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2033,7 +2228,7 @@ var file_types_proto_rawDesc = []byte{
 	0x0c, 0x5f, 0x61, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x50, 0x6f, 0x6f, 0x6c, 0x22, 0x18, 0x0a,
 	0x16, 0x56, 0x69, 0x72, 0x74, 0x75, 0x61, 0x6c, 0x4e, 0x65, 0x74, 0x77, 0x6f, 0x72, 0x6b, 0x50,
 	0x6f, 0x72, 0x74, 0x44, 0x61, 0x74, 0x61, 0x22, 0x12, 0x0a, 0x10, 0x56, 0x69, 0x72, 0x74, 0x75,
-	0x61, 0x6c, 0x54, 0x72, 0x75, 0x6e, 0x6b, 0x44, 0x61, 0x74, 0x61, 0x22, 0xcb, 0x02, 0x0a, 0x0e,
+	0x61, 0x6c, 0x54, 0x72, 0x75, 0x6e, 0x6b, 0x44, 0x61, 0x74, 0x61, 0x22, 0xdc, 0x05, 0x0a, 0x0e,
 	0x56, 0x69, 0x72, 0x74, 0x75, 0x61, 0x6c, 0x4e, 0x65, 0x74, 0x77, 0x6f, 0x72, 0x6b, 0x12, 0x39,
 	0x0a, 0x11, 0x6e, 0x65, 0x74, 0x77, 0x6f, 0x72, 0x6b, 0x52, 0x65, 0x73, 0x6f, 0x75, 0x72, 0x63,
 	0x65, 0x49, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x0b, 0x2e, 0x49, 0x64, 0x65, 0x6e,
@@ -2044,26 +2239,55 @@ var file_types_proto_rawDesc = []byte{
 	0x6b, 0x52, 0x65, 0x73, 0x6f, 0x75, 0x72, 0x63, 0x65, 0x4e, 0x61, 0x6d, 0x65, 0x88, 0x01, 0x01,
 	0x12, 0x27, 0x0a, 0x08, 0x73, 0x75, 0x62, 0x6e, 0x65, 0x74, 0x49, 0x64, 0x18, 0x03, 0x20, 0x03,
 	0x28, 0x0b, 0x32, 0x0b, 0x2e, 0x49, 0x64, 0x65, 0x6e, 0x74, 0x69, 0x66, 0x69, 0x65, 0x72, 0x52,
-	0x08, 0x73, 0x75, 0x62, 0x6e, 0x65, 0x74, 0x49, 0x64, 0x12, 0x20, 0x0a, 0x0b, 0x6e, 0x65, 0x74,
-	0x77, 0x6f, 0x72, 0x6b, 0x54, 0x79, 0x70, 0x65, 0x18, 0x06, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0b,
-	0x6e, 0x65, 0x74, 0x77, 0x6f, 0x72, 0x6b, 0x54, 0x79, 0x70, 0x65, 0x12, 0x3d, 0x0a, 0x10, 0x6f,
-	0x70, 0x65, 0x72, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x61, 0x6c, 0x53, 0x74, 0x61, 0x74, 0x65, 0x18,
-	0x0c, 0x20, 0x01, 0x28, 0x0e, 0x32, 0x11, 0x2e, 0x4f, 0x70, 0x65, 0x72, 0x61, 0x74, 0x69, 0x6f,
-	0x6e, 0x61, 0x6c, 0x53, 0x74, 0x61, 0x74, 0x65, 0x52, 0x10, 0x6f, 0x70, 0x65, 0x72, 0x61, 0x74,
-	0x69, 0x6f, 0x6e, 0x61, 0x6c, 0x53, 0x74, 0x61, 0x74, 0x65, 0x12, 0x25, 0x0a, 0x08, 0x6d, 0x65,
-	0x74, 0x61, 0x64, 0x61, 0x74, 0x61, 0x18, 0x0d, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x09, 0x2e, 0x4d,
-	0x65, 0x74, 0x61, 0x64, 0x61, 0x74, 0x61, 0x52, 0x08, 0x6d, 0x65, 0x74, 0x61, 0x64, 0x61, 0x74,
-	0x61, 0x42, 0x16, 0x0a, 0x14, 0x5f, 0x6e, 0x65, 0x74, 0x77, 0x6f, 0x72, 0x6b, 0x52, 0x65, 0x73,
-	0x6f, 0x75, 0x72, 0x63, 0x65, 0x4e, 0x61, 0x6d, 0x65, 0x22, 0x14, 0x0a, 0x12, 0x56, 0x69, 0x72,
-	0x74, 0x75, 0x61, 0x6c, 0x4e, 0x65, 0x74, 0x77, 0x6f, 0x72, 0x6b, 0x50, 0x6f, 0x72, 0x74, 0x2a,
-	0x49, 0x0a, 0x26, 0x54, 0x79, 0x70, 0x65, 0x4f, 0x66, 0x41, 0x66, 0x66, 0x69, 0x6e, 0x69, 0x74,
-	0x79, 0x4f, 0x72, 0x41, 0x6e, 0x74, 0x69, 0x41, 0x66, 0x66, 0x69, 0x6e, 0x69, 0x74, 0x79, 0x43,
-	0x6f, 0x6e, 0x73, 0x74, 0x72, 0x61, 0x69, 0x6e, 0x74, 0x12, 0x0c, 0x0a, 0x08, 0x41, 0x46, 0x46,
-	0x49, 0x4e, 0x49, 0x54, 0x59, 0x10, 0x00, 0x12, 0x11, 0x0a, 0x0d, 0x41, 0x4e, 0x54, 0x49, 0x5f,
-	0x41, 0x46, 0x46, 0x49, 0x4e, 0x49, 0x54, 0x59, 0x10, 0x01, 0x42, 0x29, 0x5a, 0x27, 0x67, 0x69,
-	0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x6b, 0x75, 0x62, 0x65, 0x2d, 0x6e, 0x66,
-	0x76, 0x2f, 0x6b, 0x75, 0x62, 0x65, 0x2d, 0x76, 0x69, 0x6d, 0x2d, 0x61, 0x70, 0x69, 0x2f, 0x70,
-	0x62, 0x2f, 0x6e, 0x66, 0x76, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x08, 0x73, 0x75, 0x62, 0x6e, 0x65, 0x74, 0x49, 0x64, 0x12, 0x35, 0x0a, 0x0b, 0x6e, 0x65, 0x74,
+	0x77, 0x6f, 0x72, 0x6b, 0x50, 0x6f, 0x72, 0x74, 0x18, 0x04, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x13,
+	0x2e, 0x56, 0x69, 0x72, 0x74, 0x75, 0x61, 0x6c, 0x4e, 0x65, 0x74, 0x77, 0x6f, 0x72, 0x6b, 0x50,
+	0x6f, 0x72, 0x74, 0x52, 0x0b, 0x6e, 0x65, 0x74, 0x77, 0x6f, 0x72, 0x6b, 0x50, 0x6f, 0x72, 0x74,
+	0x12, 0x1c, 0x0a, 0x09, 0x62, 0x61, 0x6e, 0x64, 0x77, 0x69, 0x64, 0x74, 0x68, 0x18, 0x05, 0x20,
+	0x01, 0x28, 0x02, 0x52, 0x09, 0x62, 0x61, 0x6e, 0x64, 0x77, 0x69, 0x64, 0x74, 0x68, 0x12, 0x20,
+	0x0a, 0x0b, 0x6e, 0x65, 0x74, 0x77, 0x6f, 0x72, 0x6b, 0x54, 0x79, 0x70, 0x65, 0x18, 0x06, 0x20,
+	0x01, 0x28, 0x09, 0x52, 0x0b, 0x6e, 0x65, 0x74, 0x77, 0x6f, 0x72, 0x6b, 0x54, 0x79, 0x70, 0x65,
+	0x12, 0x2d, 0x0a, 0x0f, 0x70, 0x72, 0x6f, 0x76, 0x69, 0x64, 0x65, 0x72, 0x4e, 0x65, 0x74, 0x77,
+	0x6f, 0x72, 0x6b, 0x18, 0x07, 0x20, 0x01, 0x28, 0x09, 0x48, 0x01, 0x52, 0x0f, 0x70, 0x72, 0x6f,
+	0x76, 0x69, 0x64, 0x65, 0x72, 0x4e, 0x65, 0x74, 0x77, 0x6f, 0x72, 0x6b, 0x88, 0x01, 0x01, 0x12,
+	0x2b, 0x0a, 0x0e, 0x73, 0x65, 0x67, 0x6d, 0x65, 0x6e, 0x74, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x49,
+	0x64, 0x18, 0x08, 0x20, 0x01, 0x28, 0x03, 0x48, 0x02, 0x52, 0x0e, 0x73, 0x65, 0x67, 0x6d, 0x65,
+	0x6e, 0x74, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x49, 0x64, 0x88, 0x01, 0x01, 0x12, 0x2b, 0x0a, 0x0a,
+	0x6e, 0x65, 0x74, 0x77, 0x6f, 0x72, 0x6b, 0x51, 0x6f, 0x53, 0x18, 0x09, 0x20, 0x03, 0x28, 0x0b,
+	0x32, 0x0b, 0x2e, 0x4e, 0x65, 0x74, 0x77, 0x6f, 0x72, 0x6b, 0x51, 0x6f, 0x53, 0x52, 0x0a, 0x6e,
+	0x65, 0x74, 0x77, 0x6f, 0x72, 0x6b, 0x51, 0x6f, 0x53, 0x12, 0x1a, 0x0a, 0x08, 0x69, 0x73, 0x53,
+	0x68, 0x61, 0x72, 0x65, 0x64, 0x18, 0x0a, 0x20, 0x01, 0x28, 0x08, 0x52, 0x08, 0x69, 0x73, 0x53,
+	0x68, 0x61, 0x72, 0x65, 0x64, 0x12, 0x28, 0x0a, 0x06, 0x7a, 0x6f, 0x6e, 0x65, 0x49, 0x64, 0x18,
+	0x0c, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x0b, 0x2e, 0x49, 0x64, 0x65, 0x6e, 0x74, 0x69, 0x66, 0x69,
+	0x65, 0x72, 0x48, 0x03, 0x52, 0x06, 0x7a, 0x6f, 0x6e, 0x65, 0x49, 0x64, 0x88, 0x01, 0x01, 0x12,
+	0x3d, 0x0a, 0x10, 0x6f, 0x70, 0x65, 0x72, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x61, 0x6c, 0x53, 0x74,
+	0x61, 0x74, 0x65, 0x18, 0x0d, 0x20, 0x01, 0x28, 0x0e, 0x32, 0x11, 0x2e, 0x4f, 0x70, 0x65, 0x72,
+	0x61, 0x74, 0x69, 0x6f, 0x6e, 0x61, 0x6c, 0x53, 0x74, 0x61, 0x74, 0x65, 0x52, 0x10, 0x6f, 0x70,
+	0x65, 0x72, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x61, 0x6c, 0x53, 0x74, 0x61, 0x74, 0x65, 0x12, 0x25,
+	0x0a, 0x08, 0x6d, 0x65, 0x74, 0x61, 0x64, 0x61, 0x74, 0x61, 0x18, 0x0e, 0x20, 0x01, 0x28, 0x0b,
+	0x32, 0x09, 0x2e, 0x4d, 0x65, 0x74, 0x61, 0x64, 0x61, 0x74, 0x61, 0x52, 0x08, 0x6d, 0x65, 0x74,
+	0x61, 0x64, 0x61, 0x74, 0x61, 0x12, 0x39, 0x0a, 0x11, 0x63, 0x6f, 0x6e, 0x6e, 0x65, 0x63, 0x74,
+	0x65, 0x64, 0x4e, 0x65, 0x74, 0x77, 0x6f, 0x72, 0x6b, 0x73, 0x18, 0x0f, 0x20, 0x03, 0x28, 0x0b,
+	0x32, 0x0b, 0x2e, 0x49, 0x64, 0x65, 0x6e, 0x74, 0x69, 0x66, 0x69, 0x65, 0x72, 0x52, 0x11, 0x63,
+	0x6f, 0x6e, 0x6e, 0x65, 0x63, 0x74, 0x65, 0x64, 0x4e, 0x65, 0x74, 0x77, 0x6f, 0x72, 0x6b, 0x73,
+	0x42, 0x16, 0x0a, 0x14, 0x5f, 0x6e, 0x65, 0x74, 0x77, 0x6f, 0x72, 0x6b, 0x52, 0x65, 0x73, 0x6f,
+	0x75, 0x72, 0x63, 0x65, 0x4e, 0x61, 0x6d, 0x65, 0x42, 0x12, 0x0a, 0x10, 0x5f, 0x70, 0x72, 0x6f,
+	0x76, 0x69, 0x64, 0x65, 0x72, 0x4e, 0x65, 0x74, 0x77, 0x6f, 0x72, 0x6b, 0x42, 0x11, 0x0a, 0x0f,
+	0x5f, 0x73, 0x65, 0x67, 0x6d, 0x65, 0x6e, 0x74, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x49, 0x64, 0x42,
+	0x09, 0x0a, 0x07, 0x5f, 0x7a, 0x6f, 0x6e, 0x65, 0x49, 0x64, 0x22, 0x0f, 0x0a, 0x0d, 0x4e, 0x65,
+	0x74, 0x77, 0x6f, 0x72, 0x6b, 0x53, 0x75, 0x62, 0x6e, 0x65, 0x74, 0x22, 0x14, 0x0a, 0x12, 0x56,
+	0x69, 0x72, 0x74, 0x75, 0x61, 0x6c, 0x4e, 0x65, 0x74, 0x77, 0x6f, 0x72, 0x6b, 0x50, 0x6f, 0x72,
+	0x74, 0x22, 0x11, 0x0a, 0x0f, 0x52, 0x6f, 0x75, 0x74, 0x69, 0x6e, 0x67, 0x52, 0x65, 0x73, 0x6f,
+	0x75, 0x72, 0x63, 0x65, 0x22, 0x0e, 0x0a, 0x0c, 0x56, 0x69, 0x72, 0x74, 0x75, 0x61, 0x6c, 0x54,
+	0x72, 0x75, 0x6e, 0x6b, 0x2a, 0x49, 0x0a, 0x26, 0x54, 0x79, 0x70, 0x65, 0x4f, 0x66, 0x41, 0x66,
+	0x66, 0x69, 0x6e, 0x69, 0x74, 0x79, 0x4f, 0x72, 0x41, 0x6e, 0x74, 0x69, 0x41, 0x66, 0x66, 0x69,
+	0x6e, 0x69, 0x74, 0x79, 0x43, 0x6f, 0x6e, 0x73, 0x74, 0x72, 0x61, 0x69, 0x6e, 0x74, 0x12, 0x0c,
+	0x0a, 0x08, 0x41, 0x46, 0x46, 0x49, 0x4e, 0x49, 0x54, 0x59, 0x10, 0x00, 0x12, 0x11, 0x0a, 0x0d,
+	0x41, 0x4e, 0x54, 0x49, 0x5f, 0x41, 0x46, 0x46, 0x49, 0x4e, 0x49, 0x54, 0x59, 0x10, 0x01, 0x42,
+	0x29, 0x5a, 0x27, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x6b, 0x75,
+	0x62, 0x65, 0x2d, 0x6e, 0x66, 0x76, 0x2f, 0x6b, 0x75, 0x62, 0x65, 0x2d, 0x76, 0x69, 0x6d, 0x2d,
+	0x61, 0x70, 0x69, 0x2f, 0x70, 0x62, 0x2f, 0x6e, 0x66, 0x76, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74,
+	0x6f, 0x33,
 }
 
 var (
@@ -2079,7 +2303,7 @@ func file_types_proto_rawDescGZIP() []byte {
 }
 
 var file_types_proto_enumTypes = make([]protoimpl.EnumInfo, 3)
-var file_types_proto_msgTypes = make([]protoimpl.MessageInfo, 21)
+var file_types_proto_msgTypes = make([]protoimpl.MessageInfo, 24)
 var file_types_proto_goTypes = []interface{}{
 	(TypeOfAffinityOrAntiAffinityConstraint)(0),                                                       // 0: TypeOfAffinityOrAntiAffinityConstraint
 	(AffinityOrAntiAffinityConstraintForCompute_ScopeOfAffinityOrAntiAffinityConstraintForCompute)(0), // 1: AffinityOrAntiAffinityConstraintForCompute.ScopeOfAffinityOrAntiAffinityConstraintForCompute
@@ -2101,67 +2325,74 @@ var file_types_proto_goTypes = []interface{}{
 	(*VirtualNetworkPortData)(nil),                                                                    // 17: VirtualNetworkPortData
 	(*VirtualTrunkData)(nil),                                                                          // 18: VirtualTrunkData
 	(*VirtualNetwork)(nil),                                                                            // 19: VirtualNetwork
-	(*VirtualNetworkPort)(nil),                                                                        // 20: VirtualNetworkPort
-	(*AffinityOrAntiAffinityConstraintForCompute_AffinityOrAntiAffinityResourceList)(nil), // 21: AffinityOrAntiAffinityConstraintForCompute.AffinityOrAntiAffinityResourceList
-	(*VirtualCpuData_VirtualCpuPinningData)(nil),                                          // 22: VirtualCpuData.VirtualCpuPinningData
-	(*VirtualCpuData_VirtualCpuPinningData_VirtualCpuPinningRule)(nil),                    // 23: VirtualCpuData.VirtualCpuPinningData.VirtualCpuPinningRule
-	(*Identifier)(nil),            // 24: Identifier
-	(*timestamppb.Timestamp)(nil), // 25: google.protobuf.Timestamp
-	(*resource.Quantity)(nil),     // 26: k8s.io.apimachinery.pkg.api.resource.Quantity
-	(*Metadata)(nil),              // 27: Metadata
-	(*IPAddress)(nil),             // 28: IPAddress
-	(*MacAddress)(nil),            // 29: MacAddress
-	(IPVersion)(0),                // 30: IPVersion
-	(*IPSubnetCIDR)(nil),          // 31: IPSubnetCIDR
-	(*IPAddressPool)(nil),         // 32: IPAddressPool
-	(OperationalState)(0),         // 33: OperationalState
+	(*NetworkSubnet)(nil),                                                                             // 20: NetworkSubnet
+	(*VirtualNetworkPort)(nil),                                                                        // 21: VirtualNetworkPort
+	(*RoutingResource)(nil),                                                                           // 22: RoutingResource
+	(*VirtualTrunk)(nil),                                                                              // 23: VirtualTrunk
+	(*AffinityOrAntiAffinityConstraintForCompute_AffinityOrAntiAffinityResourceList)(nil), // 24: AffinityOrAntiAffinityConstraintForCompute.AffinityOrAntiAffinityResourceList
+	(*VirtualCpuData_VirtualCpuPinningData)(nil),                                          // 25: VirtualCpuData.VirtualCpuPinningData
+	(*VirtualCpuData_VirtualCpuPinningData_VirtualCpuPinningRule)(nil),                    // 26: VirtualCpuData.VirtualCpuPinningData.VirtualCpuPinningRule
+	(*Identifier)(nil),            // 27: Identifier
+	(*timestamppb.Timestamp)(nil), // 28: google.protobuf.Timestamp
+	(*resource.Quantity)(nil),     // 29: k8s.io.apimachinery.pkg.api.resource.Quantity
+	(*Metadata)(nil),              // 30: Metadata
+	(*IPAddress)(nil),             // 31: IPAddress
+	(*MacAddress)(nil),            // 32: MacAddress
+	(IPVersion)(0),                // 33: IPVersion
+	(*IPSubnetCIDR)(nil),          // 34: IPSubnetCIDR
+	(*IPAddressPool)(nil),         // 35: IPAddressPool
+	(OperationalState)(0),         // 36: OperationalState
 }
 var file_types_proto_depIdxs = []int32{
-	24, // 0: SoftwareImageInformation.softwareImageId:type_name -> Identifier
-	25, // 1: SoftwareImageInformation.createdAt:type_name -> google.protobuf.Timestamp
-	25, // 2: SoftwareImageInformation.updatedAt:type_name -> google.protobuf.Timestamp
-	26, // 3: SoftwareImageInformation.minDisk:type_name -> k8s.io.apimachinery.pkg.api.resource.Quantity
-	26, // 4: SoftwareImageInformation.minRam:type_name -> k8s.io.apimachinery.pkg.api.resource.Quantity
-	26, // 5: SoftwareImageInformation.size:type_name -> k8s.io.apimachinery.pkg.api.resource.Quantity
-	27, // 6: SoftwareImageInformation.metadata:type_name -> Metadata
+	27, // 0: SoftwareImageInformation.softwareImageId:type_name -> Identifier
+	28, // 1: SoftwareImageInformation.createdAt:type_name -> google.protobuf.Timestamp
+	28, // 2: SoftwareImageInformation.updatedAt:type_name -> google.protobuf.Timestamp
+	29, // 3: SoftwareImageInformation.minDisk:type_name -> k8s.io.apimachinery.pkg.api.resource.Quantity
+	29, // 4: SoftwareImageInformation.minRam:type_name -> k8s.io.apimachinery.pkg.api.resource.Quantity
+	29, // 5: SoftwareImageInformation.size:type_name -> k8s.io.apimachinery.pkg.api.resource.Quantity
+	30, // 6: SoftwareImageInformation.metadata:type_name -> Metadata
 	0,  // 7: AffinityOrAntiAffinityConstraintForCompute.type:type_name -> TypeOfAffinityOrAntiAffinityConstraint
 	1,  // 8: AffinityOrAntiAffinityConstraintForCompute.scope:type_name -> AffinityOrAntiAffinityConstraintForCompute.ScopeOfAffinityOrAntiAffinityConstraintForCompute
-	21, // 9: AffinityOrAntiAffinityConstraintForCompute.affinityOrAntiAffinityResourceList:type_name -> AffinityOrAntiAffinityConstraintForCompute.AffinityOrAntiAffinityResourceList
-	24, // 10: AffinityOrAntiAffinityConstraintForCompute.affinityOrAntiAffinityResourceGroupId:type_name -> Identifier
-	24, // 11: VirtualInterfaceData.networkId:type_name -> Identifier
-	28, // 12: VirtualInterfaceData.ipAddress:type_name -> IPAddress
-	29, // 13: VirtualInterfaceData.macAddress:type_name -> MacAddress
-	22, // 14: VirtualCpuData.virtualCpuPinning:type_name -> VirtualCpuData.VirtualCpuPinningData
-	24, // 15: VirtualNetworkInterfaceData.networkId:type_name -> Identifier
-	24, // 16: VirtualNetworkInterfaceData.networkPortId:type_name -> Identifier
-	27, // 17: VirtualNetworkInterfaceData.metadata:type_name -> Metadata
-	24, // 18: VirtualComputeFlavour.flavourId:type_name -> Identifier
+	24, // 9: AffinityOrAntiAffinityConstraintForCompute.affinityOrAntiAffinityResourceList:type_name -> AffinityOrAntiAffinityConstraintForCompute.AffinityOrAntiAffinityResourceList
+	27, // 10: AffinityOrAntiAffinityConstraintForCompute.affinityOrAntiAffinityResourceGroupId:type_name -> Identifier
+	27, // 11: VirtualInterfaceData.networkId:type_name -> Identifier
+	31, // 12: VirtualInterfaceData.ipAddress:type_name -> IPAddress
+	32, // 13: VirtualInterfaceData.macAddress:type_name -> MacAddress
+	25, // 14: VirtualCpuData.virtualCpuPinning:type_name -> VirtualCpuData.VirtualCpuPinningData
+	27, // 15: VirtualNetworkInterfaceData.networkId:type_name -> Identifier
+	27, // 16: VirtualNetworkInterfaceData.networkPortId:type_name -> Identifier
+	30, // 17: VirtualNetworkInterfaceData.metadata:type_name -> Metadata
+	27, // 18: VirtualComputeFlavour.flavourId:type_name -> Identifier
 	9,  // 19: VirtualComputeFlavour.virtualMemory:type_name -> VirtualMemoryData
 	10, // 20: VirtualComputeFlavour.virtualCpu:type_name -> VirtualCpuData
 	12, // 21: VirtualComputeFlavour.storageAttributes:type_name -> VirtualStorageData
 	11, // 22: VirtualComputeFlavour.virtualNetworkInterface:type_name -> VirtualNetworkInterfaceData
-	27, // 23: VirtualComputeFlavour.metadata:type_name -> Metadata
+	30, // 23: VirtualComputeFlavour.metadata:type_name -> Metadata
 	14, // 24: VirtualNetworkData.networkQoS:type_name -> NetworkQoS
 	16, // 25: VirtualNetworkData.layer3Attributes:type_name -> NetworkSubnetData
-	27, // 26: VirtualNetworkData.metadata:type_name -> Metadata
-	24, // 27: NetworkSubnetData.networkId:type_name -> Identifier
-	30, // 28: NetworkSubnetData.ipVersion:type_name -> IPVersion
-	28, // 29: NetworkSubnetData.gatewayIp:type_name -> IPAddress
-	31, // 30: NetworkSubnetData.cidr:type_name -> IPSubnetCIDR
-	32, // 31: NetworkSubnetData.addressPool:type_name -> IPAddressPool
-	27, // 32: NetworkSubnetData.metadata:type_name -> Metadata
-	24, // 33: VirtualNetwork.networkResourceId:type_name -> Identifier
-	24, // 34: VirtualNetwork.subnetId:type_name -> Identifier
-	33, // 35: VirtualNetwork.operationalState:type_name -> OperationalState
-	27, // 36: VirtualNetwork.metadata:type_name -> Metadata
-	24, // 37: AffinityOrAntiAffinityConstraintForCompute.AffinityOrAntiAffinityResourceList.resourceId:type_name -> Identifier
-	2,  // 38: VirtualCpuData.VirtualCpuPinningData.virtualCpuPinningPolicy:type_name -> VirtualCpuData.VirtualCpuPinningData.VirtualCpuPinningPolicy
-	23, // 39: VirtualCpuData.VirtualCpuPinningData.virtualCpuPinningRules:type_name -> VirtualCpuData.VirtualCpuPinningData.VirtualCpuPinningRule
-	40, // [40:40] is the sub-list for method output_type
-	40, // [40:40] is the sub-list for method input_type
-	40, // [40:40] is the sub-list for extension type_name
-	40, // [40:40] is the sub-list for extension extendee
-	0,  // [0:40] is the sub-list for field type_name
+	30, // 26: VirtualNetworkData.metadata:type_name -> Metadata
+	27, // 27: NetworkSubnetData.networkId:type_name -> Identifier
+	33, // 28: NetworkSubnetData.ipVersion:type_name -> IPVersion
+	31, // 29: NetworkSubnetData.gatewayIp:type_name -> IPAddress
+	34, // 30: NetworkSubnetData.cidr:type_name -> IPSubnetCIDR
+	35, // 31: NetworkSubnetData.addressPool:type_name -> IPAddressPool
+	30, // 32: NetworkSubnetData.metadata:type_name -> Metadata
+	27, // 33: VirtualNetwork.networkResourceId:type_name -> Identifier
+	27, // 34: VirtualNetwork.subnetId:type_name -> Identifier
+	21, // 35: VirtualNetwork.networkPort:type_name -> VirtualNetworkPort
+	14, // 36: VirtualNetwork.networkQoS:type_name -> NetworkQoS
+	27, // 37: VirtualNetwork.zoneId:type_name -> Identifier
+	36, // 38: VirtualNetwork.operationalState:type_name -> OperationalState
+	30, // 39: VirtualNetwork.metadata:type_name -> Metadata
+	27, // 40: VirtualNetwork.connectedNetworks:type_name -> Identifier
+	27, // 41: AffinityOrAntiAffinityConstraintForCompute.AffinityOrAntiAffinityResourceList.resourceId:type_name -> Identifier
+	2,  // 42: VirtualCpuData.VirtualCpuPinningData.virtualCpuPinningPolicy:type_name -> VirtualCpuData.VirtualCpuPinningData.VirtualCpuPinningPolicy
+	26, // 43: VirtualCpuData.VirtualCpuPinningData.virtualCpuPinningRules:type_name -> VirtualCpuData.VirtualCpuPinningData.VirtualCpuPinningRule
+	44, // [44:44] is the sub-list for method output_type
+	44, // [44:44] is the sub-list for method input_type
+	44, // [44:44] is the sub-list for extension type_name
+	44, // [44:44] is the sub-list for extension extendee
+	0,  // [0:44] is the sub-list for field type_name
 }
 
 func init() { file_types_proto_init() }
@@ -2376,7 +2607,7 @@ func file_types_proto_init() {
 			}
 		}
 		file_types_proto_msgTypes[17].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*VirtualNetworkPort); i {
+			switch v := v.(*NetworkSubnet); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -2388,7 +2619,7 @@ func file_types_proto_init() {
 			}
 		}
 		file_types_proto_msgTypes[18].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*AffinityOrAntiAffinityConstraintForCompute_AffinityOrAntiAffinityResourceList); i {
+			switch v := v.(*VirtualNetworkPort); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -2400,7 +2631,7 @@ func file_types_proto_init() {
 			}
 		}
 		file_types_proto_msgTypes[19].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*VirtualCpuData_VirtualCpuPinningData); i {
+			switch v := v.(*RoutingResource); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -2412,6 +2643,42 @@ func file_types_proto_init() {
 			}
 		}
 		file_types_proto_msgTypes[20].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*VirtualTrunk); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_types_proto_msgTypes[21].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*AffinityOrAntiAffinityConstraintForCompute_AffinityOrAntiAffinityResourceList); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_types_proto_msgTypes[22].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*VirtualCpuData_VirtualCpuPinningData); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_types_proto_msgTypes[23].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*VirtualCpuData_VirtualCpuPinningData_VirtualCpuPinningRule); i {
 			case 0:
 				return &v.state
@@ -2444,7 +2711,7 @@ func file_types_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_types_proto_rawDesc,
 			NumEnums:      3,
-			NumMessages:   21,
+			NumMessages:   24,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

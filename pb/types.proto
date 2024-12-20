@@ -285,7 +285,10 @@ message VirtualNetwork {
     // References the network subnet.
     // Only present if the network provides layer 3 connectivity.
     repeated Identifier subnetId = 3;
-
+    // Provides information on an instantiated virtual network port.
+    repeated VirtualNetworkPort networkPort = 4;
+    // Minimum network bandwidth (in Mbps)
+    float bandwidth = 5;
     // Type of network that maps to the virtualised network. This list is extensible. Examples are:
     //  • "local";
     //  • "vlan";
@@ -294,14 +297,41 @@ message VirtualNetwork {
     //  • "l3-vpn";
     //  • etc.
     string networkType = 6;
-
+    // Name of the infrastructure provider network used to realize the virtual network.
+    // Cardinality can be "0" to cover the case where virtual network is not based on infrastructure provider network.
+    optional string providerNetwork = 7;
+    // The segmentation identifier of the network that maps to the virtualised network, for which, the segmentation model is defined by
+    // the networkType attribute. For instance, for a "vlan" networkType, it corresponds to the vlan identifier;
+    // and for a "gre" networkType, it corresponds to a gre key.
+    // Cardinality can be "0" to cover the case where networkType is flat network without any specific segmentation.
+    optional int64 segmentationId = 8;
+    // Provides information about Quality of Service attributes that the network supports.
+    // Cardinality can be "0" for virtual network without any QoS requirements.
+    repeated NetworkQoS networkQoS = 9;
+    // Defines whether the virtualised network is shared among consumers.
+    bool isShared = 10;
+    // Indicates the sharing criteria for this network. This criteria might be a list of authorized consumers.
+    // Only present for shared networks.
+    // optional sharingCriteria NotSpecified = 11;
+    // If present, it identifies the resource zone where the virtual network resources have been allocated.
+    optional Identifier zoneId = 12;
     // Operational state of the virtualised network.
-    OperationalState operationalState = 12;
+    OperationalState operationalState = 13;
     // List of metadata key-value pairs used by the consumer to associate meaningful metadata to the related virtualised resource.
-    Metadata metadata = 13;
+    Metadata metadata = 14;
+    // Specifies the virtual network resources to which the newly created virtual network is intended to be explicitly interconnected.
+    repeated Identifier connectedNetworks = 15;
+}
+
+// The NetworkSubnet information element encapsulates information of an instantiated virtualised sub-network.
+message NetworkSubnet {
 }
 
 message VirtualNetworkPort {
+}
 
+message RoutingResource {
+}
 
+message VirtualTrunk {
 }

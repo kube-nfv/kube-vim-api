@@ -160,7 +160,7 @@ message AllocateNetworkRequest {
     // Name provided by the consumer for the virtualised network resource to be allocated. It can be used for identifying resources from consumer side.
     optional string networkResourceName = 1;
     // Identifier of the resource reservation applicable to this virtualised resource management operation.
-    optional Identifier reservationId = 2; 
+    optional Identifier reservationId = 2;
 
     // Type of virtualised network resource.
     enum NetworkResourceType {
@@ -173,7 +173,7 @@ message AllocateNetworkRequest {
     // Provides information about the particular virtual network resource to be created. Cardinality can be "0" depending on the value of networkResourceType.
     optional VirtualNetworkData typeNetworkData = 4;
     // Provides information about the particular sub-network resource to be created. Cardinality can be "0" depending on the value of networkResourceType.
-    optional NetworkSubnetData typeSubnetData = 5; 
+    optional NetworkSubnetData typeSubnetData = 5;
     // Provides information about the particular network port to be created. Cardinality can be "0" depending on the value of networkResourceType.
     optional VirtualNetworkPortData typeNetworkPortData = 6;
     // Provides information about the particular trunk to be created. Cardinality can be "0" depending on the value of networkResourceType.
@@ -192,5 +192,19 @@ message AllocateNetworkRequest {
 
 
 message AllocateNetworkResponse {
-
+    // If network types are created satisfactorily, it contains the data relative to the instantiated virtualised network resource.
+    // Cardinality can be "0" if the request did not include creation of such type of resource.
+    optional VirtualNetwork networkData = 1;
+    // If subnet types are created satisfactorily, it contains the data relative to the allocated subnet.
+    // Cardinality can be "0" if the request did not include creation of such type of resource.
+    optional NetworkSubnet subnetData = 2;
+    // If network port types are created satisfactorily, it contains the data relative to the allocated network port.
+    // Cardinality can be "0" if the request did not include creation of such type of resource.
+    optional VirtualNetworkPort networkPortData = 3;
+    // If trunk types are created satisfactorily, it contains the data relative to the allocated trunk.
+    // Cardinality can be "0" if the request did not include creation of such type of resource.
+    optional VirtualTrunk trunkData = 4;
+    // If routing resource types are created satisfactorily, it contains the data relative to the allocated routing resource.
+    // Cardinality can be "0" if the request did not include creation of such type of resource.
+    optional RoutingResource routingResourceData = 5;
 }
