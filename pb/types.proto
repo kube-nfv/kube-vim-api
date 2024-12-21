@@ -325,6 +325,24 @@ message VirtualNetwork {
 
 // The NetworkSubnet information element encapsulates information of an instantiated virtualised sub-network.
 message NetworkSubnet {
+    // Identifier of the virtualised sub-network.
+    Identifier resourceId = 1;
+    // References the virtualised network that the virtualised sub-network is attached to.
+    // The cardinality can be 0 to cover the case where this type is used to describe the L3 attributes of a network rather than a subnetwork.
+    optional Identifier networkId = 2;
+    // IP version of the network/subnetwork.
+    IPVersion ipVersion = 3;
+    // IP address of the network/subnetwork gateway.
+    IPAddress gatewayIp = 4;
+    // CIDR of the network/subnetwork, i.e. network address and subnet mask.
+    IPSubnetCIDR cidr = 5;
+    // True when DHCP is enabled for this network/subnetwork, or false otherwise.
+    bool isDhcpEnabled = 6;
+    // Address pools for the network/subnetwork.
+    // The cardinality can be 0 when VIM is allowed to allocate all addresses in the CIDR except for the address of the network/subnetwork gateway.
+    repeated IPAddressPool addressPool = 7;
+    // List of metadata key-value pairs used by the consumer to associate meaningful metadata to the related virtualised resource.
+    Metadata metadata = 8;
 }
 
 message VirtualNetworkPort {
