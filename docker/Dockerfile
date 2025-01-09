@@ -11,6 +11,8 @@ RUN apt-get update && apt-get install -y unzip
 
 RUN go install google.golang.org/protobuf/cmd/protoc-gen-go@v1.34.1
 RUN go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@v1.3.0
+RUN go install github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-grpc-gateway@v2.25.0
+RUN go install github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2@v2.25.0
 
 # Download protoc and well-known types
 RUN export ZIP=x86_64 && \
@@ -22,3 +24,8 @@ RUN wget --quiet https://github.com/kubernetes/apimachinery/archive/refs/tags/v$
                mkdir -p /usr/local/include/k8s.io && \
                unzip -o v${K8S_APIMACHINERY_VERSION}.zip -d /usr/local/include/k8s.io '*.proto' && \
                mv /usr/local/include/k8s.io/apimachinery-${K8S_APIMACHINERY_VERSION} /usr/local/include/k8s.io/apimachinery
+RUN wget --quiet -P /usr/local/include/google/api \
+                https://raw.githubusercontent.com/googleapis/googleapis/master/google/api/http.proto \
+                https://raw.githubusercontent.com/googleapis/googleapis/master/google/api/annotations.proto \
+                https://raw.githubusercontent.com/googleapis/googleapis/master/google/api/field_behavior.proto \
+                https://raw.githubusercontent.com/googleapis/googleapis/master/google/api/httpbody.proto

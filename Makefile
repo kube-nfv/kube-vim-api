@@ -17,7 +17,8 @@ proto-compile: proto-image-build ## Compile message protobuf and gRPC service fi
 	  protogen-image \
 	  bash -c "protoc *.proto --proto_path=. \
 	  --go_out=. --go_opt=module=github.com/kube-nfv/kube-vim-api/pb \
-	  --go-grpc_out=. --go-grpc_opt=module=github.com/kube-nfv/kube-vim-api/pb"
+	  --go-grpc_out=. --go-grpc_opt=module=github.com/kube-nfv/kube-vim-api/pb \
+	  --grpc-gateway_out=./nfv --grpc-gateway_opt paths=source_relative"
 
 .PHONY: proto-image-build
 proto-image-build: ## Build docker image with all nececary dependencies to compile message protobuf and gRPC service files.

@@ -19,13 +19,13 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	ViVnfm_QueryImages_FullMethodName                        = "/vi_vnfm/QueryImages"
-	ViVnfm_QueryImage_FullMethodName                         = "/vi_vnfm/QueryImage"
-	ViVnfm_AllocateVirtualisedComputeResource_FullMethodName = "/vi_vnfm/AllocateVirtualisedComputeResource"
-	ViVnfm_CreateComputeFlavour_FullMethodName               = "/vi_vnfm/CreateComputeFlavour"
-	ViVnfm_QueryComputeFlavour_FullMethodName                = "/vi_vnfm/QueryComputeFlavour"
-	ViVnfm_DeleteComputeFlavour_FullMethodName               = "/vi_vnfm/DeleteComputeFlavour"
-	ViVnfm_AllocateVirtualisedNetworkResource_FullMethodName = "/vi_vnfm/AllocateVirtualisedNetworkResource"
+	ViVnfm_QueryImages_FullMethodName                        = "/kubenvf.kubevim.api.pb.vi_vnfm/QueryImages"
+	ViVnfm_QueryImage_FullMethodName                         = "/kubenvf.kubevim.api.pb.vi_vnfm/QueryImage"
+	ViVnfm_AllocateVirtualisedComputeResource_FullMethodName = "/kubenvf.kubevim.api.pb.vi_vnfm/AllocateVirtualisedComputeResource"
+	ViVnfm_CreateComputeFlavour_FullMethodName               = "/kubenvf.kubevim.api.pb.vi_vnfm/CreateComputeFlavour"
+	ViVnfm_QueryComputeFlavour_FullMethodName                = "/kubenvf.kubevim.api.pb.vi_vnfm/QueryComputeFlavour"
+	ViVnfm_DeleteComputeFlavour_FullMethodName               = "/kubenvf.kubevim.api.pb.vi_vnfm/DeleteComputeFlavour"
+	ViVnfm_AllocateVirtualisedNetworkResource_FullMethodName = "/kubenvf.kubevim.api.pb.vi_vnfm/AllocateVirtualisedNetworkResource"
 )
 
 // ViVnfmClient is the client API for ViVnfm service.
@@ -348,7 +348,7 @@ func _ViVnfm_AllocateVirtualisedNetworkResource_Handler(srv interface{}, ctx con
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var ViVnfm_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "vi_vnfm",
+	ServiceName: "kubenvf.kubevim.api.pb.vi_vnfm",
 	HandlerType: (*ViVnfmServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{

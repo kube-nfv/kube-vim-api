@@ -1,10 +1,16 @@
 syntax = "proto3";
 
-option go_package = "github.com/kube-nfv/kube-vim-api/pb/nfv";
+package kubenvf.kubevim.api.pb;
+
 
 import "common.proto";
 import "types.proto";
 import "google/protobuf/any.proto";
+
+// For the grpc-gateway
+import "google/api/annotations.proto";
+
+option go_package = "github.com/kube-nfv/kube-vim-api/pb/nfv";
 
 // Vi-Vnfm service definition.
 service vi_vnfm {
@@ -15,10 +21,18 @@ service vi_vnfm {
 
     // This operation allows querying the information of software images in the image repository managed by the VIM.
     // Result: As a result of this operation, the producer (VIM) shall indicate to the consumer (VNFM) whether or not it was possible to process the query
-    rpc QueryImages(QueryImagesRequest) returns (QueryImagesResponse) {}
+    rpc QueryImages(QueryImagesRequest) returns (QueryImagesResponse) {
+        option(google.api.http) = {
+            get: "/vivnfm/v5/images"
+        };
+    }
     // This operation allows querying the information about a specific software image in the image repository managed by the VIM.
     // Result: As a result of this operation, the producer (VIM) shall indicate to the consumer (VNFM) whether or not it was possible to process the query.
-    rpc QueryImage(QueryImageRequest) returns (QueryImageResponse) {}
+    rpc QueryImage(QueryImageRequest) returns (QueryImageResponse) {
+        option(google.api.http) = {
+            get: "/vivnfm/v5/images/{softwareImageId.value}"
+        };
+    }
 
 
     // Virtualised Compute Interfaces
