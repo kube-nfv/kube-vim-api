@@ -49,7 +49,11 @@ service vi_vnfm {
     // virtualised compute resource plus any additional information about the allocate request operation.
     // The VIM may also return intermediate status reports during the allocation process. If the operation was not successful,
     // the VIM shall return to the VNFM appropriate error information.
-    rpc AllocateVirtualisedComputeResource(AllocateComputeRequest) returns (AllocateComputeResponse) {}
+    rpc AllocateVirtualisedComputeResource(AllocateComputeRequest) returns (AllocateComputeResponse) {
+        option(google.api.http) = {
+            post: "/vivnfm/v5/compute"
+        };
+    }
 
 
     // Virtualised Compute Flavour Management Interface
@@ -60,17 +64,29 @@ service vi_vnfm {
     // Result: After successful operation, the VIM has created the Compute Flavour.
     // In addition, the VIM shall return to the VNFM information on the newly created Compute Flavour.
     // If the operation was not successful, the VIM shall return to the VNFM appropriate error information.
-    rpc CreateComputeFlavour(CreateComputeFlavourRequest) returns (CreateComputeFlavourResponse) {}
+    rpc CreateComputeFlavour(CreateComputeFlavourRequest) returns (CreateComputeFlavourResponse) {
+        option(google.api.http) = {
+            post: "/vivnfm/v5/flavours"
+        };
+    }
     // This operation allows querying information about created Compute Flavours.
     // Result: After successful operation, the VIM has queried the internal management objects for the Compute Flavours. The result of the query shall indicate with
     // a standard success/error result if the query has been processed correctly. For a particular query, information about the
     // Compute Flavours that the VNFM has access to and that are matching the filter shall be returned.
-    rpc QueryComputeFlavour(QueryComputeFlavourRequest) returns (QueryComputeFlavourResponse) {}
+    rpc QueryComputeFlavour(QueryComputeFlavourRequest) returns (QueryComputeFlavourResponse) {
+        option(google.api.http) = {
+            get: "/vivnfm/v5/flavours"
+        };
+    }
     // This operation allows deleting a Compute Flavour.
     // Result: After successful operation, the VIM has deleted the Compute Flavour, so no new Virtualised Compute Resource can be allocated based on it.
     // The already allocated Virtualised Compute Resources are not affected. If the operation was not successful,
     // the VIM shall return to the VNFM appropriate error information.
-    rpc DeleteComputeFlavour(DeleteComputeFlavourRequest) returns (DeleteComputeFlavourResponse) {}
+    rpc DeleteComputeFlavour(DeleteComputeFlavourRequest) returns (DeleteComputeFlavourResponse) {
+        option(google.api.http) = {
+            delete: "/vivnfm/v5/flavours"
+        };
+    }
 
 
     // Virtualised Network Interfaces
@@ -84,7 +100,11 @@ service vi_vnfm {
     // allocated this resource. In addition, the VIM shall return to the VNFM information on the newly instantiated virtualised network resource
     // plus any additional information about the allocate request operation. The VIM may also return intermediate status reports during the allocation process.
     // If the operation was not successful, the VIM shall return to the VNFM appropriate error information.
-    rpc AllocateVirtualisedNetworkResource(AllocateNetworkRequest) returns (AllocateNetworkResponse) {}
+    rpc AllocateVirtualisedNetworkResource(AllocateNetworkRequest) returns (AllocateNetworkResponse) {
+        option(google.api.http) = {
+            post: "/vivnfm/v5/networks"
+        };
+    }
 }
 
 message QueryImagesRequest {
