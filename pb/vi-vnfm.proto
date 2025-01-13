@@ -33,6 +33,7 @@ service vi_vnfm {
             get: "/vivnfm/v5/images/{softwareImageId.value}"
             additional_bindings: {
                 post: "/vivnfm/v5/images"
+                body: "*"
             }
         };
     }
