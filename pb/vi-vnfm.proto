@@ -31,9 +31,11 @@ service vi_vnfm {
     rpc QueryImage(QueryImageRequest) returns (QueryImageResponse) {
         option(google.api.http) = {
             get: "/vivnfm/v5/images/{softwareImageId.value}"
+            additional_bindings: {
+                post: "/vivnfm/v5/images"
+            }
         };
     }
-
 
     // Virtualised Compute Interfaces
 
