@@ -141,17 +141,12 @@ func local_request_ViVnfm_QueryImage_1(ctx context.Context, marshaler runtime.Ma
 	return msg, metadata, err
 }
 
-var filter_ViVnfm_AllocateVirtualisedComputeResource_0 = &utilities.DoubleArray{Encoding: map[string]int{}, Base: []int(nil), Check: []int(nil)}
-
 func request_ViVnfm_AllocateVirtualisedComputeResource_0(ctx context.Context, marshaler runtime.Marshaler, client ViVnfmClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var (
 		protoReq AllocateComputeRequest
 		metadata runtime.ServerMetadata
 	)
-	if err := req.ParseForm(); err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
-	}
-	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_ViVnfm_AllocateVirtualisedComputeResource_0); err != nil {
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 	msg, err := client.AllocateVirtualisedComputeResource(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
@@ -163,27 +158,19 @@ func local_request_ViVnfm_AllocateVirtualisedComputeResource_0(ctx context.Conte
 		protoReq AllocateComputeRequest
 		metadata runtime.ServerMetadata
 	)
-	if err := req.ParseForm(); err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
-	}
-	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_ViVnfm_AllocateVirtualisedComputeResource_0); err != nil {
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 	msg, err := server.AllocateVirtualisedComputeResource(ctx, &protoReq)
 	return msg, metadata, err
 }
 
-var filter_ViVnfm_CreateComputeFlavour_0 = &utilities.DoubleArray{Encoding: map[string]int{}, Base: []int(nil), Check: []int(nil)}
-
 func request_ViVnfm_CreateComputeFlavour_0(ctx context.Context, marshaler runtime.Marshaler, client ViVnfmClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var (
 		protoReq CreateComputeFlavourRequest
 		metadata runtime.ServerMetadata
 	)
-	if err := req.ParseForm(); err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
-	}
-	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_ViVnfm_CreateComputeFlavour_0); err != nil {
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 	msg, err := client.CreateComputeFlavour(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
@@ -195,10 +182,7 @@ func local_request_ViVnfm_CreateComputeFlavour_0(ctx context.Context, marshaler 
 		protoReq CreateComputeFlavourRequest
 		metadata runtime.ServerMetadata
 	)
-	if err := req.ParseForm(); err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
-	}
-	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_ViVnfm_CreateComputeFlavour_0); err != nil {
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 	msg, err := server.CreateComputeFlavour(ctx, &protoReq)
@@ -269,17 +253,12 @@ func local_request_ViVnfm_DeleteComputeFlavour_0(ctx context.Context, marshaler 
 	return msg, metadata, err
 }
 
-var filter_ViVnfm_AllocateVirtualisedNetworkResource_0 = &utilities.DoubleArray{Encoding: map[string]int{}, Base: []int(nil), Check: []int(nil)}
-
 func request_ViVnfm_AllocateVirtualisedNetworkResource_0(ctx context.Context, marshaler runtime.Marshaler, client ViVnfmClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var (
 		protoReq AllocateNetworkRequest
 		metadata runtime.ServerMetadata
 	)
-	if err := req.ParseForm(); err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
-	}
-	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_ViVnfm_AllocateVirtualisedNetworkResource_0); err != nil {
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 	msg, err := client.AllocateVirtualisedNetworkResource(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
@@ -291,10 +270,7 @@ func local_request_ViVnfm_AllocateVirtualisedNetworkResource_0(ctx context.Conte
 		protoReq AllocateNetworkRequest
 		metadata runtime.ServerMetadata
 	)
-	if err := req.ParseForm(); err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
-	}
-	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_ViVnfm_AllocateVirtualisedNetworkResource_0); err != nil {
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 	msg, err := server.AllocateVirtualisedNetworkResource(ctx, &protoReq)

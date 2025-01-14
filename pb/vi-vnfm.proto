@@ -55,6 +55,7 @@ service vi_vnfm {
     rpc AllocateVirtualisedComputeResource(AllocateComputeRequest) returns (AllocateComputeResponse) {
         option(google.api.http) = {
             post: "/vivnfm/v5/compute"
+            body: "*"
         };
     }
 
@@ -70,6 +71,7 @@ service vi_vnfm {
     rpc CreateComputeFlavour(CreateComputeFlavourRequest) returns (CreateComputeFlavourResponse) {
         option(google.api.http) = {
             post: "/vivnfm/v5/flavours"
+            body: "*"
         };
     }
     // This operation allows querying information about created Compute Flavours.
@@ -106,6 +108,7 @@ service vi_vnfm {
     rpc AllocateVirtualisedNetworkResource(AllocateNetworkRequest) returns (AllocateNetworkResponse) {
         option(google.api.http) = {
             post: "/vivnfm/v5/networks"
+            body: "*"
         };
     }
 }
