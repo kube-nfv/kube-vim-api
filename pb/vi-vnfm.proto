@@ -111,6 +111,32 @@ service vi_vnfm {
             body: "*"
         };
     }
+    // This operation allows querying information about instantiated virtualised network resources.
+    // Result: After successful operation, the VIM has queried the internal management objects for the virtualised network resources.
+    // The result of the query shall indicate with a standard success/error result if the query has been processed correctly. For a
+    // particular query, information about the network resources that the VNFM has access to and that are matching the filter
+    // shall be returned.
+    rpc QueryVirtualisedNetworkResource(QueryNetworkRequest) returns (QueryNetworkResponse) {
+        option(google.api.http) = {
+            get: "/vivnfm/v5/networks"
+        };
+    }
+    // This operation allows de-allocating and terminating one or more an instantiated virtualised network resource(s).
+    // When the operation is done on multiple ids, it is assumed to be best-effort, i.e. it can succeed for a subset of the ids, and
+    // fail for the remaining ones.
+    // Result: After successful operation, the VIM has terminated the virtualised network resources and removed the internal
+    // management objects for those resources. In addition, the VIM shall return to the VNFM information on the terminated
+    // virtualised network resource plus any additional information about the terminate request operation.
+    // If the operation was not successful, the VIM shall return to the VNFM appropriate error information.
+    //
+    // Note(dmalovan): ETSI GS NFV-IFA 006 (7.4.1.5.4) Operation result attached above is not coresponds to the reality, since
+    // Ouput parameters defined in the (7.4.1.5.3) Output parameters block are not contains any (C) "additional information about
+    // the terminated request operation" and (C) "appropriate error information"
+    rpc TerminateVirtualisedNetworkResource(TerminateNetworkRequest) returns (TerminateNetworkResponse) {
+        option(google.api.http) = {
+            delete: "/vivnfm/v5/networks/{networkResourceId.value}"
+        };
+    }
 }
 
 message QueryImagesRequest {
@@ -247,4 +273,56 @@ message AllocateNetworkResponse {
     // If routing resource types are created satisfactorily, it contains the data relative to the allocated routing resource.
     // Cardinality can be "0" if the request did not include creation of such type of resource.
     optional RoutingResource routingResourceData = 5;
+}
+
+message QueryNetworkRequest {
+    // Query filter based on e.g. name, identifier, meta-data
+    // information or status information, expressing the type of
+    // information to be retrieved. It can also be used to specify
+    // one or more resources to be queried by providing their
+    // identifiers.
+    Filter queryNetworkFilter = 1;
+}
+
+// Note: This message goes out of ETSI GS NFV-IFA 006 reference
+// since it is not gives the poibilities to return subnets
+message QueryNetworkResponse {
+    // Contains information about the virtual network resource(s)
+    // matching the filter.
+    // Cardinality can be "0" if no matching network resources
+    // exist.
+    // Note: that field should be named as a queryResult in ETSI GS NFV-IFA 006 spec
+    repeated VirtualNetwork queryNetworkResult = 1;
+    // Contains information about the virtual subnet(s)
+    // matching the filter.
+    // Cardinality can be "0" if no matching subnets
+    // exist.
+    // Note: that field does not exists in ETSI GS NFV-IFA 006 spec
+    repeated NetworkSubnet querySubnetResult = 2;
+    // Contains information about the virtual network port(s)
+    // matching the filter.
+    // Cardinality can be "0" if no matching network ports
+    // exist.
+    // Note: that field does not exists in ETSI GS NFV-IFA 006 spec
+    repeated VirtualNetworkPort queryNetworkPortResult = 3;
+    // Contains information about the virtual trunk(s) matching the
+    // filter. Cardinality can be "0" if no matching virtual trunk
+    repeated VirtualTrunk queryTrunkResult = 4;
+}
+
+// Note: This message goes out of ETSI GS NFV-IFA 006 reference
+// since multiple ids in request not lays down on RESTfull api, where
+// deleted resource should be specified in the path.
+message TerminateNetworkRequest {
+    // Identifier of the virtualised network
+    // resource(s) to be terminated.
+    Identifier networkResourceId = 1;
+}
+
+// Note: This message goes out of ETSI GS NFV-IFA 006 reference.
+// See TerminateNetworkRequest
+message TerminateNetworkResponse {
+    // Identifier of the virtualised network
+    // resource(s) successfully terminated.
+    Identifier networkResourceId = 1;
 }

@@ -19,13 +19,15 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	ViVnfm_QueryImages_FullMethodName                        = "/kubenvf.kubevim.api.pb.vi_vnfm/QueryImages"
-	ViVnfm_QueryImage_FullMethodName                         = "/kubenvf.kubevim.api.pb.vi_vnfm/QueryImage"
-	ViVnfm_AllocateVirtualisedComputeResource_FullMethodName = "/kubenvf.kubevim.api.pb.vi_vnfm/AllocateVirtualisedComputeResource"
-	ViVnfm_CreateComputeFlavour_FullMethodName               = "/kubenvf.kubevim.api.pb.vi_vnfm/CreateComputeFlavour"
-	ViVnfm_QueryComputeFlavour_FullMethodName                = "/kubenvf.kubevim.api.pb.vi_vnfm/QueryComputeFlavour"
-	ViVnfm_DeleteComputeFlavour_FullMethodName               = "/kubenvf.kubevim.api.pb.vi_vnfm/DeleteComputeFlavour"
-	ViVnfm_AllocateVirtualisedNetworkResource_FullMethodName = "/kubenvf.kubevim.api.pb.vi_vnfm/AllocateVirtualisedNetworkResource"
+	ViVnfm_QueryImages_FullMethodName                         = "/kubenvf.kubevim.api.pb.vi_vnfm/QueryImages"
+	ViVnfm_QueryImage_FullMethodName                          = "/kubenvf.kubevim.api.pb.vi_vnfm/QueryImage"
+	ViVnfm_AllocateVirtualisedComputeResource_FullMethodName  = "/kubenvf.kubevim.api.pb.vi_vnfm/AllocateVirtualisedComputeResource"
+	ViVnfm_CreateComputeFlavour_FullMethodName                = "/kubenvf.kubevim.api.pb.vi_vnfm/CreateComputeFlavour"
+	ViVnfm_QueryComputeFlavour_FullMethodName                 = "/kubenvf.kubevim.api.pb.vi_vnfm/QueryComputeFlavour"
+	ViVnfm_DeleteComputeFlavour_FullMethodName                = "/kubenvf.kubevim.api.pb.vi_vnfm/DeleteComputeFlavour"
+	ViVnfm_AllocateVirtualisedNetworkResource_FullMethodName  = "/kubenvf.kubevim.api.pb.vi_vnfm/AllocateVirtualisedNetworkResource"
+	ViVnfm_QueryVirtualisedNetworkResource_FullMethodName     = "/kubenvf.kubevim.api.pb.vi_vnfm/QueryVirtualisedNetworkResource"
+	ViVnfm_TerminateVirtualisedNetworkResource_FullMethodName = "/kubenvf.kubevim.api.pb.vi_vnfm/TerminateVirtualisedNetworkResource"
 )
 
 // ViVnfmClient is the client API for ViVnfm service.
@@ -66,6 +68,24 @@ type ViVnfmClient interface {
 	// plus any additional information about the allocate request operation. The VIM may also return intermediate status reports during the allocation process.
 	// If the operation was not successful, the VIM shall return to the VNFM appropriate error information.
 	AllocateVirtualisedNetworkResource(ctx context.Context, in *AllocateNetworkRequest, opts ...grpc.CallOption) (*AllocateNetworkResponse, error)
+	// This operation allows querying information about instantiated virtualised network resources.
+	// Result: After successful operation, the VIM has queried the internal management objects for the virtualised network resources.
+	// The result of the query shall indicate with a standard success/error result if the query has been processed correctly. For a
+	// particular query, information about the network resources that the VNFM has access to and that are matching the filter
+	// shall be returned.
+	QueryVirtualisedNetworkResource(ctx context.Context, in *QueryNetworkRequest, opts ...grpc.CallOption) (*QueryNetworkResponse, error)
+	// This operation allows de-allocating and terminating one or more an instantiated virtualised network resource(s).
+	// When the operation is done on multiple ids, it is assumed to be best-effort, i.e. it can succeed for a subset of the ids, and
+	// fail for the remaining ones.
+	// Result: After successful operation, the VIM has terminated the virtualised network resources and removed the internal
+	// management objects for those resources. In addition, the VIM shall return to the VNFM information on the terminated
+	// virtualised network resource plus any additional information about the terminate request operation.
+	// If the operation was not successful, the VIM shall return to the VNFM appropriate error information.
+	//
+	// Note(dmalovan): ETSI GS NFV-IFA 006 (7.4.1.5.4) Operation result attached above is not coresponds to the reality, since
+	// Ouput parameters defined in the (7.4.1.5.3) Output parameters block are not contains any (C) "additional information about
+	// the terminated request operation" and (C) "appropriate error information"
+	TerminateVirtualisedNetworkResource(ctx context.Context, in *TerminateNetworkRequest, opts ...grpc.CallOption) (*TerminateNetworkResponse, error)
 }
 
 type viVnfmClient struct {
@@ -139,6 +159,24 @@ func (c *viVnfmClient) AllocateVirtualisedNetworkResource(ctx context.Context, i
 	return out, nil
 }
 
+func (c *viVnfmClient) QueryVirtualisedNetworkResource(ctx context.Context, in *QueryNetworkRequest, opts ...grpc.CallOption) (*QueryNetworkResponse, error) {
+	out := new(QueryNetworkResponse)
+	err := c.cc.Invoke(ctx, ViVnfm_QueryVirtualisedNetworkResource_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *viVnfmClient) TerminateVirtualisedNetworkResource(ctx context.Context, in *TerminateNetworkRequest, opts ...grpc.CallOption) (*TerminateNetworkResponse, error) {
+	out := new(TerminateNetworkResponse)
+	err := c.cc.Invoke(ctx, ViVnfm_TerminateVirtualisedNetworkResource_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ViVnfmServer is the server API for ViVnfm service.
 // All implementations must embed UnimplementedViVnfmServer
 // for forward compatibility
@@ -177,6 +215,24 @@ type ViVnfmServer interface {
 	// plus any additional information about the allocate request operation. The VIM may also return intermediate status reports during the allocation process.
 	// If the operation was not successful, the VIM shall return to the VNFM appropriate error information.
 	AllocateVirtualisedNetworkResource(context.Context, *AllocateNetworkRequest) (*AllocateNetworkResponse, error)
+	// This operation allows querying information about instantiated virtualised network resources.
+	// Result: After successful operation, the VIM has queried the internal management objects for the virtualised network resources.
+	// The result of the query shall indicate with a standard success/error result if the query has been processed correctly. For a
+	// particular query, information about the network resources that the VNFM has access to and that are matching the filter
+	// shall be returned.
+	QueryVirtualisedNetworkResource(context.Context, *QueryNetworkRequest) (*QueryNetworkResponse, error)
+	// This operation allows de-allocating and terminating one or more an instantiated virtualised network resource(s).
+	// When the operation is done on multiple ids, it is assumed to be best-effort, i.e. it can succeed for a subset of the ids, and
+	// fail for the remaining ones.
+	// Result: After successful operation, the VIM has terminated the virtualised network resources and removed the internal
+	// management objects for those resources. In addition, the VIM shall return to the VNFM information on the terminated
+	// virtualised network resource plus any additional information about the terminate request operation.
+	// If the operation was not successful, the VIM shall return to the VNFM appropriate error information.
+	//
+	// Note(dmalovan): ETSI GS NFV-IFA 006 (7.4.1.5.4) Operation result attached above is not coresponds to the reality, since
+	// Ouput parameters defined in the (7.4.1.5.3) Output parameters block are not contains any (C) "additional information about
+	// the terminated request operation" and (C) "appropriate error information"
+	TerminateVirtualisedNetworkResource(context.Context, *TerminateNetworkRequest) (*TerminateNetworkResponse, error)
 	mustEmbedUnimplementedViVnfmServer()
 }
 
@@ -204,6 +260,12 @@ func (UnimplementedViVnfmServer) DeleteComputeFlavour(context.Context, *DeleteCo
 }
 func (UnimplementedViVnfmServer) AllocateVirtualisedNetworkResource(context.Context, *AllocateNetworkRequest) (*AllocateNetworkResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AllocateVirtualisedNetworkResource not implemented")
+}
+func (UnimplementedViVnfmServer) QueryVirtualisedNetworkResource(context.Context, *QueryNetworkRequest) (*QueryNetworkResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method QueryVirtualisedNetworkResource not implemented")
+}
+func (UnimplementedViVnfmServer) TerminateVirtualisedNetworkResource(context.Context, *TerminateNetworkRequest) (*TerminateNetworkResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method TerminateVirtualisedNetworkResource not implemented")
 }
 func (UnimplementedViVnfmServer) mustEmbedUnimplementedViVnfmServer() {}
 
@@ -344,6 +406,42 @@ func _ViVnfm_AllocateVirtualisedNetworkResource_Handler(srv interface{}, ctx con
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ViVnfm_QueryVirtualisedNetworkResource_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryNetworkRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ViVnfmServer).QueryVirtualisedNetworkResource(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ViVnfm_QueryVirtualisedNetworkResource_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ViVnfmServer).QueryVirtualisedNetworkResource(ctx, req.(*QueryNetworkRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ViVnfm_TerminateVirtualisedNetworkResource_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(TerminateNetworkRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ViVnfmServer).TerminateVirtualisedNetworkResource(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ViVnfm_TerminateVirtualisedNetworkResource_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ViVnfmServer).TerminateVirtualisedNetworkResource(ctx, req.(*TerminateNetworkRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // ViVnfm_ServiceDesc is the grpc.ServiceDesc for ViVnfm service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -378,6 +476,14 @@ var ViVnfm_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "AllocateVirtualisedNetworkResource",
 			Handler:    _ViVnfm_AllocateVirtualisedNetworkResource_Handler,
+		},
+		{
+			MethodName: "QueryVirtualisedNetworkResource",
+			Handler:    _ViVnfm_QueryVirtualisedNetworkResource_Handler,
+		},
+		{
+			MethodName: "TerminateVirtualisedNetworkResource",
+			Handler:    _ViVnfm_TerminateVirtualisedNetworkResource_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
