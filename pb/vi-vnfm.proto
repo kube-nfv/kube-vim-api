@@ -89,7 +89,7 @@ service vi_vnfm {
     // the VIM shall return to the VNFM appropriate error information.
     rpc DeleteComputeFlavour(DeleteComputeFlavourRequest) returns (DeleteComputeFlavourResponse) {
         option(google.api.http) = {
-            delete: "/vivnfm/v5/flavours"
+            delete: "/vivnfm/v5/flavours/{computeFlavourId.value}"
         };
     }
 
