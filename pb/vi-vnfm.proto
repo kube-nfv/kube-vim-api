@@ -228,13 +228,6 @@ message AllocateNetworkRequest {
     // Identifier of the resource reservation applicable to this virtualised resource management operation.
     optional Identifier reservationId = 2;
 
-    // Type of virtualised network resource.
-    enum NetworkResourceType {
-        NETWORK = 0;
-        SUBNET  = 1;
-        NETWORK_PORT = 2;
-        TRUNK = 3;
-    }
     optional NetworkResourceType networkResourceType = 3;
     // Provides information about the particular virtual network resource to be created. Cardinality can be "0" depending on the value of networkResourceType.
     optional VirtualNetworkData typeNetworkData = 4;
@@ -282,6 +275,11 @@ message QueryNetworkRequest {
     // one or more resources to be queried by providing their
     // identifiers.
     Filter queryNetworkFilter = 1;
+
+    // Note: this message goes out of ETSI GS NFV-IFA 006 reference but
+    // it is required to identify network resource type while performing query.
+    // Later the filter will be applied to that network resource type.
+    NetworkResourceType networkResourceType = 99;
 }
 
 // Note: This message goes out of ETSI GS NFV-IFA 006 reference

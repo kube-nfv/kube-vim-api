@@ -57,3 +57,11 @@ enum OperationalState {
 message Metadata {
     map<string, string> fields = 1;
 }
+
+// Type of virtualised network resource.
+enum NetworkResourceType {
+    NETWORK = 0;
+    SUBNET  = 1;
+    NETWORK_PORT = 2;
+    TRUNK = 3;
+}

@@ -114,6 +114,59 @@ func (OperationalState) EnumDescriptor() ([]byte, []int) {
 	return file_common_proto_rawDescGZIP(), []int{1}
 }
 
+// Type of virtualised network resource.
+type NetworkResourceType int32
+
+const (
+	NetworkResourceType_NETWORK      NetworkResourceType = 0
+	NetworkResourceType_SUBNET       NetworkResourceType = 1
+	NetworkResourceType_NETWORK_PORT NetworkResourceType = 2
+	NetworkResourceType_TRUNK        NetworkResourceType = 3
+)
+
+// Enum value maps for NetworkResourceType.
+var (
+	NetworkResourceType_name = map[int32]string{
+		0: "NETWORK",
+		1: "SUBNET",
+		2: "NETWORK_PORT",
+		3: "TRUNK",
+	}
+	NetworkResourceType_value = map[string]int32{
+		"NETWORK":      0,
+		"SUBNET":       1,
+		"NETWORK_PORT": 2,
+		"TRUNK":        3,
+	}
+)
+
+func (x NetworkResourceType) Enum() *NetworkResourceType {
+	p := new(NetworkResourceType)
+	*p = x
+	return p
+}
+
+func (x NetworkResourceType) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (NetworkResourceType) Descriptor() protoreflect.EnumDescriptor {
+	return file_common_proto_enumTypes[2].Descriptor()
+}
+
+func (NetworkResourceType) Type() protoreflect.EnumType {
+	return &file_common_proto_enumTypes[2]
+}
+
+func (x NetworkResourceType) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use NetworkResourceType.Descriptor instead.
+func (NetworkResourceType) EnumDescriptor() ([]byte, []int) {
+	return file_common_proto_rawDescGZIP(), []int{2}
+}
+
 type Identifier struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -606,10 +659,15 @@ var file_common_proto_rawDesc = []byte{
 	0x10, 0x00, 0x12, 0x08, 0x0a, 0x04, 0x49, 0x50, 0x56, 0x36, 0x10, 0x01, 0x2a, 0x2d, 0x0a, 0x10,
 	0x4f, 0x70, 0x65, 0x72, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x61, 0x6c, 0x53, 0x74, 0x61, 0x74, 0x65,
 	0x12, 0x0b, 0x0a, 0x07, 0x45, 0x4e, 0x41, 0x42, 0x4c, 0x45, 0x44, 0x10, 0x00, 0x12, 0x0c, 0x0a,
-	0x08, 0x44, 0x49, 0x53, 0x41, 0x42, 0x4c, 0x45, 0x44, 0x10, 0x01, 0x42, 0x29, 0x5a, 0x27, 0x67,
-	0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x6b, 0x75, 0x62, 0x65, 0x2d, 0x6e,
-	0x66, 0x76, 0x2f, 0x6b, 0x75, 0x62, 0x65, 0x2d, 0x76, 0x69, 0x6d, 0x2d, 0x61, 0x70, 0x69, 0x2f,
-	0x70, 0x62, 0x2f, 0x6e, 0x66, 0x76, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x08, 0x44, 0x49, 0x53, 0x41, 0x42, 0x4c, 0x45, 0x44, 0x10, 0x01, 0x2a, 0x4b, 0x0a, 0x13, 0x4e,
+	0x65, 0x74, 0x77, 0x6f, 0x72, 0x6b, 0x52, 0x65, 0x73, 0x6f, 0x75, 0x72, 0x63, 0x65, 0x54, 0x79,
+	0x70, 0x65, 0x12, 0x0b, 0x0a, 0x07, 0x4e, 0x45, 0x54, 0x57, 0x4f, 0x52, 0x4b, 0x10, 0x00, 0x12,
+	0x0a, 0x0a, 0x06, 0x53, 0x55, 0x42, 0x4e, 0x45, 0x54, 0x10, 0x01, 0x12, 0x10, 0x0a, 0x0c, 0x4e,
+	0x45, 0x54, 0x57, 0x4f, 0x52, 0x4b, 0x5f, 0x50, 0x4f, 0x52, 0x54, 0x10, 0x02, 0x12, 0x09, 0x0a,
+	0x05, 0x54, 0x52, 0x55, 0x4e, 0x4b, 0x10, 0x03, 0x42, 0x29, 0x5a, 0x27, 0x67, 0x69, 0x74, 0x68,
+	0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x6b, 0x75, 0x62, 0x65, 0x2d, 0x6e, 0x66, 0x76, 0x2f,
+	0x6b, 0x75, 0x62, 0x65, 0x2d, 0x76, 0x69, 0x6d, 0x2d, 0x61, 0x70, 0x69, 0x2f, 0x70, 0x62, 0x2f,
+	0x6e, 0x66, 0x76, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -624,28 +682,29 @@ func file_common_proto_rawDescGZIP() []byte {
 	return file_common_proto_rawDescData
 }
 
-var file_common_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
+var file_common_proto_enumTypes = make([]protoimpl.EnumInfo, 3)
 var file_common_proto_msgTypes = make([]protoimpl.MessageInfo, 10)
 var file_common_proto_goTypes = []interface{}{
-	(IPVersion)(0),        // 0: IPVersion
-	(OperationalState)(0), // 1: OperationalState
-	(*Identifier)(nil),    // 2: Identifier
-	(*Filter)(nil),        // 3: Filter
-	(*KeyValuePair)(nil),  // 4: KeyValuePair
-	(*IPAddress)(nil),     // 5: IPAddress
-	(*MacAddress)(nil),    // 6: MacAddress
-	(*IPSubnet)(nil),      // 7: IPSubnet
-	(*IPSubnetCIDR)(nil),  // 8: IPSubnetCIDR
-	(*IPAddressPool)(nil), // 9: IPAddressPool
-	(*Metadata)(nil),      // 10: Metadata
-	nil,                   // 11: Metadata.FieldsEntry
-	(*anypb.Any)(nil),     // 12: google.protobuf.Any
+	(IPVersion)(0),           // 0: IPVersion
+	(OperationalState)(0),    // 1: OperationalState
+	(NetworkResourceType)(0), // 2: NetworkResourceType
+	(*Identifier)(nil),       // 3: Identifier
+	(*Filter)(nil),           // 4: Filter
+	(*KeyValuePair)(nil),     // 5: KeyValuePair
+	(*IPAddress)(nil),        // 6: IPAddress
+	(*MacAddress)(nil),       // 7: MacAddress
+	(*IPSubnet)(nil),         // 8: IPSubnet
+	(*IPSubnetCIDR)(nil),     // 9: IPSubnetCIDR
+	(*IPAddressPool)(nil),    // 10: IPAddressPool
+	(*Metadata)(nil),         // 11: Metadata
+	nil,                      // 12: Metadata.FieldsEntry
+	(*anypb.Any)(nil),        // 13: google.protobuf.Any
 }
 var file_common_proto_depIdxs = []int32{
-	12, // 0: KeyValuePair.value:type_name -> google.protobuf.Any
-	5,  // 1: IPAddressPool.startIP:type_name -> IPAddress
-	5,  // 2: IPAddressPool.endIP:type_name -> IPAddress
-	11, // 3: Metadata.fields:type_name -> Metadata.FieldsEntry
+	13, // 0: KeyValuePair.value:type_name -> google.protobuf.Any
+	6,  // 1: IPAddressPool.startIP:type_name -> IPAddress
+	6,  // 2: IPAddressPool.endIP:type_name -> IPAddress
+	12, // 3: Metadata.fields:type_name -> Metadata.FieldsEntry
 	4,  // [4:4] is the sub-list for method output_type
 	4,  // [4:4] is the sub-list for method input_type
 	4,  // [4:4] is the sub-list for extension type_name
@@ -773,7 +832,7 @@ func file_common_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_common_proto_rawDesc,
-			NumEnums:      2,
+			NumEnums:      3,
 			NumMessages:   10,
 			NumExtensions: 0,
 			NumServices:   0,
