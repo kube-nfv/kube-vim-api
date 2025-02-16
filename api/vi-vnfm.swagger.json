@@ -1,0 +1,1294 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "vi-vnfm.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "vi_vnfm"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/vivnfm/v5/compute": {
+      "post": {
+        "summary": "This operation allows requesting the allocation of virtualised compute resources as indicated by the consumer functional block.\nResult: After successful operation, the VIM has created the internal management objects for the virtualised compute resource and allocated this\nresource according to the input requirements and constraints. In addition, the VIM shall return to the VNFM information on the newly instantiated\nvirtualised compute resource plus any additional information about the allocate request operation.\nThe VIM may also return intermediate status reports during the allocation process. If the operation was not successful,\nthe VIM shall return to the VNFM appropriate error information.",
+        "operationId": "vi_vnfm_AllocateVirtualisedComputeResource",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbAllocateComputeResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbAllocateComputeRequest"
+            }
+          }
+        ],
+        "tags": [
+          "vi_vnfm"
+        ]
+      }
+    },
+    "/vivnfm/v5/flavours": {
+      "get": {
+        "summary": "This operation allows querying information about created Compute Flavours.\nResult: After successful operation, the VIM has queried the internal management objects for the Compute Flavours. The result of the query shall indicate with\na standard success/error result if the query has been processed correctly. For a particular query, information about the\nCompute Flavours that the VNFM has access to and that are matching the filter shall be returned.",
+        "operationId": "vi_vnfm_QueryComputeFlavour",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbQueryComputeFlavourResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "queryComputeFlavourFilter.value",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "vi_vnfm"
+        ]
+      },
+      "post": {
+        "summary": "This operation allows requesting the creation of a flavour as indicated by the consumer functional block.\nResult: After successful operation, the VIM has created the Compute Flavour.\nIn addition, the VIM shall return to the VNFM information on the newly created Compute Flavour.\nIf the operation was not successful, the VIM shall return to the VNFM appropriate error information.",
+        "operationId": "vi_vnfm_CreateComputeFlavour",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbCreateComputeFlavourResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbCreateComputeFlavourRequest"
+            }
+          }
+        ],
+        "tags": [
+          "vi_vnfm"
+        ]
+      }
+    },
+    "/vivnfm/v5/flavours/{computeFlavourId.value}": {
+      "delete": {
+        "summary": "This operation allows deleting a Compute Flavour.\nResult: After successful operation, the VIM has deleted the Compute Flavour, so no new Virtualised Compute Resource can be allocated based on it.\nThe already allocated Virtualised Compute Resources are not affected. If the operation was not successful,\nthe VIM shall return to the VNFM appropriate error information.",
+        "operationId": "vi_vnfm_DeleteComputeFlavour",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbDeleteComputeFlavourResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "computeFlavourId.value",
+            "description": "UUID Identifier representation",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "vi_vnfm"
+        ]
+      }
+    },
+    "/vivnfm/v5/images": {
+      "get": {
+        "summary": "This operation allows querying the information of software images in the image repository managed by the VIM.\nResult: As a result of this operation, the producer (VIM) shall indicate to the consumer (VNFM) whether or not it was possible to process the query",
+        "operationId": "vi_vnfm_QueryImages",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbQueryImagesResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "imageQueryFilter.value",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "vi_vnfm"
+        ]
+      },
+      "post": {
+        "summary": "This operation allows querying the information about a specific software image in the image repository managed by the VIM.\nResult: As a result of this operation, the producer (VIM) shall indicate to the consumer (VNFM) whether or not it was possible to process the query.",
+        "operationId": "vi_vnfm_QueryImage2",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbQueryImageResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbQueryImageRequest"
+            }
+          }
+        ],
+        "tags": [
+          "vi_vnfm"
+        ]
+      }
+    },
+    "/vivnfm/v5/images/{softwareImageId.value}": {
+      "get": {
+        "summary": "This operation allows querying the information about a specific software image in the image repository managed by the VIM.\nResult: As a result of this operation, the producer (VIM) shall indicate to the consumer (VNFM) whether or not it was possible to process the query.",
+        "operationId": "vi_vnfm_QueryImage",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbQueryImageResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "softwareImageId.value",
+            "description": "UUID Identifier representation",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "vi_vnfm"
+        ]
+      }
+    },
+    "/vivnfm/v5/networks": {
+      "get": {
+        "summary": "This operation allows querying information about instantiated virtualised network resources.\nResult: After successful operation, the VIM has queried the internal management objects for the virtualised network resources.\nThe result of the query shall indicate with a standard success/error result if the query has been processed correctly. For a\nparticular query, information about the network resources that the VNFM has access to and that are matching the filter\nshall be returned.",
+        "operationId": "vi_vnfm_QueryVirtualisedNetworkResource",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbQueryNetworkResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "queryNetworkFilter.value",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "networkResourceType",
+            "description": "Note: this message goes out of ETSI GS NFV-IFA 006 reference but\nit is required to identify network resource type while performing query.\nLater the filter will be applied to that network resource type.",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "NETWORK",
+              "SUBNET",
+              "NETWORK_PORT",
+              "TRUNK"
+            ],
+            "default": "NETWORK"
+          }
+        ],
+        "tags": [
+          "vi_vnfm"
+        ]
+      },
+      "post": {
+        "summary": "This operation allows requesting the allocation of virtualised network resources as indicated by the consumer functional block.\nResult: After successful operation, the VIM has created the internal management objects for the virtualised network resource and\nallocated this resource. In addition, the VIM shall return to the VNFM information on the newly instantiated virtualised network resource\nplus any additional information about the allocate request operation. The VIM may also return intermediate status reports during the allocation process.\nIf the operation was not successful, the VIM shall return to the VNFM appropriate error information.",
+        "operationId": "vi_vnfm_AllocateVirtualisedNetworkResource",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbAllocateNetworkResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbAllocateNetworkRequest"
+            }
+          }
+        ],
+        "tags": [
+          "vi_vnfm"
+        ]
+      }
+    },
+    "/vivnfm/v5/networks/{networkResourceId.value}": {
+      "delete": {
+        "summary": "This operation allows de-allocating and terminating one or more an instantiated virtualised network resource(s).\nWhen the operation is done on multiple ids, it is assumed to be best-effort, i.e. it can succeed for a subset of the ids, and\nfail for the remaining ones.\nResult: After successful operation, the VIM has terminated the virtualised network resources and removed the internal\nmanagement objects for those resources. In addition, the VIM shall return to the VNFM information on the terminated\nvirtualised network resource plus any additional information about the terminate request operation.\nIf the operation was not successful, the VIM shall return to the VNFM appropriate error information.",
+        "description": "Note(dmalovan): ETSI GS NFV-IFA 006 (7.4.1.5.4) Operation result attached above is not coresponds to the reality, since\nOuput parameters defined in the (7.4.1.5.3) Output parameters block are not contains any (C) \"additional information about\nthe terminated request operation\" and (C) \"appropriate error information\"",
+        "operationId": "vi_vnfm_TerminateVirtualisedNetworkResource",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbTerminateNetworkResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "networkResourceId.value",
+            "description": "UUID Identifier representation",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "vi_vnfm"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "AffinityOrAntiAffinityConstraintForCompute": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "$ref": "#/definitions/TypeOfAffinityOrAntiAffinityConstraint",
+          "title": "Qualifies the scope of the constraint. In case of compute resource, the values are as follows"
+        },
+        "scope": {
+          "$ref": "#/definitions/AffinityOrAntiAffinityConstraintForComputeScopeOfAffinityOrAntiAffinityConstraintForCompute",
+          "description": "Indicates whether this is an affinity or anti- affinity constraint."
+        },
+        "affinityOrAntiAffinityResourceList": {
+          "$ref": "#/definitions/AffinityOrAntiAffinityConstraintForComputeAffinityOrAntiAffinityResourceList",
+          "description": "Consumer-managed list of identifiers of virtualised resources with which the actual resource is requested to be affine or anti- affine."
+        },
+        "affinityOrAntiAffinityResourceGroupId": {
+          "$ref": "#/definitions/Identifier",
+          "description": "Identifier of the producer-managed group of virtualised resources with which the actual resource is\nrequested to be affine or anti-affine. Either affinityOrAntiAffinityResourceList or affinityOrAntiAffinityResourceGroupId but not both shall be present."
+        }
+      },
+      "title": "The parameter used when giving resource affinity or anti-affinity constraints related to virtualised compute resources.\nThe parameter is an element with affinity or anti affinity information of the virtualised compute resource to be allocated ETSI GS NFV-IFA 005 and ETSI\nGS NFV-IFA 006"
+    },
+    "AffinityOrAntiAffinityConstraintForComputeAffinityOrAntiAffinityResourceList": {
+      "type": "object",
+      "properties": {
+        "resourceId": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/Identifier"
+          },
+          "description": "List of identifiers of virtualised resources."
+        }
+      },
+      "description": "The AffinityOrAntiAffinityResourceList information element defines an explicit list of resources to\nexpress affinity or anti-affinity between these resources and a current resource. The scope of the affinity or anti-affinity can also be defined."
+    },
+    "AffinityOrAntiAffinityConstraintForComputeScopeOfAffinityOrAntiAffinityConstraintForCompute": {
+      "type": "string",
+      "enum": [
+        "NFVI_NODE",
+        "NFVI_POP"
+      ],
+      "default": "NFVI_NODE",
+      "title": "- NFVI_NODE: Default"
+    },
+    "AffinityOrAntiAffinityConstraintForNetwork": {
+      "type": "object",
+      "title": "The parameter used when providing the list of elements with affinity or anti affinity information of the virtualised network resource"
+    },
+    "Filter": {
+      "type": "object",
+      "properties": {
+        "value": {
+          "type": "string"
+        }
+      }
+    },
+    "IPAddress": {
+      "type": "object",
+      "properties": {
+        "ip": {
+          "type": "string"
+        }
+      }
+    },
+    "IPAddressPool": {
+      "type": "object",
+      "properties": {
+        "startIP": {
+          "$ref": "#/definitions/IPAddress"
+        },
+        "endIP": {
+          "$ref": "#/definitions/IPAddress"
+        }
+      },
+      "title": "TODO: Might be few ranges specified in pool"
+    },
+    "IPSubnetCIDR": {
+      "type": "object",
+      "properties": {
+        "cidr": {
+          "type": "string"
+        }
+      }
+    },
+    "IPVersion": {
+      "type": "string",
+      "enum": [
+        "IPV4",
+        "IPV6"
+      ],
+      "default": "IPV4",
+      "description": "IP version of the network/subnetwork."
+    },
+    "Identifier": {
+      "type": "object",
+      "properties": {
+        "value": {
+          "type": "string",
+          "title": "UUID Identifier representation"
+        }
+      }
+    },
+    "MacAddress": {
+      "type": "object",
+      "properties": {
+        "mac": {
+          "type": "string"
+        }
+      }
+    },
+    "Metadata": {
+      "type": "object",
+      "properties": {
+        "fields": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      },
+      "description": "List of metadata key-value pairs used by the consumer to associate meaningful metadata to the related virtualised resource.\nNote: metadata represent as a string, string map. Make value of pb.Any is not mianingfull since consumer won't be able to deserialize it."
+    },
+    "NetworkQoS": {
+      "type": "object",
+      "properties": {
+        "qosName": {
+          "type": "string",
+          "description": "Name given to the QoS parameter."
+        },
+        "qosValue": {
+          "type": "string",
+          "description": "Value of the QoS parameter."
+        }
+      },
+      "description": "This clause describes the attributes for the NetworkQoS information element. This type gives QoS options to be supported on the\nvirtualised network, e.g. latency, jitter, etc."
+    },
+    "NetworkResourceType": {
+      "type": "string",
+      "enum": [
+        "NETWORK",
+        "SUBNET",
+        "NETWORK_PORT",
+        "TRUNK"
+      ],
+      "default": "NETWORK",
+      "description": "Type of virtualised network resource."
+    },
+    "NetworkSubnet": {
+      "type": "object",
+      "properties": {
+        "resourceId": {
+          "$ref": "#/definitions/Identifier",
+          "description": "Identifier of the virtualised sub-network."
+        },
+        "networkId": {
+          "$ref": "#/definitions/Identifier",
+          "description": "References the virtualised network that the virtualised sub-network is attached to.\nThe cardinality can be 0 to cover the case where this type is used to describe the L3 attributes of a network rather than a subnetwork."
+        },
+        "ipVersion": {
+          "$ref": "#/definitions/IPVersion",
+          "description": "IP version of the network/subnetwork."
+        },
+        "gatewayIp": {
+          "$ref": "#/definitions/IPAddress",
+          "description": "IP address of the network/subnetwork gateway."
+        },
+        "cidr": {
+          "$ref": "#/definitions/IPSubnetCIDR",
+          "description": "CIDR of the network/subnetwork, i.e. network address and subnet mask."
+        },
+        "isDhcpEnabled": {
+          "type": "boolean",
+          "description": "True when DHCP is enabled for this network/subnetwork, or false otherwise."
+        },
+        "addressPool": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/IPAddressPool"
+          },
+          "description": "Address pools for the network/subnetwork.\nThe cardinality can be 0 when VIM is allowed to allocate all addresses in the CIDR except for the address of the network/subnetwork gateway."
+        },
+        "metadata": {
+          "$ref": "#/definitions/Metadata",
+          "description": "List of metadata key-value pairs used by the consumer to associate meaningful metadata to the related virtualised resource."
+        }
+      },
+      "description": "The NetworkSubnet information element encapsulates information of an instantiated virtualised sub-network."
+    },
+    "NetworkSubnetData": {
+      "type": "object",
+      "properties": {
+        "networkId": {
+          "$ref": "#/definitions/Identifier",
+          "description": "Identifier of the virtualised network that the virtualised sub-network is attached to.\nThe cardinality can be 0 to cover the case where this type is used to describe the L3 attributes of a network rather\nthan a subnetwork or when NetworkSubnetData is part of Update Virtualised Network Resource.\nNote: In these cases, changing the parameter is such a fundamental change that a new virtualised network resource should be created instead of updating an existing network resource."
+        },
+        "ipVersion": {
+          "$ref": "#/definitions/IPVersion",
+          "description": "IP version of the network/subnetwork.\nCardinality can be 0 when NetworkSubnetData is part of Update Virtualised Network Resource\nNote: In these cases, changing the parameter is such a fundamental change that a new virtualised network resource should be created instead of updating an existing network resource."
+        },
+        "gatewayIp": {
+          "$ref": "#/definitions/IPAddress",
+          "description": "Specifies the IP address of the network/subnetwork gateway when the gateway is selected by the requestor."
+        },
+        "cidr": {
+          "$ref": "#/definitions/IPSubnetCIDR",
+          "description": "CIDR of the network/subnetwork, i.e. network address and subnet mask.\nCardinality can be 0 when NetworkSubnetData is part of Update Virtualised Network Resource\nIn these cases, changing the parameter is such a fundamental change that a new virtualised network resource should be created instead of updating an existing network resource."
+        },
+        "isDhcpEnabled": {
+          "type": "boolean",
+          "description": "True when DHCP is to be enabled for this network/subnetwork, or false otherwise."
+        },
+        "addressPool": {
+          "$ref": "#/definitions/IPAddressPool",
+          "description": "Address pools for the network/subnetwork. The cardinality can be 0 when VIM is allowed to allocate all addresses in the\nCIDR except for the address of the network/subnetwork gateway."
+        },
+        "metadata": {
+          "$ref": "#/definitions/Metadata",
+          "description": "List of metadata key-value pairs used by the consumer to associate meaningful metadata to the related virtualised resource."
+        }
+      },
+      "description": "The NetworkSubnetData information element encapsulates information to allocate or update virtualised sub-networks."
+    },
+    "OperationalState": {
+      "type": "string",
+      "enum": [
+        "ENABLED",
+        "DISABLED"
+      ],
+      "default": "ENABLED"
+    },
+    "RoutingResource": {
+      "type": "object"
+    },
+    "SoftwareImageInformation": {
+      "type": "object",
+      "properties": {
+        "softwareImageId": {
+          "$ref": "#/definitions/Identifier",
+          "description": "Identifier of this software image."
+        },
+        "name": {
+          "type": "string",
+          "description": "Name of this software image."
+        },
+        "provider": {
+          "type": "string",
+          "description": "Provider of this software image."
+        },
+        "version": {
+          "type": "string",
+          "description": "Version of the software image file."
+        },
+        "checksum": {
+          "type": "string",
+          "description": "Checksum of the software image file."
+        },
+        "containerFormat": {
+          "type": "string",
+          "description": "Container format indicates whether the software image is in a file format that also contains metadata about the actual software."
+        },
+        "diskFormat": {
+          "type": "string",
+          "description": "Disk format of a software image is the format of the underlying disk image."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Time this software image was created."
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Time this software image was last updated."
+        },
+        "minDisk": {
+          "$ref": "#/definitions/resourceQuantity",
+          "description": "Minimal disk size for this software image."
+        },
+        "minRam": {
+          "$ref": "#/definitions/resourceQuantity",
+          "description": "Minimal RAM size for this software image."
+        },
+        "size": {
+          "$ref": "#/definitions/resourceQuantity",
+          "description": "Size of this software image."
+        },
+        "status": {
+          "type": "string",
+          "description": "Status of this software image."
+        },
+        "metadata": {
+          "$ref": "#/definitions/Metadata",
+          "description": "List of metadata key-value pairs used by the consumer to associate meaningful metadata to the related virtualised resource."
+        }
+      },
+      "title": "This information element represents Software Image Information"
+    },
+    "TypeOfAffinityOrAntiAffinityConstraint": {
+      "type": "string",
+      "enum": [
+        "AFFINITY",
+        "ANTI_AFFINITY"
+      ],
+      "default": "AFFINITY"
+    },
+    "UserData": {
+      "type": "object"
+    },
+    "VirtualCompute": {
+      "type": "object"
+    },
+    "VirtualComputeFlavour": {
+      "type": "object",
+      "properties": {
+        "flavourId": {
+          "$ref": "#/definitions/Identifier",
+          "description": "Identifier given to the compute flavour. When the VirtualComputeFlavour is used as input in operations to request the creation\nof a compute flavour, the cardinality can be \"0\" if VIM assigns the identifier in order to avoid potential identifier assignment conflicts.\nThe flavourId shall be present otherwise."
+        },
+        "isPublic": {
+          "type": "boolean",
+          "description": "Scope of flavour accessibility. It indicates if the compute flavour is accessible and shared across clients.\nDefault value is True (if not specified), which means public. False means private."
+        },
+        "virtualMemory": {
+          "$ref": "#/definitions/VirtualMemoryData",
+          "description": "Virtual memory of the virtualised compute."
+        },
+        "virtualCpu": {
+          "$ref": "#/definitions/VirtualCpuData",
+          "description": "Virtual CPU(s) of the virtualised compute."
+        },
+        "storageAttributes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/VirtualStorageData"
+          },
+          "description": "Contains information about the size of virtualised storage resource (e.g. size of volume, in GB), the type of storage (e.g. volume, object), and support for RDMA."
+        },
+        "virtualNetworkInterface": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/VirtualNetworkInterfaceData"
+          },
+          "title": "Virtual network interfaces of the virtualised compute"
+        },
+        "metadata": {
+          "$ref": "#/definitions/Metadata",
+          "description": "List of metadata key-value pairs used by the consumer to associate meaningful metadata to the related virtualised resource."
+        }
+      },
+      "description": "The VirtualComputeFlavour information element encapsulates information for compute flavours. A compute flavour includes information\nabout number of virtual CPUs, size of virtual memory, size of virtual storage, and virtual network interfaces."
+    },
+    "VirtualCpuData": {
+      "type": "object",
+      "properties": {
+        "cpuArchitecture": {
+          "type": "string",
+          "description": "CPU architecture type. Examples are x86, ARM. The cardinality can be 0 during the allocation request, if no particular CPU architecture type is requested."
+        },
+        "numVirtualCpu": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Number of virtual CPUs."
+        },
+        "cpuClock": {
+          "type": "number",
+          "format": "float",
+          "description": "Minimum CPU clock rate\n(e.g. in MHz) available for the virtualised CPU resources. The cardinality can be 0 during the allocation request, if no particular value is requested."
+        },
+        "virtualCpuOversubscriptionPolicy": {
+          "type": "string",
+          "title": "The CPU core oversubscription policy, e.g. the relation of virtual CPU cores to physical CPU cores/threads.\nThe cardinality can be 0 during the allocation request, if no particular value is requested.\nE.g. virtual CPU core : physical CPU core= 4:1"
+        },
+        "virtualCpuPinning": {
+          "$ref": "#/definitions/VirtualCpuDataVirtualCpuPinningData",
+          "description": "Virtual CPU pinning configuration for the virtualised compute resource."
+        },
+        "powerStateReqs": {
+          "type": "string",
+          "description": "Virtual CPU power (state) requirements for the virtualised compute resource."
+        }
+      },
+      "description": "Information describing a virtual CPU."
+    },
+    "VirtualCpuDataVirtualCpuPinningData": {
+      "type": "object",
+      "properties": {
+        "virtualCpuPinningPolicy": {
+          "$ref": "#/definitions/VirtualCpuPinningDataVirtualCpuPinningPolicy"
+        },
+        "virtualCpuPinningRules": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/VirtualCpuPinningDataVirtualCpuPinningRule"
+          },
+          "description": "A list of rules that should be considered during the allocation of the virtual CPU-s to logical CPU-s in case of \"static\" virtualCpuPinningPolicy."
+        }
+      },
+      "description": "Information describing CPU pinning policy and rules for virtual CPU to physical CPU mapping of the virtualised compute resource."
+    },
+    "VirtualCpuPinningDataVirtualCpuPinningPolicy": {
+      "type": "string",
+      "enum": [
+        "STATIC",
+        "DYNAMIC"
+      ],
+      "default": "STATIC",
+      "description": "Indicates the policy for CPU pinning.\n\n - STATIC: In case of \"STATIC\" the virtual CPU cores are requested to be allocated to logical CPU cores according to the rules defined in virtualCpuPinningRules.\n - DYNAMIC: In case of \"DYNAMIC\" the allocation of virtual CPU cores to logical CPU cores is decided by the VIM (e.g. SMT (Simultaneous Multi-Threading) requirements)."
+    },
+    "VirtualCpuPinningDataVirtualCpuPinningRule": {
+      "type": "object",
+      "properties": {
+        "cores": {
+          "type": "number",
+          "format": "float",
+          "description": "The number of core in the virtual CPU."
+        },
+        "sockets": {
+          "type": "number",
+          "format": "float",
+          "description": "The number of socket in the virtual CPU."
+        },
+        "threads": {
+          "type": "number",
+          "format": "float",
+          "description": "The number of thread in the virtual CPU."
+        }
+      }
+    },
+    "VirtualInterfaceData": {
+      "type": "object",
+      "properties": {
+        "networkId": {
+          "$ref": "#/definitions/Identifier",
+          "description": "In the case when the virtual network interface is attached to the network, it references such a network.\nThe cardinality can be 0 in the case that a network interface is created without being attached to any specific network."
+        },
+        "ipAddress": {
+          "$ref": "#/definitions/IPAddress",
+          "description": "The virtual network interface can be configured with specific IP address(es) associated to the network to be attached to.\nThe cardinality can be 0 in the case that a network interface is created without being attached to any specific network,\nor when an IP address can be automatically configured, e.g. by DHCP."
+        },
+        "macAddress": {
+          "$ref": "#/definitions/MacAddress",
+          "description": "MAC address desired for the virtual network interface.\nThe cardinality can be 0 to allow for network interface without specific MAC address configuration."
+        }
+      }
+    },
+    "VirtualMemoryData": {
+      "type": "object",
+      "properties": {
+        "virtualMemSize": {
+          "type": "number",
+          "format": "float",
+          "description": "Amount of virtual Memory (e.g. in MB)."
+        },
+        "virtualMemOversubscriptionPolicy": {
+          "type": "string",
+          "description": "Memory core oversubscription policy in terms of virtual memory to physical memory on the platform.\nThe cardinality can be 0 during the allocation request, if no particular value is requested."
+        },
+        "numaEnabled": {
+          "type": "boolean",
+          "title": "Specifies the memory allocation to be cognisant of the relevant process/core allocation. The\ncardinality can be 0 during the allocation request, if no particular value is requested"
+        }
+      },
+      "description": "Information describing virtual memory."
+    },
+    "VirtualNetwork": {
+      "type": "object",
+      "properties": {
+        "networkResourceId": {
+          "$ref": "#/definitions/Identifier",
+          "description": "Identifier of the virtualised network resource."
+        },
+        "networkResourceName": {
+          "type": "string",
+          "description": "Name of the virtualised network resource."
+        },
+        "subnetId": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/Identifier"
+          },
+          "description": "References the network subnet.\nOnly present if the network provides layer 3 connectivity."
+        },
+        "networkPort": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/VirtualNetworkPort"
+          },
+          "description": "Provides information on an instantiated virtual network port."
+        },
+        "bandwidth": {
+          "type": "number",
+          "format": "float",
+          "title": "Minimum network bandwidth (in Mbps)"
+        },
+        "networkType": {
+          "type": "string",
+          "description": "Type of network that maps to the virtualised network. This list is extensible. Examples are:\n • \"local\";\n • \"vlan\";\n • \"vxlan\";\n • \"gre\";\n • \"l3-vpn\";\n • etc."
+        },
+        "providerNetwork": {
+          "type": "string",
+          "description": "Name of the infrastructure provider network used to realize the virtual network.\nCardinality can be \"0\" to cover the case where virtual network is not based on infrastructure provider network."
+        },
+        "segmentationId": {
+          "type": "string",
+          "format": "int64",
+          "description": "The segmentation identifier of the network that maps to the virtualised network, for which, the segmentation model is defined by\nthe networkType attribute. For instance, for a \"vlan\" networkType, it corresponds to the vlan identifier;\nand for a \"gre\" networkType, it corresponds to a gre key.\nCardinality can be \"0\" to cover the case where networkType is flat network without any specific segmentation."
+        },
+        "networkQoS": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/NetworkQoS"
+          },
+          "description": "Provides information about Quality of Service attributes that the network supports.\nCardinality can be \"0\" for virtual network without any QoS requirements."
+        },
+        "isShared": {
+          "type": "boolean",
+          "description": "Defines whether the virtualised network is shared among consumers."
+        },
+        "zoneId": {
+          "$ref": "#/definitions/Identifier",
+          "description": "Indicates the sharing criteria for this network. This criteria might be a list of authorized consumers.\nOnly present for shared networks.\noptional sharingCriteria NotSpecified = 11;\nIf present, it identifies the resource zone where the virtual network resources have been allocated."
+        },
+        "operationalState": {
+          "$ref": "#/definitions/OperationalState",
+          "description": "Operational state of the virtualised network."
+        },
+        "metadata": {
+          "$ref": "#/definitions/Metadata",
+          "description": "List of metadata key-value pairs used by the consumer to associate meaningful metadata to the related virtualised resource."
+        },
+        "connectedNetworks": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/Identifier"
+          },
+          "description": "Specifies the virtual network resources to which the newly created virtual network is intended to be explicitly interconnected."
+        }
+      },
+      "title": "The information elements in this group encapsulates information of an instantiated virtualised network resource.\nIn the NFVI, a virtual network transports information among the network interfaces of VM instances and physical network interfaces, providing the necessary connectiv"
+    },
+    "VirtualNetworkData": {
+      "type": "object",
+      "properties": {
+        "bandwidth": {
+          "type": "number",
+          "format": "float",
+          "description": "Minimum network bandwidth (in Mbps)."
+        },
+        "networkType": {
+          "type": "string",
+          "description": "Type of network that maps to the virtualised network. This list is extensible. Examples are:\n • \"local\";\n • \"vlan\";\n • \"vxlan\";\n • \"gre\";\n • \"l3-vpn\";\n • etc.\n Cardinality can be \"0\" to cover the case where this attribute is not required to create the virtualised network."
+        },
+        "segmentationId": {
+          "type": "string",
+          "description": "The segmentation identifier of the network that maps to the virtualised network, for which, the segmentation model is defined\nby the networkType attribute. For instance, for a \"vlan\" networkType, it corresponds to the vlan identifier;\nand for a \"gre\" networkType, it corresponds to a gre key.\nCardinality can be \"0\" to cover the case where networkType is flat network without any specific segmentation."
+        },
+        "networkQoS": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/NetworkQoS"
+          },
+          "description": "Provides information about Quality of Service attributes that the network shall support.\nCardinality can be \"0\" for networks without any specified QoS requirements."
+        },
+        "isShared": {
+          "type": "boolean",
+          "description": "Specifies whether the virtualised network is shared among consumers."
+        },
+        "layer3Attributes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/NetworkSubnetData"
+          },
+          "description": "Attribute list allows setting up a network providing defined layer 3 connectivity."
+        },
+        "metadata": {
+          "$ref": "#/definitions/Metadata",
+          "description": "List of metadata key-value pairs used by the consumer to associate meaningful metadata to the related virtualised resource."
+        }
+      }
+    },
+    "VirtualNetworkInterfaceData": {
+      "type": "object",
+      "properties": {
+        "networkId": {
+          "$ref": "#/definitions/Identifier",
+          "description": "In the case when the virtual network interface is attached to the network, it identifies such a network.\nThe cardinality can be 0 in the case that a network interface is created without being attached to any specific network."
+        },
+        "networkPortId": {
+          "$ref": "#/definitions/Identifier",
+          "description": "If the virtual network interface is attached to a specific network port, it identifies such a network port.\nThe cardinality can be 0 in the case that a network interface is created without any specific network port attachment."
+        },
+        "bandwidth": {
+          "type": "number",
+          "format": "float",
+          "description": "Note: There is only part of flavour as specified in ETSI GS NFV-IFA 005 and ETSI GS NFV-IFA 006 are included in this version of the present document,\nthe following are attributes not included: typeVirtualNic, typeConfiguration\ntypeVirtualNic = 3;\ntypeConfiguration = 4;\nBandwidth of the virtual network interface (in Mbps)."
+        },
+        "accelerationCapabilityForVirtualNetworkInterface": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "It specifies if the virtual network interface requires certain acceleration capabilities (e.g. RDMA, packet dispatch, TCP Chimney).\nThe cardinality can be 0, if no particular acceleration capability is requested."
+        },
+        "metadata": {
+          "$ref": "#/definitions/Metadata",
+          "description": "List of metadata key-value pairs used by the consumer to associate meaningful metadata to the related virtualised resource."
+        }
+      },
+      "description": "A virtual network interface is a communication endpoint under a compute resource."
+    },
+    "VirtualNetworkPort": {
+      "type": "object"
+    },
+    "VirtualNetworkPortData": {
+      "type": "object"
+    },
+    "VirtualStorageData": {
+      "type": "object",
+      "properties": {
+        "typeOfStorage": {
+          "type": "string",
+          "description": "Type of virtualised storage resource (e.g. volume, object)."
+        },
+        "sizeOfStorage": {
+          "type": "number",
+          "format": "float",
+          "description": "Size of virtualised storage resource (e.g. size of volume, in GB)."
+        },
+        "rdmaEnabled": {
+          "type": "boolean",
+          "description": "Indicates if the storage supports RDMA."
+        }
+      },
+      "description": "This clause describes the attributes for the VirtualStorageData information element."
+    },
+    "VirtualTrunk": {
+      "type": "object"
+    },
+    "VirtualTrunkData": {
+      "type": "object"
+    },
+    "pbAllocateComputeRequest": {
+      "type": "object",
+      "properties": {
+        "computeName": {
+          "type": "string",
+          "description": "Name provided by the consumer for the virtualised compute resource to be allocated. It can be used for identifying resources from consumer side."
+        },
+        "reservationId": {
+          "$ref": "#/definitions/Identifier",
+          "description": "Identifier of the resource reservation applicable to this virtualised resource management operation."
+        },
+        "affinityOrAntiAffinityConstraints": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/AffinityOrAntiAffinityConstraintForCompute"
+          },
+          "description": "List of elements with affinity or anti affinity (see clause 8.4.8.2) information of the virtualised compute resource to be allocated.\nAll the listed constraints shall be fulfilled for a successful operation."
+        },
+        "computeFlavourId": {
+          "$ref": "#/definitions/Identifier",
+          "description": "Identifier of the Compute Flavour, that is providing information about the particular memory, CPU and disk resources for virtualised compute resource to\nbe allocated. The Compute Flavour is created with Create Compute Flavour operation (clause 7.3.4.2). For the content of Compute Flavour see clause 8.4.2.2."
+        },
+        "vcImageId": {
+          "$ref": "#/definitions/Identifier",
+          "description": "Identifier of the virtualisation container software image (e.g. a virtual machine image). Cardinality can be 0 if an \"empty\" virtualisation container is allocated."
+        },
+        "interfaceData": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/VirtualInterfaceData"
+          },
+          "description": "Data of network interfaces which are specific to a Virtual Compute Resource instance. See clause 8.4.3.7."
+        },
+        "metaData": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/protobufAny"
+          },
+          "description": "List of metadata key-value pairs used by the consumer to associate meaningful metadata to the related virtualised resource."
+        },
+        "resourceGroupId": {
+          "$ref": "#/definitions/Identifier",
+          "description": "Unique identifier of the \"infrastructure resource group\", logical grouping of virtual resources assigned to a tenant within an Infrastructure Domain.\nCardinality can be 0 if the consumer credentials are implicitly associated to a specific resource group."
+        },
+        "userData": {
+          "$ref": "#/definitions/UserData",
+          "description": "Contains user data to customize the virtualised compute resource at boot-time\nThe user data may consist of static data obtained from an attribute in the VNFD, data provided by the NFVO or the EM to the VNFM in the\noperation that triggers the invocation of the Allocate Virtualised Compute Resource operation, e.g. the Instantiate VNF operation, and/or\none or multiple certificate data obtained from CMF when delegation-mode is used. The user data is transparent to the VIM.\nIt is passed to the allocated virtualised compute resource where it is up to the guest software to avail of\nit in order to e.g. configure credentials, address information, install certificates, etc."
+        }
+      }
+    },
+    "pbAllocateComputeResponse": {
+      "type": "object",
+      "properties": {
+        "computeData": {
+          "$ref": "#/definitions/VirtualCompute"
+        }
+      }
+    },
+    "pbAllocateNetworkRequest": {
+      "type": "object",
+      "properties": {
+        "networkResourceName": {
+          "type": "string",
+          "description": "Name provided by the consumer for the virtualised network resource to be allocated. It can be used for identifying resources from consumer side."
+        },
+        "reservationId": {
+          "$ref": "#/definitions/Identifier",
+          "description": "Identifier of the resource reservation applicable to this virtualised resource management operation."
+        },
+        "networkResourceType": {
+          "$ref": "#/definitions/NetworkResourceType"
+        },
+        "typeNetworkData": {
+          "$ref": "#/definitions/VirtualNetworkData",
+          "description": "Provides information about the particular virtual network resource to be created. Cardinality can be \"0\" depending on the value of networkResourceType."
+        },
+        "typeSubnetData": {
+          "$ref": "#/definitions/NetworkSubnetData",
+          "description": "Provides information about the particular sub-network resource to be created. Cardinality can be \"0\" depending on the value of networkResourceType."
+        },
+        "typeNetworkPortData": {
+          "$ref": "#/definitions/VirtualNetworkPortData",
+          "description": "Provides information about the particular network port to be created. Cardinality can be \"0\" depending on the value of networkResourceType."
+        },
+        "typeTrunkData": {
+          "$ref": "#/definitions/VirtualTrunkData",
+          "description": "Provides information about the particular trunk to be created. Cardinality can be \"0\" depending on the value of networkResourceType."
+        },
+        "affinityOrAntiAffinityConstraints": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/AffinityOrAntiAffinityConstraintForNetwork"
+          },
+          "description": "List of elements with affinity or anti affinity (see clause 8.4.8.2) information of the virtualised network resource to be allocated.\nAll the listed constraints shall be fulfilled for a successful operation."
+        },
+        "locationConstraintsForNetwork": {
+          "type": "string",
+          "description": "If present, it defines location constraints for the resource(s) to be allocated, e.g. in what particular resource zone."
+        },
+        "metaData": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/protobufAny"
+          },
+          "description": "List of metadata key-value pairs used by the consumer to associate meaningful metadata to the related virtualised resource."
+        },
+        "resourceGroupId": {
+          "$ref": "#/definitions/Identifier",
+          "description": "Unique identifier of the \"infrastructure resource group\", logical grouping of virtual resources assigned to a tenant within an Infrastructure Domain.\nCardinality can be 0 if the consumer credentials are implicitly associated to a specific resource group."
+        }
+      }
+    },
+    "pbAllocateNetworkResponse": {
+      "type": "object",
+      "properties": {
+        "networkData": {
+          "$ref": "#/definitions/VirtualNetwork",
+          "description": "If network types are created satisfactorily, it contains the data relative to the instantiated virtualised network resource.\nCardinality can be \"0\" if the request did not include creation of such type of resource."
+        },
+        "subnetData": {
+          "$ref": "#/definitions/NetworkSubnet",
+          "description": "If subnet types are created satisfactorily, it contains the data relative to the allocated subnet.\nCardinality can be \"0\" if the request did not include creation of such type of resource."
+        },
+        "networkPortData": {
+          "$ref": "#/definitions/VirtualNetworkPort",
+          "description": "If network port types are created satisfactorily, it contains the data relative to the allocated network port.\nCardinality can be \"0\" if the request did not include creation of such type of resource."
+        },
+        "trunkData": {
+          "$ref": "#/definitions/VirtualTrunk",
+          "description": "If trunk types are created satisfactorily, it contains the data relative to the allocated trunk.\nCardinality can be \"0\" if the request did not include creation of such type of resource."
+        },
+        "routingResourceData": {
+          "$ref": "#/definitions/RoutingResource",
+          "description": "If routing resource types are created satisfactorily, it contains the data relative to the allocated routing resource.\nCardinality can be \"0\" if the request did not include creation of such type of resource."
+        }
+      }
+    },
+    "pbCreateComputeFlavourRequest": {
+      "type": "object",
+      "properties": {
+        "flavour": {
+          "$ref": "#/definitions/VirtualComputeFlavour",
+          "description": "Provides information about the particular memory, CPU and disk resources for virtualised compute resource to be allocated."
+        }
+      }
+    },
+    "pbCreateComputeFlavourResponse": {
+      "type": "object",
+      "properties": {
+        "flavourId": {
+          "$ref": "#/definitions/Identifier",
+          "description": "Identifier of the created Compute Flavour."
+        }
+      }
+    },
+    "pbDeleteComputeFlavourResponse": {
+      "type": "object",
+      "description": "No output parameters."
+    },
+    "pbQueryComputeFlavourResponse": {
+      "type": "object",
+      "properties": {
+        "flavours": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/VirtualComputeFlavour"
+          },
+          "description": "List of Compute Flavours matching the query."
+        }
+      }
+    },
+    "pbQueryImageRequest": {
+      "type": "object",
+      "properties": {
+        "softwareImageId": {
+          "$ref": "#/definitions/Identifier"
+        }
+      }
+    },
+    "pbQueryImageResponse": {
+      "type": "object",
+      "properties": {
+        "softwareImageInformation": {
+          "$ref": "#/definitions/SoftwareImageInformation"
+        }
+      }
+    },
+    "pbQueryImagesResponse": {
+      "type": "object",
+      "properties": {
+        "softwareImagesInformation": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/SoftwareImageInformation"
+          }
+        }
+      }
+    },
+    "pbQueryNetworkResponse": {
+      "type": "object",
+      "properties": {
+        "queryNetworkResult": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/VirtualNetwork"
+          },
+          "title": "Contains information about the virtual network resource(s)\nmatching the filter.\nCardinality can be \"0\" if no matching network resources\nexist.\nNote: that field should be named as a queryResult in ETSI GS NFV-IFA 006 spec"
+        },
+        "querySubnetResult": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/NetworkSubnet"
+          },
+          "title": "Contains information about the virtual subnet(s)\nmatching the filter.\nCardinality can be \"0\" if no matching subnets\nexist.\nNote: that field does not exists in ETSI GS NFV-IFA 006 spec"
+        },
+        "queryNetworkPortResult": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/VirtualNetworkPort"
+          },
+          "title": "Contains information about the virtual network port(s)\nmatching the filter.\nCardinality can be \"0\" if no matching network ports\nexist.\nNote: that field does not exists in ETSI GS NFV-IFA 006 spec"
+        },
+        "queryTrunkResult": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/VirtualTrunk"
+          },
+          "title": "Contains information about the virtual trunk(s) matching the\nfilter. Cardinality can be \"0\" if no matching virtual trunk"
+        }
+      },
+      "title": "Note: This message goes out of ETSI GS NFV-IFA 006 reference\nsince it is not gives the poibilities to return subnets"
+    },
+    "pbTerminateNetworkResponse": {
+      "type": "object",
+      "properties": {
+        "networkResourceId": {
+          "$ref": "#/definitions/Identifier",
+          "description": "Identifier of the virtualised network\nresource(s) successfully terminated."
+        }
+      },
+      "title": "Note: This message goes out of ETSI GS NFV-IFA 006 reference.\nSee TerminateNetworkRequest"
+    },
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string",
+          "description": "A URL/resource name that uniquely identifies the type of the serialized\nprotocol buffer message. This string must contain at least\none \"/\" character. The last segment of the URL's path must represent\nthe fully qualified name of the type (as in\n`path/google.protobuf.Duration`). The name should be in a canonical form\n(e.g., leading \".\" is not accepted).\n\nIn practice, teams usually precompile into the binary all types that they\nexpect it to use in the context of Any. However, for URLs which use the\nscheme `http`, `https`, or no scheme, one can optionally set up a type\nserver that maps type URLs to message definitions as follows:\n\n* If no scheme is provided, `https` is assumed.\n* An HTTP GET on the URL must yield a [google.protobuf.Type][]\n  value in binary format, or produce an error.\n* Applications are allowed to cache lookup results based on the\n  URL, or have them precompiled into a binary to avoid any\n  lookup. Therefore, binary compatibility needs to be preserved\n  on changes to types. (Use versioned type names to manage\n  breaking changes.)\n\nNote: this functionality is not currently available in the official\nprotobuf release, and it is not used for type URLs beginning with\ntype.googleapis.com. As of May 2023, there are no widely used type server\nimplementations and no plans to implement one.\n\nSchemes other than `http`, `https` (or the empty scheme) might be\nused with implementation specific semantics."
+        }
+      },
+      "additionalProperties": {},
+      "description": "`Any` contains an arbitrary serialized protocol buffer message along with a\nURL that describes the type of the serialized message.\n\nProtobuf library provides support to pack/unpack Any values in the form\nof utility functions or additional generated methods of the Any type.\n\nExample 1: Pack and unpack a message in C++.\n\n    Foo foo = ...;\n    Any any;\n    any.PackFrom(foo);\n    ...\n    if (any.UnpackTo(\u0026foo)) {\n      ...\n    }\n\nExample 2: Pack and unpack a message in Java.\n\n    Foo foo = ...;\n    Any any = Any.pack(foo);\n    ...\n    if (any.is(Foo.class)) {\n      foo = any.unpack(Foo.class);\n    }\n    // or ...\n    if (any.isSameTypeAs(Foo.getDefaultInstance())) {\n      foo = any.unpack(Foo.getDefaultInstance());\n    }\n\n Example 3: Pack and unpack a message in Python.\n\n    foo = Foo(...)\n    any = Any()\n    any.Pack(foo)\n    ...\n    if any.Is(Foo.DESCRIPTOR):\n      any.Unpack(foo)\n      ...\n\n Example 4: Pack and unpack a message in Go\n\n     foo := \u0026pb.Foo{...}\n     any, err := anypb.New(foo)\n     if err != nil {\n       ...\n     }\n     ...\n     foo := \u0026pb.Foo{}\n     if err := any.UnmarshalTo(foo); err != nil {\n       ...\n     }\n\nThe pack methods provided by protobuf library will by default use\n'type.googleapis.com/full.type.name' as the type URL and the unpack\nmethods only use the fully qualified type name after the last '/'\nin the type URL, for example \"foo.bar.com/x/y.z\" will yield type\nname \"y.z\".\n\nJSON\n====\nThe JSON representation of an `Any` value uses the regular\nrepresentation of the deserialized, embedded message, with an\nadditional field `@type` which contains the type URL. Example:\n\n    package google.profile;\n    message Person {\n      string first_name = 1;\n      string last_name = 2;\n    }\n\n    {\n      \"@type\": \"type.googleapis.com/google.profile.Person\",\n      \"firstName\": \u003cstring\u003e,\n      \"lastName\": \u003cstring\u003e\n    }\n\nIf the embedded message type is well-known and has a custom JSON\nrepresentation, that representation will be embedded adding a field\n`value` which holds the custom JSON in addition to the `@type`\nfield. Example (for message [google.protobuf.Duration][]):\n\n    {\n      \"@type\": \"type.googleapis.com/google.protobuf.Duration\",\n      \"value\": \"1.212s\"\n    }"
+    },
+    "resourceQuantity": {
+      "type": "object",
+      "properties": {
+        "string": {
+          "type": "string"
+        }
+      },
+      "description": "Quantity is a fixed-point representation of a number.\nIt provides convenient marshaling/unmarshaling in JSON and YAML,\nin addition to String() and AsInt64() accessors.\n\nThe serialization format is:\n\n```\n\u003cquantity\u003e        ::= \u003csignedNumber\u003e\u003csuffix\u003e\n\n\t(Note that \u003csuffix\u003e may be empty, from the \"\" case in \u003cdecimalSI\u003e.)\n\n\u003cdigit\u003e           ::= 0 | 1 | ... | 9\n\u003cdigits\u003e          ::= \u003cdigit\u003e | \u003cdigit\u003e\u003cdigits\u003e\n\u003cnumber\u003e          ::= \u003cdigits\u003e | \u003cdigits\u003e.\u003cdigits\u003e | \u003cdigits\u003e. | .\u003cdigits\u003e\n\u003csign\u003e            ::= \"+\" | \"-\"\n\u003csignedNumber\u003e    ::= \u003cnumber\u003e | \u003csign\u003e\u003cnumber\u003e\n\u003csuffix\u003e          ::= \u003cbinarySI\u003e | \u003cdecimalExponent\u003e | \u003cdecimalSI\u003e\n\u003cbinarySI\u003e        ::= Ki | Mi | Gi | Ti | Pi | Ei\n\n\t(International System of units; See: http://physics.nist.gov/cuu/Units/binary.html)\n\n\u003cdecimalSI\u003e       ::= m | \"\" | k | M | G | T | P | E\n\n\t(Note that 1024 = 1Ki but 1000 = 1k; I didn't choose the capitalization.)\n\n\u003cdecimalExponent\u003e ::= \"e\" \u003csignedNumber\u003e | \"E\" \u003csignedNumber\u003e\n```\n\nNo matter which of the three exponent forms is used, no quantity may represent\na number greater than 2^63-1 in magnitude, nor may it have more than 3 decimal\nplaces. Numbers larger or more precise will be capped or rounded up.\n(E.g.: 0.1m will rounded up to 1m.)\nThis may be extended in the future if we require larger or smaller quantities.\n\nWhen a Quantity is parsed from a string, it will remember the type of suffix\nit had, and will use the same type again when it is serialized.\n\nBefore serializing, Quantity will be put in \"canonical form\".\nThis means that Exponent/suffix will be adjusted up or down (with a\ncorresponding increase or decrease in Mantissa) such that:\n\n- No precision is lost\n- No fractional digits will be emitted\n- The exponent (or suffix) is as large as possible.\n\nThe sign will be omitted unless the number is negative.\n\nExamples:\n\n- 1.5 will be serialized as \"1500m\"\n- 1.5Gi will be serialized as \"1536Mi\"\n\nNote that the quantity will NEVER be internally represented by a\nfloating point number. That is the whole point of this exercise.\n\nNon-canonical values will still parse as long as they are well formed,\nbut will be re-emitted in their canonical form. (So always use canonical\nform, or don't diff.)\n\nThis format is intended to make it difficult to use these numbers without\nwriting some sort of special handling code in the hopes that that will\ncause implementors to also use a fixed point implementation.\n\n+protobuf=true\n+protobuf.embed=string\n+protobuf.options.marshal=false\n+protobuf.options.(gogoproto.goproto_stringer)=false\n+k8s:deepcopy-gen=true\n+k8s:openapi-gen=true"
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    }
+  }
+}
