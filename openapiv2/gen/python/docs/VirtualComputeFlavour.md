@@ -17,7 +17,7 @@ Name | Type | Description | Notes
 ## Example
 
 ```python
-from vivnfm_client.models.virtual_compute_flavour import VirtualComputeFlavour
+from kubevim_vivnfm_client.models.virtual_compute_flavour import VirtualComputeFlavour
 
 # TODO update the JSON string below
 json = "{}"

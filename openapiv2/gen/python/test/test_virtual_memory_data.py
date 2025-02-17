@@ -14,7 +14,7 @@
 
 import unittest
 
-from vivnfm_client.models.virtual_memory_data import VirtualMemoryData
+from kubevim_vivnfm_client.models.virtual_memory_data import VirtualMemoryData
 
 class TestVirtualMemoryData(unittest.TestCase):
     """VirtualMemoryData unit test stubs"""

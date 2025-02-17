@@ -10,7 +10,7 @@ Name | Type | Description | Notes
 ## Example
 
 ```python
-from vivnfm_client.models.pb_terminate_network_response import PbTerminateNetworkResponse
+from kubevim_vivnfm_client.models.pb_terminate_network_response import PbTerminateNetworkResponse
 
 # TODO update the JSON string below
 json = "{}"

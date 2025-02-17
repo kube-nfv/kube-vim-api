@@ -23,7 +23,7 @@ Name | Type | Description | Notes
 ## Example
 
 ```python
-from vivnfm_client.models.virtual_network import VirtualNetwork
+from kubevim_vivnfm_client.models.virtual_network import VirtualNetwork
 
 # TODO update the JSON string below
 json = "{}"

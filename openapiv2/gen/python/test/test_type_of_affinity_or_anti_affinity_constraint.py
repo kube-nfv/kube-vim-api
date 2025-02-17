@@ -14,7 +14,7 @@
 
 import unittest
 
-from vivnfm_client.models.type_of_affinity_or_anti_affinity_constraint import TypeOfAffinityOrAntiAffinityConstraint
+from kubevim_vivnfm_client.models.type_of_affinity_or_anti_affinity_constraint import TypeOfAffinityOrAntiAffinityConstraint
 
 class TestTypeOfAffinityOrAntiAffinityConstraint(unittest.TestCase):
     """TypeOfAffinityOrAntiAffinityConstraint unit test stubs"""

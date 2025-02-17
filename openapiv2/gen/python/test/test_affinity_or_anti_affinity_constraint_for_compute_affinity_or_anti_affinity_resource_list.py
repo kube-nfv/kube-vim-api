@@ -14,7 +14,7 @@
 
 import unittest
 
-from vivnfm_client.models.affinity_or_anti_affinity_constraint_for_compute_affinity_or_anti_affinity_resource_list import AffinityOrAntiAffinityConstraintForComputeAffinityOrAntiAffinityResourceList
+from kubevim_vivnfm_client.models.affinity_or_anti_affinity_constraint_for_compute_affinity_or_anti_affinity_resource_list import AffinityOrAntiAffinityConstraintForComputeAffinityOrAntiAffinityResourceList
 
 class TestAffinityOrAntiAffinityConstraintForComputeAffinityOrAntiAffinityResourceList(unittest.TestCase):
     """AffinityOrAntiAffinityConstraintForComputeAffinityOrAntiAffinityResourceList unit test stubs"""
@@ -36,7 +36,7 @@ class TestAffinityOrAntiAffinityConstraintForComputeAffinityOrAntiAffinityResour
         if include_optional:
             return AffinityOrAntiAffinityConstraintForComputeAffinityOrAntiAffinityResourceList(
                 resource_id = [
-                    vivnfm_client.models.identifier.Identifier(
+                    kubevim_vivnfm_client.models.identifier.Identifier(
                         value = '', )
                     ]
             )

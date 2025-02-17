@@ -14,7 +14,7 @@
 
 import unittest
 
-from vivnfm_client.models.pb_create_compute_flavour_response import PbCreateComputeFlavourResponse
+from kubevim_vivnfm_client.models.pb_create_compute_flavour_response import PbCreateComputeFlavourResponse
 
 class TestPbCreateComputeFlavourResponse(unittest.TestCase):
     """PbCreateComputeFlavourResponse unit test stubs"""
@@ -35,7 +35,7 @@ class TestPbCreateComputeFlavourResponse(unittest.TestCase):
         model = PbCreateComputeFlavourResponse()
         if include_optional:
             return PbCreateComputeFlavourResponse(
-                flavour_id = vivnfm_client.models.identifier.Identifier(
+                flavour_id = kubevim_vivnfm_client.models.identifier.Identifier(
                     value = '', )
             )
         else:

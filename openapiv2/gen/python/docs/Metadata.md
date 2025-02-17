@@ -11,7 +11,7 @@ Name | Type | Description | Notes
 ## Example
 
 ```python
-from vivnfm_client.models.metadata import Metadata
+from kubevim_vivnfm_client.models.metadata import Metadata
 
 # TODO update the JSON string below
 json = "{}"

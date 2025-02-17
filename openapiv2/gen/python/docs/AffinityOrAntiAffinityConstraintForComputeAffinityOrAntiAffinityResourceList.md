@@ -11,7 +11,7 @@ Name | Type | Description | Notes
 ## Example
 
 ```python
-from vivnfm_client.models.affinity_or_anti_affinity_constraint_for_compute_affinity_or_anti_affinity_resource_list import AffinityOrAntiAffinityConstraintForComputeAffinityOrAntiAffinityResourceList
+from kubevim_vivnfm_client.models.affinity_or_anti_affinity_constraint_for_compute_affinity_or_anti_affinity_resource_list import AffinityOrAntiAffinityConstraintForComputeAffinityOrAntiAffinityResourceList
 
 # TODO update the JSON string below
 json = "{}"

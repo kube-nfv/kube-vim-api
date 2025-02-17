@@ -1,4 +1,4 @@
-# vivnfm_client.ViVnfmApi
+# kubevim_vivnfm_client.ViVnfmApi
 
 All URIs are relative to *http://localhost*
 
@@ -25,24 +25,24 @@ This operation allows requesting the allocation of virtualised compute resources
 
 
 ```python
-import vivnfm_client
-from vivnfm_client.models.pb_allocate_compute_request import PbAllocateComputeRequest
-from vivnfm_client.models.pb_allocate_compute_response import PbAllocateComputeResponse
-from vivnfm_client.rest import ApiException
+import kubevim_vivnfm_client
+from kubevim_vivnfm_client.models.pb_allocate_compute_request import PbAllocateComputeRequest
+from kubevim_vivnfm_client.models.pb_allocate_compute_response import PbAllocateComputeResponse
+from kubevim_vivnfm_client.rest import ApiException
 from pprint import pprint
 
 # Defining the host is optional and defaults to http://localhost
 # See configuration.py for a list of all supported configuration parameters.
-configuration = vivnfm_client.Configuration(
+configuration = kubevim_vivnfm_client.Configuration(
     host = "http://localhost"
 )
 
 
 # Enter a context with an instance of the API client
-with vivnfm_client.ApiClient(configuration) as api_client:
+with kubevim_vivnfm_client.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = vivnfm_client.ViVnfmApi(api_client)
-    body = vivnfm_client.PbAllocateComputeRequest() # PbAllocateComputeRequest | 
+    api_instance = kubevim_vivnfm_client.ViVnfmApi(api_client)
+    body = kubevim_vivnfm_client.PbAllocateComputeRequest() # PbAllocateComputeRequest | 
 
     try:
         # This operation allows requesting the allocation of virtualised compute resources as indicated by the consumer functional block. Result: After successful operation, the VIM has created the internal management objects for the virtualised compute resource and allocated this resource according to the input requirements and constraints. In addition, the VIM shall return to the VNFM information on the newly instantiated virtualised compute resource plus any additional information about the allocate request operation. The VIM may also return intermediate status reports during the allocation process. If the operation was not successful, the VIM shall return to the VNFM appropriate error information.
@@ -93,24 +93,24 @@ This operation allows requesting the allocation of virtualised network resources
 
 
 ```python
-import vivnfm_client
-from vivnfm_client.models.pb_allocate_network_request import PbAllocateNetworkRequest
-from vivnfm_client.models.pb_allocate_network_response import PbAllocateNetworkResponse
-from vivnfm_client.rest import ApiException
+import kubevim_vivnfm_client
+from kubevim_vivnfm_client.models.pb_allocate_network_request import PbAllocateNetworkRequest
+from kubevim_vivnfm_client.models.pb_allocate_network_response import PbAllocateNetworkResponse
+from kubevim_vivnfm_client.rest import ApiException
 from pprint import pprint
 
 # Defining the host is optional and defaults to http://localhost
 # See configuration.py for a list of all supported configuration parameters.
-configuration = vivnfm_client.Configuration(
+configuration = kubevim_vivnfm_client.Configuration(
     host = "http://localhost"
 )
 
 
 # Enter a context with an instance of the API client
-with vivnfm_client.ApiClient(configuration) as api_client:
+with kubevim_vivnfm_client.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = vivnfm_client.ViVnfmApi(api_client)
-    body = vivnfm_client.PbAllocateNetworkRequest() # PbAllocateNetworkRequest | 
+    api_instance = kubevim_vivnfm_client.ViVnfmApi(api_client)
+    body = kubevim_vivnfm_client.PbAllocateNetworkRequest() # PbAllocateNetworkRequest | 
 
     try:
         # This operation allows requesting the allocation of virtualised network resources as indicated by the consumer functional block. Result: After successful operation, the VIM has created the internal management objects for the virtualised network resource and allocated this resource. In addition, the VIM shall return to the VNFM information on the newly instantiated virtualised network resource plus any additional information about the allocate request operation. The VIM may also return intermediate status reports during the allocation process. If the operation was not successful, the VIM shall return to the VNFM appropriate error information.
@@ -161,24 +161,24 @@ This operation allows requesting the creation of a flavour as indicated by the c
 
 
 ```python
-import vivnfm_client
-from vivnfm_client.models.pb_create_compute_flavour_request import PbCreateComputeFlavourRequest
-from vivnfm_client.models.pb_create_compute_flavour_response import PbCreateComputeFlavourResponse
-from vivnfm_client.rest import ApiException
+import kubevim_vivnfm_client
+from kubevim_vivnfm_client.models.pb_create_compute_flavour_request import PbCreateComputeFlavourRequest
+from kubevim_vivnfm_client.models.pb_create_compute_flavour_response import PbCreateComputeFlavourResponse
+from kubevim_vivnfm_client.rest import ApiException
 from pprint import pprint
 
 # Defining the host is optional and defaults to http://localhost
 # See configuration.py for a list of all supported configuration parameters.
-configuration = vivnfm_client.Configuration(
+configuration = kubevim_vivnfm_client.Configuration(
     host = "http://localhost"
 )
 
 
 # Enter a context with an instance of the API client
-with vivnfm_client.ApiClient(configuration) as api_client:
+with kubevim_vivnfm_client.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = vivnfm_client.ViVnfmApi(api_client)
-    body = vivnfm_client.PbCreateComputeFlavourRequest() # PbCreateComputeFlavourRequest | 
+    api_instance = kubevim_vivnfm_client.ViVnfmApi(api_client)
+    body = kubevim_vivnfm_client.PbCreateComputeFlavourRequest() # PbCreateComputeFlavourRequest | 
 
     try:
         # This operation allows requesting the creation of a flavour as indicated by the consumer functional block. Result: After successful operation, the VIM has created the Compute Flavour. In addition, the VIM shall return to the VNFM information on the newly created Compute Flavour. If the operation was not successful, the VIM shall return to the VNFM appropriate error information.
@@ -229,21 +229,21 @@ This operation allows deleting a Compute Flavour. Result: After successful opera
 
 
 ```python
-import vivnfm_client
-from vivnfm_client.rest import ApiException
+import kubevim_vivnfm_client
+from kubevim_vivnfm_client.rest import ApiException
 from pprint import pprint
 
 # Defining the host is optional and defaults to http://localhost
 # See configuration.py for a list of all supported configuration parameters.
-configuration = vivnfm_client.Configuration(
+configuration = kubevim_vivnfm_client.Configuration(
     host = "http://localhost"
 )
 
 
 # Enter a context with an instance of the API client
-with vivnfm_client.ApiClient(configuration) as api_client:
+with kubevim_vivnfm_client.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = vivnfm_client.ViVnfmApi(api_client)
+    api_instance = kubevim_vivnfm_client.ViVnfmApi(api_client)
     compute_flavour_id_value = 'compute_flavour_id_value_example' # str | UUID Identifier representation
 
     try:
@@ -295,22 +295,22 @@ This operation allows querying information about created Compute Flavours. Resul
 
 
 ```python
-import vivnfm_client
-from vivnfm_client.models.pb_query_compute_flavour_response import PbQueryComputeFlavourResponse
-from vivnfm_client.rest import ApiException
+import kubevim_vivnfm_client
+from kubevim_vivnfm_client.models.pb_query_compute_flavour_response import PbQueryComputeFlavourResponse
+from kubevim_vivnfm_client.rest import ApiException
 from pprint import pprint
 
 # Defining the host is optional and defaults to http://localhost
 # See configuration.py for a list of all supported configuration parameters.
-configuration = vivnfm_client.Configuration(
+configuration = kubevim_vivnfm_client.Configuration(
     host = "http://localhost"
 )
 
 
 # Enter a context with an instance of the API client
-with vivnfm_client.ApiClient(configuration) as api_client:
+with kubevim_vivnfm_client.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = vivnfm_client.ViVnfmApi(api_client)
+    api_instance = kubevim_vivnfm_client.ViVnfmApi(api_client)
     query_compute_flavour_filter_value = 'query_compute_flavour_filter_value_example' # str |  (optional)
 
     try:
@@ -362,22 +362,22 @@ This operation allows querying the information about a specific software image i
 
 
 ```python
-import vivnfm_client
-from vivnfm_client.models.pb_query_image_response import PbQueryImageResponse
-from vivnfm_client.rest import ApiException
+import kubevim_vivnfm_client
+from kubevim_vivnfm_client.models.pb_query_image_response import PbQueryImageResponse
+from kubevim_vivnfm_client.rest import ApiException
 from pprint import pprint
 
 # Defining the host is optional and defaults to http://localhost
 # See configuration.py for a list of all supported configuration parameters.
-configuration = vivnfm_client.Configuration(
+configuration = kubevim_vivnfm_client.Configuration(
     host = "http://localhost"
 )
 
 
 # Enter a context with an instance of the API client
-with vivnfm_client.ApiClient(configuration) as api_client:
+with kubevim_vivnfm_client.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = vivnfm_client.ViVnfmApi(api_client)
+    api_instance = kubevim_vivnfm_client.ViVnfmApi(api_client)
     software_image_id_value = 'software_image_id_value_example' # str | UUID Identifier representation
 
     try:
@@ -429,24 +429,24 @@ This operation allows querying the information about a specific software image i
 
 
 ```python
-import vivnfm_client
-from vivnfm_client.models.pb_query_image_request import PbQueryImageRequest
-from vivnfm_client.models.pb_query_image_response import PbQueryImageResponse
-from vivnfm_client.rest import ApiException
+import kubevim_vivnfm_client
+from kubevim_vivnfm_client.models.pb_query_image_request import PbQueryImageRequest
+from kubevim_vivnfm_client.models.pb_query_image_response import PbQueryImageResponse
+from kubevim_vivnfm_client.rest import ApiException
 from pprint import pprint
 
 # Defining the host is optional and defaults to http://localhost
 # See configuration.py for a list of all supported configuration parameters.
-configuration = vivnfm_client.Configuration(
+configuration = kubevim_vivnfm_client.Configuration(
     host = "http://localhost"
 )
 
 
 # Enter a context with an instance of the API client
-with vivnfm_client.ApiClient(configuration) as api_client:
+with kubevim_vivnfm_client.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = vivnfm_client.ViVnfmApi(api_client)
-    body = vivnfm_client.PbQueryImageRequest() # PbQueryImageRequest | 
+    api_instance = kubevim_vivnfm_client.ViVnfmApi(api_client)
+    body = kubevim_vivnfm_client.PbQueryImageRequest() # PbQueryImageRequest | 
 
     try:
         # This operation allows querying the information about a specific software image in the image repository managed by the VIM. Result: As a result of this operation, the producer (VIM) shall indicate to the consumer (VNFM) whether or not it was possible to process the query.
@@ -497,22 +497,22 @@ This operation allows querying the information of software images in the image r
 
 
 ```python
-import vivnfm_client
-from vivnfm_client.models.pb_query_images_response import PbQueryImagesResponse
-from vivnfm_client.rest import ApiException
+import kubevim_vivnfm_client
+from kubevim_vivnfm_client.models.pb_query_images_response import PbQueryImagesResponse
+from kubevim_vivnfm_client.rest import ApiException
 from pprint import pprint
 
 # Defining the host is optional and defaults to http://localhost
 # See configuration.py for a list of all supported configuration parameters.
-configuration = vivnfm_client.Configuration(
+configuration = kubevim_vivnfm_client.Configuration(
     host = "http://localhost"
 )
 
 
 # Enter a context with an instance of the API client
-with vivnfm_client.ApiClient(configuration) as api_client:
+with kubevim_vivnfm_client.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = vivnfm_client.ViVnfmApi(api_client)
+    api_instance = kubevim_vivnfm_client.ViVnfmApi(api_client)
     image_query_filter_value = 'image_query_filter_value_example' # str |  (optional)
 
     try:
@@ -564,22 +564,22 @@ This operation allows querying information about instantiated virtualised networ
 
 
 ```python
-import vivnfm_client
-from vivnfm_client.models.pb_query_network_response import PbQueryNetworkResponse
-from vivnfm_client.rest import ApiException
+import kubevim_vivnfm_client
+from kubevim_vivnfm_client.models.pb_query_network_response import PbQueryNetworkResponse
+from kubevim_vivnfm_client.rest import ApiException
 from pprint import pprint
 
 # Defining the host is optional and defaults to http://localhost
 # See configuration.py for a list of all supported configuration parameters.
-configuration = vivnfm_client.Configuration(
+configuration = kubevim_vivnfm_client.Configuration(
     host = "http://localhost"
 )
 
 
 # Enter a context with an instance of the API client
-with vivnfm_client.ApiClient(configuration) as api_client:
+with kubevim_vivnfm_client.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = vivnfm_client.ViVnfmApi(api_client)
+    api_instance = kubevim_vivnfm_client.ViVnfmApi(api_client)
     query_network_filter_value = 'query_network_filter_value_example' # str |  (optional)
     network_resource_type = NETWORK # str | Note: this message goes out of ETSI GS NFV-IFA 006 reference but it is required to identify network resource type while performing query. Later the filter will be applied to that network resource type. (optional) (default to NETWORK)
 
@@ -635,22 +635,22 @@ Note(dmalovan): ETSI GS NFV-IFA 006 (7.4.1.5.4) Operation result attached above 
 
 
 ```python
-import vivnfm_client
-from vivnfm_client.models.pb_terminate_network_response import PbTerminateNetworkResponse
-from vivnfm_client.rest import ApiException
+import kubevim_vivnfm_client
+from kubevim_vivnfm_client.models.pb_terminate_network_response import PbTerminateNetworkResponse
+from kubevim_vivnfm_client.rest import ApiException
 from pprint import pprint
 
 # Defining the host is optional and defaults to http://localhost
 # See configuration.py for a list of all supported configuration parameters.
-configuration = vivnfm_client.Configuration(
+configuration = kubevim_vivnfm_client.Configuration(
     host = "http://localhost"
 )
 
 
 # Enter a context with an instance of the API client
-with vivnfm_client.ApiClient(configuration) as api_client:
+with kubevim_vivnfm_client.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = vivnfm_client.ViVnfmApi(api_client)
+    api_instance = kubevim_vivnfm_client.ViVnfmApi(api_client)
     network_resource_id_value = 'network_resource_id_value_example' # str | UUID Identifier representation
 
     try:

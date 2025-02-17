@@ -10,7 +10,7 @@ Name | Type | Description | Notes
 ## Example
 
 ```python
-from vivnfm_client.models.pb_create_compute_flavour_request import PbCreateComputeFlavourRequest
+from kubevim_vivnfm_client.models.pb_create_compute_flavour_request import PbCreateComputeFlavourRequest
 
 # TODO update the JSON string below
 json = "{}"

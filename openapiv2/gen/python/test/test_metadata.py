@@ -14,7 +14,7 @@
 
 import unittest
 
-from vivnfm_client.models.metadata import Metadata
+from kubevim_vivnfm_client.models.metadata import Metadata
 
 class TestMetadata(unittest.TestCase):
     """Metadata unit test stubs"""

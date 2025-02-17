@@ -1,13 +1,13 @@
 [tool.poetry]
-name = "vivnfm_client"
-version = "1.0.0"
+name = "kubevim_vivnfm_client"
+version = "0.0.4"
 description = "vi-vnfm.proto"
 authors = ["OpenAPI Generator Community <team@openapitools.org>"]
 license = "NoLicense"
 readme = "README.md"
 repository = "https://github.com/GIT_USER_ID/GIT_REPO_ID"
 keywords = ["OpenAPI", "OpenAPI-Generator", "vi-vnfm.proto"]
-include = ["vivnfm_client/py.typed"]
+include = ["kubevim_vivnfm_client/py.typed"]
 
 [tool.poetry.dependencies]
 python = "^3.8"
@@ -35,7 +35,7 @@ extension-pkg-whitelist = "pydantic"
 
 [tool.mypy]
 files = [
-  "vivnfm_client",
+  "kubevim_vivnfm_client",
   #"test",  # auto-generated tests
   "tests", # hand-written tests
 ]
@@ -73,7 +73,7 @@ disallow_any_generics = true
 
 [[tool.mypy.overrides]]
 module = [
-  "vivnfm_client.configuration",
+  "kubevim_vivnfm_client.configuration",
 ]
 warn_unused_ignores = true
 strict_equality = true

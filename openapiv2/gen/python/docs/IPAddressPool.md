@@ -11,7 +11,7 @@ Name | Type | Description | Notes
 ## Example
 
 ```python
-from vivnfm_client.models.ip_address_pool import IPAddressPool
+from kubevim_vivnfm_client.models.ip_address_pool import IPAddressPool
 
 # TODO update the JSON string below
 json = "{}"

@@ -14,7 +14,7 @@
 
 import unittest
 
-from vivnfm_client.models.virtual_network_data import VirtualNetworkData
+from kubevim_vivnfm_client.models.virtual_network_data import VirtualNetworkData
 
 class TestVirtualNetworkData(unittest.TestCase):
     """VirtualNetworkData unit test stubs"""
@@ -39,30 +39,30 @@ class TestVirtualNetworkData(unittest.TestCase):
                 network_type = '',
                 segmentation_id = '',
                 network_qo_s = [
-                    vivnfm_client.models.network_qo_s.NetworkQoS(
+                    kubevim_vivnfm_client.models.network_qo_s.NetworkQoS(
                         qos_name = '', 
                         qos_value = '', )
                     ],
                 is_shared = True,
                 layer3_attributes = [
-                    vivnfm_client.models.network_subnet_data.NetworkSubnetData(
-                        network_id = vivnfm_client.models.identifier.Identifier(
+                    kubevim_vivnfm_client.models.network_subnet_data.NetworkSubnetData(
+                        network_id = kubevim_vivnfm_client.models.identifier.Identifier(
                             value = '', ), 
                         ip_version = 'IPV4', 
-                        gateway_ip = vivnfm_client.models.ip_address.IPAddress(
+                        gateway_ip = kubevim_vivnfm_client.models.ip_address.IPAddress(
                             ip = '', ), 
-                        cidr = vivnfm_client.models.ip_subnet_cidr.IPSubnetCIDR(), 
+                        cidr = kubevim_vivnfm_client.models.ip_subnet_cidr.IPSubnetCIDR(), 
                         is_dhcp_enabled = True, 
-                        address_pool = vivnfm_client.models.todo:_might_be_few_ranges_specified_in_pool.TODO: Might be few ranges specified in pool(
-                            start_ip = vivnfm_client.models.ip_address.IPAddress(
+                        address_pool = kubevim_vivnfm_client.models.todo:_might_be_few_ranges_specified_in_pool.TODO: Might be few ranges specified in pool(
+                            start_ip = kubevim_vivnfm_client.models.ip_address.IPAddress(
                                 ip = '', ), 
                             end_ip = , ), 
-                        metadata = vivnfm_client.models.metadata.Metadata(
+                        metadata = kubevim_vivnfm_client.models.metadata.Metadata(
                             fields = {
                                 'key' : ''
                                 }, ), )
                     ],
-                metadata = vivnfm_client.models.metadata.Metadata(
+                metadata = kubevim_vivnfm_client.models.metadata.Metadata(
                     fields = {
                         'key' : ''
                         }, )

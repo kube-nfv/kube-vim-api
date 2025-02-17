@@ -14,7 +14,7 @@
 
 import unittest
 
-from vivnfm_client.models.filter import Filter
+from kubevim_vivnfm_client.models.filter import Filter
 
 class TestFilter(unittest.TestCase):
     """Filter unit test stubs"""

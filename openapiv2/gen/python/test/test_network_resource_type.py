@@ -14,7 +14,7 @@
 
 import unittest
 
-from vivnfm_client.models.network_resource_type import NetworkResourceType
+from kubevim_vivnfm_client.models.network_resource_type import NetworkResourceType
 
 class TestNetworkResourceType(unittest.TestCase):
     """NetworkResourceType unit test stubs"""

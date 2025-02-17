@@ -14,7 +14,7 @@
 
 import unittest
 
-from vivnfm_client.models.pb_query_compute_flavour_response import PbQueryComputeFlavourResponse
+from kubevim_vivnfm_client.models.pb_query_compute_flavour_response import PbQueryComputeFlavourResponse
 
 class TestPbQueryComputeFlavourResponse(unittest.TestCase):
     """PbQueryComputeFlavourResponse unit test stubs"""
@@ -36,49 +36,49 @@ class TestPbQueryComputeFlavourResponse(unittest.TestCase):
         if include_optional:
             return PbQueryComputeFlavourResponse(
                 flavours = [
-                    vivnfm_client.models.virtual_compute_flavour.VirtualComputeFlavour(
-                        flavour_id = vivnfm_client.models.identifier.Identifier(
+                    kubevim_vivnfm_client.models.virtual_compute_flavour.VirtualComputeFlavour(
+                        flavour_id = kubevim_vivnfm_client.models.identifier.Identifier(
                             value = '', ), 
                         is_public = True, 
-                        virtual_memory = vivnfm_client.models.virtual_memory_data.VirtualMemoryData(
+                        virtual_memory = kubevim_vivnfm_client.models.virtual_memory_data.VirtualMemoryData(
                             virtual_mem_size = 1.337, 
                             virtual_mem_oversubscription_policy = '', 
                             numa_enabled = True, ), 
-                        virtual_cpu = vivnfm_client.models.virtual_cpu_data.VirtualCpuData(
+                        virtual_cpu = kubevim_vivnfm_client.models.virtual_cpu_data.VirtualCpuData(
                             cpu_architecture = '', 
                             num_virtual_cpu = 56, 
                             cpu_clock = 1.337, 
                             virtual_cpu_oversubscription_policy = '', 
-                            virtual_cpu_pinning = vivnfm_client.models.virtual_cpu_data_virtual_cpu_pinning_data.VirtualCpuDataVirtualCpuPinningData(
+                            virtual_cpu_pinning = kubevim_vivnfm_client.models.virtual_cpu_data_virtual_cpu_pinning_data.VirtualCpuDataVirtualCpuPinningData(
                                 virtual_cpu_pinning_policy = 'STATIC', 
                                 virtual_cpu_pinning_rules = [
-                                    vivnfm_client.models.virtual_cpu_pinning_data_virtual_cpu_pinning_rule.VirtualCpuPinningDataVirtualCpuPinningRule(
+                                    kubevim_vivnfm_client.models.virtual_cpu_pinning_data_virtual_cpu_pinning_rule.VirtualCpuPinningDataVirtualCpuPinningRule(
                                         cores = 1.337, 
                                         sockets = 1.337, 
                                         threads = 1.337, )
                                     ], ), 
                             power_state_reqs = '', ), 
                         storage_attributes = [
-                            vivnfm_client.models.virtual_storage_data.VirtualStorageData(
+                            kubevim_vivnfm_client.models.virtual_storage_data.VirtualStorageData(
                                 type_of_storage = '', 
                                 size_of_storage = 1.337, 
                                 rdma_enabled = True, )
                             ], 
                         virtual_network_interface = [
-                            vivnfm_client.models.virtual_network_interface_data.VirtualNetworkInterfaceData(
-                                network_id = vivnfm_client.models.identifier.Identifier(
+                            kubevim_vivnfm_client.models.virtual_network_interface_data.VirtualNetworkInterfaceData(
+                                network_id = kubevim_vivnfm_client.models.identifier.Identifier(
                                     value = '', ), 
                                 network_port_id = , 
                                 bandwidth = 1.337, 
                                 acceleration_capability_for_virtual_network_interface = [
                                     ''
                                     ], 
-                                metadata = vivnfm_client.models.metadata.Metadata(
+                                metadata = kubevim_vivnfm_client.models.metadata.Metadata(
                                     fields = {
                                         'key' : ''
                                         }, ), )
                             ], 
-                        metadata = vivnfm_client.models.metadata.Metadata(), )
+                        metadata = kubevim_vivnfm_client.models.metadata.Metadata(), )
                     ]
             )
         else:

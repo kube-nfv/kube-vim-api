@@ -14,7 +14,7 @@
 
 import unittest
 
-from vivnfm_client.models.protobuf_any import ProtobufAny
+from kubevim_vivnfm_client.models.protobuf_any import ProtobufAny
 
 class TestProtobufAny(unittest.TestCase):
     """ProtobufAny unit test stubs"""

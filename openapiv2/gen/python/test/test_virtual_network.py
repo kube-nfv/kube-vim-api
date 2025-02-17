@@ -14,7 +14,7 @@
 
 import unittest
 
-from vivnfm_client.models.virtual_network import VirtualNetwork
+from kubevim_vivnfm_client.models.virtual_network import VirtualNetwork
 
 class TestVirtualNetwork(unittest.TestCase):
     """VirtualNetwork unit test stubs"""
@@ -35,35 +35,35 @@ class TestVirtualNetwork(unittest.TestCase):
         model = VirtualNetwork()
         if include_optional:
             return VirtualNetwork(
-                network_resource_id = vivnfm_client.models.identifier.Identifier(
+                network_resource_id = kubevim_vivnfm_client.models.identifier.Identifier(
                     value = '', ),
                 network_resource_name = '',
                 subnet_id = [
-                    vivnfm_client.models.identifier.Identifier(
+                    kubevim_vivnfm_client.models.identifier.Identifier(
                         value = '', )
                     ],
                 network_port = [
-                    vivnfm_client.models.virtual_network_port.VirtualNetworkPort()
+                    kubevim_vivnfm_client.models.virtual_network_port.VirtualNetworkPort()
                     ],
                 bandwidth = 1.337,
                 network_type = '',
                 provider_network = '',
                 segmentation_id = '',
                 network_qo_s = [
-                    vivnfm_client.models.network_qo_s.NetworkQoS(
+                    kubevim_vivnfm_client.models.network_qo_s.NetworkQoS(
                         qos_name = '', 
                         qos_value = '', )
                     ],
                 is_shared = True,
-                zone_id = vivnfm_client.models.identifier.Identifier(
+                zone_id = kubevim_vivnfm_client.models.identifier.Identifier(
                     value = '', ),
                 operational_state = 'ENABLED',
-                metadata = vivnfm_client.models.metadata.Metadata(
+                metadata = kubevim_vivnfm_client.models.metadata.Metadata(
                     fields = {
                         'key' : ''
                         }, ),
                 connected_networks = [
-                    vivnfm_client.models.identifier.Identifier(
+                    kubevim_vivnfm_client.models.identifier.Identifier(
                         value = '', )
                     ]
             )

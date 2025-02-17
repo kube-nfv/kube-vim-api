@@ -14,7 +14,7 @@
 
 import unittest
 
-from vivnfm_client.models.ip_version import IPVersion
+from kubevim_vivnfm_client.models.ip_version import IPVersion
 
 class TestIPVersion(unittest.TestCase):
     """IPVersion unit test stubs"""

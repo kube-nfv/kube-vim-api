@@ -14,7 +14,7 @@
 
 import unittest
 
-from vivnfm_client.models.ip_address import IPAddress
+from kubevim_vivnfm_client.models.ip_address import IPAddress
 
 class TestIPAddress(unittest.TestCase):
     """IPAddress unit test stubs"""

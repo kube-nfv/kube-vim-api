@@ -14,7 +14,7 @@
 
 import unittest
 
-from vivnfm_client.models.pb_allocate_compute_request import PbAllocateComputeRequest
+from kubevim_vivnfm_client.models.pb_allocate_compute_request import PbAllocateComputeRequest
 
 class TestPbAllocateComputeRequest(unittest.TestCase):
     """PbAllocateComputeRequest unit test stubs"""
@@ -36,35 +36,35 @@ class TestPbAllocateComputeRequest(unittest.TestCase):
         if include_optional:
             return PbAllocateComputeRequest(
                 compute_name = '',
-                reservation_id = vivnfm_client.models.identifier.Identifier(
+                reservation_id = kubevim_vivnfm_client.models.identifier.Identifier(
                     value = '', ),
                 affinity_or_anti_affinity_constraints = [
-                    vivnfm_client.models.the_parameter_used_when_giving_resource_affinity_or_anti_affinity_constraints_related_to_virtualised_compute_resources/
+                    kubevim_vivnfm_client.models.the_parameter_used_when_giving_resource_affinity_or_anti_affinity_constraints_related_to_virtualised_compute_resources/
 the_parameter_is_an_element_with_affinity_or_anti_affinity_information_of_the_virtualised_compute_resource_to_be_allocated_etsi_gs_nfv_ifa_005_and_etsi
 gs_nfv_ifa_006.The parameter used when giving resource affinity or anti-affinity constraints related to virtualised compute resources.
 The parameter is an element with affinity or anti affinity information of the virtualised compute resource to be allocated ETSI GS NFV-IFA 005 and ETSI
 GS NFV-IFA 006(
                         type = 'AFFINITY', 
                         scope = 'NFVI_NODE', 
-                        affinity_or_anti_affinity_resource_list = vivnfm_client.models.affinity_or_anti_affinity_constraint_for_compute_affinity_or_anti_affinity_resource_list.AffinityOrAntiAffinityConstraintForComputeAffinityOrAntiAffinityResourceList(
+                        affinity_or_anti_affinity_resource_list = kubevim_vivnfm_client.models.affinity_or_anti_affinity_constraint_for_compute_affinity_or_anti_affinity_resource_list.AffinityOrAntiAffinityConstraintForComputeAffinityOrAntiAffinityResourceList(
                             resource_id = [
-                                vivnfm_client.models.identifier.Identifier(
+                                kubevim_vivnfm_client.models.identifier.Identifier(
                                     value = '', )
                                 ], ), 
-                        affinity_or_anti_affinity_resource_group_id = vivnfm_client.models.identifier.Identifier(
+                        affinity_or_anti_affinity_resource_group_id = kubevim_vivnfm_client.models.identifier.Identifier(
                             value = '', ), )
                     ],
-                compute_flavour_id = vivnfm_client.models.identifier.Identifier(
+                compute_flavour_id = kubevim_vivnfm_client.models.identifier.Identifier(
                     value = '', ),
-                vc_image_id = vivnfm_client.models.identifier.Identifier(
+                vc_image_id = kubevim_vivnfm_client.models.identifier.Identifier(
                     value = '', ),
                 interface_data = [
-                    vivnfm_client.models.virtual_interface_data.VirtualInterfaceData(
-                        network_id = vivnfm_client.models.identifier.Identifier(
+                    kubevim_vivnfm_client.models.virtual_interface_data.VirtualInterfaceData(
+                        network_id = kubevim_vivnfm_client.models.identifier.Identifier(
                             value = '', ), 
-                        ip_address = vivnfm_client.models.ip_address.IPAddress(
+                        ip_address = kubevim_vivnfm_client.models.ip_address.IPAddress(
                             ip = '', ), 
-                        mac_address = vivnfm_client.models.mac_address.MacAddress(
+                        mac_address = kubevim_vivnfm_client.models.mac_address.MacAddress(
                             mac = '', ), )
                     ],
                 meta_data = {
@@ -72,7 +72,7 @@ GS NFV-IFA 006(
                         'key' : None
                         }
                     },
-                resource_group_id = vivnfm_client.models.identifier.Identifier(
+                resource_group_id = kubevim_vivnfm_client.models.identifier.Identifier(
                     value = '', ),
                 user_data = None
             )

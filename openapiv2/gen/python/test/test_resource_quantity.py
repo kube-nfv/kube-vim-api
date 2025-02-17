@@ -14,7 +14,7 @@
 
 import unittest
 
-from vivnfm_client.models.resource_quantity import ResourceQuantity
+from kubevim_vivnfm_client.models.resource_quantity import ResourceQuantity
 
 class TestResourceQuantity(unittest.TestCase):
     """ResourceQuantity unit test stubs"""

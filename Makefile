@@ -1,4 +1,6 @@
-KUBE-VIM-API-VERSION=
+KUBE_VIM_API_URL=github.com/kube-nfv/kube-vim-api
+# TODO: Get from tag
+KUBE_VIM_API_VERSION=0.0.4
 
 PROTOC_VERSION ?= 25.1
 K8S_APIMACHINERY_VERSION ?= 0.31.0
@@ -52,15 +54,8 @@ $(OPENAPIV2_PYTHON_GEN_DIR): $(OPENAPIV2_GEN_DIR) proto-compile
 	$(OPENAPI_GEN_IMAGE):$(OPENAPI_GEN_VERSION) \
 	generate -i /$(OPENAPIV2_DIR)/vi-vnfm.swagger.json \
 	-g python -o /$(OPENAPIV2_PYTHON_GEN_DIR) \
-	--additional-properties=packageName=vivnfm_client
-
+	--additional-properties=packageUrl=$(KUBE_VIM_API_URL),packageVersion=$(KUBE_VIM_API_VERSION),packageName=kubevim_vivnfm_client
+	bash ./hack/prepare_oapi_py_package.sh $(OPENAPIV2_PYTHON_GEN_DIR)
 
 $(OPENAPIV2_GEN_DIR): $(OPENAPIV2_DIR)
 	mkdir -p $@
-
-$(OPENAPIV2_DIR):
-	mkdir -p $@
-
-.PHONY: openapiv2-clean
-openapiv2-clean:
-	rm -rf $(OPENAPIV2_DIR)

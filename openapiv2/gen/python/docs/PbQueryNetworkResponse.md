@@ -13,7 +13,7 @@ Name | Type | Description | Notes
 ## Example
 
 ```python
-from vivnfm_client.models.pb_query_network_response import PbQueryNetworkResponse
+from kubevim_vivnfm_client.models.pb_query_network_response import PbQueryNetworkResponse
 
 # TODO update the JSON string below
 json = "{}"

@@ -12,7 +12,7 @@ Name | Type | Description | Notes
 ## Example
 
 ```python
-from vivnfm_client.models.virtual_cpu_pinning_data_virtual_cpu_pinning_rule import VirtualCpuPinningDataVirtualCpuPinningRule
+from kubevim_vivnfm_client.models.virtual_cpu_pinning_data_virtual_cpu_pinning_rule import VirtualCpuPinningDataVirtualCpuPinningRule
 
 # TODO update the JSON string below
 json = "{}"

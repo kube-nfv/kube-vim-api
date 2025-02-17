@@ -14,7 +14,7 @@
 
 import unittest
 
-from vivnfm_client.models.ip_address_pool import IPAddressPool
+from kubevim_vivnfm_client.models.ip_address_pool import IPAddressPool
 
 class TestIPAddressPool(unittest.TestCase):
     """IPAddressPool unit test stubs"""
@@ -35,9 +35,9 @@ class TestIPAddressPool(unittest.TestCase):
         model = IPAddressPool()
         if include_optional:
             return IPAddressPool(
-                start_ip = vivnfm_client.models.ip_address.IPAddress(
+                start_ip = kubevim_vivnfm_client.models.ip_address.IPAddress(
                     ip = '', ),
-                end_ip = vivnfm_client.models.ip_address.IPAddress(
+                end_ip = kubevim_vivnfm_client.models.ip_address.IPAddress(
                     ip = '', )
             )
         else:

@@ -12,7 +12,7 @@ Name | Type | Description | Notes
 ## Example
 
 ```python
-from vivnfm_client.models.virtual_interface_data import VirtualInterfaceData
+from kubevim_vivnfm_client.models.virtual_interface_data import VirtualInterfaceData
 
 # TODO update the JSON string below
 json = "{}"

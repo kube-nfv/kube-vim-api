@@ -14,7 +14,7 @@
 
 import unittest
 
-from vivnfm_client.models.pb_allocate_network_request import PbAllocateNetworkRequest
+from kubevim_vivnfm_client.models.pb_allocate_network_request import PbAllocateNetworkRequest
 
 class TestPbAllocateNetworkRequest(unittest.TestCase):
     """PbAllocateNetworkRequest unit test stubs"""
@@ -36,58 +36,58 @@ class TestPbAllocateNetworkRequest(unittest.TestCase):
         if include_optional:
             return PbAllocateNetworkRequest(
                 network_resource_name = '',
-                reservation_id = vivnfm_client.models.identifier.Identifier(
+                reservation_id = kubevim_vivnfm_client.models.identifier.Identifier(
                     value = '', ),
                 network_resource_type = 'NETWORK',
-                type_network_data = vivnfm_client.models.virtual_network_data.VirtualNetworkData(
+                type_network_data = kubevim_vivnfm_client.models.virtual_network_data.VirtualNetworkData(
                     bandwidth = 1.337, 
                     network_type = '', 
                     segmentation_id = '', 
                     network_qo_s = [
-                        vivnfm_client.models.network_qo_s.NetworkQoS(
+                        kubevim_vivnfm_client.models.network_qo_s.NetworkQoS(
                             qos_name = '', 
                             qos_value = '', )
                         ], 
                     is_shared = True, 
                     layer3_attributes = [
-                        vivnfm_client.models.network_subnet_data.NetworkSubnetData(
-                            network_id = vivnfm_client.models.identifier.Identifier(
+                        kubevim_vivnfm_client.models.network_subnet_data.NetworkSubnetData(
+                            network_id = kubevim_vivnfm_client.models.identifier.Identifier(
                                 value = '', ), 
                             ip_version = 'IPV4', 
-                            gateway_ip = vivnfm_client.models.ip_address.IPAddress(
+                            gateway_ip = kubevim_vivnfm_client.models.ip_address.IPAddress(
                                 ip = '', ), 
-                            cidr = vivnfm_client.models.ip_subnet_cidr.IPSubnetCIDR(), 
+                            cidr = kubevim_vivnfm_client.models.ip_subnet_cidr.IPSubnetCIDR(), 
                             is_dhcp_enabled = True, 
-                            address_pool = vivnfm_client.models.todo:_might_be_few_ranges_specified_in_pool.TODO: Might be few ranges specified in pool(
-                                start_ip = vivnfm_client.models.ip_address.IPAddress(
+                            address_pool = kubevim_vivnfm_client.models.todo:_might_be_few_ranges_specified_in_pool.TODO: Might be few ranges specified in pool(
+                                start_ip = kubevim_vivnfm_client.models.ip_address.IPAddress(
                                     ip = '', ), 
                                 end_ip = , ), 
-                            metadata = vivnfm_client.models.metadata.Metadata(
+                            metadata = kubevim_vivnfm_client.models.metadata.Metadata(
                                 fields = {
                                     'key' : ''
                                     }, ), )
                         ], 
-                    metadata = vivnfm_client.models.metadata.Metadata(), ),
-                type_subnet_data = vivnfm_client.models.network_subnet_data.NetworkSubnetData(
-                    network_id = vivnfm_client.models.identifier.Identifier(
+                    metadata = kubevim_vivnfm_client.models.metadata.Metadata(), ),
+                type_subnet_data = kubevim_vivnfm_client.models.network_subnet_data.NetworkSubnetData(
+                    network_id = kubevim_vivnfm_client.models.identifier.Identifier(
                         value = '', ), 
                     ip_version = 'IPV4', 
-                    gateway_ip = vivnfm_client.models.ip_address.IPAddress(
+                    gateway_ip = kubevim_vivnfm_client.models.ip_address.IPAddress(
                         ip = '', ), 
-                    cidr = vivnfm_client.models.ip_subnet_cidr.IPSubnetCIDR(), 
+                    cidr = kubevim_vivnfm_client.models.ip_subnet_cidr.IPSubnetCIDR(), 
                     is_dhcp_enabled = True, 
-                    address_pool = vivnfm_client.models.todo:_might_be_few_ranges_specified_in_pool.TODO: Might be few ranges specified in pool(
-                        start_ip = vivnfm_client.models.ip_address.IPAddress(
+                    address_pool = kubevim_vivnfm_client.models.todo:_might_be_few_ranges_specified_in_pool.TODO: Might be few ranges specified in pool(
+                        start_ip = kubevim_vivnfm_client.models.ip_address.IPAddress(
                             ip = '', ), 
                         end_ip = , ), 
-                    metadata = vivnfm_client.models.metadata.Metadata(
+                    metadata = kubevim_vivnfm_client.models.metadata.Metadata(
                         fields = {
                             'key' : ''
                             }, ), ),
                 type_network_port_data = None,
                 type_trunk_data = None,
                 affinity_or_anti_affinity_constraints = [
-                    vivnfm_client.models.the_parameter_used_when_providing_the_list_of_elements_with_affinity_or_anti_affinity_information_of_the_virtualised_network_resource.The parameter used when providing the list of elements with affinity or anti affinity information of the virtualised network resource()
+                    kubevim_vivnfm_client.models.the_parameter_used_when_providing_the_list_of_elements_with_affinity_or_anti_affinity_information_of_the_virtualised_network_resource.The parameter used when providing the list of elements with affinity or anti affinity information of the virtualised network resource()
                     ],
                 location_constraints_for_network = '',
                 meta_data = {
@@ -95,7 +95,7 @@ class TestPbAllocateNetworkRequest(unittest.TestCase):
                         'key' : None
                         }
                     },
-                resource_group_id = vivnfm_client.models.identifier.Identifier(
+                resource_group_id = kubevim_vivnfm_client.models.identifier.Identifier(
                     value = '', )
             )
         else:

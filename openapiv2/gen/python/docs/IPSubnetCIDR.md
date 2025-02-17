@@ -10,7 +10,7 @@ Name | Type | Description | Notes
 ## Example
 
 ```python
-from vivnfm_client.models.ip_subnet_cidr import IPSubnetCIDR
+from kubevim_vivnfm_client.models.ip_subnet_cidr import IPSubnetCIDR
 
 # TODO update the JSON string below
 json = "{}"

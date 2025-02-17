@@ -14,7 +14,7 @@
 
 import unittest
 
-from vivnfm_client.models.virtual_network_interface_data import VirtualNetworkInterfaceData
+from kubevim_vivnfm_client.models.virtual_network_interface_data import VirtualNetworkInterfaceData
 
 class TestVirtualNetworkInterfaceData(unittest.TestCase):
     """VirtualNetworkInterfaceData unit test stubs"""
@@ -35,15 +35,15 @@ class TestVirtualNetworkInterfaceData(unittest.TestCase):
         model = VirtualNetworkInterfaceData()
         if include_optional:
             return VirtualNetworkInterfaceData(
-                network_id = vivnfm_client.models.identifier.Identifier(
+                network_id = kubevim_vivnfm_client.models.identifier.Identifier(
                     value = '', ),
-                network_port_id = vivnfm_client.models.identifier.Identifier(
+                network_port_id = kubevim_vivnfm_client.models.identifier.Identifier(
                     value = '', ),
                 bandwidth = 1.337,
                 acceleration_capability_for_virtual_network_interface = [
                     ''
                     ],
-                metadata = vivnfm_client.models.metadata.Metadata(
+                metadata = kubevim_vivnfm_client.models.metadata.Metadata(
                     fields = {
                         'key' : ''
                         }, )

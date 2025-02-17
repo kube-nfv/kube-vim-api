@@ -14,7 +14,7 @@
 
 import unittest
 
-from vivnfm_client.models.pb_allocate_network_response import PbAllocateNetworkResponse
+from kubevim_vivnfm_client.models.pb_allocate_network_response import PbAllocateNetworkResponse
 
 class TestPbAllocateNetworkResponse(unittest.TestCase):
     """PbAllocateNetworkResponse unit test stubs"""
@@ -35,59 +35,59 @@ class TestPbAllocateNetworkResponse(unittest.TestCase):
         model = PbAllocateNetworkResponse()
         if include_optional:
             return PbAllocateNetworkResponse(
-                network_data = vivnfm_client.models.the_information_elements_in_this_group_encapsulates_information_of_an_instantiated_virtualised_network_resource/
+                network_data = kubevim_vivnfm_client.models.the_information_elements_in_this_group_encapsulates_information_of_an_instantiated_virtualised_network_resource/
 in_the_nfvi,_a_virtual_network_transports_information_among_the_network_interfaces_of_vm_instances_and_physical_network_interfaces,_providing_the_necessary_connectiv.The information elements in this group encapsulates information of an instantiated virtualised network resource.
 In the NFVI, a virtual network transports information among the network interfaces of VM instances and physical network interfaces, providing the necessary connectiv(
-                    network_resource_id = vivnfm_client.models.identifier.Identifier(
+                    network_resource_id = kubevim_vivnfm_client.models.identifier.Identifier(
                         value = '', ), 
                     network_resource_name = '', 
                     subnet_id = [
-                        vivnfm_client.models.identifier.Identifier(
+                        kubevim_vivnfm_client.models.identifier.Identifier(
                             value = '', )
                         ], 
                     network_port = [
-                        vivnfm_client.models.virtual_network_port.VirtualNetworkPort()
+                        kubevim_vivnfm_client.models.virtual_network_port.VirtualNetworkPort()
                         ], 
                     bandwidth = 1.337, 
                     network_type = '', 
                     provider_network = '', 
                     segmentation_id = '', 
                     network_qo_s = [
-                        vivnfm_client.models.network_qo_s.NetworkQoS(
+                        kubevim_vivnfm_client.models.network_qo_s.NetworkQoS(
                             qos_name = '', 
                             qos_value = '', )
                         ], 
                     is_shared = True, 
                     zone_id = , 
                     operational_state = 'ENABLED', 
-                    metadata = vivnfm_client.models.metadata.Metadata(
+                    metadata = kubevim_vivnfm_client.models.metadata.Metadata(
                         fields = {
                             'key' : ''
                             }, ), 
                     connected_networks = [
                         
                         ], ),
-                subnet_data = vivnfm_client.models.network_subnet.NetworkSubnet(
-                    resource_id = vivnfm_client.models.identifier.Identifier(
+                subnet_data = kubevim_vivnfm_client.models.network_subnet.NetworkSubnet(
+                    resource_id = kubevim_vivnfm_client.models.identifier.Identifier(
                         value = '', ), 
-                    network_id = vivnfm_client.models.identifier.Identifier(
+                    network_id = kubevim_vivnfm_client.models.identifier.Identifier(
                         value = '', ), 
                     ip_version = 'IPV4', 
-                    gateway_ip = vivnfm_client.models.ip_address.IPAddress(
+                    gateway_ip = kubevim_vivnfm_client.models.ip_address.IPAddress(
                         ip = '', ), 
-                    cidr = vivnfm_client.models.ip_subnet_cidr.IPSubnetCIDR(), 
+                    cidr = kubevim_vivnfm_client.models.ip_subnet_cidr.IPSubnetCIDR(), 
                     is_dhcp_enabled = True, 
                     address_pool = [
-                        vivnfm_client.models.todo:_might_be_few_ranges_specified_in_pool.TODO: Might be few ranges specified in pool(
-                            start_ip = vivnfm_client.models.ip_address.IPAddress(
+                        kubevim_vivnfm_client.models.todo:_might_be_few_ranges_specified_in_pool.TODO: Might be few ranges specified in pool(
+                            start_ip = kubevim_vivnfm_client.models.ip_address.IPAddress(
                                 ip = '', ), 
                             end_ip = , )
                         ], 
-                    metadata = vivnfm_client.models.metadata.Metadata(
+                    metadata = kubevim_vivnfm_client.models.metadata.Metadata(
                         fields = {
                             'key' : ''
                             }, ), ),
-                network_port_data = vivnfm_client.models.virtual_network_port.VirtualNetworkPort(),
+                network_port_data = kubevim_vivnfm_client.models.virtual_network_port.VirtualNetworkPort(),
                 trunk_data = None,
                 routing_resource_data = None
             )

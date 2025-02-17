@@ -14,7 +14,7 @@
 
 import unittest
 
-from vivnfm_client.models.ip_subnet_cidr import IPSubnetCIDR
+from kubevim_vivnfm_client.models.ip_subnet_cidr import IPSubnetCIDR
 
 class TestIPSubnetCIDR(unittest.TestCase):
     """IPSubnetCIDR unit test stubs"""

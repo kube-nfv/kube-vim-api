@@ -20,7 +20,7 @@ Name | Type | Description | Notes
 ## Example
 
 ```python
-from vivnfm_client.models.pb_allocate_network_request import PbAllocateNetworkRequest
+from kubevim_vivnfm_client.models.pb_allocate_network_request import PbAllocateNetworkRequest
 
 # TODO update the JSON string below
 json = "{}"

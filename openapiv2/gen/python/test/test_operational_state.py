@@ -14,7 +14,7 @@
 
 import unittest
 
-from vivnfm_client.models.operational_state import OperationalState
+from kubevim_vivnfm_client.models.operational_state import OperationalState
 
 class TestOperationalState(unittest.TestCase):
     """OperationalState unit test stubs"""

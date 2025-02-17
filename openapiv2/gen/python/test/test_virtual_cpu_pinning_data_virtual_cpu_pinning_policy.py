@@ -14,7 +14,7 @@
 
 import unittest
 
-from vivnfm_client.models.virtual_cpu_pinning_data_virtual_cpu_pinning_policy import VirtualCpuPinningDataVirtualCpuPinningPolicy
+from kubevim_vivnfm_client.models.virtual_cpu_pinning_data_virtual_cpu_pinning_policy import VirtualCpuPinningDataVirtualCpuPinningPolicy
 
 class TestVirtualCpuPinningDataVirtualCpuPinningPolicy(unittest.TestCase):
     """VirtualCpuPinningDataVirtualCpuPinningPolicy unit test stubs"""

@@ -14,7 +14,7 @@
 
 import unittest
 
-from vivnfm_client.models.software_image_information import SoftwareImageInformation
+from kubevim_vivnfm_client.models.software_image_information import SoftwareImageInformation
 
 class TestSoftwareImageInformation(unittest.TestCase):
     """SoftwareImageInformation unit test stubs"""
@@ -35,7 +35,7 @@ class TestSoftwareImageInformation(unittest.TestCase):
         model = SoftwareImageInformation()
         if include_optional:
             return SoftwareImageInformation(
-                software_image_id = vivnfm_client.models.identifier.Identifier(
+                software_image_id = kubevim_vivnfm_client.models.identifier.Identifier(
                     value = '', ),
                 name = '',
                 provider = '',
@@ -45,14 +45,14 @@ class TestSoftwareImageInformation(unittest.TestCase):
                 disk_format = '',
                 created_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'),
                 updated_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'),
-                min_disk = vivnfm_client.models.resource_quantity.resourceQuantity(
+                min_disk = kubevim_vivnfm_client.models.resource_quantity.resourceQuantity(
                     string = '', ),
-                min_ram = vivnfm_client.models.resource_quantity.resourceQuantity(
+                min_ram = kubevim_vivnfm_client.models.resource_quantity.resourceQuantity(
                     string = '', ),
-                size = vivnfm_client.models.resource_quantity.resourceQuantity(
+                size = kubevim_vivnfm_client.models.resource_quantity.resourceQuantity(
                     string = '', ),
                 status = '',
-                metadata = vivnfm_client.models.metadata.Metadata(
+                metadata = kubevim_vivnfm_client.models.metadata.Metadata(
                     fields = {
                         'key' : ''
                         }, )

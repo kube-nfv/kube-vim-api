@@ -14,7 +14,7 @@
 
 import unittest
 
-from vivnfm_client.models.pb_terminate_network_response import PbTerminateNetworkResponse
+from kubevim_vivnfm_client.models.pb_terminate_network_response import PbTerminateNetworkResponse
 
 class TestPbTerminateNetworkResponse(unittest.TestCase):
     """PbTerminateNetworkResponse unit test stubs"""
@@ -35,7 +35,7 @@ class TestPbTerminateNetworkResponse(unittest.TestCase):
         model = PbTerminateNetworkResponse()
         if include_optional:
             return PbTerminateNetworkResponse(
-                network_resource_id = vivnfm_client.models.identifier.Identifier(
+                network_resource_id = kubevim_vivnfm_client.models.identifier.Identifier(
                     value = '', )
             )
         else:

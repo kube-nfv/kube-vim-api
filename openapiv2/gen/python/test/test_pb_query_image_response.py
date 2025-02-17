@@ -14,7 +14,7 @@
 
 import unittest
 
-from vivnfm_client.models.pb_query_image_response import PbQueryImageResponse
+from kubevim_vivnfm_client.models.pb_query_image_response import PbQueryImageResponse
 
 class TestPbQueryImageResponse(unittest.TestCase):
     """PbQueryImageResponse unit test stubs"""
@@ -35,8 +35,8 @@ class TestPbQueryImageResponse(unittest.TestCase):
         model = PbQueryImageResponse()
         if include_optional:
             return PbQueryImageResponse(
-                software_image_information = vivnfm_client.models.this_information_element_represents_software_image_information.This information element represents Software Image Information(
-                    software_image_id = vivnfm_client.models.identifier.Identifier(
+                software_image_information = kubevim_vivnfm_client.models.this_information_element_represents_software_image_information.This information element represents Software Image Information(
+                    software_image_id = kubevim_vivnfm_client.models.identifier.Identifier(
                         value = '', ), 
                     name = '', 
                     provider = '', 
@@ -46,13 +46,13 @@ class TestPbQueryImageResponse(unittest.TestCase):
                     disk_format = '', 
                     created_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
                     updated_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
-                    min_disk = vivnfm_client.models.resource_quantity.resourceQuantity(
+                    min_disk = kubevim_vivnfm_client.models.resource_quantity.resourceQuantity(
                         string = '', ), 
-                    min_ram = vivnfm_client.models.resource_quantity.resourceQuantity(
+                    min_ram = kubevim_vivnfm_client.models.resource_quantity.resourceQuantity(
                         string = '', ), 
                     size = , 
                     status = '', 
-                    metadata = vivnfm_client.models.metadata.Metadata(
+                    metadata = kubevim_vivnfm_client.models.metadata.Metadata(
                         fields = {
                             'key' : ''
                             }, ), )

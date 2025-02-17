@@ -10,7 +10,7 @@ Name | Type | Description | Notes
 ## Example
 
 ```python
-from vivnfm_client.models.pb_allocate_compute_response import PbAllocateComputeResponse
+from kubevim_vivnfm_client.models.pb_allocate_compute_response import PbAllocateComputeResponse
 
 # TODO update the JSON string below
 json = "{}"

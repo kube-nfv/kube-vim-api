@@ -14,7 +14,7 @@
 
 import unittest
 
-from vivnfm_client.models.rpc_status import RpcStatus
+from kubevim_vivnfm_client.models.rpc_status import RpcStatus
 
 class TestRpcStatus(unittest.TestCase):
     """RpcStatus unit test stubs"""

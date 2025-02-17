@@ -10,7 +10,7 @@ Name | Type | Description | Notes
 ## Example
 
 ```python
-from vivnfm_client.models.pb_query_images_response import PbQueryImagesResponse
+from kubevim_vivnfm_client.models.pb_query_images_response import PbQueryImagesResponse
 
 # TODO update the JSON string below
 json = "{}"

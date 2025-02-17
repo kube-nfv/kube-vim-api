@@ -14,7 +14,7 @@
 
 import unittest
 
-from vivnfm_client.models.identifier import Identifier
+from kubevim_vivnfm_client.models.identifier import Identifier
 
 class TestIdentifier(unittest.TestCase):
     """Identifier unit test stubs"""

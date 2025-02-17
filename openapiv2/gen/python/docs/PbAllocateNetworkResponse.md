@@ -14,7 +14,7 @@ Name | Type | Description | Notes
 ## Example
 
 ```python
-from vivnfm_client.models.pb_allocate_network_response import PbAllocateNetworkResponse
+from kubevim_vivnfm_client.models.pb_allocate_network_response import PbAllocateNetworkResponse
 
 # TODO update the JSON string below
 json = "{}"

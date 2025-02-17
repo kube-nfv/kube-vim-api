@@ -14,7 +14,7 @@
 
 import unittest
 
-from vivnfm_client.models.pb_allocate_compute_response import PbAllocateComputeResponse
+from kubevim_vivnfm_client.models.pb_allocate_compute_response import PbAllocateComputeResponse
 
 class TestPbAllocateComputeResponse(unittest.TestCase):
     """PbAllocateComputeResponse unit test stubs"""

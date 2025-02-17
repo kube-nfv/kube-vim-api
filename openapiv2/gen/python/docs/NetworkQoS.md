@@ -12,7 +12,7 @@ Name | Type | Description | Notes
 ## Example
 
 ```python
-from vivnfm_client.models.network_qo_s import NetworkQoS
+from kubevim_vivnfm_client.models.network_qo_s import NetworkQoS
 
 # TODO update the JSON string below
 json = "{}"

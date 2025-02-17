@@ -10,7 +10,7 @@ Name | Type | Description | Notes
 ## Example
 
 ```python
-from vivnfm_client.models.mac_address import MacAddress
+from kubevim_vivnfm_client.models.mac_address import MacAddress
 
 # TODO update the JSON string below
 json = "{}"

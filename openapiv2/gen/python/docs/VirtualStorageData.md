@@ -13,7 +13,7 @@ Name | Type | Description | Notes
 ## Example
 
 ```python
-from vivnfm_client.models.virtual_storage_data import VirtualStorageData
+from kubevim_vivnfm_client.models.virtual_storage_data import VirtualStorageData
 
 # TODO update the JSON string below
 json = "{}"

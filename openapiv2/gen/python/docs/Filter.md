@@ -10,7 +10,7 @@ Name | Type | Description | Notes
 ## Example
 
 ```python
-from vivnfm_client.models.filter import Filter
+from kubevim_vivnfm_client.models.filter import Filter
 
 # TODO update the JSON string below
 json = "{}"

@@ -14,7 +14,7 @@
 
 import unittest
 
-from vivnfm_client.api.vi_vnfm_api import ViVnfmApi
+from kubevim_vivnfm_client.api.vi_vnfm_api import ViVnfmApi
 
 
 class TestViVnfmApi(unittest.TestCase):

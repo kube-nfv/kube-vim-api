@@ -14,7 +14,7 @@
 
 import unittest
 
-from vivnfm_client.models.network_subnet import NetworkSubnet
+from kubevim_vivnfm_client.models.network_subnet import NetworkSubnet
 
 class TestNetworkSubnet(unittest.TestCase):
     """NetworkSubnet unit test stubs"""
@@ -35,24 +35,24 @@ class TestNetworkSubnet(unittest.TestCase):
         model = NetworkSubnet()
         if include_optional:
             return NetworkSubnet(
-                resource_id = vivnfm_client.models.identifier.Identifier(
+                resource_id = kubevim_vivnfm_client.models.identifier.Identifier(
                     value = '', ),
-                network_id = vivnfm_client.models.identifier.Identifier(
+                network_id = kubevim_vivnfm_client.models.identifier.Identifier(
                     value = '', ),
                 ip_version = 'IPV4',
-                gateway_ip = vivnfm_client.models.ip_address.IPAddress(
+                gateway_ip = kubevim_vivnfm_client.models.ip_address.IPAddress(
                     ip = '', ),
-                cidr = vivnfm_client.models.ip_subnet_cidr.IPSubnetCIDR(
+                cidr = kubevim_vivnfm_client.models.ip_subnet_cidr.IPSubnetCIDR(
                     cidr = '', ),
                 is_dhcp_enabled = True,
                 address_pool = [
-                    vivnfm_client.models.todo:_might_be_few_ranges_specified_in_pool.TODO: Might be few ranges specified in pool(
-                        start_ip = vivnfm_client.models.ip_address.IPAddress(
+                    kubevim_vivnfm_client.models.todo:_might_be_few_ranges_specified_in_pool.TODO: Might be few ranges specified in pool(
+                        start_ip = kubevim_vivnfm_client.models.ip_address.IPAddress(
                             ip = '', ), 
-                        end_ip = vivnfm_client.models.ip_address.IPAddress(
+                        end_ip = kubevim_vivnfm_client.models.ip_address.IPAddress(
                             ip = '', ), )
                     ],
-                metadata = vivnfm_client.models.metadata.Metadata(
+                metadata = kubevim_vivnfm_client.models.metadata.Metadata(
                     fields = {
                         'key' : ''
                         }, )

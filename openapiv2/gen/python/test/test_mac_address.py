@@ -14,7 +14,7 @@
 
 import unittest
 
-from vivnfm_client.models.mac_address import MacAddress
+from kubevim_vivnfm_client.models.mac_address import MacAddress
 
 class TestMacAddress(unittest.TestCase):
     """MacAddress unit test stubs"""

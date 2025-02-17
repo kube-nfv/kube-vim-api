@@ -14,7 +14,7 @@
 
 import unittest
 
-from vivnfm_client.models.network_qo_s import NetworkQoS
+from kubevim_vivnfm_client.models.network_qo_s import NetworkQoS
 
 class TestNetworkQoS(unittest.TestCase):
     """NetworkQoS unit test stubs"""

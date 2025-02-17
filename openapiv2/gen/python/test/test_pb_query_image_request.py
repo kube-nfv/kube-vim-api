@@ -14,7 +14,7 @@
 
 import unittest
 
-from vivnfm_client.models.pb_query_image_request import PbQueryImageRequest
+from kubevim_vivnfm_client.models.pb_query_image_request import PbQueryImageRequest
 
 class TestPbQueryImageRequest(unittest.TestCase):
     """PbQueryImageRequest unit test stubs"""
@@ -35,7 +35,7 @@ class TestPbQueryImageRequest(unittest.TestCase):
         model = PbQueryImageRequest()
         if include_optional:
             return PbQueryImageRequest(
-                software_image_id = vivnfm_client.models.identifier.Identifier(
+                software_image_id = kubevim_vivnfm_client.models.identifier.Identifier(
                     value = '', )
             )
         else:

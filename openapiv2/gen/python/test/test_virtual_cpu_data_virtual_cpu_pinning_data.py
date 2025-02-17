@@ -14,7 +14,7 @@
 
 import unittest
 
-from vivnfm_client.models.virtual_cpu_data_virtual_cpu_pinning_data import VirtualCpuDataVirtualCpuPinningData
+from kubevim_vivnfm_client.models.virtual_cpu_data_virtual_cpu_pinning_data import VirtualCpuDataVirtualCpuPinningData
 
 class TestVirtualCpuDataVirtualCpuPinningData(unittest.TestCase):
     """VirtualCpuDataVirtualCpuPinningData unit test stubs"""
@@ -37,7 +37,7 @@ class TestVirtualCpuDataVirtualCpuPinningData(unittest.TestCase):
             return VirtualCpuDataVirtualCpuPinningData(
                 virtual_cpu_pinning_policy = 'STATIC',
                 virtual_cpu_pinning_rules = [
-                    vivnfm_client.models.virtual_cpu_pinning_data_virtual_cpu_pinning_rule.VirtualCpuPinningDataVirtualCpuPinningRule(
+                    kubevim_vivnfm_client.models.virtual_cpu_pinning_data_virtual_cpu_pinning_rule.VirtualCpuPinningDataVirtualCpuPinningRule(
                         cores = 1.337, 
                         sockets = 1.337, 
                         threads = 1.337, )

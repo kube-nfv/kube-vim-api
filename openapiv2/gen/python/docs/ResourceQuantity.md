@@ -11,7 +11,7 @@ Name | Type | Description | Notes
 ## Example
 
 ```python
-from vivnfm_client.models.resource_quantity import ResourceQuantity
+from kubevim_vivnfm_client.models.resource_quantity import ResourceQuantity
 
 # TODO update the JSON string below
 json = "{}"

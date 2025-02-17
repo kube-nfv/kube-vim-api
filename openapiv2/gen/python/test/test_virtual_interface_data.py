@@ -14,7 +14,7 @@
 
 import unittest
 
-from vivnfm_client.models.virtual_interface_data import VirtualInterfaceData
+from kubevim_vivnfm_client.models.virtual_interface_data import VirtualInterfaceData
 
 class TestVirtualInterfaceData(unittest.TestCase):
     """VirtualInterfaceData unit test stubs"""
@@ -35,11 +35,11 @@ class TestVirtualInterfaceData(unittest.TestCase):
         model = VirtualInterfaceData()
         if include_optional:
             return VirtualInterfaceData(
-                network_id = vivnfm_client.models.identifier.Identifier(
+                network_id = kubevim_vivnfm_client.models.identifier.Identifier(
                     value = '', ),
-                ip_address = vivnfm_client.models.ip_address.IPAddress(
+                ip_address = kubevim_vivnfm_client.models.ip_address.IPAddress(
                     ip = '', ),
-                mac_address = vivnfm_client.models.mac_address.MacAddress(
+                mac_address = kubevim_vivnfm_client.models.mac_address.MacAddress(
                     mac = '', )
             )
         else:

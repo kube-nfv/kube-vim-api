@@ -14,7 +14,7 @@
 
 import unittest
 
-from vivnfm_client.models.affinity_or_anti_affinity_constraint_for_compute import AffinityOrAntiAffinityConstraintForCompute
+from kubevim_vivnfm_client.models.affinity_or_anti_affinity_constraint_for_compute import AffinityOrAntiAffinityConstraintForCompute
 
 class TestAffinityOrAntiAffinityConstraintForCompute(unittest.TestCase):
     """AffinityOrAntiAffinityConstraintForCompute unit test stubs"""
@@ -37,12 +37,12 @@ class TestAffinityOrAntiAffinityConstraintForCompute(unittest.TestCase):
             return AffinityOrAntiAffinityConstraintForCompute(
                 type = 'AFFINITY',
                 scope = 'NFVI_NODE',
-                affinity_or_anti_affinity_resource_list = vivnfm_client.models.affinity_or_anti_affinity_constraint_for_compute_affinity_or_anti_affinity_resource_list.AffinityOrAntiAffinityConstraintForComputeAffinityOrAntiAffinityResourceList(
+                affinity_or_anti_affinity_resource_list = kubevim_vivnfm_client.models.affinity_or_anti_affinity_constraint_for_compute_affinity_or_anti_affinity_resource_list.AffinityOrAntiAffinityConstraintForComputeAffinityOrAntiAffinityResourceList(
                     resource_id = [
-                        vivnfm_client.models.identifier.Identifier(
+                        kubevim_vivnfm_client.models.identifier.Identifier(
                             value = '', )
                         ], ),
-                affinity_or_anti_affinity_resource_group_id = vivnfm_client.models.identifier.Identifier(
+                affinity_or_anti_affinity_resource_group_id = kubevim_vivnfm_client.models.identifier.Identifier(
                     value = '', )
             )
         else:

@@ -14,7 +14,7 @@
 
 import unittest
 
-from vivnfm_client.models.virtual_storage_data import VirtualStorageData
+from kubevim_vivnfm_client.models.virtual_storage_data import VirtualStorageData
 
 class TestVirtualStorageData(unittest.TestCase):
     """VirtualStorageData unit test stubs"""

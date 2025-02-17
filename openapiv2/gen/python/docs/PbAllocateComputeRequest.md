@@ -18,7 +18,7 @@ Name | Type | Description | Notes
 ## Example
 
 ```python
-from vivnfm_client.models.pb_allocate_compute_request import PbAllocateComputeRequest
+from kubevim_vivnfm_client.models.pb_allocate_compute_request import PbAllocateComputeRequest
 
 # TODO update the JSON string below
 json = "{}"
