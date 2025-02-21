@@ -6,7 +6,7 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **type** | [**TypeOfAffinityOrAntiAffinityConstraint**](TypeOfAffinityOrAntiAffinityConstraint.md) |  | [optional] [default to TypeOfAffinityOrAntiAffinityConstraint.AFFINITY]
-**scope** | [**AffinityOrAntiAffinityConstraintForComputeScopeOfAffinityOrAntiAffinityConstraintForCompute**](AffinityOrAntiAffinityConstraintForComputeScopeOfAffinityOrAntiAffinityConstraintForCompute.md) |  | [optional] [default to AffinityOrAntiAffinityConstraintForComputeScopeOfAffinityOrAntiAffinityConstraintForCompute.NFVI_NODE]
+**scope** | [**ScopeOfAffinityOrAntiAffinityConstraintForCompute**](ScopeOfAffinityOrAntiAffinityConstraintForCompute.md) |  | [optional] [default to ScopeOfAffinityOrAntiAffinityConstraintForCompute.NFVI_NODE]
 **affinity_or_anti_affinity_resource_list** | [**AffinityOrAntiAffinityConstraintForComputeAffinityOrAntiAffinityResourceList**](AffinityOrAntiAffinityConstraintForComputeAffinityOrAntiAffinityResourceList.md) |  | [optional] 
 **affinity_or_anti_affinity_resource_group_id** | [**Identifier**](Identifier.md) |  | [optional] 
 

@@ -7,6 +7,7 @@ Method | HTTP request | Description
 [**vi_vnfm_allocate_virtualised_compute_resource**](ViVnfmApi.md#vi_vnfm_allocate_virtualised_compute_resource) | **POST** /vivnfm/v5/compute | This operation allows requesting the allocation of virtualised compute resources as indicated by the consumer functional block. Result: After successful operation, the VIM has created the internal management objects for the virtualised compute resource and allocated this resource according to the input requirements and constraints. In addition, the VIM shall return to the VNFM information on the newly instantiated virtualised compute resource plus any additional information about the allocate request operation. The VIM may also return intermediate status reports during the allocation process. If the operation was not successful, the VIM shall return to the VNFM appropriate error information.
 [**vi_vnfm_allocate_virtualised_network_resource**](ViVnfmApi.md#vi_vnfm_allocate_virtualised_network_resource) | **POST** /vivnfm/v5/networks | This operation allows requesting the allocation of virtualised network resources as indicated by the consumer functional block. Result: After successful operation, the VIM has created the internal management objects for the virtualised network resource and allocated this resource. In addition, the VIM shall return to the VNFM information on the newly instantiated virtualised network resource plus any additional information about the allocate request operation. The VIM may also return intermediate status reports during the allocation process. If the operation was not successful, the VIM shall return to the VNFM appropriate error information.
 [**vi_vnfm_create_compute_flavour**](ViVnfmApi.md#vi_vnfm_create_compute_flavour) | **POST** /vivnfm/v5/flavours | This operation allows requesting the creation of a flavour as indicated by the consumer functional block. Result: After successful operation, the VIM has created the Compute Flavour. In addition, the VIM shall return to the VNFM information on the newly created Compute Flavour. If the operation was not successful, the VIM shall return to the VNFM appropriate error information.
+[**vi_vnfm_create_compute_resource_affinity_or_anti_affinity_constraints_group**](ViVnfmApi.md#vi_vnfm_create_compute_resource_affinity_or_anti_affinity_constraints_group) | **POST** /vivnfm/v5/compute/affinity | This operation allows an authorized consumer functional block to request the creation of a resource affinity or anti-affinity constraints group. An anti-affinity group contains resources that are not placed in proximity, e.g. that do not share the same physical NFVI node. An affinity group contains resources that are placed in proximity, e.g. that do share the same physical NFVI node. This operation shall be supported by the VIM. It shall be supported by the VNFM, if the VNFM supports named resource groups for affinity/anti-affinity.
 [**vi_vnfm_delete_compute_flavour**](ViVnfmApi.md#vi_vnfm_delete_compute_flavour) | **DELETE** /vivnfm/v5/flavours/{computeFlavourId.value} | This operation allows deleting a Compute Flavour. Result: After successful operation, the VIM has deleted the Compute Flavour, so no new Virtualised Compute Resource can be allocated based on it. The already allocated Virtualised Compute Resources are not affected. If the operation was not successful, the VIM shall return to the VNFM appropriate error information.
 [**vi_vnfm_query_compute_flavour**](ViVnfmApi.md#vi_vnfm_query_compute_flavour) | **GET** /vivnfm/v5/flavours | This operation allows querying information about created Compute Flavours. Result: After successful operation, the VIM has queried the internal management objects for the Compute Flavours. The result of the query shall indicate with a standard success/error result if the query has been processed correctly. For a particular query, information about the Compute Flavours that the VNFM has access to and that are matching the filter shall be returned.
 [**vi_vnfm_query_image**](ViVnfmApi.md#vi_vnfm_query_image) | **GET** /vivnfm/v5/images/{softwareImageId.value} | This operation allows querying the information about a specific software image in the image repository managed by the VIM. Result: As a result of this operation, the producer (VIM) shall indicate to the consumer (VNFM) whether or not it was possible to process the query.
@@ -201,6 +202,74 @@ Name | Type | Description  | Notes
 ### Return type
 
 [**PbCreateComputeFlavourResponse**](PbCreateComputeFlavourResponse.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: application/json
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | A successful response. |  -  |
+**0** | An unexpected error response. |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **vi_vnfm_create_compute_resource_affinity_or_anti_affinity_constraints_group**
+> PbCreateComputeResourceAffinityOrAntiAffinityConstraintsGroupResponse vi_vnfm_create_compute_resource_affinity_or_anti_affinity_constraints_group(body)
+
+This operation allows an authorized consumer functional block to request the creation of a resource affinity or anti-affinity constraints group. An anti-affinity group contains resources that are not placed in proximity, e.g. that do not share the same physical NFVI node. An affinity group contains resources that are placed in proximity, e.g. that do share the same physical NFVI node. This operation shall be supported by the VIM. It shall be supported by the VNFM, if the VNFM supports named resource groups for affinity/anti-affinity.
+
+### Example
+
+
+```python
+import kubevim_vivnfm_client
+from kubevim_vivnfm_client.models.pb_create_compute_resource_affinity_or_anti_affinity_constraints_group_request import PbCreateComputeResourceAffinityOrAntiAffinityConstraintsGroupRequest
+from kubevim_vivnfm_client.models.pb_create_compute_resource_affinity_or_anti_affinity_constraints_group_response import PbCreateComputeResourceAffinityOrAntiAffinityConstraintsGroupResponse
+from kubevim_vivnfm_client.rest import ApiException
+from pprint import pprint
+
+# Defining the host is optional and defaults to http://localhost
+# See configuration.py for a list of all supported configuration parameters.
+configuration = kubevim_vivnfm_client.Configuration(
+    host = "http://localhost"
+)
+
+
+# Enter a context with an instance of the API client
+with kubevim_vivnfm_client.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = kubevim_vivnfm_client.ViVnfmApi(api_client)
+    body = kubevim_vivnfm_client.PbCreateComputeResourceAffinityOrAntiAffinityConstraintsGroupRequest() # PbCreateComputeResourceAffinityOrAntiAffinityConstraintsGroupRequest | 
+
+    try:
+        # This operation allows an authorized consumer functional block to request the creation of a resource affinity or anti-affinity constraints group. An anti-affinity group contains resources that are not placed in proximity, e.g. that do not share the same physical NFVI node. An affinity group contains resources that are placed in proximity, e.g. that do share the same physical NFVI node. This operation shall be supported by the VIM. It shall be supported by the VNFM, if the VNFM supports named resource groups for affinity/anti-affinity.
+        api_response = api_instance.vi_vnfm_create_compute_resource_affinity_or_anti_affinity_constraints_group(body)
+        print("The response of ViVnfmApi->vi_vnfm_create_compute_resource_affinity_or_anti_affinity_constraints_group:\n")
+        pprint(api_response)
+    except Exception as e:
+        print("Exception when calling ViVnfmApi->vi_vnfm_create_compute_resource_affinity_or_anti_affinity_constraints_group: %s\n" % e)
+```
+
+
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **body** | [**PbCreateComputeResourceAffinityOrAntiAffinityConstraintsGroupRequest**](PbCreateComputeResourceAffinityOrAntiAffinityConstraintsGroupRequest.md)|  | 
+
+### Return type
+
+[**PbCreateComputeResourceAffinityOrAntiAffinityConstraintsGroupResponse**](PbCreateComputeResourceAffinityOrAntiAffinityConstraintsGroupResponse.md)
 
 ### Authorization
 

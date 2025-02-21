@@ -17,24 +17,21 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
-from kubevim_vivnfm_client.models.affinity_or_anti_affinity_constraint_for_compute_affinity_or_anti_affinity_resource_list import AffinityOrAntiAffinityConstraintForComputeAffinityOrAntiAffinityResourceList
-from kubevim_vivnfm_client.models.identifier import Identifier
 from kubevim_vivnfm_client.models.scope_of_affinity_or_anti_affinity_constraint_for_compute import ScopeOfAffinityOrAntiAffinityConstraintForCompute
 from kubevim_vivnfm_client.models.type_of_affinity_or_anti_affinity_constraint import TypeOfAffinityOrAntiAffinityConstraint
 from typing import Optional, Set
 from typing_extensions import Self
 
-class AffinityOrAntiAffinityConstraintForCompute(BaseModel):
+class PbCreateComputeResourceAffinityOrAntiAffinityConstraintsGroupRequest(BaseModel):
     """
-    AffinityOrAntiAffinityConstraintForCompute
+    PbCreateComputeResourceAffinityOrAntiAffinityConstraintsGroupRequest
     """ # noqa: E501
+    group_name: Optional[StrictStr] = Field(default=None, alias="groupName")
     type: Optional[TypeOfAffinityOrAntiAffinityConstraint] = TypeOfAffinityOrAntiAffinityConstraint.AFFINITY
     scope: Optional[ScopeOfAffinityOrAntiAffinityConstraintForCompute] = ScopeOfAffinityOrAntiAffinityConstraintForCompute.NFVI_NODE
-    affinity_or_anti_affinity_resource_list: Optional[AffinityOrAntiAffinityConstraintForComputeAffinityOrAntiAffinityResourceList] = Field(default=None, alias="affinityOrAntiAffinityResourceList")
-    affinity_or_anti_affinity_resource_group_id: Optional[Identifier] = Field(default=None, alias="affinityOrAntiAffinityResourceGroupId")
-    __properties: ClassVar[List[str]] = ["type", "scope", "affinityOrAntiAffinityResourceList", "affinityOrAntiAffinityResourceGroupId"]
+    __properties: ClassVar[List[str]] = ["groupName", "type", "scope"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -54,7 +51,7 @@ class AffinityOrAntiAffinityConstraintForCompute(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of AffinityOrAntiAffinityConstraintForCompute from a JSON string"""
+        """Create an instance of PbCreateComputeResourceAffinityOrAntiAffinityConstraintsGroupRequest from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -75,17 +72,11 @@ class AffinityOrAntiAffinityConstraintForCompute(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # override the default output from pydantic by calling `to_dict()` of affinity_or_anti_affinity_resource_list
-        if self.affinity_or_anti_affinity_resource_list:
-            _dict['affinityOrAntiAffinityResourceList'] = self.affinity_or_anti_affinity_resource_list.to_dict()
-        # override the default output from pydantic by calling `to_dict()` of affinity_or_anti_affinity_resource_group_id
-        if self.affinity_or_anti_affinity_resource_group_id:
-            _dict['affinityOrAntiAffinityResourceGroupId'] = self.affinity_or_anti_affinity_resource_group_id.to_dict()
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of AffinityOrAntiAffinityConstraintForCompute from a dict"""
+        """Create an instance of PbCreateComputeResourceAffinityOrAntiAffinityConstraintsGroupRequest from a dict"""
         if obj is None:
             return None
 
@@ -93,10 +84,9 @@ class AffinityOrAntiAffinityConstraintForCompute(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
+            "groupName": obj.get("groupName"),
             "type": obj.get("type") if obj.get("type") is not None else TypeOfAffinityOrAntiAffinityConstraint.AFFINITY,
-            "scope": obj.get("scope") if obj.get("scope") is not None else ScopeOfAffinityOrAntiAffinityConstraintForCompute.NFVI_NODE,
-            "affinityOrAntiAffinityResourceList": AffinityOrAntiAffinityConstraintForComputeAffinityOrAntiAffinityResourceList.from_dict(obj["affinityOrAntiAffinityResourceList"]) if obj.get("affinityOrAntiAffinityResourceList") is not None else None,
-            "affinityOrAntiAffinityResourceGroupId": Identifier.from_dict(obj["affinityOrAntiAffinityResourceGroupId"]) if obj.get("affinityOrAntiAffinityResourceGroupId") is not None else None
+            "scope": obj.get("scope") if obj.get("scope") is not None else ScopeOfAffinityOrAntiAffinityConstraintForCompute.NFVI_NODE
         })
         return _obj
 

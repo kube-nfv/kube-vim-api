@@ -19,15 +19,16 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	ViVnfm_QueryImages_FullMethodName                         = "/kubenvf.kubevim.api.pb.vi_vnfm/QueryImages"
-	ViVnfm_QueryImage_FullMethodName                          = "/kubenvf.kubevim.api.pb.vi_vnfm/QueryImage"
-	ViVnfm_AllocateVirtualisedComputeResource_FullMethodName  = "/kubenvf.kubevim.api.pb.vi_vnfm/AllocateVirtualisedComputeResource"
-	ViVnfm_CreateComputeFlavour_FullMethodName                = "/kubenvf.kubevim.api.pb.vi_vnfm/CreateComputeFlavour"
-	ViVnfm_QueryComputeFlavour_FullMethodName                 = "/kubenvf.kubevim.api.pb.vi_vnfm/QueryComputeFlavour"
-	ViVnfm_DeleteComputeFlavour_FullMethodName                = "/kubenvf.kubevim.api.pb.vi_vnfm/DeleteComputeFlavour"
-	ViVnfm_AllocateVirtualisedNetworkResource_FullMethodName  = "/kubenvf.kubevim.api.pb.vi_vnfm/AllocateVirtualisedNetworkResource"
-	ViVnfm_QueryVirtualisedNetworkResource_FullMethodName     = "/kubenvf.kubevim.api.pb.vi_vnfm/QueryVirtualisedNetworkResource"
-	ViVnfm_TerminateVirtualisedNetworkResource_FullMethodName = "/kubenvf.kubevim.api.pb.vi_vnfm/TerminateVirtualisedNetworkResource"
+	ViVnfm_QueryImages_FullMethodName                                                 = "/kubenvf.kubevim.api.pb.vi_vnfm/QueryImages"
+	ViVnfm_QueryImage_FullMethodName                                                  = "/kubenvf.kubevim.api.pb.vi_vnfm/QueryImage"
+	ViVnfm_AllocateVirtualisedComputeResource_FullMethodName                          = "/kubenvf.kubevim.api.pb.vi_vnfm/AllocateVirtualisedComputeResource"
+	ViVnfm_CreateComputeResourceAffinityOrAntiAffinityConstraintsGroup_FullMethodName = "/kubenvf.kubevim.api.pb.vi_vnfm/CreateComputeResourceAffinityOrAntiAffinityConstraintsGroup"
+	ViVnfm_CreateComputeFlavour_FullMethodName                                        = "/kubenvf.kubevim.api.pb.vi_vnfm/CreateComputeFlavour"
+	ViVnfm_QueryComputeFlavour_FullMethodName                                         = "/kubenvf.kubevim.api.pb.vi_vnfm/QueryComputeFlavour"
+	ViVnfm_DeleteComputeFlavour_FullMethodName                                        = "/kubenvf.kubevim.api.pb.vi_vnfm/DeleteComputeFlavour"
+	ViVnfm_AllocateVirtualisedNetworkResource_FullMethodName                          = "/kubenvf.kubevim.api.pb.vi_vnfm/AllocateVirtualisedNetworkResource"
+	ViVnfm_QueryVirtualisedNetworkResource_FullMethodName                             = "/kubenvf.kubevim.api.pb.vi_vnfm/QueryVirtualisedNetworkResource"
+	ViVnfm_TerminateVirtualisedNetworkResource_FullMethodName                         = "/kubenvf.kubevim.api.pb.vi_vnfm/TerminateVirtualisedNetworkResource"
 )
 
 // ViVnfmClient is the client API for ViVnfm service.
@@ -47,6 +48,13 @@ type ViVnfmClient interface {
 	// The VIM may also return intermediate status reports during the allocation process. If the operation was not successful,
 	// the VIM shall return to the VNFM appropriate error information.
 	AllocateVirtualisedComputeResource(ctx context.Context, in *AllocateComputeRequest, opts ...grpc.CallOption) (*AllocateComputeResponse, error)
+	// This operation allows an authorized consumer functional block to request the creation of a resource affinity or
+	// anti-affinity constraints group. An anti-affinity group contains resources that are not placed in proximity, e.g. that do not
+	// share the same physical NFVI node. An affinity group contains resources that are placed in proximity, e.g. that do share
+	// the same physical NFVI node.
+	// This operation shall be supported by the VIM. It shall be supported by the VNFM, if the VNFM supports named
+	// resource groups for affinity/anti-affinity.
+	CreateComputeResourceAffinityOrAntiAffinityConstraintsGroup(ctx context.Context, in *CreateComputeResourceAffinityOrAntiAffinityConstraintsGroupRequest, opts ...grpc.CallOption) (*CreateComputeResourceAffinityOrAntiAffinityConstraintsGroupResponse, error)
 	// This operation allows requesting the creation of a flavour as indicated by the consumer functional block.
 	// Result: After successful operation, the VIM has created the Compute Flavour.
 	// In addition, the VIM shall return to the VNFM information on the newly created Compute Flavour.
@@ -117,6 +125,15 @@ func (c *viVnfmClient) QueryImage(ctx context.Context, in *QueryImageRequest, op
 func (c *viVnfmClient) AllocateVirtualisedComputeResource(ctx context.Context, in *AllocateComputeRequest, opts ...grpc.CallOption) (*AllocateComputeResponse, error) {
 	out := new(AllocateComputeResponse)
 	err := c.cc.Invoke(ctx, ViVnfm_AllocateVirtualisedComputeResource_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *viVnfmClient) CreateComputeResourceAffinityOrAntiAffinityConstraintsGroup(ctx context.Context, in *CreateComputeResourceAffinityOrAntiAffinityConstraintsGroupRequest, opts ...grpc.CallOption) (*CreateComputeResourceAffinityOrAntiAffinityConstraintsGroupResponse, error) {
+	out := new(CreateComputeResourceAffinityOrAntiAffinityConstraintsGroupResponse)
+	err := c.cc.Invoke(ctx, ViVnfm_CreateComputeResourceAffinityOrAntiAffinityConstraintsGroup_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -194,6 +211,13 @@ type ViVnfmServer interface {
 	// The VIM may also return intermediate status reports during the allocation process. If the operation was not successful,
 	// the VIM shall return to the VNFM appropriate error information.
 	AllocateVirtualisedComputeResource(context.Context, *AllocateComputeRequest) (*AllocateComputeResponse, error)
+	// This operation allows an authorized consumer functional block to request the creation of a resource affinity or
+	// anti-affinity constraints group. An anti-affinity group contains resources that are not placed in proximity, e.g. that do not
+	// share the same physical NFVI node. An affinity group contains resources that are placed in proximity, e.g. that do share
+	// the same physical NFVI node.
+	// This operation shall be supported by the VIM. It shall be supported by the VNFM, if the VNFM supports named
+	// resource groups for affinity/anti-affinity.
+	CreateComputeResourceAffinityOrAntiAffinityConstraintsGroup(context.Context, *CreateComputeResourceAffinityOrAntiAffinityConstraintsGroupRequest) (*CreateComputeResourceAffinityOrAntiAffinityConstraintsGroupResponse, error)
 	// This operation allows requesting the creation of a flavour as indicated by the consumer functional block.
 	// Result: After successful operation, the VIM has created the Compute Flavour.
 	// In addition, the VIM shall return to the VNFM information on the newly created Compute Flavour.
@@ -248,6 +272,9 @@ func (UnimplementedViVnfmServer) QueryImage(context.Context, *QueryImageRequest)
 }
 func (UnimplementedViVnfmServer) AllocateVirtualisedComputeResource(context.Context, *AllocateComputeRequest) (*AllocateComputeResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AllocateVirtualisedComputeResource not implemented")
+}
+func (UnimplementedViVnfmServer) CreateComputeResourceAffinityOrAntiAffinityConstraintsGroup(context.Context, *CreateComputeResourceAffinityOrAntiAffinityConstraintsGroupRequest) (*CreateComputeResourceAffinityOrAntiAffinityConstraintsGroupResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateComputeResourceAffinityOrAntiAffinityConstraintsGroup not implemented")
 }
 func (UnimplementedViVnfmServer) CreateComputeFlavour(context.Context, *CreateComputeFlavourRequest) (*CreateComputeFlavourResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateComputeFlavour not implemented")
@@ -330,6 +357,24 @@ func _ViVnfm_AllocateVirtualisedComputeResource_Handler(srv interface{}, ctx con
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ViVnfmServer).AllocateVirtualisedComputeResource(ctx, req.(*AllocateComputeRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ViVnfm_CreateComputeResourceAffinityOrAntiAffinityConstraintsGroup_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateComputeResourceAffinityOrAntiAffinityConstraintsGroupRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ViVnfmServer).CreateComputeResourceAffinityOrAntiAffinityConstraintsGroup(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ViVnfm_CreateComputeResourceAffinityOrAntiAffinityConstraintsGroup_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ViVnfmServer).CreateComputeResourceAffinityOrAntiAffinityConstraintsGroup(ctx, req.(*CreateComputeResourceAffinityOrAntiAffinityConstraintsGroupRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -460,6 +505,10 @@ var ViVnfm_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "AllocateVirtualisedComputeResource",
 			Handler:    _ViVnfm_AllocateVirtualisedComputeResource_Handler,
+		},
+		{
+			MethodName: "CreateComputeResourceAffinityOrAntiAffinityConstraintsGroup",
+			Handler:    _ViVnfm_CreateComputeResourceAffinityOrAntiAffinityConstraintsGroup_Handler,
 		},
 		{
 			MethodName: "CreateComputeFlavour",

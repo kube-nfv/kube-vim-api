@@ -49,6 +49,39 @@
         ]
       }
     },
+    "/vivnfm/v5/compute/affinity": {
+      "post": {
+        "summary": "This operation allows an authorized consumer functional block to request the creation of a resource affinity or\nanti-affinity constraints group. An anti-affinity group contains resources that are not placed in proximity, e.g. that do not\nshare the same physical NFVI node. An affinity group contains resources that are placed in proximity, e.g. that do share\nthe same physical NFVI node.\nThis operation shall be supported by the VIM. It shall be supported by the VNFM, if the VNFM supports named\nresource groups for affinity/anti-affinity.",
+        "operationId": "vi_vnfm_CreateComputeResourceAffinityOrAntiAffinityConstraintsGroup",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbCreateComputeResourceAffinityOrAntiAffinityConstraintsGroupResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbCreateComputeResourceAffinityOrAntiAffinityConstraintsGroupRequest"
+            }
+          }
+        ],
+        "tags": [
+          "vi_vnfm"
+        ]
+      }
+    },
     "/vivnfm/v5/flavours": {
       "get": {
         "summary": "This operation allows querying information about created Compute Flavours.\nResult: After successful operation, the VIM has queried the internal management objects for the Compute Flavours. The result of the query shall indicate with\na standard success/error result if the query has been processed correctly. For a particular query, information about the\nCompute Flavours that the VNFM has access to and that are matching the filter shall be returned.",
@@ -356,7 +389,7 @@
           "title": "Qualifies the scope of the constraint. In case of compute resource, the values are as follows"
         },
         "scope": {
-          "$ref": "#/definitions/AffinityOrAntiAffinityConstraintForComputeScopeOfAffinityOrAntiAffinityConstraintForCompute",
+          "$ref": "#/definitions/ScopeOfAffinityOrAntiAffinityConstraintForCompute",
           "description": "Indicates whether this is an affinity or anti- affinity constraint."
         },
         "affinityOrAntiAffinityResourceList": {
@@ -383,15 +416,6 @@
         }
       },
       "description": "The AffinityOrAntiAffinityResourceList information element defines an explicit list of resources to\nexpress affinity or anti-affinity between these resources and a current resource. The scope of the affinity or anti-affinity can also be defined."
-    },
-    "AffinityOrAntiAffinityConstraintForComputeScopeOfAffinityOrAntiAffinityConstraintForCompute": {
-      "type": "string",
-      "enum": [
-        "NFVI_NODE",
-        "NFVI_POP"
-      ],
-      "default": "NFVI_NODE",
-      "title": "- NFVI_NODE: Default"
     },
     "AffinityOrAntiAffinityConstraintForNetwork": {
       "type": "object",
@@ -582,6 +606,14 @@
     },
     "RoutingResource": {
       "type": "object"
+    },
+    "ScopeOfAffinityOrAntiAffinityConstraintForCompute": {
+      "type": "string",
+      "enum": [
+        "NFVI_NODE",
+        "NFVI_POP"
+      ],
+      "default": "NFVI_NODE"
     },
     "SoftwareImageInformation": {
       "type": "object",
@@ -1155,6 +1187,32 @@
         "flavourId": {
           "$ref": "#/definitions/Identifier",
           "description": "Identifier of the created Compute Flavour."
+        }
+      }
+    },
+    "pbCreateComputeResourceAffinityOrAntiAffinityConstraintsGroupRequest": {
+      "type": "object",
+      "properties": {
+        "groupName": {
+          "type": "string",
+          "title": "Name of the group, given by the consumer"
+        },
+        "type": {
+          "$ref": "#/definitions/TypeOfAffinityOrAntiAffinityConstraint",
+          "description": "Indicates whether this is an affinity or anti-affinity group."
+        },
+        "scope": {
+          "$ref": "#/definitions/ScopeOfAffinityOrAntiAffinityConstraintForCompute",
+          "description": "Qualifies the scope of the constraint."
+        }
+      }
+    },
+    "pbCreateComputeResourceAffinityOrAntiAffinityConstraintsGroupResponse": {
+      "type": "object",
+      "properties": {
+        "groupId": {
+          "$ref": "#/definitions/Identifier",
+          "title": "Identifier of the group"
         }
       }
     },

@@ -60,9 +60,21 @@ service vi_vnfm {
             body: "*"
         };
     }
-
+    // This operation allows an authorized consumer functional block to request the creation of a resource affinity or
+    // anti-affinity constraints group. An anti-affinity group contains resources that are not placed in proximity, e.g. that do not
+    // share the same physical NFVI node. An affinity group contains resources that are placed in proximity, e.g. that do share
+    // the same physical NFVI node.
+    // This operation shall be supported by the VIM. It shall be supported by the VNFM, if the VNFM supports named
+    // resource groups for affinity/anti-affinity. 
+    rpc CreateComputeResourceAffinityOrAntiAffinityConstraintsGroup(CreateComputeResourceAffinityOrAntiAffinityConstraintsGroupRequest) returns (CreateComputeResourceAffinityOrAntiAffinityConstraintsGroupResponse) {
+        option(google.api.http) = {
+            post: "/vivnfm/v5/compute/affinity"
+            body: "*"
+        };
+    }
 
     // Virtualised Compute Flavour Management Interface
+    //
     // This interface allows an authorized consumer functional block to request operations related to flavours.
     // The interface includes operations for allocating, querying, updating and terminating flavours.
 
@@ -139,6 +151,7 @@ service vi_vnfm {
             delete: "/vivnfm/v5/networks/{networkResourceId.value}"
         };
     }
+
 }
 
 message QueryImagesRequest {
@@ -192,6 +205,20 @@ message AllocateComputeRequest {
 
 message AllocateComputeResponse {
     VirtualCompute computeData = 1;
+}
+
+message CreateComputeResourceAffinityOrAntiAffinityConstraintsGroupRequest {
+    // Name of the group, given by the consumer
+    string group_name = 1;
+    // Indicates whether this is an affinity or anti-affinity group.
+    TypeOfAffinityOrAntiAffinityConstraint type = 2;
+    // Qualifies the scope of the constraint. 
+    optional ScopeOfAffinityOrAntiAffinityConstraintForCompute scope = 3;
+}
+
+message CreateComputeResourceAffinityOrAntiAffinityConstraintsGroupResponse {
+    // Identifier of the group
+    Identifier groupId = 1;
 }
 
 message CreateComputeFlavourRequest {

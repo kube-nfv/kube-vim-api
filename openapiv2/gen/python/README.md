@@ -88,6 +88,7 @@ Class | Method | HTTP request | Description
 *ViVnfmApi* | [**vi_vnfm_allocate_virtualised_compute_resource**](docs/ViVnfmApi.md#vi_vnfm_allocate_virtualised_compute_resource) | **POST** /vivnfm/v5/compute | This operation allows requesting the allocation of virtualised compute resources as indicated by the consumer functional block. Result: After successful operation, the VIM has created the internal management objects for the virtualised compute resource and allocated this resource according to the input requirements and constraints. In addition, the VIM shall return to the VNFM information on the newly instantiated virtualised compute resource plus any additional information about the allocate request operation. The VIM may also return intermediate status reports during the allocation process. If the operation was not successful, the VIM shall return to the VNFM appropriate error information.
 *ViVnfmApi* | [**vi_vnfm_allocate_virtualised_network_resource**](docs/ViVnfmApi.md#vi_vnfm_allocate_virtualised_network_resource) | **POST** /vivnfm/v5/networks | This operation allows requesting the allocation of virtualised network resources as indicated by the consumer functional block. Result: After successful operation, the VIM has created the internal management objects for the virtualised network resource and allocated this resource. In addition, the VIM shall return to the VNFM information on the newly instantiated virtualised network resource plus any additional information about the allocate request operation. The VIM may also return intermediate status reports during the allocation process. If the operation was not successful, the VIM shall return to the VNFM appropriate error information.
 *ViVnfmApi* | [**vi_vnfm_create_compute_flavour**](docs/ViVnfmApi.md#vi_vnfm_create_compute_flavour) | **POST** /vivnfm/v5/flavours | This operation allows requesting the creation of a flavour as indicated by the consumer functional block. Result: After successful operation, the VIM has created the Compute Flavour. In addition, the VIM shall return to the VNFM information on the newly created Compute Flavour. If the operation was not successful, the VIM shall return to the VNFM appropriate error information.
+*ViVnfmApi* | [**vi_vnfm_create_compute_resource_affinity_or_anti_affinity_constraints_group**](docs/ViVnfmApi.md#vi_vnfm_create_compute_resource_affinity_or_anti_affinity_constraints_group) | **POST** /vivnfm/v5/compute/affinity | This operation allows an authorized consumer functional block to request the creation of a resource affinity or anti-affinity constraints group. An anti-affinity group contains resources that are not placed in proximity, e.g. that do not share the same physical NFVI node. An affinity group contains resources that are placed in proximity, e.g. that do share the same physical NFVI node. This operation shall be supported by the VIM. It shall be supported by the VNFM, if the VNFM supports named resource groups for affinity/anti-affinity.
 *ViVnfmApi* | [**vi_vnfm_delete_compute_flavour**](docs/ViVnfmApi.md#vi_vnfm_delete_compute_flavour) | **DELETE** /vivnfm/v5/flavours/{computeFlavourId.value} | This operation allows deleting a Compute Flavour. Result: After successful operation, the VIM has deleted the Compute Flavour, so no new Virtualised Compute Resource can be allocated based on it. The already allocated Virtualised Compute Resources are not affected. If the operation was not successful, the VIM shall return to the VNFM appropriate error information.
 *ViVnfmApi* | [**vi_vnfm_query_compute_flavour**](docs/ViVnfmApi.md#vi_vnfm_query_compute_flavour) | **GET** /vivnfm/v5/flavours | This operation allows querying information about created Compute Flavours. Result: After successful operation, the VIM has queried the internal management objects for the Compute Flavours. The result of the query shall indicate with a standard success/error result if the query has been processed correctly. For a particular query, information about the Compute Flavours that the VNFM has access to and that are matching the filter shall be returned.
 *ViVnfmApi* | [**vi_vnfm_query_image**](docs/ViVnfmApi.md#vi_vnfm_query_image) | **GET** /vivnfm/v5/images/{softwareImageId.value} | This operation allows querying the information about a specific software image in the image repository managed by the VIM. Result: As a result of this operation, the producer (VIM) shall indicate to the consumer (VNFM) whether or not it was possible to process the query.
@@ -101,7 +102,6 @@ Class | Method | HTTP request | Description
 
  - [AffinityOrAntiAffinityConstraintForCompute](docs/AffinityOrAntiAffinityConstraintForCompute.md)
  - [AffinityOrAntiAffinityConstraintForComputeAffinityOrAntiAffinityResourceList](docs/AffinityOrAntiAffinityConstraintForComputeAffinityOrAntiAffinityResourceList.md)
- - [AffinityOrAntiAffinityConstraintForComputeScopeOfAffinityOrAntiAffinityConstraintForCompute](docs/AffinityOrAntiAffinityConstraintForComputeScopeOfAffinityOrAntiAffinityConstraintForCompute.md)
  - [Filter](docs/Filter.md)
  - [IPAddress](docs/IPAddress.md)
  - [IPAddressPool](docs/IPAddressPool.md)
@@ -121,6 +121,8 @@ Class | Method | HTTP request | Description
  - [PbAllocateNetworkResponse](docs/PbAllocateNetworkResponse.md)
  - [PbCreateComputeFlavourRequest](docs/PbCreateComputeFlavourRequest.md)
  - [PbCreateComputeFlavourResponse](docs/PbCreateComputeFlavourResponse.md)
+ - [PbCreateComputeResourceAffinityOrAntiAffinityConstraintsGroupRequest](docs/PbCreateComputeResourceAffinityOrAntiAffinityConstraintsGroupRequest.md)
+ - [PbCreateComputeResourceAffinityOrAntiAffinityConstraintsGroupResponse](docs/PbCreateComputeResourceAffinityOrAntiAffinityConstraintsGroupResponse.md)
  - [PbQueryComputeFlavourResponse](docs/PbQueryComputeFlavourResponse.md)
  - [PbQueryImageRequest](docs/PbQueryImageRequest.md)
  - [PbQueryImageResponse](docs/PbQueryImageResponse.md)
@@ -130,6 +132,7 @@ Class | Method | HTTP request | Description
  - [ProtobufAny](docs/ProtobufAny.md)
  - [ResourceQuantity](docs/ResourceQuantity.md)
  - [RpcStatus](docs/RpcStatus.md)
+ - [ScopeOfAffinityOrAntiAffinityConstraintForCompute](docs/ScopeOfAffinityOrAntiAffinityConstraintForCompute.md)
  - [SoftwareImageInformation](docs/SoftwareImageInformation.md)
  - [TypeOfAffinityOrAntiAffinityConstraint](docs/TypeOfAffinityOrAntiAffinityConstraint.md)
  - [VirtualComputeFlavour](docs/VirtualComputeFlavour.md)

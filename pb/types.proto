@@ -38,6 +38,11 @@ message SoftwareImageInformation {
     Metadata metadata = 14;
 }
 
+enum ScopeOfAffinityOrAntiAffinityConstraintForCompute {
+    NFVI_NODE = 0;
+    NFVI_POP = 1;
+}
+
 enum TypeOfAffinityOrAntiAffinityConstraint {
     AFFINITY = 0;
     ANTI_AFFINITY = 1;
@@ -47,10 +52,6 @@ enum TypeOfAffinityOrAntiAffinityConstraint {
 // The parameter is an element with affinity or anti affinity information of the virtualised compute resource to be allocated ETSI GS NFV-IFA 005 and ETSI
 // GS NFV-IFA 006
 message AffinityOrAntiAffinityConstraintForCompute {
-    enum ScopeOfAffinityOrAntiAffinityConstraintForCompute {
-        NFVI_NODE = 0; // Default
-        NFVI_POP = 1;
-    }
     // The AffinityOrAntiAffinityResourceList information element defines an explicit list of resources to
     // express affinity or anti-affinity between these resources and a current resource. The scope of the affinity or anti-affinity can also be defined.
     message AffinityOrAntiAffinityResourceList {

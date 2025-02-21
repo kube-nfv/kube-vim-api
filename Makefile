@@ -13,6 +13,9 @@ OPENAPIV2_DIR ?= openapiv2
 OPENAPIV2_GEN_DIR = $(OPENAPIV2_DIR)/gen
 OPENAPIV2_PYTHON_GEN_DIR = $(OPENAPIV2_GEN_DIR)/python
 
+.PHONY: all
+all: proto-compile openapiv2-python-gen
+
 .PHONY: help
 help: ## Display available commands.
 	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_-]+:.*?## / {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
