@@ -90,12 +90,58 @@ message VirtualInterfaceData {
     optional MacAddress macAddress = 3;
 }
 
-message UserData {
+// Note: Either set of "privatekey" and "certificateFile" or "keystoreFile" but not both shall be present.
+message CertificateData {
+}
 
+message UserData {
+    // Contains the user data to customize a virtualised compute resource at boot-time.
+    string content = 1;
+    enum UserDataTransportationMethod {
+        CONFIG_DRIVE = 0;
+        // CONFIG_DRIVE_MIME_multi-part = 1;
+    }
+    // Method used as transportation media to convey the content of the
+    // UserData and the CertificateData to the virtualised compute resource.
+    optional UserDataTransportationMethod method = 2;
+    // Contains the additional user data to store certificate data for the VNF composed of (fully or partially) virtualised compute resource at
+    // boot-time. Shall be present if delegation-mode is used. Otherwise it shall be absent.
+    repeated CertificateData certificateData = 3;
 }
 
 message VirtualCompute {
-
+    // Identifier of the virtualised compute resource.
+    Identifier computeId = 1;
+    // Name of the virtualised compute resource.
+    optional string computeName = 2;
+    // Identifier of the given compute flavour used to instantiate this virtual compute.
+    Identifier flavourId = 3;
+    // Selected acceleration capabilities (e.g. crypto, GPU) from the set of
+    // capabilities offered by the compute node acceleration resources. The
+    // cardinality can be 0, if no particular acceleration capability is provided.
+    // repeated ?? accelerationCapability = 4;
+    // Virtual CPU(s) of the virtualised compute
+    VirtualCpu virtualCpu = 5;
+    // Virtual memory of the compute.
+    VirtualMemory virtualMemory = 6;
+    // Provides information of the instantiated virtual network interfaces of the compute resource.
+    repeated VirtualNetworkInterface virtualNetworkInterface = 7;
+    // Provides information of the virtualised storage resources (volumes, ephemeral) that are attached to the
+    // compute resource.
+    repeated VirtualStorage virtualDisks = 8;
+    // Identifier of the virtualisation container software image (e.g. virtual machine image). Cardinality can be 0 if an
+    // "empty" virtualisation container is allocated.
+    optional Identifier vcImageId = 9;
+    // If present, it identifies the resource zone where the virtual compute resources have been allocated
+    optional Identifier zoneId = 10;
+    // Identifier of the host the virtualised compute resource is allocated on.
+    Identifier hostId = 11;
+    // Operational state of the compute resource.
+    OperationalState operationalState = 12;
+    // Running state of the compute resource.
+    ComputeRunningState runningState = 13;
+    // List of metadata key-value pairs used by the consumer to associate meaningful metadata to the related virtualised resource.
+    Metadata metadata = 14;
 }
 
 // Information describing virtual memory.
@@ -108,6 +154,11 @@ message VirtualMemoryData {
     // Specifies the memory allocation to be cognisant of the relevant process/core allocation. The
     // cardinality can be 0 during the allocation request, if no particular value is requested
     optional bool numaEnabled = 3;
+}
+
+message VirtualMemory {
+
+
 }
 
 // Information describing a virtual CPU.
@@ -150,6 +201,10 @@ message VirtualCpuData {
     optional string powerStateReqs = 6;
 }
 
+message VirtualCpu {
+
+}
+
 // A virtual network interface is a communication endpoint under a compute resource.
 message VirtualNetworkInterfaceData {
     // In the case when the virtual network interface is attached to the network, it identifies such a network.
@@ -171,6 +226,10 @@ message VirtualNetworkInterfaceData {
     Metadata metadata = 7;
 }
 
+message VirtualNetworkInterface {
+
+}
+
 // This clause describes the attributes for the VirtualStorageData information element.
 message VirtualStorageData {
     // Type of virtualised storage resource (e.g. volume, object).
@@ -179,6 +238,11 @@ message VirtualStorageData {
     float sizeOfStorage = 2;
     // Indicates if the storage supports RDMA.
     optional bool rdmaEnabled = 3;
+}
+
+message VirtualStorage {
+
+
 }
 
 // The VirtualComputeFlavour information element encapsulates information for compute flavours. A compute flavour includes information

@@ -65,3 +65,12 @@ enum NetworkResourceType {
     NETWORK_PORT = 2;
     TRUNK = 3;
 }
+
+enum ComputeRunningState {
+    STARTED = 0;
+    STOPPED = 1;
+    PAUSED = 2;
+    SUSPENDED = 3;
+    REBOOTING = 4;
+}
+

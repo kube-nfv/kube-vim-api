@@ -165,6 +165,38 @@ func local_request_ViVnfm_AllocateVirtualisedComputeResource_0(ctx context.Conte
 	return msg, metadata, err
 }
 
+var filter_ViVnfm_QueryVirtualisedComputeResource_0 = &utilities.DoubleArray{Encoding: map[string]int{}, Base: []int(nil), Check: []int(nil)}
+
+func request_ViVnfm_QueryVirtualisedComputeResource_0(ctx context.Context, marshaler runtime.Marshaler, client ViVnfmClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var (
+		protoReq QueryComputeRequest
+		metadata runtime.ServerMetadata
+	)
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_ViVnfm_QueryVirtualisedComputeResource_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	msg, err := client.QueryVirtualisedComputeResource(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+}
+
+func local_request_ViVnfm_QueryVirtualisedComputeResource_0(ctx context.Context, marshaler runtime.Marshaler, server ViVnfmServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var (
+		protoReq QueryComputeRequest
+		metadata runtime.ServerMetadata
+	)
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_ViVnfm_QueryVirtualisedComputeResource_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	msg, err := server.QueryVirtualisedComputeResource(ctx, &protoReq)
+	return msg, metadata, err
+}
+
 func request_ViVnfm_CreateComputeResourceAffinityOrAntiAffinityConstraintsGroup_0(ctx context.Context, marshaler runtime.Marshaler, client ViVnfmClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var (
 		protoReq CreateComputeResourceAffinityOrAntiAffinityConstraintsGroupRequest
@@ -487,6 +519,26 @@ func RegisterViVnfmHandlerServer(ctx context.Context, mux *runtime.ServeMux, ser
 		}
 		forward_ViVnfm_AllocateVirtualisedComputeResource_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
+	mux.Handle(http.MethodGet, pattern_ViVnfm_QueryVirtualisedComputeResource_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		var stream runtime.ServerTransportStream
+		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/kubenvf.kubevim.api.pb.ViVnfm/QueryVirtualisedComputeResource", runtime.WithHTTPPathPattern("/vivnfm/v5/compute"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_ViVnfm_QueryVirtualisedComputeResource_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		forward_ViVnfm_QueryVirtualisedComputeResource_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+	})
 	mux.Handle(http.MethodPost, pattern_ViVnfm_CreateComputeResourceAffinityOrAntiAffinityConstraintsGroup_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
@@ -735,6 +787,23 @@ func RegisterViVnfmHandlerClient(ctx context.Context, mux *runtime.ServeMux, cli
 		}
 		forward_ViVnfm_AllocateVirtualisedComputeResource_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
+	mux.Handle(http.MethodGet, pattern_ViVnfm_QueryVirtualisedComputeResource_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/kubenvf.kubevim.api.pb.ViVnfm/QueryVirtualisedComputeResource", runtime.WithHTTPPathPattern("/vivnfm/v5/compute"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_ViVnfm_QueryVirtualisedComputeResource_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		forward_ViVnfm_QueryVirtualisedComputeResource_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+	})
 	mux.Handle(http.MethodPost, pattern_ViVnfm_CreateComputeResourceAffinityOrAntiAffinityConstraintsGroup_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
@@ -862,6 +931,7 @@ var (
 	pattern_ViVnfm_QueryImage_0                                                  = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"vivnfm", "v5", "images", "softwareImageId.value"}, ""))
 	pattern_ViVnfm_QueryImage_1                                                  = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"vivnfm", "v5", "images"}, ""))
 	pattern_ViVnfm_AllocateVirtualisedComputeResource_0                          = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"vivnfm", "v5", "compute"}, ""))
+	pattern_ViVnfm_QueryVirtualisedComputeResource_0                             = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"vivnfm", "v5", "compute"}, ""))
 	pattern_ViVnfm_CreateComputeResourceAffinityOrAntiAffinityConstraintsGroup_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"vivnfm", "v5", "compute", "affinity"}, ""))
 	pattern_ViVnfm_CreateComputeFlavour_0                                        = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"vivnfm", "v5", "flavours"}, ""))
 	pattern_ViVnfm_QueryComputeFlavour_0                                         = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"vivnfm", "v5", "flavours"}, ""))
@@ -876,6 +946,7 @@ var (
 	forward_ViVnfm_QueryImage_0                                                  = runtime.ForwardResponseMessage
 	forward_ViVnfm_QueryImage_1                                                  = runtime.ForwardResponseMessage
 	forward_ViVnfm_AllocateVirtualisedComputeResource_0                          = runtime.ForwardResponseMessage
+	forward_ViVnfm_QueryVirtualisedComputeResource_0                             = runtime.ForwardResponseMessage
 	forward_ViVnfm_CreateComputeResourceAffinityOrAntiAffinityConstraintsGroup_0 = runtime.ForwardResponseMessage
 	forward_ViVnfm_CreateComputeFlavour_0                                        = runtime.ForwardResponseMessage
 	forward_ViVnfm_QueryComputeFlavour_0                                         = runtime.ForwardResponseMessage

@@ -13,6 +13,7 @@ Method | HTTP request | Description
 [**vi_vnfm_query_image**](ViVnfmApi.md#vi_vnfm_query_image) | **GET** /vivnfm/v5/images/{softwareImageId.value} | This operation allows querying the information about a specific software image in the image repository managed by the VIM. Result: As a result of this operation, the producer (VIM) shall indicate to the consumer (VNFM) whether or not it was possible to process the query.
 [**vi_vnfm_query_image2**](ViVnfmApi.md#vi_vnfm_query_image2) | **POST** /vivnfm/v5/images | This operation allows querying the information about a specific software image in the image repository managed by the VIM. Result: As a result of this operation, the producer (VIM) shall indicate to the consumer (VNFM) whether or not it was possible to process the query.
 [**vi_vnfm_query_images**](ViVnfmApi.md#vi_vnfm_query_images) | **GET** /vivnfm/v5/images | This operation allows querying the information of software images in the image repository managed by the VIM. Result: As a result of this operation, the producer (VIM) shall indicate to the consumer (VNFM) whether or not it was possible to process the query
+[**vi_vnfm_query_virtualised_compute_resource**](ViVnfmApi.md#vi_vnfm_query_virtualised_compute_resource) | **GET** /vivnfm/v5/compute | This operation allows querying information about instantiated virtualised compute resources.
 [**vi_vnfm_query_virtualised_network_resource**](ViVnfmApi.md#vi_vnfm_query_virtualised_network_resource) | **GET** /vivnfm/v5/networks | This operation allows querying information about instantiated virtualised network resources. Result: After successful operation, the VIM has queried the internal management objects for the virtualised network resources. The result of the query shall indicate with a standard success/error result if the query has been processed correctly. For a particular query, information about the network resources that the VNFM has access to and that are matching the filter shall be returned.
 [**vi_vnfm_terminate_virtualised_network_resource**](ViVnfmApi.md#vi_vnfm_terminate_virtualised_network_resource) | **DELETE** /vivnfm/v5/networks/{networkResourceId.value} | This operation allows de-allocating and terminating one or more an instantiated virtualised network resource(s). When the operation is done on multiple ids, it is assumed to be best-effort, i.e. it can succeed for a subset of the ids, and fail for the remaining ones. Result: After successful operation, the VIM has terminated the virtualised network resources and removed the internal management objects for those resources. In addition, the VIM shall return to the VNFM information on the terminated virtualised network resource plus any additional information about the terminate request operation. If the operation was not successful, the VIM shall return to the VNFM appropriate error information.
 
@@ -605,6 +606,73 @@ Name | Type | Description  | Notes
 ### Return type
 
 [**PbQueryImagesResponse**](PbQueryImagesResponse.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | A successful response. |  -  |
+**0** | An unexpected error response. |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **vi_vnfm_query_virtualised_compute_resource**
+> PbQueryComputeResponse vi_vnfm_query_virtualised_compute_resource(query_compute_filter_value=query_compute_filter_value)
+
+This operation allows querying information about instantiated virtualised compute resources.
+
+### Example
+
+
+```python
+import kubevim_vivnfm_client
+from kubevim_vivnfm_client.models.pb_query_compute_response import PbQueryComputeResponse
+from kubevim_vivnfm_client.rest import ApiException
+from pprint import pprint
+
+# Defining the host is optional and defaults to http://localhost
+# See configuration.py for a list of all supported configuration parameters.
+configuration = kubevim_vivnfm_client.Configuration(
+    host = "http://localhost"
+)
+
+
+# Enter a context with an instance of the API client
+with kubevim_vivnfm_client.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = kubevim_vivnfm_client.ViVnfmApi(api_client)
+    query_compute_filter_value = 'query_compute_filter_value_example' # str |  (optional)
+
+    try:
+        # This operation allows querying information about instantiated virtualised compute resources.
+        api_response = api_instance.vi_vnfm_query_virtualised_compute_resource(query_compute_filter_value=query_compute_filter_value)
+        print("The response of ViVnfmApi->vi_vnfm_query_virtualised_compute_resource:\n")
+        pprint(api_response)
+    except Exception as e:
+        print("Exception when calling ViVnfmApi->vi_vnfm_query_virtualised_compute_resource: %s\n" % e)
+```
+
+
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **query_compute_filter_value** | **str**|  | [optional] 
+
+### Return type
+
+[**PbQueryComputeResponse**](PbQueryComputeResponse.md)
 
 ### Authorization
 

@@ -94,6 +94,7 @@ Class | Method | HTTP request | Description
 *ViVnfmApi* | [**vi_vnfm_query_image**](docs/ViVnfmApi.md#vi_vnfm_query_image) | **GET** /vivnfm/v5/images/{softwareImageId.value} | This operation allows querying the information about a specific software image in the image repository managed by the VIM. Result: As a result of this operation, the producer (VIM) shall indicate to the consumer (VNFM) whether or not it was possible to process the query.
 *ViVnfmApi* | [**vi_vnfm_query_image2**](docs/ViVnfmApi.md#vi_vnfm_query_image2) | **POST** /vivnfm/v5/images | This operation allows querying the information about a specific software image in the image repository managed by the VIM. Result: As a result of this operation, the producer (VIM) shall indicate to the consumer (VNFM) whether or not it was possible to process the query.
 *ViVnfmApi* | [**vi_vnfm_query_images**](docs/ViVnfmApi.md#vi_vnfm_query_images) | **GET** /vivnfm/v5/images | This operation allows querying the information of software images in the image repository managed by the VIM. Result: As a result of this operation, the producer (VIM) shall indicate to the consumer (VNFM) whether or not it was possible to process the query
+*ViVnfmApi* | [**vi_vnfm_query_virtualised_compute_resource**](docs/ViVnfmApi.md#vi_vnfm_query_virtualised_compute_resource) | **GET** /vivnfm/v5/compute | This operation allows querying information about instantiated virtualised compute resources.
 *ViVnfmApi* | [**vi_vnfm_query_virtualised_network_resource**](docs/ViVnfmApi.md#vi_vnfm_query_virtualised_network_resource) | **GET** /vivnfm/v5/networks | This operation allows querying information about instantiated virtualised network resources. Result: After successful operation, the VIM has queried the internal management objects for the virtualised network resources. The result of the query shall indicate with a standard success/error result if the query has been processed correctly. For a particular query, information about the network resources that the VNFM has access to and that are matching the filter shall be returned.
 *ViVnfmApi* | [**vi_vnfm_terminate_virtualised_network_resource**](docs/ViVnfmApi.md#vi_vnfm_terminate_virtualised_network_resource) | **DELETE** /vivnfm/v5/networks/{networkResourceId.value} | This operation allows de-allocating and terminating one or more an instantiated virtualised network resource(s). When the operation is done on multiple ids, it is assumed to be best-effort, i.e. it can succeed for a subset of the ids, and fail for the remaining ones. Result: After successful operation, the VIM has terminated the virtualised network resources and removed the internal management objects for those resources. In addition, the VIM shall return to the VNFM information on the terminated virtualised network resource plus any additional information about the terminate request operation. If the operation was not successful, the VIM shall return to the VNFM appropriate error information.
 
@@ -102,6 +103,7 @@ Class | Method | HTTP request | Description
 
  - [AffinityOrAntiAffinityConstraintForCompute](docs/AffinityOrAntiAffinityConstraintForCompute.md)
  - [AffinityOrAntiAffinityConstraintForComputeAffinityOrAntiAffinityResourceList](docs/AffinityOrAntiAffinityConstraintForComputeAffinityOrAntiAffinityResourceList.md)
+ - [ComputeRunningState](docs/ComputeRunningState.md)
  - [Filter](docs/Filter.md)
  - [IPAddress](docs/IPAddress.md)
  - [IPAddressPool](docs/IPAddressPool.md)
@@ -124,6 +126,7 @@ Class | Method | HTTP request | Description
  - [PbCreateComputeResourceAffinityOrAntiAffinityConstraintsGroupRequest](docs/PbCreateComputeResourceAffinityOrAntiAffinityConstraintsGroupRequest.md)
  - [PbCreateComputeResourceAffinityOrAntiAffinityConstraintsGroupResponse](docs/PbCreateComputeResourceAffinityOrAntiAffinityConstraintsGroupResponse.md)
  - [PbQueryComputeFlavourResponse](docs/PbQueryComputeFlavourResponse.md)
+ - [PbQueryComputeResponse](docs/PbQueryComputeResponse.md)
  - [PbQueryImageRequest](docs/PbQueryImageRequest.md)
  - [PbQueryImageResponse](docs/PbQueryImageResponse.md)
  - [PbQueryImagesResponse](docs/PbQueryImagesResponse.md)
@@ -135,6 +138,9 @@ Class | Method | HTTP request | Description
  - [ScopeOfAffinityOrAntiAffinityConstraintForCompute](docs/ScopeOfAffinityOrAntiAffinityConstraintForCompute.md)
  - [SoftwareImageInformation](docs/SoftwareImageInformation.md)
  - [TypeOfAffinityOrAntiAffinityConstraint](docs/TypeOfAffinityOrAntiAffinityConstraint.md)
+ - [UserData](docs/UserData.md)
+ - [UserDataUserDataTransportationMethod](docs/UserDataUserDataTransportationMethod.md)
+ - [VirtualCompute](docs/VirtualCompute.md)
  - [VirtualComputeFlavour](docs/VirtualComputeFlavour.md)
  - [VirtualCpuData](docs/VirtualCpuData.md)
  - [VirtualCpuDataVirtualCpuPinningData](docs/VirtualCpuDataVirtualCpuPinningData.md)

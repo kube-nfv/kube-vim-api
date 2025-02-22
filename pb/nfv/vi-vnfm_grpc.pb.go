@@ -22,6 +22,7 @@ const (
 	ViVnfm_QueryImages_FullMethodName                                                 = "/kubenvf.kubevim.api.pb.vi_vnfm/QueryImages"
 	ViVnfm_QueryImage_FullMethodName                                                  = "/kubenvf.kubevim.api.pb.vi_vnfm/QueryImage"
 	ViVnfm_AllocateVirtualisedComputeResource_FullMethodName                          = "/kubenvf.kubevim.api.pb.vi_vnfm/AllocateVirtualisedComputeResource"
+	ViVnfm_QueryVirtualisedComputeResource_FullMethodName                             = "/kubenvf.kubevim.api.pb.vi_vnfm/QueryVirtualisedComputeResource"
 	ViVnfm_CreateComputeResourceAffinityOrAntiAffinityConstraintsGroup_FullMethodName = "/kubenvf.kubevim.api.pb.vi_vnfm/CreateComputeResourceAffinityOrAntiAffinityConstraintsGroup"
 	ViVnfm_CreateComputeFlavour_FullMethodName                                        = "/kubenvf.kubevim.api.pb.vi_vnfm/CreateComputeFlavour"
 	ViVnfm_QueryComputeFlavour_FullMethodName                                         = "/kubenvf.kubevim.api.pb.vi_vnfm/QueryComputeFlavour"
@@ -48,6 +49,8 @@ type ViVnfmClient interface {
 	// The VIM may also return intermediate status reports during the allocation process. If the operation was not successful,
 	// the VIM shall return to the VNFM appropriate error information.
 	AllocateVirtualisedComputeResource(ctx context.Context, in *AllocateComputeRequest, opts ...grpc.CallOption) (*AllocateComputeResponse, error)
+	// This operation allows querying information about instantiated virtualised compute resources.
+	QueryVirtualisedComputeResource(ctx context.Context, in *QueryComputeRequest, opts ...grpc.CallOption) (*QueryComputeResponse, error)
 	// This operation allows an authorized consumer functional block to request the creation of a resource affinity or
 	// anti-affinity constraints group. An anti-affinity group contains resources that are not placed in proximity, e.g. that do not
 	// share the same physical NFVI node. An affinity group contains resources that are placed in proximity, e.g. that do share
@@ -125,6 +128,15 @@ func (c *viVnfmClient) QueryImage(ctx context.Context, in *QueryImageRequest, op
 func (c *viVnfmClient) AllocateVirtualisedComputeResource(ctx context.Context, in *AllocateComputeRequest, opts ...grpc.CallOption) (*AllocateComputeResponse, error) {
 	out := new(AllocateComputeResponse)
 	err := c.cc.Invoke(ctx, ViVnfm_AllocateVirtualisedComputeResource_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *viVnfmClient) QueryVirtualisedComputeResource(ctx context.Context, in *QueryComputeRequest, opts ...grpc.CallOption) (*QueryComputeResponse, error) {
+	out := new(QueryComputeResponse)
+	err := c.cc.Invoke(ctx, ViVnfm_QueryVirtualisedComputeResource_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -211,6 +223,8 @@ type ViVnfmServer interface {
 	// The VIM may also return intermediate status reports during the allocation process. If the operation was not successful,
 	// the VIM shall return to the VNFM appropriate error information.
 	AllocateVirtualisedComputeResource(context.Context, *AllocateComputeRequest) (*AllocateComputeResponse, error)
+	// This operation allows querying information about instantiated virtualised compute resources.
+	QueryVirtualisedComputeResource(context.Context, *QueryComputeRequest) (*QueryComputeResponse, error)
 	// This operation allows an authorized consumer functional block to request the creation of a resource affinity or
 	// anti-affinity constraints group. An anti-affinity group contains resources that are not placed in proximity, e.g. that do not
 	// share the same physical NFVI node. An affinity group contains resources that are placed in proximity, e.g. that do share
@@ -272,6 +286,9 @@ func (UnimplementedViVnfmServer) QueryImage(context.Context, *QueryImageRequest)
 }
 func (UnimplementedViVnfmServer) AllocateVirtualisedComputeResource(context.Context, *AllocateComputeRequest) (*AllocateComputeResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AllocateVirtualisedComputeResource not implemented")
+}
+func (UnimplementedViVnfmServer) QueryVirtualisedComputeResource(context.Context, *QueryComputeRequest) (*QueryComputeResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method QueryVirtualisedComputeResource not implemented")
 }
 func (UnimplementedViVnfmServer) CreateComputeResourceAffinityOrAntiAffinityConstraintsGroup(context.Context, *CreateComputeResourceAffinityOrAntiAffinityConstraintsGroupRequest) (*CreateComputeResourceAffinityOrAntiAffinityConstraintsGroupResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateComputeResourceAffinityOrAntiAffinityConstraintsGroup not implemented")
@@ -357,6 +374,24 @@ func _ViVnfm_AllocateVirtualisedComputeResource_Handler(srv interface{}, ctx con
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ViVnfmServer).AllocateVirtualisedComputeResource(ctx, req.(*AllocateComputeRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ViVnfm_QueryVirtualisedComputeResource_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryComputeRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ViVnfmServer).QueryVirtualisedComputeResource(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ViVnfm_QueryVirtualisedComputeResource_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ViVnfmServer).QueryVirtualisedComputeResource(ctx, req.(*QueryComputeRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -505,6 +540,10 @@ var ViVnfm_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "AllocateVirtualisedComputeResource",
 			Handler:    _ViVnfm_AllocateVirtualisedComputeResource_Handler,
+		},
+		{
+			MethodName: "QueryVirtualisedComputeResource",
+			Handler:    _ViVnfm_QueryVirtualisedComputeResource_Handler,
 		},
 		{
 			MethodName: "CreateComputeResourceAffinityOrAntiAffinityConstraintsGroup",

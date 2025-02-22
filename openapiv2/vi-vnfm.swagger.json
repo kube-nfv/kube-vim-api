@@ -17,6 +17,35 @@
   ],
   "paths": {
     "/vivnfm/v5/compute": {
+      "get": {
+        "summary": "This operation allows querying information about instantiated virtualised compute resources.",
+        "operationId": "vi_vnfm_QueryVirtualisedComputeResource",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbQueryComputeResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "queryComputeFilter.value",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "vi_vnfm"
+        ]
+      },
       "post": {
         "summary": "This operation allows requesting the allocation of virtualised compute resources as indicated by the consumer functional block.\nResult: After successful operation, the VIM has created the internal management objects for the virtualised compute resource and allocated this\nresource according to the input requirements and constraints. In addition, the VIM shall return to the VNFM information on the newly instantiated\nvirtualised compute resource plus any additional information about the allocate request operation.\nThe VIM may also return intermediate status reports during the allocation process. If the operation was not successful,\nthe VIM shall return to the VNFM appropriate error information.",
         "operationId": "vi_vnfm_AllocateVirtualisedComputeResource",
@@ -421,6 +450,21 @@
       "type": "object",
       "title": "The parameter used when providing the list of elements with affinity or anti affinity information of the virtualised network resource"
     },
+    "CertificateData": {
+      "type": "object",
+      "description": "Note: Either set of \"privatekey\" and \"certificateFile\" or \"keystoreFile\" but not both shall be present."
+    },
+    "ComputeRunningState": {
+      "type": "string",
+      "enum": [
+        "STARTED",
+        "STOPPED",
+        "PAUSED",
+        "SUSPENDED",
+        "REBOOTING"
+      ],
+      "default": "STARTED"
+    },
     "Filter": {
       "type": "object",
       "properties": {
@@ -688,10 +732,98 @@
       "default": "AFFINITY"
     },
     "UserData": {
-      "type": "object"
+      "type": "object",
+      "properties": {
+        "content": {
+          "type": "string",
+          "description": "Contains the user data to customize a virtualised compute resource at boot-time."
+        },
+        "method": {
+          "$ref": "#/definitions/UserDataUserDataTransportationMethod",
+          "description": "Method used as transportation media to convey the content of the\nUserData and the CertificateData to the virtualised compute resource."
+        },
+        "certificateData": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/CertificateData"
+          },
+          "description": "Contains the additional user data to store certificate data for the VNF composed of (fully or partially) virtualised compute resource at\nboot-time. Shall be present if delegation-mode is used. Otherwise it shall be absent."
+        }
+      }
+    },
+    "UserDataUserDataTransportationMethod": {
+      "type": "string",
+      "enum": [
+        "CONFIG_DRIVE"
+      ],
+      "default": "CONFIG_DRIVE",
+      "title": "- CONFIG_DRIVE: CONFIG_DRIVE_MIME_multi-part = 1;"
     },
     "VirtualCompute": {
-      "type": "object"
+      "type": "object",
+      "properties": {
+        "computeId": {
+          "$ref": "#/definitions/Identifier",
+          "description": "Identifier of the virtualised compute resource."
+        },
+        "computeName": {
+          "type": "string",
+          "description": "Name of the virtualised compute resource."
+        },
+        "flavourId": {
+          "$ref": "#/definitions/Identifier",
+          "description": "Identifier of the given compute flavour used to instantiate this virtual compute."
+        },
+        "virtualCpu": {
+          "$ref": "#/definitions/VirtualCpu",
+          "title": "Selected acceleration capabilities (e.g. crypto, GPU) from the set of\ncapabilities offered by the compute node acceleration resources. The\ncardinality can be 0, if no particular acceleration capability is provided.\nrepeated ?? accelerationCapability = 4;\nVirtual CPU(s) of the virtualised compute"
+        },
+        "virtualMemory": {
+          "$ref": "#/definitions/VirtualMemory",
+          "description": "Virtual memory of the compute."
+        },
+        "virtualNetworkInterface": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/VirtualNetworkInterface"
+          },
+          "description": "Provides information of the instantiated virtual network interfaces of the compute resource."
+        },
+        "virtualDisks": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/VirtualStorage"
+          },
+          "description": "Provides information of the virtualised storage resources (volumes, ephemeral) that are attached to the\ncompute resource."
+        },
+        "vcImageId": {
+          "$ref": "#/definitions/Identifier",
+          "description": "Identifier of the virtualisation container software image (e.g. virtual machine image). Cardinality can be 0 if an\n\"empty\" virtualisation container is allocated."
+        },
+        "zoneId": {
+          "$ref": "#/definitions/Identifier",
+          "title": "If present, it identifies the resource zone where the virtual compute resources have been allocated"
+        },
+        "hostId": {
+          "$ref": "#/definitions/Identifier",
+          "description": "Identifier of the host the virtualised compute resource is allocated on."
+        },
+        "operationalState": {
+          "$ref": "#/definitions/OperationalState",
+          "description": "Operational state of the compute resource."
+        },
+        "runningState": {
+          "$ref": "#/definitions/ComputeRunningState",
+          "description": "Running state of the compute resource."
+        },
+        "metadata": {
+          "$ref": "#/definitions/Metadata",
+          "description": "List of metadata key-value pairs used by the consumer to associate meaningful metadata to the related virtualised resource."
+        }
+      }
     },
     "VirtualComputeFlavour": {
       "type": "object",
@@ -734,6 +866,9 @@
         }
       },
       "description": "The VirtualComputeFlavour information element encapsulates information for compute flavours. A compute flavour includes information\nabout number of virtual CPUs, size of virtual memory, size of virtual storage, and virtual network interfaces."
+    },
+    "VirtualCpu": {
+      "type": "object"
     },
     "VirtualCpuData": {
       "type": "object",
@@ -829,6 +964,9 @@
           "description": "MAC address desired for the virtual network interface.\nThe cardinality can be 0 to allow for network interface without specific MAC address configuration."
         }
       }
+    },
+    "VirtualMemory": {
+      "type": "object"
     },
     "VirtualMemoryData": {
       "type": "object",
@@ -971,6 +1109,9 @@
         }
       }
     },
+    "VirtualNetworkInterface": {
+      "type": "object"
+    },
     "VirtualNetworkInterfaceData": {
       "type": "object",
       "properties": {
@@ -1005,6 +1146,9 @@
       "type": "object"
     },
     "VirtualNetworkPortData": {
+      "type": "object"
+    },
+    "VirtualStorage": {
       "type": "object"
     },
     "VirtualStorageData": {
@@ -1230,6 +1374,19 @@
             "$ref": "#/definitions/VirtualComputeFlavour"
           },
           "description": "List of Compute Flavours matching the query."
+        }
+      }
+    },
+    "pbQueryComputeResponse": {
+      "type": "object",
+      "properties": {
+        "queryResult": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/VirtualCompute"
+          },
+          "description": "Contains information about the virtual compute resource(s) matching the filter. The cardinality can be 0 if no matching\ncompute resources exist."
         }
       }
     },

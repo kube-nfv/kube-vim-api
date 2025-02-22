@@ -22,6 +22,7 @@ from typing import Any, ClassVar, Dict, List, Optional
 from kubevim_vivnfm_client.models.affinity_or_anti_affinity_constraint_for_compute import AffinityOrAntiAffinityConstraintForCompute
 from kubevim_vivnfm_client.models.identifier import Identifier
 from kubevim_vivnfm_client.models.protobuf_any import ProtobufAny
+from kubevim_vivnfm_client.models.user_data import UserData
 from kubevim_vivnfm_client.models.virtual_interface_data import VirtualInterfaceData
 from typing import Optional, Set
 from typing_extensions import Self
@@ -38,7 +39,7 @@ class PbAllocateComputeRequest(BaseModel):
     interface_data: Optional[List[VirtualInterfaceData]] = Field(default=None, description="Data of network interfaces which are specific to a Virtual Compute Resource instance. See clause 8.4.3.7.", alias="interfaceData")
     meta_data: Optional[Dict[str, ProtobufAny]] = Field(default=None, description="List of metadata key-value pairs used by the consumer to associate meaningful metadata to the related virtualised resource.", alias="metaData")
     resource_group_id: Optional[Identifier] = Field(default=None, alias="resourceGroupId")
-    user_data: Optional[Dict[str, Any]] = Field(default=None, alias="userData")
+    user_data: Optional[UserData] = Field(default=None, alias="userData")
     __properties: ClassVar[List[str]] = ["computeName", "reservationId", "affinityOrAntiAffinityConstraints", "computeFlavourId", "vcImageId", "interfaceData", "metaData", "resourceGroupId", "userData"]
 
     model_config = ConfigDict(
@@ -113,6 +114,9 @@ class PbAllocateComputeRequest(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of resource_group_id
         if self.resource_group_id:
             _dict['resourceGroupId'] = self.resource_group_id.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of user_data
+        if self.user_data:
+            _dict['userData'] = self.user_data.to_dict()
         return _dict
 
     @classmethod
@@ -138,7 +142,7 @@ class PbAllocateComputeRequest(BaseModel):
             if obj.get("metaData") is not None
             else None,
             "resourceGroupId": Identifier.from_dict(obj["resourceGroupId"]) if obj.get("resourceGroupId") is not None else None,
-            "userData": obj.get("userData")
+            "userData": UserData.from_dict(obj["userData"]) if obj.get("userData") is not None else None
         })
         return _obj
 

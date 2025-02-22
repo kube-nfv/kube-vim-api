@@ -17,18 +17,20 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
-from kubevim_vivnfm_client.models.virtual_compute import VirtualCompute
+from kubevim_vivnfm_client.models.user_data_user_data_transportation_method import UserDataUserDataTransportationMethod
 from typing import Optional, Set
 from typing_extensions import Self
 
-class PbAllocateComputeResponse(BaseModel):
+class UserData(BaseModel):
     """
-    PbAllocateComputeResponse
+    UserData
     """ # noqa: E501
-    compute_data: Optional[VirtualCompute] = Field(default=None, alias="computeData")
-    __properties: ClassVar[List[str]] = ["computeData"]
+    content: Optional[StrictStr] = Field(default=None, description="Contains the user data to customize a virtualised compute resource at boot-time.")
+    method: Optional[UserDataUserDataTransportationMethod] = UserDataUserDataTransportationMethod.CONFIG_DRIVE
+    certificate_data: Optional[List[Dict[str, Any]]] = Field(default=None, description="Contains the additional user data to store certificate data for the VNF composed of (fully or partially) virtualised compute resource at boot-time. Shall be present if delegation-mode is used. Otherwise it shall be absent.", alias="certificateData")
+    __properties: ClassVar[List[str]] = ["content", "method", "certificateData"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -48,7 +50,7 @@ class PbAllocateComputeResponse(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of PbAllocateComputeResponse from a JSON string"""
+        """Create an instance of UserData from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -69,14 +71,11 @@ class PbAllocateComputeResponse(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # override the default output from pydantic by calling `to_dict()` of compute_data
-        if self.compute_data:
-            _dict['computeData'] = self.compute_data.to_dict()
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of PbAllocateComputeResponse from a dict"""
+        """Create an instance of UserData from a dict"""
         if obj is None:
             return None
 
@@ -84,7 +83,9 @@ class PbAllocateComputeResponse(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "computeData": VirtualCompute.from_dict(obj["computeData"]) if obj.get("computeData") is not None else None
+            "content": obj.get("content"),
+            "method": obj.get("method") if obj.get("method") is not None else UserDataUserDataTransportationMethod.CONFIG_DRIVE,
+            "certificateData": obj.get("certificateData")
         })
         return _obj
 

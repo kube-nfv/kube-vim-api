@@ -23,12 +23,12 @@ from kubevim_vivnfm_client.models.virtual_compute import VirtualCompute
 from typing import Optional, Set
 from typing_extensions import Self
 
-class PbAllocateComputeResponse(BaseModel):
+class PbQueryComputeResponse(BaseModel):
     """
-    PbAllocateComputeResponse
+    PbQueryComputeResponse
     """ # noqa: E501
-    compute_data: Optional[VirtualCompute] = Field(default=None, alias="computeData")
-    __properties: ClassVar[List[str]] = ["computeData"]
+    query_result: Optional[List[VirtualCompute]] = Field(default=None, description="Contains information about the virtual compute resource(s) matching the filter. The cardinality can be 0 if no matching compute resources exist.", alias="queryResult")
+    __properties: ClassVar[List[str]] = ["queryResult"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -48,7 +48,7 @@ class PbAllocateComputeResponse(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of PbAllocateComputeResponse from a JSON string"""
+        """Create an instance of PbQueryComputeResponse from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -69,14 +69,18 @@ class PbAllocateComputeResponse(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # override the default output from pydantic by calling `to_dict()` of compute_data
-        if self.compute_data:
-            _dict['computeData'] = self.compute_data.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of each item in query_result (list)
+        _items = []
+        if self.query_result:
+            for _item_query_result in self.query_result:
+                if _item_query_result:
+                    _items.append(_item_query_result.to_dict())
+            _dict['queryResult'] = _items
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of PbAllocateComputeResponse from a dict"""
+        """Create an instance of PbQueryComputeResponse from a dict"""
         if obj is None:
             return None
 
@@ -84,7 +88,7 @@ class PbAllocateComputeResponse(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "computeData": VirtualCompute.from_dict(obj["computeData"]) if obj.get("computeData") is not None else None
+            "queryResult": [VirtualCompute.from_dict(_item) for _item in obj["queryResult"]] if obj.get("queryResult") is not None else None
         })
         return _obj
 

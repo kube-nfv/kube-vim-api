@@ -5,7 +5,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**compute_data** | **object** |  | [optional] 
+**compute_data** | [**VirtualCompute**](VirtualCompute.md) |  | [optional] 
 
 ## Example
 

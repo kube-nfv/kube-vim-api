@@ -13,7 +13,7 @@ Name | Type | Description | Notes
 **interface_data** | [**List[VirtualInterfaceData]**](VirtualInterfaceData.md) | Data of network interfaces which are specific to a Virtual Compute Resource instance. See clause 8.4.3.7. | [optional] 
 **meta_data** | [**Dict[str, ProtobufAny]**](ProtobufAny.md) | List of metadata key-value pairs used by the consumer to associate meaningful metadata to the related virtualised resource. | [optional] 
 **resource_group_id** | [**Identifier**](Identifier.md) |  | [optional] 
-**user_data** | **object** |  | [optional] 
+**user_data** | [**UserData**](UserData.md) |  | [optional] 
 
 ## Example
 
