@@ -640,6 +640,15 @@
       },
       "description": "The NetworkSubnetData information element encapsulates information to allocate or update virtualised sub-networks."
     },
+    "NetworkType": {
+      "type": "string",
+      "enum": [
+        "OVERLAY",
+        "UNDERLAY"
+      ],
+      "default": "OVERLAY",
+      "title": "Note(dmalovan): this message out of scope ETSI GS NFV-IFA 006. But it's required since\nkube-vim support only that network types"
+    },
     "OperationalState": {
       "type": "string",
       "enum": [
@@ -1076,7 +1085,7 @@
           "description": "Minimum network bandwidth (in Mbps)."
         },
         "networkType": {
-          "type": "string",
+          "$ref": "#/definitions/NetworkType",
           "description": "Type of network that maps to the virtualised network. This list is extensible. Examples are:\n • \"local\";\n • \"vlan\";\n • \"vxlan\";\n • \"gre\";\n • \"l3-vpn\";\n • etc.\n Cardinality can be \"0\" to cover the case where this attribute is not required to create the virtualised network."
         },
         "segmentationId": {

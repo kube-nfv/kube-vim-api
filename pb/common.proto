@@ -74,3 +74,10 @@ enum ComputeRunningState {
     REBOOTING = 4;
 }
 
+// Note(dmalovan): this message out of scope ETSI GS NFV-IFA 006. But it's required since
+// kube-vim support only that network types
+enum NetworkType {
+    OVERLAY = 0;
+    UNDERLAY = 1;
+}
+
