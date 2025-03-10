@@ -1088,6 +1088,10 @@
           "$ref": "#/definitions/NetworkType",
           "description": "Type of network that maps to the virtualised network. This list is extensible. Examples are:\n • \"local\";\n • \"vlan\";\n • \"vxlan\";\n • \"gre\";\n • \"l3-vpn\";\n • etc.\n Cardinality can be \"0\" to cover the case where this attribute is not required to create the virtualised network."
         },
+        "providerNetwork": {
+          "type": "string",
+          "description": "Name of the infrastructure provider network used to realize the virtual network.\nCardinality can be \"0\" to cover the case where virtual network is not based on infrastructure provider network."
+        },
         "segmentationId": {
           "type": "string",
           "description": "The segmentation identifier of the network that maps to the virtualised network, for which, the segmentation model is defined\nby the networkType attribute. For instance, for a \"vlan\" networkType, it corresponds to the vlan identifier;\nand for a \"gre\" networkType, it corresponds to a gre key.\nCardinality can be \"0\" to cover the case where networkType is flat network without any specific segmentation."

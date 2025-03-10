@@ -291,20 +291,23 @@ message VirtualNetworkData {
     //  • etc.
     //  Cardinality can be "0" to cover the case where this attribute is not required to create the virtualised network.
     optional NetworkType networkType = 2;
+    // Name of the infrastructure provider network used to realize the virtual network.
+    // Cardinality can be "0" to cover the case where virtual network is not based on infrastructure provider network.
+    optional string providerNetwork = 3;
     // The segmentation identifier of the network that maps to the virtualised network, for which, the segmentation model is defined
     // by the networkType attribute. For instance, for a "vlan" networkType, it corresponds to the vlan identifier;
     // and for a "gre" networkType, it corresponds to a gre key.
     // Cardinality can be "0" to cover the case where networkType is flat network without any specific segmentation.
-    optional string segmentationId = 3;
+    optional string segmentationId = 4;
     // Provides information about Quality of Service attributes that the network shall support.
     // Cardinality can be "0" for networks without any specified QoS requirements.
-    repeated NetworkQoS networkQoS = 4;
+    repeated NetworkQoS networkQoS = 5;
     // Specifies whether the virtualised network is shared among consumers.
-    optional bool isShared = 5;
+    optional bool isShared = 6;
     // Attribute list allows setting up a network providing defined layer 3 connectivity.
-    repeated NetworkSubnetData layer3Attributes = 6;
+    repeated NetworkSubnetData layer3Attributes = 8;
     // List of metadata key-value pairs used by the consumer to associate meaningful metadata to the related virtualised resource.
-    Metadata metadata = 7;
+    Metadata metadata = 9;
 }
 
 // The NetworkSubnetData information element encapsulates information to allocate or update virtualised sub-networks.
