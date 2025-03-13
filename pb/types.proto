@@ -372,7 +372,7 @@ message VirtualNetwork {
     // the networkType attribute. For instance, for a "vlan" networkType, it corresponds to the vlan identifier;
     // and for a "gre" networkType, it corresponds to a gre key.
     // Cardinality can be "0" to cover the case where networkType is flat network without any specific segmentation.
-    optional int64 segmentationId = 8;
+    optional uint64 segmentationId = 8;
     // Provides information about Quality of Service attributes that the network supports.
     // Cardinality can be "0" for virtual network without any QoS requirements.
     repeated NetworkQoS networkQoS = 9;
