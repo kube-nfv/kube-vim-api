@@ -10,7 +10,7 @@ Name | Type | Description | Notes
 **subnet_id** | [**List[Identifier]**](Identifier.md) | References the network subnet. Only present if the network provides layer 3 connectivity. | [optional] 
 **network_port** | **List[object]** | Provides information on an instantiated virtual network port. | [optional] 
 **bandwidth** | **float** |  | [optional] 
-**network_type** | **str** | Type of network that maps to the virtualised network. This list is extensible. Examples are:  • \&quot;local\&quot;;  • \&quot;vlan\&quot;;  • \&quot;vxlan\&quot;;  • \&quot;gre\&quot;;  • \&quot;l3-vpn\&quot;;  • etc. | [optional] 
+**network_type** | [**NetworkType**](NetworkType.md) |  | [optional] [default to NetworkType.OVERLAY]
 **provider_network** | **str** | Name of the infrastructure provider network used to realize the virtual network. Cardinality can be \&quot;0\&quot; to cover the case where virtual network is not based on infrastructure provider network. | [optional] 
 **segmentation_id** | **str** | The segmentation identifier of the network that maps to the virtualised network, for which, the segmentation model is defined by the networkType attribute. For instance, for a \&quot;vlan\&quot; networkType, it corresponds to the vlan identifier; and for a \&quot;gre\&quot; networkType, it corresponds to a gre key. Cardinality can be \&quot;0\&quot; to cover the case where networkType is flat network without any specific segmentation. | [optional] 
 **network_qo_s** | [**List[NetworkQoS]**](NetworkQoS.md) | Provides information about Quality of Service attributes that the network supports. Cardinality can be \&quot;0\&quot; for virtual network without any QoS requirements. | [optional] 

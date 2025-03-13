@@ -1029,7 +1029,7 @@
           "title": "Minimum network bandwidth (in Mbps)"
         },
         "networkType": {
-          "type": "string",
+          "$ref": "#/definitions/NetworkType",
           "description": "Type of network that maps to the virtualised network. This list is extensible. Examples are:\n • \"local\";\n • \"vlan\";\n • \"vxlan\";\n • \"gre\";\n • \"l3-vpn\";\n • etc."
         },
         "providerNetwork": {
@@ -1094,6 +1094,7 @@
         },
         "segmentationId": {
           "type": "string",
+          "format": "uint64",
           "description": "The segmentation identifier of the network that maps to the virtualised network, for which, the segmentation model is defined\nby the networkType attribute. For instance, for a \"vlan\" networkType, it corresponds to the vlan identifier;\nand for a \"gre\" networkType, it corresponds to a gre key.\nCardinality can be \"0\" to cover the case where networkType is flat network without any specific segmentation."
         },
         "networkQoS": {

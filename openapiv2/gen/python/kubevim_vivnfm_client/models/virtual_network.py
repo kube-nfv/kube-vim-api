@@ -22,6 +22,7 @@ from typing import Any, ClassVar, Dict, List, Optional, Union
 from kubevim_vivnfm_client.models.identifier import Identifier
 from kubevim_vivnfm_client.models.metadata import Metadata
 from kubevim_vivnfm_client.models.network_qo_s import NetworkQoS
+from kubevim_vivnfm_client.models.network_type import NetworkType
 from kubevim_vivnfm_client.models.operational_state import OperationalState
 from typing import Optional, Set
 from typing_extensions import Self
@@ -35,7 +36,7 @@ class VirtualNetwork(BaseModel):
     subnet_id: Optional[List[Identifier]] = Field(default=None, description="References the network subnet. Only present if the network provides layer 3 connectivity.", alias="subnetId")
     network_port: Optional[List[Dict[str, Any]]] = Field(default=None, description="Provides information on an instantiated virtual network port.", alias="networkPort")
     bandwidth: Optional[Union[StrictFloat, StrictInt]] = None
-    network_type: Optional[StrictStr] = Field(default=None, description="Type of network that maps to the virtualised network. This list is extensible. Examples are:  • \"local\";  • \"vlan\";  • \"vxlan\";  • \"gre\";  • \"l3-vpn\";  • etc.", alias="networkType")
+    network_type: Optional[NetworkType] = Field(default=NetworkType.OVERLAY, alias="networkType")
     provider_network: Optional[StrictStr] = Field(default=None, description="Name of the infrastructure provider network used to realize the virtual network. Cardinality can be \"0\" to cover the case where virtual network is not based on infrastructure provider network.", alias="providerNetwork")
     segmentation_id: Optional[StrictStr] = Field(default=None, description="The segmentation identifier of the network that maps to the virtualised network, for which, the segmentation model is defined by the networkType attribute. For instance, for a \"vlan\" networkType, it corresponds to the vlan identifier; and for a \"gre\" networkType, it corresponds to a gre key. Cardinality can be \"0\" to cover the case where networkType is flat network without any specific segmentation.", alias="segmentationId")
     network_qo_s: Optional[List[NetworkQoS]] = Field(default=None, description="Provides information about Quality of Service attributes that the network supports. Cardinality can be \"0\" for virtual network without any QoS requirements.", alias="networkQoS")
@@ -132,7 +133,7 @@ class VirtualNetwork(BaseModel):
             "subnetId": [Identifier.from_dict(_item) for _item in obj["subnetId"]] if obj.get("subnetId") is not None else None,
             "networkPort": obj.get("networkPort"),
             "bandwidth": obj.get("bandwidth"),
-            "networkType": obj.get("networkType"),
+            "networkType": obj.get("networkType") if obj.get("networkType") is not None else NetworkType.OVERLAY,
             "providerNetwork": obj.get("providerNetwork"),
             "segmentationId": obj.get("segmentationId"),
             "networkQoS": [NetworkQoS.from_dict(_item) for _item in obj["networkQoS"]] if obj.get("networkQoS") is not None else None,

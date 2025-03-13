@@ -116,6 +116,7 @@ Class | Method | HTTP request | Description
  - [NetworkResourceType](docs/NetworkResourceType.md)
  - [NetworkSubnet](docs/NetworkSubnet.md)
  - [NetworkSubnetData](docs/NetworkSubnetData.md)
+ - [NetworkType](docs/NetworkType.md)
  - [OperationalState](docs/OperationalState.md)
  - [PbAllocateComputeRequest](docs/PbAllocateComputeRequest.md)
  - [PbAllocateComputeResponse](docs/PbAllocateComputeResponse.md)

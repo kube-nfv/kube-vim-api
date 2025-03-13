@@ -22,6 +22,7 @@ from typing import Any, ClassVar, Dict, List, Optional, Union
 from kubevim_vivnfm_client.models.metadata import Metadata
 from kubevim_vivnfm_client.models.network_qo_s import NetworkQoS
 from kubevim_vivnfm_client.models.network_subnet_data import NetworkSubnetData
+from kubevim_vivnfm_client.models.network_type import NetworkType
 from typing import Optional, Set
 from typing_extensions import Self
 
@@ -30,13 +31,14 @@ class VirtualNetworkData(BaseModel):
     VirtualNetworkData
     """ # noqa: E501
     bandwidth: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="Minimum network bandwidth (in Mbps).")
-    network_type: Optional[StrictStr] = Field(default=None, description="Type of network that maps to the virtualised network. This list is extensible. Examples are:  • \"local\";  • \"vlan\";  • \"vxlan\";  • \"gre\";  • \"l3-vpn\";  • etc.  Cardinality can be \"0\" to cover the case where this attribute is not required to create the virtualised network.", alias="networkType")
+    network_type: Optional[NetworkType] = Field(default=NetworkType.OVERLAY, alias="networkType")
+    provider_network: Optional[StrictStr] = Field(default=None, description="Name of the infrastructure provider network used to realize the virtual network. Cardinality can be \"0\" to cover the case where virtual network is not based on infrastructure provider network.", alias="providerNetwork")
     segmentation_id: Optional[StrictStr] = Field(default=None, description="The segmentation identifier of the network that maps to the virtualised network, for which, the segmentation model is defined by the networkType attribute. For instance, for a \"vlan\" networkType, it corresponds to the vlan identifier; and for a \"gre\" networkType, it corresponds to a gre key. Cardinality can be \"0\" to cover the case where networkType is flat network without any specific segmentation.", alias="segmentationId")
     network_qo_s: Optional[List[NetworkQoS]] = Field(default=None, description="Provides information about Quality of Service attributes that the network shall support. Cardinality can be \"0\" for networks without any specified QoS requirements.", alias="networkQoS")
     is_shared: Optional[StrictBool] = Field(default=None, description="Specifies whether the virtualised network is shared among consumers.", alias="isShared")
     layer3_attributes: Optional[List[NetworkSubnetData]] = Field(default=None, description="Attribute list allows setting up a network providing defined layer 3 connectivity.", alias="layer3Attributes")
     metadata: Optional[Metadata] = None
-    __properties: ClassVar[List[str]] = ["bandwidth", "networkType", "segmentationId", "networkQoS", "isShared", "layer3Attributes", "metadata"]
+    __properties: ClassVar[List[str]] = ["bandwidth", "networkType", "providerNetwork", "segmentationId", "networkQoS", "isShared", "layer3Attributes", "metadata"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -107,7 +109,8 @@ class VirtualNetworkData(BaseModel):
 
         _obj = cls.model_validate({
             "bandwidth": obj.get("bandwidth"),
-            "networkType": obj.get("networkType"),
+            "networkType": obj.get("networkType") if obj.get("networkType") is not None else NetworkType.OVERLAY,
+            "providerNetwork": obj.get("providerNetwork"),
             "segmentationId": obj.get("segmentationId"),
             "networkQoS": [NetworkQoS.from_dict(_item) for _item in obj["networkQoS"]] if obj.get("networkQoS") is not None else None,
             "isShared": obj.get("isShared"),

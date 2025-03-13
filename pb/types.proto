@@ -298,7 +298,7 @@ message VirtualNetworkData {
     // by the networkType attribute. For instance, for a "vlan" networkType, it corresponds to the vlan identifier;
     // and for a "gre" networkType, it corresponds to a gre key.
     // Cardinality can be "0" to cover the case where networkType is flat network without any specific segmentation.
-    optional string segmentationId = 4;
+    optional uint64 segmentationId = 4;
     // Provides information about Quality of Service attributes that the network shall support.
     // Cardinality can be "0" for networks without any specified QoS requirements.
     repeated NetworkQoS networkQoS = 5;
@@ -364,7 +364,7 @@ message VirtualNetwork {
     //  • "gre";
     //  • "l3-vpn";
     //  • etc.
-    string networkType = 6;
+    NetworkType networkType = 6;
     // Name of the infrastructure provider network used to realize the virtual network.
     // Cardinality can be "0" to cover the case where virtual network is not based on infrastructure provider network.
     optional string providerNetwork = 7;

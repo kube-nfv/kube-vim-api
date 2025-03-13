@@ -6,7 +6,8 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **bandwidth** | **float** | Minimum network bandwidth (in Mbps). | [optional] 
-**network_type** | **str** | Type of network that maps to the virtualised network. This list is extensible. Examples are:  • \&quot;local\&quot;;  • \&quot;vlan\&quot;;  • \&quot;vxlan\&quot;;  • \&quot;gre\&quot;;  • \&quot;l3-vpn\&quot;;  • etc.  Cardinality can be \&quot;0\&quot; to cover the case where this attribute is not required to create the virtualised network. | [optional] 
+**network_type** | [**NetworkType**](NetworkType.md) |  | [optional] [default to NetworkType.OVERLAY]
+**provider_network** | **str** | Name of the infrastructure provider network used to realize the virtual network. Cardinality can be \&quot;0\&quot; to cover the case where virtual network is not based on infrastructure provider network. | [optional] 
 **segmentation_id** | **str** | The segmentation identifier of the network that maps to the virtualised network, for which, the segmentation model is defined by the networkType attribute. For instance, for a \&quot;vlan\&quot; networkType, it corresponds to the vlan identifier; and for a \&quot;gre\&quot; networkType, it corresponds to a gre key. Cardinality can be \&quot;0\&quot; to cover the case where networkType is flat network without any specific segmentation. | [optional] 
 **network_qo_s** | [**List[NetworkQoS]**](NetworkQoS.md) | Provides information about Quality of Service attributes that the network shall support. Cardinality can be \&quot;0\&quot; for networks without any specified QoS requirements. | [optional] 
 **is_shared** | **bool** | Specifies whether the virtualised network is shared among consumers. | [optional] 

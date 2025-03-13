@@ -46,6 +46,7 @@ from kubevim_vivnfm_client.models.network_qo_s import NetworkQoS
 from kubevim_vivnfm_client.models.network_resource_type import NetworkResourceType
 from kubevim_vivnfm_client.models.network_subnet import NetworkSubnet
 from kubevim_vivnfm_client.models.network_subnet_data import NetworkSubnetData
+from kubevim_vivnfm_client.models.network_type import NetworkType
 from kubevim_vivnfm_client.models.operational_state import OperationalState
 from kubevim_vivnfm_client.models.pb_allocate_compute_request import PbAllocateComputeRequest
 from kubevim_vivnfm_client.models.pb_allocate_compute_response import PbAllocateComputeResponse
