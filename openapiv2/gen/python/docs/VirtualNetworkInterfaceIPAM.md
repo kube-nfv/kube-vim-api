@@ -1,4 +1,4 @@
-# VirtualInterfaceData
+# VirtualNetworkInterfaceIPAM
 
 
 ## Properties
@@ -13,19 +13,19 @@ Name | Type | Description | Notes
 ## Example
 
 ```python
-from kubevim_vivnfm_client.models.virtual_interface_data import VirtualInterfaceData
+from kubevim_vivnfm_client.models.virtual_network_interface_ipam import VirtualNetworkInterfaceIPAM
 
 # TODO update the JSON string below
 json = "{}"
-# create an instance of VirtualInterfaceData from a JSON string
-virtual_interface_data_instance = VirtualInterfaceData.from_json(json)
+# create an instance of VirtualNetworkInterfaceIPAM from a JSON string
+virtual_network_interface_ipam_instance = VirtualNetworkInterfaceIPAM.from_json(json)
 # print the JSON string representation of the object
-print(VirtualInterfaceData.to_json())
+print(VirtualNetworkInterfaceIPAM.to_json())
 
 # convert the object into a dict
-virtual_interface_data_dict = virtual_interface_data_instance.to_dict()
-# create an instance of VirtualInterfaceData from a dict
-virtual_interface_data_from_dict = VirtualInterfaceData.from_dict(virtual_interface_data_dict)
+virtual_network_interface_ipam_dict = virtual_network_interface_ipam_instance.to_dict()
+# create an instance of VirtualNetworkInterfaceIPAM from a dict
+virtual_network_interface_ipam_from_dict = VirtualNetworkInterfaceIPAM.from_dict(virtual_network_interface_ipam_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

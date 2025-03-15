@@ -21,6 +21,7 @@ from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt, Stric
 from typing import Any, ClassVar, Dict, List, Optional, Union
 from kubevim_vivnfm_client.models.identifier import Identifier
 from kubevim_vivnfm_client.models.metadata import Metadata
+from kubevim_vivnfm_client.models.virtual_network_interface_data_type_virtual_nic import VirtualNetworkInterfaceDataTypeVirtualNic
 from typing import Optional, Set
 from typing_extensions import Self
 
@@ -29,11 +30,14 @@ class VirtualNetworkInterfaceData(BaseModel):
     A virtual network interface is a communication endpoint under a compute resource.
     """ # noqa: E501
     network_id: Optional[Identifier] = Field(default=None, alias="networkId")
+    subnet_id: Optional[Identifier] = Field(default=None, alias="subnetId")
     network_port_id: Optional[Identifier] = Field(default=None, alias="networkPortId")
-    bandwidth: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="Note: There is only part of flavour as specified in ETSI GS NFV-IFA 005 and ETSI GS NFV-IFA 006 are included in this version of the present document, the following are attributes not included: typeVirtualNic, typeConfiguration typeVirtualNic = 3; typeConfiguration = 4; Bandwidth of the virtual network interface (in Mbps).")
+    type_virtual_nic: Optional[VirtualNetworkInterfaceDataTypeVirtualNic] = Field(default=VirtualNetworkInterfaceDataTypeVirtualNic.BRIDGE, alias="typeVirtualNic")
+    type_configuration: Optional[List[StrictStr]] = Field(default=None, description="Extra configuration that the virtual network interface supports based on the type of virtual network interface. TODO: That interface might change.", alias="typeConfiguration")
+    bandwidth: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="Bandwidth of the virtual network interface (in Mbps).")
     acceleration_capability_for_virtual_network_interface: Optional[List[StrictStr]] = Field(default=None, description="It specifies if the virtual network interface requires certain acceleration capabilities (e.g. RDMA, packet dispatch, TCP Chimney). The cardinality can be 0, if no particular acceleration capability is requested.", alias="accelerationCapabilityForVirtualNetworkInterface")
     metadata: Optional[Metadata] = None
-    __properties: ClassVar[List[str]] = ["networkId", "networkPortId", "bandwidth", "accelerationCapabilityForVirtualNetworkInterface", "metadata"]
+    __properties: ClassVar[List[str]] = ["networkId", "subnetId", "networkPortId", "typeVirtualNic", "typeConfiguration", "bandwidth", "accelerationCapabilityForVirtualNetworkInterface", "metadata"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -77,6 +81,9 @@ class VirtualNetworkInterfaceData(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of network_id
         if self.network_id:
             _dict['networkId'] = self.network_id.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of subnet_id
+        if self.subnet_id:
+            _dict['subnetId'] = self.subnet_id.to_dict()
         # override the default output from pydantic by calling `to_dict()` of network_port_id
         if self.network_port_id:
             _dict['networkPortId'] = self.network_port_id.to_dict()
@@ -96,7 +103,10 @@ class VirtualNetworkInterfaceData(BaseModel):
 
         _obj = cls.model_validate({
             "networkId": Identifier.from_dict(obj["networkId"]) if obj.get("networkId") is not None else None,
+            "subnetId": Identifier.from_dict(obj["subnetId"]) if obj.get("subnetId") is not None else None,
             "networkPortId": Identifier.from_dict(obj["networkPortId"]) if obj.get("networkPortId") is not None else None,
+            "typeVirtualNic": obj.get("typeVirtualNic") if obj.get("typeVirtualNic") is not None else VirtualNetworkInterfaceDataTypeVirtualNic.BRIDGE,
+            "typeConfiguration": obj.get("typeConfiguration"),
             "bandwidth": obj.get("bandwidth"),
             "accelerationCapabilityForVirtualNetworkInterface": obj.get("accelerationCapabilityForVirtualNetworkInterface"),
             "metadata": Metadata.from_dict(obj["metadata"]) if obj.get("metadata") is not None else None

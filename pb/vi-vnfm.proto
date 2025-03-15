@@ -71,7 +71,7 @@ service vi_vnfm {
     // share the same physical NFVI node. An affinity group contains resources that are placed in proximity, e.g. that do share
     // the same physical NFVI node.
     // This operation shall be supported by the VIM. It shall be supported by the VNFM, if the VNFM supports named
-    // resource groups for affinity/anti-affinity. 
+    // resource groups for affinity/anti-affinity.
     rpc CreateComputeResourceAffinityOrAntiAffinityConstraintsGroup(CreateComputeResourceAffinityOrAntiAffinityConstraintsGroupRequest) returns (CreateComputeResourceAffinityOrAntiAffinityConstraintsGroupResponse) {
         option(google.api.http) = {
             post: "/vivnfm/v5/compute/affinity"
@@ -189,13 +189,18 @@ message AllocateComputeRequest {
     Identifier computeFlavourId = 4;
     // Identifier of the virtualisation container software image (e.g. a virtual machine image). Cardinality can be 0 if an "empty" virtualisation container is allocated.
     optional Identifier vcImageId = 5;
-    // Data of network interfaces which are specific to a Virtual Compute Resource instance. See clause 8.4.3.7.
-    repeated VirtualInterfaceData interfaceData = 6;
+    // Note: That is out of the ETSI GS NFV-IFA 006 scope.
+    // Traditionaly VirtualNetworkInterfaceData specified in the virtualComputeFlavour, but it is reduce flexibility, since the
+    // flavor contains virtual compute related networks, and network configuration for it (eg. QoS). Descided to move it in the
+    // AllocateComputeRequest.
+    repeated VirtualNetworkInterfaceData interfaceData = 6;
+    // IPAM Data of network interfaces which are specific to a Virtual Compute Resource instance. See clause 8.4.3.7.
+    repeated VirtualNetworkInterfaceIPAM interfaceIPAM = 7;
     // List of metadata key-value pairs used by the consumer to associate meaningful metadata to the related virtualised resource.
-    map<string, google.protobuf.Any> metaData = 7;
+    map<string, google.protobuf.Any> metaData = 8;
     // Unique identifier of the "infrastructure resource group", logical grouping of virtual resources assigned to a tenant within an Infrastructure Domain.
     // Cardinality can be 0 if the consumer credentials are implicitly associated to a specific resource group.
-    optional Identifier resourceGroupId = 8;
+    optional Identifier resourceGroupId = 9;
 
     // If present, it defines location constraints for the resource(s) is (are) requested to be allocated, e.g. in what particular resource zone
     // optional string locationConstraints = 9;
@@ -230,7 +235,7 @@ message CreateComputeResourceAffinityOrAntiAffinityConstraintsGroupRequest {
     string group_name = 1;
     // Indicates whether this is an affinity or anti-affinity group.
     TypeOfAffinityOrAntiAffinityConstraint type = 2;
-    // Qualifies the scope of the constraint. 
+    // Qualifies the scope of the constraint.
     optional ScopeOfAffinityOrAntiAffinityConstraintForCompute scope = 3;
 }
 

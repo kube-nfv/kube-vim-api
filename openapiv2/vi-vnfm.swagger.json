@@ -867,7 +867,7 @@
             "type": "object",
             "$ref": "#/definitions/VirtualNetworkInterfaceData"
           },
-          "title": "Virtual network interfaces of the virtualised compute"
+          "title": "Virtual network interfaces of the virtualised compute\nNote(dmalovan): Specifing virtualNetworkInterfaces inside the virtual flavour looks abigious. Instead of identify network\ninterfaces that should be attached to the virtual compute in the flavour them are specified in AllocateVirtualComputeRequest\ndirectly.\n**VirtualNetworkInterfaceData is NOT USED in the VirtualComputeFlavour for the kube-vim**"
         },
         "metadata": {
           "$ref": "#/definitions/Metadata",
@@ -954,23 +954,6 @@
           "type": "number",
           "format": "float",
           "description": "The number of thread in the virtual CPU."
-        }
-      }
-    },
-    "VirtualInterfaceData": {
-      "type": "object",
-      "properties": {
-        "networkId": {
-          "$ref": "#/definitions/Identifier",
-          "description": "In the case when the virtual network interface is attached to the network, it references such a network.\nThe cardinality can be 0 in the case that a network interface is created without being attached to any specific network."
-        },
-        "ipAddress": {
-          "$ref": "#/definitions/IPAddress",
-          "description": "The virtual network interface can be configured with specific IP address(es) associated to the network to be attached to.\nThe cardinality can be 0 in the case that a network interface is created without being attached to any specific network,\nor when an IP address can be automatically configured, e.g. by DHCP."
-        },
-        "macAddress": {
-          "$ref": "#/definitions/MacAddress",
-          "description": "MAC address desired for the virtual network interface.\nThe cardinality can be 0 to allow for network interface without specific MAC address configuration."
         }
       }
     },
@@ -1131,16 +1114,30 @@
       "properties": {
         "networkId": {
           "$ref": "#/definitions/Identifier",
-          "description": "In the case when the virtual network interface is attached to the network, it identifies such a network.\nThe cardinality can be 0 in the case that a network interface is created without being attached to any specific network."
+          "title": "In the case when the virtual network interface is attached to the network, it identifies such a network.\nThe cardinality can be 0 in the case that a network interface is created without being attached to any specific network.\nNote(dmalovan): Either networkId or subnetId can be specified (networkId can be calculated from the subnetId)"
+        },
+        "subnetId": {
+          "$ref": "#/definitions/Identifier",
+          "description": "Note: That is out of the ETSI GS NFV-IFA 006 scope.\nIf the networks has multiple L3 attributes which splice network broadcast domain (eg: VPC network with multiple subnets,\nwhich is communicates over vRouter)\nor subnetId should be specified in Underlay nerwork for dynamic Ip allocation from the given IP address pool.\nThe cardinality can be 0 in the case when VirtualNetworkInterface related to the Underlay (L2) network and does not need\nIP address specification."
         },
         "networkPortId": {
           "$ref": "#/definitions/Identifier",
           "description": "If the virtual network interface is attached to a specific network port, it identifies such a network port.\nThe cardinality can be 0 in the case that a network interface is created without any specific network port attachment."
         },
+        "typeVirtualNic": {
+          "$ref": "#/definitions/VirtualNetworkInterfaceDataTypeVirtualNic"
+        },
+        "typeConfiguration": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Extra configuration that the virtual network interface supports based on the type of virtual network interface.\nTODO: That interface might change."
+        },
         "bandwidth": {
           "type": "number",
           "format": "float",
-          "description": "Note: There is only part of flavour as specified in ETSI GS NFV-IFA 005 and ETSI GS NFV-IFA 006 are included in this version of the present document,\nthe following are attributes not included: typeVirtualNic, typeConfiguration\ntypeVirtualNic = 3;\ntypeConfiguration = 4;\nBandwidth of the virtual network interface (in Mbps)."
+          "description": "Bandwidth of the virtual network interface (in Mbps)."
         },
         "accelerationCapabilityForVirtualNetworkInterface": {
           "type": "array",
@@ -1155,6 +1152,38 @@
         }
       },
       "description": "A virtual network interface is a communication endpoint under a compute resource."
+    },
+    "VirtualNetworkInterfaceDataTypeVirtualNic": {
+      "type": "string",
+      "enum": [
+        "BRIDGE",
+        "PATHTHROUGH",
+        "SRIOV"
+      ],
+      "default": "BRIDGE",
+      "description": "Type of network interface. The type allows for defining how such interface is to be realized,\ne.g. normal virtual NIC, with direct PCI pass-through, SR-IOV, etc.\nNote(dmalovan): typeVirtualNic should define how the VM nic should be connected to the host network.\n\n - BRIDGE: In the simple mode VM's are connected to the network backend through a linux \"bridge\".\n - PATHTHROUGH: In masquerade mode, kubevirt allocates internal IP address to the virtual machines and hide them behind NAT.\nAll egress treaffic is \"SNAT'ed\".\nNote(dmalovan): actually don't think that is needed for NFV usecases.\nMASQUERADE = 1;\nPCI Path-through allows a compute instance to have a direct and exclusive access to the physical PCI devices.\n - SRIOV: Extension of PCIe that allows a single PCI device (NIC) to be shared among multiple VMs."
+    },
+    "VirtualNetworkInterfaceIPAM": {
+      "type": "object",
+      "properties": {
+        "networkId": {
+          "$ref": "#/definitions/Identifier",
+          "title": "In the case when the virtual network interface is attached to the network, it references such a network.\nThe cardinality can be 0 in the case that a network interface is created without being attached to any specific network.\nNote(dmalovan): Either networkId or subnetId can be specified (networkId can be calculated from the subnetId)"
+        },
+        "subnetId": {
+          "$ref": "#/definitions/Identifier",
+          "description": "Note: That is out of the ETSI GS NFV-IFA 006 scope.\nIf the networks has multiple L3 attributes which splice network broadcast domain (eg: VPC network with multiple subnets,\nwhich is communicates over vRouter)\nor subnetId should be specified in Underlay nerwork for dynamic Ip allocation from the given IP address pool.\nThe cardinality can be 0 in the case when VirtualNetworkInterface related to the Underlay (L2) network and does not need\nIP address specification."
+        },
+        "ipAddress": {
+          "$ref": "#/definitions/IPAddress",
+          "description": "The virtual network interface can be configured with specific IP address(es) associated to the network to be attached to.\nThe cardinality can be 0 in the case that a network interface is created without being attached to any specific network,\nor when an IP address can be automatically configured, e.g. by DHCP."
+        },
+        "macAddress": {
+          "$ref": "#/definitions/MacAddress",
+          "description": "MAC address desired for the virtual network interface.\nThe cardinality can be 0 to allow for network interface without specific MAC address configuration."
+        }
+      },
+      "title": "Note: That is out of the ETSI GS NFV-IFA 006 scope.\nVirtualInterfaceData renamed to the VirtualNetworkInterfaceIPAM"
     },
     "VirtualNetworkPort": {
       "type": "object"
@@ -1221,9 +1250,17 @@
           "type": "array",
           "items": {
             "type": "object",
-            "$ref": "#/definitions/VirtualInterfaceData"
+            "$ref": "#/definitions/VirtualNetworkInterfaceData"
           },
-          "description": "Data of network interfaces which are specific to a Virtual Compute Resource instance. See clause 8.4.3.7."
+          "description": "Note: That is out of the ETSI GS NFV-IFA 006 scope.\nTraditionaly VirtualNetworkInterfaceData specified in the virtualComputeFlavour, but it is reduce flexibility, since the\nflavor contains virtual compute related networks, and network configuration for it (eg. QoS). Descided to move it in the\nAllocateComputeRequest."
+        },
+        "interfaceIPAM": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/VirtualNetworkInterfaceIPAM"
+          },
+          "description": "IPAM Data of network interfaces which are specific to a Virtual Compute Resource instance. See clause 8.4.3.7."
         },
         "metaData": {
           "type": "object",

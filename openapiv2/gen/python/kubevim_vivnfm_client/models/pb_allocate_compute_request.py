@@ -23,7 +23,8 @@ from kubevim_vivnfm_client.models.affinity_or_anti_affinity_constraint_for_compu
 from kubevim_vivnfm_client.models.identifier import Identifier
 from kubevim_vivnfm_client.models.protobuf_any import ProtobufAny
 from kubevim_vivnfm_client.models.user_data import UserData
-from kubevim_vivnfm_client.models.virtual_interface_data import VirtualInterfaceData
+from kubevim_vivnfm_client.models.virtual_network_interface_data import VirtualNetworkInterfaceData
+from kubevim_vivnfm_client.models.virtual_network_interface_ipam import VirtualNetworkInterfaceIPAM
 from typing import Optional, Set
 from typing_extensions import Self
 
@@ -36,11 +37,12 @@ class PbAllocateComputeRequest(BaseModel):
     affinity_or_anti_affinity_constraints: Optional[List[AffinityOrAntiAffinityConstraintForCompute]] = Field(default=None, description="List of elements with affinity or anti affinity (see clause 8.4.8.2) information of the virtualised compute resource to be allocated. All the listed constraints shall be fulfilled for a successful operation.", alias="affinityOrAntiAffinityConstraints")
     compute_flavour_id: Optional[Identifier] = Field(default=None, alias="computeFlavourId")
     vc_image_id: Optional[Identifier] = Field(default=None, alias="vcImageId")
-    interface_data: Optional[List[VirtualInterfaceData]] = Field(default=None, description="Data of network interfaces which are specific to a Virtual Compute Resource instance. See clause 8.4.3.7.", alias="interfaceData")
+    interface_data: Optional[List[VirtualNetworkInterfaceData]] = Field(default=None, description="Note: That is out of the ETSI GS NFV-IFA 006 scope. Traditionaly VirtualNetworkInterfaceData specified in the virtualComputeFlavour, but it is reduce flexibility, since the flavor contains virtual compute related networks, and network configuration for it (eg. QoS). Descided to move it in the AllocateComputeRequest.", alias="interfaceData")
+    interface_ipam: Optional[List[VirtualNetworkInterfaceIPAM]] = Field(default=None, description="IPAM Data of network interfaces which are specific to a Virtual Compute Resource instance. See clause 8.4.3.7.", alias="interfaceIPAM")
     meta_data: Optional[Dict[str, ProtobufAny]] = Field(default=None, description="List of metadata key-value pairs used by the consumer to associate meaningful metadata to the related virtualised resource.", alias="metaData")
     resource_group_id: Optional[Identifier] = Field(default=None, alias="resourceGroupId")
     user_data: Optional[UserData] = Field(default=None, alias="userData")
-    __properties: ClassVar[List[str]] = ["computeName", "reservationId", "affinityOrAntiAffinityConstraints", "computeFlavourId", "vcImageId", "interfaceData", "metaData", "resourceGroupId", "userData"]
+    __properties: ClassVar[List[str]] = ["computeName", "reservationId", "affinityOrAntiAffinityConstraints", "computeFlavourId", "vcImageId", "interfaceData", "interfaceIPAM", "metaData", "resourceGroupId", "userData"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -104,6 +106,13 @@ class PbAllocateComputeRequest(BaseModel):
                 if _item_interface_data:
                     _items.append(_item_interface_data.to_dict())
             _dict['interfaceData'] = _items
+        # override the default output from pydantic by calling `to_dict()` of each item in interface_ipam (list)
+        _items = []
+        if self.interface_ipam:
+            for _item_interface_ipam in self.interface_ipam:
+                if _item_interface_ipam:
+                    _items.append(_item_interface_ipam.to_dict())
+            _dict['interfaceIPAM'] = _items
         # override the default output from pydantic by calling `to_dict()` of each value in meta_data (dict)
         _field_dict = {}
         if self.meta_data:
@@ -134,7 +143,8 @@ class PbAllocateComputeRequest(BaseModel):
             "affinityOrAntiAffinityConstraints": [AffinityOrAntiAffinityConstraintForCompute.from_dict(_item) for _item in obj["affinityOrAntiAffinityConstraints"]] if obj.get("affinityOrAntiAffinityConstraints") is not None else None,
             "computeFlavourId": Identifier.from_dict(obj["computeFlavourId"]) if obj.get("computeFlavourId") is not None else None,
             "vcImageId": Identifier.from_dict(obj["vcImageId"]) if obj.get("vcImageId") is not None else None,
-            "interfaceData": [VirtualInterfaceData.from_dict(_item) for _item in obj["interfaceData"]] if obj.get("interfaceData") is not None else None,
+            "interfaceData": [VirtualNetworkInterfaceData.from_dict(_item) for _item in obj["interfaceData"]] if obj.get("interfaceData") is not None else None,
+            "interfaceIPAM": [VirtualNetworkInterfaceIPAM.from_dict(_item) for _item in obj["interfaceIPAM"]] if obj.get("interfaceIPAM") is not None else None,
             "metaData": dict(
                 (_k, ProtobufAny.from_dict(_v))
                 for _k, _v in obj["metaData"].items()

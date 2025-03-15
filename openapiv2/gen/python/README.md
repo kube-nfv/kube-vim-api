@@ -147,11 +147,12 @@ Class | Method | HTTP request | Description
  - [VirtualCpuDataVirtualCpuPinningData](docs/VirtualCpuDataVirtualCpuPinningData.md)
  - [VirtualCpuPinningDataVirtualCpuPinningPolicy](docs/VirtualCpuPinningDataVirtualCpuPinningPolicy.md)
  - [VirtualCpuPinningDataVirtualCpuPinningRule](docs/VirtualCpuPinningDataVirtualCpuPinningRule.md)
- - [VirtualInterfaceData](docs/VirtualInterfaceData.md)
  - [VirtualMemoryData](docs/VirtualMemoryData.md)
  - [VirtualNetwork](docs/VirtualNetwork.md)
  - [VirtualNetworkData](docs/VirtualNetworkData.md)
  - [VirtualNetworkInterfaceData](docs/VirtualNetworkInterfaceData.md)
+ - [VirtualNetworkInterfaceDataTypeVirtualNic](docs/VirtualNetworkInterfaceDataTypeVirtualNic.md)
+ - [VirtualNetworkInterfaceIPAM](docs/VirtualNetworkInterfaceIPAM.md)
  - [VirtualStorageData](docs/VirtualStorageData.md)
 
 

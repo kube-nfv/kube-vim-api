@@ -7,8 +7,11 @@ A virtual network interface is a communication endpoint under a compute resource
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **network_id** | [**Identifier**](Identifier.md) |  | [optional] 
+**subnet_id** | [**Identifier**](Identifier.md) |  | [optional] 
 **network_port_id** | [**Identifier**](Identifier.md) |  | [optional] 
-**bandwidth** | **float** | Note: There is only part of flavour as specified in ETSI GS NFV-IFA 005 and ETSI GS NFV-IFA 006 are included in this version of the present document, the following are attributes not included: typeVirtualNic, typeConfiguration typeVirtualNic &#x3D; 3; typeConfiguration &#x3D; 4; Bandwidth of the virtual network interface (in Mbps). | [optional] 
+**type_virtual_nic** | [**VirtualNetworkInterfaceDataTypeVirtualNic**](VirtualNetworkInterfaceDataTypeVirtualNic.md) |  | [optional] [default to VirtualNetworkInterfaceDataTypeVirtualNic.BRIDGE]
+**type_configuration** | **List[str]** | Extra configuration that the virtual network interface supports based on the type of virtual network interface. TODO: That interface might change. | [optional] 
+**bandwidth** | **float** | Bandwidth of the virtual network interface (in Mbps). | [optional] 
 **acceleration_capability_for_virtual_network_interface** | **List[str]** | It specifies if the virtual network interface requires certain acceleration capabilities (e.g. RDMA, packet dispatch, TCP Chimney). The cardinality can be 0, if no particular acceleration capability is requested. | [optional] 
 **metadata** | [**Metadata**](Metadata.md) |  | [optional] 
 

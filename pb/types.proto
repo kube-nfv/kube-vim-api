@@ -77,17 +77,27 @@ message AffinityOrAntiAffinityConstraintForNetwork {
 
 }
 
-message VirtualInterfaceData {
+// Note: That is out of the ETSI GS NFV-IFA 006 scope.
+// VirtualInterfaceData renamed to the VirtualNetworkInterfaceIPAM
+message VirtualNetworkInterfaceIPAM {
     // In the case when the virtual network interface is attached to the network, it references such a network.
     // The cardinality can be 0 in the case that a network interface is created without being attached to any specific network.
+    // Note(dmalovan): Either networkId or subnetId can be specified (networkId can be calculated from the subnetId)
     optional Identifier networkId = 1;
+    // Note: That is out of the ETSI GS NFV-IFA 006 scope.
+    // If the networks has multiple L3 attributes which splice network broadcast domain (eg: VPC network with multiple subnets,
+    // which is communicates over vRouter)
+    // or subnetId should be specified in Underlay nerwork for dynamic Ip allocation from the given IP address pool.
+    // The cardinality can be 0 in the case when VirtualNetworkInterface related to the Underlay (L2) network and does not need
+    // IP address specification.
+    optional Identifier subnetId = 2;
     // The virtual network interface can be configured with specific IP address(es) associated to the network to be attached to.
     // The cardinality can be 0 in the case that a network interface is created without being attached to any specific network,
     // or when an IP address can be automatically configured, e.g. by DHCP.
-    optional IPAddress ipAddress = 2;
+    optional IPAddress ipAddress = 3;
     // MAC address desired for the virtual network interface.
     // The cardinality can be 0 to allow for network interface without specific MAC address configuration.
-    optional MacAddress macAddress = 3;
+    optional MacAddress macAddress = 4;
 }
 
 // Note: Either set of "privatekey" and "certificateFile" or "keystoreFile" but not both shall be present.
@@ -205,25 +215,49 @@ message VirtualCpu {
 
 }
 
+
 // A virtual network interface is a communication endpoint under a compute resource.
 message VirtualNetworkInterfaceData {
     // In the case when the virtual network interface is attached to the network, it identifies such a network.
     // The cardinality can be 0 in the case that a network interface is created without being attached to any specific network.
+    // Note(dmalovan): Either networkId or subnetId can be specified (networkId can be calculated from the subnetId)
     optional Identifier networkId = 1;
+    // Note: That is out of the ETSI GS NFV-IFA 006 scope.
+    // If the networks has multiple L3 attributes which splice network broadcast domain (eg: VPC network with multiple subnets,
+    // which is communicates over vRouter)
+    // or subnetId should be specified in Underlay nerwork for dynamic Ip allocation from the given IP address pool.
+    // The cardinality can be 0 in the case when VirtualNetworkInterface related to the Underlay (L2) network and does not need
+    // IP address specification.
+    optional Identifier subnetId = 2;
     // If the virtual network interface is attached to a specific network port, it identifies such a network port.
     // The cardinality can be 0 in the case that a network interface is created without any specific network port attachment.
-    optional Identifier networkPortId = 2;
-    // Note: There is only part of flavour as specified in ETSI GS NFV-IFA 005 and ETSI GS NFV-IFA 006 are included in this version of the present document,
-    // the following are attributes not included: typeVirtualNic, typeConfiguration
-    // typeVirtualNic = 3;
-    // typeConfiguration = 4;
+    optional Identifier networkPortId = 3;
+    // Type of network interface. The type allows for defining how such interface is to be realized,
+    // e.g. normal virtual NIC, with direct PCI pass-through, SR-IOV, etc.
+    // Note(dmalovan): typeVirtualNic should define how the VM nic should be connected to the host network.
+    enum TypeVirtualNic {
+        // In the simple mode VM's are connected to the network backend through a linux "bridge".
+        BRIDGE = 0;
+        // In masquerade mode, kubevirt allocates internal IP address to the virtual machines and hide them behind NAT.
+        // All egress treaffic is "SNAT'ed".
+        // Note(dmalovan): actually don't think that is needed for NFV usecases.
+        // MASQUERADE = 1;
+        // PCI Path-through allows a compute instance to have a direct and exclusive access to the physical PCI devices.
+        PATHTHROUGH = 2;
+        // Extension of PCIe that allows a single PCI device (NIC) to be shared among multiple VMs.
+        SRIOV = 3;
+    }
+    TypeVirtualNic typeVirtualNic = 4;
+    // Extra configuration that the virtual network interface supports based on the type of virtual network interface.
+    // TODO: That interface might change.
+    repeated string typeConfiguration = 5;
     // Bandwidth of the virtual network interface (in Mbps).
-    optional float bandwidth = 5;
+    optional float bandwidth = 6;
     // It specifies if the virtual network interface requires certain acceleration capabilities (e.g. RDMA, packet dispatch, TCP Chimney).
     // The cardinality can be 0, if no particular acceleration capability is requested.
-    repeated string accelerationCapabilityForVirtualNetworkInterface = 6;
+    repeated string accelerationCapabilityForVirtualNetworkInterface = 7;
     // List of metadata key-value pairs used by the consumer to associate meaningful metadata to the related virtualised resource.
-    Metadata metadata = 7;
+    Metadata metadata = 8;
 }
 
 message VirtualNetworkInterface {
@@ -265,6 +299,10 @@ message VirtualComputeFlavour {
     // Contains information about the size of virtualised storage resource (e.g. size of volume, in GB), the type of storage (e.g. volume, object), and support for RDMA.
     repeated VirtualStorageData storageAttributes = 6;
     // Virtual network interfaces of the virtualised compute
+    // Note(dmalovan): Specifing virtualNetworkInterfaces inside the virtual flavour looks abigious. Instead of identify network
+    // interfaces that should be attached to the virtual compute in the flavour them are specified in AllocateVirtualComputeRequest
+    // directly.
+    // **VirtualNetworkInterfaceData is NOT USED in the VirtualComputeFlavour for the kube-vim**
     repeated VirtualNetworkInterfaceData virtualNetworkInterface = 7;
     // List of metadata key-value pairs used by the consumer to associate meaningful metadata to the related virtualised resource.
     Metadata metadata = 8;

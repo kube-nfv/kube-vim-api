@@ -25,9 +25,9 @@ from kubevim_vivnfm_client.models.mac_address import MacAddress
 from typing import Optional, Set
 from typing_extensions import Self
 
-class VirtualInterfaceData(BaseModel):
+class VirtualNetworkInterfaceIPAM(BaseModel):
     """
-    VirtualInterfaceData
+    VirtualNetworkInterfaceIPAM
     """ # noqa: E501
     network_id: Optional[Identifier] = Field(default=None, alias="networkId")
     subnet_id: Optional[Identifier] = Field(default=None, alias="subnetId")
@@ -53,7 +53,7 @@ class VirtualInterfaceData(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of VirtualInterfaceData from a JSON string"""
+        """Create an instance of VirtualNetworkInterfaceIPAM from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -90,7 +90,7 @@ class VirtualInterfaceData(BaseModel):
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of VirtualInterfaceData from a dict"""
+        """Create an instance of VirtualNetworkInterfaceIPAM from a dict"""
         if obj is None:
             return None
 
