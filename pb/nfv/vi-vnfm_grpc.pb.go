@@ -36,7 +36,9 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ViVnfmClient interface {
-	// This operation allows querying the information of software images in the image repository managed by the VIM.
+	// Software Image Management Interface
+	// Requirements: The Software Image Management interface produced by the VIM on the reference point Vi-Vnfm
+	// shall support querying information of software image(s) from the VIM.
 	// Result: As a result of this operation, the producer (VIM) shall indicate to the consumer (VNFM) whether or not it was possible to process the query
 	QueryImages(ctx context.Context, in *QueryImagesRequest, opts ...grpc.CallOption) (*QueryImagesResponse, error)
 	// This operation allows querying the information about a specific software image in the image repository managed by the VIM.
@@ -210,7 +212,9 @@ func (c *viVnfmClient) TerminateVirtualisedNetworkResource(ctx context.Context, 
 // All implementations must embed UnimplementedViVnfmServer
 // for forward compatibility
 type ViVnfmServer interface {
-	// This operation allows querying the information of software images in the image repository managed by the VIM.
+	// Software Image Management Interface
+	// Requirements: The Software Image Management interface produced by the VIM on the reference point Vi-Vnfm
+	// shall support querying information of software image(s) from the VIM.
 	// Result: As a result of this operation, the producer (VIM) shall indicate to the consumer (VNFM) whether or not it was possible to process the query
 	QueryImages(context.Context, *QueryImagesRequest) (*QueryImagesResponse, error)
 	// This operation allows querying the information about a specific software image in the image repository managed by the VIM.

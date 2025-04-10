@@ -5,7 +5,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**network_resource_id** | [**Identifier**](Identifier.md) |  | [optional] 
+**network_resource_id** | [**Identifier**](Identifier.md) |  | 
 
 ## Example
 

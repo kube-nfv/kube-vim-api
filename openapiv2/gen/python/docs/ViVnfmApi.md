@@ -12,7 +12,7 @@ Method | HTTP request | Description
 [**vi_vnfm_query_compute_flavour**](ViVnfmApi.md#vi_vnfm_query_compute_flavour) | **GET** /vivnfm/v5/flavours | This operation allows querying information about created Compute Flavours. Result: After successful operation, the VIM has queried the internal management objects for the Compute Flavours. The result of the query shall indicate with a standard success/error result if the query has been processed correctly. For a particular query, information about the Compute Flavours that the VNFM has access to and that are matching the filter shall be returned.
 [**vi_vnfm_query_image**](ViVnfmApi.md#vi_vnfm_query_image) | **GET** /vivnfm/v5/images/{softwareImageId.value} | This operation allows querying the information about a specific software image in the image repository managed by the VIM. Result: As a result of this operation, the producer (VIM) shall indicate to the consumer (VNFM) whether or not it was possible to process the query.
 [**vi_vnfm_query_image2**](ViVnfmApi.md#vi_vnfm_query_image2) | **POST** /vivnfm/v5/images | This operation allows querying the information about a specific software image in the image repository managed by the VIM. Result: As a result of this operation, the producer (VIM) shall indicate to the consumer (VNFM) whether or not it was possible to process the query.
-[**vi_vnfm_query_images**](ViVnfmApi.md#vi_vnfm_query_images) | **GET** /vivnfm/v5/images | This operation allows querying the information of software images in the image repository managed by the VIM. Result: As a result of this operation, the producer (VIM) shall indicate to the consumer (VNFM) whether or not it was possible to process the query
+[**vi_vnfm_query_images**](ViVnfmApi.md#vi_vnfm_query_images) | **GET** /vivnfm/v5/images | Software Image Management Interface Requirements: The Software Image Management interface produced by the VIM on the reference point Vi-Vnfm shall support querying information of software image(s) from the VIM. Result: As a result of this operation, the producer (VIM) shall indicate to the consumer (VNFM) whether or not it was possible to process the query
 [**vi_vnfm_query_virtualised_compute_resource**](ViVnfmApi.md#vi_vnfm_query_virtualised_compute_resource) | **GET** /vivnfm/v5/compute | This operation allows querying information about instantiated virtualised compute resources.
 [**vi_vnfm_query_virtualised_network_resource**](ViVnfmApi.md#vi_vnfm_query_virtualised_network_resource) | **GET** /vivnfm/v5/networks | This operation allows querying information about instantiated virtualised network resources. Result: After successful operation, the VIM has queried the internal management objects for the virtualised network resources. The result of the query shall indicate with a standard success/error result if the query has been processed correctly. For a particular query, information about the network resources that the VNFM has access to and that are matching the filter shall be returned.
 [**vi_vnfm_terminate_virtualised_network_resource**](ViVnfmApi.md#vi_vnfm_terminate_virtualised_network_resource) | **DELETE** /vivnfm/v5/networks/{networkResourceId.value} | This operation allows de-allocating and terminating one or more an instantiated virtualised network resource(s). When the operation is done on multiple ids, it is assumed to be best-effort, i.e. it can succeed for a subset of the ids, and fail for the remaining ones. Result: After successful operation, the VIM has terminated the virtualised network resources and removed the internal management objects for those resources. In addition, the VIM shall return to the VNFM information on the terminated virtualised network resource plus any additional information about the terminate request operation. If the operation was not successful, the VIM shall return to the VNFM appropriate error information.
@@ -561,7 +561,7 @@ No authorization required
 # **vi_vnfm_query_images**
 > PbQueryImagesResponse vi_vnfm_query_images(image_query_filter_value=image_query_filter_value)
 
-This operation allows querying the information of software images in the image repository managed by the VIM. Result: As a result of this operation, the producer (VIM) shall indicate to the consumer (VNFM) whether or not it was possible to process the query
+Software Image Management Interface Requirements: The Software Image Management interface produced by the VIM on the reference point Vi-Vnfm shall support querying information of software image(s) from the VIM. Result: As a result of this operation, the producer (VIM) shall indicate to the consumer (VNFM) whether or not it was possible to process the query
 
 ### Example
 
@@ -586,7 +586,7 @@ with kubevim_vivnfm_client.ApiClient(configuration) as api_client:
     image_query_filter_value = 'image_query_filter_value_example' # str |  (optional)
 
     try:
-        # This operation allows querying the information of software images in the image repository managed by the VIM. Result: As a result of this operation, the producer (VIM) shall indicate to the consumer (VNFM) whether or not it was possible to process the query
+        # Software Image Management Interface Requirements: The Software Image Management interface produced by the VIM on the reference point Vi-Vnfm shall support querying information of software image(s) from the VIM. Result: As a result of this operation, the producer (VIM) shall indicate to the consumer (VNFM) whether or not it was possible to process the query
         api_response = api_instance.vi_vnfm_query_images(image_query_filter_value=image_query_filter_value)
         print("The response of ViVnfmApi->vi_vnfm_query_images:\n")
         pprint(api_response)
@@ -693,7 +693,7 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **vi_vnfm_query_virtualised_network_resource**
-> PbQueryNetworkResponse vi_vnfm_query_virtualised_network_resource(query_network_filter_value=query_network_filter_value, network_resource_type=network_resource_type)
+> PbQueryNetworkResponse vi_vnfm_query_virtualised_network_resource(network_resource_type, query_network_filter_value=query_network_filter_value)
 
 This operation allows querying information about instantiated virtualised network resources. Result: After successful operation, the VIM has queried the internal management objects for the virtualised network resources. The result of the query shall indicate with a standard success/error result if the query has been processed correctly. For a particular query, information about the network resources that the VNFM has access to and that are matching the filter shall be returned.
 
@@ -717,12 +717,12 @@ configuration = kubevim_vivnfm_client.Configuration(
 with kubevim_vivnfm_client.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = kubevim_vivnfm_client.ViVnfmApi(api_client)
+    network_resource_type = NETWORK # str | Note: this message goes out of ETSI GS NFV-IFA 006 reference but it is required to identify network resource type while performing query. Later the filter will be applied to that network resource type. (default to NETWORK)
     query_network_filter_value = 'query_network_filter_value_example' # str |  (optional)
-    network_resource_type = NETWORK # str | Note: this message goes out of ETSI GS NFV-IFA 006 reference but it is required to identify network resource type while performing query. Later the filter will be applied to that network resource type. (optional) (default to NETWORK)
 
     try:
         # This operation allows querying information about instantiated virtualised network resources. Result: After successful operation, the VIM has queried the internal management objects for the virtualised network resources. The result of the query shall indicate with a standard success/error result if the query has been processed correctly. For a particular query, information about the network resources that the VNFM has access to and that are matching the filter shall be returned.
-        api_response = api_instance.vi_vnfm_query_virtualised_network_resource(query_network_filter_value=query_network_filter_value, network_resource_type=network_resource_type)
+        api_response = api_instance.vi_vnfm_query_virtualised_network_resource(network_resource_type, query_network_filter_value=query_network_filter_value)
         print("The response of ViVnfmApi->vi_vnfm_query_virtualised_network_resource:\n")
         pprint(api_response)
     except Exception as e:
@@ -736,8 +736,8 @@ with kubevim_vivnfm_client.ApiClient(configuration) as api_client:
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
+ **network_resource_type** | **str**| Note: this message goes out of ETSI GS NFV-IFA 006 reference but it is required to identify network resource type while performing query. Later the filter will be applied to that network resource type. | [default to NETWORK]
  **query_network_filter_value** | **str**|  | [optional] 
- **network_resource_type** | **str**| Note: this message goes out of ETSI GS NFV-IFA 006 reference but it is required to identify network resource type while performing query. Later the filter will be applied to that network resource type. | [optional] [default to NETWORK]
 
 ### Return type
 

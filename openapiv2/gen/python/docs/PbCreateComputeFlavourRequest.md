@@ -5,7 +5,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**flavour** | [**VirtualComputeFlavour**](VirtualComputeFlavour.md) |  | [optional] 
+**flavour** | [**VirtualComputeFlavour**](VirtualComputeFlavour.md) |  | 
 
 ## Example
 

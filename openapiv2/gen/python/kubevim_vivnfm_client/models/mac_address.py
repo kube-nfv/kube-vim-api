@@ -18,7 +18,7 @@ import re  # noqa: F401
 import json
 
 from pydantic import BaseModel, ConfigDict, StrictStr
-from typing import Any, ClassVar, Dict, List, Optional
+from typing import Any, ClassVar, Dict, List
 from typing import Optional, Set
 from typing_extensions import Self
 
@@ -26,7 +26,7 @@ class MacAddress(BaseModel):
     """
     MacAddress
     """ # noqa: E501
-    mac: Optional[StrictStr] = None
+    mac: StrictStr
     __properties: ClassVar[List[str]] = ["mac"]
 
     model_config = ConfigDict(

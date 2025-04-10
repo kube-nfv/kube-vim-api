@@ -3,19 +3,20 @@ syntax = "proto3";
 option go_package = "github.com/kube-nfv/kube-vim-api/pb/nfv";
 
 import "google/protobuf/any.proto";
+import "google/api/field_behavior.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
 
 message Identifier {
     // UUID Identifier representation
-    string value = 1;
+    string value = 1 [(google.api.field_behavior) = REQUIRED];
 }
 
 message Filter {
-    string value = 1;
-}
-
-message KeyValuePair {
-    string key = 1;
-    google.protobuf.Any value = 2;
+    string value = 1 [
+      (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+        default: "",
+      }
+    ];
 }
 
 // IP version of the network/subnetwork.
@@ -25,26 +26,26 @@ enum IPVersion {
 }
 
 message IPAddress {
-    string ip = 1;
+    string ip = 1 [(google.api.field_behavior) = REQUIRED];
 }
 
 message MacAddress {
-    string mac = 2;
+    string mac = 2 [(google.api.field_behavior) = REQUIRED];
 }
 
 message IPSubnet {
-    string ip = 1;
-    string mask = 2;
+    string ip = 1 [(google.api.field_behavior) = REQUIRED];
+    string mask = 2 [(google.api.field_behavior) = REQUIRED];
 }
 
 message IPSubnetCIDR {
-    string cidr = 1;
+    string cidr = 1 [(google.api.field_behavior) = REQUIRED];
 }
 
 // TODO: Might be few ranges specified in pool
 message IPAddressPool {
-    IPAddress startIP = 1;
-    IPAddress endIP = 2;
+    IPAddress startIP = 1 [(google.api.field_behavior) = REQUIRED];
+    IPAddress endIP = 2 [(google.api.field_behavior) = REQUIRED];
 }
 
 enum OperationalState {

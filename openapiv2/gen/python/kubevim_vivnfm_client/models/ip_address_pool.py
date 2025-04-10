@@ -18,7 +18,7 @@ import re  # noqa: F401
 import json
 
 from pydantic import BaseModel, ConfigDict, Field
-from typing import Any, ClassVar, Dict, List, Optional
+from typing import Any, ClassVar, Dict, List
 from kubevim_vivnfm_client.models.ip_address import IPAddress
 from typing import Optional, Set
 from typing_extensions import Self
@@ -27,8 +27,8 @@ class IPAddressPool(BaseModel):
     """
     IPAddressPool
     """ # noqa: E501
-    start_ip: Optional[IPAddress] = Field(default=None, alias="startIP")
-    end_ip: Optional[IPAddress] = Field(default=None, alias="endIP")
+    start_ip: IPAddress = Field(alias="startIP")
+    end_ip: IPAddress = Field(alias="endIP")
     __properties: ClassVar[List[str]] = ["startIP", "endIP"]
 
     model_config = ConfigDict(

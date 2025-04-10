@@ -18,7 +18,7 @@ import re  # noqa: F401
 import json
 
 from pydantic import BaseModel, ConfigDict, Field
-from typing import Any, ClassVar, Dict, List, Optional
+from typing import Any, ClassVar, Dict, List
 from kubevim_vivnfm_client.models.identifier import Identifier
 from typing import Optional, Set
 from typing_extensions import Self
@@ -27,7 +27,7 @@ class PbCreateComputeResourceAffinityOrAntiAffinityConstraintsGroupResponse(Base
     """
     PbCreateComputeResourceAffinityOrAntiAffinityConstraintsGroupResponse
     """ # noqa: E501
-    group_id: Optional[Identifier] = Field(default=None, alias="groupId")
+    group_id: Identifier = Field(alias="groupId")
     __properties: ClassVar[List[str]] = ["groupId"]
 
     model_config = ConfigDict(

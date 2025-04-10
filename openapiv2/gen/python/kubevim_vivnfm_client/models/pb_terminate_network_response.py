@@ -18,7 +18,7 @@ import re  # noqa: F401
 import json
 
 from pydantic import BaseModel, ConfigDict, Field
-from typing import Any, ClassVar, Dict, List, Optional
+from typing import Any, ClassVar, Dict, List
 from kubevim_vivnfm_client.models.identifier import Identifier
 from typing import Optional, Set
 from typing_extensions import Self
@@ -27,7 +27,7 @@ class PbTerminateNetworkResponse(BaseModel):
     """
     PbTerminateNetworkResponse
     """ # noqa: E501
-    network_resource_id: Optional[Identifier] = Field(default=None, alias="networkResourceId")
+    network_resource_id: Identifier = Field(alias="networkResourceId")
     __properties: ClassVar[List[str]] = ["networkResourceId"]
 
     model_config = ConfigDict(

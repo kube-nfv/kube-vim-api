@@ -10,6 +10,7 @@ import "google/protobuf/any.proto";
 // For the grpc-gateway
 import "google/api/annotations.proto";
 import "google/api/visibility.proto";
+import "google/api/field_behavior.proto";
 import "protoc-gen-openapiv2/options/annotations.proto";
 
 option go_package = "github.com/kube-nfv/kube-vim-api/pb/nfv";
@@ -20,8 +21,6 @@ service vi_vnfm {
     // Software Image Management Interface
     // Requirements: The Software Image Management interface produced by the VIM on the reference point Vi-Vnfm
     // shall support querying information of software image(s) from the VIM.
-
-    // This operation allows querying the information of software images in the image repository managed by the VIM.
     // Result: As a result of this operation, the producer (VIM) shall indicate to the consumer (VNFM) whether or not it was possible to process the query
     rpc QueryImages(QueryImagesRequest) returns (QueryImagesResponse) {
         option(google.api.http) = {
@@ -161,46 +160,46 @@ service vi_vnfm {
 }
 
 message QueryImagesRequest {
-    Filter imageQueryFilter = 1;
+    Filter imageQueryFilter = 1 [(google.api.field_behavior) = OPTIONAL];
 }
 
 message QueryImagesResponse {
-    repeated SoftwareImageInformation softwareImagesInformation = 1;
+    repeated SoftwareImageInformation softwareImagesInformation = 1 [(google.api.field_behavior) = REQUIRED];
 }
 
 message QueryImageRequest {
-    Identifier softwareImageId = 1;
+    Identifier softwareImageId = 1 [(google.api.field_behavior) = REQUIRED];
 }
 
 message QueryImageResponse {
-    optional SoftwareImageInformation softwareImageInformation = 1;
+    optional SoftwareImageInformation softwareImageInformation = 1 [(google.api.field_behavior) = OPTIONAL];
 }
 
 message AllocateComputeRequest {
     // Name provided by the consumer for the virtualised compute resource to be allocated. It can be used for identifying resources from consumer side.
-    optional string computeName = 1;
+    optional string computeName = 1 [(google.api.field_behavior) = OPTIONAL];
     // Identifier of the resource reservation applicable to this virtualised resource management operation.
-    optional Identifier reservationId = 2;
+    optional Identifier reservationId = 2 [(google.api.field_behavior) = OPTIONAL];
     // List of elements with affinity or anti affinity (see clause 8.4.8.2) information of the virtualised compute resource to be allocated.
     // All the listed constraints shall be fulfilled for a successful operation.
-    repeated AffinityOrAntiAffinityConstraintForCompute affinityOrAntiAffinityConstraints = 3;
+    repeated AffinityOrAntiAffinityConstraintForCompute affinityOrAntiAffinityConstraints = 3 [(google.api.field_behavior) = OPTIONAL];
     // Identifier of the Compute Flavour, that is providing information about the particular memory, CPU and disk resources for virtualised compute resource to
     // be allocated. The Compute Flavour is created with Create Compute Flavour operation (clause 7.3.4.2). For the content of Compute Flavour see clause 8.4.2.2.
-    Identifier computeFlavourId = 4;
+    Identifier computeFlavourId = 4 [(google.api.field_behavior) = REQUIRED];
     // Identifier of the virtualisation container software image (e.g. a virtual machine image). Cardinality can be 0 if an "empty" virtualisation container is allocated.
-    optional Identifier vcImageId = 5;
+    optional Identifier vcImageId = 5 [(google.api.field_behavior) = OPTIONAL];
     // Note: That is out of the ETSI GS NFV-IFA 006 scope.
     // Traditionaly VirtualNetworkInterfaceData specified in the virtualComputeFlavour, but it is reduce flexibility, since the
     // flavor contains virtual compute related networks, and network configuration for it (eg. QoS). Descided to move it in the
     // AllocateComputeRequest.
-    repeated VirtualNetworkInterfaceData interfaceData = 6;
+    repeated VirtualNetworkInterfaceData interfaceData = 6 [(google.api.field_behavior) = OPTIONAL];
     // IPAM Data of network interfaces which are specific to a Virtual Compute Resource instance. See clause 8.4.3.7.
-    repeated VirtualNetworkInterfaceIPAM interfaceIPAM = 7;
+    repeated VirtualNetworkInterfaceIPAM interfaceIPAM = 7 [(google.api.field_behavior) = OPTIONAL];
     // List of metadata key-value pairs used by the consumer to associate meaningful metadata to the related virtualised resource.
-    map<string, google.protobuf.Any> metaData = 8;
+    map<string, google.protobuf.Any> metaData = 8 [(google.api.field_behavior) = OPTIONAL];
     // Unique identifier of the "infrastructure resource group", logical grouping of virtual resources assigned to a tenant within an Infrastructure Domain.
     // Cardinality can be 0 if the consumer credentials are implicitly associated to a specific resource group.
-    optional Identifier resourceGroupId = 9;
+    optional Identifier resourceGroupId = 9 [(google.api.field_behavior) = OPTIONAL];
 
     // If present, it defines location constraints for the resource(s) is (are) requested to be allocated, e.g. in what particular resource zone
     // optional string locationConstraints = 9;
@@ -211,63 +210,63 @@ message AllocateComputeRequest {
     // one or multiple certificate data obtained from CMF when delegation-mode is used. The user data is transparent to the VIM.
     // It is passed to the allocated virtualised compute resource where it is up to the guest software to avail of
     // it in order to e.g. configure credentials, address information, install certificates, etc.
-    optional UserData userData = 10;
+    optional UserData userData = 10 [(google.api.field_behavior) = OPTIONAL];
 }
 
 message AllocateComputeResponse {
-    VirtualCompute computeData = 1;
+    VirtualCompute computeData = 1 [(google.api.field_behavior) = REQUIRED];
 }
 
 message QueryComputeRequest {
     // Query filter based on e.g. name, identifier, meta-data information or status information, expressing the type of
     // information to be retrieved. It can also be used to specify one or more resources to be queried by providing their identifiers.
-    Filter queryComputeFilter = 1;
+    Filter queryComputeFilter = 1 [(google.api.field_behavior) = OPTIONAL];
 }
 
 message QueryComputeResponse {
     // Contains information about the virtual compute resource(s) matching the filter. The cardinality can be 0 if no matching
     // compute resources exist.
-    repeated VirtualCompute queryResult = 1;
+    repeated VirtualCompute queryResult = 1 [(google.api.field_behavior) = REQUIRED];
 }
 
 message CreateComputeResourceAffinityOrAntiAffinityConstraintsGroupRequest {
     // Name of the group, given by the consumer
-    string group_name = 1;
+    string group_name = 1 [(google.api.field_behavior) = REQUIRED];
     // Indicates whether this is an affinity or anti-affinity group.
-    TypeOfAffinityOrAntiAffinityConstraint type = 2;
+    TypeOfAffinityOrAntiAffinityConstraint type = 2 [(google.api.field_behavior) = REQUIRED];
     // Qualifies the scope of the constraint.
-    optional ScopeOfAffinityOrAntiAffinityConstraintForCompute scope = 3;
+    optional ScopeOfAffinityOrAntiAffinityConstraintForCompute scope = 3 [(google.api.field_behavior) = OPTIONAL];
 }
 
 message CreateComputeResourceAffinityOrAntiAffinityConstraintsGroupResponse {
     // Identifier of the group
-    Identifier groupId = 1;
+    Identifier groupId = 1 [(google.api.field_behavior) = REQUIRED];
 }
 
 message CreateComputeFlavourRequest {
     // Provides information about the particular memory, CPU and disk resources for virtualised compute resource to be allocated.
-    VirtualComputeFlavour flavour = 1;
+    VirtualComputeFlavour flavour = 1 [(google.api.field_behavior) = REQUIRED];
 }
 
 message CreateComputeFlavourResponse {
     // Identifier of the created Compute Flavour.
-    Identifier flavourId = 1;
+    Identifier flavourId = 1 [(google.api.field_behavior) = REQUIRED];
 }
 
 message QueryComputeFlavourRequest {
     // Query filter based on e.g. name, identifier, meta-data information or status information, expressing the type of information to be retrieved.
     // It can also be used to specify one or more Compute Flavours to be queried by providing their identifiers.
-    Filter queryComputeFlavourFilter = 1;
+    Filter queryComputeFlavourFilter = 1 [(google.api.field_behavior) = OPTIONAL];
 }
 
 message QueryComputeFlavourResponse {
     // List of Compute Flavours matching the query.
-    repeated VirtualComputeFlavour flavours = 1;
+    repeated VirtualComputeFlavour flavours = 1 [(google.api.field_behavior) = REQUIRED];
 }
 
 message DeleteComputeFlavourRequest {
     // Identifier of the Compute Flavour to be deleted.
-    Identifier computeFlavourId = 1;
+    Identifier computeFlavourId = 1 [(google.api.field_behavior) = REQUIRED];
 }
 
 message DeleteComputeFlavourResponse {
@@ -276,48 +275,48 @@ message DeleteComputeFlavourResponse {
 
 message AllocateNetworkRequest {
     // Name provided by the consumer for the virtualised network resource to be allocated. It can be used for identifying resources from consumer side.
-    optional string networkResourceName = 1;
+    optional string networkResourceName = 1 [(google.api.field_behavior) = OPTIONAL];
     // Identifier of the resource reservation applicable to this virtualised resource management operation.
-    optional Identifier reservationId = 2;
+    optional Identifier reservationId = 2 [(google.api.field_behavior) = OPTIONAL];
 
-    optional NetworkResourceType networkResourceType = 3;
+    NetworkResourceType networkResourceType = 3 [(google.api.field_behavior) = REQUIRED];
     // Provides information about the particular virtual network resource to be created. Cardinality can be "0" depending on the value of networkResourceType.
-    optional VirtualNetworkData typeNetworkData = 4;
+    optional VirtualNetworkData typeNetworkData = 4 [(google.api.field_behavior) = OPTIONAL];
     // Provides information about the particular sub-network resource to be created. Cardinality can be "0" depending on the value of networkResourceType.
-    optional NetworkSubnetData typeSubnetData = 5;
+    optional NetworkSubnetData typeSubnetData = 5 [(google.api.field_behavior) = OPTIONAL];
     // Provides information about the particular network port to be created. Cardinality can be "0" depending on the value of networkResourceType.
-    optional VirtualNetworkPortData typeNetworkPortData = 6;
+    optional VirtualNetworkPortData typeNetworkPortData = 6 [(google.api.field_behavior) = OPTIONAL];
     // Provides information about the particular trunk to be created. Cardinality can be "0" depending on the value of networkResourceType.
-    optional VirtualTrunkData typeTrunkData = 7;
+    optional VirtualTrunkData typeTrunkData = 7 [(google.api.field_behavior) = OPTIONAL];
     // List of elements with affinity or anti affinity (see clause 8.4.8.2) information of the virtualised network resource to be allocated.
     // All the listed constraints shall be fulfilled for a successful operation.
-    repeated AffinityOrAntiAffinityConstraintForNetwork affinityOrAntiAffinityConstraints = 8;
+    repeated AffinityOrAntiAffinityConstraintForNetwork affinityOrAntiAffinityConstraints = 8 [(google.api.field_behavior) = OPTIONAL];
     // If present, it defines location constraints for the resource(s) to be allocated, e.g. in what particular resource zone.
-    optional string locationConstraintsForNetwork = 9;
+    optional string locationConstraintsForNetwork = 9 [(google.api.field_behavior) = OPTIONAL];
     // List of metadata key-value pairs used by the consumer to associate meaningful metadata to the related virtualised resource.
-    map<string, google.protobuf.Any> metaData = 10;
+    map<string, google.protobuf.Any> metaData = 10 [(google.api.field_behavior) = OPTIONAL];
     // Unique identifier of the "infrastructure resource group", logical grouping of virtual resources assigned to a tenant within an Infrastructure Domain.
     // Cardinality can be 0 if the consumer credentials are implicitly associated to a specific resource group.
-    optional Identifier resourceGroupId = 11;
+    optional Identifier resourceGroupId = 11 [(google.api.field_behavior) = OPTIONAL];
 }
 
 
 message AllocateNetworkResponse {
     // If network types are created satisfactorily, it contains the data relative to the instantiated virtualised network resource.
     // Cardinality can be "0" if the request did not include creation of such type of resource.
-    optional VirtualNetwork networkData = 1;
+    optional VirtualNetwork networkData = 1 [(google.api.field_behavior) = OPTIONAL];
     // If subnet types are created satisfactorily, it contains the data relative to the allocated subnet.
     // Cardinality can be "0" if the request did not include creation of such type of resource.
-    optional NetworkSubnet subnetData = 2;
+    optional NetworkSubnet subnetData = 2 [(google.api.field_behavior) = OPTIONAL];
     // If network port types are created satisfactorily, it contains the data relative to the allocated network port.
     // Cardinality can be "0" if the request did not include creation of such type of resource.
-    optional VirtualNetworkPort networkPortData = 3;
+    optional VirtualNetworkPort networkPortData = 3 [(google.api.field_behavior) = OPTIONAL];
     // If trunk types are created satisfactorily, it contains the data relative to the allocated trunk.
     // Cardinality can be "0" if the request did not include creation of such type of resource.
-    optional VirtualTrunk trunkData = 4;
+    optional VirtualTrunk trunkData = 4 [(google.api.field_behavior) = OPTIONAL];
     // If routing resource types are created satisfactorily, it contains the data relative to the allocated routing resource.
     // Cardinality can be "0" if the request did not include creation of such type of resource.
-    optional RoutingResource routingResourceData = 5;
+    optional RoutingResource routingResourceData = 5 [(google.api.field_behavior) = OPTIONAL];
 }
 
 message QueryNetworkRequest {
@@ -326,12 +325,12 @@ message QueryNetworkRequest {
     // information to be retrieved. It can also be used to specify
     // one or more resources to be queried by providing their
     // identifiers.
-    Filter queryNetworkFilter = 1;
+    Filter queryNetworkFilter = 1 [(google.api.field_behavior) = OPTIONAL];
 
     // Note: this message goes out of ETSI GS NFV-IFA 006 reference but
     // it is required to identify network resource type while performing query.
     // Later the filter will be applied to that network resource type.
-    NetworkResourceType networkResourceType = 99;
+    NetworkResourceType networkResourceType = 99 [(google.api.field_behavior) = REQUIRED];
 }
 
 // Note: This message goes out of ETSI GS NFV-IFA 006 reference
@@ -342,22 +341,22 @@ message QueryNetworkResponse {
     // Cardinality can be "0" if no matching network resources
     // exist.
     // Note: that field should be named as a queryResult in ETSI GS NFV-IFA 006 spec
-    repeated VirtualNetwork queryNetworkResult = 1;
+    repeated VirtualNetwork queryNetworkResult = 1 [(google.api.field_behavior) = OPTIONAL];
     // Contains information about the virtual subnet(s)
     // matching the filter.
     // Cardinality can be "0" if no matching subnets
     // exist.
     // Note: that field does not exists in ETSI GS NFV-IFA 006 spec
-    repeated NetworkSubnet querySubnetResult = 2;
+    repeated NetworkSubnet querySubnetResult = 2 [(google.api.field_behavior) = OPTIONAL];
     // Contains information about the virtual network port(s)
     // matching the filter.
     // Cardinality can be "0" if no matching network ports
     // exist.
     // Note: that field does not exists in ETSI GS NFV-IFA 006 spec
-    repeated VirtualNetworkPort queryNetworkPortResult = 3;
+    repeated VirtualNetworkPort queryNetworkPortResult = 3 [(google.api.field_behavior) = OPTIONAL];
     // Contains information about the virtual trunk(s) matching the
     // filter. Cardinality can be "0" if no matching virtual trunk
-    repeated VirtualTrunk queryTrunkResult = 4;
+    repeated VirtualTrunk queryTrunkResult = 4 [(google.api.field_behavior) = OPTIONAL];
 }
 
 // Note: This message goes out of ETSI GS NFV-IFA 006 reference
@@ -366,7 +365,7 @@ message QueryNetworkResponse {
 message TerminateNetworkRequest {
     // Identifier of the virtualised network
     // resource(s) to be terminated.
-    Identifier networkResourceId = 1;
+    Identifier networkResourceId = 1 [(google.api.field_behavior) = REQUIRED];
 }
 
 // Note: This message goes out of ETSI GS NFV-IFA 006 reference.
@@ -374,5 +373,5 @@ message TerminateNetworkRequest {
 message TerminateNetworkResponse {
     // Identifier of the virtualised network
     // resource(s) successfully terminated.
-    Identifier networkResourceId = 1;
+    Identifier networkResourceId = 1 [(google.api.field_behavior) = REQUIRED];
 }

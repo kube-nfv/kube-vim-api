@@ -5,7 +5,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**group_id** | [**Identifier**](Identifier.md) |  | [optional] 
+**group_id** | [**Identifier**](Identifier.md) |  | 
 
 ## Example
 

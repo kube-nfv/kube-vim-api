@@ -5,7 +5,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**flavour_id** | [**Identifier**](Identifier.md) |  | [optional] 
+**flavour_id** | [**Identifier**](Identifier.md) |  | 
 
 ## Example
 

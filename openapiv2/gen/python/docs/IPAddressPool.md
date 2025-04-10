@@ -5,8 +5,8 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**start_ip** | [**IPAddress**](IPAddress.md) |  | [optional] 
-**end_ip** | [**IPAddress**](IPAddress.md) |  | [optional] 
+**start_ip** | [**IPAddress**](IPAddress.md) |  | 
+**end_ip** | [**IPAddress**](IPAddress.md) |  | 
 
 ## Example
 

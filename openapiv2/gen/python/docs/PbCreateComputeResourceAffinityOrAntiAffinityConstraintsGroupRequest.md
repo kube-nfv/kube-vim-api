@@ -5,8 +5,8 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**group_name** | **str** |  | [optional] 
-**type** | [**TypeOfAffinityOrAntiAffinityConstraint**](TypeOfAffinityOrAntiAffinityConstraint.md) |  | [optional] [default to TypeOfAffinityOrAntiAffinityConstraint.AFFINITY]
+**group_name** | **str** |  | 
+**type** | [**TypeOfAffinityOrAntiAffinityConstraint**](TypeOfAffinityOrAntiAffinityConstraint.md) |  | [default to TypeOfAffinityOrAntiAffinityConstraint.AFFINITY]
 **scope** | [**ScopeOfAffinityOrAntiAffinityConstraintForCompute**](ScopeOfAffinityOrAntiAffinityConstraintForCompute.md) |  | [optional] [default to ScopeOfAffinityOrAntiAffinityConstraintForCompute.NFVI_NODE]
 
 ## Example

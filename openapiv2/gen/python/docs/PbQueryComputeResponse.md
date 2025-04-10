@@ -5,7 +5,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**query_result** | [**List[VirtualCompute]**](VirtualCompute.md) | Contains information about the virtual compute resource(s) matching the filter. The cardinality can be 0 if no matching compute resources exist. | [optional] 
+**query_result** | [**List[VirtualCompute]**](VirtualCompute.md) | Contains information about the virtual compute resource(s) matching the filter. The cardinality can be 0 if no matching compute resources exist. | 
 
 ## Example
 

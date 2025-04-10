@@ -5,7 +5,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**software_image_id** | [**Identifier**](Identifier.md) |  | [optional] 
+**software_image_id** | [**Identifier**](Identifier.md) |  | 
 
 ## Example
 

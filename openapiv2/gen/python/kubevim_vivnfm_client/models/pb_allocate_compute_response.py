@@ -18,7 +18,7 @@ import re  # noqa: F401
 import json
 
 from pydantic import BaseModel, ConfigDict, Field
-from typing import Any, ClassVar, Dict, List, Optional
+from typing import Any, ClassVar, Dict, List
 from kubevim_vivnfm_client.models.virtual_compute import VirtualCompute
 from typing import Optional, Set
 from typing_extensions import Self
@@ -27,7 +27,7 @@ class PbAllocateComputeResponse(BaseModel):
     """
     PbAllocateComputeResponse
     """ # noqa: E501
-    compute_data: Optional[VirtualCompute] = Field(default=None, alias="computeData")
+    compute_data: VirtualCompute = Field(alias="computeData")
     __properties: ClassVar[List[str]] = ["computeData"]
 
     model_config = ConfigDict(

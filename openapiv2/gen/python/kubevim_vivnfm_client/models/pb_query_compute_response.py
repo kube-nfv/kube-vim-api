@@ -18,7 +18,7 @@ import re  # noqa: F401
 import json
 
 from pydantic import BaseModel, ConfigDict, Field
-from typing import Any, ClassVar, Dict, List, Optional
+from typing import Any, ClassVar, Dict, List
 from kubevim_vivnfm_client.models.virtual_compute import VirtualCompute
 from typing import Optional, Set
 from typing_extensions import Self
@@ -27,7 +27,7 @@ class PbQueryComputeResponse(BaseModel):
     """
     PbQueryComputeResponse
     """ # noqa: E501
-    query_result: Optional[List[VirtualCompute]] = Field(default=None, description="Contains information about the virtual compute resource(s) matching the filter. The cardinality can be 0 if no matching compute resources exist.", alias="queryResult")
+    query_result: List[VirtualCompute] = Field(description="Contains information about the virtual compute resource(s) matching the filter. The cardinality can be 0 if no matching compute resources exist.", alias="queryResult")
     __properties: ClassVar[List[str]] = ["queryResult"]
 
     model_config = ConfigDict(

@@ -207,7 +207,7 @@
     },
     "/vivnfm/v5/images": {
       "get": {
-        "summary": "This operation allows querying the information of software images in the image repository managed by the VIM.\nResult: As a result of this operation, the producer (VIM) shall indicate to the consumer (VNFM) whether or not it was possible to process the query",
+        "summary": "Software Image Management Interface\nRequirements: The Software Image Management interface produced by the VIM on the reference point Vi-Vnfm\nshall support querying information of software image(s) from the VIM.\nResult: As a result of this operation, the producer (VIM) shall indicate to the consumer (VNFM) whether or not it was possible to process the query",
         "operationId": "vi_vnfm_QueryImages",
         "responses": {
           "200": {
@@ -328,7 +328,7 @@
             "name": "networkResourceType",
             "description": "Note: this message goes out of ETSI GS NFV-IFA 006 reference but\nit is required to identify network resource type while performing query.\nLater the filter will be applied to that network resource type.",
             "in": "query",
-            "required": false,
+            "required": true,
             "type": "string",
             "enum": [
               "NETWORK",
@@ -479,7 +479,10 @@
         "ip": {
           "type": "string"
         }
-      }
+      },
+      "required": [
+        "ip"
+      ]
     },
     "IPAddressPool": {
       "type": "object",
@@ -491,7 +494,11 @@
           "$ref": "#/definitions/IPAddress"
         }
       },
-      "title": "TODO: Might be few ranges specified in pool"
+      "title": "TODO: Might be few ranges specified in pool",
+      "required": [
+        "startIP",
+        "endIP"
+      ]
     },
     "IPSubnetCIDR": {
       "type": "object",
@@ -499,7 +506,10 @@
         "cidr": {
           "type": "string"
         }
-      }
+      },
+      "required": [
+        "cidr"
+      ]
     },
     "IPVersion": {
       "type": "string",
@@ -517,7 +527,10 @@
           "type": "string",
           "title": "UUID Identifier representation"
         }
-      }
+      },
+      "required": [
+        "value"
+      ]
     },
     "MacAddress": {
       "type": "object",
@@ -525,7 +538,10 @@
         "mac": {
           "type": "string"
         }
-      }
+      },
+      "required": [
+        "mac"
+      ]
     },
     "Metadata": {
       "type": "object",
@@ -1277,7 +1293,10 @@
           "$ref": "#/definitions/UserData",
           "description": "Contains user data to customize the virtualised compute resource at boot-time\nThe user data may consist of static data obtained from an attribute in the VNFD, data provided by the NFVO or the EM to the VNFM in the\noperation that triggers the invocation of the Allocate Virtualised Compute Resource operation, e.g. the Instantiate VNF operation, and/or\none or multiple certificate data obtained from CMF when delegation-mode is used. The user data is transparent to the VIM.\nIt is passed to the allocated virtualised compute resource where it is up to the guest software to avail of\nit in order to e.g. configure credentials, address information, install certificates, etc."
         }
-      }
+      },
+      "required": [
+        "computeFlavourId"
+      ]
     },
     "pbAllocateComputeResponse": {
       "type": "object",
@@ -1285,7 +1304,10 @@
         "computeData": {
           "$ref": "#/definitions/VirtualCompute"
         }
-      }
+      },
+      "required": [
+        "computeData"
+      ]
     },
     "pbAllocateNetworkRequest": {
       "type": "object",
@@ -1340,7 +1362,10 @@
           "$ref": "#/definitions/Identifier",
           "description": "Unique identifier of the \"infrastructure resource group\", logical grouping of virtual resources assigned to a tenant within an Infrastructure Domain.\nCardinality can be 0 if the consumer credentials are implicitly associated to a specific resource group."
         }
-      }
+      },
+      "required": [
+        "networkResourceType"
+      ]
     },
     "pbAllocateNetworkResponse": {
       "type": "object",
@@ -1374,7 +1399,10 @@
           "$ref": "#/definitions/VirtualComputeFlavour",
           "description": "Provides information about the particular memory, CPU and disk resources for virtualised compute resource to be allocated."
         }
-      }
+      },
+      "required": [
+        "flavour"
+      ]
     },
     "pbCreateComputeFlavourResponse": {
       "type": "object",
@@ -1383,7 +1411,10 @@
           "$ref": "#/definitions/Identifier",
           "description": "Identifier of the created Compute Flavour."
         }
-      }
+      },
+      "required": [
+        "flavourId"
+      ]
     },
     "pbCreateComputeResourceAffinityOrAntiAffinityConstraintsGroupRequest": {
       "type": "object",
@@ -1400,7 +1431,11 @@
           "$ref": "#/definitions/ScopeOfAffinityOrAntiAffinityConstraintForCompute",
           "description": "Qualifies the scope of the constraint."
         }
-      }
+      },
+      "required": [
+        "groupName",
+        "type"
+      ]
     },
     "pbCreateComputeResourceAffinityOrAntiAffinityConstraintsGroupResponse": {
       "type": "object",
@@ -1409,7 +1444,10 @@
           "$ref": "#/definitions/Identifier",
           "title": "Identifier of the group"
         }
-      }
+      },
+      "required": [
+        "groupId"
+      ]
     },
     "pbDeleteComputeFlavourResponse": {
       "type": "object",
@@ -1426,7 +1464,10 @@
           },
           "description": "List of Compute Flavours matching the query."
         }
-      }
+      },
+      "required": [
+        "flavours"
+      ]
     },
     "pbQueryComputeResponse": {
       "type": "object",
@@ -1439,7 +1480,10 @@
           },
           "description": "Contains information about the virtual compute resource(s) matching the filter. The cardinality can be 0 if no matching\ncompute resources exist."
         }
-      }
+      },
+      "required": [
+        "queryResult"
+      ]
     },
     "pbQueryImageRequest": {
       "type": "object",
@@ -1447,7 +1491,10 @@
         "softwareImageId": {
           "$ref": "#/definitions/Identifier"
         }
-      }
+      },
+      "required": [
+        "softwareImageId"
+      ]
     },
     "pbQueryImageResponse": {
       "type": "object",
@@ -1467,7 +1514,10 @@
             "$ref": "#/definitions/SoftwareImageInformation"
           }
         }
-      }
+      },
+      "required": [
+        "softwareImagesInformation"
+      ]
     },
     "pbQueryNetworkResponse": {
       "type": "object",
@@ -1515,7 +1565,10 @@
           "description": "Identifier of the virtualised network\nresource(s) successfully terminated."
         }
       },
-      "title": "Note: This message goes out of ETSI GS NFV-IFA 006 reference.\nSee TerminateNetworkRequest"
+      "title": "Note: This message goes out of ETSI GS NFV-IFA 006 reference.\nSee TerminateNetworkRequest",
+      "required": [
+        "networkResourceId"
+      ]
     },
     "protobufAny": {
       "type": "object",

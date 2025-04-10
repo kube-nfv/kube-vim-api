@@ -33,7 +33,7 @@ class PbAllocateNetworkRequest(BaseModel):
     """ # noqa: E501
     network_resource_name: Optional[StrictStr] = Field(default=None, description="Name provided by the consumer for the virtualised network resource to be allocated. It can be used for identifying resources from consumer side.", alias="networkResourceName")
     reservation_id: Optional[Identifier] = Field(default=None, alias="reservationId")
-    network_resource_type: Optional[NetworkResourceType] = Field(default=NetworkResourceType.NETWORK, alias="networkResourceType")
+    network_resource_type: NetworkResourceType = Field(alias="networkResourceType")
     type_network_data: Optional[VirtualNetworkData] = Field(default=None, alias="typeNetworkData")
     type_subnet_data: Optional[NetworkSubnetData] = Field(default=None, alias="typeSubnetData")
     type_network_port_data: Optional[Dict[str, Any]] = Field(default=None, alias="typeNetworkPortData")

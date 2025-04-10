@@ -28,8 +28,8 @@ class PbCreateComputeResourceAffinityOrAntiAffinityConstraintsGroupRequest(BaseM
     """
     PbCreateComputeResourceAffinityOrAntiAffinityConstraintsGroupRequest
     """ # noqa: E501
-    group_name: Optional[StrictStr] = Field(default=None, alias="groupName")
-    type: Optional[TypeOfAffinityOrAntiAffinityConstraint] = TypeOfAffinityOrAntiAffinityConstraint.AFFINITY
+    group_name: StrictStr = Field(alias="groupName")
+    type: TypeOfAffinityOrAntiAffinityConstraint
     scope: Optional[ScopeOfAffinityOrAntiAffinityConstraintForCompute] = ScopeOfAffinityOrAntiAffinityConstraintForCompute.NFVI_NODE
     __properties: ClassVar[List[str]] = ["groupName", "type", "scope"]
 

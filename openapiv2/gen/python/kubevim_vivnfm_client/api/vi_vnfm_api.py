@@ -2193,7 +2193,7 @@ class ViVnfmApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> PbQueryImagesResponse:
-        """This operation allows querying the information of software images in the image repository managed by the VIM. Result: As a result of this operation, the producer (VIM) shall indicate to the consumer (VNFM) whether or not it was possible to process the query
+        """Software Image Management Interface Requirements: The Software Image Management interface produced by the VIM on the reference point Vi-Vnfm shall support querying information of software image(s) from the VIM. Result: As a result of this operation, the producer (VIM) shall indicate to the consumer (VNFM) whether or not it was possible to process the query
 
 
         :param image_query_filter_value:
@@ -2259,7 +2259,7 @@ class ViVnfmApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> ApiResponse[PbQueryImagesResponse]:
-        """This operation allows querying the information of software images in the image repository managed by the VIM. Result: As a result of this operation, the producer (VIM) shall indicate to the consumer (VNFM) whether or not it was possible to process the query
+        """Software Image Management Interface Requirements: The Software Image Management interface produced by the VIM on the reference point Vi-Vnfm shall support querying information of software image(s) from the VIM. Result: As a result of this operation, the producer (VIM) shall indicate to the consumer (VNFM) whether or not it was possible to process the query
 
 
         :param image_query_filter_value:
@@ -2325,7 +2325,7 @@ class ViVnfmApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> RESTResponseType:
-        """This operation allows querying the information of software images in the image repository managed by the VIM. Result: As a result of this operation, the producer (VIM) shall indicate to the consumer (VNFM) whether or not it was possible to process the query
+        """Software Image Management Interface Requirements: The Software Image Management interface produced by the VIM on the reference point Vi-Vnfm shall support querying information of software image(s) from the VIM. Result: As a result of this operation, the producer (VIM) shall indicate to the consumer (VNFM) whether or not it was possible to process the query
 
 
         :param image_query_filter_value:
@@ -2697,8 +2697,8 @@ class ViVnfmApi:
     @validate_call
     def vi_vnfm_query_virtualised_network_resource(
         self,
+        network_resource_type: Annotated[StrictStr, Field(description="Note: this message goes out of ETSI GS NFV-IFA 006 reference but it is required to identify network resource type while performing query. Later the filter will be applied to that network resource type.")],
         query_network_filter_value: Optional[StrictStr] = None,
-        network_resource_type: Annotated[Optional[StrictStr], Field(description="Note: this message goes out of ETSI GS NFV-IFA 006 reference but it is required to identify network resource type while performing query. Later the filter will be applied to that network resource type.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2715,10 +2715,10 @@ class ViVnfmApi:
         """This operation allows querying information about instantiated virtualised network resources. Result: After successful operation, the VIM has queried the internal management objects for the virtualised network resources. The result of the query shall indicate with a standard success/error result if the query has been processed correctly. For a particular query, information about the network resources that the VNFM has access to and that are matching the filter shall be returned.
 
 
+        :param network_resource_type: Note: this message goes out of ETSI GS NFV-IFA 006 reference but it is required to identify network resource type while performing query. Later the filter will be applied to that network resource type. (required)
+        :type network_resource_type: str
         :param query_network_filter_value:
         :type query_network_filter_value: str
-        :param network_resource_type: Note: this message goes out of ETSI GS NFV-IFA 006 reference but it is required to identify network resource type while performing query. Later the filter will be applied to that network resource type.
-        :type network_resource_type: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -2742,8 +2742,8 @@ class ViVnfmApi:
         """ # noqa: E501
 
         _param = self._vi_vnfm_query_virtualised_network_resource_serialize(
-            query_network_filter_value=query_network_filter_value,
             network_resource_type=network_resource_type,
+            query_network_filter_value=query_network_filter_value,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -2767,8 +2767,8 @@ class ViVnfmApi:
     @validate_call
     def vi_vnfm_query_virtualised_network_resource_with_http_info(
         self,
+        network_resource_type: Annotated[StrictStr, Field(description="Note: this message goes out of ETSI GS NFV-IFA 006 reference but it is required to identify network resource type while performing query. Later the filter will be applied to that network resource type.")],
         query_network_filter_value: Optional[StrictStr] = None,
-        network_resource_type: Annotated[Optional[StrictStr], Field(description="Note: this message goes out of ETSI GS NFV-IFA 006 reference but it is required to identify network resource type while performing query. Later the filter will be applied to that network resource type.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2785,10 +2785,10 @@ class ViVnfmApi:
         """This operation allows querying information about instantiated virtualised network resources. Result: After successful operation, the VIM has queried the internal management objects for the virtualised network resources. The result of the query shall indicate with a standard success/error result if the query has been processed correctly. For a particular query, information about the network resources that the VNFM has access to and that are matching the filter shall be returned.
 
 
+        :param network_resource_type: Note: this message goes out of ETSI GS NFV-IFA 006 reference but it is required to identify network resource type while performing query. Later the filter will be applied to that network resource type. (required)
+        :type network_resource_type: str
         :param query_network_filter_value:
         :type query_network_filter_value: str
-        :param network_resource_type: Note: this message goes out of ETSI GS NFV-IFA 006 reference but it is required to identify network resource type while performing query. Later the filter will be applied to that network resource type.
-        :type network_resource_type: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -2812,8 +2812,8 @@ class ViVnfmApi:
         """ # noqa: E501
 
         _param = self._vi_vnfm_query_virtualised_network_resource_serialize(
-            query_network_filter_value=query_network_filter_value,
             network_resource_type=network_resource_type,
+            query_network_filter_value=query_network_filter_value,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -2837,8 +2837,8 @@ class ViVnfmApi:
     @validate_call
     def vi_vnfm_query_virtualised_network_resource_without_preload_content(
         self,
+        network_resource_type: Annotated[StrictStr, Field(description="Note: this message goes out of ETSI GS NFV-IFA 006 reference but it is required to identify network resource type while performing query. Later the filter will be applied to that network resource type.")],
         query_network_filter_value: Optional[StrictStr] = None,
-        network_resource_type: Annotated[Optional[StrictStr], Field(description="Note: this message goes out of ETSI GS NFV-IFA 006 reference but it is required to identify network resource type while performing query. Later the filter will be applied to that network resource type.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2855,10 +2855,10 @@ class ViVnfmApi:
         """This operation allows querying information about instantiated virtualised network resources. Result: After successful operation, the VIM has queried the internal management objects for the virtualised network resources. The result of the query shall indicate with a standard success/error result if the query has been processed correctly. For a particular query, information about the network resources that the VNFM has access to and that are matching the filter shall be returned.
 
 
+        :param network_resource_type: Note: this message goes out of ETSI GS NFV-IFA 006 reference but it is required to identify network resource type while performing query. Later the filter will be applied to that network resource type. (required)
+        :type network_resource_type: str
         :param query_network_filter_value:
         :type query_network_filter_value: str
-        :param network_resource_type: Note: this message goes out of ETSI GS NFV-IFA 006 reference but it is required to identify network resource type while performing query. Later the filter will be applied to that network resource type.
-        :type network_resource_type: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -2882,8 +2882,8 @@ class ViVnfmApi:
         """ # noqa: E501
 
         _param = self._vi_vnfm_query_virtualised_network_resource_serialize(
-            query_network_filter_value=query_network_filter_value,
             network_resource_type=network_resource_type,
+            query_network_filter_value=query_network_filter_value,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -2902,8 +2902,8 @@ class ViVnfmApi:
 
     def _vi_vnfm_query_virtualised_network_resource_serialize(
         self,
-        query_network_filter_value,
         network_resource_type,
+        query_network_filter_value,
         _request_auth,
         _content_type,
         _headers,

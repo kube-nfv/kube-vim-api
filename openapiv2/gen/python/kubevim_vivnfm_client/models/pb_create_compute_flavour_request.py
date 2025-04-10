@@ -18,7 +18,7 @@ import re  # noqa: F401
 import json
 
 from pydantic import BaseModel, ConfigDict
-from typing import Any, ClassVar, Dict, List, Optional
+from typing import Any, ClassVar, Dict, List
 from kubevim_vivnfm_client.models.virtual_compute_flavour import VirtualComputeFlavour
 from typing import Optional, Set
 from typing_extensions import Self
@@ -27,7 +27,7 @@ class PbCreateComputeFlavourRequest(BaseModel):
     """
     PbCreateComputeFlavourRequest
     """ # noqa: E501
-    flavour: Optional[VirtualComputeFlavour] = None
+    flavour: VirtualComputeFlavour
     __properties: ClassVar[List[str]] = ["flavour"]
 
     model_config = ConfigDict(

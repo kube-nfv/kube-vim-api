@@ -7,7 +7,7 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **network_resource_name** | **str** | Name provided by the consumer for the virtualised network resource to be allocated. It can be used for identifying resources from consumer side. | [optional] 
 **reservation_id** | [**Identifier**](Identifier.md) |  | [optional] 
-**network_resource_type** | [**NetworkResourceType**](NetworkResourceType.md) |  | [optional] [default to NetworkResourceType.NETWORK]
+**network_resource_type** | [**NetworkResourceType**](NetworkResourceType.md) |  | [default to NetworkResourceType.NETWORK]
 **type_network_data** | [**VirtualNetworkData**](VirtualNetworkData.md) |  | [optional] 
 **type_subnet_data** | [**NetworkSubnetData**](NetworkSubnetData.md) |  | [optional] 
 **type_network_port_data** | **object** |  | [optional] 

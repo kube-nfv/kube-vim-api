@@ -35,7 +35,7 @@ class PbAllocateComputeRequest(BaseModel):
     compute_name: Optional[StrictStr] = Field(default=None, description="Name provided by the consumer for the virtualised compute resource to be allocated. It can be used for identifying resources from consumer side.", alias="computeName")
     reservation_id: Optional[Identifier] = Field(default=None, alias="reservationId")
     affinity_or_anti_affinity_constraints: Optional[List[AffinityOrAntiAffinityConstraintForCompute]] = Field(default=None, description="List of elements with affinity or anti affinity (see clause 8.4.8.2) information of the virtualised compute resource to be allocated. All the listed constraints shall be fulfilled for a successful operation.", alias="affinityOrAntiAffinityConstraints")
-    compute_flavour_id: Optional[Identifier] = Field(default=None, alias="computeFlavourId")
+    compute_flavour_id: Identifier = Field(alias="computeFlavourId")
     vc_image_id: Optional[Identifier] = Field(default=None, alias="vcImageId")
     interface_data: Optional[List[VirtualNetworkInterfaceData]] = Field(default=None, description="Note: That is out of the ETSI GS NFV-IFA 006 scope. Traditionaly VirtualNetworkInterfaceData specified in the virtualComputeFlavour, but it is reduce flexibility, since the flavor contains virtual compute related networks, and network configuration for it (eg. QoS). Descided to move it in the AllocateComputeRequest.", alias="interfaceData")
     interface_ipam: Optional[List[VirtualNetworkInterfaceIPAM]] = Field(default=None, description="IPAM Data of network interfaces which are specific to a Virtual Compute Resource instance. See clause 8.4.3.7.", alias="interfaceIPAM")

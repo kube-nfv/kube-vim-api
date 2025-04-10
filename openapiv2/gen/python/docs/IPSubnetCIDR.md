@@ -5,7 +5,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**cidr** | **str** |  | [optional] 
+**cidr** | **str** |  | 
 
 ## Example
 

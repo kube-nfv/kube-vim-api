@@ -7,9 +7,11 @@
 package nfv
 
 import (
+	_ "github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2/options"
+	_ "google.golang.org/genproto/googleapis/api/annotations"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
-	anypb "google.golang.org/protobuf/types/known/anypb"
+	_ "google.golang.org/protobuf/types/known/anypb"
 	reflect "reflect"
 	sync "sync"
 )
@@ -365,61 +367,6 @@ func (x *Filter) GetValue() string {
 	return ""
 }
 
-type KeyValuePair struct {
-	state         protoimpl.MessageState
-	sizeCache     protoimpl.SizeCache
-	unknownFields protoimpl.UnknownFields
-
-	Key   string     `protobuf:"bytes,1,opt,name=key,proto3" json:"key,omitempty"`
-	Value *anypb.Any `protobuf:"bytes,2,opt,name=value,proto3" json:"value,omitempty"`
-}
-
-func (x *KeyValuePair) Reset() {
-	*x = KeyValuePair{}
-	if protoimpl.UnsafeEnabled {
-		mi := &file_common_proto_msgTypes[2]
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		ms.StoreMessageInfo(mi)
-	}
-}
-
-func (x *KeyValuePair) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*KeyValuePair) ProtoMessage() {}
-
-func (x *KeyValuePair) ProtoReflect() protoreflect.Message {
-	mi := &file_common_proto_msgTypes[2]
-	if protoimpl.UnsafeEnabled && x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use KeyValuePair.ProtoReflect.Descriptor instead.
-func (*KeyValuePair) Descriptor() ([]byte, []int) {
-	return file_common_proto_rawDescGZIP(), []int{2}
-}
-
-func (x *KeyValuePair) GetKey() string {
-	if x != nil {
-		return x.Key
-	}
-	return ""
-}
-
-func (x *KeyValuePair) GetValue() *anypb.Any {
-	if x != nil {
-		return x.Value
-	}
-	return nil
-}
-
 type IPAddress struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -431,7 +378,7 @@ type IPAddress struct {
 func (x *IPAddress) Reset() {
 	*x = IPAddress{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_common_proto_msgTypes[3]
+		mi := &file_common_proto_msgTypes[2]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -444,7 +391,7 @@ func (x *IPAddress) String() string {
 func (*IPAddress) ProtoMessage() {}
 
 func (x *IPAddress) ProtoReflect() protoreflect.Message {
-	mi := &file_common_proto_msgTypes[3]
+	mi := &file_common_proto_msgTypes[2]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -457,7 +404,7 @@ func (x *IPAddress) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use IPAddress.ProtoReflect.Descriptor instead.
 func (*IPAddress) Descriptor() ([]byte, []int) {
-	return file_common_proto_rawDescGZIP(), []int{3}
+	return file_common_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *IPAddress) GetIp() string {
@@ -478,7 +425,7 @@ type MacAddress struct {
 func (x *MacAddress) Reset() {
 	*x = MacAddress{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_common_proto_msgTypes[4]
+		mi := &file_common_proto_msgTypes[3]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -491,7 +438,7 @@ func (x *MacAddress) String() string {
 func (*MacAddress) ProtoMessage() {}
 
 func (x *MacAddress) ProtoReflect() protoreflect.Message {
-	mi := &file_common_proto_msgTypes[4]
+	mi := &file_common_proto_msgTypes[3]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -504,7 +451,7 @@ func (x *MacAddress) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MacAddress.ProtoReflect.Descriptor instead.
 func (*MacAddress) Descriptor() ([]byte, []int) {
-	return file_common_proto_rawDescGZIP(), []int{4}
+	return file_common_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *MacAddress) GetMac() string {
@@ -526,7 +473,7 @@ type IPSubnet struct {
 func (x *IPSubnet) Reset() {
 	*x = IPSubnet{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_common_proto_msgTypes[5]
+		mi := &file_common_proto_msgTypes[4]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -539,7 +486,7 @@ func (x *IPSubnet) String() string {
 func (*IPSubnet) ProtoMessage() {}
 
 func (x *IPSubnet) ProtoReflect() protoreflect.Message {
-	mi := &file_common_proto_msgTypes[5]
+	mi := &file_common_proto_msgTypes[4]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -552,7 +499,7 @@ func (x *IPSubnet) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use IPSubnet.ProtoReflect.Descriptor instead.
 func (*IPSubnet) Descriptor() ([]byte, []int) {
-	return file_common_proto_rawDescGZIP(), []int{5}
+	return file_common_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *IPSubnet) GetIp() string {
@@ -580,7 +527,7 @@ type IPSubnetCIDR struct {
 func (x *IPSubnetCIDR) Reset() {
 	*x = IPSubnetCIDR{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_common_proto_msgTypes[6]
+		mi := &file_common_proto_msgTypes[5]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -593,7 +540,7 @@ func (x *IPSubnetCIDR) String() string {
 func (*IPSubnetCIDR) ProtoMessage() {}
 
 func (x *IPSubnetCIDR) ProtoReflect() protoreflect.Message {
-	mi := &file_common_proto_msgTypes[6]
+	mi := &file_common_proto_msgTypes[5]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -606,7 +553,7 @@ func (x *IPSubnetCIDR) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use IPSubnetCIDR.ProtoReflect.Descriptor instead.
 func (*IPSubnetCIDR) Descriptor() ([]byte, []int) {
-	return file_common_proto_rawDescGZIP(), []int{6}
+	return file_common_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *IPSubnetCIDR) GetCidr() string {
@@ -629,7 +576,7 @@ type IPAddressPool struct {
 func (x *IPAddressPool) Reset() {
 	*x = IPAddressPool{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_common_proto_msgTypes[7]
+		mi := &file_common_proto_msgTypes[6]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -642,7 +589,7 @@ func (x *IPAddressPool) String() string {
 func (*IPAddressPool) ProtoMessage() {}
 
 func (x *IPAddressPool) ProtoReflect() protoreflect.Message {
-	mi := &file_common_proto_msgTypes[7]
+	mi := &file_common_proto_msgTypes[6]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -655,7 +602,7 @@ func (x *IPAddressPool) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use IPAddressPool.ProtoReflect.Descriptor instead.
 func (*IPAddressPool) Descriptor() ([]byte, []int) {
-	return file_common_proto_rawDescGZIP(), []int{7}
+	return file_common_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *IPAddressPool) GetStartIP() *IPAddress {
@@ -685,7 +632,7 @@ type Metadata struct {
 func (x *Metadata) Reset() {
 	*x = Metadata{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_common_proto_msgTypes[8]
+		mi := &file_common_proto_msgTypes[7]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -698,7 +645,7 @@ func (x *Metadata) String() string {
 func (*Metadata) ProtoMessage() {}
 
 func (x *Metadata) ProtoReflect() protoreflect.Message {
-	mi := &file_common_proto_msgTypes[8]
+	mi := &file_common_proto_msgTypes[7]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -711,7 +658,7 @@ func (x *Metadata) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Metadata.ProtoReflect.Descriptor instead.
 func (*Metadata) Descriptor() ([]byte, []int) {
-	return file_common_proto_rawDescGZIP(), []int{8}
+	return file_common_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *Metadata) GetFields() map[string]string {
@@ -726,30 +673,33 @@ var File_common_proto protoreflect.FileDescriptor
 var file_common_proto_rawDesc = []byte{
 	0x0a, 0x0c, 0x63, 0x6f, 0x6d, 0x6d, 0x6f, 0x6e, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x19,
 	0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2f, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2f,
-	0x61, 0x6e, 0x79, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x22, 0x22, 0x0a, 0x0a, 0x49, 0x64, 0x65,
-	0x6e, 0x74, 0x69, 0x66, 0x69, 0x65, 0x72, 0x12, 0x14, 0x0a, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65,
-	0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x22, 0x1e, 0x0a,
-	0x06, 0x46, 0x69, 0x6c, 0x74, 0x65, 0x72, 0x12, 0x14, 0x0a, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65,
-	0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x22, 0x4c, 0x0a,
-	0x0c, 0x4b, 0x65, 0x79, 0x56, 0x61, 0x6c, 0x75, 0x65, 0x50, 0x61, 0x69, 0x72, 0x12, 0x10, 0x0a,
-	0x03, 0x6b, 0x65, 0x79, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x03, 0x6b, 0x65, 0x79, 0x12,
-	0x2a, 0x0a, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x14,
-	0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66,
-	0x2e, 0x41, 0x6e, 0x79, 0x52, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x22, 0x1b, 0x0a, 0x09, 0x49,
-	0x50, 0x41, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x70, 0x18, 0x01,
-	0x20, 0x01, 0x28, 0x09, 0x52, 0x02, 0x69, 0x70, 0x22, 0x1e, 0x0a, 0x0a, 0x4d, 0x61, 0x63, 0x41,
-	0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x12, 0x10, 0x0a, 0x03, 0x6d, 0x61, 0x63, 0x18, 0x02, 0x20,
-	0x01, 0x28, 0x09, 0x52, 0x03, 0x6d, 0x61, 0x63, 0x22, 0x2e, 0x0a, 0x08, 0x49, 0x50, 0x53, 0x75,
-	0x62, 0x6e, 0x65, 0x74, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x70, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09,
-	0x52, 0x02, 0x69, 0x70, 0x12, 0x12, 0x0a, 0x04, 0x6d, 0x61, 0x73, 0x6b, 0x18, 0x02, 0x20, 0x01,
-	0x28, 0x09, 0x52, 0x04, 0x6d, 0x61, 0x73, 0x6b, 0x22, 0x22, 0x0a, 0x0c, 0x49, 0x50, 0x53, 0x75,
-	0x62, 0x6e, 0x65, 0x74, 0x43, 0x49, 0x44, 0x52, 0x12, 0x12, 0x0a, 0x04, 0x63, 0x69, 0x64, 0x72,
-	0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x63, 0x69, 0x64, 0x72, 0x22, 0x57, 0x0a, 0x0d,
-	0x49, 0x50, 0x41, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x50, 0x6f, 0x6f, 0x6c, 0x12, 0x24, 0x0a,
-	0x07, 0x73, 0x74, 0x61, 0x72, 0x74, 0x49, 0x50, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x0a,
-	0x2e, 0x49, 0x50, 0x41, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x52, 0x07, 0x73, 0x74, 0x61, 0x72,
-	0x74, 0x49, 0x50, 0x12, 0x20, 0x0a, 0x05, 0x65, 0x6e, 0x64, 0x49, 0x50, 0x18, 0x02, 0x20, 0x01,
-	0x28, 0x0b, 0x32, 0x0a, 0x2e, 0x49, 0x50, 0x41, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x52, 0x05,
+	0x61, 0x6e, 0x79, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x1f, 0x67, 0x6f, 0x6f, 0x67, 0x6c,
+	0x65, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x66, 0x69, 0x65, 0x6c, 0x64, 0x5f, 0x62, 0x65, 0x68, 0x61,
+	0x76, 0x69, 0x6f, 0x72, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x2e, 0x70, 0x72, 0x6f, 0x74,
+	0x6f, 0x63, 0x2d, 0x67, 0x65, 0x6e, 0x2d, 0x6f, 0x70, 0x65, 0x6e, 0x61, 0x70, 0x69, 0x76, 0x32,
+	0x2f, 0x6f, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x2f, 0x61, 0x6e, 0x6e, 0x6f, 0x74, 0x61, 0x74,
+	0x69, 0x6f, 0x6e, 0x73, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x22, 0x27, 0x0a, 0x0a, 0x49, 0x64,
+	0x65, 0x6e, 0x74, 0x69, 0x66, 0x69, 0x65, 0x72, 0x12, 0x19, 0x0a, 0x05, 0x76, 0x61, 0x6c, 0x75,
+	0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x42, 0x03, 0xe0, 0x41, 0x02, 0x52, 0x05, 0x76, 0x61,
+	0x6c, 0x75, 0x65, 0x22, 0x23, 0x0a, 0x06, 0x46, 0x69, 0x6c, 0x74, 0x65, 0x72, 0x12, 0x19, 0x0a,
+	0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x42, 0x03, 0x92, 0x41,
+	0x00, 0x52, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x22, 0x20, 0x0a, 0x09, 0x49, 0x50, 0x41, 0x64,
+	0x64, 0x72, 0x65, 0x73, 0x73, 0x12, 0x13, 0x0a, 0x02, 0x69, 0x70, 0x18, 0x01, 0x20, 0x01, 0x28,
+	0x09, 0x42, 0x03, 0xe0, 0x41, 0x02, 0x52, 0x02, 0x69, 0x70, 0x22, 0x23, 0x0a, 0x0a, 0x4d, 0x61,
+	0x63, 0x41, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x12, 0x15, 0x0a, 0x03, 0x6d, 0x61, 0x63, 0x18,
+	0x02, 0x20, 0x01, 0x28, 0x09, 0x42, 0x03, 0xe0, 0x41, 0x02, 0x52, 0x03, 0x6d, 0x61, 0x63, 0x22,
+	0x38, 0x0a, 0x08, 0x49, 0x50, 0x53, 0x75, 0x62, 0x6e, 0x65, 0x74, 0x12, 0x13, 0x0a, 0x02, 0x69,
+	0x70, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x42, 0x03, 0xe0, 0x41, 0x02, 0x52, 0x02, 0x69, 0x70,
+	0x12, 0x17, 0x0a, 0x04, 0x6d, 0x61, 0x73, 0x6b, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x42, 0x03,
+	0xe0, 0x41, 0x02, 0x52, 0x04, 0x6d, 0x61, 0x73, 0x6b, 0x22, 0x27, 0x0a, 0x0c, 0x49, 0x50, 0x53,
+	0x75, 0x62, 0x6e, 0x65, 0x74, 0x43, 0x49, 0x44, 0x52, 0x12, 0x17, 0x0a, 0x04, 0x63, 0x69, 0x64,
+	0x72, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x42, 0x03, 0xe0, 0x41, 0x02, 0x52, 0x04, 0x63, 0x69,
+	0x64, 0x72, 0x22, 0x61, 0x0a, 0x0d, 0x49, 0x50, 0x41, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x50,
+	0x6f, 0x6f, 0x6c, 0x12, 0x29, 0x0a, 0x07, 0x73, 0x74, 0x61, 0x72, 0x74, 0x49, 0x50, 0x18, 0x01,
+	0x20, 0x01, 0x28, 0x0b, 0x32, 0x0a, 0x2e, 0x49, 0x50, 0x41, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73,
+	0x42, 0x03, 0xe0, 0x41, 0x02, 0x52, 0x07, 0x73, 0x74, 0x61, 0x72, 0x74, 0x49, 0x50, 0x12, 0x25,
+	0x0a, 0x05, 0x65, 0x6e, 0x64, 0x49, 0x50, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x0a, 0x2e,
+	0x49, 0x50, 0x41, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x42, 0x03, 0xe0, 0x41, 0x02, 0x52, 0x05,
 	0x65, 0x6e, 0x64, 0x49, 0x50, 0x22, 0x74, 0x0a, 0x08, 0x4d, 0x65, 0x74, 0x61, 0x64, 0x61, 0x74,
 	0x61, 0x12, 0x2d, 0x0a, 0x06, 0x66, 0x69, 0x65, 0x6c, 0x64, 0x73, 0x18, 0x01, 0x20, 0x03, 0x28,
 	0x0b, 0x32, 0x15, 0x2e, 0x4d, 0x65, 0x74, 0x61, 0x64, 0x61, 0x74, 0x61, 0x2e, 0x46, 0x69, 0x65,
@@ -794,7 +744,7 @@ func file_common_proto_rawDescGZIP() []byte {
 }
 
 var file_common_proto_enumTypes = make([]protoimpl.EnumInfo, 5)
-var file_common_proto_msgTypes = make([]protoimpl.MessageInfo, 10)
+var file_common_proto_msgTypes = make([]protoimpl.MessageInfo, 9)
 var file_common_proto_goTypes = []interface{}{
 	(IPVersion)(0),           // 0: IPVersion
 	(OperationalState)(0),    // 1: OperationalState
@@ -803,26 +753,23 @@ var file_common_proto_goTypes = []interface{}{
 	(NetworkType)(0),         // 4: NetworkType
 	(*Identifier)(nil),       // 5: Identifier
 	(*Filter)(nil),           // 6: Filter
-	(*KeyValuePair)(nil),     // 7: KeyValuePair
-	(*IPAddress)(nil),        // 8: IPAddress
-	(*MacAddress)(nil),       // 9: MacAddress
-	(*IPSubnet)(nil),         // 10: IPSubnet
-	(*IPSubnetCIDR)(nil),     // 11: IPSubnetCIDR
-	(*IPAddressPool)(nil),    // 12: IPAddressPool
-	(*Metadata)(nil),         // 13: Metadata
-	nil,                      // 14: Metadata.FieldsEntry
-	(*anypb.Any)(nil),        // 15: google.protobuf.Any
+	(*IPAddress)(nil),        // 7: IPAddress
+	(*MacAddress)(nil),       // 8: MacAddress
+	(*IPSubnet)(nil),         // 9: IPSubnet
+	(*IPSubnetCIDR)(nil),     // 10: IPSubnetCIDR
+	(*IPAddressPool)(nil),    // 11: IPAddressPool
+	(*Metadata)(nil),         // 12: Metadata
+	nil,                      // 13: Metadata.FieldsEntry
 }
 var file_common_proto_depIdxs = []int32{
-	15, // 0: KeyValuePair.value:type_name -> google.protobuf.Any
-	8,  // 1: IPAddressPool.startIP:type_name -> IPAddress
-	8,  // 2: IPAddressPool.endIP:type_name -> IPAddress
-	14, // 3: Metadata.fields:type_name -> Metadata.FieldsEntry
-	4,  // [4:4] is the sub-list for method output_type
-	4,  // [4:4] is the sub-list for method input_type
-	4,  // [4:4] is the sub-list for extension type_name
-	4,  // [4:4] is the sub-list for extension extendee
-	0,  // [0:4] is the sub-list for field type_name
+	7,  // 0: IPAddressPool.startIP:type_name -> IPAddress
+	7,  // 1: IPAddressPool.endIP:type_name -> IPAddress
+	13, // 2: Metadata.fields:type_name -> Metadata.FieldsEntry
+	3,  // [3:3] is the sub-list for method output_type
+	3,  // [3:3] is the sub-list for method input_type
+	3,  // [3:3] is the sub-list for extension type_name
+	3,  // [3:3] is the sub-list for extension extendee
+	0,  // [0:3] is the sub-list for field type_name
 }
 
 func init() { file_common_proto_init() }
@@ -856,18 +803,6 @@ func file_common_proto_init() {
 			}
 		}
 		file_common_proto_msgTypes[2].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*KeyValuePair); i {
-			case 0:
-				return &v.state
-			case 1:
-				return &v.sizeCache
-			case 2:
-				return &v.unknownFields
-			default:
-				return nil
-			}
-		}
-		file_common_proto_msgTypes[3].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*IPAddress); i {
 			case 0:
 				return &v.state
@@ -879,7 +814,7 @@ func file_common_proto_init() {
 				return nil
 			}
 		}
-		file_common_proto_msgTypes[4].Exporter = func(v interface{}, i int) interface{} {
+		file_common_proto_msgTypes[3].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*MacAddress); i {
 			case 0:
 				return &v.state
@@ -891,7 +826,7 @@ func file_common_proto_init() {
 				return nil
 			}
 		}
-		file_common_proto_msgTypes[5].Exporter = func(v interface{}, i int) interface{} {
+		file_common_proto_msgTypes[4].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*IPSubnet); i {
 			case 0:
 				return &v.state
@@ -903,7 +838,7 @@ func file_common_proto_init() {
 				return nil
 			}
 		}
-		file_common_proto_msgTypes[6].Exporter = func(v interface{}, i int) interface{} {
+		file_common_proto_msgTypes[5].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*IPSubnetCIDR); i {
 			case 0:
 				return &v.state
@@ -915,7 +850,7 @@ func file_common_proto_init() {
 				return nil
 			}
 		}
-		file_common_proto_msgTypes[7].Exporter = func(v interface{}, i int) interface{} {
+		file_common_proto_msgTypes[6].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*IPAddressPool); i {
 			case 0:
 				return &v.state
@@ -927,7 +862,7 @@ func file_common_proto_init() {
 				return nil
 			}
 		}
-		file_common_proto_msgTypes[8].Exporter = func(v interface{}, i int) interface{} {
+		file_common_proto_msgTypes[7].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*Metadata); i {
 			case 0:
 				return &v.state
@@ -946,7 +881,7 @@ func file_common_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_common_proto_rawDesc,
 			NumEnums:      5,
-			NumMessages:   10,
+			NumMessages:   9,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

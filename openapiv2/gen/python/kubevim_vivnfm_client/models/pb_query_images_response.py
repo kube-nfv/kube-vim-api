@@ -18,7 +18,7 @@ import re  # noqa: F401
 import json
 
 from pydantic import BaseModel, ConfigDict, Field
-from typing import Any, ClassVar, Dict, List, Optional
+from typing import Any, ClassVar, Dict, List
 from kubevim_vivnfm_client.models.software_image_information import SoftwareImageInformation
 from typing import Optional, Set
 from typing_extensions import Self
@@ -27,7 +27,7 @@ class PbQueryImagesResponse(BaseModel):
     """
     PbQueryImagesResponse
     """ # noqa: E501
-    software_images_information: Optional[List[SoftwareImageInformation]] = Field(default=None, alias="softwareImagesInformation")
+    software_images_information: List[SoftwareImageInformation] = Field(alias="softwareImagesInformation")
     __properties: ClassVar[List[str]] = ["softwareImagesInformation"]
 
     model_config = ConfigDict(
