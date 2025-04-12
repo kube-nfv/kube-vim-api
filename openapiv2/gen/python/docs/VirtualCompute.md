@@ -5,18 +5,18 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**compute_id** | [**Identifier**](Identifier.md) |  | [optional] 
+**compute_id** | [**Identifier**](Identifier.md) |  | 
 **compute_name** | **str** | Name of the virtualised compute resource. | [optional] 
-**flavour_id** | [**Identifier**](Identifier.md) |  | [optional] 
-**virtual_cpu** | **object** |  | [optional] 
-**virtual_memory** | **object** |  | [optional] 
-**virtual_network_interface** | **List[object]** | Provides information of the instantiated virtual network interfaces of the compute resource. | [optional] 
-**virtual_disks** | **List[object]** | Provides information of the virtualised storage resources (volumes, ephemeral) that are attached to the compute resource. | [optional] 
+**flavour_id** | [**Identifier**](Identifier.md) |  | 
+**virtual_cpu** | **object** |  | 
+**virtual_memory** | **object** |  | 
+**virtual_network_interface** | **List[object]** | Provides information of the instantiated virtual network interfaces of the compute resource. | 
+**virtual_disks** | **List[object]** | Provides information of the virtualised storage resources (volumes, ephemeral) that are attached to the compute resource. | 
 **vc_image_id** | [**Identifier**](Identifier.md) |  | [optional] 
 **zone_id** | [**Identifier**](Identifier.md) |  | [optional] 
-**host_id** | [**Identifier**](Identifier.md) |  | [optional] 
-**operational_state** | [**OperationalState**](OperationalState.md) |  | [optional] [default to OperationalState.ENABLED]
-**running_state** | [**ComputeRunningState**](ComputeRunningState.md) |  | [optional] [default to ComputeRunningState.STARTED]
+**host_id** | [**Identifier**](Identifier.md) |  | 
+**operational_state** | [**OperationalState**](OperationalState.md) |  | [default to OperationalState.ENABLED]
+**running_state** | [**ComputeRunningState**](ComputeRunningState.md) |  | [default to ComputeRunningState.STARTED]
 **metadata** | [**Metadata**](Metadata.md) |  | [optional] 
 
 ## Example

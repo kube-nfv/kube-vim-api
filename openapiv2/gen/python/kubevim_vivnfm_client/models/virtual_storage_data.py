@@ -26,8 +26,8 @@ class VirtualStorageData(BaseModel):
     """
     This clause describes the attributes for the VirtualStorageData information element.
     """ # noqa: E501
-    type_of_storage: Optional[StrictStr] = Field(default=None, description="Type of virtualised storage resource (e.g. volume, object).", alias="typeOfStorage")
-    size_of_storage: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="Size of virtualised storage resource (e.g. size of volume, in GB).", alias="sizeOfStorage")
+    type_of_storage: StrictStr = Field(description="Type of virtualised storage resource (e.g. volume, object).", alias="typeOfStorage")
+    size_of_storage: Union[StrictFloat, StrictInt] = Field(description="Size of virtualised storage resource (e.g. size of volume, in GB).", alias="sizeOfStorage")
     rdma_enabled: Optional[StrictBool] = Field(default=None, description="Indicates if the storage supports RDMA.", alias="rdmaEnabled")
     __properties: ClassVar[List[str]] = ["typeOfStorage", "sizeOfStorage", "rdmaEnabled"]
 

@@ -33,9 +33,9 @@ class VirtualComputeFlavour(BaseModel):
     The VirtualComputeFlavour information element encapsulates information for compute flavours. A compute flavour includes information about number of virtual CPUs, size of virtual memory, size of virtual storage, and virtual network interfaces.
     """ # noqa: E501
     flavour_id: Optional[Identifier] = Field(default=None, alias="flavourId")
-    is_public: Optional[StrictBool] = Field(default=None, description="Scope of flavour accessibility. It indicates if the compute flavour is accessible and shared across clients. Default value is True (if not specified), which means public. False means private.", alias="isPublic")
-    virtual_memory: Optional[VirtualMemoryData] = Field(default=None, alias="virtualMemory")
-    virtual_cpu: Optional[VirtualCpuData] = Field(default=None, alias="virtualCpu")
+    is_public: Optional[StrictBool] = Field(default=True, description="Scope of flavour accessibility. It indicates if the compute flavour is accessible and shared across clients. Default value is True (if not specified), which means public. False means private.  accelerationCapability = 3;", alias="isPublic")
+    virtual_memory: VirtualMemoryData = Field(alias="virtualMemory")
+    virtual_cpu: VirtualCpuData = Field(alias="virtualCpu")
     storage_attributes: Optional[List[VirtualStorageData]] = Field(default=None, description="Contains information about the size of virtualised storage resource (e.g. size of volume, in GB), the type of storage (e.g. volume, object), and support for RDMA.", alias="storageAttributes")
     virtual_network_interface: Optional[List[VirtualNetworkInterfaceData]] = Field(default=None, alias="virtualNetworkInterface")
     metadata: Optional[Metadata] = None
@@ -119,7 +119,7 @@ class VirtualComputeFlavour(BaseModel):
 
         _obj = cls.model_validate({
             "flavourId": Identifier.from_dict(obj["flavourId"]) if obj.get("flavourId") is not None else None,
-            "isPublic": obj.get("isPublic"),
+            "isPublic": obj.get("isPublic") if obj.get("isPublic") is not None else True,
             "virtualMemory": VirtualMemoryData.from_dict(obj["virtualMemory"]) if obj.get("virtualMemory") is not None else None,
             "virtualCpu": VirtualCpuData.from_dict(obj["virtualCpu"]) if obj.get("virtualCpu") is not None else None,
             "storageAttributes": [VirtualStorageData.from_dict(_item) for _item in obj["storageAttributes"]] if obj.get("storageAttributes") is not None else None,

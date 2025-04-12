@@ -32,7 +32,7 @@ class VirtualNetworkInterfaceData(BaseModel):
     network_id: Optional[Identifier] = Field(default=None, alias="networkId")
     subnet_id: Optional[Identifier] = Field(default=None, alias="subnetId")
     network_port_id: Optional[Identifier] = Field(default=None, alias="networkPortId")
-    type_virtual_nic: Optional[VirtualNetworkInterfaceDataTypeVirtualNic] = Field(default=VirtualNetworkInterfaceDataTypeVirtualNic.BRIDGE, alias="typeVirtualNic")
+    type_virtual_nic: VirtualNetworkInterfaceDataTypeVirtualNic = Field(alias="typeVirtualNic")
     type_configuration: Optional[List[StrictStr]] = Field(default=None, description="Extra configuration that the virtual network interface supports based on the type of virtual network interface. TODO: That interface might change.", alias="typeConfiguration")
     bandwidth: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="Bandwidth of the virtual network interface (in Mbps).")
     acceleration_capability_for_virtual_network_interface: Optional[List[StrictStr]] = Field(default=None, description="It specifies if the virtual network interface requires certain acceleration capabilities (e.g. RDMA, packet dispatch, TCP Chimney). The cardinality can be 0, if no particular acceleration capability is requested.", alias="accelerationCapabilityForVirtualNetworkInterface")

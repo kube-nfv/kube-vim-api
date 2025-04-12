@@ -26,7 +26,7 @@ class VirtualMemoryData(BaseModel):
     """
     Information describing virtual memory.
     """ # noqa: E501
-    virtual_mem_size: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="Amount of virtual Memory (e.g. in MB).", alias="virtualMemSize")
+    virtual_mem_size: Union[StrictFloat, StrictInt] = Field(description="Amount of virtual Memory (e.g. in MB).", alias="virtualMemSize")
     virtual_mem_oversubscription_policy: Optional[StrictStr] = Field(default=None, description="Memory core oversubscription policy in terms of virtual memory to physical memory on the platform. The cardinality can be 0 during the allocation request, if no particular value is requested.", alias="virtualMemOversubscriptionPolicy")
     numa_enabled: Optional[StrictBool] = Field(default=None, alias="numaEnabled")
     __properties: ClassVar[List[str]] = ["virtualMemSize", "virtualMemOversubscriptionPolicy", "numaEnabled"]

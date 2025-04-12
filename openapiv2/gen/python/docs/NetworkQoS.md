@@ -6,8 +6,8 @@ This clause describes the attributes for the NetworkQoS information element. Thi
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**qos_name** | **str** | Name given to the QoS parameter. | [optional] 
-**qos_value** | **str** | Value of the QoS parameter. | [optional] 
+**qos_name** | **str** | Name given to the QoS parameter. | 
+**qos_value** | **str** | Value of the QoS parameter. | 
 
 ## Example
 

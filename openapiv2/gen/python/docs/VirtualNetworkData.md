@@ -5,7 +5,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**bandwidth** | **float** | Minimum network bandwidth (in Mbps). | [optional] 
+**bandwidth** | **float** | Minimum network bandwidth (in Mbps). | 
 **network_type** | [**NetworkType**](NetworkType.md) |  | [optional] [default to NetworkType.OVERLAY]
 **provider_network** | **str** | Name of the infrastructure provider network used to realize the virtual network. Cardinality can be \&quot;0\&quot; to cover the case where virtual network is not based on infrastructure provider network. | [optional] 
 **segmentation_id** | **str** | The segmentation identifier of the network that maps to the virtualised network, for which, the segmentation model is defined by the networkType attribute. For instance, for a \&quot;vlan\&quot; networkType, it corresponds to the vlan identifier; and for a \&quot;gre\&quot; networkType, it corresponds to a gre key. Cardinality can be \&quot;0\&quot; to cover the case where networkType is flat network without any specific segmentation. | [optional] 

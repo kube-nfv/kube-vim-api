@@ -31,18 +31,18 @@ class VirtualNetwork(BaseModel):
     """
     VirtualNetwork
     """ # noqa: E501
-    network_resource_id: Optional[Identifier] = Field(default=None, alias="networkResourceId")
+    network_resource_id: Identifier = Field(alias="networkResourceId")
     network_resource_name: Optional[StrictStr] = Field(default=None, description="Name of the virtualised network resource.", alias="networkResourceName")
     subnet_id: Optional[List[Identifier]] = Field(default=None, description="References the network subnet. Only present if the network provides layer 3 connectivity.", alias="subnetId")
     network_port: Optional[List[Dict[str, Any]]] = Field(default=None, description="Provides information on an instantiated virtual network port.", alias="networkPort")
-    bandwidth: Optional[Union[StrictFloat, StrictInt]] = None
-    network_type: Optional[NetworkType] = Field(default=NetworkType.OVERLAY, alias="networkType")
+    bandwidth: Union[StrictFloat, StrictInt]
+    network_type: NetworkType = Field(alias="networkType")
     provider_network: Optional[StrictStr] = Field(default=None, description="Name of the infrastructure provider network used to realize the virtual network. Cardinality can be \"0\" to cover the case where virtual network is not based on infrastructure provider network.", alias="providerNetwork")
     segmentation_id: Optional[StrictStr] = Field(default=None, description="The segmentation identifier of the network that maps to the virtualised network, for which, the segmentation model is defined by the networkType attribute. For instance, for a \"vlan\" networkType, it corresponds to the vlan identifier; and for a \"gre\" networkType, it corresponds to a gre key. Cardinality can be \"0\" to cover the case where networkType is flat network without any specific segmentation.", alias="segmentationId")
     network_qo_s: Optional[List[NetworkQoS]] = Field(default=None, description="Provides information about Quality of Service attributes that the network supports. Cardinality can be \"0\" for virtual network without any QoS requirements.", alias="networkQoS")
-    is_shared: Optional[StrictBool] = Field(default=None, description="Defines whether the virtualised network is shared among consumers.", alias="isShared")
+    is_shared: StrictBool = Field(description="Defines whether the virtualised network is shared among consumers.", alias="isShared")
     zone_id: Optional[Identifier] = Field(default=None, alias="zoneId")
-    operational_state: Optional[OperationalState] = Field(default=OperationalState.ENABLED, alias="operationalState")
+    operational_state: OperationalState = Field(alias="operationalState")
     metadata: Optional[Metadata] = None
     connected_networks: Optional[List[Identifier]] = Field(default=None, description="Specifies the virtual network resources to which the newly created virtual network is intended to be explicitly interconnected.", alias="connectedNetworks")
     __properties: ClassVar[List[str]] = ["networkResourceId", "networkResourceName", "subnetId", "networkPort", "bandwidth", "networkType", "providerNetwork", "segmentationId", "networkQoS", "isShared", "zoneId", "operationalState", "metadata", "connectedNetworks"]

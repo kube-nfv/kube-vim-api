@@ -5,18 +5,18 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**network_resource_id** | [**Identifier**](Identifier.md) |  | [optional] 
+**network_resource_id** | [**Identifier**](Identifier.md) |  | 
 **network_resource_name** | **str** | Name of the virtualised network resource. | [optional] 
 **subnet_id** | [**List[Identifier]**](Identifier.md) | References the network subnet. Only present if the network provides layer 3 connectivity. | [optional] 
 **network_port** | **List[object]** | Provides information on an instantiated virtual network port. | [optional] 
-**bandwidth** | **float** |  | [optional] 
-**network_type** | [**NetworkType**](NetworkType.md) |  | [optional] [default to NetworkType.OVERLAY]
+**bandwidth** | **float** |  | 
+**network_type** | [**NetworkType**](NetworkType.md) |  | [default to NetworkType.OVERLAY]
 **provider_network** | **str** | Name of the infrastructure provider network used to realize the virtual network. Cardinality can be \&quot;0\&quot; to cover the case where virtual network is not based on infrastructure provider network. | [optional] 
 **segmentation_id** | **str** | The segmentation identifier of the network that maps to the virtualised network, for which, the segmentation model is defined by the networkType attribute. For instance, for a \&quot;vlan\&quot; networkType, it corresponds to the vlan identifier; and for a \&quot;gre\&quot; networkType, it corresponds to a gre key. Cardinality can be \&quot;0\&quot; to cover the case where networkType is flat network without any specific segmentation. | [optional] 
 **network_qo_s** | [**List[NetworkQoS]**](NetworkQoS.md) | Provides information about Quality of Service attributes that the network supports. Cardinality can be \&quot;0\&quot; for virtual network without any QoS requirements. | [optional] 
-**is_shared** | **bool** | Defines whether the virtualised network is shared among consumers. | [optional] 
+**is_shared** | **bool** | Defines whether the virtualised network is shared among consumers. | 
 **zone_id** | [**Identifier**](Identifier.md) |  | [optional] 
-**operational_state** | [**OperationalState**](OperationalState.md) |  | [optional] [default to OperationalState.ENABLED]
+**operational_state** | [**OperationalState**](OperationalState.md) |  | [default to OperationalState.ENABLED]
 **metadata** | [**Metadata**](Metadata.md) |  | [optional] 
 **connected_networks** | [**List[Identifier]**](Identifier.md) | Specifies the virtual network resources to which the newly created virtual network is intended to be explicitly interconnected. | [optional] 
 

@@ -18,7 +18,7 @@ import re  # noqa: F401
 import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictStr
-from typing import Any, ClassVar, Dict, List, Optional
+from typing import Any, ClassVar, Dict, List
 from typing import Optional, Set
 from typing_extensions import Self
 
@@ -26,8 +26,8 @@ class NetworkQoS(BaseModel):
     """
     This clause describes the attributes for the NetworkQoS information element. This type gives QoS options to be supported on the virtualised network, e.g. latency, jitter, etc.
     """ # noqa: E501
-    qos_name: Optional[StrictStr] = Field(default=None, description="Name given to the QoS parameter.", alias="qosName")
-    qos_value: Optional[StrictStr] = Field(default=None, description="Value of the QoS parameter.", alias="qosValue")
+    qos_name: StrictStr = Field(description="Name given to the QoS parameter.", alias="qosName")
+    qos_value: StrictStr = Field(description="Value of the QoS parameter.", alias="qosValue")
     __properties: ClassVar[List[str]] = ["qosName", "qosValue"]
 
     model_config = ConfigDict(

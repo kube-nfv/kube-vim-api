@@ -30,18 +30,18 @@ class VirtualCompute(BaseModel):
     """
     VirtualCompute
     """ # noqa: E501
-    compute_id: Optional[Identifier] = Field(default=None, alias="computeId")
+    compute_id: Identifier = Field(alias="computeId")
     compute_name: Optional[StrictStr] = Field(default=None, description="Name of the virtualised compute resource.", alias="computeName")
-    flavour_id: Optional[Identifier] = Field(default=None, alias="flavourId")
-    virtual_cpu: Optional[Dict[str, Any]] = Field(default=None, alias="virtualCpu")
-    virtual_memory: Optional[Dict[str, Any]] = Field(default=None, alias="virtualMemory")
-    virtual_network_interface: Optional[List[Dict[str, Any]]] = Field(default=None, description="Provides information of the instantiated virtual network interfaces of the compute resource.", alias="virtualNetworkInterface")
-    virtual_disks: Optional[List[Dict[str, Any]]] = Field(default=None, description="Provides information of the virtualised storage resources (volumes, ephemeral) that are attached to the compute resource.", alias="virtualDisks")
+    flavour_id: Identifier = Field(alias="flavourId")
+    virtual_cpu: Dict[str, Any] = Field(alias="virtualCpu")
+    virtual_memory: Dict[str, Any] = Field(alias="virtualMemory")
+    virtual_network_interface: List[Dict[str, Any]] = Field(description="Provides information of the instantiated virtual network interfaces of the compute resource.", alias="virtualNetworkInterface")
+    virtual_disks: List[Dict[str, Any]] = Field(description="Provides information of the virtualised storage resources (volumes, ephemeral) that are attached to the compute resource.", alias="virtualDisks")
     vc_image_id: Optional[Identifier] = Field(default=None, alias="vcImageId")
     zone_id: Optional[Identifier] = Field(default=None, alias="zoneId")
-    host_id: Optional[Identifier] = Field(default=None, alias="hostId")
-    operational_state: Optional[OperationalState] = Field(default=OperationalState.ENABLED, alias="operationalState")
-    running_state: Optional[ComputeRunningState] = Field(default=ComputeRunningState.STARTED, alias="runningState")
+    host_id: Identifier = Field(alias="hostId")
+    operational_state: OperationalState = Field(alias="operationalState")
+    running_state: ComputeRunningState = Field(alias="runningState")
     metadata: Optional[Metadata] = None
     __properties: ClassVar[List[str]] = ["computeId", "computeName", "flavourId", "virtualCpu", "virtualMemory", "virtualNetworkInterface", "virtualDisks", "vcImageId", "zoneId", "hostId", "operationalState", "runningState", "metadata"]
 

@@ -30,19 +30,19 @@ class SoftwareImageInformation(BaseModel):
     """
     SoftwareImageInformation
     """ # noqa: E501
-    software_image_id: Optional[Identifier] = Field(default=None, alias="softwareImageId")
-    name: Optional[StrictStr] = Field(default=None, description="Name of this software image.")
+    software_image_id: Identifier = Field(alias="softwareImageId")
+    name: StrictStr = Field(description="Name of this software image.")
     provider: Optional[StrictStr] = Field(default=None, description="Provider of this software image.")
     version: Optional[StrictStr] = Field(default=None, description="Version of the software image file.")
     checksum: Optional[StrictStr] = Field(default=None, description="Checksum of the software image file.")
     container_format: Optional[StrictStr] = Field(default=None, description="Container format indicates whether the software image is in a file format that also contains metadata about the actual software.", alias="containerFormat")
     disk_format: Optional[StrictStr] = Field(default=None, description="Disk format of a software image is the format of the underlying disk image.", alias="diskFormat")
-    created_at: Optional[datetime] = Field(default=None, description="Time this software image was created.", alias="createdAt")
-    updated_at: Optional[datetime] = Field(default=None, description="Time this software image was last updated.", alias="updatedAt")
+    created_at: datetime = Field(description="Time this software image was created.", alias="createdAt")
+    updated_at: datetime = Field(description="Time this software image was last updated.", alias="updatedAt")
     min_disk: Optional[ResourceQuantity] = Field(default=None, alias="minDisk")
     min_ram: Optional[ResourceQuantity] = Field(default=None, alias="minRam")
-    size: Optional[ResourceQuantity] = None
-    status: Optional[StrictStr] = Field(default=None, description="Status of this software image.")
+    size: ResourceQuantity
+    status: StrictStr
     metadata: Optional[Metadata] = None
     __properties: ClassVar[List[str]] = ["softwareImageId", "name", "provider", "version", "checksum", "containerFormat", "diskFormat", "createdAt", "updatedAt", "minDisk", "minRam", "size", "status", "metadata"]
 

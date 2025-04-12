@@ -567,7 +567,11 @@
           "description": "Value of the QoS parameter."
         }
       },
-      "description": "This clause describes the attributes for the NetworkQoS information element. This type gives QoS options to be supported on the\nvirtualised network, e.g. latency, jitter, etc."
+      "description": "This clause describes the attributes for the NetworkQoS information element. This type gives QoS options to be supported on the\nvirtualised network, e.g. latency, jitter, etc.",
+      "required": [
+        "qosName",
+        "qosValue"
+      ]
     },
     "NetworkResourceType": {
       "type": "string",
@@ -620,7 +624,13 @@
           "description": "List of metadata key-value pairs used by the consumer to associate meaningful metadata to the related virtualised resource."
         }
       },
-      "description": "The NetworkSubnet information element encapsulates information of an instantiated virtualised sub-network."
+      "description": "The NetworkSubnet information element encapsulates information of an instantiated virtualised sub-network.",
+      "required": [
+        "resourceId",
+        "gatewayIp",
+        "cidr",
+        "isDhcpEnabled"
+      ]
     },
     "NetworkSubnetData": {
       "type": "object",
@@ -739,14 +749,22 @@
         },
         "status": {
           "type": "string",
-          "description": "Status of this software image."
+          "title": "Status of this software image.\nTODO: Change status to the enum"
         },
         "metadata": {
           "$ref": "#/definitions/Metadata",
           "description": "List of metadata key-value pairs used by the consumer to associate meaningful metadata to the related virtualised resource."
         }
       },
-      "title": "This information element represents Software Image Information"
+      "title": "This information element represents Software Image Information",
+      "required": [
+        "softwareImageId",
+        "name",
+        "createdAt",
+        "updatedAt",
+        "size",
+        "status"
+      ]
     },
     "TypeOfAffinityOrAntiAffinityConstraint": {
       "type": "string",
@@ -775,7 +793,10 @@
           },
           "description": "Contains the additional user data to store certificate data for the VNF composed of (fully or partially) virtualised compute resource at\nboot-time. Shall be present if delegation-mode is used. Otherwise it shall be absent."
         }
-      }
+      },
+      "required": [
+        "content"
+      ]
     },
     "UserDataUserDataTransportationMethod": {
       "type": "string",
@@ -848,7 +869,18 @@
           "$ref": "#/definitions/Metadata",
           "description": "List of metadata key-value pairs used by the consumer to associate meaningful metadata to the related virtualised resource."
         }
-      }
+      },
+      "required": [
+        "computeId",
+        "flavourId",
+        "virtualCpu",
+        "virtualMemory",
+        "virtualNetworkInterface",
+        "virtualDisks",
+        "hostId",
+        "operationalState",
+        "runningState"
+      ]
     },
     "VirtualComputeFlavour": {
       "type": "object",
@@ -859,7 +891,8 @@
         },
         "isPublic": {
           "type": "boolean",
-          "description": "Scope of flavour accessibility. It indicates if the compute flavour is accessible and shared across clients.\nDefault value is True (if not specified), which means public. False means private."
+          "default": "true",
+          "description": "Scope of flavour accessibility. It indicates if the compute flavour is accessible and shared across clients.\nDefault value is True (if not specified), which means public. False means private.\n\naccelerationCapability = 3;"
         },
         "virtualMemory": {
           "$ref": "#/definitions/VirtualMemoryData",
@@ -890,7 +923,11 @@
           "description": "List of metadata key-value pairs used by the consumer to associate meaningful metadata to the related virtualised resource."
         }
       },
-      "description": "The VirtualComputeFlavour information element encapsulates information for compute flavours. A compute flavour includes information\nabout number of virtual CPUs, size of virtual memory, size of virtual storage, and virtual network interfaces."
+      "description": "The VirtualComputeFlavour information element encapsulates information for compute flavours. A compute flavour includes information\nabout number of virtual CPUs, size of virtual memory, size of virtual storage, and virtual network interfaces.",
+      "required": [
+        "virtualMemory",
+        "virtualCpu"
+      ]
     },
     "VirtualCpu": {
       "type": "object"
@@ -925,7 +962,10 @@
           "description": "Virtual CPU power (state) requirements for the virtualised compute resource."
         }
       },
-      "description": "Information describing a virtual CPU."
+      "description": "Information describing a virtual CPU.",
+      "required": [
+        "numVirtualCpu"
+      ]
     },
     "VirtualCpuDataVirtualCpuPinningData": {
       "type": "object",
@@ -993,7 +1033,10 @@
           "title": "Specifies the memory allocation to be cognisant of the relevant process/core allocation. The\ncardinality can be 0 during the allocation request, if no particular value is requested"
         }
       },
-      "description": "Information describing virtual memory."
+      "description": "Information describing virtual memory.",
+      "required": [
+        "virtualMemSize"
+      ]
     },
     "VirtualNetwork": {
       "type": "object",
@@ -1073,7 +1116,14 @@
           "description": "Specifies the virtual network resources to which the newly created virtual network is intended to be explicitly interconnected."
         }
       },
-      "title": "The information elements in this group encapsulates information of an instantiated virtualised network resource.\nIn the NFVI, a virtual network transports information among the network interfaces of VM instances and physical network interfaces, providing the necessary connectiv"
+      "title": "The information elements in this group encapsulates information of an instantiated virtualised network resource.\nIn the NFVI, a virtual network transports information among the network interfaces of VM instances and physical network interfaces, providing the necessary connectiv",
+      "required": [
+        "networkResourceId",
+        "bandwidth",
+        "networkType",
+        "isShared",
+        "operationalState"
+      ]
     },
     "VirtualNetworkData": {
       "type": "object",
@@ -1120,7 +1170,10 @@
           "$ref": "#/definitions/Metadata",
           "description": "List of metadata key-value pairs used by the consumer to associate meaningful metadata to the related virtualised resource."
         }
-      }
+      },
+      "required": [
+        "bandwidth"
+      ]
     },
     "VirtualNetworkInterface": {
       "type": "object"
@@ -1167,7 +1220,10 @@
           "description": "List of metadata key-value pairs used by the consumer to associate meaningful metadata to the related virtualised resource."
         }
       },
-      "description": "A virtual network interface is a communication endpoint under a compute resource."
+      "description": "A virtual network interface is a communication endpoint under a compute resource.",
+      "required": [
+        "typeVirtualNic"
+      ]
     },
     "VirtualNetworkInterfaceDataTypeVirtualNic": {
       "type": "string",
@@ -1227,7 +1283,11 @@
           "description": "Indicates if the storage supports RDMA."
         }
       },
-      "description": "This clause describes the attributes for the VirtualStorageData information element."
+      "description": "This clause describes the attributes for the VirtualStorageData information element.",
+      "required": [
+        "typeOfStorage",
+        "sizeOfStorage"
+      ]
     },
     "VirtualTrunk": {
       "type": "object"

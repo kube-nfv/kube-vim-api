@@ -7,9 +7,9 @@ The VirtualComputeFlavour information element encapsulates information for compu
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **flavour_id** | [**Identifier**](Identifier.md) |  | [optional] 
-**is_public** | **bool** | Scope of flavour accessibility. It indicates if the compute flavour is accessible and shared across clients. Default value is True (if not specified), which means public. False means private. | [optional] 
-**virtual_memory** | [**VirtualMemoryData**](VirtualMemoryData.md) |  | [optional] 
-**virtual_cpu** | [**VirtualCpuData**](VirtualCpuData.md) |  | [optional] 
+**is_public** | **bool** | Scope of flavour accessibility. It indicates if the compute flavour is accessible and shared across clients. Default value is True (if not specified), which means public. False means private.  accelerationCapability &#x3D; 3; | [optional] [default to True]
+**virtual_memory** | [**VirtualMemoryData**](VirtualMemoryData.md) |  | 
+**virtual_cpu** | [**VirtualCpuData**](VirtualCpuData.md) |  | 
 **storage_attributes** | [**List[VirtualStorageData]**](VirtualStorageData.md) | Contains information about the size of virtualised storage resource (e.g. size of volume, in GB), the type of storage (e.g. volume, object), and support for RDMA. | [optional] 
 **virtual_network_interface** | [**List[VirtualNetworkInterfaceData]**](VirtualNetworkInterfaceData.md) |  | [optional] 
 **metadata** | [**Metadata**](Metadata.md) |  | [optional] 

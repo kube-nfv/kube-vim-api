@@ -5,19 +5,19 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**software_image_id** | [**Identifier**](Identifier.md) |  | [optional] 
-**name** | **str** | Name of this software image. | [optional] 
+**software_image_id** | [**Identifier**](Identifier.md) |  | 
+**name** | **str** | Name of this software image. | 
 **provider** | **str** | Provider of this software image. | [optional] 
 **version** | **str** | Version of the software image file. | [optional] 
 **checksum** | **str** | Checksum of the software image file. | [optional] 
 **container_format** | **str** | Container format indicates whether the software image is in a file format that also contains metadata about the actual software. | [optional] 
 **disk_format** | **str** | Disk format of a software image is the format of the underlying disk image. | [optional] 
-**created_at** | **datetime** | Time this software image was created. | [optional] 
-**updated_at** | **datetime** | Time this software image was last updated. | [optional] 
+**created_at** | **datetime** | Time this software image was created. | 
+**updated_at** | **datetime** | Time this software image was last updated. | 
 **min_disk** | [**ResourceQuantity**](ResourceQuantity.md) |  | [optional] 
 **min_ram** | [**ResourceQuantity**](ResourceQuantity.md) |  | [optional] 
-**size** | [**ResourceQuantity**](ResourceQuantity.md) |  | [optional] 
-**status** | **str** | Status of this software image. | [optional] 
+**size** | [**ResourceQuantity**](ResourceQuantity.md) |  | 
+**status** | **str** |  | 
 **metadata** | [**Metadata**](Metadata.md) |  | [optional] 
 
 ## Example

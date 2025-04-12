@@ -30,7 +30,7 @@ class VirtualNetworkData(BaseModel):
     """
     VirtualNetworkData
     """ # noqa: E501
-    bandwidth: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="Minimum network bandwidth (in Mbps).")
+    bandwidth: Union[StrictFloat, StrictInt] = Field(description="Minimum network bandwidth (in Mbps).")
     network_type: Optional[NetworkType] = Field(default=NetworkType.OVERLAY, alias="networkType")
     provider_network: Optional[StrictStr] = Field(default=None, description="Name of the infrastructure provider network used to realize the virtual network. Cardinality can be \"0\" to cover the case where virtual network is not based on infrastructure provider network.", alias="providerNetwork")
     segmentation_id: Optional[StrictStr] = Field(default=None, description="The segmentation identifier of the network that maps to the virtualised network, for which, the segmentation model is defined by the networkType attribute. For instance, for a \"vlan\" networkType, it corresponds to the vlan identifier; and for a \"gre\" networkType, it corresponds to a gre key. Cardinality can be \"0\" to cover the case where networkType is flat network without any specific segmentation.", alias="segmentationId")

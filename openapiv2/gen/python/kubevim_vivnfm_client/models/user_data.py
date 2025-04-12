@@ -27,7 +27,7 @@ class UserData(BaseModel):
     """
     UserData
     """ # noqa: E501
-    content: Optional[StrictStr] = Field(default=None, description="Contains the user data to customize a virtualised compute resource at boot-time.")
+    content: StrictStr = Field(description="Contains the user data to customize a virtualised compute resource at boot-time.")
     method: Optional[UserDataUserDataTransportationMethod] = UserDataUserDataTransportationMethod.CONFIG_DRIVE
     certificate_data: Optional[List[Dict[str, Any]]] = Field(default=None, description="Contains the additional user data to store certificate data for the VNF composed of (fully or partially) virtualised compute resource at boot-time. Shall be present if delegation-mode is used. Otherwise it shall be absent.", alias="certificateData")
     __properties: ClassVar[List[str]] = ["content", "method", "certificateData"]

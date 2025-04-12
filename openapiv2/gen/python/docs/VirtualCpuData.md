@@ -7,7 +7,7 @@ Information describing a virtual CPU.
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **cpu_architecture** | **str** | CPU architecture type. Examples are x86, ARM. The cardinality can be 0 during the allocation request, if no particular CPU architecture type is requested. | [optional] 
-**num_virtual_cpu** | **int** | Number of virtual CPUs. | [optional] 
+**num_virtual_cpu** | **int** | Number of virtual CPUs. | 
 **cpu_clock** | **float** | Minimum CPU clock rate (e.g. in MHz) available for the virtualised CPU resources. The cardinality can be 0 during the allocation request, if no particular value is requested. | [optional] 
 **virtual_cpu_oversubscription_policy** | **str** |  | [optional] 
 **virtual_cpu_pinning** | [**VirtualCpuDataVirtualCpuPinningData**](VirtualCpuDataVirtualCpuPinningData.md) |  | [optional] 

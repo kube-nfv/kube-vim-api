@@ -32,12 +32,12 @@ class NetworkSubnet(BaseModel):
     """
     The NetworkSubnet information element encapsulates information of an instantiated virtualised sub-network.
     """ # noqa: E501
-    resource_id: Optional[Identifier] = Field(default=None, alias="resourceId")
+    resource_id: Identifier = Field(alias="resourceId")
     network_id: Optional[Identifier] = Field(default=None, alias="networkId")
     ip_version: Optional[IPVersion] = Field(default=IPVersion.IPV4, alias="ipVersion")
-    gateway_ip: Optional[IPAddress] = Field(default=None, alias="gatewayIp")
-    cidr: Optional[IPSubnetCIDR] = None
-    is_dhcp_enabled: Optional[StrictBool] = Field(default=None, description="True when DHCP is enabled for this network/subnetwork, or false otherwise.", alias="isDhcpEnabled")
+    gateway_ip: IPAddress = Field(alias="gatewayIp")
+    cidr: IPSubnetCIDR
+    is_dhcp_enabled: StrictBool = Field(description="True when DHCP is enabled for this network/subnetwork, or false otherwise.", alias="isDhcpEnabled")
     address_pool: Optional[List[IPAddressPool]] = Field(default=None, description="Address pools for the network/subnetwork. The cardinality can be 0 when VIM is allowed to allocate all addresses in the CIDR except for the address of the network/subnetwork gateway.", alias="addressPool")
     metadata: Optional[Metadata] = None
     __properties: ClassVar[List[str]] = ["resourceId", "networkId", "ipVersion", "gatewayIp", "cidr", "isDhcpEnabled", "addressPool", "metadata"]

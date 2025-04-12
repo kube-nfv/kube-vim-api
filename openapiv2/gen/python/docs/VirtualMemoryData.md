@@ -6,7 +6,7 @@ Information describing virtual memory.
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**virtual_mem_size** | **float** | Amount of virtual Memory (e.g. in MB). | [optional] 
+**virtual_mem_size** | **float** | Amount of virtual Memory (e.g. in MB). | 
 **virtual_mem_oversubscription_policy** | **str** | Memory core oversubscription policy in terms of virtual memory to physical memory on the platform. The cardinality can be 0 during the allocation request, if no particular value is requested. | [optional] 
 **numa_enabled** | **bool** |  | [optional] 
 

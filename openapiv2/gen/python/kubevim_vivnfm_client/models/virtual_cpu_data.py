@@ -28,7 +28,7 @@ class VirtualCpuData(BaseModel):
     Information describing a virtual CPU.
     """ # noqa: E501
     cpu_architecture: Optional[StrictStr] = Field(default=None, description="CPU architecture type. Examples are x86, ARM. The cardinality can be 0 during the allocation request, if no particular CPU architecture type is requested.", alias="cpuArchitecture")
-    num_virtual_cpu: Optional[StrictInt] = Field(default=None, description="Number of virtual CPUs.", alias="numVirtualCpu")
+    num_virtual_cpu: StrictInt = Field(description="Number of virtual CPUs.", alias="numVirtualCpu")
     cpu_clock: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="Minimum CPU clock rate (e.g. in MHz) available for the virtualised CPU resources. The cardinality can be 0 during the allocation request, if no particular value is requested.", alias="cpuClock")
     virtual_cpu_oversubscription_policy: Optional[StrictStr] = Field(default=None, alias="virtualCpuOversubscriptionPolicy")
     virtual_cpu_pinning: Optional[VirtualCpuDataVirtualCpuPinningData] = Field(default=None, alias="virtualCpuPinning")
