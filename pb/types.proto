@@ -288,7 +288,7 @@ message VirtualComputeFlavour {
     // Identifier given to the compute flavour. When the VirtualComputeFlavour is used as input in operations to request the creation
     // of a compute flavour, the cardinality can be "0" if VIM assigns the identifier in order to avoid potential identifier assignment conflicts.
     // The flavourId shall be present otherwise.
-    optional Identifier flavourId = 1 [(google.api.field_behavior) = OPTIONAL];
+    optional Identifier flavourId = 1 [(google.api.field_behavior) = OUTPUT_ONLY];
     // Scope of flavour accessibility. It indicates if the compute flavour is accessible and shared across clients.
     // Default value is True (if not specified), which means public. False means private.
     optional bool isPublic = 2 [
