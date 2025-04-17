@@ -24,6 +24,8 @@ const (
 	ViVnfm_AllocateVirtualisedComputeResource_FullMethodName                          = "/kubenvf.kubevim.api.pb.vi_vnfm/AllocateVirtualisedComputeResource"
 	ViVnfm_QueryVirtualisedComputeResource_FullMethodName                             = "/kubenvf.kubevim.api.pb.vi_vnfm/QueryVirtualisedComputeResource"
 	ViVnfm_CreateComputeResourceAffinityOrAntiAffinityConstraintsGroup_FullMethodName = "/kubenvf.kubevim.api.pb.vi_vnfm/CreateComputeResourceAffinityOrAntiAffinityConstraintsGroup"
+	ViVnfm_TerminateVirtualisedComputeResource_FullMethodName                         = "/kubenvf.kubevim.api.pb.vi_vnfm/TerminateVirtualisedComputeResource"
+	ViVnfm_OperateVirtualisedComputeResource_FullMethodName                           = "/kubenvf.kubevim.api.pb.vi_vnfm/OperateVirtualisedComputeResource"
 	ViVnfm_CreateComputeFlavour_FullMethodName                                        = "/kubenvf.kubevim.api.pb.vi_vnfm/CreateComputeFlavour"
 	ViVnfm_QueryComputeFlavour_FullMethodName                                         = "/kubenvf.kubevim.api.pb.vi_vnfm/QueryComputeFlavour"
 	ViVnfm_DeleteComputeFlavour_FullMethodName                                        = "/kubenvf.kubevim.api.pb.vi_vnfm/DeleteComputeFlavour"
@@ -52,6 +54,10 @@ type ViVnfmClient interface {
 	// the VIM shall return to the VNFM appropriate error information.
 	AllocateVirtualisedComputeResource(ctx context.Context, in *AllocateComputeRequest, opts ...grpc.CallOption) (*AllocateComputeResponse, error)
 	// This operation allows querying information about instantiated virtualised compute resources.
+	// Result: After successful operation, the VIM has queried the internal management objects for the virtualised compute resources.
+	// The result of the query shall indicate with a standard success/error result if the query has been processed correctly. For a
+	// particular query, information about the compute resources that the VNFM has access to and that are matching the filter
+	// shall be returned.
 	QueryVirtualisedComputeResource(ctx context.Context, in *QueryComputeRequest, opts ...grpc.CallOption) (*QueryComputeResponse, error)
 	// This operation allows an authorized consumer functional block to request the creation of a resource affinity or
 	// anti-affinity constraints group. An anti-affinity group contains resources that are not placed in proximity, e.g. that do not
@@ -60,6 +66,21 @@ type ViVnfmClient interface {
 	// This operation shall be supported by the VIM. It shall be supported by the VNFM, if the VNFM supports named
 	// resource groups for affinity/anti-affinity.
 	CreateComputeResourceAffinityOrAntiAffinityConstraintsGroup(ctx context.Context, in *CreateComputeResourceAffinityOrAntiAffinityConstraintsGroupRequest, opts ...grpc.CallOption) (*CreateComputeResourceAffinityOrAntiAffinityConstraintsGroupResponse, error)
+	// This operation allows de-allocating and terminating one or more instantiated virtualised compute resource.
+	// When the operation is done on multiple resources, it is assumed to be best-effort, i.e. it can succeed for a subset of the
+	// resources, and fail for the remaining ones.
+	// Result: After successful operation, the VIM has terminated the virtualised compute resources and removed the internal
+	// management objects for those resources. In addition, the VIM shall return to the VNFM information on the terminated
+	// virtualised compute resource plus any additional information about the terminate request operation.
+	//
+	// If the operation was not successful, the VIM shall return to the VNFM appropriate error information.
+	TerminateVirtualisedComputeResource(ctx context.Context, in *TerminateComputeRequest, opts ...grpc.CallOption) (*TerminateComputeResponse, error)
+	// This operation allows executing specific operation command on instantiated virtualised compute resources.
+	// Result: After successful operation, the VIM has executed the requested operation command on the virtualised compute
+	// resource. In addition, the VIM shall return to the VNFM information on the new status of the operated virtualised
+	// compute resources, operation specific data plus any additional information about the operate request operation.
+	// If the operation was not successful, the VIM shall return to the VNFM appropriate error information.
+	OperateVirtualisedComputeResource(ctx context.Context, in *OperateComputeRequest, opts ...grpc.CallOption) (*OperateComputeResponse, error)
 	// This operation allows requesting the creation of a flavour as indicated by the consumer functional block.
 	// Result: After successful operation, the VIM has created the Compute Flavour.
 	// In addition, the VIM shall return to the VNFM information on the newly created Compute Flavour.
@@ -154,6 +175,24 @@ func (c *viVnfmClient) CreateComputeResourceAffinityOrAntiAffinityConstraintsGro
 	return out, nil
 }
 
+func (c *viVnfmClient) TerminateVirtualisedComputeResource(ctx context.Context, in *TerminateComputeRequest, opts ...grpc.CallOption) (*TerminateComputeResponse, error) {
+	out := new(TerminateComputeResponse)
+	err := c.cc.Invoke(ctx, ViVnfm_TerminateVirtualisedComputeResource_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *viVnfmClient) OperateVirtualisedComputeResource(ctx context.Context, in *OperateComputeRequest, opts ...grpc.CallOption) (*OperateComputeResponse, error) {
+	out := new(OperateComputeResponse)
+	err := c.cc.Invoke(ctx, ViVnfm_OperateVirtualisedComputeResource_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *viVnfmClient) CreateComputeFlavour(ctx context.Context, in *CreateComputeFlavourRequest, opts ...grpc.CallOption) (*CreateComputeFlavourResponse, error) {
 	out := new(CreateComputeFlavourResponse)
 	err := c.cc.Invoke(ctx, ViVnfm_CreateComputeFlavour_FullMethodName, in, out, opts...)
@@ -228,6 +267,10 @@ type ViVnfmServer interface {
 	// the VIM shall return to the VNFM appropriate error information.
 	AllocateVirtualisedComputeResource(context.Context, *AllocateComputeRequest) (*AllocateComputeResponse, error)
 	// This operation allows querying information about instantiated virtualised compute resources.
+	// Result: After successful operation, the VIM has queried the internal management objects for the virtualised compute resources.
+	// The result of the query shall indicate with a standard success/error result if the query has been processed correctly. For a
+	// particular query, information about the compute resources that the VNFM has access to and that are matching the filter
+	// shall be returned.
 	QueryVirtualisedComputeResource(context.Context, *QueryComputeRequest) (*QueryComputeResponse, error)
 	// This operation allows an authorized consumer functional block to request the creation of a resource affinity or
 	// anti-affinity constraints group. An anti-affinity group contains resources that are not placed in proximity, e.g. that do not
@@ -236,6 +279,21 @@ type ViVnfmServer interface {
 	// This operation shall be supported by the VIM. It shall be supported by the VNFM, if the VNFM supports named
 	// resource groups for affinity/anti-affinity.
 	CreateComputeResourceAffinityOrAntiAffinityConstraintsGroup(context.Context, *CreateComputeResourceAffinityOrAntiAffinityConstraintsGroupRequest) (*CreateComputeResourceAffinityOrAntiAffinityConstraintsGroupResponse, error)
+	// This operation allows de-allocating and terminating one or more instantiated virtualised compute resource.
+	// When the operation is done on multiple resources, it is assumed to be best-effort, i.e. it can succeed for a subset of the
+	// resources, and fail for the remaining ones.
+	// Result: After successful operation, the VIM has terminated the virtualised compute resources and removed the internal
+	// management objects for those resources. In addition, the VIM shall return to the VNFM information on the terminated
+	// virtualised compute resource plus any additional information about the terminate request operation.
+	//
+	// If the operation was not successful, the VIM shall return to the VNFM appropriate error information.
+	TerminateVirtualisedComputeResource(context.Context, *TerminateComputeRequest) (*TerminateComputeResponse, error)
+	// This operation allows executing specific operation command on instantiated virtualised compute resources.
+	// Result: After successful operation, the VIM has executed the requested operation command on the virtualised compute
+	// resource. In addition, the VIM shall return to the VNFM information on the new status of the operated virtualised
+	// compute resources, operation specific data plus any additional information about the operate request operation.
+	// If the operation was not successful, the VIM shall return to the VNFM appropriate error information.
+	OperateVirtualisedComputeResource(context.Context, *OperateComputeRequest) (*OperateComputeResponse, error)
 	// This operation allows requesting the creation of a flavour as indicated by the consumer functional block.
 	// Result: After successful operation, the VIM has created the Compute Flavour.
 	// In addition, the VIM shall return to the VNFM information on the newly created Compute Flavour.
@@ -296,6 +354,12 @@ func (UnimplementedViVnfmServer) QueryVirtualisedComputeResource(context.Context
 }
 func (UnimplementedViVnfmServer) CreateComputeResourceAffinityOrAntiAffinityConstraintsGroup(context.Context, *CreateComputeResourceAffinityOrAntiAffinityConstraintsGroupRequest) (*CreateComputeResourceAffinityOrAntiAffinityConstraintsGroupResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateComputeResourceAffinityOrAntiAffinityConstraintsGroup not implemented")
+}
+func (UnimplementedViVnfmServer) TerminateVirtualisedComputeResource(context.Context, *TerminateComputeRequest) (*TerminateComputeResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method TerminateVirtualisedComputeResource not implemented")
+}
+func (UnimplementedViVnfmServer) OperateVirtualisedComputeResource(context.Context, *OperateComputeRequest) (*OperateComputeResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method OperateVirtualisedComputeResource not implemented")
 }
 func (UnimplementedViVnfmServer) CreateComputeFlavour(context.Context, *CreateComputeFlavourRequest) (*CreateComputeFlavourResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateComputeFlavour not implemented")
@@ -414,6 +478,42 @@ func _ViVnfm_CreateComputeResourceAffinityOrAntiAffinityConstraintsGroup_Handler
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ViVnfmServer).CreateComputeResourceAffinityOrAntiAffinityConstraintsGroup(ctx, req.(*CreateComputeResourceAffinityOrAntiAffinityConstraintsGroupRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ViVnfm_TerminateVirtualisedComputeResource_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(TerminateComputeRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ViVnfmServer).TerminateVirtualisedComputeResource(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ViVnfm_TerminateVirtualisedComputeResource_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ViVnfmServer).TerminateVirtualisedComputeResource(ctx, req.(*TerminateComputeRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ViVnfm_OperateVirtualisedComputeResource_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(OperateComputeRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ViVnfmServer).OperateVirtualisedComputeResource(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ViVnfm_OperateVirtualisedComputeResource_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ViVnfmServer).OperateVirtualisedComputeResource(ctx, req.(*OperateComputeRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -552,6 +652,14 @@ var ViVnfm_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CreateComputeResourceAffinityOrAntiAffinityConstraintsGroup",
 			Handler:    _ViVnfm_CreateComputeResourceAffinityOrAntiAffinityConstraintsGroup_Handler,
+		},
+		{
+			MethodName: "TerminateVirtualisedComputeResource",
+			Handler:    _ViVnfm_TerminateVirtualisedComputeResource_Handler,
+		},
+		{
+			MethodName: "OperateVirtualisedComputeResource",
+			Handler:    _ViVnfm_OperateVirtualisedComputeResource_Handler,
 		},
 		{
 			MethodName: "CreateComputeFlavour",

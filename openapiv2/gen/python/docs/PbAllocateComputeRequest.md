@@ -12,7 +12,7 @@ Name | Type | Description | Notes
 **vc_image_id** | [**Identifier**](Identifier.md) |  | [optional] 
 **interface_data** | [**List[VirtualNetworkInterfaceData]**](VirtualNetworkInterfaceData.md) | Note: That is out of the ETSI GS NFV-IFA 006 scope. Traditionaly VirtualNetworkInterfaceData specified in the virtualComputeFlavour, but it is reduce flexibility, since the flavor contains virtual compute related networks, and network configuration for it (eg. QoS). Descided to move it in the AllocateComputeRequest. | [optional] 
 **interface_ipam** | [**List[VirtualNetworkInterfaceIPAM]**](VirtualNetworkInterfaceIPAM.md) | IPAM Data of network interfaces which are specific to a Virtual Compute Resource instance. See clause 8.4.3.7. | [optional] 
-**meta_data** | [**Dict[str, ProtobufAny]**](ProtobufAny.md) | List of metadata key-value pairs used by the consumer to associate meaningful metadata to the related virtualised resource. | [optional] 
+**meta_data** | [**Metadata**](Metadata.md) |  | [optional] 
 **resource_group_id** | [**Identifier**](Identifier.md) |  | [optional] 
 **user_data** | [**UserData**](UserData.md) |  | [optional] 
 

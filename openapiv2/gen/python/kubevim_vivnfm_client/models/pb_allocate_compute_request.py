@@ -21,7 +21,7 @@ from pydantic import BaseModel, ConfigDict, Field, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from kubevim_vivnfm_client.models.affinity_or_anti_affinity_constraint_for_compute import AffinityOrAntiAffinityConstraintForCompute
 from kubevim_vivnfm_client.models.identifier import Identifier
-from kubevim_vivnfm_client.models.protobuf_any import ProtobufAny
+from kubevim_vivnfm_client.models.metadata import Metadata
 from kubevim_vivnfm_client.models.user_data import UserData
 from kubevim_vivnfm_client.models.virtual_network_interface_data import VirtualNetworkInterfaceData
 from kubevim_vivnfm_client.models.virtual_network_interface_ipam import VirtualNetworkInterfaceIPAM
@@ -39,7 +39,7 @@ class PbAllocateComputeRequest(BaseModel):
     vc_image_id: Optional[Identifier] = Field(default=None, alias="vcImageId")
     interface_data: Optional[List[VirtualNetworkInterfaceData]] = Field(default=None, description="Note: That is out of the ETSI GS NFV-IFA 006 scope. Traditionaly VirtualNetworkInterfaceData specified in the virtualComputeFlavour, but it is reduce flexibility, since the flavor contains virtual compute related networks, and network configuration for it (eg. QoS). Descided to move it in the AllocateComputeRequest.", alias="interfaceData")
     interface_ipam: Optional[List[VirtualNetworkInterfaceIPAM]] = Field(default=None, description="IPAM Data of network interfaces which are specific to a Virtual Compute Resource instance. See clause 8.4.3.7.", alias="interfaceIPAM")
-    meta_data: Optional[Dict[str, ProtobufAny]] = Field(default=None, description="List of metadata key-value pairs used by the consumer to associate meaningful metadata to the related virtualised resource.", alias="metaData")
+    meta_data: Optional[Metadata] = Field(default=None, alias="metaData")
     resource_group_id: Optional[Identifier] = Field(default=None, alias="resourceGroupId")
     user_data: Optional[UserData] = Field(default=None, alias="userData")
     __properties: ClassVar[List[str]] = ["computeName", "reservationId", "affinityOrAntiAffinityConstraints", "computeFlavourId", "vcImageId", "interfaceData", "interfaceIPAM", "metaData", "resourceGroupId", "userData"]
@@ -113,13 +113,9 @@ class PbAllocateComputeRequest(BaseModel):
                 if _item_interface_ipam:
                     _items.append(_item_interface_ipam.to_dict())
             _dict['interfaceIPAM'] = _items
-        # override the default output from pydantic by calling `to_dict()` of each value in meta_data (dict)
-        _field_dict = {}
+        # override the default output from pydantic by calling `to_dict()` of meta_data
         if self.meta_data:
-            for _key_meta_data in self.meta_data:
-                if self.meta_data[_key_meta_data]:
-                    _field_dict[_key_meta_data] = self.meta_data[_key_meta_data].to_dict()
-            _dict['metaData'] = _field_dict
+            _dict['metaData'] = self.meta_data.to_dict()
         # override the default output from pydantic by calling `to_dict()` of resource_group_id
         if self.resource_group_id:
             _dict['resourceGroupId'] = self.resource_group_id.to_dict()
@@ -145,12 +141,7 @@ class PbAllocateComputeRequest(BaseModel):
             "vcImageId": Identifier.from_dict(obj["vcImageId"]) if obj.get("vcImageId") is not None else None,
             "interfaceData": [VirtualNetworkInterfaceData.from_dict(_item) for _item in obj["interfaceData"]] if obj.get("interfaceData") is not None else None,
             "interfaceIPAM": [VirtualNetworkInterfaceIPAM.from_dict(_item) for _item in obj["interfaceIPAM"]] if obj.get("interfaceIPAM") is not None else None,
-            "metaData": dict(
-                (_k, ProtobufAny.from_dict(_v))
-                for _k, _v in obj["metaData"].items()
-            )
-            if obj.get("metaData") is not None
-            else None,
+            "metaData": Metadata.from_dict(obj["metaData"]) if obj.get("metaData") is not None else None,
             "resourceGroupId": Identifier.from_dict(obj["resourceGroupId"]) if obj.get("resourceGroupId") is not None else None,
             "userData": UserData.from_dict(obj["userData"]) if obj.get("userData") is not None else None
         })

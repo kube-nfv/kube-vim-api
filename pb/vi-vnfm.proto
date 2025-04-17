@@ -58,6 +58,10 @@ service vi_vnfm {
         };
     }
     // This operation allows querying information about instantiated virtualised compute resources.
+    // Result: After successful operation, the VIM has queried the internal management objects for the virtualised compute resources.
+    // The result of the query shall indicate with a standard success/error result if the query has been processed correctly. For a
+    // particular query, information about the compute resources that the VNFM has access to and that are matching the filter
+    // shall be returned.
     rpc QueryVirtualisedComputeResource(QueryComputeRequest) returns (QueryComputeResponse) {
         option(google.api.http) = {
             get: "/vivnfm/v5/compute"
@@ -74,6 +78,30 @@ service vi_vnfm {
             post: "/vivnfm/v5/compute/affinity"
             body: "*"
         };
+    }
+    // This operation allows de-allocating and terminating one or more instantiated virtualised compute resource.
+    // When the operation is done on multiple resources, it is assumed to be best-effort, i.e. it can succeed for a subset of the
+    // resources, and fail for the remaining ones.
+    // Result: After successful operation, the VIM has terminated the virtualised compute resources and removed the internal
+    // management objects for those resources. In addition, the VIM shall return to the VNFM information on the terminated
+    // virtualised compute resource plus any additional information about the terminate request operation.
+    //
+    // If the operation was not successful, the VIM shall return to the VNFM appropriate error information.
+    rpc TerminateVirtualisedComputeResource(TerminateComputeRequest) returns (TerminateComputeResponse) {
+        option(google.api.http) = {
+            delete: "/vivnfm/v5/compute/{computeId.value}"
+        };
+    }
+    // This operation allows executing specific operation command on instantiated virtualised compute resources.
+    // Result: After successful operation, the VIM has executed the requested operation command on the virtualised compute
+    // resource. In addition, the VIM shall return to the VNFM information on the new status of the operated virtualised
+    // compute resources, operation specific data plus any additional information about the operate request operation.
+    // If the operation was not successful, the VIM shall return to the VNFM appropriate error information.
+    rpc OperateVirtualisedComputeResource(OperateComputeRequest) returns (OperateComputeResponse) {
+      option(google.api.http) = {
+            post: "/vivnfm/v5/compute/{computeId.value}/{computeOperation}"
+            body: "*"
+      };
     }
 
     // Virtualised Compute Flavour Management Interface
@@ -109,7 +137,6 @@ service vi_vnfm {
             delete: "/vivnfm/v5/flavours/{computeFlavourId.value}"
         };
     }
-
 
     // Virtualised Network Interfaces
 
@@ -194,7 +221,7 @@ message AllocateComputeRequest {
     // IPAM Data of network interfaces which are specific to a Virtual Compute Resource instance. See clause 8.4.3.7.
     repeated VirtualNetworkInterfaceIPAM interfaceIPAM = 7 [(google.api.field_behavior) = OPTIONAL];
     // List of metadata key-value pairs used by the consumer to associate meaningful metadata to the related virtualised resource.
-    map<string, google.protobuf.Any> metaData = 8 [(google.api.field_behavior) = OPTIONAL];
+    Metadata metaData = 8 [(google.api.field_behavior) = OPTIONAL];
     // Unique identifier of the "infrastructure resource group", logical grouping of virtual resources assigned to a tenant within an Infrastructure Domain.
     // Cardinality can be 0 if the consumer credentials are implicitly associated to a specific resource group.
     optional Identifier resourceGroupId = 9 [(google.api.field_behavior) = OPTIONAL];
@@ -225,6 +252,40 @@ message QueryComputeResponse {
     // Contains information about the virtual compute resource(s) matching the filter. The cardinality can be 0 if no matching
     // compute resources exist.
     repeated VirtualCompute queryResult = 1 [(google.api.field_behavior) = REQUIRED];
+}
+
+// Note: This message goes out of ETSI GS NFV-IFA 006 reference
+// since multiple ids in request not lays down on RESTfull api, where
+// deleted resource should be specified in the path.
+message TerminateComputeRequest {
+    // Identifier of the virtualised compute resource to be terminated.
+    Identifier computeId = 1 [(google.api.field_behavior) = REQUIRED];
+}
+
+// Note: This message goes out of ETSI GS NFV-IFA 006 reference.
+// See TerminateComputeRequest
+message TerminateComputeResponse {
+    // Identifier of the virtualised compute resource successfully terminated.
+    Identifier computeId = 1 [(google.api.field_behavior) = REQUIRED];
+}
+
+message OperateComputeRequest {
+    // Identifier of the virtualised compute resource successfully terminated.
+    Identifier computeId = 1 [(google.api.field_behavior) = REQUIRED];
+    // Type of operation to be performed on the virtualised compute resource.
+    string computeOperation = 2 [(google.api.field_behavior) = REQUIRED];
+    // Additional parameters associated to the operation to be performed. For example, if
+    // the operation is "delete snapshot", information identifying the snapshot to be deleted is provided.
+    map<string, string> computeOperationInputData = 3 [(google.api.field_behavior) = OPTIONAL];
+}
+
+message OperateComputeResponse {
+    // Contains information on the new status of the operated virtualised compute resource.
+    VirtualCompute computeData = 1 [(google.api.field_behavior) = REQUIRED];
+    // Set of output values depending on the type of operation. For instance, when a
+    // snapshot operation is requested, this field provides information about the identifier of
+    // the snapshot and its location.
+    map<string, string> computeOperationOutputData = 2 [(google.api.field_behavior) = OPTIONAL];
 }
 
 message CreateComputeResourceAffinityOrAntiAffinityConstraintsGroupRequest {
@@ -292,7 +353,7 @@ message AllocateNetworkRequest {
     // If present, it defines location constraints for the resource(s) to be allocated, e.g. in what particular resource zone.
     optional string locationConstraintsForNetwork = 9 [(google.api.field_behavior) = OPTIONAL];
     // List of metadata key-value pairs used by the consumer to associate meaningful metadata to the related virtualised resource.
-    map<string, google.protobuf.Any> metaData = 10 [(google.api.field_behavior) = OPTIONAL];
+    Metadata metaData = 10 [(google.api.field_behavior) = OPTIONAL];
     // Unique identifier of the "infrastructure resource group", logical grouping of virtual resources assigned to a tenant within an Infrastructure Domain.
     // Cardinality can be 0 if the consumer credentials are implicitly associated to a specific resource group.
     optional Identifier resourceGroupId = 11 [(google.api.field_behavior) = OPTIONAL];

@@ -20,9 +20,9 @@ import json
 from pydantic import BaseModel, ConfigDict, Field, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from kubevim_vivnfm_client.models.identifier import Identifier
+from kubevim_vivnfm_client.models.metadata import Metadata
 from kubevim_vivnfm_client.models.network_resource_type import NetworkResourceType
 from kubevim_vivnfm_client.models.network_subnet_data import NetworkSubnetData
-from kubevim_vivnfm_client.models.protobuf_any import ProtobufAny
 from kubevim_vivnfm_client.models.virtual_network_data import VirtualNetworkData
 from typing import Optional, Set
 from typing_extensions import Self
@@ -40,7 +40,7 @@ class PbAllocateNetworkRequest(BaseModel):
     type_trunk_data: Optional[Dict[str, Any]] = Field(default=None, alias="typeTrunkData")
     affinity_or_anti_affinity_constraints: Optional[List[Dict[str, Any]]] = Field(default=None, description="List of elements with affinity or anti affinity (see clause 8.4.8.2) information of the virtualised network resource to be allocated. All the listed constraints shall be fulfilled for a successful operation.", alias="affinityOrAntiAffinityConstraints")
     location_constraints_for_network: Optional[StrictStr] = Field(default=None, description="If present, it defines location constraints for the resource(s) to be allocated, e.g. in what particular resource zone.", alias="locationConstraintsForNetwork")
-    meta_data: Optional[Dict[str, ProtobufAny]] = Field(default=None, description="List of metadata key-value pairs used by the consumer to associate meaningful metadata to the related virtualised resource.", alias="metaData")
+    meta_data: Optional[Metadata] = Field(default=None, alias="metaData")
     resource_group_id: Optional[Identifier] = Field(default=None, alias="resourceGroupId")
     __properties: ClassVar[List[str]] = ["networkResourceName", "reservationId", "networkResourceType", "typeNetworkData", "typeSubnetData", "typeNetworkPortData", "typeTrunkData", "affinityOrAntiAffinityConstraints", "locationConstraintsForNetwork", "metaData", "resourceGroupId"]
 
@@ -92,13 +92,9 @@ class PbAllocateNetworkRequest(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of type_subnet_data
         if self.type_subnet_data:
             _dict['typeSubnetData'] = self.type_subnet_data.to_dict()
-        # override the default output from pydantic by calling `to_dict()` of each value in meta_data (dict)
-        _field_dict = {}
+        # override the default output from pydantic by calling `to_dict()` of meta_data
         if self.meta_data:
-            for _key_meta_data in self.meta_data:
-                if self.meta_data[_key_meta_data]:
-                    _field_dict[_key_meta_data] = self.meta_data[_key_meta_data].to_dict()
-            _dict['metaData'] = _field_dict
+            _dict['metaData'] = self.meta_data.to_dict()
         # override the default output from pydantic by calling `to_dict()` of resource_group_id
         if self.resource_group_id:
             _dict['resourceGroupId'] = self.resource_group_id.to_dict()
@@ -123,12 +119,7 @@ class PbAllocateNetworkRequest(BaseModel):
             "typeTrunkData": obj.get("typeTrunkData"),
             "affinityOrAntiAffinityConstraints": obj.get("affinityOrAntiAffinityConstraints"),
             "locationConstraintsForNetwork": obj.get("locationConstraintsForNetwork"),
-            "metaData": dict(
-                (_k, ProtobufAny.from_dict(_v))
-                for _k, _v in obj["metaData"].items()
-            )
-            if obj.get("metaData") is not None
-            else None,
+            "metaData": Metadata.from_dict(obj["metaData"]) if obj.get("metaData") is not None else None,
             "resourceGroupId": Identifier.from_dict(obj["resourceGroupId"]) if obj.get("resourceGroupId") is not None else None
         })
         return _obj

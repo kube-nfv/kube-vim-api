@@ -221,6 +221,114 @@ func local_request_ViVnfm_CreateComputeResourceAffinityOrAntiAffinityConstraints
 	return msg, metadata, err
 }
 
+var filter_ViVnfm_TerminateVirtualisedComputeResource_0 = &utilities.DoubleArray{Encoding: map[string]int{"computeId": 0, "value": 1}, Base: []int{1, 1, 1, 0}, Check: []int{0, 1, 2, 3}}
+
+func request_ViVnfm_TerminateVirtualisedComputeResource_0(ctx context.Context, marshaler runtime.Marshaler, client ViVnfmClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var (
+		protoReq TerminateComputeRequest
+		metadata runtime.ServerMetadata
+		err      error
+	)
+	val, ok := pathParams["computeId.value"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "computeId.value")
+	}
+	err = runtime.PopulateFieldFromPath(&protoReq, "computeId.value", val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "computeId.value", err)
+	}
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_ViVnfm_TerminateVirtualisedComputeResource_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	msg, err := client.TerminateVirtualisedComputeResource(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+}
+
+func local_request_ViVnfm_TerminateVirtualisedComputeResource_0(ctx context.Context, marshaler runtime.Marshaler, server ViVnfmServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var (
+		protoReq TerminateComputeRequest
+		metadata runtime.ServerMetadata
+		err      error
+	)
+	val, ok := pathParams["computeId.value"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "computeId.value")
+	}
+	err = runtime.PopulateFieldFromPath(&protoReq, "computeId.value", val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "computeId.value", err)
+	}
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_ViVnfm_TerminateVirtualisedComputeResource_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	msg, err := server.TerminateVirtualisedComputeResource(ctx, &protoReq)
+	return msg, metadata, err
+}
+
+func request_ViVnfm_OperateVirtualisedComputeResource_0(ctx context.Context, marshaler runtime.Marshaler, client ViVnfmClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var (
+		protoReq OperateComputeRequest
+		metadata runtime.ServerMetadata
+		err      error
+	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	val, ok := pathParams["computeId.value"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "computeId.value")
+	}
+	err = runtime.PopulateFieldFromPath(&protoReq, "computeId.value", val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "computeId.value", err)
+	}
+	val, ok = pathParams["computeOperation"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "computeOperation")
+	}
+	protoReq.ComputeOperation, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "computeOperation", err)
+	}
+	msg, err := client.OperateVirtualisedComputeResource(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+}
+
+func local_request_ViVnfm_OperateVirtualisedComputeResource_0(ctx context.Context, marshaler runtime.Marshaler, server ViVnfmServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var (
+		protoReq OperateComputeRequest
+		metadata runtime.ServerMetadata
+		err      error
+	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	val, ok := pathParams["computeId.value"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "computeId.value")
+	}
+	err = runtime.PopulateFieldFromPath(&protoReq, "computeId.value", val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "computeId.value", err)
+	}
+	val, ok = pathParams["computeOperation"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "computeOperation")
+	}
+	protoReq.ComputeOperation, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "computeOperation", err)
+	}
+	msg, err := server.OperateVirtualisedComputeResource(ctx, &protoReq)
+	return msg, metadata, err
+}
+
 func request_ViVnfm_CreateComputeFlavour_0(ctx context.Context, marshaler runtime.Marshaler, client ViVnfmClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var (
 		protoReq CreateComputeFlavourRequest
@@ -559,6 +667,46 @@ func RegisterViVnfmHandlerServer(ctx context.Context, mux *runtime.ServeMux, ser
 		}
 		forward_ViVnfm_CreateComputeResourceAffinityOrAntiAffinityConstraintsGroup_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
+	mux.Handle(http.MethodDelete, pattern_ViVnfm_TerminateVirtualisedComputeResource_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		var stream runtime.ServerTransportStream
+		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/kubenvf.kubevim.api.pb.ViVnfm/TerminateVirtualisedComputeResource", runtime.WithHTTPPathPattern("/vivnfm/v5/compute/{computeId.value}"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_ViVnfm_TerminateVirtualisedComputeResource_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		forward_ViVnfm_TerminateVirtualisedComputeResource_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+	})
+	mux.Handle(http.MethodPost, pattern_ViVnfm_OperateVirtualisedComputeResource_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		var stream runtime.ServerTransportStream
+		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/kubenvf.kubevim.api.pb.ViVnfm/OperateVirtualisedComputeResource", runtime.WithHTTPPathPattern("/vivnfm/v5/compute/{computeId.value}/{computeOperation}"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_ViVnfm_OperateVirtualisedComputeResource_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		forward_ViVnfm_OperateVirtualisedComputeResource_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+	})
 	mux.Handle(http.MethodPost, pattern_ViVnfm_CreateComputeFlavour_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
@@ -821,6 +969,40 @@ func RegisterViVnfmHandlerClient(ctx context.Context, mux *runtime.ServeMux, cli
 		}
 		forward_ViVnfm_CreateComputeResourceAffinityOrAntiAffinityConstraintsGroup_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
+	mux.Handle(http.MethodDelete, pattern_ViVnfm_TerminateVirtualisedComputeResource_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/kubenvf.kubevim.api.pb.ViVnfm/TerminateVirtualisedComputeResource", runtime.WithHTTPPathPattern("/vivnfm/v5/compute/{computeId.value}"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_ViVnfm_TerminateVirtualisedComputeResource_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		forward_ViVnfm_TerminateVirtualisedComputeResource_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+	})
+	mux.Handle(http.MethodPost, pattern_ViVnfm_OperateVirtualisedComputeResource_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/kubenvf.kubevim.api.pb.ViVnfm/OperateVirtualisedComputeResource", runtime.WithHTTPPathPattern("/vivnfm/v5/compute/{computeId.value}/{computeOperation}"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_ViVnfm_OperateVirtualisedComputeResource_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		forward_ViVnfm_OperateVirtualisedComputeResource_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+	})
 	mux.Handle(http.MethodPost, pattern_ViVnfm_CreateComputeFlavour_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
@@ -933,6 +1115,8 @@ var (
 	pattern_ViVnfm_AllocateVirtualisedComputeResource_0                          = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"vivnfm", "v5", "compute"}, ""))
 	pattern_ViVnfm_QueryVirtualisedComputeResource_0                             = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"vivnfm", "v5", "compute"}, ""))
 	pattern_ViVnfm_CreateComputeResourceAffinityOrAntiAffinityConstraintsGroup_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"vivnfm", "v5", "compute", "affinity"}, ""))
+	pattern_ViVnfm_TerminateVirtualisedComputeResource_0                         = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"vivnfm", "v5", "compute", "computeId.value"}, ""))
+	pattern_ViVnfm_OperateVirtualisedComputeResource_0                           = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 1, 0, 4, 1, 5, 4}, []string{"vivnfm", "v5", "compute", "computeId.value", "computeOperation"}, ""))
 	pattern_ViVnfm_CreateComputeFlavour_0                                        = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"vivnfm", "v5", "flavours"}, ""))
 	pattern_ViVnfm_QueryComputeFlavour_0                                         = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"vivnfm", "v5", "flavours"}, ""))
 	pattern_ViVnfm_DeleteComputeFlavour_0                                        = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"vivnfm", "v5", "flavours", "computeFlavourId.value"}, ""))
@@ -948,6 +1132,8 @@ var (
 	forward_ViVnfm_AllocateVirtualisedComputeResource_0                          = runtime.ForwardResponseMessage
 	forward_ViVnfm_QueryVirtualisedComputeResource_0                             = runtime.ForwardResponseMessage
 	forward_ViVnfm_CreateComputeResourceAffinityOrAntiAffinityConstraintsGroup_0 = runtime.ForwardResponseMessage
+	forward_ViVnfm_TerminateVirtualisedComputeResource_0                         = runtime.ForwardResponseMessage
+	forward_ViVnfm_OperateVirtualisedComputeResource_0                           = runtime.ForwardResponseMessage
 	forward_ViVnfm_CreateComputeFlavour_0                                        = runtime.ForwardResponseMessage
 	forward_ViVnfm_QueryComputeFlavour_0                                         = runtime.ForwardResponseMessage
 	forward_ViVnfm_DeleteComputeFlavour_0                                        = runtime.ForwardResponseMessage

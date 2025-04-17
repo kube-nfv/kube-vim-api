@@ -18,7 +18,7 @@
   "paths": {
     "/vivnfm/v5/compute": {
       "get": {
-        "summary": "This operation allows querying information about instantiated virtualised compute resources.",
+        "summary": "This operation allows querying information about instantiated virtualised compute resources.\nResult: After successful operation, the VIM has queried the internal management objects for the virtualised compute resources.\nThe result of the query shall indicate with a standard success/error result if the query has been processed correctly. For a\nparticular query, information about the compute resources that the VNFM has access to and that are matching the filter\nshall be returned.",
         "operationId": "vi_vnfm_QueryVirtualisedComputeResource",
         "responses": {
           "200": {
@@ -103,6 +103,86 @@
             "required": true,
             "schema": {
               "$ref": "#/definitions/pbCreateComputeResourceAffinityOrAntiAffinityConstraintsGroupRequest"
+            }
+          }
+        ],
+        "tags": [
+          "vi_vnfm"
+        ]
+      }
+    },
+    "/vivnfm/v5/compute/{computeId.value}": {
+      "delete": {
+        "summary": "This operation allows de-allocating and terminating one or more instantiated virtualised compute resource.\nWhen the operation is done on multiple resources, it is assumed to be best-effort, i.e. it can succeed for a subset of the\nresources, and fail for the remaining ones.\nResult: After successful operation, the VIM has terminated the virtualised compute resources and removed the internal\nmanagement objects for those resources. In addition, the VIM shall return to the VNFM information on the terminated\nvirtualised compute resource plus any additional information about the terminate request operation.",
+        "description": "If the operation was not successful, the VIM shall return to the VNFM appropriate error information.",
+        "operationId": "vi_vnfm_TerminateVirtualisedComputeResource",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbTerminateComputeResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "computeId.value",
+            "description": "UUID Identifier representation",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "vi_vnfm"
+        ]
+      }
+    },
+    "/vivnfm/v5/compute/{computeId.value}/{computeOperation}": {
+      "post": {
+        "summary": "This operation allows executing specific operation command on instantiated virtualised compute resources.\nResult: After successful operation, the VIM has executed the requested operation command on the virtualised compute\nresource. In addition, the VIM shall return to the VNFM information on the new status of the operated virtualised\ncompute resources, operation specific data plus any additional information about the operate request operation.\nIf the operation was not successful, the VIM shall return to the VNFM appropriate error information.",
+        "operationId": "vi_vnfm_OperateVirtualisedComputeResource",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbOperateComputeResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "computeId.value",
+            "description": "UUID Identifier representation",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "computeOperation",
+            "description": "Type of operation to be performed on the virtualised compute resource.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/vi_vnfmOperateVirtualisedComputeResourceBody"
             }
           }
         ],
@@ -887,7 +967,8 @@
       "properties": {
         "flavourId": {
           "$ref": "#/definitions/Identifier",
-          "description": "Identifier given to the compute flavour. When the VirtualComputeFlavour is used as input in operations to request the creation\nof a compute flavour, the cardinality can be \"0\" if VIM assigns the identifier in order to avoid potential identifier assignment conflicts.\nThe flavourId shall be present otherwise."
+          "description": "Identifier given to the compute flavour. When the VirtualComputeFlavour is used as input in operations to request the creation\nof a compute flavour, the cardinality can be \"0\" if VIM assigns the identifier in order to avoid potential identifier assignment conflicts.\nThe flavourId shall be present otherwise.",
+          "readOnly": true
         },
         "isPublic": {
           "type": "boolean",
@@ -1339,10 +1420,7 @@
           "description": "IPAM Data of network interfaces which are specific to a Virtual Compute Resource instance. See clause 8.4.3.7."
         },
         "metaData": {
-          "type": "object",
-          "additionalProperties": {
-            "$ref": "#/definitions/protobufAny"
-          },
+          "$ref": "#/definitions/Metadata",
           "description": "List of metadata key-value pairs used by the consumer to associate meaningful metadata to the related virtualised resource."
         },
         "resourceGroupId": {
@@ -1412,10 +1490,7 @@
           "description": "If present, it defines location constraints for the resource(s) to be allocated, e.g. in what particular resource zone."
         },
         "metaData": {
-          "type": "object",
-          "additionalProperties": {
-            "$ref": "#/definitions/protobufAny"
-          },
+          "$ref": "#/definitions/Metadata",
           "description": "List of metadata key-value pairs used by the consumer to associate meaningful metadata to the related virtualised resource."
         },
         "resourceGroupId": {
@@ -1512,6 +1587,25 @@
     "pbDeleteComputeFlavourResponse": {
       "type": "object",
       "description": "No output parameters."
+    },
+    "pbOperateComputeResponse": {
+      "type": "object",
+      "properties": {
+        "computeData": {
+          "$ref": "#/definitions/VirtualCompute",
+          "description": "Contains information on the new status of the operated virtualised compute resource."
+        },
+        "computeOperationOutputData": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "description": "Set of output values depending on the type of operation. For instance, when a\nsnapshot operation is requested, this field provides information about the identifier of\nthe snapshot and its location."
+        }
+      },
+      "required": [
+        "computeData"
+      ]
     },
     "pbQueryComputeFlavourResponse": {
       "type": "object",
@@ -1617,6 +1711,19 @@
       },
       "title": "Note: This message goes out of ETSI GS NFV-IFA 006 reference\nsince it is not gives the poibilities to return subnets"
     },
+    "pbTerminateComputeResponse": {
+      "type": "object",
+      "properties": {
+        "computeId": {
+          "$ref": "#/definitions/Identifier",
+          "description": "Identifier of the virtualised compute resource successfully terminated."
+        }
+      },
+      "title": "Note: This message goes out of ETSI GS NFV-IFA 006 reference.\nSee TerminateComputeRequest",
+      "required": [
+        "computeId"
+      ]
+    },
     "pbTerminateNetworkResponse": {
       "type": "object",
       "properties": {
@@ -1668,6 +1775,26 @@
           }
         }
       }
+    },
+    "vi_vnfmOperateVirtualisedComputeResourceBody": {
+      "type": "object",
+      "properties": {
+        "computeId": {
+          "type": "object",
+          "description": "Identifier of the virtualised compute resource successfully terminated.",
+          "title": "Identifier of the virtualised compute resource successfully terminated."
+        },
+        "computeOperationInputData": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "description": "Additional parameters associated to the operation to be performed. For example, if\nthe operation is \"delete snapshot\", information identifying the snapshot to be deleted is provided."
+        }
+      },
+      "required": [
+        "computeId"
+      ]
     }
   }
 }

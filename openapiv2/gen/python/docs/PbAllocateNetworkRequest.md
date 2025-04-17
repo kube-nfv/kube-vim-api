@@ -14,7 +14,7 @@ Name | Type | Description | Notes
 **type_trunk_data** | **object** |  | [optional] 
 **affinity_or_anti_affinity_constraints** | **List[object]** | List of elements with affinity or anti affinity (see clause 8.4.8.2) information of the virtualised network resource to be allocated. All the listed constraints shall be fulfilled for a successful operation. | [optional] 
 **location_constraints_for_network** | **str** | If present, it defines location constraints for the resource(s) to be allocated, e.g. in what particular resource zone. | [optional] 
-**meta_data** | [**Dict[str, ProtobufAny]**](ProtobufAny.md) | List of metadata key-value pairs used by the consumer to associate meaningful metadata to the related virtualised resource. | [optional] 
+**meta_data** | [**Metadata**](Metadata.md) |  | [optional] 
 **resource_group_id** | [**Identifier**](Identifier.md) |  | [optional] 
 
 ## Example

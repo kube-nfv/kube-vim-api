@@ -27,13 +27,16 @@ from kubevim_vivnfm_client.models.pb_create_compute_flavour_request import PbCre
 from kubevim_vivnfm_client.models.pb_create_compute_flavour_response import PbCreateComputeFlavourResponse
 from kubevim_vivnfm_client.models.pb_create_compute_resource_affinity_or_anti_affinity_constraints_group_request import PbCreateComputeResourceAffinityOrAntiAffinityConstraintsGroupRequest
 from kubevim_vivnfm_client.models.pb_create_compute_resource_affinity_or_anti_affinity_constraints_group_response import PbCreateComputeResourceAffinityOrAntiAffinityConstraintsGroupResponse
+from kubevim_vivnfm_client.models.pb_operate_compute_response import PbOperateComputeResponse
 from kubevim_vivnfm_client.models.pb_query_compute_flavour_response import PbQueryComputeFlavourResponse
 from kubevim_vivnfm_client.models.pb_query_compute_response import PbQueryComputeResponse
 from kubevim_vivnfm_client.models.pb_query_image_request import PbQueryImageRequest
 from kubevim_vivnfm_client.models.pb_query_image_response import PbQueryImageResponse
 from kubevim_vivnfm_client.models.pb_query_images_response import PbQueryImagesResponse
 from kubevim_vivnfm_client.models.pb_query_network_response import PbQueryNetworkResponse
+from kubevim_vivnfm_client.models.pb_terminate_compute_response import PbTerminateComputeResponse
 from kubevim_vivnfm_client.models.pb_terminate_network_response import PbTerminateNetworkResponse
+from kubevim_vivnfm_client.models.vi_vnfm_operate_virtualised_compute_resource_body import ViVnfmOperateVirtualisedComputeResourceBody
 
 from kubevim_vivnfm_client.api_client import ApiClient, RequestSerialized
 from kubevim_vivnfm_client.api_response import ApiResponse
@@ -1391,6 +1394,306 @@ class ViVnfmApi:
 
 
     @validate_call
+    def vi_vnfm_operate_virtualised_compute_resource(
+        self,
+        compute_id_value: Annotated[StrictStr, Field(description="UUID Identifier representation")],
+        compute_operation: Annotated[StrictStr, Field(description="Type of operation to be performed on the virtualised compute resource.")],
+        body: ViVnfmOperateVirtualisedComputeResourceBody,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> PbOperateComputeResponse:
+        """This operation allows executing specific operation command on instantiated virtualised compute resources. Result: After successful operation, the VIM has executed the requested operation command on the virtualised compute resource. In addition, the VIM shall return to the VNFM information on the new status of the operated virtualised compute resources, operation specific data plus any additional information about the operate request operation. If the operation was not successful, the VIM shall return to the VNFM appropriate error information.
+
+
+        :param compute_id_value: UUID Identifier representation (required)
+        :type compute_id_value: str
+        :param compute_operation: Type of operation to be performed on the virtualised compute resource. (required)
+        :type compute_operation: str
+        :param body: (required)
+        :type body: ViVnfmOperateVirtualisedComputeResourceBody
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._vi_vnfm_operate_virtualised_compute_resource_serialize(
+            compute_id_value=compute_id_value,
+            compute_operation=compute_operation,
+            body=body,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "PbOperateComputeResponse",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        ).data
+
+
+    @validate_call
+    def vi_vnfm_operate_virtualised_compute_resource_with_http_info(
+        self,
+        compute_id_value: Annotated[StrictStr, Field(description="UUID Identifier representation")],
+        compute_operation: Annotated[StrictStr, Field(description="Type of operation to be performed on the virtualised compute resource.")],
+        body: ViVnfmOperateVirtualisedComputeResourceBody,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ApiResponse[PbOperateComputeResponse]:
+        """This operation allows executing specific operation command on instantiated virtualised compute resources. Result: After successful operation, the VIM has executed the requested operation command on the virtualised compute resource. In addition, the VIM shall return to the VNFM information on the new status of the operated virtualised compute resources, operation specific data plus any additional information about the operate request operation. If the operation was not successful, the VIM shall return to the VNFM appropriate error information.
+
+
+        :param compute_id_value: UUID Identifier representation (required)
+        :type compute_id_value: str
+        :param compute_operation: Type of operation to be performed on the virtualised compute resource. (required)
+        :type compute_operation: str
+        :param body: (required)
+        :type body: ViVnfmOperateVirtualisedComputeResourceBody
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._vi_vnfm_operate_virtualised_compute_resource_serialize(
+            compute_id_value=compute_id_value,
+            compute_operation=compute_operation,
+            body=body,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "PbOperateComputeResponse",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        )
+
+
+    @validate_call
+    def vi_vnfm_operate_virtualised_compute_resource_without_preload_content(
+        self,
+        compute_id_value: Annotated[StrictStr, Field(description="UUID Identifier representation")],
+        compute_operation: Annotated[StrictStr, Field(description="Type of operation to be performed on the virtualised compute resource.")],
+        body: ViVnfmOperateVirtualisedComputeResourceBody,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> RESTResponseType:
+        """This operation allows executing specific operation command on instantiated virtualised compute resources. Result: After successful operation, the VIM has executed the requested operation command on the virtualised compute resource. In addition, the VIM shall return to the VNFM information on the new status of the operated virtualised compute resources, operation specific data plus any additional information about the operate request operation. If the operation was not successful, the VIM shall return to the VNFM appropriate error information.
+
+
+        :param compute_id_value: UUID Identifier representation (required)
+        :type compute_id_value: str
+        :param compute_operation: Type of operation to be performed on the virtualised compute resource. (required)
+        :type compute_operation: str
+        :param body: (required)
+        :type body: ViVnfmOperateVirtualisedComputeResourceBody
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._vi_vnfm_operate_virtualised_compute_resource_serialize(
+            compute_id_value=compute_id_value,
+            compute_operation=compute_operation,
+            body=body,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "PbOperateComputeResponse",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        return response_data.response
+
+
+    def _vi_vnfm_operate_virtualised_compute_resource_serialize(
+        self,
+        compute_id_value,
+        compute_operation,
+        body,
+        _request_auth,
+        _content_type,
+        _headers,
+        _host_index,
+    ) -> RequestSerialized:
+
+        _host = None
+
+        _collection_formats: Dict[str, str] = {
+        }
+
+        _path_params: Dict[str, str] = {}
+        _query_params: List[Tuple[str, str]] = []
+        _header_params: Dict[str, Optional[str]] = _headers or {}
+        _form_params: List[Tuple[str, str]] = []
+        _files: Dict[
+            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        ] = {}
+        _body_params: Optional[bytes] = None
+
+        # process the path parameters
+        if compute_id_value is not None:
+            _path_params['computeId.value'] = compute_id_value
+        if compute_operation is not None:
+            _path_params['computeOperation'] = compute_operation
+        # process the query parameters
+        # process the header parameters
+        # process the form parameters
+        # process the body parameter
+        if body is not None:
+            _body_params = body
+
+
+        # set the HTTP header `Accept`
+        if 'Accept' not in _header_params:
+            _header_params['Accept'] = self.api_client.select_header_accept(
+                [
+                    'application/json'
+                ]
+            )
+
+        # set the HTTP header `Content-Type`
+        if _content_type:
+            _header_params['Content-Type'] = _content_type
+        else:
+            _default_content_type = (
+                self.api_client.select_header_content_type(
+                    [
+                        'application/json'
+                    ]
+                )
+            )
+            if _default_content_type is not None:
+                _header_params['Content-Type'] = _default_content_type
+
+        # authentication setting
+        _auth_settings: List[str] = [
+        ]
+
+        return self.api_client.param_serialize(
+            method='POST',
+            resource_path='/vivnfm/v5/compute/{computeId.value}/{computeOperation}',
+            path_params=_path_params,
+            query_params=_query_params,
+            header_params=_header_params,
+            body=_body_params,
+            post_params=_form_params,
+            files=_files,
+            auth_settings=_auth_settings,
+            collection_formats=_collection_formats,
+            _host=_host,
+            _request_auth=_request_auth
+        )
+
+
+
+
+    @validate_call
     def vi_vnfm_query_compute_flavour(
         self,
         query_compute_flavour_filter_value: Optional[StrictStr] = None,
@@ -2452,7 +2755,7 @@ class ViVnfmApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> PbQueryComputeResponse:
-        """This operation allows querying information about instantiated virtualised compute resources.
+        """This operation allows querying information about instantiated virtualised compute resources. Result: After successful operation, the VIM has queried the internal management objects for the virtualised compute resources. The result of the query shall indicate with a standard success/error result if the query has been processed correctly. For a particular query, information about the compute resources that the VNFM has access to and that are matching the filter shall be returned.
 
 
         :param query_compute_filter_value:
@@ -2518,7 +2821,7 @@ class ViVnfmApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> ApiResponse[PbQueryComputeResponse]:
-        """This operation allows querying information about instantiated virtualised compute resources.
+        """This operation allows querying information about instantiated virtualised compute resources. Result: After successful operation, the VIM has queried the internal management objects for the virtualised compute resources. The result of the query shall indicate with a standard success/error result if the query has been processed correctly. For a particular query, information about the compute resources that the VNFM has access to and that are matching the filter shall be returned.
 
 
         :param query_compute_filter_value:
@@ -2584,7 +2887,7 @@ class ViVnfmApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> RESTResponseType:
-        """This operation allows querying information about instantiated virtualised compute resources.
+        """This operation allows querying information about instantiated virtualised compute resources. Result: After successful operation, the VIM has queried the internal management objects for the virtualised compute resources. The result of the query shall indicate with a standard success/error result if the query has been processed correctly. For a particular query, information about the compute resources that the VNFM has access to and that are matching the filter shall be returned.
 
 
         :param query_compute_filter_value:
@@ -2955,6 +3258,266 @@ class ViVnfmApi:
         return self.api_client.param_serialize(
             method='GET',
             resource_path='/vivnfm/v5/networks',
+            path_params=_path_params,
+            query_params=_query_params,
+            header_params=_header_params,
+            body=_body_params,
+            post_params=_form_params,
+            files=_files,
+            auth_settings=_auth_settings,
+            collection_formats=_collection_formats,
+            _host=_host,
+            _request_auth=_request_auth
+        )
+
+
+
+
+    @validate_call
+    def vi_vnfm_terminate_virtualised_compute_resource(
+        self,
+        compute_id_value: Annotated[StrictStr, Field(description="UUID Identifier representation")],
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> PbTerminateComputeResponse:
+        """This operation allows de-allocating and terminating one or more instantiated virtualised compute resource. When the operation is done on multiple resources, it is assumed to be best-effort, i.e. it can succeed for a subset of the resources, and fail for the remaining ones. Result: After successful operation, the VIM has terminated the virtualised compute resources and removed the internal management objects for those resources. In addition, the VIM shall return to the VNFM information on the terminated virtualised compute resource plus any additional information about the terminate request operation.
+
+        If the operation was not successful, the VIM shall return to the VNFM appropriate error information.
+
+        :param compute_id_value: UUID Identifier representation (required)
+        :type compute_id_value: str
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._vi_vnfm_terminate_virtualised_compute_resource_serialize(
+            compute_id_value=compute_id_value,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "PbTerminateComputeResponse",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        ).data
+
+
+    @validate_call
+    def vi_vnfm_terminate_virtualised_compute_resource_with_http_info(
+        self,
+        compute_id_value: Annotated[StrictStr, Field(description="UUID Identifier representation")],
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ApiResponse[PbTerminateComputeResponse]:
+        """This operation allows de-allocating and terminating one or more instantiated virtualised compute resource. When the operation is done on multiple resources, it is assumed to be best-effort, i.e. it can succeed for a subset of the resources, and fail for the remaining ones. Result: After successful operation, the VIM has terminated the virtualised compute resources and removed the internal management objects for those resources. In addition, the VIM shall return to the VNFM information on the terminated virtualised compute resource plus any additional information about the terminate request operation.
+
+        If the operation was not successful, the VIM shall return to the VNFM appropriate error information.
+
+        :param compute_id_value: UUID Identifier representation (required)
+        :type compute_id_value: str
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._vi_vnfm_terminate_virtualised_compute_resource_serialize(
+            compute_id_value=compute_id_value,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "PbTerminateComputeResponse",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        )
+
+
+    @validate_call
+    def vi_vnfm_terminate_virtualised_compute_resource_without_preload_content(
+        self,
+        compute_id_value: Annotated[StrictStr, Field(description="UUID Identifier representation")],
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> RESTResponseType:
+        """This operation allows de-allocating and terminating one or more instantiated virtualised compute resource. When the operation is done on multiple resources, it is assumed to be best-effort, i.e. it can succeed for a subset of the resources, and fail for the remaining ones. Result: After successful operation, the VIM has terminated the virtualised compute resources and removed the internal management objects for those resources. In addition, the VIM shall return to the VNFM information on the terminated virtualised compute resource plus any additional information about the terminate request operation.
+
+        If the operation was not successful, the VIM shall return to the VNFM appropriate error information.
+
+        :param compute_id_value: UUID Identifier representation (required)
+        :type compute_id_value: str
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._vi_vnfm_terminate_virtualised_compute_resource_serialize(
+            compute_id_value=compute_id_value,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "PbTerminateComputeResponse",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        return response_data.response
+
+
+    def _vi_vnfm_terminate_virtualised_compute_resource_serialize(
+        self,
+        compute_id_value,
+        _request_auth,
+        _content_type,
+        _headers,
+        _host_index,
+    ) -> RequestSerialized:
+
+        _host = None
+
+        _collection_formats: Dict[str, str] = {
+        }
+
+        _path_params: Dict[str, str] = {}
+        _query_params: List[Tuple[str, str]] = []
+        _header_params: Dict[str, Optional[str]] = _headers or {}
+        _form_params: List[Tuple[str, str]] = []
+        _files: Dict[
+            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        ] = {}
+        _body_params: Optional[bytes] = None
+
+        # process the path parameters
+        if compute_id_value is not None:
+            _path_params['computeId.value'] = compute_id_value
+        # process the query parameters
+        # process the header parameters
+        # process the form parameters
+        # process the body parameter
+
+
+        # set the HTTP header `Accept`
+        if 'Accept' not in _header_params:
+            _header_params['Accept'] = self.api_client.select_header_accept(
+                [
+                    'application/json'
+                ]
+            )
+
+
+        # authentication setting
+        _auth_settings: List[str] = [
+        ]
+
+        return self.api_client.param_serialize(
+            method='DELETE',
+            resource_path='/vivnfm/v5/compute/{computeId.value}',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
