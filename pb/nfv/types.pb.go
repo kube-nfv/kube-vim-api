@@ -928,7 +928,7 @@ func (x *VirtualCompute) GetRunningState() ComputeRunningState {
 	if x != nil {
 		return x.RunningState
 	}
-	return ComputeRunningState_STARTED
+	return ComputeRunningState_STARTING
 }
 
 func (x *VirtualCompute) GetMetadata() *Metadata {

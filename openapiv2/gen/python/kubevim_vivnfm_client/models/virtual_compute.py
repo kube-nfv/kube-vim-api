@@ -125,7 +125,7 @@ class VirtualCompute(BaseModel):
             "zoneId": Identifier.from_dict(obj["zoneId"]) if obj.get("zoneId") is not None else None,
             "hostId": Identifier.from_dict(obj["hostId"]) if obj.get("hostId") is not None else None,
             "operationalState": obj.get("operationalState") if obj.get("operationalState") is not None else OperationalState.ENABLED,
-            "runningState": obj.get("runningState") if obj.get("runningState") is not None else ComputeRunningState.STARTED,
+            "runningState": obj.get("runningState") if obj.get("runningState") is not None else ComputeRunningState.STARTING,
             "metadata": Metadata.from_dict(obj["metadata"]) if obj.get("metadata") is not None else None
         })
         return _obj

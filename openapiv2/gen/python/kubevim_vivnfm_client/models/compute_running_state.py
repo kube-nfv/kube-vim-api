@@ -20,17 +20,20 @@ from typing_extensions import Self
 
 class ComputeRunningState(str, Enum):
     """
-    ComputeRunningState
+    Note: ETSI GS NFV-IFA 006 define another set of the states.   - STARTING: VM is requested to start, but VMI isn't running yet  - STOPPED: VM is administratively stopped and not running  - RUNNING: VM is up and running normally  - FAILED: VM instance failed to start or crashed  - PAUSED: VM is paused  - SUSPENDED: VM paused and memory saved to disk  - TERMINATING: VM is shutting down or being deleted  - UNKNOWN: VMI status cannot be determined  TBD: Think if rebooting state is need
     """
 
     """
     allowed enum values
     """
-    STARTED = 'STARTED'
+    STARTING = 'STARTING'
     STOPPED = 'STOPPED'
+    RUNNING = 'RUNNING'
+    FAILED = 'FAILED'
     PAUSED = 'PAUSED'
     SUSPENDED = 'SUSPENDED'
-    REBOOTING = 'REBOOTING'
+    TERMINATING = 'TERMINATING'
+    UNKNOWN = 'UNKNOWN'
 
     @classmethod
     def from_json(cls, json_str: str) -> Self:

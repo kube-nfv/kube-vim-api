@@ -67,12 +67,25 @@ enum NetworkResourceType {
     TRUNK = 3;
 }
 
+// Note: ETSI GS NFV-IFA 006 define another set of the states.
 enum ComputeRunningState {
-    STARTED = 0;
+    // VM is requested to start, but VMI isn't running yet
+    STARTING = 0;
+    // VM is administratively stopped and not running
     STOPPED = 1;
-    PAUSED = 2;
-    SUSPENDED = 3;
-    REBOOTING = 4;
+    // VM is up and running normally
+    RUNNING = 2;
+    // VM instance failed to start or crashed
+    FAILED = 3;
+    // VM is paused
+    PAUSED = 4;
+    // VM paused and memory saved to disk
+    SUSPENDED = 5;
+    // VM is shutting down or being deleted
+    TERMINATING = 6;
+    // VMI status cannot be determined
+    UNKNOWN = 7;
+    // TBD: Think if rebooting state is need
 }
 
 // Note(dmalovan): this message out of scope ETSI GS NFV-IFA 006. But it's required since

@@ -16,7 +16,7 @@ Name | Type | Description | Notes
 **zone_id** | [**Identifier**](Identifier.md) |  | [optional] 
 **host_id** | [**Identifier**](Identifier.md) |  | 
 **operational_state** | [**OperationalState**](OperationalState.md) |  | [default to OperationalState.ENABLED]
-**running_state** | [**ComputeRunningState**](ComputeRunningState.md) |  | [default to ComputeRunningState.STARTED]
+**running_state** | [**ComputeRunningState**](ComputeRunningState.md) |  | [default to ComputeRunningState.STARTING]
 **metadata** | [**Metadata**](Metadata.md) |  | [optional] 
 
 ## Example

@@ -537,13 +537,17 @@
     "ComputeRunningState": {
       "type": "string",
       "enum": [
-        "STARTED",
+        "STARTING",
         "STOPPED",
+        "RUNNING",
+        "FAILED",
         "PAUSED",
         "SUSPENDED",
-        "REBOOTING"
+        "TERMINATING",
+        "UNKNOWN"
       ],
-      "default": "STARTED"
+      "default": "STARTING",
+      "description": "Note: ETSI GS NFV-IFA 006 define another set of the states.\n\n - STARTING: VM is requested to start, but VMI isn't running yet\n - STOPPED: VM is administratively stopped and not running\n - RUNNING: VM is up and running normally\n - FAILED: VM instance failed to start or crashed\n - PAUSED: VM is paused\n - SUSPENDED: VM paused and memory saved to disk\n - TERMINATING: VM is shutting down or being deleted\n - UNKNOWN: VMI status cannot be determined\n\nTBD: Think if rebooting state is need"
     },
     "Filter": {
       "type": "object",
