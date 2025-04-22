@@ -23,6 +23,7 @@ from kubevim_vivnfm_client.models.compute_running_state import ComputeRunningSta
 from kubevim_vivnfm_client.models.identifier import Identifier
 from kubevim_vivnfm_client.models.metadata import Metadata
 from kubevim_vivnfm_client.models.operational_state import OperationalState
+from kubevim_vivnfm_client.models.virtual_network_interface import VirtualNetworkInterface
 from typing import Optional, Set
 from typing_extensions import Self
 
@@ -35,7 +36,7 @@ class VirtualCompute(BaseModel):
     flavour_id: Identifier = Field(alias="flavourId")
     virtual_cpu: Dict[str, Any] = Field(alias="virtualCpu")
     virtual_memory: Dict[str, Any] = Field(alias="virtualMemory")
-    virtual_network_interface: List[Dict[str, Any]] = Field(description="Provides information of the instantiated virtual network interfaces of the compute resource.", alias="virtualNetworkInterface")
+    virtual_network_interface: List[VirtualNetworkInterface] = Field(description="Provides information of the instantiated virtual network interfaces of the compute resource.", alias="virtualNetworkInterface")
     virtual_disks: List[Dict[str, Any]] = Field(description="Provides information of the virtualised storage resources (volumes, ephemeral) that are attached to the compute resource.", alias="virtualDisks")
     vc_image_id: Optional[Identifier] = Field(default=None, alias="vcImageId")
     zone_id: Optional[Identifier] = Field(default=None, alias="zoneId")
@@ -90,6 +91,13 @@ class VirtualCompute(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of flavour_id
         if self.flavour_id:
             _dict['flavourId'] = self.flavour_id.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of each item in virtual_network_interface (list)
+        _items = []
+        if self.virtual_network_interface:
+            for _item_virtual_network_interface in self.virtual_network_interface:
+                if _item_virtual_network_interface:
+                    _items.append(_item_virtual_network_interface.to_dict())
+            _dict['virtualNetworkInterface'] = _items
         # override the default output from pydantic by calling `to_dict()` of vc_image_id
         if self.vc_image_id:
             _dict['vcImageId'] = self.vc_image_id.to_dict()
@@ -119,7 +127,7 @@ class VirtualCompute(BaseModel):
             "flavourId": Identifier.from_dict(obj["flavourId"]) if obj.get("flavourId") is not None else None,
             "virtualCpu": obj.get("virtualCpu"),
             "virtualMemory": obj.get("virtualMemory"),
-            "virtualNetworkInterface": obj.get("virtualNetworkInterface"),
+            "virtualNetworkInterface": [VirtualNetworkInterface.from_dict(_item) for _item in obj["virtualNetworkInterface"]] if obj.get("virtualNetworkInterface") is not None else None,
             "virtualDisks": obj.get("virtualDisks"),
             "vcImageId": Identifier.from_dict(obj["vcImageId"]) if obj.get("vcImageId") is not None else None,
             "zoneId": Identifier.from_dict(obj["zoneId"]) if obj.get("zoneId") is not None else None,

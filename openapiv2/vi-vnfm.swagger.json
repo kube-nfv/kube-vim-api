@@ -858,6 +858,16 @@
       ],
       "default": "AFFINITY"
     },
+    "TypeVirtualNic": {
+      "type": "string",
+      "enum": [
+        "BRIDGE",
+        "PATHTHROUGH",
+        "SRIOV"
+      ],
+      "default": "BRIDGE",
+      "description": "Type of network interface. The type allows for defining how such interface is to be realized,\ne.g. normal virtual NIC, with direct PCI pass-through, SR-IOV, etc.\nNote(dmalovan): typeVirtualNic should define how the VM nic should be connected to the host network.\n\n - BRIDGE: In the simple mode VM's are connected to the network backend through a linux \"bridge\".\n - PATHTHROUGH: In masquerade mode, kubevirt allocates internal IP address to the virtual machines and hide them behind NAT.\nAll egress treaffic is \"SNAT'ed\".\nNote(dmalovan): actually don't think that is needed for NFV usecases.\nMASQUERADE = 1;\nPCI Path-through allows a compute instance to have a direct and exclusive access to the physical PCI devices.\n - SRIOV: Extension of PCIe that allows a single PCI device (NIC) to be shared among multiple VMs."
+    },
     "UserData": {
       "type": "object",
       "properties": {
@@ -1261,7 +1271,76 @@
       ]
     },
     "VirtualNetworkInterface": {
-      "type": "object"
+      "type": "object",
+      "properties": {
+        "resourceId": {
+          "$ref": "#/definitions/Identifier",
+          "description": "Identifier of the virtual network interface."
+        },
+        "networkId": {
+          "$ref": "#/definitions/Identifier",
+          "description": "In the case when the virtual network interface is attached to the network, it\nreferences such a network. The cardinality can be 0 in the case that a\nnetwork interface is created without being attached to any specific network."
+        },
+        "subnetId": {
+          "$ref": "#/definitions/Identifier",
+          "description": "Note: That is out of the ETSI GS NFV-IFA 006 scope.\nIf the networks has multiple L3 attributes which splice network broadcast domain (eg: VPC network with multiple subnets,\nwhich is communicates over vRouter)\nor subnetId should be specified in Underlay nerwork for dynamic Ip allocation from the given IP address pool.\nThe cardinality can be 0 in the case when VirtualNetworkInterface related to the Underlay (L2) network and does not need\nIP address specification."
+        },
+        "networkPortId": {
+          "$ref": "#/definitions/Identifier",
+          "description": "If the virtual network interface is attached to a specific network port, it\nreferences such a network port. The cardinality can be 0 in the case that a\nnetwork interface is created without any specific network port attachment."
+        },
+        "ipAddress": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/IPAddress"
+          },
+          "description": "The virtual network interface can be configured with specific IP address(es)\nassociated to the network to be attached to. The cardinality can be 0 in\nthe case that a network interface is created without being attached to any\nspecific network, or when an IP address can be automatically configured, e.g. by DHCP.\nNote(dmalovan): In general IPaddresses should be passed even if them are allocated dynamically\ne.g. via DHCP. If DHCP client not yet aquired the address cardinality can be 0."
+        },
+        "typeVirtualNic": {
+          "$ref": "#/definitions/TypeVirtualNic",
+          "description": "Type of network interface. The type allows for defining how such interface is\nto be realized, e.g. normal virtual NIC, with direct PCI pass-through, etc."
+        },
+        "typeConfiguration": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Extra configuration that the virtual network interface supports based on the type of virtual network interface.\nTODO: That interface might change."
+        },
+        "macAddress": {
+          "$ref": "#/definitions/MacAddress",
+          "description": "MAC address of the virtual network interface."
+        },
+        "bandwidth": {
+          "type": "number",
+          "format": "float",
+          "description": "Bandwidth of the virtual network interface (in Mbps)."
+        },
+        "accelerationCapability": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "The cardinality can be 0, if no particular acceleration capability is requested.\nTODO: That interface might change."
+        },
+        "operationalState": {
+          "$ref": "#/definitions/OperationalState",
+          "description": "Operational state of the virtual network interface."
+        },
+        "metadata": {
+          "$ref": "#/definitions/Metadata",
+          "description": "List of metadata key-value pairs used by the consumer to associate meaningful\nmetadata to the related virtualised resource."
+        }
+      },
+      "description": "A virtual network interface resource is a communication endpoint under an instantiated compute resource.",
+      "required": [
+        "resourceId",
+        "typeVirtualNic",
+        "macAddress",
+        "bandwidth",
+        "operationalState"
+      ]
     },
     "VirtualNetworkInterfaceData": {
       "type": "object",
@@ -1279,7 +1358,8 @@
           "description": "If the virtual network interface is attached to a specific network port, it identifies such a network port.\nThe cardinality can be 0 in the case that a network interface is created without any specific network port attachment."
         },
         "typeVirtualNic": {
-          "$ref": "#/definitions/VirtualNetworkInterfaceDataTypeVirtualNic"
+          "$ref": "#/definitions/TypeVirtualNic",
+          "description": "Type of network interface. The type allows for defining how such interface is to be realized,\ne.g. normal virtual NIC, with direct PCI pass-through, SR-IOV, etc.\nNote(dmalovan): typeVirtualNic should define how the VM nic should be connected to the host network."
         },
         "typeConfiguration": {
           "type": "array",
@@ -1293,12 +1373,12 @@
           "format": "float",
           "description": "Bandwidth of the virtual network interface (in Mbps)."
         },
-        "accelerationCapabilityForVirtualNetworkInterface": {
+        "accelerationCapability": {
           "type": "array",
           "items": {
             "type": "string"
           },
-          "description": "It specifies if the virtual network interface requires certain acceleration capabilities (e.g. RDMA, packet dispatch, TCP Chimney).\nThe cardinality can be 0, if no particular acceleration capability is requested."
+          "description": "It specifies if the virtual network interface requires certain acceleration capabilities (e.g. RDMA, packet dispatch, TCP Chimney).\nThe cardinality can be 0, if no particular acceleration capability is requested.\nTODO: That interface might change."
         },
         "metadata": {
           "$ref": "#/definitions/Metadata",
@@ -1309,16 +1389,6 @@
       "required": [
         "typeVirtualNic"
       ]
-    },
-    "VirtualNetworkInterfaceDataTypeVirtualNic": {
-      "type": "string",
-      "enum": [
-        "BRIDGE",
-        "PATHTHROUGH",
-        "SRIOV"
-      ],
-      "default": "BRIDGE",
-      "description": "Type of network interface. The type allows for defining how such interface is to be realized,\ne.g. normal virtual NIC, with direct PCI pass-through, SR-IOV, etc.\nNote(dmalovan): typeVirtualNic should define how the VM nic should be connected to the host network.\n\n - BRIDGE: In the simple mode VM's are connected to the network backend through a linux \"bridge\".\n - PATHTHROUGH: In masquerade mode, kubevirt allocates internal IP address to the virtual machines and hide them behind NAT.\nAll egress treaffic is \"SNAT'ed\".\nNote(dmalovan): actually don't think that is needed for NFV usecases.\nMASQUERADE = 1;\nPCI Path-through allows a compute instance to have a direct and exclusive access to the physical PCI devices.\n - SRIOV: Extension of PCIe that allows a single PCI device (NIC) to be shared among multiple VMs."
     },
     "VirtualNetworkInterfaceIPAM": {
       "type": "object",

@@ -143,6 +143,7 @@ Class | Method | HTTP request | Description
  - [ScopeOfAffinityOrAntiAffinityConstraintForCompute](docs/ScopeOfAffinityOrAntiAffinityConstraintForCompute.md)
  - [SoftwareImageInformation](docs/SoftwareImageInformation.md)
  - [TypeOfAffinityOrAntiAffinityConstraint](docs/TypeOfAffinityOrAntiAffinityConstraint.md)
+ - [TypeVirtualNic](docs/TypeVirtualNic.md)
  - [UserData](docs/UserData.md)
  - [UserDataUserDataTransportationMethod](docs/UserDataUserDataTransportationMethod.md)
  - [ViVnfmOperateVirtualisedComputeResourceBody](docs/ViVnfmOperateVirtualisedComputeResourceBody.md)
@@ -155,8 +156,8 @@ Class | Method | HTTP request | Description
  - [VirtualMemoryData](docs/VirtualMemoryData.md)
  - [VirtualNetwork](docs/VirtualNetwork.md)
  - [VirtualNetworkData](docs/VirtualNetworkData.md)
+ - [VirtualNetworkInterface](docs/VirtualNetworkInterface.md)
  - [VirtualNetworkInterfaceData](docs/VirtualNetworkInterfaceData.md)
- - [VirtualNetworkInterfaceDataTypeVirtualNic](docs/VirtualNetworkInterfaceDataTypeVirtualNic.md)
  - [VirtualNetworkInterfaceIPAM](docs/VirtualNetworkInterfaceIPAM.md)
  - [VirtualStorageData](docs/VirtualStorageData.md)
 

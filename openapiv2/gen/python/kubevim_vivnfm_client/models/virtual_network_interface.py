@@ -20,24 +20,31 @@ import json
 from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional, Union
 from kubevim_vivnfm_client.models.identifier import Identifier
+from kubevim_vivnfm_client.models.ip_address import IPAddress
+from kubevim_vivnfm_client.models.mac_address import MacAddress
 from kubevim_vivnfm_client.models.metadata import Metadata
+from kubevim_vivnfm_client.models.operational_state import OperationalState
 from kubevim_vivnfm_client.models.type_virtual_nic import TypeVirtualNic
 from typing import Optional, Set
 from typing_extensions import Self
 
-class VirtualNetworkInterfaceData(BaseModel):
+class VirtualNetworkInterface(BaseModel):
     """
-    A virtual network interface is a communication endpoint under a compute resource.
+    A virtual network interface resource is a communication endpoint under an instantiated compute resource.
     """ # noqa: E501
+    resource_id: Identifier = Field(alias="resourceId")
     network_id: Optional[Identifier] = Field(default=None, alias="networkId")
     subnet_id: Optional[Identifier] = Field(default=None, alias="subnetId")
     network_port_id: Optional[Identifier] = Field(default=None, alias="networkPortId")
+    ip_address: Optional[List[IPAddress]] = Field(default=None, description="The virtual network interface can be configured with specific IP address(es) associated to the network to be attached to. The cardinality can be 0 in the case that a network interface is created without being attached to any specific network, or when an IP address can be automatically configured, e.g. by DHCP. Note(dmalovan): In general IPaddresses should be passed even if them are allocated dynamically e.g. via DHCP. If DHCP client not yet aquired the address cardinality can be 0.", alias="ipAddress")
     type_virtual_nic: TypeVirtualNic = Field(alias="typeVirtualNic")
     type_configuration: Optional[List[StrictStr]] = Field(default=None, description="Extra configuration that the virtual network interface supports based on the type of virtual network interface. TODO: That interface might change.", alias="typeConfiguration")
-    bandwidth: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="Bandwidth of the virtual network interface (in Mbps).")
-    acceleration_capability: Optional[List[StrictStr]] = Field(default=None, description="It specifies if the virtual network interface requires certain acceleration capabilities (e.g. RDMA, packet dispatch, TCP Chimney). The cardinality can be 0, if no particular acceleration capability is requested. TODO: That interface might change.", alias="accelerationCapability")
+    mac_address: MacAddress = Field(alias="macAddress")
+    bandwidth: Union[StrictFloat, StrictInt] = Field(description="Bandwidth of the virtual network interface (in Mbps).")
+    acceleration_capability: Optional[List[StrictStr]] = Field(default=None, description="The cardinality can be 0, if no particular acceleration capability is requested. TODO: That interface might change.", alias="accelerationCapability")
+    operational_state: OperationalState = Field(alias="operationalState")
     metadata: Optional[Metadata] = None
-    __properties: ClassVar[List[str]] = ["networkId", "subnetId", "networkPortId", "typeVirtualNic", "typeConfiguration", "bandwidth", "accelerationCapability", "metadata"]
+    __properties: ClassVar[List[str]] = ["resourceId", "networkId", "subnetId", "networkPortId", "ipAddress", "typeVirtualNic", "typeConfiguration", "macAddress", "bandwidth", "accelerationCapability", "operationalState", "metadata"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -57,7 +64,7 @@ class VirtualNetworkInterfaceData(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of VirtualNetworkInterfaceData from a JSON string"""
+        """Create an instance of VirtualNetworkInterface from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -78,6 +85,9 @@ class VirtualNetworkInterfaceData(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of resource_id
+        if self.resource_id:
+            _dict['resourceId'] = self.resource_id.to_dict()
         # override the default output from pydantic by calling `to_dict()` of network_id
         if self.network_id:
             _dict['networkId'] = self.network_id.to_dict()
@@ -87,6 +97,16 @@ class VirtualNetworkInterfaceData(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of network_port_id
         if self.network_port_id:
             _dict['networkPortId'] = self.network_port_id.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of each item in ip_address (list)
+        _items = []
+        if self.ip_address:
+            for _item_ip_address in self.ip_address:
+                if _item_ip_address:
+                    _items.append(_item_ip_address.to_dict())
+            _dict['ipAddress'] = _items
+        # override the default output from pydantic by calling `to_dict()` of mac_address
+        if self.mac_address:
+            _dict['macAddress'] = self.mac_address.to_dict()
         # override the default output from pydantic by calling `to_dict()` of metadata
         if self.metadata:
             _dict['metadata'] = self.metadata.to_dict()
@@ -94,7 +114,7 @@ class VirtualNetworkInterfaceData(BaseModel):
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of VirtualNetworkInterfaceData from a dict"""
+        """Create an instance of VirtualNetworkInterface from a dict"""
         if obj is None:
             return None
 
@@ -102,13 +122,17 @@ class VirtualNetworkInterfaceData(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
+            "resourceId": Identifier.from_dict(obj["resourceId"]) if obj.get("resourceId") is not None else None,
             "networkId": Identifier.from_dict(obj["networkId"]) if obj.get("networkId") is not None else None,
             "subnetId": Identifier.from_dict(obj["subnetId"]) if obj.get("subnetId") is not None else None,
             "networkPortId": Identifier.from_dict(obj["networkPortId"]) if obj.get("networkPortId") is not None else None,
+            "ipAddress": [IPAddress.from_dict(_item) for _item in obj["ipAddress"]] if obj.get("ipAddress") is not None else None,
             "typeVirtualNic": obj.get("typeVirtualNic") if obj.get("typeVirtualNic") is not None else TypeVirtualNic.BRIDGE,
             "typeConfiguration": obj.get("typeConfiguration"),
+            "macAddress": MacAddress.from_dict(obj["macAddress"]) if obj.get("macAddress") is not None else None,
             "bandwidth": obj.get("bandwidth"),
             "accelerationCapability": obj.get("accelerationCapability"),
+            "operationalState": obj.get("operationalState") if obj.get("operationalState") is not None else OperationalState.ENABLED,
             "metadata": Metadata.from_dict(obj["metadata"]) if obj.get("metadata") is not None else None
         })
         return _obj

@@ -10,7 +10,7 @@ Name | Type | Description | Notes
 **flavour_id** | [**Identifier**](Identifier.md) |  | 
 **virtual_cpu** | **object** |  | 
 **virtual_memory** | **object** |  | 
-**virtual_network_interface** | **List[object]** | Provides information of the instantiated virtual network interfaces of the compute resource. | 
+**virtual_network_interface** | [**List[VirtualNetworkInterface]**](VirtualNetworkInterface.md) | Provides information of the instantiated virtual network interfaces of the compute resource. | 
 **virtual_disks** | **List[object]** | Provides information of the virtualised storage resources (volumes, ephemeral) that are attached to the compute resource. | 
 **vc_image_id** | [**Identifier**](Identifier.md) |  | [optional] 
 **zone_id** | [**Identifier**](Identifier.md) |  | [optional] 
