@@ -33,6 +33,7 @@ class VirtualNetworkInterface(BaseModel):
     A virtual network interface resource is a communication endpoint under an instantiated compute resource.
     """ # noqa: E501
     resource_id: Identifier = Field(alias="resourceId")
+    owner_id: Identifier = Field(alias="ownerId")
     network_id: Optional[Identifier] = Field(default=None, alias="networkId")
     subnet_id: Optional[Identifier] = Field(default=None, alias="subnetId")
     network_port_id: Optional[Identifier] = Field(default=None, alias="networkPortId")
@@ -44,7 +45,7 @@ class VirtualNetworkInterface(BaseModel):
     acceleration_capability: Optional[List[StrictStr]] = Field(default=None, description="The cardinality can be 0, if no particular acceleration capability is requested. TODO: That interface might change.", alias="accelerationCapability")
     operational_state: OperationalState = Field(alias="operationalState")
     metadata: Optional[Metadata] = None
-    __properties: ClassVar[List[str]] = ["resourceId", "networkId", "subnetId", "networkPortId", "ipAddress", "typeVirtualNic", "typeConfiguration", "macAddress", "bandwidth", "accelerationCapability", "operationalState", "metadata"]
+    __properties: ClassVar[List[str]] = ["resourceId", "ownerId", "networkId", "subnetId", "networkPortId", "ipAddress", "typeVirtualNic", "typeConfiguration", "macAddress", "bandwidth", "accelerationCapability", "operationalState", "metadata"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -88,6 +89,9 @@ class VirtualNetworkInterface(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of resource_id
         if self.resource_id:
             _dict['resourceId'] = self.resource_id.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of owner_id
+        if self.owner_id:
+            _dict['ownerId'] = self.owner_id.to_dict()
         # override the default output from pydantic by calling `to_dict()` of network_id
         if self.network_id:
             _dict['networkId'] = self.network_id.to_dict()
@@ -123,6 +127,7 @@ class VirtualNetworkInterface(BaseModel):
 
         _obj = cls.model_validate({
             "resourceId": Identifier.from_dict(obj["resourceId"]) if obj.get("resourceId") is not None else None,
+            "ownerId": Identifier.from_dict(obj["ownerId"]) if obj.get("ownerId") is not None else None,
             "networkId": Identifier.from_dict(obj["networkId"]) if obj.get("networkId") is not None else None,
             "subnetId": Identifier.from_dict(obj["subnetId"]) if obj.get("subnetId") is not None else None,
             "networkPortId": Identifier.from_dict(obj["networkPortId"]) if obj.get("networkPortId") is not None else None,

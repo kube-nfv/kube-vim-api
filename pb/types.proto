@@ -255,46 +255,48 @@ message VirtualNetworkInterfaceData {
 message VirtualNetworkInterface {
     // Identifier of the virtual network interface.
     Identifier resourceId = 1 [(google.api.field_behavior) = REQUIRED];
+    // Identifier of the owner of the network interface (e.g. a virtualised compute resource).
+    Identifier ownerId = 2 [(google.api.field_behavior) = REQUIRED];
     // In the case when the virtual network interface is attached to the network, it
     // references such a network. The cardinality can be 0 in the case that a
     // network interface is created without being attached to any specific network.
-    optional Identifier networkId = 2 [(google.api.field_behavior) = OPTIONAL];
+    optional Identifier networkId = 3 [(google.api.field_behavior) = OPTIONAL];
     // Note: That is out of the ETSI GS NFV-IFA 006 scope.
     // If the networks has multiple L3 attributes which splice network broadcast domain (eg: VPC network with multiple subnets,
     // which is communicates over vRouter)
     // or subnetId should be specified in Underlay nerwork for dynamic Ip allocation from the given IP address pool.
     // The cardinality can be 0 in the case when VirtualNetworkInterface related to the Underlay (L2) network and does not need
     // IP address specification.
-    optional Identifier subnetId = 3 [(google.api.field_behavior) = OPTIONAL];
+    optional Identifier subnetId = 4 [(google.api.field_behavior) = OPTIONAL];
     // If the virtual network interface is attached to a specific network port, it
     // references such a network port. The cardinality can be 0 in the case that a
     // network interface is created without any specific network port attachment.
-    optional Identifier networkPortId = 4 [(google.api.field_behavior) = OPTIONAL];
+    optional Identifier networkPortId = 5 [(google.api.field_behavior) = OPTIONAL];
     // The virtual network interface can be configured with specific IP address(es)
     // associated to the network to be attached to. The cardinality can be 0 in
     // the case that a network interface is created without being attached to any
     // specific network, or when an IP address can be automatically configured, e.g. by DHCP.
     // Note(dmalovan): In general IPaddresses should be passed even if them are allocated dynamically
     // e.g. via DHCP. If DHCP client not yet aquired the address cardinality can be 0.
-    repeated IPAddress ipAddress = 5 [(google.api.field_behavior) = OPTIONAL];
+    repeated IPAddress ipAddress = 6 [(google.api.field_behavior) = OPTIONAL];
     // Type of network interface. The type allows for defining how such interface is
     // to be realized, e.g. normal virtual NIC, with direct PCI pass-through, etc.
-    TypeVirtualNic typeVirtualNic = 6 [(google.api.field_behavior) = REQUIRED];
+    TypeVirtualNic typeVirtualNic = 7 [(google.api.field_behavior) = REQUIRED];
     // Extra configuration that the virtual network interface supports based on the type of virtual network interface.
     // TODO: That interface might change.
-    repeated string typeConfiguration = 7 [(google.api.field_behavior) = OPTIONAL];
+    repeated string typeConfiguration = 8 [(google.api.field_behavior) = OPTIONAL];
     // MAC address of the virtual network interface.
-    MacAddress macAddress = 8 [(google.api.field_behavior) = REQUIRED];
+    MacAddress macAddress = 9 [(google.api.field_behavior) = REQUIRED];
     // Bandwidth of the virtual network interface (in Mbps).
-    float bandwidth = 9 [(google.api.field_behavior) = REQUIRED];
+    float bandwidth = 10 [(google.api.field_behavior) = REQUIRED];
     // The cardinality can be 0, if no particular acceleration capability is requested.
     // TODO: That interface might change.
-    repeated string accelerationCapability = 10 [(google.api.field_behavior) = OPTIONAL];
+    repeated string accelerationCapability = 11 [(google.api.field_behavior) = OPTIONAL];
     // Operational state of the virtual network interface.
-    OperationalState operationalState = 11 [(google.api.field_behavior) = REQUIRED];
+    OperationalState operationalState = 12 [(google.api.field_behavior) = REQUIRED];
     // List of metadata key-value pairs used by the consumer to associate meaningful
     // metadata to the related virtualised resource.
-    Metadata metadata = 12 [(google.api.field_behavior) = OPTIONAL];
+    Metadata metadata = 13 [(google.api.field_behavior) = OPTIONAL];
 }
 
 // This clause describes the attributes for the VirtualStorageData information element.

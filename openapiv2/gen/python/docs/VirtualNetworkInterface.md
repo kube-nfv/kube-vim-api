@@ -7,6 +7,7 @@ A virtual network interface resource is a communication endpoint under an instan
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **resource_id** | [**Identifier**](Identifier.md) |  | 
+**owner_id** | [**Identifier**](Identifier.md) |  | 
 **network_id** | [**Identifier**](Identifier.md) |  | [optional] 
 **subnet_id** | [**Identifier**](Identifier.md) |  | [optional] 
 **network_port_id** | [**Identifier**](Identifier.md) |  | [optional] 
