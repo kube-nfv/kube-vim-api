@@ -20,13 +20,16 @@ from typing_extensions import Self
 
 class UserDataUserDataTransportationMethod(str, Enum):
     """
-    UserDataUserDataTransportationMethod
+     - CONFIG_DRIVE_PLAINTEXT: Uses a mounted config drive with plaintext cloud-init format  - CONFIG_DRIVE_MIME_MULTIPART: Uses a mounted config drive with user data in MIME multipart format.  - METADATA_SERVICE: Uses a metadata service (e.g., HTTP 169.254.169.254).  - NO_CLOUD: Uses a local disk with NoCloud format.
     """
 
     """
     allowed enum values
     """
-    CONFIG_DRIVE = 'CONFIG_DRIVE'
+    CONFIG_DRIVE_PLAINTEXT = 'CONFIG_DRIVE_PLAINTEXT'
+    CONFIG_DRIVE_MIME_MULTIPART = 'CONFIG_DRIVE_MIME_MULTIPART'
+    METADATA_SERVICE = 'METADATA_SERVICE'
+    NO_CLOUD = 'NO_CLOUD'
 
     @classmethod
     def from_json(cls, json_str: str) -> Self:

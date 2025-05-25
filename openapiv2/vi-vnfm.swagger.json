@@ -532,7 +532,44 @@
     },
     "CertificateData": {
       "type": "object",
-      "description": "Note: Either set of \"privatekey\" and \"certificateFile\" or \"keystoreFile\" but not both shall be present."
+      "properties": {
+        "privateKey": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Private key paired with signed public key. VNFM shall generate both\nprivate key and public key and set this attribute."
+        },
+        "certificateFile": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Signed certificate including public key and certificate chain."
+        },
+        "keystoreFile": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Keystore which includes the private key, signed certificate and\ncertificate chain, e.g. pkcs#12, pfx.\nCredentials to read this file shall be provided to the VNF instance by\noutbound."
+        },
+        "certSubjectData": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Subject to be signed."
+        },
+        "certifiateProfileName": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Name of certificate profile to be signed."
+        }
+      },
+      "description": "Note: Either set of \"privatekey\" and \"certificateFile\" or \"keystoreFile\" but not both shall be present.\ncertificateFile is optional only if keystoreFile is present.\ncertSubjectData is required only when a certificate needs to be generated or signed (i.e., not when a complete keystore is provided).\ncertificateProfileName helps automate signing via predefined templates or CA policies."
     },
     "ComputeRunningState": {
       "type": "string",
@@ -866,7 +903,7 @@
         "SRIOV"
       ],
       "default": "BRIDGE",
-      "description": "Type of network interface. The type allows for defining how such interface is to be realized,\ne.g. normal virtual NIC, with direct PCI pass-through, SR-IOV, etc.\nNote(dmalovan): typeVirtualNic should define how the VM nic should be connected to the host network.\n\n - BRIDGE: In the simple mode VM's are connected to the network backend through a linux \"bridge\".\n - PATHTHROUGH: In masquerade mode, kubevirt allocates internal IP address to the virtual machines and hide them behind NAT.\nAll egress treaffic is \"SNAT'ed\".\nNote(dmalovan): actually don't think that is needed for NFV usecases.\nMASQUERADE = 1;\nPCI Path-through allows a compute instance to have a direct and exclusive access to the physical PCI devices.\n - SRIOV: Extension of PCIe that allows a single PCI device (NIC) to be shared among multiple VMs."
+      "description": "Type of network interface. The type allows for defining how such interface is to be realized,\ne.g. normal virtual NIC, with direct PCI pass-through, SR-IOV, etc.\nNote(dmalovan): typeVirtualNic should define how the VM nic should be connected to the host network.\n\n - BRIDGE: In the simple mode VM's are connected to the network backend through a linux \"bridge\".\n\nIn masquerade mode, kubevirt allocates internal IP address to the virtual machines and hide them behind NAT.\n All egress treaffic is \"SNAT'ed\".\n Note(dmalovan): actually don't think that is needed for NFV usecases.\n MASQUERADE = 1;\n - PATHTHROUGH: PCI Path-through allows a compute instance to have a direct and exclusive access to the physical PCI devices.\n - SRIOV: Extension of PCIe that allows a single PCI device (NIC) to be shared among multiple VMs."
     },
     "UserData": {
       "type": "object",
@@ -895,10 +932,13 @@
     "UserDataUserDataTransportationMethod": {
       "type": "string",
       "enum": [
-        "CONFIG_DRIVE"
+        "CONFIG_DRIVE_PLAINTEXT",
+        "CONFIG_DRIVE_MIME_MULTIPART",
+        "METADATA_SERVICE",
+        "NO_CLOUD"
       ],
-      "default": "CONFIG_DRIVE",
-      "title": "- CONFIG_DRIVE: CONFIG_DRIVE_MIME_multi-part = 1;"
+      "default": "CONFIG_DRIVE_PLAINTEXT",
+      "description": " - CONFIG_DRIVE_PLAINTEXT: Uses a mounted config drive with plaintext cloud-init format\n - CONFIG_DRIVE_MIME_MULTIPART: Uses a mounted config drive with user data in MIME multipart format.\n - METADATA_SERVICE: Uses a metadata service (e.g., HTTP 169.254.169.254).\n - NO_CLOUD: Uses a local disk with NoCloud format."
     },
     "VirtualCompute": {
       "type": "object",

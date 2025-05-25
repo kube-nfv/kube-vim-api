@@ -297,10 +297,6 @@ type TypeVirtualNic int32
 const (
 	// In the simple mode VM's are connected to the network backend through a linux "bridge".
 	TypeVirtualNic_BRIDGE TypeVirtualNic = 0
-	// In masquerade mode, kubevirt allocates internal IP address to the virtual machines and hide them behind NAT.
-	// All egress treaffic is "SNAT'ed".
-	// Note(dmalovan): actually don't think that is needed for NFV usecases.
-	// MASQUERADE = 1;
 	// PCI Path-through allows a compute instance to have a direct and exclusive access to the physical PCI devices.
 	TypeVirtualNic_PATHTHROUGH TypeVirtualNic = 2
 	// Extension of PCIe that allows a single PCI device (NIC) to be shared among multiple VMs.

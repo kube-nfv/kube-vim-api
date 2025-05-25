@@ -19,19 +19,19 @@ import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
-from kubevim_vivnfm_client.models.certificate_data import CertificateData
-from kubevim_vivnfm_client.models.user_data_user_data_transportation_method import UserDataUserDataTransportationMethod
 from typing import Optional, Set
 from typing_extensions import Self
 
-class UserData(BaseModel):
+class CertificateData(BaseModel):
     """
-    UserData
+    Note: Either set of \"privatekey\" and \"certificateFile\" or \"keystoreFile\" but not both shall be present. certificateFile is optional only if keystoreFile is present. certSubjectData is required only when a certificate needs to be generated or signed (i.e., not when a complete keystore is provided). certificateProfileName helps automate signing via predefined templates or CA policies.
     """ # noqa: E501
-    content: StrictStr = Field(description="Contains the user data to customize a virtualised compute resource at boot-time.")
-    method: Optional[UserDataUserDataTransportationMethod] = UserDataUserDataTransportationMethod.CONFIG_DRIVE_PLAINTEXT
-    certificate_data: Optional[List[CertificateData]] = Field(default=None, description="Contains the additional user data to store certificate data for the VNF composed of (fully or partially) virtualised compute resource at boot-time. Shall be present if delegation-mode is used. Otherwise it shall be absent.", alias="certificateData")
-    __properties: ClassVar[List[str]] = ["content", "method", "certificateData"]
+    private_key: Optional[List[StrictStr]] = Field(default=None, description="Private key paired with signed public key. VNFM shall generate both private key and public key and set this attribute.", alias="privateKey")
+    certificate_file: Optional[List[StrictStr]] = Field(default=None, description="Signed certificate including public key and certificate chain.", alias="certificateFile")
+    keystore_file: Optional[List[StrictStr]] = Field(default=None, description="Keystore which includes the private key, signed certificate and certificate chain, e.g. pkcs#12, pfx. Credentials to read this file shall be provided to the VNF instance by outbound.", alias="keystoreFile")
+    cert_subject_data: Optional[List[StrictStr]] = Field(default=None, description="Subject to be signed.", alias="certSubjectData")
+    certifiate_profile_name: Optional[List[StrictStr]] = Field(default=None, description="Name of certificate profile to be signed.", alias="certifiateProfileName")
+    __properties: ClassVar[List[str]] = ["privateKey", "certificateFile", "keystoreFile", "certSubjectData", "certifiateProfileName"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -51,7 +51,7 @@ class UserData(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of UserData from a JSON string"""
+        """Create an instance of CertificateData from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -72,18 +72,11 @@ class UserData(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # override the default output from pydantic by calling `to_dict()` of each item in certificate_data (list)
-        _items = []
-        if self.certificate_data:
-            for _item_certificate_data in self.certificate_data:
-                if _item_certificate_data:
-                    _items.append(_item_certificate_data.to_dict())
-            _dict['certificateData'] = _items
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of UserData from a dict"""
+        """Create an instance of CertificateData from a dict"""
         if obj is None:
             return None
 
@@ -91,9 +84,11 @@ class UserData(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "content": obj.get("content"),
-            "method": obj.get("method") if obj.get("method") is not None else UserDataUserDataTransportationMethod.CONFIG_DRIVE_PLAINTEXT,
-            "certificateData": [CertificateData.from_dict(_item) for _item in obj["certificateData"]] if obj.get("certificateData") is not None else None
+            "privateKey": obj.get("privateKey"),
+            "certificateFile": obj.get("certificateFile"),
+            "keystoreFile": obj.get("keystoreFile"),
+            "certSubjectData": obj.get("certSubjectData"),
+            "certifiateProfileName": obj.get("certifiateProfileName")
         })
         return _obj
 

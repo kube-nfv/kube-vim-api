@@ -105,6 +105,7 @@ enum TypeVirtualNic {
     // All egress treaffic is "SNAT'ed".
     // Note(dmalovan): actually don't think that is needed for NFV usecases.
     // MASQUERADE = 1;
+
     // PCI Path-through allows a compute instance to have a direct and exclusive access to the physical PCI devices.
     PATHTHROUGH = 2;
     // Extension of PCIe that allows a single PCI device (NIC) to be shared among multiple VMs.

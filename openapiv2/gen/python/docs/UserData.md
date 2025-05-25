@@ -6,8 +6,8 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **content** | **str** | Contains the user data to customize a virtualised compute resource at boot-time. | 
-**method** | [**UserDataUserDataTransportationMethod**](UserDataUserDataTransportationMethod.md) |  | [optional] [default to UserDataUserDataTransportationMethod.CONFIG_DRIVE]
-**certificate_data** | **List[object]** | Contains the additional user data to store certificate data for the VNF composed of (fully or partially) virtualised compute resource at boot-time. Shall be present if delegation-mode is used. Otherwise it shall be absent. | [optional] 
+**method** | [**UserDataUserDataTransportationMethod**](UserDataUserDataTransportationMethod.md) |  | [optional] [default to UserDataUserDataTransportationMethod.CONFIG_DRIVE_PLAINTEXT]
+**certificate_data** | [**List[CertificateData]**](CertificateData.md) | Contains the additional user data to store certificate data for the VNF composed of (fully or partially) virtualised compute resource at boot-time. Shall be present if delegation-mode is used. Otherwise it shall be absent. | [optional] 
 
 ## Example
 

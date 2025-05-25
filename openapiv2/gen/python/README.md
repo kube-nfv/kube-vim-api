@@ -105,6 +105,7 @@ Class | Method | HTTP request | Description
 
  - [AffinityOrAntiAffinityConstraintForCompute](docs/AffinityOrAntiAffinityConstraintForCompute.md)
  - [AffinityOrAntiAffinityConstraintForComputeAffinityOrAntiAffinityResourceList](docs/AffinityOrAntiAffinityConstraintForComputeAffinityOrAntiAffinityResourceList.md)
+ - [CertificateData](docs/CertificateData.md)
  - [ComputeRunningState](docs/ComputeRunningState.md)
  - [Filter](docs/Filter.md)
  - [IPAddress](docs/IPAddress.md)

@@ -104,15 +104,34 @@ message VirtualNetworkInterfaceIPAM {
 }
 
 // Note: Either set of "privatekey" and "certificateFile" or "keystoreFile" but not both shall be present.
+// certificateFile is optional only if keystoreFile is present.
+// certSubjectData is required only when a certificate needs to be generated or signed (i.e., not when a complete keystore is provided).
+// certificateProfileName helps automate signing via predefined templates or CA policies.
 message CertificateData {
+  // Private key paired with signed public key. VNFM shall generate both
+  // private key and public key and set this attribute.
+  repeated string privateKey = 1 [(google.api.field_behavior) = OPTIONAL];
+  // Signed certificate including public key and certificate chain.
+  repeated string certificateFile = 2 [(google.api.field_behavior) = OPTIONAL];
+  // Keystore which includes the private key, signed certificate and
+  // certificate chain, e.g. pkcs#12, pfx.
+  // Credentials to read this file shall be provided to the VNF instance by
+  // outbound.
+  repeated string keystoreFile = 3 [(google.api.field_behavior) = OPTIONAL];
+  // Subject to be signed.
+  repeated string certSubjectData = 4 [(google.api.field_behavior) = OPTIONAL];
+  // Name of certificate profile to be signed.
+  repeated string certifiateProfileName = 5 [(google.api.field_behavior) = OPTIONAL];
 }
 
 message UserData {
     // Contains the user data to customize a virtualised compute resource at boot-time.
     string content = 1 [(google.api.field_behavior) = REQUIRED];
     enum UserDataTransportationMethod {
-        CONFIG_DRIVE = 0;
-        // CONFIG_DRIVE_MIME_multi-part = 1;
+        CONFIG_DRIVE_PLAINTEXT = 0; // Uses a mounted config drive with plaintext cloud-init format
+        CONFIG_DRIVE_MIME_MULTIPART = 1; // Uses a mounted config drive with user data in MIME multipart format.
+        METADATA_SERVICE = 2; // Uses a metadata service (e.g., HTTP 169.254.169.254).
+        NO_CLOUD = 3; // Uses a local disk with NoCloud format.
     }
     // Method used as transportation media to convey the content of the
     // UserData and the CertificateData to the virtualised compute resource.
