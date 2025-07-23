@@ -13,6 +13,8 @@ OPENAPIV2_DIR ?= openapiv2
 OPENAPIV2_GEN_DIR = $(OPENAPIV2_DIR)/gen
 OPENAPIV2_PYTHON_GEN_DIR = $(OPENAPIV2_GEN_DIR)/python
 
+LICENSE_FILE ?= LICENSE
+
 .PHONY: all
 all: proto-compile openapiv2-python-gen
 
@@ -57,8 +59,12 @@ $(OPENAPIV2_PYTHON_GEN_DIR): $(OPENAPIV2_GEN_DIR) proto-compile
 	$(OPENAPI_GEN_IMAGE):$(OPENAPI_GEN_VERSION) \
 	generate -i /$(OPENAPIV2_DIR)/vi-vnfm.swagger.json \
 	-g python -o /$(OPENAPIV2_PYTHON_GEN_DIR) \
-	--additional-properties=packageUrl=$(KUBE_VIM_API_URL),packageVersion=$(KUBE_VIM_API_VERSION),packageName=kubevim_vivnfm_client
-	bash ./hack/prepare_oapi_py_package.sh $(OPENAPIV2_PYTHON_GEN_DIR)
+	--additional-properties=\
+	packageUrl=$(KUBE_VIM_API_URL),\
+	packageVersion=$(KUBE_VIM_API_VERSION),\
+	packageName=kubevim_vivnfm_client,\
+	projectDescription="Python client for VI-VNFM API"
+	python3 ./hack/prepare_oapi_py_package.py $(OPENAPIV2_PYTHON_GEN_DIR) $(LICENSE_FILE)
 
 $(OPENAPIV2_GEN_DIR): $(OPENAPIV2_DIR)
 	mkdir -p $@
