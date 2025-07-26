@@ -6,6 +6,7 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **flavour** | [**VirtualComputeFlavour**](VirtualComputeFlavour.md) |  | 
+**meta_data** | [**Metadata**](Metadata.md) |  | [optional] 
 
 ## Example
 

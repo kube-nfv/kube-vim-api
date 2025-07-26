@@ -305,6 +305,8 @@ message CreateComputeResourceAffinityOrAntiAffinityConstraintsGroupResponse {
 message CreateComputeFlavourRequest {
     // Provides information about the particular memory, CPU and disk resources for virtualised compute resource to be allocated.
     VirtualComputeFlavour flavour = 1 [(google.api.field_behavior) = REQUIRED];
+    // List of metadata key-value pairs used by the consumer to associate meaningful metadata to the related virtualised resource.
+    Metadata metaData = 2 [(google.api.field_behavior) = OPTIONAL];
 }
 
 message CreateComputeFlavourResponse {

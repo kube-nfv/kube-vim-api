@@ -1652,6 +1652,10 @@
         "flavour": {
           "$ref": "#/definitions/VirtualComputeFlavour",
           "description": "Provides information about the particular memory, CPU and disk resources for virtualised compute resource to be allocated."
+        },
+        "metaData": {
+          "$ref": "#/definitions/Metadata",
+          "description": "List of metadata key-value pairs used by the consumer to associate meaningful metadata to the related virtualised resource."
         }
       },
       "required": [

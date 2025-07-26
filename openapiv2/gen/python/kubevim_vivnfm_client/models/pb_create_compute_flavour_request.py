@@ -17,8 +17,9 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict
-from typing import Any, ClassVar, Dict, List
+from pydantic import BaseModel, ConfigDict, Field
+from typing import Any, ClassVar, Dict, List, Optional
+from kubevim_vivnfm_client.models.metadata import Metadata
 from kubevim_vivnfm_client.models.virtual_compute_flavour import VirtualComputeFlavour
 from typing import Optional, Set
 from typing_extensions import Self
@@ -28,7 +29,8 @@ class PbCreateComputeFlavourRequest(BaseModel):
     PbCreateComputeFlavourRequest
     """ # noqa: E501
     flavour: VirtualComputeFlavour
-    __properties: ClassVar[List[str]] = ["flavour"]
+    meta_data: Optional[Metadata] = Field(default=None, alias="metaData")
+    __properties: ClassVar[List[str]] = ["flavour", "metaData"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -72,6 +74,9 @@ class PbCreateComputeFlavourRequest(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of flavour
         if self.flavour:
             _dict['flavour'] = self.flavour.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of meta_data
+        if self.meta_data:
+            _dict['metaData'] = self.meta_data.to_dict()
         return _dict
 
     @classmethod
@@ -84,7 +89,8 @@ class PbCreateComputeFlavourRequest(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "flavour": VirtualComputeFlavour.from_dict(obj["flavour"]) if obj.get("flavour") is not None else None
+            "flavour": VirtualComputeFlavour.from_dict(obj["flavour"]) if obj.get("flavour") is not None else None,
+            "metaData": Metadata.from_dict(obj["metaData"]) if obj.get("metaData") is not None else None
         })
         return _obj
 
