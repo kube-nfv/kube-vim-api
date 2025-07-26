@@ -1,6 +1,6 @@
 KUBE_VIM_API_URL=github.com/kube-nfv/kube-vim-api
-# TODO: Get from tag
-KUBE_VIM_API_VERSION=0.0.4
+
+KUBE_VIM_API_VERSION ?= $(shell git describe --tags --abbrev=0)
 
 PROTOC_VERSION ?= 25.1
 K8S_APIMACHINERY_VERSION ?= 0.31.0

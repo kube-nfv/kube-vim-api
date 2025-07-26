@@ -14,7 +14,7 @@
 """  # noqa: E501
 
 
-__version__ = "0.0.4"
+__version__ = "v0.0.4-alpha.15"
 
 # import apis into sdk package
 from kubevim_vivnfm_client.api.vi_vnfm_api import ViVnfmApi

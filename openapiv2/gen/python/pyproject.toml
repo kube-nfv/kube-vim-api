@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "kubevim_vivnfm_client"
-version = "0.0.4"
+version = "v0.0.4-alpha.15"
 description = "vi-vnfm.proto"
 authors = ["OpenAPI Generator Community <team@openapitools.org>"]
 license = "NoLicense"
