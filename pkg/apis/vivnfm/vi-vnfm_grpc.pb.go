@@ -4,7 +4,7 @@
 // - protoc             v4.25.1
 // source: vi-vnfm.proto
 
-package nfv
+package vivnfm
 
 import (
 	context "context"

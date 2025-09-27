@@ -5,13 +5,12 @@ package kubenvf.kubevim.api.pb;
 
 import "common.proto";
 import "types.proto";
-import "google/protobuf/any.proto";
 
 // For the grpc-gateway
 import "google/api/annotations.proto";
 import "google/api/field_behavior.proto";
 
-option go_package = "github.com/kube-nfv/kube-vim-api/pb/nfv";
+option go_package = "github.com/kube-nfv/kube-vim-api/pkg/apis/vivnfm";
 
 // Vi-Vnfm service definition.
 service vi_vnfm {

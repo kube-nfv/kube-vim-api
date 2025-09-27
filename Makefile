@@ -24,20 +24,30 @@ help: ## Display available commands.
 
 .PHONY: proto-clean
 proto-clean: ## Clean generated proto.
-	rm -rf pb/nfv
+	rm -rf pkg/apis
+
+.PHONY: proto-dirs
+proto-dirs: ## Create proto output directories.
+	mkdir -p pkg/apis/vivnfm pkg/apis/admin
 
 .PHONY: proto-compile
-proto-compile: proto-image-build $(OPENAPIV2_DIR) ## Compile message protobuf and gRPC service files.
+proto-compile: proto-dirs proto-image-build $(OPENAPIV2_DIR) ## Compile message protobuf and gRPC service files.
 	docker run --rm \
-	  -v "$(PWD)/pb:/source" \
+	  -v "$(PWD):/workspace" \
 	  -v "$(PWD)/$(OPENAPIV2_DIR):/api" \
-	  -w "/source" \
+	  -w "/workspace/pb" \
 	  protogen-image \
-	  bash -c "protoc *.proto --proto_path=. \
-	  --go_out=. --go_opt=module=github.com/kube-nfv/kube-vim-api/pb \
-	  --go-grpc_out=. --go-grpc_opt=module=github.com/kube-nfv/kube-vim-api/pb \
-	  --grpc-gateway_out=./nfv --grpc-gateway_opt paths=source_relative \
-	  --openapiv2_out=/api"
+	  bash -c "protoc common.proto types.proto --proto_path=. \
+	  --go_out=/workspace --go_opt=module=$(KUBE_VIM_API_URL) && \
+	  protoc vi-vnfm.proto --proto_path=. \
+	  --go_out=/workspace --go_opt=module=$(KUBE_VIM_API_URL) \
+	  --go-grpc_out=/workspace --go-grpc_opt=module=$(KUBE_VIM_API_URL) \
+	  --grpc-gateway_out=/workspace/pkg/apis/vivnfm --grpc-gateway_opt paths=source_relative \
+	  --openapiv2_out=/api && \
+	  protoc kubevim-admin.proto --proto_path=. \
+	  --go_out=/workspace --go_opt=module=$(KUBE_VIM_API_URL) \
+	  --go-grpc_out=/workspace --go-grpc_opt=module=$(KUBE_VIM_API_URL) \
+	  --grpc-gateway_out=/workspace/pkg/apis/admin --grpc-gateway_opt paths=source_relative"
 
 .PHONY: proto-image-build
 proto-image-build: ## Build docker image with all nececary dependencies to compile message protobuf and gRPC service files.

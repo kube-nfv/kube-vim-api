@@ -2,11 +2,11 @@
 // source: vi-vnfm.proto
 
 /*
-Package nfv is a reverse proxy.
+Package vivnfm is a reverse proxy.
 
 It translates gRPC into RESTful JSON APIs.
 */
-package nfv
+package vivnfm
 
 import (
 	"context"
