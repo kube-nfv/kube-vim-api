@@ -1,0 +1,53 @@
+syntax = "proto3";
+
+package admin.kubevim.kubenfv.api.pb;
+
+// For the grpc-gateway
+import "google/api/annotations.proto";
+import "google/api/field_behavior.proto";
+import "common/types.proto";
+
+option go_package = "github.com/kube-nfv/kube-vim-api/pkg/apis/admin";
+
+// KubeVim admin service definition for extended image management operations.
+service admin {
+
+    // Software Image Management Interface
+    //
+    // This operation allows downloading and initializing a software image from
+    // the specified image repository.
+    // Result: As a result of this operation, the requested software image should be present
+    // and available for querying via the ETSI NFV IFA-006 Vi-Vnfm API.
+    rpc DownloadImage(DownloadImageRequest) returns (DownloadImageResponse) {
+        option(google.api.http) = {
+            post: "/admin/v1/images"
+            body: "*"
+        };
+    }
+    // This operation sets up the software image upload proxy, which can be used for
+    // software image uploading from external services.
+    // Result: As a result of this operation, the client should have an available endpoint for
+    // software image uploading.
+    rpc SetupImageUploadProxy(SetupImageUploadProxyRequest) returns (SetupImageUploadProxyResponse) {
+        option(google.api.http) = {
+            post: "/admin/v1/images/uploadproxy"
+            body: "*"
+        };
+    }
+}
+
+message DownloadImageRequest {
+
+}
+
+message DownloadImageResponse {
+    SoftwareImageInformation softwareImageInformation = 1 [(google.api.field_behavior) = REQUIRED];
+}
+
+message SetupImageUploadProxyRequest {
+
+}
+
+message SetupImageUploadProxyResponse {
+
+}

@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.3.0
 // - protoc             v4.25.1
-// source: kubevim-admin.proto
+// source: admin/kubevim-admin.proto
 
 package admin
 
@@ -162,5 +162,5 @@ var Admin_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "kubevim-admin.proto",
+	Metadata: "admin/kubevim-admin.proto",
 }

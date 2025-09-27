@@ -1,0 +1,519 @@
+syntax = "proto3";
+
+option go_package = "github.com/kube-nfv/kube-vim-api/pkg/apis";
+
+import "common/common.proto";
+import "google/protobuf/timestamp.proto";
+import "google/api/field_behavior.proto";
+import "k8s.io/apimachinery/pkg/api/resource/generated.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+// This information element represents Software Image Information
+message SoftwareImageInformation {
+    // Identifier of this software image.
+    Identifier softwareImageId = 1 [(google.api.field_behavior) = REQUIRED];
+    // Name of this software image.
+    string name = 2 [(google.api.field_behavior) = REQUIRED];
+    // Provider of this software image.
+    optional string provider = 3 [(google.api.field_behavior) = OPTIONAL];
+    // Version of the software image file.
+    optional string version = 4 [(google.api.field_behavior) = OPTIONAL];
+    // Checksum of the software image file.
+    optional string checksum = 5 [(google.api.field_behavior) = OPTIONAL];
+    // Container format indicates whether the software image is in a file format that also contains metadata about the actual software.
+    optional string containerFormat = 6 [(google.api.field_behavior) = OPTIONAL];
+    // Disk format of a software image is the format of the underlying disk image.
+    optional string diskFormat = 7 [(google.api.field_behavior) = OPTIONAL];
+    // Time this software image was created.
+    google.protobuf.Timestamp createdAt = 8 [(google.api.field_behavior) = REQUIRED];
+    // Time this software image was last updated.
+    google.protobuf.Timestamp updatedAt = 9 [(google.api.field_behavior) = REQUIRED];
+    // Minimal disk size for this software image.
+    optional k8s.io.apimachinery.pkg.api.resource.Quantity minDisk = 10 [(google.api.field_behavior) = OPTIONAL];
+    // Minimal RAM size for this software image.
+    optional k8s.io.apimachinery.pkg.api.resource.Quantity minRam = 11 [(google.api.field_behavior) = OPTIONAL];
+    // Size of this software image.
+    k8s.io.apimachinery.pkg.api.resource.Quantity size = 12 [(google.api.field_behavior) = REQUIRED];
+    // Status of this software image.
+    // TODO: Change status to the enum
+    string status = 13 [(google.api.field_behavior) = REQUIRED];
+    // List of metadata key-value pairs used by the consumer to associate meaningful metadata to the related virtualised resource.
+    Metadata metadata = 14 [(google.api.field_behavior) = OPTIONAL];
+}
+
+enum ScopeOfAffinityOrAntiAffinityConstraintForCompute {
+    NFVI_NODE = 0;
+    NFVI_POP = 1;
+}
+
+enum TypeOfAffinityOrAntiAffinityConstraint {
+    AFFINITY = 0;
+    ANTI_AFFINITY = 1;
+}
+
+// The parameter used when giving resource affinity or anti-affinity constraints related to virtualised compute resources.
+// The parameter is an element with affinity or anti affinity information of the virtualised compute resource to be allocated ETSI GS NFV-IFA 005 and ETSI
+// GS NFV-IFA 006
+message AffinityOrAntiAffinityConstraintForCompute {
+    // The AffinityOrAntiAffinityResourceList information element defines an explicit list of resources to
+    // express affinity or anti-affinity between these resources and a current resource. The scope of the affinity or anti-affinity can also be defined.
+    message AffinityOrAntiAffinityResourceList {
+        // List of identifiers of virtualised resources.
+        repeated Identifier resourceId = 1;
+    }
+    // Qualifies the scope of the constraint. In case of compute resource, the values are as follows
+    TypeOfAffinityOrAntiAffinityConstraint type = 1;
+    // Indicates whether this is an affinity or anti- affinity constraint.
+    optional ScopeOfAffinityOrAntiAffinityConstraintForCompute scope = 2;
+    // Either affinityOrAntiAffinityResourceList or affinityOrAntiAffinityResourceGroupId but not both shall be present.
+    oneof constraint {
+        // Consumer-managed list of identifiers of virtualised resources with which the actual resource is requested to be affine or anti- affine.
+        AffinityOrAntiAffinityResourceList affinityOrAntiAffinityResourceList = 3;
+        // Identifier of the producer-managed group of virtualised resources with which the actual resource is
+        // requested to be affine or anti-affine. Either affinityOrAntiAffinityResourceList or affinityOrAntiAffinityResourceGroupId but not both shall be present.
+        Identifier affinityOrAntiAffinityResourceGroupId = 4;
+    }
+}
+
+// The parameter used when providing the list of elements with affinity or anti affinity information of the virtualised network resource
+message AffinityOrAntiAffinityConstraintForNetwork {
+
+}
+
+// Note: That is out of the ETSI GS NFV-IFA 006 scope.
+// VirtualInterfaceData renamed to the VirtualNetworkInterfaceIPAM
+message VirtualNetworkInterfaceIPAM {
+    // In the case when the virtual network interface is attached to the network, it references such a network.
+    // The cardinality can be 0 in the case that a network interface is created without being attached to any specific network.
+    // Note(dmalovan): Either networkId or subnetId can be specified (networkId can be calculated from the subnetId)
+    optional Identifier networkId = 1 [(google.api.field_behavior) = OPTIONAL];
+    // Note: That is out of the ETSI GS NFV-IFA 006 scope.
+    // If the networks has multiple L3 attributes which splice network broadcast domain (eg: VPC network with multiple subnets,
+    // which is communicates over vRouter)
+    // or subnetId should be specified in Underlay nerwork for dynamic Ip allocation from the given IP address pool.
+    // The cardinality can be 0 in the case when VirtualNetworkInterface related to the Underlay (L2) network and does not need
+    // IP address specification.
+    optional Identifier subnetId = 2 [(google.api.field_behavior) = OPTIONAL];
+    // The virtual network interface can be configured with specific IP address(es) associated to the network to be attached to.
+    // The cardinality can be 0 in the case that a network interface is created without being attached to any specific network,
+    // or when an IP address can be automatically configured, e.g. by DHCP.
+    optional IPAddress ipAddress = 3 [(google.api.field_behavior) = OPTIONAL];
+    // MAC address desired for the virtual network interface.
+    // The cardinality can be 0 to allow for network interface without specific MAC address configuration.
+    optional MacAddress macAddress = 4 [(google.api.field_behavior) = OPTIONAL];
+}
+
+// Note: Either set of "privatekey" and "certificateFile" or "keystoreFile" but not both shall be present.
+// certificateFile is optional only if keystoreFile is present.
+// certSubjectData is required only when a certificate needs to be generated or signed (i.e., not when a complete keystore is provided).
+// certificateProfileName helps automate signing via predefined templates or CA policies.
+message CertificateData {
+  // Private key paired with signed public key. VNFM shall generate both
+  // private key and public key and set this attribute.
+  repeated string privateKey = 1 [(google.api.field_behavior) = OPTIONAL];
+  // Signed certificate including public key and certificate chain.
+  repeated string certificateFile = 2 [(google.api.field_behavior) = OPTIONAL];
+  // Keystore which includes the private key, signed certificate and
+  // certificate chain, e.g. pkcs#12, pfx.
+  // Credentials to read this file shall be provided to the VNF instance by
+  // outbound.
+  repeated string keystoreFile = 3 [(google.api.field_behavior) = OPTIONAL];
+  // Subject to be signed.
+  repeated string certSubjectData = 4 [(google.api.field_behavior) = OPTIONAL];
+  // Name of certificate profile to be signed.
+  repeated string certifiateProfileName = 5 [(google.api.field_behavior) = OPTIONAL];
+}
+
+message UserData {
+    // Contains the user data to customize a virtualised compute resource at boot-time.
+    string content = 1 [(google.api.field_behavior) = REQUIRED];
+    enum UserDataTransportationMethod {
+        CONFIG_DRIVE_PLAINTEXT = 0; // Uses a mounted config drive with plaintext cloud-init format
+        CONFIG_DRIVE_MIME_MULTIPART = 1; // Uses a mounted config drive with user data in MIME multipart format.
+        METADATA_SERVICE = 2; // Uses a metadata service (e.g., HTTP 169.254.169.254).
+        NO_CLOUD = 3; // Uses a local disk with NoCloud format.
+    }
+    // Method used as transportation media to convey the content of the
+    // UserData and the CertificateData to the virtualised compute resource.
+    optional UserDataTransportationMethod method = 2 [(google.api.field_behavior) = OPTIONAL];
+    // Contains the additional user data to store certificate data for the VNF composed of (fully or partially) virtualised compute resource at
+    // boot-time. Shall be present if delegation-mode is used. Otherwise it shall be absent.
+    repeated CertificateData certificateData = 3 [(google.api.field_behavior) = OPTIONAL];
+}
+
+message VirtualCompute {
+    // Identifier of the virtualised compute resource.
+    Identifier computeId = 1 [(google.api.field_behavior) = REQUIRED];
+    // Name of the virtualised compute resource.
+    optional string computeName = 2 [(google.api.field_behavior) = OPTIONAL];
+    // Identifier of the given compute flavour used to instantiate this virtual compute.
+    Identifier flavourId = 3 [(google.api.field_behavior) = REQUIRED];
+    // Selected acceleration capabilities (e.g. crypto, GPU) from the set of
+    // capabilities offered by the compute node acceleration resources. The
+    // cardinality can be 0, if no particular acceleration capability is provided.
+    // repeated ?? accelerationCapability = 4;
+    // Virtual CPU(s) of the virtualised compute
+    VirtualCpu virtualCpu = 5 [(google.api.field_behavior) = REQUIRED];
+    // Virtual memory of the compute.
+    VirtualMemory virtualMemory = 6 [(google.api.field_behavior) = REQUIRED];
+    // Provides information of the instantiated virtual network interfaces of the compute resource.
+    repeated VirtualNetworkInterface virtualNetworkInterface = 7 [(google.api.field_behavior) = REQUIRED];
+    // Provides information of the virtualised storage resources (volumes, ephemeral) that are attached to the
+    // compute resource.
+    repeated VirtualStorage virtualDisks = 8 [(google.api.field_behavior) = REQUIRED];
+    // Identifier of the virtualisation container software image (e.g. virtual machine image). Cardinality can be 0 if an
+    // "empty" virtualisation container is allocated.
+    optional Identifier vcImageId = 9 [(google.api.field_behavior) = OPTIONAL];
+    // If present, it identifies the resource zone where the virtual compute resources have been allocated
+    optional Identifier zoneId = 10 [(google.api.field_behavior) = OPTIONAL];
+    // Identifier of the host the virtualised compute resource is allocated on.
+    Identifier hostId = 11 [(google.api.field_behavior) = REQUIRED];
+    // Operational state of the compute resource.
+    OperationalState operationalState = 12 [(google.api.field_behavior) = REQUIRED];
+    // Running state of the compute resource.
+    ComputeRunningState runningState = 13 [(google.api.field_behavior) = REQUIRED];
+    // List of metadata key-value pairs used by the consumer to associate meaningful metadata to the related virtualised resource.
+    Metadata metadata = 14 [(google.api.field_behavior) = OPTIONAL];
+}
+
+// Information describing virtual memory.
+message VirtualMemoryData {
+    // Amount of virtual Memory (e.g. in MB).
+    float virtualMemSize = 1 [(google.api.field_behavior) = REQUIRED];
+    // Memory core oversubscription policy in terms of virtual memory to physical memory on the platform.
+    // The cardinality can be 0 during the allocation request, if no particular value is requested.
+    optional string virtualMemOversubscriptionPolicy = 2 [(google.api.field_behavior) = OPTIONAL];
+    // Specifies the memory allocation to be cognisant of the relevant process/core allocation. The
+    // cardinality can be 0 during the allocation request, if no particular value is requested
+    optional bool numaEnabled = 3 [(google.api.field_behavior) = OPTIONAL];
+}
+
+message VirtualMemory {
+
+}
+
+// Information describing a virtual CPU.
+message VirtualCpuData {
+    // CPU architecture type. Examples are x86, ARM. The cardinality can be 0 during the allocation request, if no particular CPU architecture type is requested.
+    optional string cpuArchitecture = 1 [(google.api.field_behavior) = OPTIONAL];
+    // Number of virtual CPUs.
+    uint32 numVirtualCpu = 2 [(google.api.field_behavior) = REQUIRED];
+    // Minimum CPU clock rate
+    // (e.g. in MHz) available for the virtualised CPU resources. The cardinality can be 0 during the allocation request, if no particular value is requested.
+    optional float cpuClock = 3 [(google.api.field_behavior) = OPTIONAL];
+    // The CPU core oversubscription policy, e.g. the relation of virtual CPU cores to physical CPU cores/threads.
+    // The cardinality can be 0 during the allocation request, if no particular value is requested.
+    // E.g. virtual CPU core : physical CPU core= 4:1
+    optional string virtualCpuOversubscriptionPolicy = 4 [(google.api.field_behavior) = OPTIONAL];
+    // Information describing CPU pinning policy and rules for virtual CPU to physical CPU mapping of the virtualised compute resource.
+    message VirtualCpuPinningData {
+        // Indicates the policy for CPU pinning.
+        enum VirtualCpuPinningPolicy {
+            // In case of "STATIC" the virtual CPU cores are requested to be allocated to logical CPU cores according to the rules defined in virtualCpuPinningRules.
+            STATIC = 0;
+            // In case of "DYNAMIC" the allocation of virtual CPU cores to logical CPU cores is decided by the VIM (e.g. SMT (Simultaneous Multi-Threading) requirements).
+            DYNAMIC = 1;
+        }
+        message VirtualCpuPinningRule {
+            // The number of core in the virtual CPU.
+            float cores = 1 [(google.api.field_behavior) = OPTIONAL];
+            // The number of socket in the virtual CPU.
+            float sockets = 2 [(google.api.field_behavior) = OPTIONAL];
+            // The number of thread in the virtual CPU.
+            float threads = 3 [(google.api.field_behavior) = OPTIONAL];
+        }
+        VirtualCpuPinningPolicy virtualCpuPinningPolicy = 1 [(google.api.field_behavior) = OPTIONAL];
+        // A list of rules that should be considered during the allocation of the virtual CPU-s to logical CPU-s in case of "static" virtualCpuPinningPolicy.
+        repeated  VirtualCpuPinningRule virtualCpuPinningRules = 2 [(google.api.field_behavior) = OPTIONAL];
+    }
+    // Virtual CPU pinning configuration for the virtualised compute resource.
+    optional VirtualCpuPinningData virtualCpuPinning = 5 [(google.api.field_behavior) = OPTIONAL];
+    // Virtual CPU power (state) requirements for the virtualised compute resource.
+    optional string powerStateReqs = 6 [(google.api.field_behavior) = OPTIONAL];
+}
+
+message VirtualCpu {
+
+}
+
+
+// A virtual network interface is a communication endpoint under a compute resource.
+message VirtualNetworkInterfaceData {
+    // In the case when the virtual network interface is attached to the network, it identifies such a network.
+    // The cardinality can be 0 in the case that a network interface is created without being attached to any specific network.
+    // Note(dmalovan): Either networkId or subnetId can be specified (networkId can be calculated from the subnetId)
+    optional Identifier networkId = 1 [(google.api.field_behavior) = OPTIONAL];
+    // Note: That is out of the ETSI GS NFV-IFA 006 scope.
+    // If the networks has multiple L3 attributes which splice network broadcast domain (eg: VPC network with multiple subnets,
+    // which is communicates over vRouter)
+    // or subnetId should be specified in Underlay nerwork for dynamic Ip allocation from the given IP address pool.
+    // The cardinality can be 0 in the case when VirtualNetworkInterface related to the Underlay (L2) network and does not need
+    // IP address specification.
+    optional Identifier subnetId = 2 [(google.api.field_behavior) = OPTIONAL];
+    // If the virtual network interface is attached to a specific network port, it identifies such a network port.
+    // The cardinality can be 0 in the case that a network interface is created without any specific network port attachment.
+    optional Identifier networkPortId = 3 [(google.api.field_behavior) = OPTIONAL];
+    // Type of network interface. The type allows for defining how such interface is to be realized,
+    // e.g. normal virtual NIC, with direct PCI pass-through, SR-IOV, etc.
+    // Note(dmalovan): typeVirtualNic should define how the VM nic should be connected to the host network.
+    TypeVirtualNic typeVirtualNic = 4 [(google.api.field_behavior) = REQUIRED];
+    // Extra configuration that the virtual network interface supports based on the type of virtual network interface.
+    // TODO: That interface might change.
+    repeated string typeConfiguration = 5 [(google.api.field_behavior) = OPTIONAL];
+    // Bandwidth of the virtual network interface (in Mbps).
+    optional float bandwidth = 6 [(google.api.field_behavior) = OPTIONAL];
+    // It specifies if the virtual network interface requires certain acceleration capabilities (e.g. RDMA, packet dispatch, TCP Chimney).
+    // The cardinality can be 0, if no particular acceleration capability is requested.
+    // TODO: That interface might change.
+    repeated string accelerationCapability = 7 [(google.api.field_behavior) = OPTIONAL];
+    // List of metadata key-value pairs used by the consumer to associate meaningful metadata to the related virtualised resource.
+    Metadata metadata = 8 [(google.api.field_behavior) = OPTIONAL];
+}
+
+// A virtual network interface resource is a communication endpoint under an instantiated compute resource.
+message VirtualNetworkInterface {
+    // Identifier of the virtual network interface.
+    Identifier resourceId = 1 [(google.api.field_behavior) = REQUIRED];
+    // Identifier of the owner of the network interface (e.g. a virtualised compute resource).
+    Identifier ownerId = 2 [(google.api.field_behavior) = REQUIRED];
+    // In the case when the virtual network interface is attached to the network, it
+    // references such a network. The cardinality can be 0 in the case that a
+    // network interface is created without being attached to any specific network.
+    optional Identifier networkId = 3 [(google.api.field_behavior) = OPTIONAL];
+    // Note: That is out of the ETSI GS NFV-IFA 006 scope.
+    // If the networks has multiple L3 attributes which splice network broadcast domain (eg: VPC network with multiple subnets,
+    // which is communicates over vRouter)
+    // or subnetId should be specified in Underlay nerwork for dynamic Ip allocation from the given IP address pool.
+    // The cardinality can be 0 in the case when VirtualNetworkInterface related to the Underlay (L2) network and does not need
+    // IP address specification.
+    optional Identifier subnetId = 4 [(google.api.field_behavior) = OPTIONAL];
+    // If the virtual network interface is attached to a specific network port, it
+    // references such a network port. The cardinality can be 0 in the case that a
+    // network interface is created without any specific network port attachment.
+    optional Identifier networkPortId = 5 [(google.api.field_behavior) = OPTIONAL];
+    // The virtual network interface can be configured with specific IP address(es)
+    // associated to the network to be attached to. The cardinality can be 0 in
+    // the case that a network interface is created without being attached to any
+    // specific network, or when an IP address can be automatically configured, e.g. by DHCP.
+    // Note(dmalovan): In general IPaddresses should be passed even if them are allocated dynamically
+    // e.g. via DHCP. If DHCP client not yet aquired the address cardinality can be 0.
+    repeated IPAddress ipAddress = 6 [(google.api.field_behavior) = OPTIONAL];
+    // Type of network interface. The type allows for defining how such interface is
+    // to be realized, e.g. normal virtual NIC, with direct PCI pass-through, etc.
+    TypeVirtualNic typeVirtualNic = 7 [(google.api.field_behavior) = REQUIRED];
+    // Extra configuration that the virtual network interface supports based on the type of virtual network interface.
+    // TODO: That interface might change.
+    repeated string typeConfiguration = 8 [(google.api.field_behavior) = OPTIONAL];
+    // MAC address of the virtual network interface.
+    MacAddress macAddress = 9 [(google.api.field_behavior) = REQUIRED];
+    // Bandwidth of the virtual network interface (in Mbps).
+    float bandwidth = 10 [(google.api.field_behavior) = REQUIRED];
+    // The cardinality can be 0, if no particular acceleration capability is requested.
+    // TODO: That interface might change.
+    repeated string accelerationCapability = 11 [(google.api.field_behavior) = OPTIONAL];
+    // Operational state of the virtual network interface.
+    OperationalState operationalState = 12 [(google.api.field_behavior) = REQUIRED];
+    // List of metadata key-value pairs used by the consumer to associate meaningful
+    // metadata to the related virtualised resource.
+    Metadata metadata = 13 [(google.api.field_behavior) = OPTIONAL];
+}
+
+// This clause describes the attributes for the VirtualStorageData information element.
+message VirtualStorageData {
+    // Type of virtualised storage resource (e.g. volume, object).
+    string typeOfStorage = 1 [(google.api.field_behavior) = REQUIRED];
+    // Size of virtualised storage resource (e.g. size of volume, in GB).
+    float sizeOfStorage = 2 [(google.api.field_behavior) = REQUIRED];
+    // Indicates if the storage supports RDMA.
+    optional bool rdmaEnabled = 3 [(google.api.field_behavior) = OPTIONAL];
+}
+
+message VirtualStorage {
+
+
+}
+
+// The VirtualComputeFlavour information element encapsulates information for compute flavours. A compute flavour includes information
+// about number of virtual CPUs, size of virtual memory, size of virtual storage, and virtual network interfaces.
+message VirtualComputeFlavour {
+    // Identifier given to the compute flavour. When the VirtualComputeFlavour is used as input in operations to request the creation
+    // of a compute flavour, the cardinality can be "0" if VIM assigns the identifier in order to avoid potential identifier assignment conflicts.
+    // The flavourId shall be present otherwise.
+    optional Identifier flavourId = 1 [(google.api.field_behavior) = OUTPUT_ONLY];
+    // Scope of flavour accessibility. It indicates if the compute flavour is accessible and shared across clients.
+    // Default value is True (if not specified), which means public. False means private.
+    optional bool isPublic = 2 [
+      (google.api.field_behavior) = OPTIONAL,
+      (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+        default: "true",
+      }
+    ];
+    // accelerationCapability = 3;
+
+    // Virtual memory of the virtualised compute.
+    VirtualMemoryData virtualMemory = 4 [(google.api.field_behavior) = REQUIRED];
+    // Virtual CPU(s) of the virtualised compute.
+    VirtualCpuData virtualCpu = 5 [(google.api.field_behavior) = REQUIRED];
+    // Contains information about the size of virtualised storage resource (e.g. size of volume, in GB), the type of storage (e.g. volume, object), and support for RDMA.
+    repeated VirtualStorageData storageAttributes = 6 [(google.api.field_behavior) = OPTIONAL];
+    // Virtual network interfaces of the virtualised compute
+    // Note(dmalovan): Specifing virtualNetworkInterfaces inside the virtual flavour looks abigious. Instead of identify network
+    // interfaces that should be attached to the virtual compute in the flavour them are specified in AllocateVirtualComputeRequest
+    // directly.
+    // **VirtualNetworkInterfaceData is NOT USED in the VirtualComputeFlavour for the kube-vim**
+    repeated VirtualNetworkInterfaceData virtualNetworkInterface = 7 [(google.api.field_behavior) = OPTIONAL];
+    // List of metadata key-value pairs used by the consumer to associate meaningful metadata to the related virtualised resource.
+    Metadata metadata = 8 [(google.api.field_behavior) = OPTIONAL];
+}
+
+// This clause describes the attributes for the NetworkQoS information element. This type gives QoS options to be supported on the
+// virtualised network, e.g. latency, jitter, etc.
+message NetworkQoS {
+    // Name given to the QoS parameter.
+    string qosName = 1 [(google.api.field_behavior) = REQUIRED];
+    // Value of the QoS parameter.
+    string qosValue = 2 [(google.api.field_behavior) = REQUIRED];
+}
+
+message VirtualNetworkData {
+    // Minimum network bandwidth (in Mbps).
+    float bandwidth = 1 [(google.api.field_behavior) = REQUIRED];
+    // Type of network that maps to the virtualised network. This list is extensible. Examples are:
+    //  • "local";
+    //  • "vlan";
+    //  • "vxlan";
+    //  • "gre";
+    //  • "l3-vpn";
+    //  • etc.
+    //  Cardinality can be "0" to cover the case where this attribute is not required to create the virtualised network.
+    optional NetworkType networkType = 2 [(google.api.field_behavior) = OPTIONAL];
+    // Name of the infrastructure provider network used to realize the virtual network.
+    // Cardinality can be "0" to cover the case where virtual network is not based on infrastructure provider network.
+    optional string providerNetwork = 3 [(google.api.field_behavior) = OPTIONAL];
+    // The segmentation identifier of the network that maps to the virtualised network, for which, the segmentation model is defined
+    // by the networkType attribute. For instance, for a "vlan" networkType, it corresponds to the vlan identifier;
+    // and for a "gre" networkType, it corresponds to a gre key.
+    // Cardinality can be "0" to cover the case where networkType is flat network without any specific segmentation.
+    optional uint64 segmentationId = 4 [(google.api.field_behavior) = OPTIONAL];
+    // Provides information about Quality of Service attributes that the network shall support.
+    // Cardinality can be "0" for networks without any specified QoS requirements.
+    repeated NetworkQoS networkQoS = 5 [(google.api.field_behavior) = OPTIONAL];
+    // Specifies whether the virtualised network is shared among consumers.
+    optional bool isShared = 6 [(google.api.field_behavior) = OPTIONAL];
+    // Attribute list allows setting up a network providing defined layer 3 connectivity.
+    repeated NetworkSubnetData layer3Attributes = 8 [(google.api.field_behavior) = OPTIONAL];
+    // List of metadata key-value pairs used by the consumer to associate meaningful metadata to the related virtualised resource.
+    Metadata metadata = 9 [(google.api.field_behavior) = OPTIONAL];
+}
+
+// The NetworkSubnetData information element encapsulates information to allocate or update virtualised sub-networks.
+message NetworkSubnetData {
+    // Identifier of the virtualised network that the virtualised sub-network is attached to.
+    // The cardinality can be 0 to cover the case where this type is used to describe the L3 attributes of a network rather
+    // than a subnetwork or when NetworkSubnetData is part of Update Virtualised Network Resource.
+    // Note: In these cases, changing the parameter is such a fundamental change that a new virtualised network resource should be created instead of updating an existing network resource.
+    optional Identifier networkId = 1 [(google.api.field_behavior) = OPTIONAL];
+    // IP version of the network/subnetwork.
+    // Cardinality can be 0 when NetworkSubnetData is part of Update Virtualised Network Resource
+    // Note: In these cases, changing the parameter is such a fundamental change that a new virtualised network resource should be created instead of updating an existing network resource.
+    optional IPVersion ipVersion = 2 [(google.api.field_behavior) = OPTIONAL];
+    // Specifies the IP address of the network/subnetwork gateway when the gateway is selected by the requestor.
+    optional IPAddress gatewayIp = 3 [(google.api.field_behavior) = OPTIONAL];
+    // CIDR of the network/subnetwork, i.e. network address and subnet mask.
+    // Cardinality can be 0 when NetworkSubnetData is part of Update Virtualised Network Resource
+    // In these cases, changing the parameter is such a fundamental change that a new virtualised network resource should be created instead of updating an existing network resource.
+    optional IPSubnetCIDR cidr = 4 [(google.api.field_behavior) = OPTIONAL];
+    // True when DHCP is to be enabled for this network/subnetwork, or false otherwise.
+    optional bool isDhcpEnabled = 5 [(google.api.field_behavior) = OPTIONAL];
+    // Address pools for the network/subnetwork. The cardinality can be 0 when VIM is allowed to allocate all addresses in the
+    // CIDR except for the address of the network/subnetwork gateway.
+    optional IPAddressPool addressPool = 6 [(google.api.field_behavior) = OPTIONAL];
+    // List of metadata key-value pairs used by the consumer to associate meaningful metadata to the related virtualised resource.
+    Metadata metadata = 7 [(google.api.field_behavior) = OPTIONAL];
+}
+
+message VirtualNetworkPortData {
+}
+
+message VirtualTrunkData {
+
+}
+
+// The information elements in this group encapsulates information of an instantiated virtualised network resource.
+// In the NFVI, a virtual network transports information among the network interfaces of VM instances and physical network interfaces, providing the necessary connectiv
+message VirtualNetwork {
+    // Identifier of the virtualised network resource.
+    Identifier networkResourceId = 1 [(google.api.field_behavior) = REQUIRED];
+    // Name of the virtualised network resource.
+    optional string networkResourceName = 2 [(google.api.field_behavior) = OPTIONAL];
+    // References the network subnet.
+    // Only present if the network provides layer 3 connectivity.
+    repeated Identifier subnetId = 3 [(google.api.field_behavior) = OPTIONAL];
+    // Provides information on an instantiated virtual network port.
+    repeated VirtualNetworkPort networkPort = 4 [(google.api.field_behavior) = OPTIONAL];
+    // Minimum network bandwidth (in Mbps)
+    float bandwidth = 5 [(google.api.field_behavior) = REQUIRED];
+    // Type of network that maps to the virtualised network. This list is extensible. Examples are:
+    //  • "local";
+    //  • "vlan";
+    //  • "vxlan";
+    //  • "gre";
+    //  • "l3-vpn";
+    //  • etc.
+    NetworkType networkType = 6 [(google.api.field_behavior) = REQUIRED];
+    // Name of the infrastructure provider network used to realize the virtual network.
+    // Cardinality can be "0" to cover the case where virtual network is not based on infrastructure provider network.
+    optional string providerNetwork = 7 [(google.api.field_behavior) = OPTIONAL];
+    // The segmentation identifier of the network that maps to the virtualised network, for which, the segmentation model is defined by
+    // the networkType attribute. For instance, for a "vlan" networkType, it corresponds to the vlan identifier;
+    // and for a "gre" networkType, it corresponds to a gre key.
+    // Cardinality can be "0" to cover the case where networkType is flat network without any specific segmentation.
+    optional uint64 segmentationId = 8 [(google.api.field_behavior) = OPTIONAL];
+    // Provides information about Quality of Service attributes that the network supports.
+    // Cardinality can be "0" for virtual network without any QoS requirements.
+    repeated NetworkQoS networkQoS = 9 [(google.api.field_behavior) = OPTIONAL];
+    // Defines whether the virtualised network is shared among consumers.
+    bool isShared = 10 [(google.api.field_behavior) = REQUIRED];
+    // Indicates the sharing criteria for this network. This criteria might be a list of authorized consumers.
+    // Only present for shared networks.
+    // optional sharingCriteria NotSpecified = 11;
+    // If present, it identifies the resource zone where the virtual network resources have been allocated.
+    optional Identifier zoneId = 12 [(google.api.field_behavior) = OPTIONAL];
+    // Operational state of the virtualised network.
+    OperationalState operationalState = 13 [(google.api.field_behavior) = REQUIRED];
+    // List of metadata key-value pairs used by the consumer to associate meaningful metadata to the related virtualised resource.
+    Metadata metadata = 14 [(google.api.field_behavior) = OPTIONAL];
+    // Specifies the virtual network resources to which the newly created virtual network is intended to be explicitly interconnected.
+    repeated Identifier connectedNetworks = 15 [(google.api.field_behavior) = OPTIONAL];
+}
+
+// The NetworkSubnet information element encapsulates information of an instantiated virtualised sub-network.
+message NetworkSubnet {
+    // Identifier of the virtualised sub-network.
+    Identifier resourceId = 1 [(google.api.field_behavior) = REQUIRED];
+    // References the virtualised network that the virtualised sub-network is attached to.
+    // The cardinality can be 0 to cover the case where this type is used to describe the L3 attributes of a network rather than a subnetwork.
+    optional Identifier networkId = 2 [(google.api.field_behavior) = OPTIONAL];
+    // IP version of the network/subnetwork.
+    IPVersion ipVersion = 3 [(google.api.field_behavior) = OPTIONAL];
+    // IP address of the network/subnetwork gateway.
+    IPAddress gatewayIp = 4 [(google.api.field_behavior) = REQUIRED];
+    // CIDR of the network/subnetwork, i.e. network address and subnet mask.
+    IPSubnetCIDR cidr = 5 [(google.api.field_behavior) = REQUIRED];
+    // True when DHCP is enabled for this network/subnetwork, or false otherwise.
+    bool isDhcpEnabled = 6 [(google.api.field_behavior) = REQUIRED];
+    // Address pools for the network/subnetwork.
+    // The cardinality can be 0 when VIM is allowed to allocate all addresses in the CIDR except for the address of the network/subnetwork gateway.
+    repeated IPAddressPool addressPool = 7 [(google.api.field_behavior) = OPTIONAL];
+    // List of metadata key-value pairs used by the consumer to associate meaningful metadata to the related virtualised resource.
+    Metadata metadata = 8 [(google.api.field_behavior) = OPTIONAL];
+}
+
+message VirtualNetworkPort {
+}
+
+message RoutingResource {
+}
+
+message VirtualTrunk {
+}

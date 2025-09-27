@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.3.0
 // - protoc             v4.25.1
-// source: vi-vnfm.proto
+// source: vivnfm/vi-vnfm.proto
 
 package vivnfm
 
@@ -687,5 +687,5 @@ var ViVnfm_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "vi-vnfm.proto",
+	Metadata: "vivnfm/vi-vnfm.proto",
 }

@@ -9,14 +9,14 @@ GRPC_GATEWAY_VERSION ?= 2.26.1
 OPENAPI_GEN_IMAGE ?= openapitools/openapi-generator-cli
 OPENAPI_GEN_VERSION ?= v7.11.0
 
-OPENAPIV2_DIR ?= openapiv2
-OPENAPIV2_GEN_DIR = $(OPENAPIV2_DIR)/gen
-OPENAPIV2_PYTHON_GEN_DIR = $(OPENAPIV2_GEN_DIR)/python
+OPENAPI_DIR ?= generated/openapi
+GENERATED_DIR ?= generated
+PYTHON_GEN_DIR = $(GENERATED_DIR)/python
 
 LICENSE_FILE ?= LICENSE
 
 .PHONY: all
-all: proto-compile openapiv2-python-gen
+all: proto-compile python-gen
 
 .PHONY: help
 help: ## Display available commands.
@@ -24,30 +24,35 @@ help: ## Display available commands.
 
 .PHONY: proto-clean
 proto-clean: ## Clean generated proto.
-	rm -rf pkg/apis
+	rm -rf pkg/apis $(GENERATED_DIR)
 
 .PHONY: proto-dirs
 proto-dirs: ## Create proto output directories.
-	mkdir -p pkg/apis/vivnfm pkg/apis/admin
+	mkdir -p pkg/apis/vivnfm pkg/apis/admin $(OPENAPI_DIR)
 
 .PHONY: proto-compile
-proto-compile: proto-dirs proto-image-build $(OPENAPIV2_DIR) ## Compile message protobuf and gRPC service files.
+$(OPENAPI_DIR):
+	mkdir -p $(OPENAPI_DIR)
+
+proto-compile: proto-dirs proto-image-build $(OPENAPI_DIR) ## Compile message protobuf and gRPC service files.
 	docker run --rm \
 	  -v "$(PWD):/workspace" \
-	  -v "$(PWD)/$(OPENAPIV2_DIR):/api" \
-	  -w "/workspace/pb" \
+	  -v "$(PWD)/$(OPENAPI_DIR):/api" \
+	  -w "/workspace/api" \
 	  protogen-image \
-	  bash -c "protoc common.proto types.proto --proto_path=. \
+	  bash -c "protoc common/common.proto common/types.proto --proto_path=. \
 	  --go_out=/workspace --go_opt=module=$(KUBE_VIM_API_URL) && \
-	  protoc vi-vnfm.proto --proto_path=. \
+	  protoc vivnfm/vi-vnfm.proto --proto_path=. \
 	  --go_out=/workspace --go_opt=module=$(KUBE_VIM_API_URL) \
 	  --go-grpc_out=/workspace --go-grpc_opt=module=$(KUBE_VIM_API_URL) \
-	  --grpc-gateway_out=/workspace/pkg/apis/vivnfm --grpc-gateway_opt paths=source_relative \
+	  --grpc-gateway_out=/workspace --grpc-gateway_opt=module=$(KUBE_VIM_API_URL) \
+	  --grpc-gateway_opt=Mvivnfm/vi-vnfm.proto=$(KUBE_VIM_API_URL)/pkg/apis/vivnfm \
 	  --openapiv2_out=/api && \
-	  protoc kubevim-admin.proto --proto_path=. \
+	  protoc admin/kubevim-admin.proto --proto_path=. \
 	  --go_out=/workspace --go_opt=module=$(KUBE_VIM_API_URL) \
 	  --go-grpc_out=/workspace --go-grpc_opt=module=$(KUBE_VIM_API_URL) \
-	  --grpc-gateway_out=/workspace/pkg/apis/admin --grpc-gateway_opt paths=source_relative"
+	  --grpc-gateway_out=/workspace --grpc-gateway_opt=module=$(KUBE_VIM_API_URL) \
+	  --grpc-gateway_opt=Madmin/kubevim-admin.proto=$(KUBE_VIM_API_URL)/pkg/apis/admin"
 
 .PHONY: proto-image-build
 proto-image-build: ## Build docker image with all nececary dependencies to compile message protobuf and gRPC service files.
@@ -59,22 +64,20 @@ proto-image-build: ## Build docker image with all nececary dependencies to compi
 	  -t protogen-image \
 	  -f docker/Dockerfile docker/
 
-.PHONY: openapiv2-python-gen
-openapiv2-python-gen: $(OPENAPIV2_PYTHON_GEN_DIR) ## Generate python stubs from the openapiv2 schema.
+.PHONY: python-gen
+python-gen: $(PYTHON_GEN_DIR) ## Generate python stubs from the openapi schema.
 
-$(OPENAPIV2_PYTHON_GEN_DIR): $(OPENAPIV2_GEN_DIR) proto-compile
+$(PYTHON_GEN_DIR): $(OPENAPI_DIR) proto-compile
 	mkdir -p $@
 	docker run --rm \
-	-v "$(PWD)/$(OPENAPIV2_DIR):/$(OPENAPIV2_DIR)" \
+	-v "$(PWD)/$(OPENAPI_DIR):/$(OPENAPI_DIR)" \
+	-v "$(PWD)/$(PYTHON_GEN_DIR):/$(PYTHON_GEN_DIR)" \
 	$(OPENAPI_GEN_IMAGE):$(OPENAPI_GEN_VERSION) \
-	generate -i /$(OPENAPIV2_DIR)/vi-vnfm.swagger.json \
-	-g python -o /$(OPENAPIV2_PYTHON_GEN_DIR) \
+	generate -i /$(OPENAPI_DIR)/vivnfm/vi-vnfm.swagger.json \
+	-g python -o /$(PYTHON_GEN_DIR) \
 	--additional-properties=\
 	packageUrl=$(KUBE_VIM_API_URL),\
 	packageVersion=$(KUBE_VIM_API_VERSION),\
 	packageName=kubevim_vivnfm_client,\
 	projectDescription="Python client for VI-VNFM API"
-	python3 ./hack/prepare_oapi_py_package.py $(OPENAPIV2_PYTHON_GEN_DIR) $(LICENSE_FILE)
-
-$(OPENAPIV2_GEN_DIR): $(OPENAPIV2_DIR)
-	mkdir -p $@
+	python3 ./hack/prepare_oapi_py_package.py $(PYTHON_GEN_DIR) $(LICENSE_FILE)
