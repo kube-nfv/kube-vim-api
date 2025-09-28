@@ -38,14 +38,47 @@ setup(
     author_email="dmitrymalovanyy@gmail.com",
     license="Apache-2.0",
     url="https://github.com/kube-nfv/kube-vim-api",
-    keywords=["OpenAPI", "OpenAPI-Generator", "vivnfm/vi-vnfm.proto"],
+    project_urls={
+        "Documentation": "https://github.com/kube-nfv/kube-vim-api#readme",
+        "Source": "https://github.com/kube-nfv/kube-vim-api",
+        "Tracker": "https://github.com/kube-nfv/kube-vim-api/issues",
+        "Download": "https://pypi.org/project/kubevim-vivnfm-client/",
+    },
+    keywords=["etsi", "nfv", "mano", "vim", "vnfm", "kubevim", "kubernetes", "virtualization", "openapi", "grpc", "cloud-native"],
     install_requires=REQUIRES,
     packages=find_packages(exclude=["test", "tests"]),
     include_package_data=True,
     classifiers=[
-        "Programming Language :: Python :: 3",
+        # Development Status
+        "Development Status :: 4 - Beta",
+
+        # Intended Audience
+        "Intended Audience :: Developers",
+        "Intended Audience :: System Administrators",
+        "Intended Audience :: Telecommunications Industry",
+
+        # Topic
+        "Topic :: Software Development :: Libraries :: Python Modules",
+        "Topic :: System :: Networking",
+        "Topic :: System :: Systems Administration",
+        "Topic :: Internet",
+
+        # License
         "License :: OSI Approved :: Apache Software License",
+
+        # Programming Language
+        "Programming Language :: Python :: 3",
+        "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.9",
+        "Programming Language :: Python :: 3.10",
+        "Programming Language :: Python :: 3.11",
+        "Programming Language :: Python :: 3.12",
+
+        # Operating System
         "Operating System :: OS Independent",
+
+        # Framework
+        "Framework :: AsyncIO",
     ],
     long_description_content_type='text/markdown',
     long_description=open("README.md").read(),  # noqa: E501
