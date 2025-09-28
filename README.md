@@ -24,28 +24,32 @@ This implementation provides:
 ```
 kube-vim-api/
 ├── api/                          # Protocol Buffer definitions
-│   ├── common/                   # Shared types and ETSI common models
-│   │   ├── common.proto          # Basic types (Identifier, Filter, etc.)
-│   │   └── types.proto           # ETSI NFV types (SoftwareImageInformation, etc.)
+│   ├── common/                   # Shared basic types
+│   │   └── common.proto          # Basic types (Identifier, Filter, etc.)
 │   ├── vivnfm/                   # ETSI VI-VNFM interface (IFA-006)
+│   │   ├── types.proto           # ETSI NFV types (SoftwareImageInformation, etc.)
 │   │   └── vi-vnfm.proto         # Complete VI-VNFM API definition
 │   └── admin/                    # KubeVim administrative extensions
-│       └── kubevim-admin.proto   # Non-standard admin operations
+│       ├── types.proto           # Admin-specific types (ImageSource, etc.)
+│       └── kubevim-admin.proto   # Admin API operations
 ├── pkg/apis/                     # Generated Go code
 │   ├── common.pb.go              # Generated common types
-│   ├── types.pb.go               # Generated ETSI types
 │   ├── vivnfm/                   # VI-VNFM Go client
+│   │   ├── types.pb.go           # Generated ETSI types
 │   │   ├── vi-vnfm.pb.go         # Protocol Buffer types
 │   │   ├── vi-vnfm_grpc.pb.go    # gRPC client/server
 │   │   └── vi-vnfm.pb.gw.go      # gRPC-Gateway reverse proxy
 │   └── admin/                    # Admin API Go client
+│       ├── types.pb.go           # Generated admin types
 │       ├── kubevim-admin.pb.go
 │       ├── kubevim-admin_grpc.pb.go
 │       └── kubevim-admin.pb.gw.go
 ├── generated/                    # Generated clients (non-Go)
 │   ├── openapi/                  # OpenAPI/Swagger specifications
-│   │   └── vivnfm/
-│   │       └── vi-vnfm.swagger.json
+│   │   ├── vivnfm/
+│   │   │   └── vi-vnfm.swagger.json
+│   │   └── admin/
+│   │       └── kubevim-admin.swagger.json
 │   └── python/                   # Python client library
 │       ├── kubevim_vivnfm_client/
 │       ├── docs/                 # API documentation
@@ -143,27 +147,63 @@ with kubevim_vivnfm_client.ApiClient(configuration) as api_client:
         print(f"Exception when calling ViVnfmApi->query_images: {e}")
 ```
 
-### REST API Examples
-```bash
-# Query software images
-curl -X GET "http://localhost:8080/vivnfm/v5/images" \
-     -H "accept: application/json"
+### Admin API Operations
 
-# Allocate compute resources
-curl -X POST "http://localhost:8080/vivnfm/v5/compute" \
-     -H "accept: application/json" \
-     -H "Content-Type: application/json" \
-     -d '{
-       "computeFlavourId": {"value": "m1.small"},
-       "vcImageId": {"value": "ubuntu-20.04"}
-     }'
+#### Download Image
+**Endpoint**: `POST /admin/v1/images`
 
-# Admin: Download software image (KubeVim extension)
-curl -X POST "http://localhost:8080/admin/v1/images" \
-     -H "accept: application/json" \
-     -H "Content-Type: application/json" \
-     -d '{}'
+Download images from various sources including HTTP/HTTPS, container registries, PVC volumes, and S3-compatible storage.
+
+**Example**: Download from HTTP source
+```json
+{
+  "metadata": {
+    "name": "ubuntu-20.04-server",
+    "description": "Ubuntu 20.04 LTS Server Image",
+    "provider": "Canonical",
+    "version": "20.04.6",
+    "tags": ["ubuntu", "lts", "server"]
+  },
+  "source": {
+    "type": "HTTP",
+    "http": {
+      "url": "https://example.com/ubuntu-20.04-server.img",
+      "verifyTls": true,
+      "checksum": {
+        "algorithm": "sha256",
+        "value": "abc123..."
+      }
+    }
+  },
+  "options": {
+    "lazyDownload": false,
+    "validateChecksum": true,
+    "timeout": "30m"
+  }
+}
 ```
+
+**Example**: Download from container registry
+```json
+{
+  "metadata": {
+    "name": "nginx-alpine",
+    "description": "Nginx Alpine Linux Image"
+  },
+  "source": {
+    "type": "REGISTRY",
+    "registry": {
+      "image": "nginx:alpine",
+      "pullPolicy": "ALWAYS"
+    }
+  }
+}
+```
+
+#### Get Download Status
+**Endpoint**: `GET /admin/v1/images/{imageId}/status`
+
+Monitor download progress and status for asynchronous operations.
 
 ## API Documentation
 
@@ -172,8 +212,8 @@ curl -X POST "http://localhost:8080/admin/v1/images" \
 | API | Description | Standard | Package |
 |-----|-------------|----------|---------|
 | **VI-VNFM** | VIM-VNFM interface for resource management | ETSI IFA-006 | `pkg/apis/vivnfm` |
-| **Admin** | KubeVim administrative extensions | Custom | `pkg/apis/admin` |
-| **Common** | Shared ETSI types and utilities | ETSI IFA-005/006 | `pkg/apis` |
+| **Admin** | KubeVim administrative extensions for image management | Custom | `pkg/apis/admin` |
+| **Common** | Shared basic types and utilities | ETSI IFA-005/006 | `pkg/apis` |
 
 ### Key Operations (VI-VNFM)
 
@@ -196,6 +236,25 @@ curl -X POST "http://localhost:8080/admin/v1/images" \
 - `AllocateVirtualisedNetworkResource` - Allocate network resources
 - `QueryVirtualisedNetworkResource` - Query network resources
 - `TerminateVirtualisedNetworkResource` - Terminate network resources
+
+### Key Operations (Admin)
+
+#### Image Download Management
+- `DownloadImage` - Download images from various sources (HTTP, registry, PVC, S3)
+- `GetImageDownloadStatus` - Monitor download progress and status
+
+#### Supported Image Sources
+- **HTTP/HTTPS**: Direct download from web servers with checksum validation
+- **Container Registry**: Pull from Docker-compatible registries with authentication
+- **PVC/Volume**: Clone from existing Kubernetes persistent volumes
+- **S3 Compatible**: Download from S3-compatible object storage
+
+#### Download Features
+- **Backend Agnostic**: Works with any backend implementation (KubeVirt CDI, etc.)
+- **Lazy Download**: Optional deferred download until first use
+- **Progress Monitoring**: Real-time download progress and statistics
+- **Checksum Validation**: Automatic integrity verification
+- **Retry Logic**: Configurable retry attempts for failed downloads
 
 For complete API reference, see the [OpenAPI documentation](generated/openapi/).
 
