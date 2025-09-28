@@ -40,15 +40,15 @@ proto-compile: proto-dirs proto-image-build $(OPENAPI_DIR) ## Compile message pr
 	  -v "$(PWD)/$(OPENAPI_DIR):/api" \
 	  -w "/workspace/api" \
 	  protogen-image \
-	  bash -c "protoc common/common.proto common/types.proto --proto_path=. \
+	  bash -c "protoc common/common.proto --proto_path=. \
 	  --go_out=/workspace --go_opt=module=$(KUBE_VIM_API_URL) && \
-	  protoc vivnfm/vi-vnfm.proto --proto_path=. \
+	  protoc vivnfm/types.proto vivnfm/vi-vnfm.proto --proto_path=. \
 	  --go_out=/workspace --go_opt=module=$(KUBE_VIM_API_URL) \
 	  --go-grpc_out=/workspace --go-grpc_opt=module=$(KUBE_VIM_API_URL) \
 	  --grpc-gateway_out=/workspace --grpc-gateway_opt=module=$(KUBE_VIM_API_URL) \
 	  --grpc-gateway_opt=Mvivnfm/vi-vnfm.proto=$(KUBE_VIM_API_URL)/pkg/apis/vivnfm \
 	  --openapiv2_out=/api && \
-	  protoc admin/kubevim-admin.proto --proto_path=. \
+	  protoc admin/types.proto admin/kubevim-admin.proto --proto_path=. \
 	  --go_out=/workspace --go_opt=module=$(KUBE_VIM_API_URL) \
 	  --go-grpc_out=/workspace --go-grpc_opt=module=$(KUBE_VIM_API_URL) \
 	  --grpc-gateway_out=/workspace --grpc-gateway_opt=module=$(KUBE_VIM_API_URL) \

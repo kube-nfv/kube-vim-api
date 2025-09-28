@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-option go_package = "github.com/kube-nfv/kube-vim-api/pkg/apis";
+option go_package = "github.com/kube-nfv/kube-vim-api/pkg/apis/vivnfm";
 
 import "common/common.proto";
 import "google/protobuf/timestamp.proto";

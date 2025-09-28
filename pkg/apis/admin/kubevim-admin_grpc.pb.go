@@ -19,8 +19,9 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	Admin_DownloadImage_FullMethodName         = "/admin.kubevim.kubenfv.api.pb.admin/DownloadImage"
-	Admin_SetupImageUploadProxy_FullMethodName = "/admin.kubevim.kubenfv.api.pb.admin/SetupImageUploadProxy"
+	Admin_DownloadImage_FullMethodName          = "/admin.kubevim.kubenfv.api.pb.admin/DownloadImage"
+	Admin_GetImageDownloadStatus_FullMethodName = "/admin.kubevim.kubenfv.api.pb.admin/GetImageDownloadStatus"
+	Admin_SetupImageUploadProxy_FullMethodName  = "/admin.kubevim.kubenfv.api.pb.admin/SetupImageUploadProxy"
 )
 
 // AdminClient is the client API for Admin service.
@@ -34,6 +35,10 @@ type AdminClient interface {
 	// Result: As a result of this operation, the requested software image should be present
 	// and available for querying via the ETSI NFV IFA-006 Vi-Vnfm API.
 	DownloadImage(ctx context.Context, in *DownloadImageRequest, opts ...grpc.CallOption) (*DownloadImageResponse, error)
+	// This operation allows querying the download status of a software image.
+	// Result: As a result of this operation, the client receives current status information
+	// about the image download operation.
+	GetImageDownloadStatus(ctx context.Context, in *GetImageDownloadStatusRequest, opts ...grpc.CallOption) (*GetImageDownloadStatusResponse, error)
 	// This operation sets up the software image upload proxy, which can be used for
 	// software image uploading from external services.
 	// Result: As a result of this operation, the client should have an available endpoint for
@@ -52,6 +57,15 @@ func NewAdminClient(cc grpc.ClientConnInterface) AdminClient {
 func (c *adminClient) DownloadImage(ctx context.Context, in *DownloadImageRequest, opts ...grpc.CallOption) (*DownloadImageResponse, error) {
 	out := new(DownloadImageResponse)
 	err := c.cc.Invoke(ctx, Admin_DownloadImage_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *adminClient) GetImageDownloadStatus(ctx context.Context, in *GetImageDownloadStatusRequest, opts ...grpc.CallOption) (*GetImageDownloadStatusResponse, error) {
+	out := new(GetImageDownloadStatusResponse)
+	err := c.cc.Invoke(ctx, Admin_GetImageDownloadStatus_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -78,6 +92,10 @@ type AdminServer interface {
 	// Result: As a result of this operation, the requested software image should be present
 	// and available for querying via the ETSI NFV IFA-006 Vi-Vnfm API.
 	DownloadImage(context.Context, *DownloadImageRequest) (*DownloadImageResponse, error)
+	// This operation allows querying the download status of a software image.
+	// Result: As a result of this operation, the client receives current status information
+	// about the image download operation.
+	GetImageDownloadStatus(context.Context, *GetImageDownloadStatusRequest) (*GetImageDownloadStatusResponse, error)
 	// This operation sets up the software image upload proxy, which can be used for
 	// software image uploading from external services.
 	// Result: As a result of this operation, the client should have an available endpoint for
@@ -92,6 +110,9 @@ type UnimplementedAdminServer struct {
 
 func (UnimplementedAdminServer) DownloadImage(context.Context, *DownloadImageRequest) (*DownloadImageResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DownloadImage not implemented")
+}
+func (UnimplementedAdminServer) GetImageDownloadStatus(context.Context, *GetImageDownloadStatusRequest) (*GetImageDownloadStatusResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetImageDownloadStatus not implemented")
 }
 func (UnimplementedAdminServer) SetupImageUploadProxy(context.Context, *SetupImageUploadProxyRequest) (*SetupImageUploadProxyResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SetupImageUploadProxy not implemented")
@@ -127,6 +148,24 @@ func _Admin_DownloadImage_Handler(srv interface{}, ctx context.Context, dec func
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Admin_GetImageDownloadStatus_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetImageDownloadStatusRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AdminServer).GetImageDownloadStatus(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Admin_GetImageDownloadStatus_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AdminServer).GetImageDownloadStatus(ctx, req.(*GetImageDownloadStatusRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _Admin_SetupImageUploadProxy_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(SetupImageUploadProxyRequest)
 	if err := dec(in); err != nil {
@@ -155,6 +194,10 @@ var Admin_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "DownloadImage",
 			Handler:    _Admin_DownloadImage_Handler,
+		},
+		{
+			MethodName: "GetImageDownloadStatus",
+			Handler:    _Admin_GetImageDownloadStatus_Handler,
 		},
 		{
 			MethodName: "SetupImageUploadProxy",

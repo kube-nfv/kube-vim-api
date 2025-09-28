@@ -1,0 +1,171 @@
+syntax = "proto3";
+
+package admin.kubevim.kubenfv.api.pb;
+
+import "google/api/field_behavior.proto";
+import "google/protobuf/timestamp.proto";
+import "common/common.proto";
+
+option go_package = "github.com/kube-nfv/kube-vim-api/pkg/apis/admin";
+
+// Image metadata that must be specified for proper identification
+message ImageMetadata {
+    // Name for the downloaded image - required
+    string name = 1 [(google.api.field_behavior) = REQUIRED];
+    // Description of the image
+    optional string description = 2 [(google.api.field_behavior) = OPTIONAL];
+    // Provider of the image
+    optional string provider = 3 [(google.api.field_behavior) = OPTIONAL];
+    // Version of the image
+    optional string version = 4 [(google.api.field_behavior) = OPTIONAL];
+    // Tags associated with the image
+    repeated string tags = 5 [(google.api.field_behavior) = OPTIONAL];
+    // List of metadata key-value pairs used by the consumer to associate meaningful metadata to the related virtualised resource
+    optional Metadata metadata = 6 [(google.api.field_behavior) = OPTIONAL];
+}
+
+// Source specification with support for multiple source types
+message ImageSource {
+    // Type of image source
+    ImageSourceType type = 1 [(google.api.field_behavior) = REQUIRED];
+    // HTTP/HTTPS source specification
+    optional HttpSource http = 2 [(google.api.field_behavior) = OPTIONAL];
+    // Container registry source specification
+    optional RegistrySource registry = 3 [(google.api.field_behavior) = OPTIONAL];
+    // PVC/Volume source specification
+    optional PvcSource pvc = 4 [(google.api.field_behavior) = OPTIONAL];
+    // S3-compatible source specification
+    optional S3Source s3 = 5 [(google.api.field_behavior) = OPTIONAL];
+}
+
+// Supported image source types
+enum ImageSourceType {
+    HTTP = 0;
+    REGISTRY = 1;
+    PVC = 2;
+    S3 = 3;
+}
+
+// HTTP/HTTPS source specification
+message HttpSource {
+    // URL of the image to download
+    string url = 1 [(google.api.field_behavior) = REQUIRED];
+    // Custom HTTP headers
+    map<string, string> headers = 2 [(google.api.field_behavior) = OPTIONAL];
+    // Whether to verify TLS certificates
+    optional bool verifyTls = 3 [(google.api.field_behavior) = OPTIONAL];
+    // Expected checksum for validation
+    optional Checksum checksum = 4 [(google.api.field_behavior) = OPTIONAL];
+}
+
+// Container registry source specification
+message RegistrySource {
+    // Container image reference (e.g., "registry.example.com/namespace/image:tag")
+    string image = 1 [(google.api.field_behavior) = REQUIRED];
+    // Pull policy for the image
+    optional PullPolicy pullPolicy = 2 [(google.api.field_behavior) = OPTIONAL];
+    // Platform specification for multi-arch images
+    optional string platform = 3 [(google.api.field_behavior) = OPTIONAL];
+}
+
+// PVC/Volume source specification
+message PvcSource {
+    // Name of the source PVC
+    string name = 1 [(google.api.field_behavior) = REQUIRED];
+    // Namespace of the source PVC
+    optional string namespace = 2 [(google.api.field_behavior) = OPTIONAL];
+    // Optional path within the volume
+    optional string path = 3 [(google.api.field_behavior) = OPTIONAL];
+}
+
+// S3-compatible storage source specification
+message S3Source {
+    // S3 endpoint URL
+    string endpoint = 1 [(google.api.field_behavior) = REQUIRED];
+    // S3 bucket name
+    string bucket = 2 [(google.api.field_behavior) = REQUIRED];
+    // Object key/path
+    string key = 3 [(google.api.field_behavior) = REQUIRED];
+    // AWS region (if applicable)
+    optional string region = 4 [(google.api.field_behavior) = OPTIONAL];
+    // Whether to use path-style URLs
+    optional bool pathStyle = 5 [(google.api.field_behavior) = OPTIONAL];
+}
+
+
+// Download options and policies
+message DownloadOptions {
+    // Whether to download lazily (only when first accessed/used)
+    optional bool lazyDownload = 1 [(google.api.field_behavior) = OPTIONAL];
+    // Timeout for the download operation
+    optional string timeout = 2 [(google.api.field_behavior) = OPTIONAL];
+    // Number of retry attempts
+    optional int32 retries = 3 [(google.api.field_behavior) = OPTIONAL];
+    // Whether to validate checksums
+    optional bool validateChecksum = 4 [(google.api.field_behavior) = OPTIONAL];
+    // Compression handling (auto, gzip, none)
+    optional string compression = 5 [(google.api.field_behavior) = OPTIONAL];
+    // Storage size hint (for pre-allocation)
+    optional string storageSize = 6 [(google.api.field_behavior) = OPTIONAL];
+    // Storage class preference
+    optional string storageClass = 7 [(google.api.field_behavior) = OPTIONAL];
+    // Backend storage hints
+    repeated string preferredBackends = 8 [(google.api.field_behavior) = OPTIONAL];
+}
+
+// Checksum specification for validation
+message Checksum {
+    // Checksum algorithm (sha256, md5, sha1, etc.)
+    string algorithm = 1 [(google.api.field_behavior) = REQUIRED];
+    // Expected checksum value
+    string value = 2 [(google.api.field_behavior) = REQUIRED];
+}
+
+// Pull policy for container images
+enum PullPolicy {
+    ALWAYS = 0;
+    IF_NOT_PRESENT = 1;
+    NEVER = 2;
+}
+
+// Image download status information
+message ImageDownloadStatus {
+    // Image identifier
+    Identifier imageId = 1 [(google.api.field_behavior) = REQUIRED];
+    // Current state of the download operation
+    DownloadState state = 2 [(google.api.field_behavior) = REQUIRED];
+    // Human-readable status message
+    optional string message = 3 [(google.api.field_behavior) = OPTIONAL];
+    // Download progress percentage (0-100)
+    optional int32 progressPercentage = 4 [(google.api.field_behavior) = OPTIONAL];
+    // Timestamp when the download was initiated
+    optional google.protobuf.Timestamp startedAt = 5 [(google.api.field_behavior) = OPTIONAL];
+    // Timestamp when the download completed (if applicable)
+    optional google.protobuf.Timestamp completedAt = 6 [(google.api.field_behavior) = OPTIONAL];
+    // Error information if the download failed
+    optional string errorMessage = 7 [(google.api.field_behavior) = OPTIONAL];
+    // Download statistics
+    optional DownloadStatistics statistics = 8 [(google.api.field_behavior) = OPTIONAL];
+    // List of metadata key-value pairs used by the consumer to associate meaningful metadata to the related download operation
+    optional Metadata metadata = 9 [(google.api.field_behavior) = OPTIONAL];
+}
+
+// Download operation states
+enum DownloadState {
+    PENDING = 0;      // Download queued but not started
+    DOWNLOADING = 1;  // Download in progress
+    COMPLETED = 2;    // Download completed successfully
+    FAILED = 3;       // Download failed
+    CANCELLED = 4;    // Download was cancelled
+    LAZY_REGISTERED = 5; // Image registered for lazy download
+}
+
+// Download statistics
+message DownloadStatistics {
+    // Total bytes downloaded
+    optional int64 bytesDownloaded = 1 [(google.api.field_behavior) = OPTIONAL];
+    // Total size of the image (if known)
+    optional int64 totalBytes = 2 [(google.api.field_behavior) = OPTIONAL];
+    // Download speed in bytes per second
+    optional int64 downloadSpeed = 3 [(google.api.field_behavior) = OPTIONAL];
+}

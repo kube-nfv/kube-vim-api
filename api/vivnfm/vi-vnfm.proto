@@ -4,7 +4,7 @@ package kubenvf.kubevim.api.pb;
 
 
 import "common/common.proto";
-import "common/types.proto";
+import "vivnfm/types.proto";
 
 // For the grpc-gateway
 import "google/api/annotations.proto";

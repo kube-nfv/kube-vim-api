@@ -5,7 +5,8 @@ package admin.kubevim.kubenfv.api.pb;
 // For the grpc-gateway
 import "google/api/annotations.proto";
 import "google/api/field_behavior.proto";
-import "common/types.proto";
+import "common/common.proto";
+import "admin/types.proto";
 
 option go_package = "github.com/kube-nfv/kube-vim-api/pkg/apis/admin";
 
@@ -24,6 +25,15 @@ service admin {
             body: "*"
         };
     }
+    // This operation allows querying the download status of a software image.
+    // Result: As a result of this operation, the client receives current status information
+    // about the image download operation.
+    rpc GetImageDownloadStatus(GetImageDownloadStatusRequest) returns (GetImageDownloadStatusResponse) {
+        option(google.api.http) = {
+            get: "/admin/v1/images/{imageId.value}/status"
+        };
+    }
+
     // This operation sets up the software image upload proxy, which can be used for
     // software image uploading from external services.
     // Result: As a result of this operation, the client should have an available endpoint for
@@ -37,11 +47,27 @@ service admin {
 }
 
 message DownloadImageRequest {
-
+    // Image metadata - required for backend-agnostic identification
+    ImageMetadata metadata = 1 [(google.api.field_behavior) = REQUIRED];
+    // Source specification for the image download
+    ImageSource source = 2 [(google.api.field_behavior) = REQUIRED];
+    // Download options and policies
+    optional DownloadOptions options = 3 [(google.api.field_behavior) = OPTIONAL];
 }
 
 message DownloadImageResponse {
-    SoftwareImageInformation softwareImageInformation = 1 [(google.api.field_behavior) = REQUIRED];
+    // Identifier of the downloaded/registered image
+    Identifier imageId = 1 [(google.api.field_behavior) = REQUIRED];
+}
+
+message GetImageDownloadStatusRequest {
+    // Identifier of the image to query status for
+    Identifier imageId = 1 [(google.api.field_behavior) = REQUIRED];
+}
+
+message GetImageDownloadStatusResponse {
+    // Current download status information
+    ImageDownloadStatus status = 1 [(google.api.field_behavior) = REQUIRED];
 }
 
 message SetupImageUploadProxyRequest {

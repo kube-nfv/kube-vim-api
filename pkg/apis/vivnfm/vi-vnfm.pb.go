@@ -74,7 +74,7 @@ type QueryImagesResponse struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	SoftwareImagesInformation []*apis.SoftwareImageInformation `protobuf:"bytes,1,rep,name=softwareImagesInformation,proto3" json:"softwareImagesInformation,omitempty"`
+	SoftwareImagesInformation []*SoftwareImageInformation `protobuf:"bytes,1,rep,name=softwareImagesInformation,proto3" json:"softwareImagesInformation,omitempty"`
 }
 
 func (x *QueryImagesResponse) Reset() {
@@ -109,7 +109,7 @@ func (*QueryImagesResponse) Descriptor() ([]byte, []int) {
 	return file_vivnfm_vi_vnfm_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *QueryImagesResponse) GetSoftwareImagesInformation() []*apis.SoftwareImageInformation {
+func (x *QueryImagesResponse) GetSoftwareImagesInformation() []*SoftwareImageInformation {
 	if x != nil {
 		return x.SoftwareImagesInformation
 	}
@@ -168,7 +168,7 @@ type QueryImageResponse struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	SoftwareImageInformation *apis.SoftwareImageInformation `protobuf:"bytes,1,opt,name=softwareImageInformation,proto3,oneof" json:"softwareImageInformation,omitempty"`
+	SoftwareImageInformation *SoftwareImageInformation `protobuf:"bytes,1,opt,name=softwareImageInformation,proto3,oneof" json:"softwareImageInformation,omitempty"`
 }
 
 func (x *QueryImageResponse) Reset() {
@@ -203,7 +203,7 @@ func (*QueryImageResponse) Descriptor() ([]byte, []int) {
 	return file_vivnfm_vi_vnfm_proto_rawDescGZIP(), []int{3}
 }
 
-func (x *QueryImageResponse) GetSoftwareImageInformation() *apis.SoftwareImageInformation {
+func (x *QueryImageResponse) GetSoftwareImageInformation() *SoftwareImageInformation {
 	if x != nil {
 		return x.SoftwareImageInformation
 	}
@@ -221,7 +221,7 @@ type AllocateComputeRequest struct {
 	ReservationId *apis.Identifier `protobuf:"bytes,2,opt,name=reservationId,proto3,oneof" json:"reservationId,omitempty"`
 	// List of elements with affinity or anti affinity (see clause 8.4.8.2) information of the virtualised compute resource to be allocated.
 	// All the listed constraints shall be fulfilled for a successful operation.
-	AffinityOrAntiAffinityConstraints []*apis.AffinityOrAntiAffinityConstraintForCompute `protobuf:"bytes,3,rep,name=affinityOrAntiAffinityConstraints,proto3" json:"affinityOrAntiAffinityConstraints,omitempty"`
+	AffinityOrAntiAffinityConstraints []*AffinityOrAntiAffinityConstraintForCompute `protobuf:"bytes,3,rep,name=affinityOrAntiAffinityConstraints,proto3" json:"affinityOrAntiAffinityConstraints,omitempty"`
 	// Identifier of the Compute Flavour, that is providing information about the particular memory, CPU and disk resources for virtualised compute resource to
 	// be allocated. The Compute Flavour is created with Create Compute Flavour operation (clause 7.3.4.2). For the content of Compute Flavour see clause 8.4.2.2.
 	ComputeFlavourId *apis.Identifier `protobuf:"bytes,4,opt,name=computeFlavourId,proto3" json:"computeFlavourId,omitempty"`
@@ -231,9 +231,9 @@ type AllocateComputeRequest struct {
 	// Traditionaly VirtualNetworkInterfaceData specified in the virtualComputeFlavour, but it is reduce flexibility, since the
 	// flavor contains virtual compute related networks, and network configuration for it (eg. QoS). Descided to move it in the
 	// AllocateComputeRequest.
-	InterfaceData []*apis.VirtualNetworkInterfaceData `protobuf:"bytes,6,rep,name=interfaceData,proto3" json:"interfaceData,omitempty"`
+	InterfaceData []*VirtualNetworkInterfaceData `protobuf:"bytes,6,rep,name=interfaceData,proto3" json:"interfaceData,omitempty"`
 	// IPAM Data of network interfaces which are specific to a Virtual Compute Resource instance. See clause 8.4.3.7.
-	InterfaceIPAM []*apis.VirtualNetworkInterfaceIPAM `protobuf:"bytes,7,rep,name=interfaceIPAM,proto3" json:"interfaceIPAM,omitempty"`
+	InterfaceIPAM []*VirtualNetworkInterfaceIPAM `protobuf:"bytes,7,rep,name=interfaceIPAM,proto3" json:"interfaceIPAM,omitempty"`
 	// List of metadata key-value pairs used by the consumer to associate meaningful metadata to the related virtualised resource.
 	MetaData *apis.Metadata `protobuf:"bytes,8,opt,name=metaData,proto3" json:"metaData,omitempty"`
 	// Unique identifier of the "infrastructure resource group", logical grouping of virtual resources assigned to a tenant within an Infrastructure Domain.
@@ -245,7 +245,7 @@ type AllocateComputeRequest struct {
 	// one or multiple certificate data obtained from CMF when delegation-mode is used. The user data is transparent to the VIM.
 	// It is passed to the allocated virtualised compute resource where it is up to the guest software to avail of
 	// it in order to e.g. configure credentials, address information, install certificates, etc.
-	UserData *apis.UserData `protobuf:"bytes,10,opt,name=userData,proto3,oneof" json:"userData,omitempty"`
+	UserData *UserData `protobuf:"bytes,10,opt,name=userData,proto3,oneof" json:"userData,omitempty"`
 }
 
 func (x *AllocateComputeRequest) Reset() {
@@ -294,7 +294,7 @@ func (x *AllocateComputeRequest) GetReservationId() *apis.Identifier {
 	return nil
 }
 
-func (x *AllocateComputeRequest) GetAffinityOrAntiAffinityConstraints() []*apis.AffinityOrAntiAffinityConstraintForCompute {
+func (x *AllocateComputeRequest) GetAffinityOrAntiAffinityConstraints() []*AffinityOrAntiAffinityConstraintForCompute {
 	if x != nil {
 		return x.AffinityOrAntiAffinityConstraints
 	}
@@ -315,14 +315,14 @@ func (x *AllocateComputeRequest) GetVcImageId() *apis.Identifier {
 	return nil
 }
 
-func (x *AllocateComputeRequest) GetInterfaceData() []*apis.VirtualNetworkInterfaceData {
+func (x *AllocateComputeRequest) GetInterfaceData() []*VirtualNetworkInterfaceData {
 	if x != nil {
 		return x.InterfaceData
 	}
 	return nil
 }
 
-func (x *AllocateComputeRequest) GetInterfaceIPAM() []*apis.VirtualNetworkInterfaceIPAM {
+func (x *AllocateComputeRequest) GetInterfaceIPAM() []*VirtualNetworkInterfaceIPAM {
 	if x != nil {
 		return x.InterfaceIPAM
 	}
@@ -343,7 +343,7 @@ func (x *AllocateComputeRequest) GetResourceGroupId() *apis.Identifier {
 	return nil
 }
 
-func (x *AllocateComputeRequest) GetUserData() *apis.UserData {
+func (x *AllocateComputeRequest) GetUserData() *UserData {
 	if x != nil {
 		return x.UserData
 	}
@@ -355,7 +355,7 @@ type AllocateComputeResponse struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	ComputeData *apis.VirtualCompute `protobuf:"bytes,1,opt,name=computeData,proto3" json:"computeData,omitempty"`
+	ComputeData *VirtualCompute `protobuf:"bytes,1,opt,name=computeData,proto3" json:"computeData,omitempty"`
 }
 
 func (x *AllocateComputeResponse) Reset() {
@@ -390,7 +390,7 @@ func (*AllocateComputeResponse) Descriptor() ([]byte, []int) {
 	return file_vivnfm_vi_vnfm_proto_rawDescGZIP(), []int{5}
 }
 
-func (x *AllocateComputeResponse) GetComputeData() *apis.VirtualCompute {
+func (x *AllocateComputeResponse) GetComputeData() *VirtualCompute {
 	if x != nil {
 		return x.ComputeData
 	}
@@ -453,7 +453,7 @@ type QueryComputeResponse struct {
 
 	// Contains information about the virtual compute resource(s) matching the filter. The cardinality can be 0 if no matching
 	// compute resources exist.
-	QueryResult []*apis.VirtualCompute `protobuf:"bytes,1,rep,name=queryResult,proto3" json:"queryResult,omitempty"`
+	QueryResult []*VirtualCompute `protobuf:"bytes,1,rep,name=queryResult,proto3" json:"queryResult,omitempty"`
 }
 
 func (x *QueryComputeResponse) Reset() {
@@ -488,7 +488,7 @@ func (*QueryComputeResponse) Descriptor() ([]byte, []int) {
 	return file_vivnfm_vi_vnfm_proto_rawDescGZIP(), []int{7}
 }
 
-func (x *QueryComputeResponse) GetQueryResult() []*apis.VirtualCompute {
+func (x *QueryComputeResponse) GetQueryResult() []*VirtualCompute {
 	if x != nil {
 		return x.QueryResult
 	}
@@ -669,7 +669,7 @@ type OperateComputeResponse struct {
 	unknownFields protoimpl.UnknownFields
 
 	// Contains information on the new status of the operated virtualised compute resource.
-	ComputeData *apis.VirtualCompute `protobuf:"bytes,1,opt,name=computeData,proto3" json:"computeData,omitempty"`
+	ComputeData *VirtualCompute `protobuf:"bytes,1,opt,name=computeData,proto3" json:"computeData,omitempty"`
 	// Set of output values depending on the type of operation. For instance, when a
 	// snapshot operation is requested, this field provides information about the identifier of
 	// the snapshot and its location.
@@ -708,7 +708,7 @@ func (*OperateComputeResponse) Descriptor() ([]byte, []int) {
 	return file_vivnfm_vi_vnfm_proto_rawDescGZIP(), []int{11}
 }
 
-func (x *OperateComputeResponse) GetComputeData() *apis.VirtualCompute {
+func (x *OperateComputeResponse) GetComputeData() *VirtualCompute {
 	if x != nil {
 		return x.ComputeData
 	}
@@ -730,9 +730,9 @@ type CreateComputeResourceAffinityOrAntiAffinityConstraintsGroupRequest struct {
 	// Name of the group, given by the consumer
 	GroupName string `protobuf:"bytes,1,opt,name=group_name,json=groupName,proto3" json:"group_name,omitempty"`
 	// Indicates whether this is an affinity or anti-affinity group.
-	Type apis.TypeOfAffinityOrAntiAffinityConstraint `protobuf:"varint,2,opt,name=type,proto3,enum=TypeOfAffinityOrAntiAffinityConstraint" json:"type,omitempty"`
+	Type TypeOfAffinityOrAntiAffinityConstraint `protobuf:"varint,2,opt,name=type,proto3,enum=TypeOfAffinityOrAntiAffinityConstraint" json:"type,omitempty"`
 	// Qualifies the scope of the constraint.
-	Scope *apis.ScopeOfAffinityOrAntiAffinityConstraintForCompute `protobuf:"varint,3,opt,name=scope,proto3,enum=ScopeOfAffinityOrAntiAffinityConstraintForCompute,oneof" json:"scope,omitempty"`
+	Scope *ScopeOfAffinityOrAntiAffinityConstraintForCompute `protobuf:"varint,3,opt,name=scope,proto3,enum=ScopeOfAffinityOrAntiAffinityConstraintForCompute,oneof" json:"scope,omitempty"`
 }
 
 func (x *CreateComputeResourceAffinityOrAntiAffinityConstraintsGroupRequest) Reset() {
@@ -774,18 +774,18 @@ func (x *CreateComputeResourceAffinityOrAntiAffinityConstraintsGroupRequest) Get
 	return ""
 }
 
-func (x *CreateComputeResourceAffinityOrAntiAffinityConstraintsGroupRequest) GetType() apis.TypeOfAffinityOrAntiAffinityConstraint {
+func (x *CreateComputeResourceAffinityOrAntiAffinityConstraintsGroupRequest) GetType() TypeOfAffinityOrAntiAffinityConstraint {
 	if x != nil {
 		return x.Type
 	}
-	return apis.TypeOfAffinityOrAntiAffinityConstraint(0)
+	return TypeOfAffinityOrAntiAffinityConstraint_AFFINITY
 }
 
-func (x *CreateComputeResourceAffinityOrAntiAffinityConstraintsGroupRequest) GetScope() apis.ScopeOfAffinityOrAntiAffinityConstraintForCompute {
+func (x *CreateComputeResourceAffinityOrAntiAffinityConstraintsGroupRequest) GetScope() ScopeOfAffinityOrAntiAffinityConstraintForCompute {
 	if x != nil && x.Scope != nil {
 		return *x.Scope
 	}
-	return apis.ScopeOfAffinityOrAntiAffinityConstraintForCompute(0)
+	return ScopeOfAffinityOrAntiAffinityConstraintForCompute_NFVI_NODE
 }
 
 type CreateComputeResourceAffinityOrAntiAffinityConstraintsGroupResponse struct {
@@ -842,7 +842,7 @@ type CreateComputeFlavourRequest struct {
 	unknownFields protoimpl.UnknownFields
 
 	// Provides information about the particular memory, CPU and disk resources for virtualised compute resource to be allocated.
-	Flavour *apis.VirtualComputeFlavour `protobuf:"bytes,1,opt,name=flavour,proto3" json:"flavour,omitempty"`
+	Flavour *VirtualComputeFlavour `protobuf:"bytes,1,opt,name=flavour,proto3" json:"flavour,omitempty"`
 	// List of metadata key-value pairs used by the consumer to associate meaningful metadata to the related virtualised resource.
 	MetaData *apis.Metadata `protobuf:"bytes,2,opt,name=metaData,proto3" json:"metaData,omitempty"`
 }
@@ -879,7 +879,7 @@ func (*CreateComputeFlavourRequest) Descriptor() ([]byte, []int) {
 	return file_vivnfm_vi_vnfm_proto_rawDescGZIP(), []int{14}
 }
 
-func (x *CreateComputeFlavourRequest) GetFlavour() *apis.VirtualComputeFlavour {
+func (x *CreateComputeFlavourRequest) GetFlavour() *VirtualComputeFlavour {
 	if x != nil {
 		return x.Flavour
 	}
@@ -996,7 +996,7 @@ type QueryComputeFlavourResponse struct {
 	unknownFields protoimpl.UnknownFields
 
 	// List of Compute Flavours matching the query.
-	Flavours []*apis.VirtualComputeFlavour `protobuf:"bytes,1,rep,name=flavours,proto3" json:"flavours,omitempty"`
+	Flavours []*VirtualComputeFlavour `protobuf:"bytes,1,rep,name=flavours,proto3" json:"flavours,omitempty"`
 }
 
 func (x *QueryComputeFlavourResponse) Reset() {
@@ -1031,7 +1031,7 @@ func (*QueryComputeFlavourResponse) Descriptor() ([]byte, []int) {
 	return file_vivnfm_vi_vnfm_proto_rawDescGZIP(), []int{17}
 }
 
-func (x *QueryComputeFlavourResponse) GetFlavours() []*apis.VirtualComputeFlavour {
+func (x *QueryComputeFlavourResponse) GetFlavours() []*VirtualComputeFlavour {
 	if x != nil {
 		return x.Flavours
 	}
@@ -1135,16 +1135,16 @@ type AllocateNetworkRequest struct {
 	ReservationId       *apis.Identifier         `protobuf:"bytes,2,opt,name=reservationId,proto3,oneof" json:"reservationId,omitempty"`
 	NetworkResourceType apis.NetworkResourceType `protobuf:"varint,3,opt,name=networkResourceType,proto3,enum=NetworkResourceType" json:"networkResourceType,omitempty"`
 	// Provides information about the particular virtual network resource to be created. Cardinality can be "0" depending on the value of networkResourceType.
-	TypeNetworkData *apis.VirtualNetworkData `protobuf:"bytes,4,opt,name=typeNetworkData,proto3,oneof" json:"typeNetworkData,omitempty"`
+	TypeNetworkData *VirtualNetworkData `protobuf:"bytes,4,opt,name=typeNetworkData,proto3,oneof" json:"typeNetworkData,omitempty"`
 	// Provides information about the particular sub-network resource to be created. Cardinality can be "0" depending on the value of networkResourceType.
-	TypeSubnetData *apis.NetworkSubnetData `protobuf:"bytes,5,opt,name=typeSubnetData,proto3,oneof" json:"typeSubnetData,omitempty"`
+	TypeSubnetData *NetworkSubnetData `protobuf:"bytes,5,opt,name=typeSubnetData,proto3,oneof" json:"typeSubnetData,omitempty"`
 	// Provides information about the particular network port to be created. Cardinality can be "0" depending on the value of networkResourceType.
-	TypeNetworkPortData *apis.VirtualNetworkPortData `protobuf:"bytes,6,opt,name=typeNetworkPortData,proto3,oneof" json:"typeNetworkPortData,omitempty"`
+	TypeNetworkPortData *VirtualNetworkPortData `protobuf:"bytes,6,opt,name=typeNetworkPortData,proto3,oneof" json:"typeNetworkPortData,omitempty"`
 	// Provides information about the particular trunk to be created. Cardinality can be "0" depending on the value of networkResourceType.
-	TypeTrunkData *apis.VirtualTrunkData `protobuf:"bytes,7,opt,name=typeTrunkData,proto3,oneof" json:"typeTrunkData,omitempty"`
+	TypeTrunkData *VirtualTrunkData `protobuf:"bytes,7,opt,name=typeTrunkData,proto3,oneof" json:"typeTrunkData,omitempty"`
 	// List of elements with affinity or anti affinity (see clause 8.4.8.2) information of the virtualised network resource to be allocated.
 	// All the listed constraints shall be fulfilled for a successful operation.
-	AffinityOrAntiAffinityConstraints []*apis.AffinityOrAntiAffinityConstraintForNetwork `protobuf:"bytes,8,rep,name=affinityOrAntiAffinityConstraints,proto3" json:"affinityOrAntiAffinityConstraints,omitempty"`
+	AffinityOrAntiAffinityConstraints []*AffinityOrAntiAffinityConstraintForNetwork `protobuf:"bytes,8,rep,name=affinityOrAntiAffinityConstraints,proto3" json:"affinityOrAntiAffinityConstraints,omitempty"`
 	// If present, it defines location constraints for the resource(s) to be allocated, e.g. in what particular resource zone.
 	LocationConstraintsForNetwork *string `protobuf:"bytes,9,opt,name=locationConstraintsForNetwork,proto3,oneof" json:"locationConstraintsForNetwork,omitempty"`
 	// List of metadata key-value pairs used by the consumer to associate meaningful metadata to the related virtualised resource.
@@ -1207,35 +1207,35 @@ func (x *AllocateNetworkRequest) GetNetworkResourceType() apis.NetworkResourceTy
 	return apis.NetworkResourceType(0)
 }
 
-func (x *AllocateNetworkRequest) GetTypeNetworkData() *apis.VirtualNetworkData {
+func (x *AllocateNetworkRequest) GetTypeNetworkData() *VirtualNetworkData {
 	if x != nil {
 		return x.TypeNetworkData
 	}
 	return nil
 }
 
-func (x *AllocateNetworkRequest) GetTypeSubnetData() *apis.NetworkSubnetData {
+func (x *AllocateNetworkRequest) GetTypeSubnetData() *NetworkSubnetData {
 	if x != nil {
 		return x.TypeSubnetData
 	}
 	return nil
 }
 
-func (x *AllocateNetworkRequest) GetTypeNetworkPortData() *apis.VirtualNetworkPortData {
+func (x *AllocateNetworkRequest) GetTypeNetworkPortData() *VirtualNetworkPortData {
 	if x != nil {
 		return x.TypeNetworkPortData
 	}
 	return nil
 }
 
-func (x *AllocateNetworkRequest) GetTypeTrunkData() *apis.VirtualTrunkData {
+func (x *AllocateNetworkRequest) GetTypeTrunkData() *VirtualTrunkData {
 	if x != nil {
 		return x.TypeTrunkData
 	}
 	return nil
 }
 
-func (x *AllocateNetworkRequest) GetAffinityOrAntiAffinityConstraints() []*apis.AffinityOrAntiAffinityConstraintForNetwork {
+func (x *AllocateNetworkRequest) GetAffinityOrAntiAffinityConstraints() []*AffinityOrAntiAffinityConstraintForNetwork {
 	if x != nil {
 		return x.AffinityOrAntiAffinityConstraints
 	}
@@ -1270,19 +1270,19 @@ type AllocateNetworkResponse struct {
 
 	// If network types are created satisfactorily, it contains the data relative to the instantiated virtualised network resource.
 	// Cardinality can be "0" if the request did not include creation of such type of resource.
-	NetworkData *apis.VirtualNetwork `protobuf:"bytes,1,opt,name=networkData,proto3,oneof" json:"networkData,omitempty"`
+	NetworkData *VirtualNetwork `protobuf:"bytes,1,opt,name=networkData,proto3,oneof" json:"networkData,omitempty"`
 	// If subnet types are created satisfactorily, it contains the data relative to the allocated subnet.
 	// Cardinality can be "0" if the request did not include creation of such type of resource.
-	SubnetData *apis.NetworkSubnet `protobuf:"bytes,2,opt,name=subnetData,proto3,oneof" json:"subnetData,omitempty"`
+	SubnetData *NetworkSubnet `protobuf:"bytes,2,opt,name=subnetData,proto3,oneof" json:"subnetData,omitempty"`
 	// If network port types are created satisfactorily, it contains the data relative to the allocated network port.
 	// Cardinality can be "0" if the request did not include creation of such type of resource.
-	NetworkPortData *apis.VirtualNetworkPort `protobuf:"bytes,3,opt,name=networkPortData,proto3,oneof" json:"networkPortData,omitempty"`
+	NetworkPortData *VirtualNetworkPort `protobuf:"bytes,3,opt,name=networkPortData,proto3,oneof" json:"networkPortData,omitempty"`
 	// If trunk types are created satisfactorily, it contains the data relative to the allocated trunk.
 	// Cardinality can be "0" if the request did not include creation of such type of resource.
-	TrunkData *apis.VirtualTrunk `protobuf:"bytes,4,opt,name=trunkData,proto3,oneof" json:"trunkData,omitempty"`
+	TrunkData *VirtualTrunk `protobuf:"bytes,4,opt,name=trunkData,proto3,oneof" json:"trunkData,omitempty"`
 	// If routing resource types are created satisfactorily, it contains the data relative to the allocated routing resource.
 	// Cardinality can be "0" if the request did not include creation of such type of resource.
-	RoutingResourceData *apis.RoutingResource `protobuf:"bytes,5,opt,name=routingResourceData,proto3,oneof" json:"routingResourceData,omitempty"`
+	RoutingResourceData *RoutingResource `protobuf:"bytes,5,opt,name=routingResourceData,proto3,oneof" json:"routingResourceData,omitempty"`
 }
 
 func (x *AllocateNetworkResponse) Reset() {
@@ -1317,35 +1317,35 @@ func (*AllocateNetworkResponse) Descriptor() ([]byte, []int) {
 	return file_vivnfm_vi_vnfm_proto_rawDescGZIP(), []int{21}
 }
 
-func (x *AllocateNetworkResponse) GetNetworkData() *apis.VirtualNetwork {
+func (x *AllocateNetworkResponse) GetNetworkData() *VirtualNetwork {
 	if x != nil {
 		return x.NetworkData
 	}
 	return nil
 }
 
-func (x *AllocateNetworkResponse) GetSubnetData() *apis.NetworkSubnet {
+func (x *AllocateNetworkResponse) GetSubnetData() *NetworkSubnet {
 	if x != nil {
 		return x.SubnetData
 	}
 	return nil
 }
 
-func (x *AllocateNetworkResponse) GetNetworkPortData() *apis.VirtualNetworkPort {
+func (x *AllocateNetworkResponse) GetNetworkPortData() *VirtualNetworkPort {
 	if x != nil {
 		return x.NetworkPortData
 	}
 	return nil
 }
 
-func (x *AllocateNetworkResponse) GetTrunkData() *apis.VirtualTrunk {
+func (x *AllocateNetworkResponse) GetTrunkData() *VirtualTrunk {
 	if x != nil {
 		return x.TrunkData
 	}
 	return nil
 }
 
-func (x *AllocateNetworkResponse) GetRoutingResourceData() *apis.RoutingResource {
+func (x *AllocateNetworkResponse) GetRoutingResourceData() *RoutingResource {
 	if x != nil {
 		return x.RoutingResourceData
 	}
@@ -1427,22 +1427,22 @@ type QueryNetworkResponse struct {
 	// Cardinality can be "0" if no matching network resources
 	// exist.
 	// Note: that field should be named as a queryResult in ETSI GS NFV-IFA 006 spec
-	QueryNetworkResult []*apis.VirtualNetwork `protobuf:"bytes,1,rep,name=queryNetworkResult,proto3" json:"queryNetworkResult,omitempty"`
+	QueryNetworkResult []*VirtualNetwork `protobuf:"bytes,1,rep,name=queryNetworkResult,proto3" json:"queryNetworkResult,omitempty"`
 	// Contains information about the virtual subnet(s)
 	// matching the filter.
 	// Cardinality can be "0" if no matching subnets
 	// exist.
 	// Note: that field does not exists in ETSI GS NFV-IFA 006 spec
-	QuerySubnetResult []*apis.NetworkSubnet `protobuf:"bytes,2,rep,name=querySubnetResult,proto3" json:"querySubnetResult,omitempty"`
+	QuerySubnetResult []*NetworkSubnet `protobuf:"bytes,2,rep,name=querySubnetResult,proto3" json:"querySubnetResult,omitempty"`
 	// Contains information about the virtual network port(s)
 	// matching the filter.
 	// Cardinality can be "0" if no matching network ports
 	// exist.
 	// Note: that field does not exists in ETSI GS NFV-IFA 006 spec
-	QueryNetworkPortResult []*apis.VirtualNetworkPort `protobuf:"bytes,3,rep,name=queryNetworkPortResult,proto3" json:"queryNetworkPortResult,omitempty"`
+	QueryNetworkPortResult []*VirtualNetworkPort `protobuf:"bytes,3,rep,name=queryNetworkPortResult,proto3" json:"queryNetworkPortResult,omitempty"`
 	// Contains information about the virtual trunk(s) matching the
 	// filter. Cardinality can be "0" if no matching virtual trunk
-	QueryTrunkResult []*apis.VirtualTrunk `protobuf:"bytes,4,rep,name=queryTrunkResult,proto3" json:"queryTrunkResult,omitempty"`
+	QueryTrunkResult []*VirtualTrunk `protobuf:"bytes,4,rep,name=queryTrunkResult,proto3" json:"queryTrunkResult,omitempty"`
 }
 
 func (x *QueryNetworkResponse) Reset() {
@@ -1477,28 +1477,28 @@ func (*QueryNetworkResponse) Descriptor() ([]byte, []int) {
 	return file_vivnfm_vi_vnfm_proto_rawDescGZIP(), []int{23}
 }
 
-func (x *QueryNetworkResponse) GetQueryNetworkResult() []*apis.VirtualNetwork {
+func (x *QueryNetworkResponse) GetQueryNetworkResult() []*VirtualNetwork {
 	if x != nil {
 		return x.QueryNetworkResult
 	}
 	return nil
 }
 
-func (x *QueryNetworkResponse) GetQuerySubnetResult() []*apis.NetworkSubnet {
+func (x *QueryNetworkResponse) GetQuerySubnetResult() []*NetworkSubnet {
 	if x != nil {
 		return x.QuerySubnetResult
 	}
 	return nil
 }
 
-func (x *QueryNetworkResponse) GetQueryNetworkPortResult() []*apis.VirtualNetworkPort {
+func (x *QueryNetworkResponse) GetQueryNetworkPortResult() []*VirtualNetworkPort {
 	if x != nil {
 		return x.QueryNetworkPortResult
 	}
 	return nil
 }
 
-func (x *QueryNetworkResponse) GetQueryTrunkResult() []*apis.VirtualTrunk {
+func (x *QueryNetworkResponse) GetQueryTrunkResult() []*VirtualTrunk {
 	if x != nil {
 		return x.QueryTrunkResult
 	}
@@ -1615,7 +1615,7 @@ var file_vivnfm_vi_vnfm_proto_rawDesc = []byte{
 	0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x12, 0x16, 0x6b, 0x75, 0x62, 0x65, 0x6e, 0x76, 0x66, 0x2e,
 	0x6b, 0x75, 0x62, 0x65, 0x76, 0x69, 0x6d, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x70, 0x62, 0x1a, 0x13,
 	0x63, 0x6f, 0x6d, 0x6d, 0x6f, 0x6e, 0x2f, 0x63, 0x6f, 0x6d, 0x6d, 0x6f, 0x6e, 0x2e, 0x70, 0x72,
-	0x6f, 0x74, 0x6f, 0x1a, 0x12, 0x63, 0x6f, 0x6d, 0x6d, 0x6f, 0x6e, 0x2f, 0x74, 0x79, 0x70, 0x65,
+	0x6f, 0x74, 0x6f, 0x1a, 0x12, 0x76, 0x69, 0x76, 0x6e, 0x66, 0x6d, 0x2f, 0x74, 0x79, 0x70, 0x65,
 	0x73, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x1c, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2f,
 	0x61, 0x70, 0x69, 0x2f, 0x61, 0x6e, 0x6e, 0x6f, 0x74, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x2e,
 	0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x1f, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2f, 0x61, 0x70,
@@ -2145,28 +2145,28 @@ var file_vivnfm_vi_vnfm_proto_goTypes = []interface{}{
 	nil,                                                                         // 26: kubenvf.kubevim.api.pb.OperateComputeRequest.ComputeOperationInputDataEntry
 	nil,                                                                         // 27: kubenvf.kubevim.api.pb.OperateComputeResponse.ComputeOperationOutputDataEntry
 	(*apis.Filter)(nil),                                                         // 28: Filter
-	(*apis.SoftwareImageInformation)(nil),                                       // 29: SoftwareImageInformation
+	(*SoftwareImageInformation)(nil),                                            // 29: SoftwareImageInformation
 	(*apis.Identifier)(nil),                                                     // 30: Identifier
-	(*apis.AffinityOrAntiAffinityConstraintForCompute)(nil),                     // 31: AffinityOrAntiAffinityConstraintForCompute
-	(*apis.VirtualNetworkInterfaceData)(nil),                                    // 32: VirtualNetworkInterfaceData
-	(*apis.VirtualNetworkInterfaceIPAM)(nil),                                    // 33: VirtualNetworkInterfaceIPAM
+	(*AffinityOrAntiAffinityConstraintForCompute)(nil),                          // 31: AffinityOrAntiAffinityConstraintForCompute
+	(*VirtualNetworkInterfaceData)(nil),                                         // 32: VirtualNetworkInterfaceData
+	(*VirtualNetworkInterfaceIPAM)(nil),                                         // 33: VirtualNetworkInterfaceIPAM
 	(*apis.Metadata)(nil),                                                       // 34: Metadata
-	(*apis.UserData)(nil),                                                       // 35: UserData
-	(*apis.VirtualCompute)(nil),                                                 // 36: VirtualCompute
-	(apis.TypeOfAffinityOrAntiAffinityConstraint)(0),                            // 37: TypeOfAffinityOrAntiAffinityConstraint
-	(apis.ScopeOfAffinityOrAntiAffinityConstraintForCompute)(0),                 // 38: ScopeOfAffinityOrAntiAffinityConstraintForCompute
-	(*apis.VirtualComputeFlavour)(nil),                                          // 39: VirtualComputeFlavour
+	(*UserData)(nil),                                                            // 35: UserData
+	(*VirtualCompute)(nil),                                                      // 36: VirtualCompute
+	(TypeOfAffinityOrAntiAffinityConstraint)(0),                                 // 37: TypeOfAffinityOrAntiAffinityConstraint
+	(ScopeOfAffinityOrAntiAffinityConstraintForCompute)(0),                      // 38: ScopeOfAffinityOrAntiAffinityConstraintForCompute
+	(*VirtualComputeFlavour)(nil),                                               // 39: VirtualComputeFlavour
 	(apis.NetworkResourceType)(0),                                               // 40: NetworkResourceType
-	(*apis.VirtualNetworkData)(nil),                                             // 41: VirtualNetworkData
-	(*apis.NetworkSubnetData)(nil),                                              // 42: NetworkSubnetData
-	(*apis.VirtualNetworkPortData)(nil),                                         // 43: VirtualNetworkPortData
-	(*apis.VirtualTrunkData)(nil),                                               // 44: VirtualTrunkData
-	(*apis.AffinityOrAntiAffinityConstraintForNetwork)(nil),                     // 45: AffinityOrAntiAffinityConstraintForNetwork
-	(*apis.VirtualNetwork)(nil),                                                 // 46: VirtualNetwork
-	(*apis.NetworkSubnet)(nil),                                                  // 47: NetworkSubnet
-	(*apis.VirtualNetworkPort)(nil),                                             // 48: VirtualNetworkPort
-	(*apis.VirtualTrunk)(nil),                                                   // 49: VirtualTrunk
-	(*apis.RoutingResource)(nil),                                                // 50: RoutingResource
+	(*VirtualNetworkData)(nil),                                                  // 41: VirtualNetworkData
+	(*NetworkSubnetData)(nil),                                                   // 42: NetworkSubnetData
+	(*VirtualNetworkPortData)(nil),                                              // 43: VirtualNetworkPortData
+	(*VirtualTrunkData)(nil),                                                    // 44: VirtualTrunkData
+	(*AffinityOrAntiAffinityConstraintForNetwork)(nil),                          // 45: AffinityOrAntiAffinityConstraintForNetwork
+	(*VirtualNetwork)(nil),                                                      // 46: VirtualNetwork
+	(*NetworkSubnet)(nil),                                                       // 47: NetworkSubnet
+	(*VirtualNetworkPort)(nil),                                                  // 48: VirtualNetworkPort
+	(*VirtualTrunk)(nil),                                                        // 49: VirtualTrunk
+	(*RoutingResource)(nil),                                                     // 50: RoutingResource
 }
 var file_vivnfm_vi_vnfm_proto_depIdxs = []int32{
 	28, // 0: kubenvf.kubevim.api.pb.QueryImagesRequest.imageQueryFilter:type_name -> Filter
@@ -2260,6 +2260,7 @@ func file_vivnfm_vi_vnfm_proto_init() {
 	if File_vivnfm_vi_vnfm_proto != nil {
 		return
 	}
+	file_vivnfm_types_proto_init()
 	if !protoimpl.UnsafeEnabled {
 		file_vivnfm_vi_vnfm_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*QueryImagesRequest); i {
