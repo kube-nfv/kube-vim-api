@@ -52,6 +52,7 @@ func newVips(c *KubeovnV1Client) *vips {
 			scheme.ParameterCodec,
 			"",
 			func() *kubeovnv1.Vip { return &kubeovnv1.Vip{} },
-			func() *kubeovnv1.VipList { return &kubeovnv1.VipList{} }),
+			func() *kubeovnv1.VipList { return &kubeovnv1.VipList{} },
+		),
 	}
 }

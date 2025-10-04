@@ -5,16 +5,17 @@ package v1
 // IptablesDnatRuleStatusApplyConfiguration represents a declarative configuration of the IptablesDnatRuleStatus type for use
 // with apply.
 type IptablesDnatRuleStatusApplyConfiguration struct {
-	Ready        *bool                                         `json:"ready,omitempty"`
-	V4ip         *string                                       `json:"v4ip,omitempty"`
-	V6ip         *string                                       `json:"v6ip,omitempty"`
-	NatGwDp      *string                                       `json:"natGwDp,omitempty"`
-	Redo         *string                                       `json:"redo,omitempty"`
-	Protocol     *string                                       `json:"protocol,omitempty"`
-	InternalIP   *string                                       `json:"internalIp,omitempty"`
-	InternalPort *string                                       `json:"internalPort,omitempty"`
-	ExternalPort *string                                       `json:"externalPort,omitempty"`
-	Conditions   []IptablesDnatRuleConditionApplyConfiguration `json:"conditions,omitempty"`
+	Ready        *bool   `json:"ready,omitempty"`
+	V4ip         *string `json:"v4ip,omitempty"`
+	V6ip         *string `json:"v6ip,omitempty"`
+	NatGwDp      *string `json:"natGwDp,omitempty"`
+	Redo         *string `json:"redo,omitempty"`
+	Protocol     *string `json:"protocol,omitempty"`
+	InternalIP   *string `json:"internalIp,omitempty"`
+	InternalPort *string `json:"internalPort,omitempty"`
+	ExternalPort *string `json:"externalPort,omitempty"`
+	// Conditions represents the latest state of the object
+	Conditions []ConditionApplyConfiguration `json:"conditions,omitempty"`
 }
 
 // IptablesDnatRuleStatusApplyConfiguration constructs a declarative configuration of the IptablesDnatRuleStatus type for use with
@@ -98,7 +99,7 @@ func (b *IptablesDnatRuleStatusApplyConfiguration) WithExternalPort(value string
 // WithConditions adds the given value to the Conditions field in the declarative configuration
 // and returns the receiver, so that objects can be build by chaining "With" function invocations.
 // If called multiple times, values provided by each call will be appended to the Conditions field.
-func (b *IptablesDnatRuleStatusApplyConfiguration) WithConditions(values ...*IptablesDnatRuleConditionApplyConfiguration) *IptablesDnatRuleStatusApplyConfiguration {
+func (b *IptablesDnatRuleStatusApplyConfiguration) WithConditions(values ...*ConditionApplyConfiguration) *IptablesDnatRuleStatusApplyConfiguration {
 	for i := range values {
 		if values[i] == nil {
 			panic("nil value passed to WithConditions")

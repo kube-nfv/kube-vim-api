@@ -5,6 +5,7 @@ package v1
 // ProviderNetworkConditionApplyConfiguration represents a declarative configuration of the ProviderNetworkCondition type for use
 // with apply.
 type ProviderNetworkConditionApplyConfiguration struct {
+	// Node name
 	Node *string `json:"node,omitempty"`
 }
 

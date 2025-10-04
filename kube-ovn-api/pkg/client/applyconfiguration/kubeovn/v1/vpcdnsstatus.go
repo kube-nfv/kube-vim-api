@@ -5,8 +5,8 @@ package v1
 // VpcDNSStatusApplyConfiguration represents a declarative configuration of the VpcDNSStatus type for use
 // with apply.
 type VpcDNSStatusApplyConfiguration struct {
-	Conditions []VpcDNSConditionApplyConfiguration `json:"conditions,omitempty"`
-	Active     *bool                               `json:"active,omitempty"`
+	Conditions []ConditionApplyConfiguration `json:"conditions,omitempty"`
+	Active     *bool                         `json:"active,omitempty"`
 }
 
 // VpcDNSStatusApplyConfiguration constructs a declarative configuration of the VpcDNSStatus type for use with
@@ -18,7 +18,7 @@ func VpcDNSStatus() *VpcDNSStatusApplyConfiguration {
 // WithConditions adds the given value to the Conditions field in the declarative configuration
 // and returns the receiver, so that objects can be build by chaining "With" function invocations.
 // If called multiple times, values provided by each call will be appended to the Conditions field.
-func (b *VpcDNSStatusApplyConfiguration) WithConditions(values ...*VpcDNSConditionApplyConfiguration) *VpcDNSStatusApplyConfiguration {
+func (b *VpcDNSStatusApplyConfiguration) WithConditions(values ...*ConditionApplyConfiguration) *VpcDNSStatusApplyConfiguration {
 	for i := range values {
 		if values[i] == nil {
 			panic("nil value passed to WithConditions")

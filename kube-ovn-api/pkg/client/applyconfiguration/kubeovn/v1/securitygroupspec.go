@@ -2,16 +2,12 @@
 
 package v1
 
-import (
-	kubeovnv1 "github.com/kube-nfv/kube-vim-api/kube-ovn-api/pkg/apis/kubeovn/v1"
-)
-
 // SecurityGroupSpecApplyConfiguration represents a declarative configuration of the SecurityGroupSpec type for use
 // with apply.
 type SecurityGroupSpecApplyConfiguration struct {
-	IngressRules          []*kubeovnv1.SgRule `json:"ingressRules,omitempty"`
-	EgressRules           []*kubeovnv1.SgRule `json:"egressRules,omitempty"`
-	AllowSameGroupTraffic *bool               `json:"allowSameGroupTraffic,omitempty"`
+	IngressRules          []SecurityGroupRuleApplyConfiguration `json:"ingressRules,omitempty"`
+	EgressRules           []SecurityGroupRuleApplyConfiguration `json:"egressRules,omitempty"`
+	AllowSameGroupTraffic *bool                                 `json:"allowSameGroupTraffic,omitempty"`
 }
 
 // SecurityGroupSpecApplyConfiguration constructs a declarative configuration of the SecurityGroupSpec type for use with
@@ -23,7 +19,7 @@ func SecurityGroupSpec() *SecurityGroupSpecApplyConfiguration {
 // WithIngressRules adds the given value to the IngressRules field in the declarative configuration
 // and returns the receiver, so that objects can be build by chaining "With" function invocations.
 // If called multiple times, values provided by each call will be appended to the IngressRules field.
-func (b *SecurityGroupSpecApplyConfiguration) WithIngressRules(values ...**kubeovnv1.SgRule) *SecurityGroupSpecApplyConfiguration {
+func (b *SecurityGroupSpecApplyConfiguration) WithIngressRules(values ...*SecurityGroupRuleApplyConfiguration) *SecurityGroupSpecApplyConfiguration {
 	for i := range values {
 		if values[i] == nil {
 			panic("nil value passed to WithIngressRules")
@@ -36,7 +32,7 @@ func (b *SecurityGroupSpecApplyConfiguration) WithIngressRules(values ...**kubeo
 // WithEgressRules adds the given value to the EgressRules field in the declarative configuration
 // and returns the receiver, so that objects can be build by chaining "With" function invocations.
 // If called multiple times, values provided by each call will be appended to the EgressRules field.
-func (b *SecurityGroupSpecApplyConfiguration) WithEgressRules(values ...**kubeovnv1.SgRule) *SecurityGroupSpecApplyConfiguration {
+func (b *SecurityGroupSpecApplyConfiguration) WithEgressRules(values ...*SecurityGroupRuleApplyConfiguration) *SecurityGroupSpecApplyConfiguration {
 	for i := range values {
 		if values[i] == nil {
 			panic("nil value passed to WithEgressRules")

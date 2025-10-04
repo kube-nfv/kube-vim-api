@@ -52,6 +52,7 @@ func newSubnets(c *KubeovnV1Client) *subnets {
 			scheme.ParameterCodec,
 			"",
 			func() *kubeovnv1.Subnet { return &kubeovnv1.Subnet{} },
-			func() *kubeovnv1.SubnetList { return &kubeovnv1.SubnetList{} }),
+			func() *kubeovnv1.SubnetList { return &kubeovnv1.SubnetList{} },
+		),
 	}
 }

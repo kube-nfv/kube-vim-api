@@ -12,7 +12,8 @@ type QoSPolicyStatusApplyConfiguration struct {
 	BandwidthLimitRules *kubeovnv1.QoSPolicyBandwidthLimitRules `json:"bandwidthLimitRules,omitempty"`
 	Shared              *bool                                   `json:"shared,omitempty"`
 	BindingType         *kubeovnv1.QoSPolicyBindingType         `json:"bindingType,omitempty"`
-	Conditions          []QoSPolicyConditionApplyConfiguration  `json:"conditions,omitempty"`
+	// Conditions represents the latest state of the object
+	Conditions []ConditionApplyConfiguration `json:"conditions,omitempty"`
 }
 
 // QoSPolicyStatusApplyConfiguration constructs a declarative configuration of the QoSPolicyStatus type for use with
@@ -48,7 +49,7 @@ func (b *QoSPolicyStatusApplyConfiguration) WithBindingType(value kubeovnv1.QoSP
 // WithConditions adds the given value to the Conditions field in the declarative configuration
 // and returns the receiver, so that objects can be build by chaining "With" function invocations.
 // If called multiple times, values provided by each call will be appended to the Conditions field.
-func (b *QoSPolicyStatusApplyConfiguration) WithConditions(values ...*QoSPolicyConditionApplyConfiguration) *QoSPolicyStatusApplyConfiguration {
+func (b *QoSPolicyStatusApplyConfiguration) WithConditions(values ...*ConditionApplyConfiguration) *QoSPolicyStatusApplyConfiguration {
 	for i := range values {
 		if values[i] == nil {
 			panic("nil value passed to WithConditions")

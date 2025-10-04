@@ -2,45 +2,51 @@
 
 package v1
 
+import (
+	metav1 "k8s.io/client-go/applyconfigurations/meta/v1"
+)
+
 // SubnetSpecApplyConfiguration represents a declarative configuration of the SubnetSpec type for use
 // with apply.
 type SubnetSpecApplyConfiguration struct {
-	Default                *bool                                     `json:"default,omitempty"`
-	Vpc                    *string                                   `json:"vpc,omitempty"`
-	Protocol               *string                                   `json:"protocol,omitempty"`
-	Namespaces             []string                                  `json:"namespaces,omitempty"`
-	CIDRBlock              *string                                   `json:"cidrBlock,omitempty"`
-	Gateway                *string                                   `json:"gateway,omitempty"`
-	ExcludeIps             []string                                  `json:"excludeIps,omitempty"`
-	Provider               *string                                   `json:"provider,omitempty"`
-	GatewayType            *string                                   `json:"gatewayType,omitempty"`
-	GatewayNode            *string                                   `json:"gatewayNode,omitempty"`
-	NatOutgoing            *bool                                     `json:"natOutgoing,omitempty"`
-	ExternalEgressGateway  *string                                   `json:"externalEgressGateway,omitempty"`
-	PolicyRoutingPriority  *uint32                                   `json:"policyRoutingPriority,omitempty"`
-	PolicyRoutingTableID   *uint32                                   `json:"policyRoutingTableID,omitempty"`
-	Mtu                    *uint32                                   `json:"mtu,omitempty"`
-	Private                *bool                                     `json:"private,omitempty"`
-	AllowSubnets           []string                                  `json:"allowSubnets,omitempty"`
-	Vlan                   *string                                   `json:"vlan,omitempty"`
-	Vips                   []string                                  `json:"vips,omitempty"`
-	LogicalGateway         *bool                                     `json:"logicalGateway,omitempty"`
-	DisableGatewayCheck    *bool                                     `json:"disableGatewayCheck,omitempty"`
-	DisableInterConnection *bool                                     `json:"disableInterConnection,omitempty"`
-	EnableDHCP             *bool                                     `json:"enableDHCP,omitempty"`
-	DHCPv4Options          *string                                   `json:"dhcpV4Options,omitempty"`
-	DHCPv6Options          *string                                   `json:"dhcpV6Options,omitempty"`
-	EnableIPv6RA           *bool                                     `json:"enableIPv6RA,omitempty"`
-	IPv6RAConfigs          *string                                   `json:"ipv6RAConfigs,omitempty"`
-	Acls                   []ACLApplyConfiguration                   `json:"acls,omitempty"`
-	AllowEWTraffic         *bool                                     `json:"allowEWTraffic,omitempty"`
-	NatOutgoingPolicyRules []NatOutgoingPolicyRuleApplyConfiguration `json:"natOutgoingPolicyRules,omitempty"`
-	U2OInterconnectionIP   *string                                   `json:"u2oInterconnectionIP,omitempty"`
-	U2OInterconnection     *bool                                     `json:"u2oInterconnection,omitempty"`
-	EnableLb               *bool                                     `json:"enableLb,omitempty"`
-	EnableEcmp             *bool                                     `json:"enableEcmp,omitempty"`
-	EnableMulticastSnoop   *bool                                     `json:"enableMulticastSnoop,omitempty"`
-	RouteTable             *string                                   `json:"routeTable,omitempty"`
+	Default                 *bool                                     `json:"default,omitempty"`
+	Vpc                     *string                                   `json:"vpc,omitempty"`
+	Protocol                *string                                   `json:"protocol,omitempty"`
+	Namespaces              []string                                  `json:"namespaces,omitempty"`
+	CIDRBlock               *string                                   `json:"cidrBlock,omitempty"`
+	Gateway                 *string                                   `json:"gateway,omitempty"`
+	ExcludeIps              []string                                  `json:"excludeIps,omitempty"`
+	Provider                *string                                   `json:"provider,omitempty"`
+	GatewayType             *string                                   `json:"gatewayType,omitempty"`
+	GatewayNode             *string                                   `json:"gatewayNode,omitempty"`
+	NatOutgoing             *bool                                     `json:"natOutgoing,omitempty"`
+	ExternalEgressGateway   *string                                   `json:"externalEgressGateway,omitempty"`
+	PolicyRoutingPriority   *uint32                                   `json:"policyRoutingPriority,omitempty"`
+	PolicyRoutingTableID    *uint32                                   `json:"policyRoutingTableID,omitempty"`
+	Mtu                     *uint32                                   `json:"mtu,omitempty"`
+	Private                 *bool                                     `json:"private,omitempty"`
+	AllowSubnets            []string                                  `json:"allowSubnets,omitempty"`
+	Vlan                    *string                                   `json:"vlan,omitempty"`
+	Vips                    []string                                  `json:"vips,omitempty"`
+	LogicalGateway          *bool                                     `json:"logicalGateway,omitempty"`
+	DisableGatewayCheck     *bool                                     `json:"disableGatewayCheck,omitempty"`
+	DisableInterConnection  *bool                                     `json:"disableInterConnection,omitempty"`
+	EnableDHCP              *bool                                     `json:"enableDHCP,omitempty"`
+	DHCPv4Options           *string                                   `json:"dhcpV4Options,omitempty"`
+	DHCPv6Options           *string                                   `json:"dhcpV6Options,omitempty"`
+	EnableIPv6RA            *bool                                     `json:"enableIPv6RA,omitempty"`
+	IPv6RAConfigs           *string                                   `json:"ipv6RAConfigs,omitempty"`
+	Acls                    []ACLApplyConfiguration                   `json:"acls,omitempty"`
+	AllowEWTraffic          *bool                                     `json:"allowEWTraffic,omitempty"`
+	NatOutgoingPolicyRules  []NatOutgoingPolicyRuleApplyConfiguration `json:"natOutgoingPolicyRules,omitempty"`
+	U2OInterconnectionIP    *string                                   `json:"u2oInterconnectionIP,omitempty"`
+	U2OInterconnection      *bool                                     `json:"u2oInterconnection,omitempty"`
+	EnableLb                *bool                                     `json:"enableLb,omitempty"`
+	EnableEcmp              *bool                                     `json:"enableEcmp,omitempty"`
+	EnableMulticastSnoop    *bool                                     `json:"enableMulticastSnoop,omitempty"`
+	EnableExternalLBAddress *bool                                     `json:"enableExternalLBAddress,omitempty"`
+	RouteTable              *string                                   `json:"routeTable,omitempty"`
+	NamespaceSelectors      []metav1.LabelSelectorApplyConfiguration  `json:"namespaceSelectors,omitempty"`
 }
 
 // SubnetSpecApplyConfiguration constructs a declarative configuration of the SubnetSpec type for use with
@@ -347,10 +353,31 @@ func (b *SubnetSpecApplyConfiguration) WithEnableMulticastSnoop(value bool) *Sub
 	return b
 }
 
+// WithEnableExternalLBAddress sets the EnableExternalLBAddress field in the declarative configuration to the given value
+// and returns the receiver, so that objects can be built by chaining "With" function invocations.
+// If called multiple times, the EnableExternalLBAddress field is set to the value of the last call.
+func (b *SubnetSpecApplyConfiguration) WithEnableExternalLBAddress(value bool) *SubnetSpecApplyConfiguration {
+	b.EnableExternalLBAddress = &value
+	return b
+}
+
 // WithRouteTable sets the RouteTable field in the declarative configuration to the given value
 // and returns the receiver, so that objects can be built by chaining "With" function invocations.
 // If called multiple times, the RouteTable field is set to the value of the last call.
 func (b *SubnetSpecApplyConfiguration) WithRouteTable(value string) *SubnetSpecApplyConfiguration {
 	b.RouteTable = &value
+	return b
+}
+
+// WithNamespaceSelectors adds the given value to the NamespaceSelectors field in the declarative configuration
+// and returns the receiver, so that objects can be build by chaining "With" function invocations.
+// If called multiple times, values provided by each call will be appended to the NamespaceSelectors field.
+func (b *SubnetSpecApplyConfiguration) WithNamespaceSelectors(values ...*metav1.LabelSelectorApplyConfiguration) *SubnetSpecApplyConfiguration {
+	for i := range values {
+		if values[i] == nil {
+			panic("nil value passed to WithNamespaceSelectors")
+		}
+		b.NamespaceSelectors = append(b.NamespaceSelectors, *values[i])
+	}
 	return b
 }

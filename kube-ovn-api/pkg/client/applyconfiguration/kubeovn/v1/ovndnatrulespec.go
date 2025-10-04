@@ -5,9 +5,11 @@ package v1
 // OvnDnatRuleSpecApplyConfiguration represents a declarative configuration of the OvnDnatRuleSpec type for use
 // with apply.
 type OvnDnatRuleSpecApplyConfiguration struct {
-	OvnEip       *string `json:"ovnEip,omitempty"`
-	IPType       *string `json:"ipType,omitempty"`
-	IPName       *string `json:"ipName,omitempty"`
+	OvnEip *string `json:"ovnEip,omitempty"`
+	IPType *string `json:"ipType,omitempty"`
+	// vip, ip
+	IPName *string `json:"ipName,omitempty"`
+	// vip, ip crd name
 	InternalPort *string `json:"internalPort,omitempty"`
 	ExternalPort *string `json:"externalPort,omitempty"`
 	Protocol     *string `json:"protocol,omitempty"`

@@ -52,6 +52,7 @@ func newVlans(c *KubeovnV1Client) *vlans {
 			scheme.ParameterCodec,
 			"",
 			func() *kubeovnv1.Vlan { return &kubeovnv1.Vlan{} },
-			func() *kubeovnv1.VlanList { return &kubeovnv1.VlanList{} }),
+			func() *kubeovnv1.VlanList { return &kubeovnv1.VlanList{} },
+		),
 	}
 }

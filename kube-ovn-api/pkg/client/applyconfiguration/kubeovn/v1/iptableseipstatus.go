@@ -2,27 +2,28 @@
 
 package v1
 
-// IptablesEipStatusApplyConfiguration represents a declarative configuration of the IptablesEipStatus type for use
+// IptablesEIPStatusApplyConfiguration represents a declarative configuration of the IptablesEIPStatus type for use
 // with apply.
-type IptablesEipStatusApplyConfiguration struct {
-	Ready      *bool                                    `json:"ready,omitempty"`
-	IP         *string                                  `json:"ip,omitempty"`
-	Redo       *string                                  `json:"redo,omitempty"`
-	Nat        *string                                  `json:"nat,omitempty"`
-	QoSPolicy  *string                                  `json:"qosPolicy,omitempty"`
-	Conditions []IptablesEIPConditionApplyConfiguration `json:"conditions,omitempty"`
+type IptablesEIPStatusApplyConfiguration struct {
+	Ready     *bool   `json:"ready,omitempty"`
+	IP        *string `json:"ip,omitempty"`
+	Redo      *string `json:"redo,omitempty"`
+	Nat       *string `json:"nat,omitempty"`
+	QoSPolicy *string `json:"qosPolicy,omitempty"`
+	// Conditions represents the latest state of the object
+	Conditions []ConditionApplyConfiguration `json:"conditions,omitempty"`
 }
 
-// IptablesEipStatusApplyConfiguration constructs a declarative configuration of the IptablesEipStatus type for use with
+// IptablesEIPStatusApplyConfiguration constructs a declarative configuration of the IptablesEIPStatus type for use with
 // apply.
-func IptablesEipStatus() *IptablesEipStatusApplyConfiguration {
-	return &IptablesEipStatusApplyConfiguration{}
+func IptablesEIPStatus() *IptablesEIPStatusApplyConfiguration {
+	return &IptablesEIPStatusApplyConfiguration{}
 }
 
 // WithReady sets the Ready field in the declarative configuration to the given value
 // and returns the receiver, so that objects can be built by chaining "With" function invocations.
 // If called multiple times, the Ready field is set to the value of the last call.
-func (b *IptablesEipStatusApplyConfiguration) WithReady(value bool) *IptablesEipStatusApplyConfiguration {
+func (b *IptablesEIPStatusApplyConfiguration) WithReady(value bool) *IptablesEIPStatusApplyConfiguration {
 	b.Ready = &value
 	return b
 }
@@ -30,7 +31,7 @@ func (b *IptablesEipStatusApplyConfiguration) WithReady(value bool) *IptablesEip
 // WithIP sets the IP field in the declarative configuration to the given value
 // and returns the receiver, so that objects can be built by chaining "With" function invocations.
 // If called multiple times, the IP field is set to the value of the last call.
-func (b *IptablesEipStatusApplyConfiguration) WithIP(value string) *IptablesEipStatusApplyConfiguration {
+func (b *IptablesEIPStatusApplyConfiguration) WithIP(value string) *IptablesEIPStatusApplyConfiguration {
 	b.IP = &value
 	return b
 }
@@ -38,7 +39,7 @@ func (b *IptablesEipStatusApplyConfiguration) WithIP(value string) *IptablesEipS
 // WithRedo sets the Redo field in the declarative configuration to the given value
 // and returns the receiver, so that objects can be built by chaining "With" function invocations.
 // If called multiple times, the Redo field is set to the value of the last call.
-func (b *IptablesEipStatusApplyConfiguration) WithRedo(value string) *IptablesEipStatusApplyConfiguration {
+func (b *IptablesEIPStatusApplyConfiguration) WithRedo(value string) *IptablesEIPStatusApplyConfiguration {
 	b.Redo = &value
 	return b
 }
@@ -46,7 +47,7 @@ func (b *IptablesEipStatusApplyConfiguration) WithRedo(value string) *IptablesEi
 // WithNat sets the Nat field in the declarative configuration to the given value
 // and returns the receiver, so that objects can be built by chaining "With" function invocations.
 // If called multiple times, the Nat field is set to the value of the last call.
-func (b *IptablesEipStatusApplyConfiguration) WithNat(value string) *IptablesEipStatusApplyConfiguration {
+func (b *IptablesEIPStatusApplyConfiguration) WithNat(value string) *IptablesEIPStatusApplyConfiguration {
 	b.Nat = &value
 	return b
 }
@@ -54,7 +55,7 @@ func (b *IptablesEipStatusApplyConfiguration) WithNat(value string) *IptablesEip
 // WithQoSPolicy sets the QoSPolicy field in the declarative configuration to the given value
 // and returns the receiver, so that objects can be built by chaining "With" function invocations.
 // If called multiple times, the QoSPolicy field is set to the value of the last call.
-func (b *IptablesEipStatusApplyConfiguration) WithQoSPolicy(value string) *IptablesEipStatusApplyConfiguration {
+func (b *IptablesEIPStatusApplyConfiguration) WithQoSPolicy(value string) *IptablesEIPStatusApplyConfiguration {
 	b.QoSPolicy = &value
 	return b
 }
@@ -62,7 +63,7 @@ func (b *IptablesEipStatusApplyConfiguration) WithQoSPolicy(value string) *Iptab
 // WithConditions adds the given value to the Conditions field in the declarative configuration
 // and returns the receiver, so that objects can be build by chaining "With" function invocations.
 // If called multiple times, values provided by each call will be appended to the Conditions field.
-func (b *IptablesEipStatusApplyConfiguration) WithConditions(values ...*IptablesEIPConditionApplyConfiguration) *IptablesEipStatusApplyConfiguration {
+func (b *IptablesEIPStatusApplyConfiguration) WithConditions(values ...*ConditionApplyConfiguration) *IptablesEIPStatusApplyConfiguration {
 	for i := range values {
 		if values[i] == nil {
 			panic("nil value passed to WithConditions")

@@ -10,7 +10,8 @@ type OvnSnatRuleSpecApplyConfiguration struct {
 	IPName    *string `json:"ipName,omitempty"`
 	Vpc       *string `json:"vpc,omitempty"`
 	V4IpCidr  *string `json:"v4IpCidr,omitempty"`
-	V6IpCidr  *string `json:"v6IpCidr,omitempty"`
+	// subnet cidr or pod ip address
+	V6IpCidr *string `json:"v6IpCidr,omitempty"`
 }
 
 // OvnSnatRuleSpecApplyConfiguration constructs a declarative configuration of the OvnSnatRuleSpec type for use with

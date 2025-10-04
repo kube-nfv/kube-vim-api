@@ -52,6 +52,7 @@ func newVpcNatGateways(c *KubeovnV1Client) *vpcNatGateways {
 			scheme.ParameterCodec,
 			"",
 			func() *kubeovnv1.VpcNatGateway { return &kubeovnv1.VpcNatGateway{} },
-			func() *kubeovnv1.VpcNatGatewayList { return &kubeovnv1.VpcNatGatewayList{} }),
+			func() *kubeovnv1.VpcNatGatewayList { return &kubeovnv1.VpcNatGatewayList{} },
+		),
 	}
 }

@@ -5,13 +5,14 @@ package v1
 // OvnFipStatusApplyConfiguration represents a declarative configuration of the OvnFipStatus type for use
 // with apply.
 type OvnFipStatusApplyConfiguration struct {
-	Vpc        *string                             `json:"vpc,omitempty"`
-	V4Eip      *string                             `json:"v4Eip,omitempty"`
-	V6Eip      *string                             `json:"v6Eip,omitempty"`
-	V4Ip       *string                             `json:"v4Ip,omitempty"`
-	V6Ip       *string                             `json:"v6Ip,omitempty"`
-	Ready      *bool                               `json:"ready,omitempty"`
-	Conditions []OvnFipConditionApplyConfiguration `json:"conditions,omitempty"`
+	Vpc   *string `json:"vpc,omitempty"`
+	V4Eip *string `json:"v4Eip,omitempty"`
+	V6Eip *string `json:"v6Eip,omitempty"`
+	V4Ip  *string `json:"v4Ip,omitempty"`
+	V6Ip  *string `json:"v6Ip,omitempty"`
+	Ready *bool   `json:"ready,omitempty"`
+	// Conditions represents the latest state of the object
+	Conditions []ConditionApplyConfiguration `json:"conditions,omitempty"`
 }
 
 // OvnFipStatusApplyConfiguration constructs a declarative configuration of the OvnFipStatus type for use with
@@ -71,7 +72,7 @@ func (b *OvnFipStatusApplyConfiguration) WithReady(value bool) *OvnFipStatusAppl
 // WithConditions adds the given value to the Conditions field in the declarative configuration
 // and returns the receiver, so that objects can be build by chaining "With" function invocations.
 // If called multiple times, values provided by each call will be appended to the Conditions field.
-func (b *OvnFipStatusApplyConfiguration) WithConditions(values ...*OvnFipConditionApplyConfiguration) *OvnFipStatusApplyConfiguration {
+func (b *OvnFipStatusApplyConfiguration) WithConditions(values ...*ConditionApplyConfiguration) *OvnFipStatusApplyConfiguration {
 	for i := range values {
 		if values[i] == nil {
 			panic("nil value passed to WithConditions")

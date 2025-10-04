@@ -5,13 +5,14 @@ package v1
 // IptablesSnatRuleStatusApplyConfiguration represents a declarative configuration of the IptablesSnatRuleStatus type for use
 // with apply.
 type IptablesSnatRuleStatusApplyConfiguration struct {
-	Ready        *bool                                         `json:"ready,omitempty"`
-	V4ip         *string                                       `json:"v4ip,omitempty"`
-	V6ip         *string                                       `json:"v6ip,omitempty"`
-	NatGwDp      *string                                       `json:"natGwDp,omitempty"`
-	Redo         *string                                       `json:"redo,omitempty"`
-	InternalCIDR *string                                       `json:"internalCIDR,omitempty"`
-	Conditions   []IptablesSnatRuleConditionApplyConfiguration `json:"conditions,omitempty"`
+	Ready        *bool   `json:"ready,omitempty"`
+	V4ip         *string `json:"v4ip,omitempty"`
+	V6ip         *string `json:"v6ip,omitempty"`
+	NatGwDp      *string `json:"natGwDp,omitempty"`
+	Redo         *string `json:"redo,omitempty"`
+	InternalCIDR *string `json:"internalCIDR,omitempty"`
+	// Conditions represents the latest state of the object
+	Conditions []ConditionApplyConfiguration `json:"conditions,omitempty"`
 }
 
 // IptablesSnatRuleStatusApplyConfiguration constructs a declarative configuration of the IptablesSnatRuleStatus type for use with
@@ -71,7 +72,7 @@ func (b *IptablesSnatRuleStatusApplyConfiguration) WithInternalCIDR(value string
 // WithConditions adds the given value to the Conditions field in the declarative configuration
 // and returns the receiver, so that objects can be build by chaining "With" function invocations.
 // If called multiple times, values provided by each call will be appended to the Conditions field.
-func (b *IptablesSnatRuleStatusApplyConfiguration) WithConditions(values ...*IptablesSnatRuleConditionApplyConfiguration) *IptablesSnatRuleStatusApplyConfiguration {
+func (b *IptablesSnatRuleStatusApplyConfiguration) WithConditions(values ...*ConditionApplyConfiguration) *IptablesSnatRuleStatusApplyConfiguration {
 	for i := range values {
 		if values[i] == nil {
 			panic("nil value passed to WithConditions")

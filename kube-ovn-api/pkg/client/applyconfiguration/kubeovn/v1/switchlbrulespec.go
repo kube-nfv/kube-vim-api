@@ -5,12 +5,12 @@ package v1
 // SwitchLBRuleSpecApplyConfiguration represents a declarative configuration of the SwitchLBRuleSpec type for use
 // with apply.
 type SwitchLBRuleSpecApplyConfiguration struct {
-	Vip             *string                     `json:"vip,omitempty"`
-	Namespace       *string                     `json:"namespace,omitempty"`
-	Selector        []string                    `json:"selector,omitempty"`
-	Endpoints       []string                    `json:"endpoints,omitempty"`
-	SessionAffinity *string                     `json:"sessionAffinity,omitempty"`
-	Ports           []SlrPortApplyConfiguration `json:"ports,omitempty"`
+	Vip             *string                              `json:"vip,omitempty"`
+	Namespace       *string                              `json:"namespace,omitempty"`
+	Selector        []string                             `json:"selector,omitempty"`
+	Endpoints       []string                             `json:"endpoints,omitempty"`
+	SessionAffinity *string                              `json:"sessionAffinity,omitempty"`
+	Ports           []SwitchLBRulePortApplyConfiguration `json:"ports,omitempty"`
 }
 
 // SwitchLBRuleSpecApplyConfiguration constructs a declarative configuration of the SwitchLBRuleSpec type for use with
@@ -66,7 +66,7 @@ func (b *SwitchLBRuleSpecApplyConfiguration) WithSessionAffinity(value string) *
 // WithPorts adds the given value to the Ports field in the declarative configuration
 // and returns the receiver, so that objects can be build by chaining "With" function invocations.
 // If called multiple times, values provided by each call will be appended to the Ports field.
-func (b *SwitchLBRuleSpecApplyConfiguration) WithPorts(values ...*SlrPortApplyConfiguration) *SwitchLBRuleSpecApplyConfiguration {
+func (b *SwitchLBRuleSpecApplyConfiguration) WithPorts(values ...*SwitchLBRulePortApplyConfiguration) *SwitchLBRuleSpecApplyConfiguration {
 	for i := range values {
 		if values[i] == nil {
 			panic("nil value passed to WithPorts")

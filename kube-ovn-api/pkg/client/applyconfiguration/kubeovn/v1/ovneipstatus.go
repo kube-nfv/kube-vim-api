@@ -5,13 +5,14 @@ package v1
 // OvnEipStatusApplyConfiguration represents a declarative configuration of the OvnEipStatus type for use
 // with apply.
 type OvnEipStatusApplyConfiguration struct {
-	Conditions []OvnEipConditionApplyConfiguration `json:"conditions,omitempty"`
-	Type       *string                             `json:"type,omitempty"`
-	Nat        *string                             `json:"nat,omitempty"`
-	Ready      *bool                               `json:"ready,omitempty"`
-	V4Ip       *string                             `json:"v4Ip,omitempty"`
-	V6Ip       *string                             `json:"v6Ip,omitempty"`
-	MacAddress *string                             `json:"macAddress,omitempty"`
+	// Conditions represents the latest state of the object
+	Conditions []ConditionApplyConfiguration `json:"conditions,omitempty"`
+	Type       *string                       `json:"type,omitempty"`
+	Nat        *string                       `json:"nat,omitempty"`
+	Ready      *bool                         `json:"ready,omitempty"`
+	V4Ip       *string                       `json:"v4Ip,omitempty"`
+	V6Ip       *string                       `json:"v6Ip,omitempty"`
+	MacAddress *string                       `json:"macAddress,omitempty"`
 }
 
 // OvnEipStatusApplyConfiguration constructs a declarative configuration of the OvnEipStatus type for use with
@@ -23,7 +24,7 @@ func OvnEipStatus() *OvnEipStatusApplyConfiguration {
 // WithConditions adds the given value to the Conditions field in the declarative configuration
 // and returns the receiver, so that objects can be build by chaining "With" function invocations.
 // If called multiple times, values provided by each call will be appended to the Conditions field.
-func (b *OvnEipStatusApplyConfiguration) WithConditions(values ...*OvnEipConditionApplyConfiguration) *OvnEipStatusApplyConfiguration {
+func (b *OvnEipStatusApplyConfiguration) WithConditions(values ...*ConditionApplyConfiguration) *OvnEipStatusApplyConfiguration {
 	for i := range values {
 		if values[i] == nil {
 			panic("nil value passed to WithConditions")

@@ -52,6 +52,7 @@ func newIptablesSnatRules(c *KubeovnV1Client) *iptablesSnatRules {
 			scheme.ParameterCodec,
 			"",
 			func() *kubeovnv1.IptablesSnatRule { return &kubeovnv1.IptablesSnatRule{} },
-			func() *kubeovnv1.IptablesSnatRuleList { return &kubeovnv1.IptablesSnatRuleList{} }),
+			func() *kubeovnv1.IptablesSnatRuleList { return &kubeovnv1.IptablesSnatRuleList{} },
+		),
 	}
 }

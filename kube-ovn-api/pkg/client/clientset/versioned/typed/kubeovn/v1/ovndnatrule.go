@@ -52,6 +52,7 @@ func newOvnDnatRules(c *KubeovnV1Client) *ovnDnatRules {
 			scheme.ParameterCodec,
 			"",
 			func() *kubeovnv1.OvnDnatRule { return &kubeovnv1.OvnDnatRule{} },
-			func() *kubeovnv1.OvnDnatRuleList { return &kubeovnv1.OvnDnatRuleList{} }),
+			func() *kubeovnv1.OvnDnatRuleList { return &kubeovnv1.OvnDnatRuleList{} },
+		),
 	}
 }

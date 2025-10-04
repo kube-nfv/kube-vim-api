@@ -5,8 +5,10 @@ package v1
 // VlanStatusApplyConfiguration represents a declarative configuration of the VlanStatus type for use
 // with apply.
 type VlanStatusApplyConfiguration struct {
-	Subnets    []string                          `json:"subnets,omitempty"`
-	Conditions []VlanConditionApplyConfiguration `json:"conditions,omitempty"`
+	Subnets  []string `json:"subnets,omitempty"`
+	Conflict *bool    `json:"conflict,omitempty"`
+	// Conditions represents the latest state of the object
+	Conditions []ConditionApplyConfiguration `json:"conditions,omitempty"`
 }
 
 // VlanStatusApplyConfiguration constructs a declarative configuration of the VlanStatus type for use with
@@ -25,10 +27,18 @@ func (b *VlanStatusApplyConfiguration) WithSubnets(values ...string) *VlanStatus
 	return b
 }
 
+// WithConflict sets the Conflict field in the declarative configuration to the given value
+// and returns the receiver, so that objects can be built by chaining "With" function invocations.
+// If called multiple times, the Conflict field is set to the value of the last call.
+func (b *VlanStatusApplyConfiguration) WithConflict(value bool) *VlanStatusApplyConfiguration {
+	b.Conflict = &value
+	return b
+}
+
 // WithConditions adds the given value to the Conditions field in the declarative configuration
 // and returns the receiver, so that objects can be build by chaining "With" function invocations.
 // If called multiple times, values provided by each call will be appended to the Conditions field.
-func (b *VlanStatusApplyConfiguration) WithConditions(values ...*VlanConditionApplyConfiguration) *VlanStatusApplyConfiguration {
+func (b *VlanStatusApplyConfiguration) WithConditions(values ...*ConditionApplyConfiguration) *VlanStatusApplyConfiguration {
 	for i := range values {
 		if values[i] == nil {
 			panic("nil value passed to WithConditions")

@@ -48,6 +48,7 @@ func newIPs(c *KubeovnV1Client) *iPs {
 			scheme.ParameterCodec,
 			"",
 			func() *kubeovnv1.IP { return &kubeovnv1.IP{} },
-			func() *kubeovnv1.IPList { return &kubeovnv1.IPList{} }),
+			func() *kubeovnv1.IPList { return &kubeovnv1.IPList{} },
+		),
 	}
 }

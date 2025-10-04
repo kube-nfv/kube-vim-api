@@ -5,6 +5,7 @@ package v1
 // VlanSpecApplyConfiguration represents a declarative configuration of the VlanSpec type for use
 // with apply.
 type VlanSpecApplyConfiguration struct {
+	// deprecated fields, use ID & Provider instead
 	VlanID                *int    `json:"vlanId,omitempty"`
 	ProviderInterfaceName *string `json:"providerInterfaceName,omitempty"`
 	ID                    *int    `json:"id,omitempty"`

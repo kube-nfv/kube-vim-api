@@ -2,9 +2,9 @@
 
 package v1
 
-// IptablesEipSpecApplyConfiguration represents a declarative configuration of the IptablesEipSpec type for use
+// IptablesEIPSpecApplyConfiguration represents a declarative configuration of the IptablesEIPSpec type for use
 // with apply.
-type IptablesEipSpecApplyConfiguration struct {
+type IptablesEIPSpecApplyConfiguration struct {
 	V4ip           *string `json:"v4ip,omitempty"`
 	V6ip           *string `json:"v6ip,omitempty"`
 	MacAddress     *string `json:"macAddress,omitempty"`
@@ -13,16 +13,16 @@ type IptablesEipSpecApplyConfiguration struct {
 	ExternalSubnet *string `json:"externalSubnet,omitempty"`
 }
 
-// IptablesEipSpecApplyConfiguration constructs a declarative configuration of the IptablesEipSpec type for use with
+// IptablesEIPSpecApplyConfiguration constructs a declarative configuration of the IptablesEIPSpec type for use with
 // apply.
-func IptablesEipSpec() *IptablesEipSpecApplyConfiguration {
-	return &IptablesEipSpecApplyConfiguration{}
+func IptablesEIPSpec() *IptablesEIPSpecApplyConfiguration {
+	return &IptablesEIPSpecApplyConfiguration{}
 }
 
 // WithV4ip sets the V4ip field in the declarative configuration to the given value
 // and returns the receiver, so that objects can be built by chaining "With" function invocations.
 // If called multiple times, the V4ip field is set to the value of the last call.
-func (b *IptablesEipSpecApplyConfiguration) WithV4ip(value string) *IptablesEipSpecApplyConfiguration {
+func (b *IptablesEIPSpecApplyConfiguration) WithV4ip(value string) *IptablesEIPSpecApplyConfiguration {
 	b.V4ip = &value
 	return b
 }
@@ -30,7 +30,7 @@ func (b *IptablesEipSpecApplyConfiguration) WithV4ip(value string) *IptablesEipS
 // WithV6ip sets the V6ip field in the declarative configuration to the given value
 // and returns the receiver, so that objects can be built by chaining "With" function invocations.
 // If called multiple times, the V6ip field is set to the value of the last call.
-func (b *IptablesEipSpecApplyConfiguration) WithV6ip(value string) *IptablesEipSpecApplyConfiguration {
+func (b *IptablesEIPSpecApplyConfiguration) WithV6ip(value string) *IptablesEIPSpecApplyConfiguration {
 	b.V6ip = &value
 	return b
 }
@@ -38,7 +38,7 @@ func (b *IptablesEipSpecApplyConfiguration) WithV6ip(value string) *IptablesEipS
 // WithMacAddress sets the MacAddress field in the declarative configuration to the given value
 // and returns the receiver, so that objects can be built by chaining "With" function invocations.
 // If called multiple times, the MacAddress field is set to the value of the last call.
-func (b *IptablesEipSpecApplyConfiguration) WithMacAddress(value string) *IptablesEipSpecApplyConfiguration {
+func (b *IptablesEIPSpecApplyConfiguration) WithMacAddress(value string) *IptablesEIPSpecApplyConfiguration {
 	b.MacAddress = &value
 	return b
 }
@@ -46,7 +46,7 @@ func (b *IptablesEipSpecApplyConfiguration) WithMacAddress(value string) *Iptabl
 // WithNatGwDp sets the NatGwDp field in the declarative configuration to the given value
 // and returns the receiver, so that objects can be built by chaining "With" function invocations.
 // If called multiple times, the NatGwDp field is set to the value of the last call.
-func (b *IptablesEipSpecApplyConfiguration) WithNatGwDp(value string) *IptablesEipSpecApplyConfiguration {
+func (b *IptablesEIPSpecApplyConfiguration) WithNatGwDp(value string) *IptablesEIPSpecApplyConfiguration {
 	b.NatGwDp = &value
 	return b
 }
@@ -54,7 +54,7 @@ func (b *IptablesEipSpecApplyConfiguration) WithNatGwDp(value string) *IptablesE
 // WithQoSPolicy sets the QoSPolicy field in the declarative configuration to the given value
 // and returns the receiver, so that objects can be built by chaining "With" function invocations.
 // If called multiple times, the QoSPolicy field is set to the value of the last call.
-func (b *IptablesEipSpecApplyConfiguration) WithQoSPolicy(value string) *IptablesEipSpecApplyConfiguration {
+func (b *IptablesEIPSpecApplyConfiguration) WithQoSPolicy(value string) *IptablesEIPSpecApplyConfiguration {
 	b.QoSPolicy = &value
 	return b
 }
@@ -62,7 +62,7 @@ func (b *IptablesEipSpecApplyConfiguration) WithQoSPolicy(value string) *Iptable
 // WithExternalSubnet sets the ExternalSubnet field in the declarative configuration to the given value
 // and returns the receiver, so that objects can be built by chaining "With" function invocations.
 // If called multiple times, the ExternalSubnet field is set to the value of the last call.
-func (b *IptablesEipSpecApplyConfiguration) WithExternalSubnet(value string) *IptablesEipSpecApplyConfiguration {
+func (b *IptablesEIPSpecApplyConfiguration) WithExternalSubnet(value string) *IptablesEIPSpecApplyConfiguration {
 	b.ExternalSubnet = &value
 	return b
 }

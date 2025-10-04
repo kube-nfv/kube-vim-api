@@ -52,6 +52,7 @@ func newIptablesEIPs(c *KubeovnV1Client) *iptablesEIPs {
 			scheme.ParameterCodec,
 			"",
 			func() *kubeovnv1.IptablesEIP { return &kubeovnv1.IptablesEIP{} },
-			func() *kubeovnv1.IptablesEIPList { return &kubeovnv1.IptablesEIPList{} }),
+			func() *kubeovnv1.IptablesEIPList { return &kubeovnv1.IptablesEIPList{} },
+		),
 	}
 }

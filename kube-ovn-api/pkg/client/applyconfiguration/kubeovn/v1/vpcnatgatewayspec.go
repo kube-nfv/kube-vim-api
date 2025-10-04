@@ -6,9 +6,9 @@ import (
 	corev1 "k8s.io/api/core/v1"
 )
 
-// VpcNatSpecApplyConfiguration represents a declarative configuration of the VpcNatSpec type for use
+// VpcNatGatewaySpecApplyConfiguration represents a declarative configuration of the VpcNatGatewaySpec type for use
 // with apply.
-type VpcNatSpecApplyConfiguration struct {
+type VpcNatGatewaySpecApplyConfiguration struct {
 	Vpc             *string                          `json:"vpc,omitempty"`
 	Subnet          *string                          `json:"subnet,omitempty"`
 	ExternalSubnets []string                         `json:"externalSubnets,omitempty"`
@@ -20,16 +20,16 @@ type VpcNatSpecApplyConfiguration struct {
 	BgpSpeaker      *VpcBgpSpeakerApplyConfiguration `json:"bgpSpeaker,omitempty"`
 }
 
-// VpcNatSpecApplyConfiguration constructs a declarative configuration of the VpcNatSpec type for use with
+// VpcNatGatewaySpecApplyConfiguration constructs a declarative configuration of the VpcNatGatewaySpec type for use with
 // apply.
-func VpcNatSpec() *VpcNatSpecApplyConfiguration {
-	return &VpcNatSpecApplyConfiguration{}
+func VpcNatGatewaySpec() *VpcNatGatewaySpecApplyConfiguration {
+	return &VpcNatGatewaySpecApplyConfiguration{}
 }
 
 // WithVpc sets the Vpc field in the declarative configuration to the given value
 // and returns the receiver, so that objects can be built by chaining "With" function invocations.
 // If called multiple times, the Vpc field is set to the value of the last call.
-func (b *VpcNatSpecApplyConfiguration) WithVpc(value string) *VpcNatSpecApplyConfiguration {
+func (b *VpcNatGatewaySpecApplyConfiguration) WithVpc(value string) *VpcNatGatewaySpecApplyConfiguration {
 	b.Vpc = &value
 	return b
 }
@@ -37,7 +37,7 @@ func (b *VpcNatSpecApplyConfiguration) WithVpc(value string) *VpcNatSpecApplyCon
 // WithSubnet sets the Subnet field in the declarative configuration to the given value
 // and returns the receiver, so that objects can be built by chaining "With" function invocations.
 // If called multiple times, the Subnet field is set to the value of the last call.
-func (b *VpcNatSpecApplyConfiguration) WithSubnet(value string) *VpcNatSpecApplyConfiguration {
+func (b *VpcNatGatewaySpecApplyConfiguration) WithSubnet(value string) *VpcNatGatewaySpecApplyConfiguration {
 	b.Subnet = &value
 	return b
 }
@@ -45,7 +45,7 @@ func (b *VpcNatSpecApplyConfiguration) WithSubnet(value string) *VpcNatSpecApply
 // WithExternalSubnets adds the given value to the ExternalSubnets field in the declarative configuration
 // and returns the receiver, so that objects can be build by chaining "With" function invocations.
 // If called multiple times, values provided by each call will be appended to the ExternalSubnets field.
-func (b *VpcNatSpecApplyConfiguration) WithExternalSubnets(values ...string) *VpcNatSpecApplyConfiguration {
+func (b *VpcNatGatewaySpecApplyConfiguration) WithExternalSubnets(values ...string) *VpcNatGatewaySpecApplyConfiguration {
 	for i := range values {
 		b.ExternalSubnets = append(b.ExternalSubnets, values[i])
 	}
@@ -55,7 +55,7 @@ func (b *VpcNatSpecApplyConfiguration) WithExternalSubnets(values ...string) *Vp
 // WithLanIP sets the LanIP field in the declarative configuration to the given value
 // and returns the receiver, so that objects can be built by chaining "With" function invocations.
 // If called multiple times, the LanIP field is set to the value of the last call.
-func (b *VpcNatSpecApplyConfiguration) WithLanIP(value string) *VpcNatSpecApplyConfiguration {
+func (b *VpcNatGatewaySpecApplyConfiguration) WithLanIP(value string) *VpcNatGatewaySpecApplyConfiguration {
 	b.LanIP = &value
 	return b
 }
@@ -63,7 +63,7 @@ func (b *VpcNatSpecApplyConfiguration) WithLanIP(value string) *VpcNatSpecApplyC
 // WithSelector adds the given value to the Selector field in the declarative configuration
 // and returns the receiver, so that objects can be build by chaining "With" function invocations.
 // If called multiple times, values provided by each call will be appended to the Selector field.
-func (b *VpcNatSpecApplyConfiguration) WithSelector(values ...string) *VpcNatSpecApplyConfiguration {
+func (b *VpcNatGatewaySpecApplyConfiguration) WithSelector(values ...string) *VpcNatGatewaySpecApplyConfiguration {
 	for i := range values {
 		b.Selector = append(b.Selector, values[i])
 	}
@@ -73,7 +73,7 @@ func (b *VpcNatSpecApplyConfiguration) WithSelector(values ...string) *VpcNatSpe
 // WithTolerations adds the given value to the Tolerations field in the declarative configuration
 // and returns the receiver, so that objects can be build by chaining "With" function invocations.
 // If called multiple times, values provided by each call will be appended to the Tolerations field.
-func (b *VpcNatSpecApplyConfiguration) WithTolerations(values ...corev1.Toleration) *VpcNatSpecApplyConfiguration {
+func (b *VpcNatGatewaySpecApplyConfiguration) WithTolerations(values ...corev1.Toleration) *VpcNatGatewaySpecApplyConfiguration {
 	for i := range values {
 		b.Tolerations = append(b.Tolerations, values[i])
 	}
@@ -83,7 +83,7 @@ func (b *VpcNatSpecApplyConfiguration) WithTolerations(values ...corev1.Tolerati
 // WithAffinity sets the Affinity field in the declarative configuration to the given value
 // and returns the receiver, so that objects can be built by chaining "With" function invocations.
 // If called multiple times, the Affinity field is set to the value of the last call.
-func (b *VpcNatSpecApplyConfiguration) WithAffinity(value corev1.Affinity) *VpcNatSpecApplyConfiguration {
+func (b *VpcNatGatewaySpecApplyConfiguration) WithAffinity(value corev1.Affinity) *VpcNatGatewaySpecApplyConfiguration {
 	b.Affinity = &value
 	return b
 }
@@ -91,7 +91,7 @@ func (b *VpcNatSpecApplyConfiguration) WithAffinity(value corev1.Affinity) *VpcN
 // WithQoSPolicy sets the QoSPolicy field in the declarative configuration to the given value
 // and returns the receiver, so that objects can be built by chaining "With" function invocations.
 // If called multiple times, the QoSPolicy field is set to the value of the last call.
-func (b *VpcNatSpecApplyConfiguration) WithQoSPolicy(value string) *VpcNatSpecApplyConfiguration {
+func (b *VpcNatGatewaySpecApplyConfiguration) WithQoSPolicy(value string) *VpcNatGatewaySpecApplyConfiguration {
 	b.QoSPolicy = &value
 	return b
 }
@@ -99,7 +99,7 @@ func (b *VpcNatSpecApplyConfiguration) WithQoSPolicy(value string) *VpcNatSpecAp
 // WithBgpSpeaker sets the BgpSpeaker field in the declarative configuration to the given value
 // and returns the receiver, so that objects can be built by chaining "With" function invocations.
 // If called multiple times, the BgpSpeaker field is set to the value of the last call.
-func (b *VpcNatSpecApplyConfiguration) WithBgpSpeaker(value *VpcBgpSpeakerApplyConfiguration) *VpcNatSpecApplyConfiguration {
+func (b *VpcNatGatewaySpecApplyConfiguration) WithBgpSpeaker(value *VpcBgpSpeakerApplyConfiguration) *VpcNatGatewaySpecApplyConfiguration {
 	b.BgpSpeaker = value
 	return b
 }

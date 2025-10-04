@@ -52,6 +52,7 @@ func newVpcs(c *KubeovnV1Client) *vpcs {
 			scheme.ParameterCodec,
 			"",
 			func() *kubeovnv1.Vpc { return &kubeovnv1.Vpc{} },
-			func() *kubeovnv1.VpcList { return &kubeovnv1.VpcList{} }),
+			func() *kubeovnv1.VpcList { return &kubeovnv1.VpcList{} },
+		),
 	}
 }

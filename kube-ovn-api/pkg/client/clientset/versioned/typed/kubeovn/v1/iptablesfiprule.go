@@ -52,6 +52,7 @@ func newIptablesFIPRules(c *KubeovnV1Client) *iptablesFIPRules {
 			scheme.ParameterCodec,
 			"",
 			func() *kubeovnv1.IptablesFIPRule { return &kubeovnv1.IptablesFIPRule{} },
-			func() *kubeovnv1.IptablesFIPRuleList { return &kubeovnv1.IptablesFIPRuleList{} }),
+			func() *kubeovnv1.IptablesFIPRuleList { return &kubeovnv1.IptablesFIPRuleList{} },
+		),
 	}
 }

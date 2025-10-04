@@ -5,7 +5,8 @@ package v1
 // SubnetStatusApplyConfiguration represents a declarative configuration of the SubnetStatus type for use
 // with apply.
 type SubnetStatusApplyConfiguration struct {
-	Conditions             []SubnetConditionApplyConfiguration             `json:"conditions,omitempty"`
+	// Conditions represents the latest state of the object
+	Conditions             []ConditionApplyConfiguration                   `json:"conditions,omitempty"`
 	V4AvailableIPs         *float64                                        `json:"v4availableIPs,omitempty"`
 	V4AvailableIPRange     *string                                         `json:"v4availableIPrange,omitempty"`
 	V4UsingIPs             *float64                                        `json:"v4usingIPs,omitempty"`
@@ -34,7 +35,7 @@ func SubnetStatus() *SubnetStatusApplyConfiguration {
 // WithConditions adds the given value to the Conditions field in the declarative configuration
 // and returns the receiver, so that objects can be build by chaining "With" function invocations.
 // If called multiple times, values provided by each call will be appended to the Conditions field.
-func (b *SubnetStatusApplyConfiguration) WithConditions(values ...*SubnetConditionApplyConfiguration) *SubnetStatusApplyConfiguration {
+func (b *SubnetStatusApplyConfiguration) WithConditions(values ...*ConditionApplyConfiguration) *SubnetStatusApplyConfiguration {
 	for i := range values {
 		if values[i] == nil {
 			panic("nil value passed to WithConditions")

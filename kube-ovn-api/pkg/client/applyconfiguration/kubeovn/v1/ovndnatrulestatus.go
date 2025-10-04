@@ -5,17 +5,18 @@ package v1
 // OvnDnatRuleStatusApplyConfiguration represents a declarative configuration of the OvnDnatRuleStatus type for use
 // with apply.
 type OvnDnatRuleStatusApplyConfiguration struct {
-	Vpc          *string                                  `json:"vpc,omitempty"`
-	V4Eip        *string                                  `json:"v4Eip,omitempty"`
-	V6Eip        *string                                  `json:"v6Eip,omitempty"`
-	ExternalPort *string                                  `json:"externalPort,omitempty"`
-	V4Ip         *string                                  `json:"v4Ip,omitempty"`
-	V6Ip         *string                                  `json:"v6Ip,omitempty"`
-	InternalPort *string                                  `json:"internalPort,omitempty"`
-	Protocol     *string                                  `json:"protocol,omitempty"`
-	IPName       *string                                  `json:"ipName,omitempty"`
-	Ready        *bool                                    `json:"ready,omitempty"`
-	Conditions   []OvnDnatRuleConditionApplyConfiguration `json:"conditions,omitempty"`
+	Vpc          *string `json:"vpc,omitempty"`
+	V4Eip        *string `json:"v4Eip,omitempty"`
+	V6Eip        *string `json:"v6Eip,omitempty"`
+	ExternalPort *string `json:"externalPort,omitempty"`
+	V4Ip         *string `json:"v4Ip,omitempty"`
+	V6Ip         *string `json:"v6Ip,omitempty"`
+	InternalPort *string `json:"internalPort,omitempty"`
+	Protocol     *string `json:"protocol,omitempty"`
+	IPName       *string `json:"ipName,omitempty"`
+	Ready        *bool   `json:"ready,omitempty"`
+	// Conditions represents the latest state of the object
+	Conditions []ConditionApplyConfiguration `json:"conditions,omitempty"`
 }
 
 // OvnDnatRuleStatusApplyConfiguration constructs a declarative configuration of the OvnDnatRuleStatus type for use with
@@ -107,7 +108,7 @@ func (b *OvnDnatRuleStatusApplyConfiguration) WithReady(value bool) *OvnDnatRule
 // WithConditions adds the given value to the Conditions field in the declarative configuration
 // and returns the receiver, so that objects can be build by chaining "With" function invocations.
 // If called multiple times, values provided by each call will be appended to the Conditions field.
-func (b *OvnDnatRuleStatusApplyConfiguration) WithConditions(values ...*OvnDnatRuleConditionApplyConfiguration) *OvnDnatRuleStatusApplyConfiguration {
+func (b *OvnDnatRuleStatusApplyConfiguration) WithConditions(values ...*ConditionApplyConfiguration) *OvnDnatRuleStatusApplyConfiguration {
 	for i := range values {
 		if values[i] == nil {
 			panic("nil value passed to WithConditions")

@@ -5,9 +5,10 @@ package v1
 // SwitchLBRuleStatusApplyConfiguration represents a declarative configuration of the SwitchLBRuleStatus type for use
 // with apply.
 type SwitchLBRuleStatusApplyConfiguration struct {
-	Conditions []SwitchLBRuleConditionApplyConfiguration `json:"conditions,omitempty"`
-	Ports      *string                                   `json:"ports,omitempty"`
-	Service    *string                                   `json:"service,omitempty"`
+	// Conditions represents the latest state of the object
+	Conditions []ConditionApplyConfiguration `json:"conditions,omitempty"`
+	Ports      *string                       `json:"ports,omitempty"`
+	Service    *string                       `json:"service,omitempty"`
 }
 
 // SwitchLBRuleStatusApplyConfiguration constructs a declarative configuration of the SwitchLBRuleStatus type for use with
@@ -19,7 +20,7 @@ func SwitchLBRuleStatus() *SwitchLBRuleStatusApplyConfiguration {
 // WithConditions adds the given value to the Conditions field in the declarative configuration
 // and returns the receiver, so that objects can be build by chaining "With" function invocations.
 // If called multiple times, values provided by each call will be appended to the Conditions field.
-func (b *SwitchLBRuleStatusApplyConfiguration) WithConditions(values ...*SwitchLBRuleConditionApplyConfiguration) *SwitchLBRuleStatusApplyConfiguration {
+func (b *SwitchLBRuleStatusApplyConfiguration) WithConditions(values ...*ConditionApplyConfiguration) *SwitchLBRuleStatusApplyConfiguration {
 	for i := range values {
 		if values[i] == nil {
 			panic("nil value passed to WithConditions")

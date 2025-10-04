@@ -9,15 +9,16 @@ import (
 // IPPoolStatusApplyConfiguration represents a declarative configuration of the IPPoolStatus type for use
 // with apply.
 type IPPoolStatusApplyConfiguration struct {
-	V4AvailableIPs     *internal.BigInt                    `json:"v4AvailableIPs,omitempty"`
-	V4AvailableIPRange *string                             `json:"v4AvailableIPRange,omitempty"`
-	V4UsingIPs         *internal.BigInt                    `json:"v4UsingIPs,omitempty"`
-	V4UsingIPRange     *string                             `json:"v4UsingIPRange,omitempty"`
-	V6AvailableIPs     *internal.BigInt                    `json:"v6AvailableIPs,omitempty"`
-	V6AvailableIPRange *string                             `json:"v6AvailableIPRange,omitempty"`
-	V6UsingIPs         *internal.BigInt                    `json:"v6UsingIPs,omitempty"`
-	V6UsingIPRange     *string                             `json:"v6UsingIPRange,omitempty"`
-	Conditions         []IPPoolConditionApplyConfiguration `json:"conditions,omitempty"`
+	V4AvailableIPs     *internal.BigInt `json:"v4AvailableIPs,omitempty"`
+	V4AvailableIPRange *string          `json:"v4AvailableIPRange,omitempty"`
+	V4UsingIPs         *internal.BigInt `json:"v4UsingIPs,omitempty"`
+	V4UsingIPRange     *string          `json:"v4UsingIPRange,omitempty"`
+	V6AvailableIPs     *internal.BigInt `json:"v6AvailableIPs,omitempty"`
+	V6AvailableIPRange *string          `json:"v6AvailableIPRange,omitempty"`
+	V6UsingIPs         *internal.BigInt `json:"v6UsingIPs,omitempty"`
+	V6UsingIPRange     *string          `json:"v6UsingIPRange,omitempty"`
+	// Conditions represents the latest state of the object
+	Conditions []ConditionApplyConfiguration `json:"conditions,omitempty"`
 }
 
 // IPPoolStatusApplyConfiguration constructs a declarative configuration of the IPPoolStatus type for use with
@@ -93,7 +94,7 @@ func (b *IPPoolStatusApplyConfiguration) WithV6UsingIPRange(value string) *IPPoo
 // WithConditions adds the given value to the Conditions field in the declarative configuration
 // and returns the receiver, so that objects can be build by chaining "With" function invocations.
 // If called multiple times, values provided by each call will be appended to the Conditions field.
-func (b *IPPoolStatusApplyConfiguration) WithConditions(values ...*IPPoolConditionApplyConfiguration) *IPPoolStatusApplyConfiguration {
+func (b *IPPoolStatusApplyConfiguration) WithConditions(values ...*ConditionApplyConfiguration) *IPPoolStatusApplyConfiguration {
 	for i := range values {
 		if values[i] == nil {
 			panic("nil value passed to WithConditions")

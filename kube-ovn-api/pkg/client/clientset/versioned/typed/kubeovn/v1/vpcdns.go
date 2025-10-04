@@ -52,6 +52,7 @@ func newVpcDnses(c *KubeovnV1Client) *vpcDnses {
 			scheme.ParameterCodec,
 			"",
 			func() *kubeovnv1.VpcDns { return &kubeovnv1.VpcDns{} },
-			func() *kubeovnv1.VpcDnsList { return &kubeovnv1.VpcDnsList{} }),
+			func() *kubeovnv1.VpcDnsList { return &kubeovnv1.VpcDnsList{} },
+		),
 	}
 }

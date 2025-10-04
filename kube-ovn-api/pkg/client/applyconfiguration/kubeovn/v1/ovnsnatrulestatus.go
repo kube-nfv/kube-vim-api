@@ -5,13 +5,14 @@ package v1
 // OvnSnatRuleStatusApplyConfiguration represents a declarative configuration of the OvnSnatRuleStatus type for use
 // with apply.
 type OvnSnatRuleStatusApplyConfiguration struct {
-	Vpc        *string                                  `json:"vpc,omitempty"`
-	V4Eip      *string                                  `json:"v4Eip,omitempty"`
-	V6Eip      *string                                  `json:"v6Eip,omitempty"`
-	V4IpCidr   *string                                  `json:"v4IpCidr,omitempty"`
-	V6IpCidr   *string                                  `json:"v6IpCidr,omitempty"`
-	Ready      *bool                                    `json:"ready,omitempty"`
-	Conditions []OvnSnatRuleConditionApplyConfiguration `json:"conditions,omitempty"`
+	Vpc      *string `json:"vpc,omitempty"`
+	V4Eip    *string `json:"v4Eip,omitempty"`
+	V6Eip    *string `json:"v6Eip,omitempty"`
+	V4IpCidr *string `json:"v4IpCidr,omitempty"`
+	V6IpCidr *string `json:"v6IpCidr,omitempty"`
+	Ready    *bool   `json:"ready,omitempty"`
+	// Conditions represents the latest state of the object
+	Conditions []ConditionApplyConfiguration `json:"conditions,omitempty"`
 }
 
 // OvnSnatRuleStatusApplyConfiguration constructs a declarative configuration of the OvnSnatRuleStatus type for use with
@@ -71,7 +72,7 @@ func (b *OvnSnatRuleStatusApplyConfiguration) WithReady(value bool) *OvnSnatRule
 // WithConditions adds the given value to the Conditions field in the declarative configuration
 // and returns the receiver, so that objects can be build by chaining "With" function invocations.
 // If called multiple times, values provided by each call will be appended to the Conditions field.
-func (b *OvnSnatRuleStatusApplyConfiguration) WithConditions(values ...*OvnSnatRuleConditionApplyConfiguration) *OvnSnatRuleStatusApplyConfiguration {
+func (b *OvnSnatRuleStatusApplyConfiguration) WithConditions(values ...*ConditionApplyConfiguration) *OvnSnatRuleStatusApplyConfiguration {
 	for i := range values {
 		if values[i] == nil {
 			panic("nil value passed to WithConditions")

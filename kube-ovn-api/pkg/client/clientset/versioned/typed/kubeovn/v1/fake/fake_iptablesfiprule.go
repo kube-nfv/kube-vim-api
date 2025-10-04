@@ -3,168 +3,33 @@
 package fake
 
 import (
-	context "context"
-	json "encoding/json"
-	fmt "fmt"
-
 	v1 "github.com/kube-nfv/kube-vim-api/kube-ovn-api/pkg/apis/kubeovn/v1"
 	kubeovnv1 "github.com/kube-nfv/kube-vim-api/kube-ovn-api/pkg/client/applyconfiguration/kubeovn/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	labels "k8s.io/apimachinery/pkg/labels"
-	types "k8s.io/apimachinery/pkg/types"
-	watch "k8s.io/apimachinery/pkg/watch"
-	testing "k8s.io/client-go/testing"
+	typedkubeovnv1 "github.com/kube-nfv/kube-vim-api/kube-ovn-api/pkg/client/clientset/versioned/typed/kubeovn/v1"
+	gentype "k8s.io/client-go/gentype"
 )
 
-// FakeIptablesFIPRules implements IptablesFIPRuleInterface
-type FakeIptablesFIPRules struct {
+// fakeIptablesFIPRules implements IptablesFIPRuleInterface
+type fakeIptablesFIPRules struct {
+	*gentype.FakeClientWithListAndApply[*v1.IptablesFIPRule, *v1.IptablesFIPRuleList, *kubeovnv1.IptablesFIPRuleApplyConfiguration]
 	Fake *FakeKubeovnV1
 }
 
-var iptablesfiprulesResource = v1.SchemeGroupVersion.WithResource("iptables-fip-rules")
-
-var iptablesfiprulesKind = v1.SchemeGroupVersion.WithKind("IptablesFIPRule")
-
-// Get takes name of the iptablesFIPRule, and returns the corresponding iptablesFIPRule object, and an error if there is any.
-func (c *FakeIptablesFIPRules) Get(ctx context.Context, name string, options metav1.GetOptions) (result *v1.IptablesFIPRule, err error) {
-	emptyResult := &v1.IptablesFIPRule{}
-	obj, err := c.Fake.
-		Invokes(testing.NewRootGetActionWithOptions(iptablesfiprulesResource, name, options), emptyResult)
-	if obj == nil {
-		return emptyResult, err
+func newFakeIptablesFIPRules(fake *FakeKubeovnV1) typedkubeovnv1.IptablesFIPRuleInterface {
+	return &fakeIptablesFIPRules{
+		gentype.NewFakeClientWithListAndApply[*v1.IptablesFIPRule, *v1.IptablesFIPRuleList, *kubeovnv1.IptablesFIPRuleApplyConfiguration](
+			fake.Fake,
+			"",
+			v1.SchemeGroupVersion.WithResource("iptables-fip-rules"),
+			v1.SchemeGroupVersion.WithKind("IptablesFIPRule"),
+			func() *v1.IptablesFIPRule { return &v1.IptablesFIPRule{} },
+			func() *v1.IptablesFIPRuleList { return &v1.IptablesFIPRuleList{} },
+			func(dst, src *v1.IptablesFIPRuleList) { dst.ListMeta = src.ListMeta },
+			func(list *v1.IptablesFIPRuleList) []*v1.IptablesFIPRule { return gentype.ToPointerSlice(list.Items) },
+			func(list *v1.IptablesFIPRuleList, items []*v1.IptablesFIPRule) {
+				list.Items = gentype.FromPointerSlice(items)
+			},
+		),
+		fake,
 	}
-	return obj.(*v1.IptablesFIPRule), err
-}
-
-// List takes label and field selectors, and returns the list of IptablesFIPRules that match those selectors.
-func (c *FakeIptablesFIPRules) List(ctx context.Context, opts metav1.ListOptions) (result *v1.IptablesFIPRuleList, err error) {
-	emptyResult := &v1.IptablesFIPRuleList{}
-	obj, err := c.Fake.
-		Invokes(testing.NewRootListActionWithOptions(iptablesfiprulesResource, iptablesfiprulesKind, opts), emptyResult)
-	if obj == nil {
-		return emptyResult, err
-	}
-
-	label, _, _ := testing.ExtractFromListOptions(opts)
-	if label == nil {
-		label = labels.Everything()
-	}
-	list := &v1.IptablesFIPRuleList{ListMeta: obj.(*v1.IptablesFIPRuleList).ListMeta}
-	for _, item := range obj.(*v1.IptablesFIPRuleList).Items {
-		if label.Matches(labels.Set(item.Labels)) {
-			list.Items = append(list.Items, item)
-		}
-	}
-	return list, err
-}
-
-// Watch returns a watch.Interface that watches the requested iptablesFIPRules.
-func (c *FakeIptablesFIPRules) Watch(ctx context.Context, opts metav1.ListOptions) (watch.Interface, error) {
-	return c.Fake.
-		InvokesWatch(testing.NewRootWatchActionWithOptions(iptablesfiprulesResource, opts))
-}
-
-// Create takes the representation of a iptablesFIPRule and creates it.  Returns the server's representation of the iptablesFIPRule, and an error, if there is any.
-func (c *FakeIptablesFIPRules) Create(ctx context.Context, iptablesFIPRule *v1.IptablesFIPRule, opts metav1.CreateOptions) (result *v1.IptablesFIPRule, err error) {
-	emptyResult := &v1.IptablesFIPRule{}
-	obj, err := c.Fake.
-		Invokes(testing.NewRootCreateActionWithOptions(iptablesfiprulesResource, iptablesFIPRule, opts), emptyResult)
-	if obj == nil {
-		return emptyResult, err
-	}
-	return obj.(*v1.IptablesFIPRule), err
-}
-
-// Update takes the representation of a iptablesFIPRule and updates it. Returns the server's representation of the iptablesFIPRule, and an error, if there is any.
-func (c *FakeIptablesFIPRules) Update(ctx context.Context, iptablesFIPRule *v1.IptablesFIPRule, opts metav1.UpdateOptions) (result *v1.IptablesFIPRule, err error) {
-	emptyResult := &v1.IptablesFIPRule{}
-	obj, err := c.Fake.
-		Invokes(testing.NewRootUpdateActionWithOptions(iptablesfiprulesResource, iptablesFIPRule, opts), emptyResult)
-	if obj == nil {
-		return emptyResult, err
-	}
-	return obj.(*v1.IptablesFIPRule), err
-}
-
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *FakeIptablesFIPRules) UpdateStatus(ctx context.Context, iptablesFIPRule *v1.IptablesFIPRule, opts metav1.UpdateOptions) (result *v1.IptablesFIPRule, err error) {
-	emptyResult := &v1.IptablesFIPRule{}
-	obj, err := c.Fake.
-		Invokes(testing.NewRootUpdateSubresourceActionWithOptions(iptablesfiprulesResource, "status", iptablesFIPRule, opts), emptyResult)
-	if obj == nil {
-		return emptyResult, err
-	}
-	return obj.(*v1.IptablesFIPRule), err
-}
-
-// Delete takes name of the iptablesFIPRule and deletes it. Returns an error if one occurs.
-func (c *FakeIptablesFIPRules) Delete(ctx context.Context, name string, opts metav1.DeleteOptions) error {
-	_, err := c.Fake.
-		Invokes(testing.NewRootDeleteActionWithOptions(iptablesfiprulesResource, name, opts), &v1.IptablesFIPRule{})
-	return err
-}
-
-// DeleteCollection deletes a collection of objects.
-func (c *FakeIptablesFIPRules) DeleteCollection(ctx context.Context, opts metav1.DeleteOptions, listOpts metav1.ListOptions) error {
-	action := testing.NewRootDeleteCollectionActionWithOptions(iptablesfiprulesResource, opts, listOpts)
-
-	_, err := c.Fake.Invokes(action, &v1.IptablesFIPRuleList{})
-	return err
-}
-
-// Patch applies the patch and returns the patched iptablesFIPRule.
-func (c *FakeIptablesFIPRules) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts metav1.PatchOptions, subresources ...string) (result *v1.IptablesFIPRule, err error) {
-	emptyResult := &v1.IptablesFIPRule{}
-	obj, err := c.Fake.
-		Invokes(testing.NewRootPatchSubresourceActionWithOptions(iptablesfiprulesResource, name, pt, data, opts, subresources...), emptyResult)
-	if obj == nil {
-		return emptyResult, err
-	}
-	return obj.(*v1.IptablesFIPRule), err
-}
-
-// Apply takes the given apply declarative configuration, applies it and returns the applied iptablesFIPRule.
-func (c *FakeIptablesFIPRules) Apply(ctx context.Context, iptablesFIPRule *kubeovnv1.IptablesFIPRuleApplyConfiguration, opts metav1.ApplyOptions) (result *v1.IptablesFIPRule, err error) {
-	if iptablesFIPRule == nil {
-		return nil, fmt.Errorf("iptablesFIPRule provided to Apply must not be nil")
-	}
-	data, err := json.Marshal(iptablesFIPRule)
-	if err != nil {
-		return nil, err
-	}
-	name := iptablesFIPRule.Name
-	if name == nil {
-		return nil, fmt.Errorf("iptablesFIPRule.Name must be provided to Apply")
-	}
-	emptyResult := &v1.IptablesFIPRule{}
-	obj, err := c.Fake.
-		Invokes(testing.NewRootPatchSubresourceActionWithOptions(iptablesfiprulesResource, *name, types.ApplyPatchType, data, opts.ToPatchOptions()), emptyResult)
-	if obj == nil {
-		return emptyResult, err
-	}
-	return obj.(*v1.IptablesFIPRule), err
-}
-
-// ApplyStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating ApplyStatus().
-func (c *FakeIptablesFIPRules) ApplyStatus(ctx context.Context, iptablesFIPRule *kubeovnv1.IptablesFIPRuleApplyConfiguration, opts metav1.ApplyOptions) (result *v1.IptablesFIPRule, err error) {
-	if iptablesFIPRule == nil {
-		return nil, fmt.Errorf("iptablesFIPRule provided to Apply must not be nil")
-	}
-	data, err := json.Marshal(iptablesFIPRule)
-	if err != nil {
-		return nil, err
-	}
-	name := iptablesFIPRule.Name
-	if name == nil {
-		return nil, fmt.Errorf("iptablesFIPRule.Name must be provided to Apply")
-	}
-	emptyResult := &v1.IptablesFIPRule{}
-	obj, err := c.Fake.
-		Invokes(testing.NewRootPatchSubresourceActionWithOptions(iptablesfiprulesResource, *name, types.ApplyPatchType, data, opts.ToPatchOptions(), "status"), emptyResult)
-	if obj == nil {
-		return emptyResult, err
-	}
-	return obj.(*v1.IptablesFIPRule), err
 }

@@ -7,10 +7,13 @@ package v1
 type OvnFipSpecApplyConfiguration struct {
 	OvnEip *string `json:"ovnEip,omitempty"`
 	IPType *string `json:"ipType,omitempty"`
+	// vip, ip
 	IPName *string `json:"ipName,omitempty"`
-	Vpc    *string `json:"vpc,omitempty"`
-	V4Ip   *string `json:"v4Ip,omitempty"`
-	V6Ip   *string `json:"v6Ip,omitempty"`
+	// vip, ip crd name
+	Vpc  *string `json:"vpc,omitempty"`
+	V4Ip *string `json:"v4Ip,omitempty"`
+	V6Ip *string `json:"v6Ip,omitempty"`
+	Type *string `json:"type,omitempty"`
 }
 
 // OvnFipSpecApplyConfiguration constructs a declarative configuration of the OvnFipSpec type for use with
@@ -64,5 +67,13 @@ func (b *OvnFipSpecApplyConfiguration) WithV4Ip(value string) *OvnFipSpecApplyCo
 // If called multiple times, the V6Ip field is set to the value of the last call.
 func (b *OvnFipSpecApplyConfiguration) WithV6Ip(value string) *OvnFipSpecApplyConfiguration {
 	b.V6Ip = &value
+	return b
+}
+
+// WithType sets the Type field in the declarative configuration to the given value
+// and returns the receiver, so that objects can be built by chaining "With" function invocations.
+// If called multiple times, the Type field is set to the value of the last call.
+func (b *OvnFipSpecApplyConfiguration) WithType(value string) *OvnFipSpecApplyConfiguration {
+	b.Type = &value
 	return b
 }

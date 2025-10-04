@@ -5,15 +5,13 @@ package v1
 // VipSpecApplyConfiguration represents a declarative configuration of the VipSpec type for use
 // with apply.
 type VipSpecApplyConfiguration struct {
-	Namespace     *string  `json:"namespace,omitempty"`
-	Subnet        *string  `json:"subnet,omitempty"`
-	Type          *string  `json:"type,omitempty"`
+	Namespace *string `json:"namespace,omitempty"`
+	Subnet    *string `json:"subnet,omitempty"`
+	Type      *string `json:"type,omitempty"`
+	// usage type: switch lb vip, allowed address pair vip by default
 	V4ip          *string  `json:"v4ip,omitempty"`
 	V6ip          *string  `json:"v6ip,omitempty"`
 	MacAddress    *string  `json:"macAddress,omitempty"`
-	ParentV4ip    *string  `json:"parentV4ip,omitempty"`
-	ParentV6ip    *string  `json:"parentV6ip,omitempty"`
-	ParentMac     *string  `json:"parentMac,omitempty"`
 	Selector      []string `json:"selector,omitempty"`
 	AttachSubnets []string `json:"attachSubnets,omitempty"`
 }
@@ -69,30 +67,6 @@ func (b *VipSpecApplyConfiguration) WithV6ip(value string) *VipSpecApplyConfigur
 // If called multiple times, the MacAddress field is set to the value of the last call.
 func (b *VipSpecApplyConfiguration) WithMacAddress(value string) *VipSpecApplyConfiguration {
 	b.MacAddress = &value
-	return b
-}
-
-// WithParentV4ip sets the ParentV4ip field in the declarative configuration to the given value
-// and returns the receiver, so that objects can be built by chaining "With" function invocations.
-// If called multiple times, the ParentV4ip field is set to the value of the last call.
-func (b *VipSpecApplyConfiguration) WithParentV4ip(value string) *VipSpecApplyConfiguration {
-	b.ParentV4ip = &value
-	return b
-}
-
-// WithParentV6ip sets the ParentV6ip field in the declarative configuration to the given value
-// and returns the receiver, so that objects can be built by chaining "With" function invocations.
-// If called multiple times, the ParentV6ip field is set to the value of the last call.
-func (b *VipSpecApplyConfiguration) WithParentV6ip(value string) *VipSpecApplyConfiguration {
-	b.ParentV6ip = &value
-	return b
-}
-
-// WithParentMac sets the ParentMac field in the declarative configuration to the given value
-// and returns the receiver, so that objects can be built by chaining "With" function invocations.
-// If called multiple times, the ParentMac field is set to the value of the last call.
-func (b *VipSpecApplyConfiguration) WithParentMac(value string) *VipSpecApplyConfiguration {
-	b.ParentMac = &value
 	return b
 }
 

@@ -6,9 +6,9 @@ import (
 	corev1 "k8s.io/api/core/v1"
 )
 
-// VpcNatStatusApplyConfiguration represents a declarative configuration of the VpcNatStatus type for use
+// VpcNatGatewayStatusApplyConfiguration represents a declarative configuration of the VpcNatGatewayStatus type for use
 // with apply.
-type VpcNatStatusApplyConfiguration struct {
+type VpcNatGatewayStatusApplyConfiguration struct {
 	QoSPolicy       *string             `json:"qosPolicy,omitempty"`
 	ExternalSubnets []string            `json:"externalSubnets,omitempty"`
 	Selector        []string            `json:"selector,omitempty"`
@@ -16,16 +16,16 @@ type VpcNatStatusApplyConfiguration struct {
 	Affinity        *corev1.Affinity    `json:"affinity,omitempty"`
 }
 
-// VpcNatStatusApplyConfiguration constructs a declarative configuration of the VpcNatStatus type for use with
+// VpcNatGatewayStatusApplyConfiguration constructs a declarative configuration of the VpcNatGatewayStatus type for use with
 // apply.
-func VpcNatStatus() *VpcNatStatusApplyConfiguration {
-	return &VpcNatStatusApplyConfiguration{}
+func VpcNatGatewayStatus() *VpcNatGatewayStatusApplyConfiguration {
+	return &VpcNatGatewayStatusApplyConfiguration{}
 }
 
 // WithQoSPolicy sets the QoSPolicy field in the declarative configuration to the given value
 // and returns the receiver, so that objects can be built by chaining "With" function invocations.
 // If called multiple times, the QoSPolicy field is set to the value of the last call.
-func (b *VpcNatStatusApplyConfiguration) WithQoSPolicy(value string) *VpcNatStatusApplyConfiguration {
+func (b *VpcNatGatewayStatusApplyConfiguration) WithQoSPolicy(value string) *VpcNatGatewayStatusApplyConfiguration {
 	b.QoSPolicy = &value
 	return b
 }
@@ -33,7 +33,7 @@ func (b *VpcNatStatusApplyConfiguration) WithQoSPolicy(value string) *VpcNatStat
 // WithExternalSubnets adds the given value to the ExternalSubnets field in the declarative configuration
 // and returns the receiver, so that objects can be build by chaining "With" function invocations.
 // If called multiple times, values provided by each call will be appended to the ExternalSubnets field.
-func (b *VpcNatStatusApplyConfiguration) WithExternalSubnets(values ...string) *VpcNatStatusApplyConfiguration {
+func (b *VpcNatGatewayStatusApplyConfiguration) WithExternalSubnets(values ...string) *VpcNatGatewayStatusApplyConfiguration {
 	for i := range values {
 		b.ExternalSubnets = append(b.ExternalSubnets, values[i])
 	}
@@ -43,7 +43,7 @@ func (b *VpcNatStatusApplyConfiguration) WithExternalSubnets(values ...string) *
 // WithSelector adds the given value to the Selector field in the declarative configuration
 // and returns the receiver, so that objects can be build by chaining "With" function invocations.
 // If called multiple times, values provided by each call will be appended to the Selector field.
-func (b *VpcNatStatusApplyConfiguration) WithSelector(values ...string) *VpcNatStatusApplyConfiguration {
+func (b *VpcNatGatewayStatusApplyConfiguration) WithSelector(values ...string) *VpcNatGatewayStatusApplyConfiguration {
 	for i := range values {
 		b.Selector = append(b.Selector, values[i])
 	}
@@ -53,7 +53,7 @@ func (b *VpcNatStatusApplyConfiguration) WithSelector(values ...string) *VpcNatS
 // WithTolerations adds the given value to the Tolerations field in the declarative configuration
 // and returns the receiver, so that objects can be build by chaining "With" function invocations.
 // If called multiple times, values provided by each call will be appended to the Tolerations field.
-func (b *VpcNatStatusApplyConfiguration) WithTolerations(values ...corev1.Toleration) *VpcNatStatusApplyConfiguration {
+func (b *VpcNatGatewayStatusApplyConfiguration) WithTolerations(values ...corev1.Toleration) *VpcNatGatewayStatusApplyConfiguration {
 	for i := range values {
 		b.Tolerations = append(b.Tolerations, values[i])
 	}
@@ -63,7 +63,7 @@ func (b *VpcNatStatusApplyConfiguration) WithTolerations(values ...corev1.Tolera
 // WithAffinity sets the Affinity field in the declarative configuration to the given value
 // and returns the receiver, so that objects can be built by chaining "With" function invocations.
 // If called multiple times, the Affinity field is set to the value of the last call.
-func (b *VpcNatStatusApplyConfiguration) WithAffinity(value corev1.Affinity) *VpcNatStatusApplyConfiguration {
+func (b *VpcNatGatewayStatusApplyConfiguration) WithAffinity(value corev1.Affinity) *VpcNatGatewayStatusApplyConfiguration {
 	b.Affinity = &value
 	return b
 }

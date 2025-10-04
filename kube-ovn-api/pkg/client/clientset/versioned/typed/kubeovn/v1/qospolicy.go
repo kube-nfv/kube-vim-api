@@ -52,6 +52,7 @@ func newQoSPolicies(c *KubeovnV1Client) *qoSPolicies {
 			scheme.ParameterCodec,
 			"",
 			func() *kubeovnv1.QoSPolicy { return &kubeovnv1.QoSPolicy{} },
-			func() *kubeovnv1.QoSPolicyList { return &kubeovnv1.QoSPolicyList{} }),
+			func() *kubeovnv1.QoSPolicyList { return &kubeovnv1.QoSPolicyList{} },
+		),
 	}
 }

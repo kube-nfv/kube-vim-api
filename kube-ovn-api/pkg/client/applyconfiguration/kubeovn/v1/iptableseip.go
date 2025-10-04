@@ -13,8 +13,8 @@ import (
 type IptablesEIPApplyConfiguration struct {
 	metav1.TypeMetaApplyConfiguration    `json:",inline"`
 	*metav1.ObjectMetaApplyConfiguration `json:"metadata,omitempty"`
-	Spec                                 *IptablesEipSpecApplyConfiguration   `json:"spec,omitempty"`
-	Status                               *IptablesEipStatusApplyConfiguration `json:"status,omitempty"`
+	Spec                                 *IptablesEIPSpecApplyConfiguration   `json:"spec,omitempty"`
+	Status                               *IptablesEIPStatusApplyConfiguration `json:"status,omitempty"`
 }
 
 // IptablesEIP constructs a declarative configuration of the IptablesEIP type for use with
@@ -26,6 +26,8 @@ func IptablesEIP(name string) *IptablesEIPApplyConfiguration {
 	b.WithAPIVersion("kubeovn.io/v1")
 	return b
 }
+
+func (b IptablesEIPApplyConfiguration) IsApplyConfiguration() {}
 
 // WithKind sets the Kind field in the declarative configuration to the given value
 // and returns the receiver, so that objects can be built by chaining "With" function invocations.
@@ -188,7 +190,7 @@ func (b *IptablesEIPApplyConfiguration) ensureObjectMetaApplyConfigurationExists
 // WithSpec sets the Spec field in the declarative configuration to the given value
 // and returns the receiver, so that objects can be built by chaining "With" function invocations.
 // If called multiple times, the Spec field is set to the value of the last call.
-func (b *IptablesEIPApplyConfiguration) WithSpec(value *IptablesEipSpecApplyConfiguration) *IptablesEIPApplyConfiguration {
+func (b *IptablesEIPApplyConfiguration) WithSpec(value *IptablesEIPSpecApplyConfiguration) *IptablesEIPApplyConfiguration {
 	b.Spec = value
 	return b
 }
@@ -196,13 +198,29 @@ func (b *IptablesEIPApplyConfiguration) WithSpec(value *IptablesEipSpecApplyConf
 // WithStatus sets the Status field in the declarative configuration to the given value
 // and returns the receiver, so that objects can be built by chaining "With" function invocations.
 // If called multiple times, the Status field is set to the value of the last call.
-func (b *IptablesEIPApplyConfiguration) WithStatus(value *IptablesEipStatusApplyConfiguration) *IptablesEIPApplyConfiguration {
+func (b *IptablesEIPApplyConfiguration) WithStatus(value *IptablesEIPStatusApplyConfiguration) *IptablesEIPApplyConfiguration {
 	b.Status = value
 	return b
+}
+
+// GetKind retrieves the value of the Kind field in the declarative configuration.
+func (b *IptablesEIPApplyConfiguration) GetKind() *string {
+	return b.TypeMetaApplyConfiguration.Kind
+}
+
+// GetAPIVersion retrieves the value of the APIVersion field in the declarative configuration.
+func (b *IptablesEIPApplyConfiguration) GetAPIVersion() *string {
+	return b.TypeMetaApplyConfiguration.APIVersion
 }
 
 // GetName retrieves the value of the Name field in the declarative configuration.
 func (b *IptablesEIPApplyConfiguration) GetName() *string {
 	b.ensureObjectMetaApplyConfigurationExists()
 	return b.ObjectMetaApplyConfiguration.Name
+}
+
+// GetNamespace retrieves the value of the Namespace field in the declarative configuration.
+func (b *IptablesEIPApplyConfiguration) GetNamespace() *string {
+	b.ensureObjectMetaApplyConfigurationExists()
+	return b.ObjectMetaApplyConfiguration.Namespace
 }

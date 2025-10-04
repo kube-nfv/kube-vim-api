@@ -8,6 +8,8 @@ import (
 
 // QoSPolicyBandwidthLimitRuleApplyConfiguration represents a declarative configuration of the QoSPolicyBandwidthLimitRule type for use
 // with apply.
+//
+// BandwidthLimitRule describes the rule of an bandwidth limit.
 type QoSPolicyBandwidthLimitRuleApplyConfiguration struct {
 	Name       *string                           `json:"name,omitempty"`
 	Interface  *string                           `json:"interface,omitempty"`

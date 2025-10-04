@@ -2,25 +2,25 @@
 
 package v1
 
-// SlrPortApplyConfiguration represents a declarative configuration of the SlrPort type for use
+// SwitchLBRulePortApplyConfiguration represents a declarative configuration of the SwitchLBRulePort type for use
 // with apply.
-type SlrPortApplyConfiguration struct {
+type SwitchLBRulePortApplyConfiguration struct {
 	Name       *string `json:"name,omitempty"`
 	Port       *int32  `json:"port,omitempty"`
 	TargetPort *int32  `json:"targetPort,omitempty"`
 	Protocol   *string `json:"protocol,omitempty"`
 }
 
-// SlrPortApplyConfiguration constructs a declarative configuration of the SlrPort type for use with
+// SwitchLBRulePortApplyConfiguration constructs a declarative configuration of the SwitchLBRulePort type for use with
 // apply.
-func SlrPort() *SlrPortApplyConfiguration {
-	return &SlrPortApplyConfiguration{}
+func SwitchLBRulePort() *SwitchLBRulePortApplyConfiguration {
+	return &SwitchLBRulePortApplyConfiguration{}
 }
 
 // WithName sets the Name field in the declarative configuration to the given value
 // and returns the receiver, so that objects can be built by chaining "With" function invocations.
 // If called multiple times, the Name field is set to the value of the last call.
-func (b *SlrPortApplyConfiguration) WithName(value string) *SlrPortApplyConfiguration {
+func (b *SwitchLBRulePortApplyConfiguration) WithName(value string) *SwitchLBRulePortApplyConfiguration {
 	b.Name = &value
 	return b
 }
@@ -28,7 +28,7 @@ func (b *SlrPortApplyConfiguration) WithName(value string) *SlrPortApplyConfigur
 // WithPort sets the Port field in the declarative configuration to the given value
 // and returns the receiver, so that objects can be built by chaining "With" function invocations.
 // If called multiple times, the Port field is set to the value of the last call.
-func (b *SlrPortApplyConfiguration) WithPort(value int32) *SlrPortApplyConfiguration {
+func (b *SwitchLBRulePortApplyConfiguration) WithPort(value int32) *SwitchLBRulePortApplyConfiguration {
 	b.Port = &value
 	return b
 }
@@ -36,7 +36,7 @@ func (b *SlrPortApplyConfiguration) WithPort(value int32) *SlrPortApplyConfigura
 // WithTargetPort sets the TargetPort field in the declarative configuration to the given value
 // and returns the receiver, so that objects can be built by chaining "With" function invocations.
 // If called multiple times, the TargetPort field is set to the value of the last call.
-func (b *SlrPortApplyConfiguration) WithTargetPort(value int32) *SlrPortApplyConfiguration {
+func (b *SwitchLBRulePortApplyConfiguration) WithTargetPort(value int32) *SwitchLBRulePortApplyConfiguration {
 	b.TargetPort = &value
 	return b
 }
@@ -44,7 +44,7 @@ func (b *SlrPortApplyConfiguration) WithTargetPort(value int32) *SlrPortApplyCon
 // WithProtocol sets the Protocol field in the declarative configuration to the given value
 // and returns the receiver, so that objects can be built by chaining "With" function invocations.
 // If called multiple times, the Protocol field is set to the value of the last call.
-func (b *SlrPortApplyConfiguration) WithProtocol(value string) *SlrPortApplyConfiguration {
+func (b *SwitchLBRulePortApplyConfiguration) WithProtocol(value string) *SwitchLBRulePortApplyConfiguration {
 	b.Protocol = &value
 	return b
 }

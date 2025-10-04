@@ -52,6 +52,7 @@ func newSecurityGroups(c *KubeovnV1Client) *securityGroups {
 			scheme.ParameterCodec,
 			"",
 			func() *kubeovnv1.SecurityGroup { return &kubeovnv1.SecurityGroup{} },
-			func() *kubeovnv1.SecurityGroupList { return &kubeovnv1.SecurityGroupList{} }),
+			func() *kubeovnv1.SecurityGroupList { return &kubeovnv1.SecurityGroupList{} },
+		),
 	}
 }

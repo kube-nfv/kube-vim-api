@@ -52,6 +52,7 @@ func newProviderNetworks(c *KubeovnV1Client) *providerNetworks {
 			scheme.ParameterCodec,
 			"",
 			func() *kubeovnv1.ProviderNetwork { return &kubeovnv1.ProviderNetwork{} },
-			func() *kubeovnv1.ProviderNetworkList { return &kubeovnv1.ProviderNetworkList{} }),
+			func() *kubeovnv1.ProviderNetworkList { return &kubeovnv1.ProviderNetworkList{} },
+		),
 	}
 }

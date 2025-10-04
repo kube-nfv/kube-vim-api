@@ -52,6 +52,7 @@ func newIPPools(c *KubeovnV1Client) *iPPools {
 			scheme.ParameterCodec,
 			"",
 			func() *kubeovnv1.IPPool { return &kubeovnv1.IPPool{} },
-			func() *kubeovnv1.IPPoolList { return &kubeovnv1.IPPoolList{} }),
+			func() *kubeovnv1.IPPoolList { return &kubeovnv1.IPPoolList{} },
+		),
 	}
 }

@@ -52,6 +52,7 @@ func newOvnFips(c *KubeovnV1Client) *ovnFips {
 			scheme.ParameterCodec,
 			"",
 			func() *kubeovnv1.OvnFip { return &kubeovnv1.OvnFip{} },
-			func() *kubeovnv1.OvnFipList { return &kubeovnv1.OvnFipList{} }),
+			func() *kubeovnv1.OvnFipList { return &kubeovnv1.OvnFipList{} },
+		),
 	}
 }

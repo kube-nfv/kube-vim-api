@@ -5,7 +5,8 @@ package v1
 // VpcStatusApplyConfiguration represents a declarative configuration of the VpcStatus type for use
 // with apply.
 type VpcStatusApplyConfiguration struct {
-	Conditions              []VpcConditionApplyConfiguration `json:"conditions,omitempty"`
+	// Conditions represents the latest state of the object
+	Conditions              []ConditionApplyConfiguration    `json:"conditions,omitempty"`
 	Standby                 *bool                            `json:"standby,omitempty"`
 	Default                 *bool                            `json:"default,omitempty"`
 	DefaultLogicalSwitch    *string                          `json:"defaultLogicalSwitch,omitempty"`
@@ -21,6 +22,7 @@ type VpcStatusApplyConfiguration struct {
 	EnableExternal          *bool                            `json:"enableExternal,omitempty"`
 	ExtraExternalSubnets    []string                         `json:"extraExternalSubnets,omitempty"`
 	EnableBfd               *bool                            `json:"enableBfd,omitempty"`
+	BFDPort                 *BFDPortStatusApplyConfiguration `json:"bfdPort,omitempty"`
 }
 
 // VpcStatusApplyConfiguration constructs a declarative configuration of the VpcStatus type for use with
@@ -32,7 +34,7 @@ func VpcStatus() *VpcStatusApplyConfiguration {
 // WithConditions adds the given value to the Conditions field in the declarative configuration
 // and returns the receiver, so that objects can be build by chaining "With" function invocations.
 // If called multiple times, values provided by each call will be appended to the Conditions field.
-func (b *VpcStatusApplyConfiguration) WithConditions(values ...*VpcConditionApplyConfiguration) *VpcStatusApplyConfiguration {
+func (b *VpcStatusApplyConfiguration) WithConditions(values ...*ConditionApplyConfiguration) *VpcStatusApplyConfiguration {
 	for i := range values {
 		if values[i] == nil {
 			panic("nil value passed to WithConditions")
@@ -165,5 +167,13 @@ func (b *VpcStatusApplyConfiguration) WithExtraExternalSubnets(values ...string)
 // If called multiple times, the EnableBfd field is set to the value of the last call.
 func (b *VpcStatusApplyConfiguration) WithEnableBfd(value bool) *VpcStatusApplyConfiguration {
 	b.EnableBfd = &value
+	return b
+}
+
+// WithBFDPort sets the BFDPort field in the declarative configuration to the given value
+// and returns the receiver, so that objects can be built by chaining "With" function invocations.
+// If called multiple times, the BFDPort field is set to the value of the last call.
+func (b *VpcStatusApplyConfiguration) WithBFDPort(value *BFDPortStatusApplyConfiguration) *VpcStatusApplyConfiguration {
+	b.BFDPort = value
 	return b
 }

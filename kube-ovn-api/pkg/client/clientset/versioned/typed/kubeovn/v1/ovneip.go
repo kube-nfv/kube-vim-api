@@ -52,6 +52,7 @@ func newOvnEips(c *KubeovnV1Client) *ovnEips {
 			scheme.ParameterCodec,
 			"",
 			func() *kubeovnv1.OvnEip { return &kubeovnv1.OvnEip{} },
-			func() *kubeovnv1.OvnEipList { return &kubeovnv1.OvnEipList{} }),
+			func() *kubeovnv1.OvnEipList { return &kubeovnv1.OvnEipList{} },
+		),
 	}
 }

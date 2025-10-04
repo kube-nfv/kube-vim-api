@@ -52,6 +52,7 @@ func newSwitchLBRules(c *KubeovnV1Client) *switchLBRules {
 			scheme.ParameterCodec,
 			"",
 			func() *kubeovnv1.SwitchLBRule { return &kubeovnv1.SwitchLBRule{} },
-			func() *kubeovnv1.SwitchLBRuleList { return &kubeovnv1.SwitchLBRuleList{} }),
+			func() *kubeovnv1.SwitchLBRuleList { return &kubeovnv1.SwitchLBRuleList{} },
+		),
 	}
 }

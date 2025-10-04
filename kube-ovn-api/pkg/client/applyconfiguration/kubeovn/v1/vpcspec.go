@@ -17,6 +17,9 @@ type VpcSpecApplyConfiguration struct {
 	EnableExternal       *bool                    `json:"enableExternal,omitempty"`
 	ExtraExternalSubnets []string                 `json:"extraExternalSubnets,omitempty"`
 	EnableBfd            *bool                    `json:"enableBfd,omitempty"`
+	// optional BFD LRP configuration
+	// currently the LRP is used for vpc external gateway only
+	BFDPort *BFDPortApplyConfiguration `json:"bfdPort,omitempty"`
 }
 
 // VpcSpecApplyConfiguration constructs a declarative configuration of the VpcSpec type for use with
@@ -105,5 +108,13 @@ func (b *VpcSpecApplyConfiguration) WithExtraExternalSubnets(values ...string) *
 // If called multiple times, the EnableBfd field is set to the value of the last call.
 func (b *VpcSpecApplyConfiguration) WithEnableBfd(value bool) *VpcSpecApplyConfiguration {
 	b.EnableBfd = &value
+	return b
+}
+
+// WithBFDPort sets the BFDPort field in the declarative configuration to the given value
+// and returns the receiver, so that objects can be built by chaining "With" function invocations.
+// If called multiple times, the BFDPort field is set to the value of the last call.
+func (b *VpcSpecApplyConfiguration) WithBFDPort(value *BFDPortApplyConfiguration) *VpcSpecApplyConfiguration {
+	b.BFDPort = value
 	return b
 }

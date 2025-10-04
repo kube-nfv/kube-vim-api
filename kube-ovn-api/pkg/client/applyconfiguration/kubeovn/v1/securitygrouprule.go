@@ -6,9 +6,9 @@ import (
 	kubeovnv1 "github.com/kube-nfv/kube-vim-api/kube-ovn-api/pkg/apis/kubeovn/v1"
 )
 
-// SgRuleApplyConfiguration represents a declarative configuration of the SgRule type for use
+// SecurityGroupRuleApplyConfiguration represents a declarative configuration of the SecurityGroupRule type for use
 // with apply.
-type SgRuleApplyConfiguration struct {
+type SecurityGroupRuleApplyConfiguration struct {
 	IPVersion           *string                 `json:"ipVersion,omitempty"`
 	Protocol            *kubeovnv1.SgProtocol   `json:"protocol,omitempty"`
 	Priority            *int                    `json:"priority,omitempty"`
@@ -20,16 +20,16 @@ type SgRuleApplyConfiguration struct {
 	Policy              *kubeovnv1.SgPolicy     `json:"policy,omitempty"`
 }
 
-// SgRuleApplyConfiguration constructs a declarative configuration of the SgRule type for use with
+// SecurityGroupRuleApplyConfiguration constructs a declarative configuration of the SecurityGroupRule type for use with
 // apply.
-func SgRule() *SgRuleApplyConfiguration {
-	return &SgRuleApplyConfiguration{}
+func SecurityGroupRule() *SecurityGroupRuleApplyConfiguration {
+	return &SecurityGroupRuleApplyConfiguration{}
 }
 
 // WithIPVersion sets the IPVersion field in the declarative configuration to the given value
 // and returns the receiver, so that objects can be built by chaining "With" function invocations.
 // If called multiple times, the IPVersion field is set to the value of the last call.
-func (b *SgRuleApplyConfiguration) WithIPVersion(value string) *SgRuleApplyConfiguration {
+func (b *SecurityGroupRuleApplyConfiguration) WithIPVersion(value string) *SecurityGroupRuleApplyConfiguration {
 	b.IPVersion = &value
 	return b
 }
@@ -37,7 +37,7 @@ func (b *SgRuleApplyConfiguration) WithIPVersion(value string) *SgRuleApplyConfi
 // WithProtocol sets the Protocol field in the declarative configuration to the given value
 // and returns the receiver, so that objects can be built by chaining "With" function invocations.
 // If called multiple times, the Protocol field is set to the value of the last call.
-func (b *SgRuleApplyConfiguration) WithProtocol(value kubeovnv1.SgProtocol) *SgRuleApplyConfiguration {
+func (b *SecurityGroupRuleApplyConfiguration) WithProtocol(value kubeovnv1.SgProtocol) *SecurityGroupRuleApplyConfiguration {
 	b.Protocol = &value
 	return b
 }
@@ -45,7 +45,7 @@ func (b *SgRuleApplyConfiguration) WithProtocol(value kubeovnv1.SgProtocol) *SgR
 // WithPriority sets the Priority field in the declarative configuration to the given value
 // and returns the receiver, so that objects can be built by chaining "With" function invocations.
 // If called multiple times, the Priority field is set to the value of the last call.
-func (b *SgRuleApplyConfiguration) WithPriority(value int) *SgRuleApplyConfiguration {
+func (b *SecurityGroupRuleApplyConfiguration) WithPriority(value int) *SecurityGroupRuleApplyConfiguration {
 	b.Priority = &value
 	return b
 }
@@ -53,7 +53,7 @@ func (b *SgRuleApplyConfiguration) WithPriority(value int) *SgRuleApplyConfigura
 // WithRemoteType sets the RemoteType field in the declarative configuration to the given value
 // and returns the receiver, so that objects can be built by chaining "With" function invocations.
 // If called multiple times, the RemoteType field is set to the value of the last call.
-func (b *SgRuleApplyConfiguration) WithRemoteType(value kubeovnv1.SgRemoteType) *SgRuleApplyConfiguration {
+func (b *SecurityGroupRuleApplyConfiguration) WithRemoteType(value kubeovnv1.SgRemoteType) *SecurityGroupRuleApplyConfiguration {
 	b.RemoteType = &value
 	return b
 }
@@ -61,7 +61,7 @@ func (b *SgRuleApplyConfiguration) WithRemoteType(value kubeovnv1.SgRemoteType) 
 // WithRemoteAddress sets the RemoteAddress field in the declarative configuration to the given value
 // and returns the receiver, so that objects can be built by chaining "With" function invocations.
 // If called multiple times, the RemoteAddress field is set to the value of the last call.
-func (b *SgRuleApplyConfiguration) WithRemoteAddress(value string) *SgRuleApplyConfiguration {
+func (b *SecurityGroupRuleApplyConfiguration) WithRemoteAddress(value string) *SecurityGroupRuleApplyConfiguration {
 	b.RemoteAddress = &value
 	return b
 }
@@ -69,7 +69,7 @@ func (b *SgRuleApplyConfiguration) WithRemoteAddress(value string) *SgRuleApplyC
 // WithRemoteSecurityGroup sets the RemoteSecurityGroup field in the declarative configuration to the given value
 // and returns the receiver, so that objects can be built by chaining "With" function invocations.
 // If called multiple times, the RemoteSecurityGroup field is set to the value of the last call.
-func (b *SgRuleApplyConfiguration) WithRemoteSecurityGroup(value string) *SgRuleApplyConfiguration {
+func (b *SecurityGroupRuleApplyConfiguration) WithRemoteSecurityGroup(value string) *SecurityGroupRuleApplyConfiguration {
 	b.RemoteSecurityGroup = &value
 	return b
 }
@@ -77,7 +77,7 @@ func (b *SgRuleApplyConfiguration) WithRemoteSecurityGroup(value string) *SgRule
 // WithPortRangeMin sets the PortRangeMin field in the declarative configuration to the given value
 // and returns the receiver, so that objects can be built by chaining "With" function invocations.
 // If called multiple times, the PortRangeMin field is set to the value of the last call.
-func (b *SgRuleApplyConfiguration) WithPortRangeMin(value int) *SgRuleApplyConfiguration {
+func (b *SecurityGroupRuleApplyConfiguration) WithPortRangeMin(value int) *SecurityGroupRuleApplyConfiguration {
 	b.PortRangeMin = &value
 	return b
 }
@@ -85,7 +85,7 @@ func (b *SgRuleApplyConfiguration) WithPortRangeMin(value int) *SgRuleApplyConfi
 // WithPortRangeMax sets the PortRangeMax field in the declarative configuration to the given value
 // and returns the receiver, so that objects can be built by chaining "With" function invocations.
 // If called multiple times, the PortRangeMax field is set to the value of the last call.
-func (b *SgRuleApplyConfiguration) WithPortRangeMax(value int) *SgRuleApplyConfiguration {
+func (b *SecurityGroupRuleApplyConfiguration) WithPortRangeMax(value int) *SecurityGroupRuleApplyConfiguration {
 	b.PortRangeMax = &value
 	return b
 }
@@ -93,7 +93,7 @@ func (b *SgRuleApplyConfiguration) WithPortRangeMax(value int) *SgRuleApplyConfi
 // WithPolicy sets the Policy field in the declarative configuration to the given value
 // and returns the receiver, so that objects can be built by chaining "With" function invocations.
 // If called multiple times, the Policy field is set to the value of the last call.
-func (b *SgRuleApplyConfiguration) WithPolicy(value kubeovnv1.SgPolicy) *SgRuleApplyConfiguration {
+func (b *SecurityGroupRuleApplyConfiguration) WithPolicy(value kubeovnv1.SgPolicy) *SecurityGroupRuleApplyConfiguration {
 	b.Policy = &value
 	return b
 }
