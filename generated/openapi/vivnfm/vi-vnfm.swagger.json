@@ -1155,8 +1155,7 @@
       "type": "object",
       "properties": {
         "virtualMemSize": {
-          "type": "number",
-          "format": "float",
+          "$ref": "#/definitions/resourceQuantity",
           "description": "Amount of virtual Memory (e.g. in MB)."
         },
         "virtualMemOversubscriptionPolicy": {
@@ -1474,8 +1473,7 @@
           "description": "Type of virtualised storage resource (e.g. volume, object)."
         },
         "sizeOfStorage": {
-          "type": "number",
-          "format": "float",
+          "$ref": "#/definitions/resourceQuantity",
           "description": "Size of virtualised storage resource (e.g. size of volume, in GB)."
         },
         "rdmaEnabled": {

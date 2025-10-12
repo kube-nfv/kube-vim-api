@@ -17,8 +17,9 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictFloat, StrictInt, StrictStr
-from typing import Any, ClassVar, Dict, List, Optional, Union
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
+from typing import Any, ClassVar, Dict, List, Optional
+from kubevim_vivnfm_client.models.resource_quantity import ResourceQuantity
 from typing import Optional, Set
 from typing_extensions import Self
 
@@ -26,7 +27,7 @@ class VirtualMemoryData(BaseModel):
     """
     Information describing virtual memory.
     """ # noqa: E501
-    virtual_mem_size: Union[StrictFloat, StrictInt] = Field(description="Amount of virtual Memory (e.g. in MB).", alias="virtualMemSize")
+    virtual_mem_size: ResourceQuantity = Field(alias="virtualMemSize")
     virtual_mem_oversubscription_policy: Optional[StrictStr] = Field(default=None, description="Memory core oversubscription policy in terms of virtual memory to physical memory on the platform. The cardinality can be 0 during the allocation request, if no particular value is requested.", alias="virtualMemOversubscriptionPolicy")
     numa_enabled: Optional[StrictBool] = Field(default=None, alias="numaEnabled")
     __properties: ClassVar[List[str]] = ["virtualMemSize", "virtualMemOversubscriptionPolicy", "numaEnabled"]
@@ -70,6 +71,9 @@ class VirtualMemoryData(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of virtual_mem_size
+        if self.virtual_mem_size:
+            _dict['virtualMemSize'] = self.virtual_mem_size.to_dict()
         return _dict
 
     @classmethod
@@ -82,7 +86,7 @@ class VirtualMemoryData(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "virtualMemSize": obj.get("virtualMemSize"),
+            "virtualMemSize": ResourceQuantity.from_dict(obj["virtualMemSize"]) if obj.get("virtualMemSize") is not None else None,
             "virtualMemOversubscriptionPolicy": obj.get("virtualMemOversubscriptionPolicy"),
             "numaEnabled": obj.get("numaEnabled")
         })

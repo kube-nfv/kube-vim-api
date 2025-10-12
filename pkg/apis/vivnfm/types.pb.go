@@ -949,7 +949,7 @@ type VirtualMemoryData struct {
 	unknownFields protoimpl.UnknownFields
 
 	// Amount of virtual Memory (e.g. in MB).
-	VirtualMemSize float32 `protobuf:"fixed32,1,opt,name=virtualMemSize,proto3" json:"virtualMemSize,omitempty"`
+	VirtualMemSize *resource.Quantity `protobuf:"bytes,1,opt,name=virtualMemSize,proto3" json:"virtualMemSize,omitempty"`
 	// Memory core oversubscription policy in terms of virtual memory to physical memory on the platform.
 	// The cardinality can be 0 during the allocation request, if no particular value is requested.
 	VirtualMemOversubscriptionPolicy *string `protobuf:"bytes,2,opt,name=virtualMemOversubscriptionPolicy,proto3,oneof" json:"virtualMemOversubscriptionPolicy,omitempty"`
@@ -990,11 +990,11 @@ func (*VirtualMemoryData) Descriptor() ([]byte, []int) {
 	return file_vivnfm_types_proto_rawDescGZIP(), []int{7}
 }
 
-func (x *VirtualMemoryData) GetVirtualMemSize() float32 {
+func (x *VirtualMemoryData) GetVirtualMemSize() *resource.Quantity {
 	if x != nil {
 		return x.VirtualMemSize
 	}
-	return 0
+	return nil
 }
 
 func (x *VirtualMemoryData) GetVirtualMemOversubscriptionPolicy() string {
@@ -1493,7 +1493,7 @@ type VirtualStorageData struct {
 	// Type of virtualised storage resource (e.g. volume, object).
 	TypeOfStorage string `protobuf:"bytes,1,opt,name=typeOfStorage,proto3" json:"typeOfStorage,omitempty"`
 	// Size of virtualised storage resource (e.g. size of volume, in GB).
-	SizeOfStorage float32 `protobuf:"fixed32,2,opt,name=sizeOfStorage,proto3" json:"sizeOfStorage,omitempty"`
+	SizeOfStorage *resource.Quantity `protobuf:"bytes,2,opt,name=sizeOfStorage,proto3" json:"sizeOfStorage,omitempty"`
 	// Indicates if the storage supports RDMA.
 	RdmaEnabled *bool `protobuf:"varint,3,opt,name=rdmaEnabled,proto3,oneof" json:"rdmaEnabled,omitempty"`
 	// Note: That is out of the ETSI GS NFV-IFA 006 scope. But it is requires to identify the
@@ -1541,11 +1541,11 @@ func (x *VirtualStorageData) GetTypeOfStorage() string {
 	return ""
 }
 
-func (x *VirtualStorageData) GetSizeOfStorage() float32 {
+func (x *VirtualStorageData) GetSizeOfStorage() *resource.Quantity {
 	if x != nil {
 		return x.SizeOfStorage
 	}
-	return 0
+	return nil
 }
 
 func (x *VirtualStorageData) GetRdmaEnabled() bool {
@@ -2874,9 +2874,12 @@ var file_vivnfm_types_proto_rawDesc = []byte{
 	0x6d, 0x65, 0x74, 0x61, 0x64, 0x61, 0x74, 0x61, 0x42, 0x0e, 0x0a, 0x0c, 0x5f, 0x63, 0x6f, 0x6d,
 	0x70, 0x75, 0x74, 0x65, 0x4e, 0x61, 0x6d, 0x65, 0x42, 0x0c, 0x0a, 0x0a, 0x5f, 0x76, 0x63, 0x49,
 	0x6d, 0x61, 0x67, 0x65, 0x49, 0x64, 0x42, 0x09, 0x0a, 0x07, 0x5f, 0x7a, 0x6f, 0x6e, 0x65, 0x49,
-	0x64, 0x22, 0xf7, 0x01, 0x0a, 0x11, 0x56, 0x69, 0x72, 0x74, 0x75, 0x61, 0x6c, 0x4d, 0x65, 0x6d,
-	0x6f, 0x72, 0x79, 0x44, 0x61, 0x74, 0x61, 0x12, 0x2b, 0x0a, 0x0e, 0x76, 0x69, 0x72, 0x74, 0x75,
-	0x61, 0x6c, 0x4d, 0x65, 0x6d, 0x53, 0x69, 0x7a, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x02, 0x42,
+	0x64, 0x22, 0xa7, 0x02, 0x0a, 0x11, 0x56, 0x69, 0x72, 0x74, 0x75, 0x61, 0x6c, 0x4d, 0x65, 0x6d,
+	0x6f, 0x72, 0x79, 0x44, 0x61, 0x74, 0x61, 0x12, 0x5b, 0x0a, 0x0e, 0x76, 0x69, 0x72, 0x74, 0x75,
+	0x61, 0x6c, 0x4d, 0x65, 0x6d, 0x53, 0x69, 0x7a, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32,
+	0x2e, 0x2e, 0x6b, 0x38, 0x73, 0x2e, 0x69, 0x6f, 0x2e, 0x61, 0x70, 0x69, 0x6d, 0x61, 0x63, 0x68,
+	0x69, 0x6e, 0x65, 0x72, 0x79, 0x2e, 0x70, 0x6b, 0x67, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x72, 0x65,
+	0x73, 0x6f, 0x75, 0x72, 0x63, 0x65, 0x2e, 0x51, 0x75, 0x61, 0x6e, 0x74, 0x69, 0x74, 0x79, 0x42,
 	0x03, 0xe0, 0x41, 0x02, 0x52, 0x0e, 0x76, 0x69, 0x72, 0x74, 0x75, 0x61, 0x6c, 0x4d, 0x65, 0x6d,
 	0x53, 0x69, 0x7a, 0x65, 0x12, 0x54, 0x0a, 0x20, 0x76, 0x69, 0x72, 0x74, 0x75, 0x61, 0x6c, 0x4d,
 	0x65, 0x6d, 0x4f, 0x76, 0x65, 0x72, 0x73, 0x75, 0x62, 0x73, 0x63, 0x72, 0x69, 0x70, 0x74, 0x69,
@@ -3029,12 +3032,15 @@ var file_vivnfm_types_proto_rawDesc = []byte{
 	0x61, 0x74, 0x61, 0x42, 0x0c, 0x0a, 0x0a, 0x5f, 0x6e, 0x65, 0x74, 0x77, 0x6f, 0x72, 0x6b, 0x49,
 	0x64, 0x42, 0x0b, 0x0a, 0x09, 0x5f, 0x73, 0x75, 0x62, 0x6e, 0x65, 0x74, 0x49, 0x64, 0x42, 0x10,
 	0x0a, 0x0e, 0x5f, 0x6e, 0x65, 0x74, 0x77, 0x6f, 0x72, 0x6b, 0x50, 0x6f, 0x72, 0x74, 0x49, 0x64,
-	0x22, 0xdd, 0x01, 0x0a, 0x12, 0x56, 0x69, 0x72, 0x74, 0x75, 0x61, 0x6c, 0x53, 0x74, 0x6f, 0x72,
+	0x22, 0x8d, 0x02, 0x0a, 0x12, 0x56, 0x69, 0x72, 0x74, 0x75, 0x61, 0x6c, 0x53, 0x74, 0x6f, 0x72,
 	0x61, 0x67, 0x65, 0x44, 0x61, 0x74, 0x61, 0x12, 0x29, 0x0a, 0x0d, 0x74, 0x79, 0x70, 0x65, 0x4f,
 	0x66, 0x53, 0x74, 0x6f, 0x72, 0x61, 0x67, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x42, 0x03,
 	0xe0, 0x41, 0x02, 0x52, 0x0d, 0x74, 0x79, 0x70, 0x65, 0x4f, 0x66, 0x53, 0x74, 0x6f, 0x72, 0x61,
-	0x67, 0x65, 0x12, 0x29, 0x0a, 0x0d, 0x73, 0x69, 0x7a, 0x65, 0x4f, 0x66, 0x53, 0x74, 0x6f, 0x72,
-	0x61, 0x67, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x02, 0x42, 0x03, 0xe0, 0x41, 0x02, 0x52, 0x0d,
+	0x67, 0x65, 0x12, 0x59, 0x0a, 0x0d, 0x73, 0x69, 0x7a, 0x65, 0x4f, 0x66, 0x53, 0x74, 0x6f, 0x72,
+	0x61, 0x67, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x2e, 0x2e, 0x6b, 0x38, 0x73, 0x2e,
+	0x69, 0x6f, 0x2e, 0x61, 0x70, 0x69, 0x6d, 0x61, 0x63, 0x68, 0x69, 0x6e, 0x65, 0x72, 0x79, 0x2e,
+	0x70, 0x6b, 0x67, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x72, 0x65, 0x73, 0x6f, 0x75, 0x72, 0x63, 0x65,
+	0x2e, 0x51, 0x75, 0x61, 0x6e, 0x74, 0x69, 0x74, 0x79, 0x42, 0x03, 0xe0, 0x41, 0x02, 0x52, 0x0d,
 	0x73, 0x69, 0x7a, 0x65, 0x4f, 0x66, 0x53, 0x74, 0x6f, 0x72, 0x61, 0x67, 0x65, 0x12, 0x2a, 0x0a,
 	0x0b, 0x72, 0x64, 0x6d, 0x61, 0x45, 0x6e, 0x61, 0x62, 0x6c, 0x65, 0x64, 0x18, 0x03, 0x20, 0x01,
 	0x28, 0x08, 0x42, 0x03, 0xe0, 0x41, 0x01, 0x48, 0x00, 0x52, 0x0b, 0x72, 0x64, 0x6d, 0x61, 0x45,
@@ -3330,62 +3336,64 @@ var file_vivnfm_types_proto_depIdxs = []int32{
 	39, // 26: VirtualCompute.operationalState:type_name -> OperationalState
 	40, // 27: VirtualCompute.runningState:type_name -> ComputeRunningState
 	36, // 28: VirtualCompute.metadata:type_name -> Metadata
-	31, // 29: VirtualCpuData.virtualCpuPinning:type_name -> VirtualCpuData.VirtualCpuPinningData
-	33, // 30: VirtualNetworkInterfaceData.networkId:type_name -> Identifier
-	33, // 31: VirtualNetworkInterfaceData.subnetId:type_name -> Identifier
-	33, // 32: VirtualNetworkInterfaceData.networkPortId:type_name -> Identifier
-	41, // 33: VirtualNetworkInterfaceData.typeVirtualNic:type_name -> TypeVirtualNic
-	36, // 34: VirtualNetworkInterfaceData.metadata:type_name -> Metadata
-	33, // 35: VirtualNetworkInterface.resourceId:type_name -> Identifier
-	33, // 36: VirtualNetworkInterface.ownerId:type_name -> Identifier
-	33, // 37: VirtualNetworkInterface.networkId:type_name -> Identifier
-	33, // 38: VirtualNetworkInterface.subnetId:type_name -> Identifier
-	33, // 39: VirtualNetworkInterface.networkPortId:type_name -> Identifier
-	37, // 40: VirtualNetworkInterface.ipAddress:type_name -> IPAddress
-	41, // 41: VirtualNetworkInterface.typeVirtualNic:type_name -> TypeVirtualNic
-	38, // 42: VirtualNetworkInterface.macAddress:type_name -> MacAddress
-	39, // 43: VirtualNetworkInterface.operationalState:type_name -> OperationalState
-	36, // 44: VirtualNetworkInterface.metadata:type_name -> Metadata
-	33, // 45: VirtualComputeFlavour.flavourId:type_name -> Identifier
-	11, // 46: VirtualComputeFlavour.virtualMemory:type_name -> VirtualMemoryData
-	13, // 47: VirtualComputeFlavour.virtualCpu:type_name -> VirtualCpuData
-	17, // 48: VirtualComputeFlavour.storageAttributes:type_name -> VirtualStorageData
-	15, // 49: VirtualComputeFlavour.virtualNetworkInterface:type_name -> VirtualNetworkInterfaceData
-	36, // 50: VirtualComputeFlavour.metadata:type_name -> Metadata
-	42, // 51: VirtualNetworkData.networkType:type_name -> NetworkType
-	20, // 52: VirtualNetworkData.networkQoS:type_name -> NetworkQoS
-	22, // 53: VirtualNetworkData.layer3Attributes:type_name -> NetworkSubnetData
-	36, // 54: VirtualNetworkData.metadata:type_name -> Metadata
-	33, // 55: NetworkSubnetData.networkId:type_name -> Identifier
-	43, // 56: NetworkSubnetData.ipVersion:type_name -> IPVersion
-	37, // 57: NetworkSubnetData.gatewayIp:type_name -> IPAddress
-	44, // 58: NetworkSubnetData.cidr:type_name -> IPSubnetCIDR
-	45, // 59: NetworkSubnetData.addressPool:type_name -> IPAddressPool
-	36, // 60: NetworkSubnetData.metadata:type_name -> Metadata
-	33, // 61: VirtualNetwork.networkResourceId:type_name -> Identifier
-	33, // 62: VirtualNetwork.subnetId:type_name -> Identifier
-	27, // 63: VirtualNetwork.networkPort:type_name -> VirtualNetworkPort
-	42, // 64: VirtualNetwork.networkType:type_name -> NetworkType
-	20, // 65: VirtualNetwork.networkQoS:type_name -> NetworkQoS
-	33, // 66: VirtualNetwork.zoneId:type_name -> Identifier
-	39, // 67: VirtualNetwork.operationalState:type_name -> OperationalState
-	36, // 68: VirtualNetwork.metadata:type_name -> Metadata
-	33, // 69: VirtualNetwork.connectedNetworks:type_name -> Identifier
-	33, // 70: NetworkSubnet.resourceId:type_name -> Identifier
-	33, // 71: NetworkSubnet.networkId:type_name -> Identifier
-	43, // 72: NetworkSubnet.ipVersion:type_name -> IPVersion
-	37, // 73: NetworkSubnet.gatewayIp:type_name -> IPAddress
-	44, // 74: NetworkSubnet.cidr:type_name -> IPSubnetCIDR
-	45, // 75: NetworkSubnet.addressPool:type_name -> IPAddressPool
-	36, // 76: NetworkSubnet.metadata:type_name -> Metadata
-	33, // 77: AffinityOrAntiAffinityConstraintForCompute.AffinityOrAntiAffinityResourceList.resourceId:type_name -> Identifier
-	3,  // 78: VirtualCpuData.VirtualCpuPinningData.virtualCpuPinningPolicy:type_name -> VirtualCpuData.VirtualCpuPinningData.VirtualCpuPinningPolicy
-	32, // 79: VirtualCpuData.VirtualCpuPinningData.virtualCpuPinningRules:type_name -> VirtualCpuData.VirtualCpuPinningData.VirtualCpuPinningRule
-	80, // [80:80] is the sub-list for method output_type
-	80, // [80:80] is the sub-list for method input_type
-	80, // [80:80] is the sub-list for extension type_name
-	80, // [80:80] is the sub-list for extension extendee
-	0,  // [0:80] is the sub-list for field type_name
+	35, // 29: VirtualMemoryData.virtualMemSize:type_name -> k8s.io.apimachinery.pkg.api.resource.Quantity
+	31, // 30: VirtualCpuData.virtualCpuPinning:type_name -> VirtualCpuData.VirtualCpuPinningData
+	33, // 31: VirtualNetworkInterfaceData.networkId:type_name -> Identifier
+	33, // 32: VirtualNetworkInterfaceData.subnetId:type_name -> Identifier
+	33, // 33: VirtualNetworkInterfaceData.networkPortId:type_name -> Identifier
+	41, // 34: VirtualNetworkInterfaceData.typeVirtualNic:type_name -> TypeVirtualNic
+	36, // 35: VirtualNetworkInterfaceData.metadata:type_name -> Metadata
+	33, // 36: VirtualNetworkInterface.resourceId:type_name -> Identifier
+	33, // 37: VirtualNetworkInterface.ownerId:type_name -> Identifier
+	33, // 38: VirtualNetworkInterface.networkId:type_name -> Identifier
+	33, // 39: VirtualNetworkInterface.subnetId:type_name -> Identifier
+	33, // 40: VirtualNetworkInterface.networkPortId:type_name -> Identifier
+	37, // 41: VirtualNetworkInterface.ipAddress:type_name -> IPAddress
+	41, // 42: VirtualNetworkInterface.typeVirtualNic:type_name -> TypeVirtualNic
+	38, // 43: VirtualNetworkInterface.macAddress:type_name -> MacAddress
+	39, // 44: VirtualNetworkInterface.operationalState:type_name -> OperationalState
+	36, // 45: VirtualNetworkInterface.metadata:type_name -> Metadata
+	35, // 46: VirtualStorageData.sizeOfStorage:type_name -> k8s.io.apimachinery.pkg.api.resource.Quantity
+	33, // 47: VirtualComputeFlavour.flavourId:type_name -> Identifier
+	11, // 48: VirtualComputeFlavour.virtualMemory:type_name -> VirtualMemoryData
+	13, // 49: VirtualComputeFlavour.virtualCpu:type_name -> VirtualCpuData
+	17, // 50: VirtualComputeFlavour.storageAttributes:type_name -> VirtualStorageData
+	15, // 51: VirtualComputeFlavour.virtualNetworkInterface:type_name -> VirtualNetworkInterfaceData
+	36, // 52: VirtualComputeFlavour.metadata:type_name -> Metadata
+	42, // 53: VirtualNetworkData.networkType:type_name -> NetworkType
+	20, // 54: VirtualNetworkData.networkQoS:type_name -> NetworkQoS
+	22, // 55: VirtualNetworkData.layer3Attributes:type_name -> NetworkSubnetData
+	36, // 56: VirtualNetworkData.metadata:type_name -> Metadata
+	33, // 57: NetworkSubnetData.networkId:type_name -> Identifier
+	43, // 58: NetworkSubnetData.ipVersion:type_name -> IPVersion
+	37, // 59: NetworkSubnetData.gatewayIp:type_name -> IPAddress
+	44, // 60: NetworkSubnetData.cidr:type_name -> IPSubnetCIDR
+	45, // 61: NetworkSubnetData.addressPool:type_name -> IPAddressPool
+	36, // 62: NetworkSubnetData.metadata:type_name -> Metadata
+	33, // 63: VirtualNetwork.networkResourceId:type_name -> Identifier
+	33, // 64: VirtualNetwork.subnetId:type_name -> Identifier
+	27, // 65: VirtualNetwork.networkPort:type_name -> VirtualNetworkPort
+	42, // 66: VirtualNetwork.networkType:type_name -> NetworkType
+	20, // 67: VirtualNetwork.networkQoS:type_name -> NetworkQoS
+	33, // 68: VirtualNetwork.zoneId:type_name -> Identifier
+	39, // 69: VirtualNetwork.operationalState:type_name -> OperationalState
+	36, // 70: VirtualNetwork.metadata:type_name -> Metadata
+	33, // 71: VirtualNetwork.connectedNetworks:type_name -> Identifier
+	33, // 72: NetworkSubnet.resourceId:type_name -> Identifier
+	33, // 73: NetworkSubnet.networkId:type_name -> Identifier
+	43, // 74: NetworkSubnet.ipVersion:type_name -> IPVersion
+	37, // 75: NetworkSubnet.gatewayIp:type_name -> IPAddress
+	44, // 76: NetworkSubnet.cidr:type_name -> IPSubnetCIDR
+	45, // 77: NetworkSubnet.addressPool:type_name -> IPAddressPool
+	36, // 78: NetworkSubnet.metadata:type_name -> Metadata
+	33, // 79: AffinityOrAntiAffinityConstraintForCompute.AffinityOrAntiAffinityResourceList.resourceId:type_name -> Identifier
+	3,  // 80: VirtualCpuData.VirtualCpuPinningData.virtualCpuPinningPolicy:type_name -> VirtualCpuData.VirtualCpuPinningData.VirtualCpuPinningPolicy
+	32, // 81: VirtualCpuData.VirtualCpuPinningData.virtualCpuPinningRules:type_name -> VirtualCpuData.VirtualCpuPinningData.VirtualCpuPinningRule
+	82, // [82:82] is the sub-list for method output_type
+	82, // [82:82] is the sub-list for method input_type
+	82, // [82:82] is the sub-list for extension type_name
+	82, // [82:82] is the sub-list for extension extendee
+	0,  // [0:82] is the sub-list for field type_name
 }
 
 func init() { file_vivnfm_types_proto_init() }

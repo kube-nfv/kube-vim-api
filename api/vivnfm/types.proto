@@ -179,7 +179,7 @@ message VirtualCompute {
 // Information describing virtual memory.
 message VirtualMemoryData {
     // Amount of virtual Memory (e.g. in MB).
-    float virtualMemSize = 1 [(google.api.field_behavior) = REQUIRED];
+    k8s.io.apimachinery.pkg.api.resource.Quantity virtualMemSize = 1 [(google.api.field_behavior) = REQUIRED];
     // Memory core oversubscription policy in terms of virtual memory to physical memory on the platform.
     // The cardinality can be 0 during the allocation request, if no particular value is requested.
     optional string virtualMemOversubscriptionPolicy = 2 [(google.api.field_behavior) = OPTIONAL];
@@ -323,7 +323,7 @@ message VirtualStorageData {
     // Type of virtualised storage resource (e.g. volume, object).
     string typeOfStorage = 1 [(google.api.field_behavior) = REQUIRED];
     // Size of virtualised storage resource (e.g. size of volume, in GB).
-    float sizeOfStorage = 2 [(google.api.field_behavior) = REQUIRED];
+    k8s.io.apimachinery.pkg.api.resource.Quantity sizeOfStorage = 2 [(google.api.field_behavior) = REQUIRED];
     // Indicates if the storage supports RDMA.
     optional bool rdmaEnabled = 3 [(google.api.field_behavior) = OPTIONAL];
     // Note: That is out of the ETSI GS NFV-IFA 006 scope. But it is requires to identify the

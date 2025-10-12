@@ -7,7 +7,7 @@ This clause describes the attributes for the VirtualStorageData information elem
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **type_of_storage** | **str** | Type of virtualised storage resource (e.g. volume, object). | 
-**size_of_storage** | **float** | Size of virtualised storage resource (e.g. size of volume, in GB). | 
+**size_of_storage** | [**ResourceQuantity**](ResourceQuantity.md) |  | 
 **rdma_enabled** | **bool** | Indicates if the storage supports RDMA. | [optional] 
 **is_boot** | **bool** |  | [optional] [default to False]
 
