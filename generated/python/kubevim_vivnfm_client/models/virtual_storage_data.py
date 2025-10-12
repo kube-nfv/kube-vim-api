@@ -29,7 +29,8 @@ class VirtualStorageData(BaseModel):
     type_of_storage: StrictStr = Field(description="Type of virtualised storage resource (e.g. volume, object).", alias="typeOfStorage")
     size_of_storage: Union[StrictFloat, StrictInt] = Field(description="Size of virtualised storage resource (e.g. size of volume, in GB).", alias="sizeOfStorage")
     rdma_enabled: Optional[StrictBool] = Field(default=None, description="Indicates if the storage supports RDMA.", alias="rdmaEnabled")
-    __properties: ClassVar[List[str]] = ["typeOfStorage", "sizeOfStorage", "rdmaEnabled"]
+    is_boot: Optional[StrictBool] = Field(default=False, alias="isBoot")
+    __properties: ClassVar[List[str]] = ["typeOfStorage", "sizeOfStorage", "rdmaEnabled", "isBoot"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -84,7 +85,8 @@ class VirtualStorageData(BaseModel):
         _obj = cls.model_validate({
             "typeOfStorage": obj.get("typeOfStorage"),
             "sizeOfStorage": obj.get("sizeOfStorage"),
-            "rdmaEnabled": obj.get("rdmaEnabled")
+            "rdmaEnabled": obj.get("rdmaEnabled"),
+            "isBoot": obj.get("isBoot") if obj.get("isBoot") is not None else False
         })
         return _obj
 

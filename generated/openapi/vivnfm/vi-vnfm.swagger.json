@@ -1481,6 +1481,11 @@
         "rdmaEnabled": {
           "type": "boolean",
           "description": "Indicates if the storage supports RDMA."
+        },
+        "isBoot": {
+          "type": "boolean",
+          "default": "false",
+          "title": "Note: That is out of the ETSI GS NFV-IFA 006 scope. But it is requires to identify the\ninstance boot disk where the software image will be copied to.\nIndicates if the storage is bootable disk"
         }
       },
       "description": "This clause describes the attributes for the VirtualStorageData information element.",

@@ -326,6 +326,15 @@ message VirtualStorageData {
     float sizeOfStorage = 2 [(google.api.field_behavior) = REQUIRED];
     // Indicates if the storage supports RDMA.
     optional bool rdmaEnabled = 3 [(google.api.field_behavior) = OPTIONAL];
+    // Note: That is out of the ETSI GS NFV-IFA 006 scope. But it is requires to identify the
+    // instance boot disk where the software image will be copied to.
+    // Indicates if the storage is bootable disk
+    optional bool isBoot = 4 [
+      (google.api.field_behavior) = OPTIONAL,
+      (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+        default: "false",
+      }
+    ];
 }
 
 message VirtualStorage {
