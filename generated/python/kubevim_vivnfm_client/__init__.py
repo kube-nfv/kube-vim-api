@@ -14,7 +14,7 @@
 """  # noqa: E501
 
 
-__version__ = "v0.0.5-alpha.7"
+__version__ = "v0.0.5-alpha.8"
 
 # import apis into sdk package
 from kubevim_vivnfm_client.api.vi_vnfm_api import ViVnfmApi
@@ -67,7 +67,6 @@ from kubevim_vivnfm_client.models.pb_query_network_response import PbQueryNetwor
 from kubevim_vivnfm_client.models.pb_terminate_compute_response import PbTerminateComputeResponse
 from kubevim_vivnfm_client.models.pb_terminate_network_response import PbTerminateNetworkResponse
 from kubevim_vivnfm_client.models.protobuf_any import ProtobufAny
-from kubevim_vivnfm_client.models.resource_quantity import ResourceQuantity
 from kubevim_vivnfm_client.models.rpc_status import RpcStatus
 from kubevim_vivnfm_client.models.scope_of_affinity_or_anti_affinity_constraint_for_compute import ScopeOfAffinityOrAntiAffinityConstraintForCompute
 from kubevim_vivnfm_client.models.software_image_information import SoftwareImageInformation

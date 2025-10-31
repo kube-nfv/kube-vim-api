@@ -53,6 +53,8 @@ proto-compile: proto-dirs proto-image-build $(OPENAPI_DIR) ## Compile message pr
 	  --go-grpc_out=/workspace --go-grpc_opt=module=$(KUBE_VIM_API_URL) \
 	  --grpc-gateway_out=/workspace --grpc-gateway_opt=module=$(KUBE_VIM_API_URL) \
 	  --grpc-gateway_opt=Madmin/kubevim-admin.proto=$(KUBE_VIM_API_URL)/pkg/apis/admin"
+	@echo "Post-processing OpenAPI spec to fix Quantity fields..."
+	@python3 ./hack/fix_quantity_openapi.py $(OPENAPI_DIR)/vivnfm/vi-vnfm.swagger.json
 
 .PHONY: proto-image-build
 proto-image-build: ## Build docker image with all nececary dependencies to compile message protobuf and gRPC service files.

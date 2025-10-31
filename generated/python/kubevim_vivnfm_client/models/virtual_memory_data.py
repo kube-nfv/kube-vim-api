@@ -17,9 +17,9 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional
-from kubevim_vivnfm_client.models.resource_quantity import ResourceQuantity
+from typing_extensions import Annotated
 from typing import Optional, Set
 from typing_extensions import Self
 
@@ -27,10 +27,17 @@ class VirtualMemoryData(BaseModel):
     """
     Information describing virtual memory.
     """ # noqa: E501
-    virtual_mem_size: ResourceQuantity = Field(alias="virtualMemSize")
+    virtual_mem_size: Annotated[str, Field(strict=True)] = Field(description="Amount of virtual Memory (e.g. in MB).", alias="virtualMemSize")
     virtual_mem_oversubscription_policy: Optional[StrictStr] = Field(default=None, description="Memory core oversubscription policy in terms of virtual memory to physical memory on the platform. The cardinality can be 0 during the allocation request, if no particular value is requested.", alias="virtualMemOversubscriptionPolicy")
     numa_enabled: Optional[StrictBool] = Field(default=None, alias="numaEnabled")
     __properties: ClassVar[List[str]] = ["virtualMemSize", "virtualMemOversubscriptionPolicy", "numaEnabled"]
+
+    @field_validator('virtual_mem_size')
+    def virtual_mem_size_validate_regular_expression(cls, value):
+        """Validates the regular expression"""
+        if not re.match(r"^([+-]?[0-9.]+)([eEinumkKMGTP]*[-+]?[0-9]*)$", value):
+            raise ValueError(r"must validate the regular expression /^([+-]?[0-9.]+)([eEinumkKMGTP]*[-+]?[0-9]*)$/")
+        return value
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -71,9 +78,6 @@ class VirtualMemoryData(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # override the default output from pydantic by calling `to_dict()` of virtual_mem_size
-        if self.virtual_mem_size:
-            _dict['virtualMemSize'] = self.virtual_mem_size.to_dict()
         return _dict
 
     @classmethod
@@ -86,7 +90,7 @@ class VirtualMemoryData(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "virtualMemSize": ResourceQuantity.from_dict(obj["virtualMemSize"]) if obj.get("virtualMemSize") is not None else None,
+            "virtualMemSize": obj.get("virtualMemSize"),
             "virtualMemOversubscriptionPolicy": obj.get("virtualMemOversubscriptionPolicy"),
             "numaEnabled": obj.get("numaEnabled")
         })

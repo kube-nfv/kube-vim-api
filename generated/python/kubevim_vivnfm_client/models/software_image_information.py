@@ -18,11 +18,11 @@ import re  # noqa: F401
 import json
 
 from datetime import datetime
-from pydantic import BaseModel, ConfigDict, Field, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional
+from typing_extensions import Annotated
 from kubevim_vivnfm_client.models.identifier import Identifier
 from kubevim_vivnfm_client.models.metadata import Metadata
-from kubevim_vivnfm_client.models.resource_quantity import ResourceQuantity
 from typing import Optional, Set
 from typing_extensions import Self
 
@@ -39,12 +39,39 @@ class SoftwareImageInformation(BaseModel):
     disk_format: Optional[StrictStr] = Field(default=None, description="Disk format of a software image is the format of the underlying disk image.", alias="diskFormat")
     created_at: datetime = Field(description="Time this software image was created.", alias="createdAt")
     updated_at: datetime = Field(description="Time this software image was last updated.", alias="updatedAt")
-    min_disk: Optional[ResourceQuantity] = Field(default=None, alias="minDisk")
-    min_ram: Optional[ResourceQuantity] = Field(default=None, alias="minRam")
-    size: ResourceQuantity
+    min_disk: Optional[Annotated[str, Field(strict=True)]] = Field(default=None, description="Minimal disk size for this software image.", alias="minDisk")
+    min_ram: Optional[Annotated[str, Field(strict=True)]] = Field(default=None, description="Minimal RAM size for this software image.", alias="minRam")
+    size: Annotated[str, Field(strict=True)] = Field(description="Size of this software image.")
     status: StrictStr
     metadata: Optional[Metadata] = None
     __properties: ClassVar[List[str]] = ["softwareImageId", "name", "provider", "version", "checksum", "containerFormat", "diskFormat", "createdAt", "updatedAt", "minDisk", "minRam", "size", "status", "metadata"]
+
+    @field_validator('min_disk')
+    def min_disk_validate_regular_expression(cls, value):
+        """Validates the regular expression"""
+        if value is None:
+            return value
+
+        if not re.match(r"^([+-]?[0-9.]+)([eEinumkKMGTP]*[-+]?[0-9]*)$", value):
+            raise ValueError(r"must validate the regular expression /^([+-]?[0-9.]+)([eEinumkKMGTP]*[-+]?[0-9]*)$/")
+        return value
+
+    @field_validator('min_ram')
+    def min_ram_validate_regular_expression(cls, value):
+        """Validates the regular expression"""
+        if value is None:
+            return value
+
+        if not re.match(r"^([+-]?[0-9.]+)([eEinumkKMGTP]*[-+]?[0-9]*)$", value):
+            raise ValueError(r"must validate the regular expression /^([+-]?[0-9.]+)([eEinumkKMGTP]*[-+]?[0-9]*)$/")
+        return value
+
+    @field_validator('size')
+    def size_validate_regular_expression(cls, value):
+        """Validates the regular expression"""
+        if not re.match(r"^([+-]?[0-9.]+)([eEinumkKMGTP]*[-+]?[0-9]*)$", value):
+            raise ValueError(r"must validate the regular expression /^([+-]?[0-9.]+)([eEinumkKMGTP]*[-+]?[0-9]*)$/")
+        return value
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -88,15 +115,6 @@ class SoftwareImageInformation(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of software_image_id
         if self.software_image_id:
             _dict['softwareImageId'] = self.software_image_id.to_dict()
-        # override the default output from pydantic by calling `to_dict()` of min_disk
-        if self.min_disk:
-            _dict['minDisk'] = self.min_disk.to_dict()
-        # override the default output from pydantic by calling `to_dict()` of min_ram
-        if self.min_ram:
-            _dict['minRam'] = self.min_ram.to_dict()
-        # override the default output from pydantic by calling `to_dict()` of size
-        if self.size:
-            _dict['size'] = self.size.to_dict()
         # override the default output from pydantic by calling `to_dict()` of metadata
         if self.metadata:
             _dict['metadata'] = self.metadata.to_dict()
@@ -121,9 +139,9 @@ class SoftwareImageInformation(BaseModel):
             "diskFormat": obj.get("diskFormat"),
             "createdAt": obj.get("createdAt"),
             "updatedAt": obj.get("updatedAt"),
-            "minDisk": ResourceQuantity.from_dict(obj["minDisk"]) if obj.get("minDisk") is not None else None,
-            "minRam": ResourceQuantity.from_dict(obj["minRam"]) if obj.get("minRam") is not None else None,
-            "size": ResourceQuantity.from_dict(obj["size"]) if obj.get("size") is not None else None,
+            "minDisk": obj.get("minDisk"),
+            "minRam": obj.get("minRam"),
+            "size": obj.get("size"),
             "status": obj.get("status"),
             "metadata": Metadata.from_dict(obj["metadata"]) if obj.get("metadata") is not None else None
         })

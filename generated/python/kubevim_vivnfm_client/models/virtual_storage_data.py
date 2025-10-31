@@ -17,9 +17,9 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional
-from kubevim_vivnfm_client.models.resource_quantity import ResourceQuantity
+from typing_extensions import Annotated
 from typing import Optional, Set
 from typing_extensions import Self
 
@@ -28,10 +28,17 @@ class VirtualStorageData(BaseModel):
     This clause describes the attributes for the VirtualStorageData information element.
     """ # noqa: E501
     type_of_storage: StrictStr = Field(description="Type of virtualised storage resource (e.g. volume, object).", alias="typeOfStorage")
-    size_of_storage: ResourceQuantity = Field(alias="sizeOfStorage")
+    size_of_storage: Annotated[str, Field(strict=True)] = Field(description="Size of virtualised storage resource (e.g. size of volume, in GB).", alias="sizeOfStorage")
     rdma_enabled: Optional[StrictBool] = Field(default=None, description="Indicates if the storage supports RDMA.", alias="rdmaEnabled")
     is_boot: Optional[StrictBool] = Field(default=False, alias="isBoot")
     __properties: ClassVar[List[str]] = ["typeOfStorage", "sizeOfStorage", "rdmaEnabled", "isBoot"]
+
+    @field_validator('size_of_storage')
+    def size_of_storage_validate_regular_expression(cls, value):
+        """Validates the regular expression"""
+        if not re.match(r"^([+-]?[0-9.]+)([eEinumkKMGTP]*[-+]?[0-9]*)$", value):
+            raise ValueError(r"must validate the regular expression /^([+-]?[0-9.]+)([eEinumkKMGTP]*[-+]?[0-9]*)$/")
+        return value
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -72,9 +79,6 @@ class VirtualStorageData(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # override the default output from pydantic by calling `to_dict()` of size_of_storage
-        if self.size_of_storage:
-            _dict['sizeOfStorage'] = self.size_of_storage.to_dict()
         return _dict
 
     @classmethod
@@ -88,7 +92,7 @@ class VirtualStorageData(BaseModel):
 
         _obj = cls.model_validate({
             "typeOfStorage": obj.get("typeOfStorage"),
-            "sizeOfStorage": ResourceQuantity.from_dict(obj["sizeOfStorage"]) if obj.get("sizeOfStorage") is not None else None,
+            "sizeOfStorage": obj.get("sizeOfStorage"),
             "rdmaEnabled": obj.get("rdmaEnabled"),
             "isBoot": obj.get("isBoot") if obj.get("isBoot") is not None else False
         })

@@ -29,11 +29,32 @@ message SoftwareImageInformation {
     // Time this software image was last updated.
     google.protobuf.Timestamp updatedAt = 9 [(google.api.field_behavior) = REQUIRED];
     // Minimal disk size for this software image.
-    optional k8s.io.apimachinery.pkg.api.resource.Quantity minDisk = 10 [(google.api.field_behavior) = OPTIONAL];
+    optional k8s.io.apimachinery.pkg.api.resource.Quantity minDisk = 10 [
+        (google.api.field_behavior) = OPTIONAL,
+        (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+            type: STRING,
+            example: "\"10Gi\"",
+            pattern: "^([+-]?[0-9.]+)([eEinumkKMGTP]*[-+]?[0-9]*)$"
+        }
+    ];
     // Minimal RAM size for this software image.
-    optional k8s.io.apimachinery.pkg.api.resource.Quantity minRam = 11 [(google.api.field_behavior) = OPTIONAL];
+    optional k8s.io.apimachinery.pkg.api.resource.Quantity minRam = 11 [
+        (google.api.field_behavior) = OPTIONAL,
+        (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+            type: STRING,
+            example: "\"512M\"",
+            pattern: "^([+-]?[0-9.]+)([eEinumkKMGTP]*[-+]?[0-9]*)$"
+        }
+    ];
     // Size of this software image.
-    k8s.io.apimachinery.pkg.api.resource.Quantity size = 12 [(google.api.field_behavior) = REQUIRED];
+    k8s.io.apimachinery.pkg.api.resource.Quantity size = 12 [
+        (google.api.field_behavior) = REQUIRED,
+        (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+            type: STRING,
+            example: "\"5Gi\"",
+            pattern: "^([+-]?[0-9.]+)([eEinumkKMGTP]*[-+]?[0-9]*)$"
+        }
+    ];
     // Status of this software image.
     // TODO: Change status to the enum
     string status = 13 [(google.api.field_behavior) = REQUIRED];
@@ -179,7 +200,15 @@ message VirtualCompute {
 // Information describing virtual memory.
 message VirtualMemoryData {
     // Amount of virtual Memory (e.g. in MB).
-    k8s.io.apimachinery.pkg.api.resource.Quantity virtualMemSize = 1 [(google.api.field_behavior) = REQUIRED];
+    k8s.io.apimachinery.pkg.api.resource.Quantity virtualMemSize = 1 [
+        (google.api.field_behavior) = REQUIRED,
+        (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+            type: STRING,
+            example: "\"2048M\"",
+            pattern: "^([+-]?[0-9.]+)([eEinumkKMGTP]*[-+]?[0-9]*)$"
+        },
+        json_name = "virtualMemSize"
+    ];
     // Memory core oversubscription policy in terms of virtual memory to physical memory on the platform.
     // The cardinality can be 0 during the allocation request, if no particular value is requested.
     optional string virtualMemOversubscriptionPolicy = 2 [(google.api.field_behavior) = OPTIONAL];
@@ -323,7 +352,15 @@ message VirtualStorageData {
     // Type of virtualised storage resource (e.g. volume, object).
     string typeOfStorage = 1 [(google.api.field_behavior) = REQUIRED];
     // Size of virtualised storage resource (e.g. size of volume, in GB).
-    k8s.io.apimachinery.pkg.api.resource.Quantity sizeOfStorage = 2 [(google.api.field_behavior) = REQUIRED];
+    k8s.io.apimachinery.pkg.api.resource.Quantity sizeOfStorage = 2 [
+        (google.api.field_behavior) = REQUIRED,
+        (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+            type: STRING,
+            example: "\"20Gi\"",
+            pattern: "^([+-]?[0-9.]+)([eEinumkKMGTP]*[-+]?[0-9]*)$"
+        },
+        json_name = "sizeOfStorage"
+    ];
     // Indicates if the storage supports RDMA.
     optional bool rdmaEnabled = 3 [(google.api.field_behavior) = OPTIONAL];
     // Note: That is out of the ETSI GS NFV-IFA 006 scope. But it is requires to identify the
