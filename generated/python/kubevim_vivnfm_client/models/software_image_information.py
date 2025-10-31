@@ -17,7 +17,6 @@ import pprint
 import re  # noqa: F401
 import json
 
-from datetime import datetime
 from pydantic import BaseModel, ConfigDict, Field, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional
 from typing_extensions import Annotated
@@ -37,8 +36,8 @@ class SoftwareImageInformation(BaseModel):
     checksum: Optional[StrictStr] = Field(default=None, description="Checksum of the software image file.")
     container_format: Optional[StrictStr] = Field(default=None, description="Container format indicates whether the software image is in a file format that also contains metadata about the actual software.", alias="containerFormat")
     disk_format: Optional[StrictStr] = Field(default=None, description="Disk format of a software image is the format of the underlying disk image.", alias="diskFormat")
-    created_at: datetime = Field(description="Time this software image was created.", alias="createdAt")
-    updated_at: datetime = Field(description="Time this software image was last updated.", alias="updatedAt")
+    created_at: Dict[str, Any] = Field(description="Time this software image was created.", alias="createdAt")
+    updated_at: Dict[str, Any] = Field(description="Time this software image was last updated.", alias="updatedAt")
     min_disk: Optional[Annotated[str, Field(strict=True)]] = Field(default=None, description="Minimal disk size for this software image.", alias="minDisk")
     min_ram: Optional[Annotated[str, Field(strict=True)]] = Field(default=None, description="Minimal RAM size for this software image.", alias="minRam")
     size: Annotated[str, Field(strict=True)] = Field(description="Size of this software image.")

@@ -25,9 +25,21 @@ message SoftwareImageInformation {
     // Disk format of a software image is the format of the underlying disk image.
     optional string diskFormat = 7 [(google.api.field_behavior) = OPTIONAL];
     // Time this software image was created.
-    google.protobuf.Timestamp createdAt = 8 [(google.api.field_behavior) = REQUIRED];
+    google.protobuf.Timestamp createdAt = 8 [
+        (google.api.field_behavior) = REQUIRED,
+        (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+            type: OBJECT,
+            example: "{\"seconds\": 1730000000}"
+        }
+    ];
     // Time this software image was last updated.
-    google.protobuf.Timestamp updatedAt = 9 [(google.api.field_behavior) = REQUIRED];
+    google.protobuf.Timestamp updatedAt = 9 [
+        (google.api.field_behavior) = REQUIRED,
+        (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+            type: OBJECT,
+            example: "{\"seconds\": 1730000000}"
+        }
+    ];
     // Minimal disk size for this software image.
     optional k8s.io.apimachinery.pkg.api.resource.Quantity minDisk = 10 [
         (google.api.field_behavior) = OPTIONAL,

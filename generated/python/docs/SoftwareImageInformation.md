@@ -12,8 +12,8 @@ Name | Type | Description | Notes
 **checksum** | **str** | Checksum of the software image file. | [optional] 
 **container_format** | **str** | Container format indicates whether the software image is in a file format that also contains metadata about the actual software. | [optional] 
 **disk_format** | **str** | Disk format of a software image is the format of the underlying disk image. | [optional] 
-**created_at** | **datetime** | Time this software image was created. | 
-**updated_at** | **datetime** | Time this software image was last updated. | 
+**created_at** | **object** | Time this software image was created. | 
+**updated_at** | **object** | Time this software image was last updated. | 
 **min_disk** | **str** | Minimal disk size for this software image. | [optional] 
 **min_ram** | **str** | Minimal RAM size for this software image. | [optional] 
 **size** | **str** | Size of this software image. | 

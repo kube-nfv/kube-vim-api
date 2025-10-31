@@ -847,13 +847,19 @@
           "description": "Disk format of a software image is the format of the underlying disk image."
         },
         "createdAt": {
-          "type": "string",
+          "type": "object",
           "format": "date-time",
+          "example": {
+            "seconds": 1730000000
+          },
           "description": "Time this software image was created."
         },
         "updatedAt": {
-          "type": "string",
+          "type": "object",
           "format": "date-time",
+          "example": {
+            "seconds": 1730000000
+          },
           "description": "Time this software image was last updated."
         },
         "minDisk": {
