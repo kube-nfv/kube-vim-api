@@ -5,7 +5,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**flavours** | [**List[VirtualComputeFlavour]**](VirtualComputeFlavour.md) | List of Compute Flavours matching the query. | 
+**flavours** | [**List[VirtualComputeFlavour]**](VirtualComputeFlavour.md) | List of Compute Flavours matching the query. | [optional] 
 
 ## Example
 

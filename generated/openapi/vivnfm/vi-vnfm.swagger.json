@@ -1760,10 +1760,7 @@
           },
           "description": "List of Compute Flavours matching the query."
         }
-      },
-      "required": [
-        "flavours"
-      ]
+      }
     },
     "pbQueryComputeResponse": {
       "type": "object",
@@ -1776,10 +1773,7 @@
           },
           "description": "Contains information about the virtual compute resource(s) matching the filter. The cardinality can be 0 if no matching\ncompute resources exist."
         }
-      },
-      "required": [
-        "queryResult"
-      ]
+      }
     },
     "pbQueryImageRequest": {
       "type": "object",
@@ -1810,10 +1804,7 @@
             "$ref": "#/definitions/SoftwareImageInformation"
           }
         }
-      },
-      "required": [
-        "softwareImagesInformation"
-      ]
+      }
     },
     "pbQueryNetworkResponse": {
       "type": "object",
