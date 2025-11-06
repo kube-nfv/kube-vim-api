@@ -188,7 +188,7 @@ message QueryImagesRequest {
 }
 
 message QueryImagesResponse {
-    repeated SoftwareImageInformation softwareImagesInformation = 1 [(google.api.field_behavior) = REQUIRED];
+    repeated SoftwareImageInformation softwareImagesInformation = 1 [(google.api.field_behavior) = OPTIONAL];
 }
 
 message QueryImageRequest {
@@ -250,7 +250,7 @@ message QueryComputeRequest {
 message QueryComputeResponse {
     // Contains information about the virtual compute resource(s) matching the filter. The cardinality can be 0 if no matching
     // compute resources exist.
-    repeated VirtualCompute queryResult = 1 [(google.api.field_behavior) = REQUIRED];
+    repeated VirtualCompute queryResult = 1 [(google.api.field_behavior) = OPTIONAL];
 }
 
 // Note: This message goes out of ETSI GS NFV-IFA 006 reference
@@ -321,7 +321,7 @@ message QueryComputeFlavourRequest {
 
 message QueryComputeFlavourResponse {
     // List of Compute Flavours matching the query.
-    repeated VirtualComputeFlavour flavours = 1 [(google.api.field_behavior) = REQUIRED];
+    repeated VirtualComputeFlavour flavours = 1 [(google.api.field_behavior) = OPTIONAL];
 }
 
 message DeleteComputeFlavourRequest {
