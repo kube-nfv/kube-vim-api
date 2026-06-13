@@ -91,8 +91,13 @@ enum ComputeRunningState {
 // Note(dmalovan): this message out of scope ETSI GS NFV-IFA 006. But it's required since
 // kube-vim support only that network types
 enum NetworkType {
-    OVERLAY = 0;
-    UNDERLAY = 1;
+    NETWORK_TYPE_OVERLAY  = 0;
+    NETWORK_TYPE_UNDERLAY = 1;
+    // SR-IOV VF pool realized via sriov-cni + Multus NetworkAttachmentDefinition.
+    // providerNetwork = device plugin resource name (k8s.v1.cni.cncf.io/resourceName)
+    // segmentationId  = VLAN ID (0 = untagged)
+    // bandwidth       = min_tx_rate in Mbps (0 = no guarantee)
+    NETWORK_TYPE_SRIOV    = 2;
 }
 
 // Type of network interface. The type allows for defining how such interface is to be realized,
@@ -100,14 +105,14 @@ enum NetworkType {
 // Note(dmalovan): typeVirtualNic should define how the VM nic should be connected to the host network.
 enum TypeVirtualNic {
     // In the simple mode VM's are connected to the network backend through a linux "bridge".
-    BRIDGE = 0;
+    TYPE_VIRTUAL_NIC_BRIDGE = 0;
     // In masquerade mode, kubevirt allocates internal IP address to the virtual machines and hide them behind NAT.
     // All egress treaffic is "SNAT'ed".
     // Note(dmalovan): actually don't think that is needed for NFV usecases.
     // MASQUERADE = 1;
 
     // PCI Path-through allows a compute instance to have a direct and exclusive access to the physical PCI devices.
-    PATHTHROUGH = 2;
+    TYPE_VIRTUAL_NIC_PATHTHROUGH = 2;
     // Extension of PCIe that allows a single PCI device (NIC) to be shared among multiple VMs.
-    SRIOV = 3;
+    TYPE_VIRTUAL_NIC_SRIOV = 3;
 }

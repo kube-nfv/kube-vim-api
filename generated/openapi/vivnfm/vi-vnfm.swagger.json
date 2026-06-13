@@ -790,10 +790,12 @@
     "NetworkType": {
       "type": "string",
       "enum": [
-        "OVERLAY",
-        "UNDERLAY"
+        "NETWORK_TYPE_OVERLAY",
+        "NETWORK_TYPE_UNDERLAY",
+        "NETWORK_TYPE_SRIOV"
       ],
-      "default": "OVERLAY",
+      "default": "NETWORK_TYPE_OVERLAY",
+      "description": "- NETWORK_TYPE_SRIOV: SR-IOV VF pool realized via sriov-cni + Multus NetworkAttachmentDefinition.\nproviderNetwork = device plugin resource name (k8s.v1.cni.cncf.io/resourceName)\nsegmentationId  = VLAN ID (0 = untagged)\nbandwidth       = min_tx_rate in Mbps (0 = no guarantee)",
       "title": "Note(dmalovan): this message out of scope ETSI GS NFV-IFA 006. But it's required since\nkube-vim support only that network types"
     },
     "OperationalState": {
@@ -898,12 +900,12 @@
     "TypeVirtualNic": {
       "type": "string",
       "enum": [
-        "BRIDGE",
-        "PATHTHROUGH",
-        "SRIOV"
+        "TYPE_VIRTUAL_NIC_BRIDGE",
+        "TYPE_VIRTUAL_NIC_PATHTHROUGH",
+        "TYPE_VIRTUAL_NIC_SRIOV"
       ],
-      "default": "BRIDGE",
-      "description": "Type of network interface. The type allows for defining how such interface is to be realized,\ne.g. normal virtual NIC, with direct PCI pass-through, SR-IOV, etc.\nNote(dmalovan): typeVirtualNic should define how the VM nic should be connected to the host network.\n\n - BRIDGE: In the simple mode VM's are connected to the network backend through a linux \"bridge\".\n\nIn masquerade mode, kubevirt allocates internal IP address to the virtual machines and hide them behind NAT.\n All egress treaffic is \"SNAT'ed\".\n Note(dmalovan): actually don't think that is needed for NFV usecases.\n MASQUERADE = 1;\n - PATHTHROUGH: PCI Path-through allows a compute instance to have a direct and exclusive access to the physical PCI devices.\n - SRIOV: Extension of PCIe that allows a single PCI device (NIC) to be shared among multiple VMs."
+      "default": "TYPE_VIRTUAL_NIC_BRIDGE",
+      "description": "Type of network interface. The type allows for defining how such interface is to be realized,\ne.g. normal virtual NIC, with direct PCI pass-through, SR-IOV, etc.\nNote(dmalovan): typeVirtualNic should define how the VM nic should be connected to the host network.\n\n - TYPE_VIRTUAL_NIC_BRIDGE: In the simple mode VM's are connected to the network backend through a linux \"bridge\".\n\nIn masquerade mode, kubevirt allocates internal IP address to the virtual machines and hide them behind NAT.\n All egress treaffic is \"SNAT'ed\".\n Note(dmalovan): actually don't think that is needed for NFV usecases.\n MASQUERADE = 1;\n - TYPE_VIRTUAL_NIC_PATHTHROUGH: PCI Path-through allows a compute instance to have a direct and exclusive access to the physical PCI devices.\n - TYPE_VIRTUAL_NIC_SRIOV: Extension of PCIe that allows a single PCI device (NIC) to be shared among multiple VMs."
     },
     "UserData": {
       "type": "object",
