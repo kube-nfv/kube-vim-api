@@ -55,7 +55,7 @@ class TestVirtualCompute(unittest.TestCase):
                             kubevim_vivnfm_client.models.ip_address.IPAddress(
                                 ip = '', )
                             ], 
-                        type_virtual_nic = 'BRIDGE', 
+                        type_virtual_nic = 'TYPE_VIRTUAL_NIC_BRIDGE', 
                         type_configuration = [
                             ''
                             ], 
@@ -108,7 +108,7 @@ class TestVirtualCompute(unittest.TestCase):
                             kubevim_vivnfm_client.models.ip_address.IPAddress(
                                 ip = '', )
                             ], 
-                        type_virtual_nic = 'BRIDGE', 
+                        type_virtual_nic = 'TYPE_VIRTUAL_NIC_BRIDGE', 
                         type_configuration = [
                             ''
                             ], 

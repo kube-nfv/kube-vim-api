@@ -61,29 +61,6 @@ class TestPbQueryImagesResponse(unittest.TestCase):
             )
         else:
             return PbQueryImagesResponse(
-                software_images_information = [
-                    kubevim_vivnfm_client.models.this_information_element_represents_software_image_information.This information element represents Software Image Information(
-                        software_image_id = kubevim_vivnfm_client.models.identifier.Identifier(
-                            value = '', ), 
-                        name = '', 
-                        provider = '', 
-                        version = '', 
-                        checksum = '', 
-                        container_format = '', 
-                        disk_format = '', 
-                        created_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
-                        updated_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
-                        min_disk = kubevim_vivnfm_client.models.resource_quantity.resourceQuantity(
-                            string = '', ), 
-                        min_ram = kubevim_vivnfm_client.models.resource_quantity.resourceQuantity(
-                            string = '', ), 
-                        size = , 
-                        status = '', 
-                        metadata = kubevim_vivnfm_client.models.metadata.Metadata(
-                            fields = {
-                                'key' : ''
-                                }, ), )
-                    ],
         )
         """
 

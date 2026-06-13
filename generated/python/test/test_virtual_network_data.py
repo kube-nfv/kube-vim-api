@@ -36,7 +36,7 @@ class TestVirtualNetworkData(unittest.TestCase):
         if include_optional:
             return VirtualNetworkData(
                 bandwidth = 1.337,
-                network_type = 'OVERLAY',
+                network_type = 'NETWORK_TYPE_OVERLAY',
                 provider_network = '',
                 segmentation_id = '',
                 network_qo_s = [

@@ -49,7 +49,7 @@ class TestVirtualNetworkInterface(unittest.TestCase):
                     kubevim_vivnfm_client.models.ip_address.IPAddress(
                         ip = '', )
                     ],
-                type_virtual_nic = 'BRIDGE',
+                type_virtual_nic = 'TYPE_VIRTUAL_NIC_BRIDGE',
                 type_configuration = [
                     ''
                     ],
@@ -71,7 +71,7 @@ class TestVirtualNetworkInterface(unittest.TestCase):
                     value = '', ),
                 owner_id = kubevim_vivnfm_client.models.identifier.Identifier(
                     value = '', ),
-                type_virtual_nic = 'BRIDGE',
+                type_virtual_nic = 'TYPE_VIRTUAL_NIC_BRIDGE',
                 mac_address = kubevim_vivnfm_client.models.mac_address.MacAddress(
                     mac = '', ),
                 bandwidth = 1.337,

@@ -36,13 +36,16 @@ class TestVirtualStorageData(unittest.TestCase):
         if include_optional:
             return VirtualStorageData(
                 type_of_storage = '',
-                size_of_storage = 1.337,
-                rdma_enabled = True
+                size_of_storage = kubevim_vivnfm_client.models.resource_quantity.resourceQuantity(
+                    string = '', ),
+                rdma_enabled = True,
+                is_boot = True
             )
         else:
             return VirtualStorageData(
                 type_of_storage = '',
-                size_of_storage = 1.337,
+                size_of_storage = kubevim_vivnfm_client.models.resource_quantity.resourceQuantity(
+                    string = '', ),
         )
         """
 

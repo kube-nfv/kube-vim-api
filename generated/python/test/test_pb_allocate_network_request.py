@@ -41,7 +41,7 @@ class TestPbAllocateNetworkRequest(unittest.TestCase):
                 network_resource_type = 'NETWORK',
                 type_network_data = kubevim_vivnfm_client.models.virtual_network_data.VirtualNetworkData(
                     bandwidth = 1.337, 
-                    network_type = 'OVERLAY', 
+                    network_type = 'NETWORK_TYPE_OVERLAY', 
                     provider_network = '', 
                     segmentation_id = '', 
                     network_qo_s = [

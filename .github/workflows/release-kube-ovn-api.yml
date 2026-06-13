@@ -1,0 +1,51 @@
+name: Release kube-ovn-api
+
+on:
+  push:
+    tags:
+      - 'kube-ovn-api/v*'
+
+jobs:
+  release:
+    name: Test and create release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate tag format
+        run: |
+          TAG="${GITHUB_REF_NAME#kube-ovn-api/}"
+          if ! echo "$TAG" | grep -qE '^v[0-9]+\.[0-9]+\.[0-9]+(-(alpha|beta|rc)\.[0-9]+)?$'; then
+            echo "Tag '$GITHUB_REF_NAME' does not match expected format kube-ovn-api/vX.Y.Z[-alpha|beta|rc.N]"
+            exit 1
+          fi
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: kube-ovn-api/go.mod
+
+      - name: Build
+        working-directory: kube-ovn-api
+        run: go build ./...
+
+      - name: Test
+        working-directory: kube-ovn-api
+        run: go test ./...
+
+      - name: Determine prerelease
+        id: meta
+        run: |
+          IS_PRE=$([[ "$GITHUB_REF_NAME" =~ -(alpha|beta|rc)\. ]] && echo true || echo false)
+          echo "prerelease=$IS_PRE" >> "$GITHUB_OUTPUT"
+
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" \
+            --generate-notes \
+            --title "kube-ovn-api ${GITHUB_REF_NAME#kube-ovn-api/}" \
+            ${{ steps.meta.outputs.prerelease == 'true' && '--prerelease' || '' }}

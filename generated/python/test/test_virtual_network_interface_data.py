@@ -41,7 +41,7 @@ class TestVirtualNetworkInterfaceData(unittest.TestCase):
                     value = '', ),
                 network_port_id = kubevim_vivnfm_client.models.identifier.Identifier(
                     value = '', ),
-                type_virtual_nic = 'BRIDGE',
+                type_virtual_nic = 'TYPE_VIRTUAL_NIC_BRIDGE',
                 type_configuration = [
                     ''
                     ],
@@ -56,7 +56,7 @@ class TestVirtualNetworkInterfaceData(unittest.TestCase):
             )
         else:
             return VirtualNetworkInterfaceData(
-                type_virtual_nic = 'BRIDGE',
+                type_virtual_nic = 'TYPE_VIRTUAL_NIC_BRIDGE',
         )
         """
 

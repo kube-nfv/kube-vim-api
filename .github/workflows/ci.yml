@@ -1,0 +1,76 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  proto-drift:
+    name: Generated code drift check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Cache Docker layers
+        uses: actions/cache@v4
+        with:
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx-${{ hashFiles('docker/**') }}
+          restore-keys: |
+            ${{ runner.os }}-buildx-
+
+      - name: Regenerate all artifacts
+        run: make proto-clean && make all
+
+      - name: Check for drift
+        run: |
+          git diff --exit-code || {
+            echo "Generated files are out of sync with source."
+            echo "Run 'make all' locally and commit the result."
+            exit 1
+          }
+
+  go-build:
+    name: Go build and test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+
+      - name: Build
+        run: go build ./...
+
+      - name: Test
+        run: go test ./pkg/apis/...
+
+      - name: Build kube-ovn-api
+        working-directory: kube-ovn-api
+        run: go build ./...
+
+      - name: Test kube-ovn-api
+        working-directory: kube-ovn-api
+        run: go test ./...
+
+  python-smoke:
+    name: Python smoke test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install package
+        working-directory: generated/python
+        run: pip install -e .
+
+      - name: Import check
+        run: python -c "import kubevim_vivnfm_client; print('ok')"

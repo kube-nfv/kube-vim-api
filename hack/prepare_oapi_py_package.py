@@ -25,6 +25,34 @@ def copy_license_file(package_dir: Path, license_file: Path):
     shutil.copyfile(license_file, target_path)
     print(f"Copied LICENSE to: {target_path}")
 
+def patch_pyproject_toml(pyproject_path: Path):
+    content = pyproject_path.read_text()
+
+    content = content.replace(
+        'description = "vivnfm/vi-vnfm.proto"',
+        'description = "Python client for KubeVIM VI-VNFM API - ETSI NFV MANO interface"',
+    )
+    content = content.replace(
+        'authors = ["OpenAPI Generator Community <team@openapitools.org>"]',
+        'authors = ["Dmytro Malovanyi <dmitrymalovanyy@gmail.com>"]',
+    )
+    content = content.replace(
+        'license = "NoLicense"',
+        'license = "Apache-2.0"',
+    )
+    content = content.replace(
+        'repository = "https://github.com/GIT_USER_ID/GIT_REPO_ID"',
+        'repository = "https://github.com/kube-nfv/kube-vim-api"',
+    )
+    content = content.replace(
+        'keywords = ["OpenAPI", "OpenAPI-Generator", "vivnfm/vi-vnfm.proto"]',
+        'keywords = ["etsi", "nfv", "mano", "vim", "vnfm", "kubevim", "kubernetes", "virtualization", "openapi", "grpc", "cloud-native"]',
+    )
+
+    pyproject_path.write_text(content)
+    print(f"Patched pyproject.toml: {pyproject_path}")
+
+
 def patch_setup_py(setup_path: Path):
     content = setup_path.read_text()
 
@@ -149,9 +177,13 @@ def main():
         print(f"setup.py not found in: {package_dir}")
         sys.exit(1)
 
+    pyproject_toml = package_dir / "pyproject.toml"
+
     cleanup_files(package_dir)
     copy_license_file(package_dir, license_file)
     patch_setup_py(setup_py)
+    if pyproject_toml.exists():
+        patch_pyproject_toml(pyproject_toml)
 
 if __name__ == "__main__":
     main()

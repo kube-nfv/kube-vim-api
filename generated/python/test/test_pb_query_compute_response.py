@@ -55,7 +55,7 @@ class TestPbQueryComputeResponse(unittest.TestCase):
                                     kubevim_vivnfm_client.models.ip_address.IPAddress(
                                         ip = '', )
                                     ], 
-                                type_virtual_nic = 'BRIDGE', 
+                                type_virtual_nic = 'TYPE_VIRTUAL_NIC_BRIDGE', 
                                 type_configuration = [
                                     ''
                                     ], 
@@ -84,52 +84,6 @@ class TestPbQueryComputeResponse(unittest.TestCase):
             )
         else:
             return PbQueryComputeResponse(
-                query_result = [
-                    kubevim_vivnfm_client.models.virtual_compute.VirtualCompute(
-                        compute_id = kubevim_vivnfm_client.models.identifier.Identifier(
-                            value = '', ), 
-                        compute_name = '', 
-                        flavour_id = kubevim_vivnfm_client.models.identifier.Identifier(
-                            value = '', ), 
-                        virtual_cpu = kubevim_vivnfm_client.models.virtual_cpu.virtualCpu(), 
-                        virtual_memory = kubevim_vivnfm_client.models.virtual_memory.virtualMemory(), 
-                        virtual_network_interface = [
-                            kubevim_vivnfm_client.models.virtual_network_interface.VirtualNetworkInterface(
-                                resource_id = , 
-                                owner_id = , 
-                                network_id = , 
-                                subnet_id = , 
-                                network_port_id = , 
-                                ip_address = [
-                                    kubevim_vivnfm_client.models.ip_address.IPAddress(
-                                        ip = '', )
-                                    ], 
-                                type_virtual_nic = 'BRIDGE', 
-                                type_configuration = [
-                                    ''
-                                    ], 
-                                mac_address = kubevim_vivnfm_client.models.mac_address.MacAddress(
-                                    mac = '', ), 
-                                bandwidth = 1.337, 
-                                acceleration_capability = [
-                                    ''
-                                    ], 
-                                operational_state = 'ENABLED', 
-                                metadata = kubevim_vivnfm_client.models.metadata.Metadata(
-                                    fields = {
-                                        'key' : ''
-                                        }, ), )
-                            ], 
-                        virtual_disks = [
-                            kubevim_vivnfm_client.models.virtual_storage.VirtualStorage()
-                            ], 
-                        vc_image_id = , 
-                        zone_id = , 
-                        host_id = , 
-                        operational_state = 'ENABLED', 
-                        running_state = 'STARTING', 
-                        metadata = kubevim_vivnfm_client.models.metadata.Metadata(), )
-                    ],
         )
         """
 

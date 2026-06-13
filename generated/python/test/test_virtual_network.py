@@ -46,7 +46,7 @@ class TestVirtualNetwork(unittest.TestCase):
                     kubevim_vivnfm_client.models.virtual_network_port.VirtualNetworkPort()
                     ],
                 bandwidth = 1.337,
-                network_type = 'OVERLAY',
+                network_type = 'NETWORK_TYPE_OVERLAY',
                 provider_network = '',
                 segmentation_id = '',
                 network_qo_s = [
@@ -72,7 +72,7 @@ class TestVirtualNetwork(unittest.TestCase):
                 network_resource_id = kubevim_vivnfm_client.models.identifier.Identifier(
                     value = '', ),
                 bandwidth = 1.337,
-                network_type = 'OVERLAY',
+                network_type = 'NETWORK_TYPE_OVERLAY',
                 is_shared = True,
                 operational_state = 'ENABLED',
         )

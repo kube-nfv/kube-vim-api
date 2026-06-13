@@ -77,7 +77,7 @@ $(PYTHON_GEN_DIR): $(OPENAPI_DIR) proto-compile
 	-g python -o /$(PYTHON_GEN_DIR) \
 	--additional-properties=\
 	packageUrl=$(KUBE_VIM_API_URL),\
-	packageVersion=$(KUBE_VIM_API_VERSION),\
+	packageVersion=0.0.0.dev0,\
 	packageName=kubevim_vivnfm_client,\
 	projectDescription="Python client for VI-VNFM API"
 	python3 ./hack/prepare_oapi_py_package.py $(PYTHON_GEN_DIR) $(LICENSE_FILE)

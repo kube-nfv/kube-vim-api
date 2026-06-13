@@ -40,7 +40,8 @@ class TestPbCreateComputeFlavourRequest(unittest.TestCase):
                         value = '', ), 
                     is_public = True, 
                     virtual_memory = kubevim_vivnfm_client.models.virtual_memory_data.VirtualMemoryData(
-                        virtual_mem_size = 1.337, 
+                        virtual_mem_size = kubevim_vivnfm_client.models.resource_quantity.resourceQuantity(
+                            string = '', ), 
                         virtual_mem_oversubscription_policy = '', 
                         numa_enabled = True, ), 
                     virtual_cpu = kubevim_vivnfm_client.models.virtual_cpu_data.VirtualCpuData(
@@ -60,8 +61,10 @@ class TestPbCreateComputeFlavourRequest(unittest.TestCase):
                     storage_attributes = [
                         kubevim_vivnfm_client.models.virtual_storage_data.VirtualStorageData(
                             type_of_storage = '', 
-                            size_of_storage = 1.337, 
-                            rdma_enabled = True, )
+                            size_of_storage = kubevim_vivnfm_client.models.resource_quantity.resourceQuantity(
+                                string = '', ), 
+                            rdma_enabled = True, 
+                            is_boot = True, )
                         ], 
                     virtual_network_interface = [
                         kubevim_vivnfm_client.models.virtual_network_interface_data.VirtualNetworkInterfaceData(
@@ -69,7 +72,7 @@ class TestPbCreateComputeFlavourRequest(unittest.TestCase):
                                 value = '', ), 
                             subnet_id = , 
                             network_port_id = , 
-                            type_virtual_nic = 'BRIDGE', 
+                            type_virtual_nic = 'TYPE_VIRTUAL_NIC_BRIDGE', 
                             type_configuration = [
                                 ''
                                 ], 
@@ -95,7 +98,8 @@ class TestPbCreateComputeFlavourRequest(unittest.TestCase):
                         value = '', ), 
                     is_public = True, 
                     virtual_memory = kubevim_vivnfm_client.models.virtual_memory_data.VirtualMemoryData(
-                        virtual_mem_size = 1.337, 
+                        virtual_mem_size = kubevim_vivnfm_client.models.resource_quantity.resourceQuantity(
+                            string = '', ), 
                         virtual_mem_oversubscription_policy = '', 
                         numa_enabled = True, ), 
                     virtual_cpu = kubevim_vivnfm_client.models.virtual_cpu_data.VirtualCpuData(
@@ -115,8 +119,10 @@ class TestPbCreateComputeFlavourRequest(unittest.TestCase):
                     storage_attributes = [
                         kubevim_vivnfm_client.models.virtual_storage_data.VirtualStorageData(
                             type_of_storage = '', 
-                            size_of_storage = 1.337, 
-                            rdma_enabled = True, )
+                            size_of_storage = kubevim_vivnfm_client.models.resource_quantity.resourceQuantity(
+                                string = '', ), 
+                            rdma_enabled = True, 
+                            is_boot = True, )
                         ], 
                     virtual_network_interface = [
                         kubevim_vivnfm_client.models.virtual_network_interface_data.VirtualNetworkInterfaceData(
@@ -124,7 +130,7 @@ class TestPbCreateComputeFlavourRequest(unittest.TestCase):
                                 value = '', ), 
                             subnet_id = , 
                             network_port_id = , 
-                            type_virtual_nic = 'BRIDGE', 
+                            type_virtual_nic = 'TYPE_VIRTUAL_NIC_BRIDGE', 
                             type_configuration = [
                                 ''
                                 ], 

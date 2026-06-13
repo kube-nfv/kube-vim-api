@@ -1,0 +1,72 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  release:
+    name: Build and publish
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write   # create GitHub Release
+      id-token: write   # PyPI trusted publishing
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Validate tag format
+        run: |
+          TAG="${GITHUB_REF_NAME}"
+          if ! echo "$TAG" | grep -qE '^v[0-9]+\.[0-9]+\.[0-9]+(-(alpha|beta|rc)\.[0-9]+)?$'; then
+            echo "Tag '$TAG' does not match expected format vX.Y.Z[-alpha|beta|rc.N]"
+            exit 1
+          fi
+
+      - name: Translate tag to PEP 440
+        id: version
+        run: |
+          TAG="${GITHUB_REF_NAME}"
+          PEP440=$(echo "$TAG" \
+            | sed 's/^v//' \
+            | sed 's/-alpha\./a/' \
+            | sed 's/-beta\./b/' \
+            | sed 's/-rc\./rc/')
+          echo "pep440=$PEP440" >> "$GITHUB_OUTPUT"
+          IS_PRE=$([[ "$TAG" =~ -(alpha|beta|rc)\. ]] && echo true || echo false)
+          echo "prerelease=$IS_PRE" >> "$GITHUB_OUTPUT"
+
+      - name: Stamp version into Python package
+        working-directory: generated/python
+        run: |
+          VERSION="${{ steps.version.outputs.pep440 }}"
+          sed -i "s/^VERSION = .*/VERSION = \"$VERSION\"/" setup.py
+          sed -i "s/^version = .*/version = \"$VERSION\"/" pyproject.toml
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Build Python package
+        working-directory: generated/python
+        run: |
+          pip install build
+          python -m build
+
+      - name: Publish to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          packages-dir: generated/python/dist/
+
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" \
+            --generate-notes \
+            ${{ steps.version.outputs.prerelease == 'true' && '--prerelease' || '' }} \
+            generated/python/dist/* \
+            generated/openapi/vivnfm/*.swagger.json

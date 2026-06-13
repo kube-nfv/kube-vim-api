@@ -50,7 +50,7 @@ In the NFVI, a virtual network transports information among the network interfac
                             kubevim_vivnfm_client.models.virtual_network_port.VirtualNetworkPort()
                             ], 
                         bandwidth = 1.337, 
-                        network_type = 'OVERLAY', 
+                        network_type = 'NETWORK_TYPE_OVERLAY', 
                         provider_network = '', 
                         segmentation_id = '', 
                         network_qo_s = [

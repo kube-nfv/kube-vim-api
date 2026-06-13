@@ -1,12 +1,12 @@
 [tool.poetry]
 name = "kubevim_vivnfm_client"
-version = "v0.0.5-alpha.14"
-description = "vivnfm/vi-vnfm.proto"
-authors = ["OpenAPI Generator Community <team@openapitools.org>"]
-license = "NoLicense"
+version = "0.0.0.dev0"
+description = "Python client for KubeVIM VI-VNFM API - ETSI NFV MANO interface"
+authors = ["Dmytro Malovanyi <dmitrymalovanyy@gmail.com>"]
+license = "Apache-2.0"
 readme = "README.md"
-repository = "https://github.com/GIT_USER_ID/GIT_REPO_ID"
-keywords = ["OpenAPI", "OpenAPI-Generator", "vivnfm/vi-vnfm.proto"]
+repository = "https://github.com/kube-nfv/kube-vim-api"
+keywords = ["etsi", "nfv", "mano", "vim", "vnfm", "kubevim", "kubernetes", "virtualization", "openapi", "grpc", "cloud-native"]
 include = ["kubevim_vivnfm_client/py.typed"]
 
 [tool.poetry.dependencies]

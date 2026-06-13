@@ -35,13 +35,15 @@ class TestVirtualMemoryData(unittest.TestCase):
         model = VirtualMemoryData()
         if include_optional:
             return VirtualMemoryData(
-                virtual_mem_size = 1.337,
+                virtual_mem_size = kubevim_vivnfm_client.models.resource_quantity.resourceQuantity(
+                    string = '', ),
                 virtual_mem_oversubscription_policy = '',
                 numa_enabled = True
             )
         else:
             return VirtualMemoryData(
-                virtual_mem_size = 1.337,
+                virtual_mem_size = kubevim_vivnfm_client.models.resource_quantity.resourceQuantity(
+                    string = '', ),
         )
         """
 
