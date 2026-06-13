@@ -70,6 +70,7 @@ python-gen: $(PYTHON_GEN_DIR) ## Generate python stubs from the openapi schema.
 $(PYTHON_GEN_DIR): $(OPENAPI_DIR) proto-compile
 	mkdir -p $@
 	docker run --rm \
+	--user $(shell id -u):$(shell id -g) \
 	-v "$(PWD)/$(OPENAPI_DIR):/$(OPENAPI_DIR)" \
 	-v "$(PWD)/$(PYTHON_GEN_DIR):/$(PYTHON_GEN_DIR)" \
 	$(OPENAPI_GEN_IMAGE):$(OPENAPI_GEN_VERSION) \
