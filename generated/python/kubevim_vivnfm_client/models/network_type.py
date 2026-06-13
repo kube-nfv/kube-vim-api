@@ -20,14 +20,15 @@ from typing_extensions import Self
 
 class NetworkType(str, Enum):
     """
-    NetworkType
+    - NETWORK_TYPE_SRIOV: SR-IOV VF pool realized via sriov-cni + Multus NetworkAttachmentDefinition. providerNetwork = device plugin resource name (k8s.v1.cni.cncf.io/resourceName) segmentationId  = VLAN ID (0 = untagged) bandwidth       = min_tx_rate in Mbps (0 = no guarantee)
     """
 
     """
     allowed enum values
     """
-    OVERLAY = 'OVERLAY'
-    UNDERLAY = 'UNDERLAY'
+    NETWORK_TYPE_OVERLAY = 'NETWORK_TYPE_OVERLAY'
+    NETWORK_TYPE_UNDERLAY = 'NETWORK_TYPE_UNDERLAY'
+    NETWORK_TYPE_SRIOV = 'NETWORK_TYPE_SRIOV'
 
     @classmethod
     def from_json(cls, json_str: str) -> Self:

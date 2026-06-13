@@ -12,7 +12,7 @@ Name | Type | Description | Notes
 **subnet_id** | [**Identifier**](Identifier.md) |  | [optional] 
 **network_port_id** | [**Identifier**](Identifier.md) |  | [optional] 
 **ip_address** | [**List[IPAddress]**](IPAddress.md) | The virtual network interface can be configured with specific IP address(es) associated to the network to be attached to. The cardinality can be 0 in the case that a network interface is created without being attached to any specific network, or when an IP address can be automatically configured, e.g. by DHCP. Note(dmalovan): In general IPaddresses should be passed even if them are allocated dynamically e.g. via DHCP. If DHCP client not yet aquired the address cardinality can be 0. | [optional] 
-**type_virtual_nic** | [**TypeVirtualNic**](TypeVirtualNic.md) |  | [default to TypeVirtualNic.BRIDGE]
+**type_virtual_nic** | [**TypeVirtualNic**](TypeVirtualNic.md) |  | [default to TypeVirtualNic.TYPE_VIRTUAL_NIC_BRIDGE]
 **type_configuration** | **List[str]** | Extra configuration that the virtual network interface supports based on the type of virtual network interface. TODO: That interface might change. | [optional] 
 **mac_address** | [**MacAddress**](MacAddress.md) |  | 
 **bandwidth** | **float** | Bandwidth of the virtual network interface (in Mbps). | 

@@ -133,7 +133,7 @@ class VirtualNetwork(BaseModel):
             "subnetId": [Identifier.from_dict(_item) for _item in obj["subnetId"]] if obj.get("subnetId") is not None else None,
             "networkPort": obj.get("networkPort"),
             "bandwidth": obj.get("bandwidth"),
-            "networkType": obj.get("networkType") if obj.get("networkType") is not None else NetworkType.OVERLAY,
+            "networkType": obj.get("networkType") if obj.get("networkType") is not None else NetworkType.NETWORK_TYPE_OVERLAY,
             "providerNetwork": obj.get("providerNetwork"),
             "segmentationId": obj.get("segmentationId"),
             "networkQoS": [NetworkQoS.from_dict(_item) for _item in obj["networkQoS"]] if obj.get("networkQoS") is not None else None,

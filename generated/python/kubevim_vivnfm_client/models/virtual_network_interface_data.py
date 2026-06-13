@@ -105,7 +105,7 @@ class VirtualNetworkInterfaceData(BaseModel):
             "networkId": Identifier.from_dict(obj["networkId"]) if obj.get("networkId") is not None else None,
             "subnetId": Identifier.from_dict(obj["subnetId"]) if obj.get("subnetId") is not None else None,
             "networkPortId": Identifier.from_dict(obj["networkPortId"]) if obj.get("networkPortId") is not None else None,
-            "typeVirtualNic": obj.get("typeVirtualNic") if obj.get("typeVirtualNic") is not None else TypeVirtualNic.BRIDGE,
+            "typeVirtualNic": obj.get("typeVirtualNic") if obj.get("typeVirtualNic") is not None else TypeVirtualNic.TYPE_VIRTUAL_NIC_BRIDGE,
             "typeConfiguration": obj.get("typeConfiguration"),
             "bandwidth": obj.get("bandwidth"),
             "accelerationCapability": obj.get("accelerationCapability"),

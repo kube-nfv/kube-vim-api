@@ -9,7 +9,7 @@ Name | Type | Description | Notes
 **network_id** | [**Identifier**](Identifier.md) |  | [optional] 
 **subnet_id** | [**Identifier**](Identifier.md) |  | [optional] 
 **network_port_id** | [**Identifier**](Identifier.md) |  | [optional] 
-**type_virtual_nic** | [**TypeVirtualNic**](TypeVirtualNic.md) |  | [default to TypeVirtualNic.BRIDGE]
+**type_virtual_nic** | [**TypeVirtualNic**](TypeVirtualNic.md) |  | [default to TypeVirtualNic.TYPE_VIRTUAL_NIC_BRIDGE]
 **type_configuration** | **List[str]** | Extra configuration that the virtual network interface supports based on the type of virtual network interface. TODO: That interface might change. | [optional] 
 **bandwidth** | **float** | Bandwidth of the virtual network interface (in Mbps). | [optional] 
 **acceleration_capability** | **List[str]** | It specifies if the virtual network interface requires certain acceleration capabilities (e.g. RDMA, packet dispatch, TCP Chimney). The cardinality can be 0, if no particular acceleration capability is requested. TODO: That interface might change. | [optional] 

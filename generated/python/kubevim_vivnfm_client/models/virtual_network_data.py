@@ -31,7 +31,7 @@ class VirtualNetworkData(BaseModel):
     VirtualNetworkData
     """ # noqa: E501
     bandwidth: Union[StrictFloat, StrictInt] = Field(description="Minimum network bandwidth (in Mbps).")
-    network_type: Optional[NetworkType] = Field(default=NetworkType.OVERLAY, alias="networkType")
+    network_type: Optional[NetworkType] = Field(default=NetworkType.NETWORK_TYPE_OVERLAY, alias="networkType")
     provider_network: Optional[StrictStr] = Field(default=None, description="Name of the infrastructure provider network used to realize the virtual network. Cardinality can be \"0\" to cover the case where virtual network is not based on infrastructure provider network.", alias="providerNetwork")
     segmentation_id: Optional[StrictStr] = Field(default=None, description="The segmentation identifier of the network that maps to the virtualised network, for which, the segmentation model is defined by the networkType attribute. For instance, for a \"vlan\" networkType, it corresponds to the vlan identifier; and for a \"gre\" networkType, it corresponds to a gre key. Cardinality can be \"0\" to cover the case where networkType is flat network without any specific segmentation.", alias="segmentationId")
     network_qo_s: Optional[List[NetworkQoS]] = Field(default=None, description="Provides information about Quality of Service attributes that the network shall support. Cardinality can be \"0\" for networks without any specified QoS requirements.", alias="networkQoS")
@@ -109,7 +109,7 @@ class VirtualNetworkData(BaseModel):
 
         _obj = cls.model_validate({
             "bandwidth": obj.get("bandwidth"),
-            "networkType": obj.get("networkType") if obj.get("networkType") is not None else NetworkType.OVERLAY,
+            "networkType": obj.get("networkType") if obj.get("networkType") is not None else NetworkType.NETWORK_TYPE_OVERLAY,
             "providerNetwork": obj.get("providerNetwork"),
             "segmentationId": obj.get("segmentationId"),
             "networkQoS": [NetworkQoS.from_dict(_item) for _item in obj["networkQoS"]] if obj.get("networkQoS") is not None else None,
