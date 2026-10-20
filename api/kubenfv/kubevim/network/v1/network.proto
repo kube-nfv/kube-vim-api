@@ -494,7 +494,7 @@ service NetworkService {
   }
 
   // Creates a network affinity or anti-affinity group.
-  rpc CreateAffinityGroup(CreateAffinityGroupRequest) returns (kubenfv.kubevim.common.v1.AffinityGroup) {
+  rpc CreateAffinityGroup(kubenfv.kubevim.common.v1.CreateAffinityGroupRequest) returns (kubenfv.kubevim.common.v1.AffinityGroup) {
     option (google.api.http) = {
       post: "/network/v1/affinityGroups"
       body: "*"
@@ -511,7 +511,7 @@ service NetworkService {
   }
 
   // Returns one network affinity group.
-  rpc GetAffinityGroup(GetAffinityGroupRequest) returns (kubenfv.kubevim.common.v1.AffinityGroup) {
+  rpc GetAffinityGroup(kubenfv.kubevim.common.v1.GetAffinityGroupRequest) returns (kubenfv.kubevim.common.v1.AffinityGroup) {
     option (google.api.http) = {get: "/network/v1/affinityGroups/{group_id}"};
     option (grpc.gateway.protoc_gen_openapiv3.options.openapiv3_operation) = {
       security: {
@@ -531,7 +531,7 @@ service NetworkService {
   }
 
   // Returns the network affinity groups.
-  rpc ListAffinityGroups(ListAffinityGroupsRequest) returns (ListAffinityGroupsResponse) {
+  rpc ListAffinityGroups(kubenfv.kubevim.common.v1.ListAffinityGroupsRequest) returns (kubenfv.kubevim.common.v1.ListAffinityGroupsResponse) {
     option (google.api.http) = {get: "/network/v1/affinityGroups"};
     option (grpc.gateway.protoc_gen_openapiv3.options.openapiv3_operation) = {
       security: {
@@ -551,7 +551,7 @@ service NetworkService {
   }
 
   // Deletes a network affinity group.
-  rpc DeleteAffinityGroup(DeleteAffinityGroupRequest) returns (google.protobuf.Empty) {
+  rpc DeleteAffinityGroup(kubenfv.kubevim.common.v1.DeleteAffinityGroupRequest) returns (google.protobuf.Empty) {
     option (google.api.http) = {delete: "/network/v1/affinityGroups/{group_id}"};
     option (grpc.gateway.protoc_gen_openapiv3.options.openapiv3_operation) = {
       security: {
@@ -1528,52 +1528,5 @@ message TrunkUpdate {
     (buf.validate.field).repeated.items.string.uuid = true,
     (google.api.field_behavior) = OPTIONAL,
     (kubenfv.kubevim.options.v1.ifa_field) = {ref: "IFA006 8.4.4.8 UpdateTrunkData.portId"}
-  ];
-}
-
-message CreateAffinityGroupRequest {
-  // Group to create.
-  kubenfv.kubevim.common.v1.AffinityGroup affinity_group = 1 [
-    (google.api.field_behavior) = REQUIRED,
-    (buf.validate.field).required = true
-  ];
-  // Client-chosen UUID that makes the request idempotent (AIP-155).
-  string request_id = 2 [
-    (google.api.field_behavior) = OPTIONAL,
-    (buf.validate.field).string.uuid = true,
-    (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE
-  ];
-}
-
-message GetAffinityGroupRequest {
-  // Identifier of the group.
-  string group_id = 1 [
-    (google.api.field_behavior) = REQUIRED,
-    (buf.validate.field).string.uuid = true
-  ];
-}
-
-message ListAffinityGroupsRequest {
-  // Attribute-based filter expression (SOL 013 5.2).
-  string filter = 1 [(google.api.field_behavior) = OPTIONAL];
-  // Marker of the page to return, from a previous response (SOL 013 5.4).
-  string nextpage_opaque_marker = 2 [
-    json_name = "nextpage_opaque_marker",
-    (google.api.field_behavior) = OPTIONAL
-  ];
-}
-
-message ListAffinityGroupsResponse {
-  // Groups matching the filter.
-  repeated kubenfv.kubevim.common.v1.AffinityGroup affinity_groups = 1;
-  // Marker of the next page; empty on the last page (SOL 013 5.4).
-  string nextpage_opaque_marker = 2 [json_name = "nextpage_opaque_marker"];
-}
-
-message DeleteAffinityGroupRequest {
-  // Identifier of the group.
-  string group_id = 1 [
-    (google.api.field_behavior) = REQUIRED,
-    (buf.validate.field).string.uuid = true
   ];
 }

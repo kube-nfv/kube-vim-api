@@ -16,6 +16,7 @@ import (
 
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/utilities"
+	"github.com/kube-nfv/kube-vim-api/pkg/apis/common/v1"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/grpclog"
@@ -777,7 +778,7 @@ func local_request_NetworkService_DeleteTrunk_0(ctx context.Context, marshaler r
 
 func request_NetworkService_CreateAffinityGroup_0(ctx context.Context, marshaler runtime.Marshaler, client NetworkServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var (
-		protoReq CreateAffinityGroupRequest
+		protoReq commonv1.CreateAffinityGroupRequest
 		metadata runtime.ServerMetadata
 	)
 	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
@@ -792,7 +793,7 @@ func request_NetworkService_CreateAffinityGroup_0(ctx context.Context, marshaler
 
 func local_request_NetworkService_CreateAffinityGroup_0(ctx context.Context, marshaler runtime.Marshaler, server NetworkServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var (
-		protoReq CreateAffinityGroupRequest
+		protoReq commonv1.CreateAffinityGroupRequest
 		metadata runtime.ServerMetadata
 	)
 	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
@@ -804,7 +805,7 @@ func local_request_NetworkService_CreateAffinityGroup_0(ctx context.Context, mar
 
 func request_NetworkService_GetAffinityGroup_0(ctx context.Context, marshaler runtime.Marshaler, client NetworkServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var (
-		protoReq GetAffinityGroupRequest
+		protoReq commonv1.GetAffinityGroupRequest
 		metadata runtime.ServerMetadata
 		err      error
 	)
@@ -825,7 +826,7 @@ func request_NetworkService_GetAffinityGroup_0(ctx context.Context, marshaler ru
 
 func local_request_NetworkService_GetAffinityGroup_0(ctx context.Context, marshaler runtime.Marshaler, server NetworkServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var (
-		protoReq GetAffinityGroupRequest
+		protoReq commonv1.GetAffinityGroupRequest
 		metadata runtime.ServerMetadata
 		err      error
 	)
@@ -845,7 +846,7 @@ var filter_NetworkService_ListAffinityGroups_0 = &utilities.DoubleArray{Encoding
 
 func request_NetworkService_ListAffinityGroups_0(ctx context.Context, marshaler runtime.Marshaler, client NetworkServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var (
-		protoReq ListAffinityGroupsRequest
+		protoReq commonv1.ListAffinityGroupsRequest
 		metadata runtime.ServerMetadata
 	)
 	if err := req.ParseForm(); err != nil {
@@ -863,7 +864,7 @@ func request_NetworkService_ListAffinityGroups_0(ctx context.Context, marshaler 
 
 func local_request_NetworkService_ListAffinityGroups_0(ctx context.Context, marshaler runtime.Marshaler, server NetworkServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var (
-		protoReq ListAffinityGroupsRequest
+		protoReq commonv1.ListAffinityGroupsRequest
 		metadata runtime.ServerMetadata
 	)
 	if err := req.ParseForm(); err != nil {
@@ -878,7 +879,7 @@ func local_request_NetworkService_ListAffinityGroups_0(ctx context.Context, mars
 
 func request_NetworkService_DeleteAffinityGroup_0(ctx context.Context, marshaler runtime.Marshaler, client NetworkServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var (
-		protoReq DeleteAffinityGroupRequest
+		protoReq commonv1.DeleteAffinityGroupRequest
 		metadata runtime.ServerMetadata
 		err      error
 	)
@@ -899,7 +900,7 @@ func request_NetworkService_DeleteAffinityGroup_0(ctx context.Context, marshaler
 
 func local_request_NetworkService_DeleteAffinityGroup_0(ctx context.Context, marshaler runtime.Marshaler, server NetworkServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var (
-		protoReq DeleteAffinityGroupRequest
+		protoReq commonv1.DeleteAffinityGroupRequest
 		metadata runtime.ServerMetadata
 		err      error
 	)

@@ -2550,258 +2550,6 @@ func (x *TrunkUpdate) GetSubportIdsToRemove() []string {
 	return nil
 }
 
-type CreateAffinityGroupRequest struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// Group to create.
-	AffinityGroup *v1.AffinityGroup `protobuf:"bytes,1,opt,name=affinity_group,json=affinityGroup,proto3" json:"affinity_group,omitempty"`
-	// Client-chosen UUID that makes the request idempotent (AIP-155).
-	RequestId     string `protobuf:"bytes,2,opt,name=request_id,json=requestId,proto3" json:"request_id,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *CreateAffinityGroupRequest) Reset() {
-	*x = CreateAffinityGroupRequest{}
-	mi := &file_kubenfv_kubevim_network_v1_network_proto_msgTypes[36]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *CreateAffinityGroupRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*CreateAffinityGroupRequest) ProtoMessage() {}
-
-func (x *CreateAffinityGroupRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_kubenfv_kubevim_network_v1_network_proto_msgTypes[36]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use CreateAffinityGroupRequest.ProtoReflect.Descriptor instead.
-func (*CreateAffinityGroupRequest) Descriptor() ([]byte, []int) {
-	return file_kubenfv_kubevim_network_v1_network_proto_rawDescGZIP(), []int{36}
-}
-
-func (x *CreateAffinityGroupRequest) GetAffinityGroup() *v1.AffinityGroup {
-	if x != nil {
-		return x.AffinityGroup
-	}
-	return nil
-}
-
-func (x *CreateAffinityGroupRequest) GetRequestId() string {
-	if x != nil {
-		return x.RequestId
-	}
-	return ""
-}
-
-type GetAffinityGroupRequest struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// Identifier of the group.
-	GroupId       string `protobuf:"bytes,1,opt,name=group_id,json=groupId,proto3" json:"group_id,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *GetAffinityGroupRequest) Reset() {
-	*x = GetAffinityGroupRequest{}
-	mi := &file_kubenfv_kubevim_network_v1_network_proto_msgTypes[37]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *GetAffinityGroupRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*GetAffinityGroupRequest) ProtoMessage() {}
-
-func (x *GetAffinityGroupRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_kubenfv_kubevim_network_v1_network_proto_msgTypes[37]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use GetAffinityGroupRequest.ProtoReflect.Descriptor instead.
-func (*GetAffinityGroupRequest) Descriptor() ([]byte, []int) {
-	return file_kubenfv_kubevim_network_v1_network_proto_rawDescGZIP(), []int{37}
-}
-
-func (x *GetAffinityGroupRequest) GetGroupId() string {
-	if x != nil {
-		return x.GroupId
-	}
-	return ""
-}
-
-type ListAffinityGroupsRequest struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// Attribute-based filter expression (SOL 013 5.2).
-	Filter string `protobuf:"bytes,1,opt,name=filter,proto3" json:"filter,omitempty"`
-	// Marker of the page to return, from a previous response (SOL 013 5.4).
-	NextpageOpaqueMarker string `protobuf:"bytes,2,opt,name=nextpage_opaque_marker,proto3" json:"nextpage_opaque_marker,omitempty"`
-	unknownFields        protoimpl.UnknownFields
-	sizeCache            protoimpl.SizeCache
-}
-
-func (x *ListAffinityGroupsRequest) Reset() {
-	*x = ListAffinityGroupsRequest{}
-	mi := &file_kubenfv_kubevim_network_v1_network_proto_msgTypes[38]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ListAffinityGroupsRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ListAffinityGroupsRequest) ProtoMessage() {}
-
-func (x *ListAffinityGroupsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_kubenfv_kubevim_network_v1_network_proto_msgTypes[38]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ListAffinityGroupsRequest.ProtoReflect.Descriptor instead.
-func (*ListAffinityGroupsRequest) Descriptor() ([]byte, []int) {
-	return file_kubenfv_kubevim_network_v1_network_proto_rawDescGZIP(), []int{38}
-}
-
-func (x *ListAffinityGroupsRequest) GetFilter() string {
-	if x != nil {
-		return x.Filter
-	}
-	return ""
-}
-
-func (x *ListAffinityGroupsRequest) GetNextpageOpaqueMarker() string {
-	if x != nil {
-		return x.NextpageOpaqueMarker
-	}
-	return ""
-}
-
-type ListAffinityGroupsResponse struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// Groups matching the filter.
-	AffinityGroups []*v1.AffinityGroup `protobuf:"bytes,1,rep,name=affinity_groups,json=affinityGroups,proto3" json:"affinity_groups,omitempty"`
-	// Marker of the next page; empty on the last page (SOL 013 5.4).
-	NextpageOpaqueMarker string `protobuf:"bytes,2,opt,name=nextpage_opaque_marker,proto3" json:"nextpage_opaque_marker,omitempty"`
-	unknownFields        protoimpl.UnknownFields
-	sizeCache            protoimpl.SizeCache
-}
-
-func (x *ListAffinityGroupsResponse) Reset() {
-	*x = ListAffinityGroupsResponse{}
-	mi := &file_kubenfv_kubevim_network_v1_network_proto_msgTypes[39]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ListAffinityGroupsResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ListAffinityGroupsResponse) ProtoMessage() {}
-
-func (x *ListAffinityGroupsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_kubenfv_kubevim_network_v1_network_proto_msgTypes[39]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ListAffinityGroupsResponse.ProtoReflect.Descriptor instead.
-func (*ListAffinityGroupsResponse) Descriptor() ([]byte, []int) {
-	return file_kubenfv_kubevim_network_v1_network_proto_rawDescGZIP(), []int{39}
-}
-
-func (x *ListAffinityGroupsResponse) GetAffinityGroups() []*v1.AffinityGroup {
-	if x != nil {
-		return x.AffinityGroups
-	}
-	return nil
-}
-
-func (x *ListAffinityGroupsResponse) GetNextpageOpaqueMarker() string {
-	if x != nil {
-		return x.NextpageOpaqueMarker
-	}
-	return ""
-}
-
-type DeleteAffinityGroupRequest struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// Identifier of the group.
-	GroupId       string `protobuf:"bytes,1,opt,name=group_id,json=groupId,proto3" json:"group_id,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *DeleteAffinityGroupRequest) Reset() {
-	*x = DeleteAffinityGroupRequest{}
-	mi := &file_kubenfv_kubevim_network_v1_network_proto_msgTypes[40]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *DeleteAffinityGroupRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*DeleteAffinityGroupRequest) ProtoMessage() {}
-
-func (x *DeleteAffinityGroupRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_kubenfv_kubevim_network_v1_network_proto_msgTypes[40]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use DeleteAffinityGroupRequest.ProtoReflect.Descriptor instead.
-func (*DeleteAffinityGroupRequest) Descriptor() ([]byte, []int) {
-	return file_kubenfv_kubevim_network_v1_network_proto_rawDescGZIP(), []int{40}
-}
-
-func (x *DeleteAffinityGroupRequest) GetGroupId() string {
-	if x != nil {
-		return x.GroupId
-	}
-	return ""
-}
-
 var File_kubenfv_kubevim_network_v1_network_proto protoreflect.FileDescriptor
 
 const file_kubenfv_kubevim_network_v1_network_proto_rawDesc = "" +
@@ -3087,22 +2835,7 @@ const file_kubenfv_kubevim_network_v1_network_proto_rawDesc = "" +
 	"\x15subport_ids_to_remove\x18\x02 \x03(\tB;\xe2A\x01\x01\xbaH\n" +
 	"\x92\x01\a\"\x05r\x03\xb0\x01\x01\xfaV'\n" +
 	"%IFA006 8.4.4.8 UpdateTrunkData.portIdR\x12subportIdsToRemove:\x80\x01\xfaV}\n" +
-	"\x1eIFA006 8.4.4.8 UpdateTrunkData\x12[\b\x03\x10\x01\x1aUAdds and removes subports in one request; IFA allows only one of the two per request.\"\xa9\x01\n" +
-	"\x1aCreateAffinityGroupRequest\x12[\n" +
-	"\x0eaffinity_group\x18\x01 \x01(\v2(.kubenfv.kubevim.common.v1.AffinityGroupB\n" +
-	"\xe2A\x01\x02\xbaH\x03\xc8\x01\x01R\raffinityGroup\x12.\n" +
-	"\n" +
-	"request_id\x18\x02 \x01(\tB\x0f\xe2A\x01\x01\xbaH\b\xd8\x01\x01r\x03\xb0\x01\x01R\trequestId\"B\n" +
-	"\x17GetAffinityGroupRequest\x12'\n" +
-	"\bgroup_id\x18\x01 \x01(\tB\f\xe2A\x01\x02\xbaH\x05r\x03\xb0\x01\x01R\agroupId\"w\n" +
-	"\x19ListAffinityGroupsRequest\x12\x1c\n" +
-	"\x06filter\x18\x01 \x01(\tB\x04\xe2A\x01\x01R\x06filter\x12<\n" +
-	"\x16nextpage_opaque_marker\x18\x02 \x01(\tB\x04\xe2A\x01\x01R\x16nextpage_opaque_marker\"\xa7\x01\n" +
-	"\x1aListAffinityGroupsResponse\x12Q\n" +
-	"\x0faffinity_groups\x18\x01 \x03(\v2(.kubenfv.kubevim.common.v1.AffinityGroupR\x0eaffinityGroups\x126\n" +
-	"\x16nextpage_opaque_marker\x18\x02 \x01(\tR\x16nextpage_opaque_marker\"E\n" +
-	"\x1aDeleteAffinityGroupRequest\x12'\n" +
-	"\bgroup_id\x18\x01 \x01(\tB\f\xe2A\x01\x02\xbaH\x05r\x03\xb0\x01\x01R\agroupId*r\n" +
+	"\x1eIFA006 8.4.4.8 UpdateTrunkData\x12[\b\x03\x10\x01\x1aUAdds and removes subports in one request; IFA allows only one of the two per request.*r\n" +
 	"\vNetworkType\x12\x1c\n" +
 	"\x18NETWORK_TYPE_UNSPECIFIED\x10\x00\x12\x17\n" +
 	"\x13NETWORK_TYPE_GENEVE\x10\x01\x12\x15\n" +
@@ -3117,7 +2850,7 @@ const file_kubenfv_kubevim_network_v1_network_proto_rawDesc = "" +
 	"\x16SEGMENTATION_TYPE_VLAN\x10\x01\x12\x1b\n" +
 	"\x17SEGMENTATION_TYPE_VXLAN\x10\x02\x12\x1b\n" +
 	"\x17SEGMENTATION_TYPE_NVGRE\x10\x03\x12\x1d\n" +
-	"\x19SEGMENTATION_TYPE_INHERIT\x10\x042\xcb7\n" +
+	"\x19SEGMENTATION_TYPE_INHERIT\x10\x042\xc67\n" +
 	"\x0eNetworkService\x12\xac\x02\n" +
 	"\rCreateNetwork\x120.kubenfv.kubevim.network.v1.CreateNetworkRequest\x1a#.kubenfv.kubevim.network.v1.Network\"\xc3\x01\xfaP#J!\n" +
 	"\x1f\n" +
@@ -3223,21 +2956,21 @@ const file_kubenfv_kubevim_network_v1_network_proto_rawDesc = "" +
 	" \n" +
 	"\x06oauth2\x12\x16\n" +
 	"\x14network:v1:terminate\xfaV\x92\x01\n" +
-	"5IFA006 7.4.1.5 Terminate Virtualised Network Resource\x12Y\b\x03\x10\x01\x1aSOne resource per request (the path identifies it) instead of a list of identifiers.\x82\xd3\xe4\x93\x02\x1f*\x1d/network/v1/trunks/{trunk_id}\x12\xa7\x02\n" +
-	"\x13CreateAffinityGroup\x126.kubenfv.kubevim.network.v1.CreateAffinityGroupRequest\x1a(.kubenfv.kubevim.common.v1.AffinityGroup\"\xad\x01\xfaP#J!\n" +
+	"5IFA006 7.4.1.5 Terminate Virtualised Network Resource\x12Y\b\x03\x10\x01\x1aSOne resource per request (the path identifies it) instead of a list of identifiers.\x82\xd3\xe4\x93\x02\x1f*\x1d/network/v1/trunks/{trunk_id}\x12\xa6\x02\n" +
+	"\x13CreateAffinityGroup\x125.kubenfv.kubevim.common.v1.CreateAffinityGroupRequest\x1a(.kubenfv.kubevim.common.v1.AffinityGroup\"\xad\x01\xfaP#J!\n" +
 	"\x1f\n" +
 	"\x06oauth2\x12\x15\n" +
 	"\x13network:v1:allocate\xfaV_\n" +
-	"]IFA006 7.4.1.6 Create Virtualised Network Resource Affinity Or AntiAffinity Constraints Group\x82\xd3\xe4\x93\x02\x1f:\x01*\"\x1a/network/v1/affinityGroups\x12\xfc\x01\n" +
-	"\x10GetAffinityGroup\x123.kubenfv.kubevim.network.v1.GetAffinityGroupRequest\x1a(.kubenfv.kubevim.common.v1.AffinityGroup\"\x88\x01\xfaP J\x1e\n" +
+	"]IFA006 7.4.1.6 Create Virtualised Network Resource Affinity Or AntiAffinity Constraints Group\x82\xd3\xe4\x93\x02\x1f:\x01*\"\x1a/network/v1/affinityGroups\x12\xfb\x01\n" +
+	"\x10GetAffinityGroup\x122.kubenfv.kubevim.common.v1.GetAffinityGroupRequest\x1a(.kubenfv.kubevim.common.v1.AffinityGroup\"\x88\x01\xfaP J\x1e\n" +
 	"\x1c\n" +
 	"\x06oauth2\x12\x12\n" +
-	"\x10network:v1:query\xfaV5\x123\b\x01\x10\x01\x1a-IFA can create groups but not read them back.\x82\xd3\xe4\x93\x02'\x12%/network/v1/affinityGroups/{group_id}\x12\xfd\x01\n" +
-	"\x12ListAffinityGroups\x125.kubenfv.kubevim.network.v1.ListAffinityGroupsRequest\x1a6.kubenfv.kubevim.network.v1.ListAffinityGroupsResponse\"x\xfaP J\x1e\n" +
+	"\x10network:v1:query\xfaV5\x123\b\x01\x10\x01\x1a-IFA can create groups but not read them back.\x82\xd3\xe4\x93\x02'\x12%/network/v1/affinityGroups/{group_id}\x12\xfb\x01\n" +
+	"\x12ListAffinityGroups\x124.kubenfv.kubevim.common.v1.ListAffinityGroupsRequest\x1a5.kubenfv.kubevim.common.v1.ListAffinityGroupsResponse\"x\xfaP J\x1e\n" +
 	"\x1c\n" +
 	"\x06oauth2\x12\x12\n" +
-	"\x10network:v1:query\xfaV0\x12.\b\x01\x10\x01\x1a(IFA can create groups but not list them.\x82\xd3\xe4\x93\x02\x1c\x12\x1a/network/v1/affinityGroups\x12\xf1\x01\n" +
-	"\x13DeleteAffinityGroup\x126.kubenfv.kubevim.network.v1.DeleteAffinityGroupRequest\x1a\x16.google.protobuf.Empty\"\x89\x01\xfaP$J\"\n" +
+	"\x10network:v1:query\xfaV0\x12.\b\x01\x10\x01\x1a(IFA can create groups but not list them.\x82\xd3\xe4\x93\x02\x1c\x12\x1a/network/v1/affinityGroups\x12\xf0\x01\n" +
+	"\x13DeleteAffinityGroup\x125.kubenfv.kubevim.common.v1.DeleteAffinityGroupRequest\x1a\x16.google.protobuf.Empty\"\x89\x01\xfaP$J\"\n" +
 	" \n" +
 	"\x06oauth2\x12\x16\n" +
 	"\x14network:v1:terminate\xfaV2\x120\b\x01\x10\x01\x1a*IFA can create groups but not delete them.\x82\xd3\xe4\x93\x02'*%/network/v1/affinityGroups/{group_id}\x1aD\xfaVA\n" +
@@ -3266,89 +2999,89 @@ func file_kubenfv_kubevim_network_v1_network_proto_rawDescGZIP() []byte {
 }
 
 var file_kubenfv_kubevim_network_v1_network_proto_enumTypes = make([]protoimpl.EnumInfo, 3)
-var file_kubenfv_kubevim_network_v1_network_proto_msgTypes = make([]protoimpl.MessageInfo, 47)
+var file_kubenfv_kubevim_network_v1_network_proto_msgTypes = make([]protoimpl.MessageInfo, 42)
 var file_kubenfv_kubevim_network_v1_network_proto_goTypes = []any{
-	(NetworkType)(0),                            // 0: kubenfv.kubevim.network.v1.NetworkType
-	(PortType)(0),                               // 1: kubenfv.kubevim.network.v1.PortType
-	(SegmentationType)(0),                       // 2: kubenfv.kubevim.network.v1.SegmentationType
-	(*Network)(nil),                             // 3: kubenfv.kubevim.network.v1.Network
-	(*NetworkQoS)(nil),                          // 4: kubenfv.kubevim.network.v1.NetworkQoS
-	(*SubnetData)(nil),                          // 5: kubenfv.kubevim.network.v1.SubnetData
-	(*Subnet)(nil),                              // 6: kubenfv.kubevim.network.v1.Subnet
-	(*IpAddressPool)(nil),                       // 7: kubenfv.kubevim.network.v1.IpAddressPool
-	(*Port)(nil),                                // 8: kubenfv.kubevim.network.v1.Port
-	(*Trunk)(nil),                               // 9: kubenfv.kubevim.network.v1.Trunk
-	(*TrunkSubport)(nil),                        // 10: kubenfv.kubevim.network.v1.TrunkSubport
-	(*CreateNetworkRequest)(nil),                // 11: kubenfv.kubevim.network.v1.CreateNetworkRequest
-	(*CreateSubnetRequest)(nil),                 // 12: kubenfv.kubevim.network.v1.CreateSubnetRequest
-	(*CreatePortRequest)(nil),                   // 13: kubenfv.kubevim.network.v1.CreatePortRequest
-	(*CreateTrunkRequest)(nil),                  // 14: kubenfv.kubevim.network.v1.CreateTrunkRequest
-	(*GetNetworkRequest)(nil),                   // 15: kubenfv.kubevim.network.v1.GetNetworkRequest
-	(*ListNetworksRequest)(nil),                 // 16: kubenfv.kubevim.network.v1.ListNetworksRequest
-	(*ListNetworksResponse)(nil),                // 17: kubenfv.kubevim.network.v1.ListNetworksResponse
-	(*UpdateNetworkRequest)(nil),                // 18: kubenfv.kubevim.network.v1.UpdateNetworkRequest
-	(*DeleteNetworkRequest)(nil),                // 19: kubenfv.kubevim.network.v1.DeleteNetworkRequest
-	(*GetSubnetRequest)(nil),                    // 20: kubenfv.kubevim.network.v1.GetSubnetRequest
-	(*ListSubnetsRequest)(nil),                  // 21: kubenfv.kubevim.network.v1.ListSubnetsRequest
-	(*ListSubnetsResponse)(nil),                 // 22: kubenfv.kubevim.network.v1.ListSubnetsResponse
-	(*UpdateSubnetRequest)(nil),                 // 23: kubenfv.kubevim.network.v1.UpdateSubnetRequest
-	(*DeleteSubnetRequest)(nil),                 // 24: kubenfv.kubevim.network.v1.DeleteSubnetRequest
-	(*GetPortRequest)(nil),                      // 25: kubenfv.kubevim.network.v1.GetPortRequest
-	(*ListPortsRequest)(nil),                    // 26: kubenfv.kubevim.network.v1.ListPortsRequest
-	(*ListPortsResponse)(nil),                   // 27: kubenfv.kubevim.network.v1.ListPortsResponse
-	(*UpdatePortRequest)(nil),                   // 28: kubenfv.kubevim.network.v1.UpdatePortRequest
-	(*DeletePortRequest)(nil),                   // 29: kubenfv.kubevim.network.v1.DeletePortRequest
-	(*GetTrunkRequest)(nil),                     // 30: kubenfv.kubevim.network.v1.GetTrunkRequest
-	(*ListTrunksRequest)(nil),                   // 31: kubenfv.kubevim.network.v1.ListTrunksRequest
-	(*ListTrunksResponse)(nil),                  // 32: kubenfv.kubevim.network.v1.ListTrunksResponse
-	(*UpdateTrunkRequest)(nil),                  // 33: kubenfv.kubevim.network.v1.UpdateTrunkRequest
-	(*DeleteTrunkRequest)(nil),                  // 34: kubenfv.kubevim.network.v1.DeleteTrunkRequest
-	(*NetworkUpdate)(nil),                       // 35: kubenfv.kubevim.network.v1.NetworkUpdate
-	(*SubnetUpdate)(nil),                        // 36: kubenfv.kubevim.network.v1.SubnetUpdate
-	(*PortUpdate)(nil),                          // 37: kubenfv.kubevim.network.v1.PortUpdate
-	(*TrunkUpdate)(nil),                         // 38: kubenfv.kubevim.network.v1.TrunkUpdate
-	(*CreateAffinityGroupRequest)(nil),          // 39: kubenfv.kubevim.network.v1.CreateAffinityGroupRequest
-	(*GetAffinityGroupRequest)(nil),             // 40: kubenfv.kubevim.network.v1.GetAffinityGroupRequest
-	(*ListAffinityGroupsRequest)(nil),           // 41: kubenfv.kubevim.network.v1.ListAffinityGroupsRequest
-	(*ListAffinityGroupsResponse)(nil),          // 42: kubenfv.kubevim.network.v1.ListAffinityGroupsResponse
-	(*DeleteAffinityGroupRequest)(nil),          // 43: kubenfv.kubevim.network.v1.DeleteAffinityGroupRequest
-	nil,                                         // 44: kubenfv.kubevim.network.v1.Network.MetadataEntry
-	nil,                                         // 45: kubenfv.kubevim.network.v1.SubnetData.MetadataEntry
-	nil,                                         // 46: kubenfv.kubevim.network.v1.Port.MetadataEntry
-	nil,                                         // 47: kubenfv.kubevim.network.v1.NetworkUpdate.MetadataEntry
-	nil,                                         // 48: kubenfv.kubevim.network.v1.SubnetUpdate.MetadataEntry
-	nil,                                         // 49: kubenfv.kubevim.network.v1.PortUpdate.MetadataEntry
-	(v1.OperationalState)(0),                    // 50: kubenfv.kubevim.common.v1.OperationalState
-	(v1.IpVersion)(0),                           // 51: kubenfv.kubevim.common.v1.IpVersion
-	(*v1.AffinityOrAntiAffinityConstraint)(nil), // 52: kubenfv.kubevim.common.v1.AffinityOrAntiAffinityConstraint
+	(NetworkType)(0),             // 0: kubenfv.kubevim.network.v1.NetworkType
+	(PortType)(0),                // 1: kubenfv.kubevim.network.v1.PortType
+	(SegmentationType)(0),        // 2: kubenfv.kubevim.network.v1.SegmentationType
+	(*Network)(nil),              // 3: kubenfv.kubevim.network.v1.Network
+	(*NetworkQoS)(nil),           // 4: kubenfv.kubevim.network.v1.NetworkQoS
+	(*SubnetData)(nil),           // 5: kubenfv.kubevim.network.v1.SubnetData
+	(*Subnet)(nil),               // 6: kubenfv.kubevim.network.v1.Subnet
+	(*IpAddressPool)(nil),        // 7: kubenfv.kubevim.network.v1.IpAddressPool
+	(*Port)(nil),                 // 8: kubenfv.kubevim.network.v1.Port
+	(*Trunk)(nil),                // 9: kubenfv.kubevim.network.v1.Trunk
+	(*TrunkSubport)(nil),         // 10: kubenfv.kubevim.network.v1.TrunkSubport
+	(*CreateNetworkRequest)(nil), // 11: kubenfv.kubevim.network.v1.CreateNetworkRequest
+	(*CreateSubnetRequest)(nil),  // 12: kubenfv.kubevim.network.v1.CreateSubnetRequest
+	(*CreatePortRequest)(nil),    // 13: kubenfv.kubevim.network.v1.CreatePortRequest
+	(*CreateTrunkRequest)(nil),   // 14: kubenfv.kubevim.network.v1.CreateTrunkRequest
+	(*GetNetworkRequest)(nil),    // 15: kubenfv.kubevim.network.v1.GetNetworkRequest
+	(*ListNetworksRequest)(nil),  // 16: kubenfv.kubevim.network.v1.ListNetworksRequest
+	(*ListNetworksResponse)(nil), // 17: kubenfv.kubevim.network.v1.ListNetworksResponse
+	(*UpdateNetworkRequest)(nil), // 18: kubenfv.kubevim.network.v1.UpdateNetworkRequest
+	(*DeleteNetworkRequest)(nil), // 19: kubenfv.kubevim.network.v1.DeleteNetworkRequest
+	(*GetSubnetRequest)(nil),     // 20: kubenfv.kubevim.network.v1.GetSubnetRequest
+	(*ListSubnetsRequest)(nil),   // 21: kubenfv.kubevim.network.v1.ListSubnetsRequest
+	(*ListSubnetsResponse)(nil),  // 22: kubenfv.kubevim.network.v1.ListSubnetsResponse
+	(*UpdateSubnetRequest)(nil),  // 23: kubenfv.kubevim.network.v1.UpdateSubnetRequest
+	(*DeleteSubnetRequest)(nil),  // 24: kubenfv.kubevim.network.v1.DeleteSubnetRequest
+	(*GetPortRequest)(nil),       // 25: kubenfv.kubevim.network.v1.GetPortRequest
+	(*ListPortsRequest)(nil),     // 26: kubenfv.kubevim.network.v1.ListPortsRequest
+	(*ListPortsResponse)(nil),    // 27: kubenfv.kubevim.network.v1.ListPortsResponse
+	(*UpdatePortRequest)(nil),    // 28: kubenfv.kubevim.network.v1.UpdatePortRequest
+	(*DeletePortRequest)(nil),    // 29: kubenfv.kubevim.network.v1.DeletePortRequest
+	(*GetTrunkRequest)(nil),      // 30: kubenfv.kubevim.network.v1.GetTrunkRequest
+	(*ListTrunksRequest)(nil),    // 31: kubenfv.kubevim.network.v1.ListTrunksRequest
+	(*ListTrunksResponse)(nil),   // 32: kubenfv.kubevim.network.v1.ListTrunksResponse
+	(*UpdateTrunkRequest)(nil),   // 33: kubenfv.kubevim.network.v1.UpdateTrunkRequest
+	(*DeleteTrunkRequest)(nil),   // 34: kubenfv.kubevim.network.v1.DeleteTrunkRequest
+	(*NetworkUpdate)(nil),        // 35: kubenfv.kubevim.network.v1.NetworkUpdate
+	(*SubnetUpdate)(nil),         // 36: kubenfv.kubevim.network.v1.SubnetUpdate
+	(*PortUpdate)(nil),           // 37: kubenfv.kubevim.network.v1.PortUpdate
+	(*TrunkUpdate)(nil),          // 38: kubenfv.kubevim.network.v1.TrunkUpdate
+	nil,                          // 39: kubenfv.kubevim.network.v1.Network.MetadataEntry
+	nil,                          // 40: kubenfv.kubevim.network.v1.SubnetData.MetadataEntry
+	nil,                          // 41: kubenfv.kubevim.network.v1.Port.MetadataEntry
+	nil,                          // 42: kubenfv.kubevim.network.v1.NetworkUpdate.MetadataEntry
+	nil,                          // 43: kubenfv.kubevim.network.v1.SubnetUpdate.MetadataEntry
+	nil,                          // 44: kubenfv.kubevim.network.v1.PortUpdate.MetadataEntry
+	(v1.OperationalState)(0),     // 45: kubenfv.kubevim.common.v1.OperationalState
+	(v1.IpVersion)(0),            // 46: kubenfv.kubevim.common.v1.IpVersion
+	(*v1.AffinityOrAntiAffinityConstraint)(nil), // 47: kubenfv.kubevim.common.v1.AffinityOrAntiAffinityConstraint
+	(*v1.CreateAffinityGroupRequest)(nil),       // 48: kubenfv.kubevim.common.v1.CreateAffinityGroupRequest
+	(*v1.GetAffinityGroupRequest)(nil),          // 49: kubenfv.kubevim.common.v1.GetAffinityGroupRequest
+	(*v1.ListAffinityGroupsRequest)(nil),        // 50: kubenfv.kubevim.common.v1.ListAffinityGroupsRequest
+	(*v1.DeleteAffinityGroupRequest)(nil),       // 51: kubenfv.kubevim.common.v1.DeleteAffinityGroupRequest
+	(*emptypb.Empty)(nil),                       // 52: google.protobuf.Empty
 	(*v1.AffinityGroup)(nil),                    // 53: kubenfv.kubevim.common.v1.AffinityGroup
-	(*emptypb.Empty)(nil),                       // 54: google.protobuf.Empty
+	(*v1.ListAffinityGroupsResponse)(nil),       // 54: kubenfv.kubevim.common.v1.ListAffinityGroupsResponse
 }
 var file_kubenfv_kubevim_network_v1_network_proto_depIdxs = []int32{
 	0,  // 0: kubenfv.kubevim.network.v1.Network.network_type:type_name -> kubenfv.kubevim.network.v1.NetworkType
 	4,  // 1: kubenfv.kubevim.network.v1.Network.network_qos:type_name -> kubenfv.kubevim.network.v1.NetworkQoS
 	5,  // 2: kubenfv.kubevim.network.v1.Network.layer3_attributes:type_name -> kubenfv.kubevim.network.v1.SubnetData
-	50, // 3: kubenfv.kubevim.network.v1.Network.operational_state:type_name -> kubenfv.kubevim.common.v1.OperationalState
-	44, // 4: kubenfv.kubevim.network.v1.Network.metadata:type_name -> kubenfv.kubevim.network.v1.Network.MetadataEntry
-	51, // 5: kubenfv.kubevim.network.v1.SubnetData.ip_version:type_name -> kubenfv.kubevim.common.v1.IpVersion
+	45, // 3: kubenfv.kubevim.network.v1.Network.operational_state:type_name -> kubenfv.kubevim.common.v1.OperationalState
+	39, // 4: kubenfv.kubevim.network.v1.Network.metadata:type_name -> kubenfv.kubevim.network.v1.Network.MetadataEntry
+	46, // 5: kubenfv.kubevim.network.v1.SubnetData.ip_version:type_name -> kubenfv.kubevim.common.v1.IpVersion
 	7,  // 6: kubenfv.kubevim.network.v1.SubnetData.address_pool:type_name -> kubenfv.kubevim.network.v1.IpAddressPool
-	45, // 7: kubenfv.kubevim.network.v1.SubnetData.metadata:type_name -> kubenfv.kubevim.network.v1.SubnetData.MetadataEntry
+	40, // 7: kubenfv.kubevim.network.v1.SubnetData.metadata:type_name -> kubenfv.kubevim.network.v1.SubnetData.MetadataEntry
 	5,  // 8: kubenfv.kubevim.network.v1.Subnet.data:type_name -> kubenfv.kubevim.network.v1.SubnetData
 	1,  // 9: kubenfv.kubevim.network.v1.Port.port_type:type_name -> kubenfv.kubevim.network.v1.PortType
 	4,  // 10: kubenfv.kubevim.network.v1.Port.port_qos:type_name -> kubenfv.kubevim.network.v1.NetworkQoS
-	50, // 11: kubenfv.kubevim.network.v1.Port.operational_state:type_name -> kubenfv.kubevim.common.v1.OperationalState
-	46, // 12: kubenfv.kubevim.network.v1.Port.metadata:type_name -> kubenfv.kubevim.network.v1.Port.MetadataEntry
+	45, // 11: kubenfv.kubevim.network.v1.Port.operational_state:type_name -> kubenfv.kubevim.common.v1.OperationalState
+	41, // 12: kubenfv.kubevim.network.v1.Port.metadata:type_name -> kubenfv.kubevim.network.v1.Port.MetadataEntry
 	10, // 13: kubenfv.kubevim.network.v1.Trunk.subport_list:type_name -> kubenfv.kubevim.network.v1.TrunkSubport
-	50, // 14: kubenfv.kubevim.network.v1.Trunk.operational_state:type_name -> kubenfv.kubevim.common.v1.OperationalState
+	45, // 14: kubenfv.kubevim.network.v1.Trunk.operational_state:type_name -> kubenfv.kubevim.common.v1.OperationalState
 	2,  // 15: kubenfv.kubevim.network.v1.TrunkSubport.segmentation_type:type_name -> kubenfv.kubevim.network.v1.SegmentationType
 	3,  // 16: kubenfv.kubevim.network.v1.CreateNetworkRequest.network:type_name -> kubenfv.kubevim.network.v1.Network
-	52, // 17: kubenfv.kubevim.network.v1.CreateNetworkRequest.affinity_or_anti_affinity_constraints:type_name -> kubenfv.kubevim.common.v1.AffinityOrAntiAffinityConstraint
+	47, // 17: kubenfv.kubevim.network.v1.CreateNetworkRequest.affinity_or_anti_affinity_constraints:type_name -> kubenfv.kubevim.common.v1.AffinityOrAntiAffinityConstraint
 	6,  // 18: kubenfv.kubevim.network.v1.CreateSubnetRequest.subnet:type_name -> kubenfv.kubevim.network.v1.Subnet
-	52, // 19: kubenfv.kubevim.network.v1.CreateSubnetRequest.affinity_or_anti_affinity_constraints:type_name -> kubenfv.kubevim.common.v1.AffinityOrAntiAffinityConstraint
+	47, // 19: kubenfv.kubevim.network.v1.CreateSubnetRequest.affinity_or_anti_affinity_constraints:type_name -> kubenfv.kubevim.common.v1.AffinityOrAntiAffinityConstraint
 	8,  // 20: kubenfv.kubevim.network.v1.CreatePortRequest.port:type_name -> kubenfv.kubevim.network.v1.Port
-	52, // 21: kubenfv.kubevim.network.v1.CreatePortRequest.affinity_or_anti_affinity_constraints:type_name -> kubenfv.kubevim.common.v1.AffinityOrAntiAffinityConstraint
+	47, // 21: kubenfv.kubevim.network.v1.CreatePortRequest.affinity_or_anti_affinity_constraints:type_name -> kubenfv.kubevim.common.v1.AffinityOrAntiAffinityConstraint
 	9,  // 22: kubenfv.kubevim.network.v1.CreateTrunkRequest.trunk:type_name -> kubenfv.kubevim.network.v1.Trunk
-	52, // 23: kubenfv.kubevim.network.v1.CreateTrunkRequest.affinity_or_anti_affinity_constraints:type_name -> kubenfv.kubevim.common.v1.AffinityOrAntiAffinityConstraint
+	47, // 23: kubenfv.kubevim.network.v1.CreateTrunkRequest.affinity_or_anti_affinity_constraints:type_name -> kubenfv.kubevim.common.v1.AffinityOrAntiAffinityConstraint
 	3,  // 24: kubenfv.kubevim.network.v1.ListNetworksResponse.networks:type_name -> kubenfv.kubevim.network.v1.Network
 	35, // 25: kubenfv.kubevim.network.v1.UpdateNetworkRequest.update:type_name -> kubenfv.kubevim.network.v1.NetworkUpdate
 	6,  // 26: kubenfv.kubevim.network.v1.ListSubnetsResponse.subnets:type_name -> kubenfv.kubevim.network.v1.Subnet
@@ -3357,66 +3090,64 @@ var file_kubenfv_kubevim_network_v1_network_proto_depIdxs = []int32{
 	37, // 29: kubenfv.kubevim.network.v1.UpdatePortRequest.update:type_name -> kubenfv.kubevim.network.v1.PortUpdate
 	9,  // 30: kubenfv.kubevim.network.v1.ListTrunksResponse.trunks:type_name -> kubenfv.kubevim.network.v1.Trunk
 	38, // 31: kubenfv.kubevim.network.v1.UpdateTrunkRequest.update:type_name -> kubenfv.kubevim.network.v1.TrunkUpdate
-	47, // 32: kubenfv.kubevim.network.v1.NetworkUpdate.metadata:type_name -> kubenfv.kubevim.network.v1.NetworkUpdate.MetadataEntry
+	42, // 32: kubenfv.kubevim.network.v1.NetworkUpdate.metadata:type_name -> kubenfv.kubevim.network.v1.NetworkUpdate.MetadataEntry
 	7,  // 33: kubenfv.kubevim.network.v1.SubnetUpdate.address_pool:type_name -> kubenfv.kubevim.network.v1.IpAddressPool
-	48, // 34: kubenfv.kubevim.network.v1.SubnetUpdate.metadata:type_name -> kubenfv.kubevim.network.v1.SubnetUpdate.MetadataEntry
-	49, // 35: kubenfv.kubevim.network.v1.PortUpdate.metadata:type_name -> kubenfv.kubevim.network.v1.PortUpdate.MetadataEntry
+	43, // 34: kubenfv.kubevim.network.v1.SubnetUpdate.metadata:type_name -> kubenfv.kubevim.network.v1.SubnetUpdate.MetadataEntry
+	44, // 35: kubenfv.kubevim.network.v1.PortUpdate.metadata:type_name -> kubenfv.kubevim.network.v1.PortUpdate.MetadataEntry
 	10, // 36: kubenfv.kubevim.network.v1.TrunkUpdate.subports_to_add:type_name -> kubenfv.kubevim.network.v1.TrunkSubport
-	53, // 37: kubenfv.kubevim.network.v1.CreateAffinityGroupRequest.affinity_group:type_name -> kubenfv.kubevim.common.v1.AffinityGroup
-	53, // 38: kubenfv.kubevim.network.v1.ListAffinityGroupsResponse.affinity_groups:type_name -> kubenfv.kubevim.common.v1.AffinityGroup
-	11, // 39: kubenfv.kubevim.network.v1.NetworkService.CreateNetwork:input_type -> kubenfv.kubevim.network.v1.CreateNetworkRequest
-	15, // 40: kubenfv.kubevim.network.v1.NetworkService.GetNetwork:input_type -> kubenfv.kubevim.network.v1.GetNetworkRequest
-	16, // 41: kubenfv.kubevim.network.v1.NetworkService.ListNetworks:input_type -> kubenfv.kubevim.network.v1.ListNetworksRequest
-	18, // 42: kubenfv.kubevim.network.v1.NetworkService.UpdateNetwork:input_type -> kubenfv.kubevim.network.v1.UpdateNetworkRequest
-	19, // 43: kubenfv.kubevim.network.v1.NetworkService.DeleteNetwork:input_type -> kubenfv.kubevim.network.v1.DeleteNetworkRequest
-	12, // 44: kubenfv.kubevim.network.v1.NetworkService.CreateSubnet:input_type -> kubenfv.kubevim.network.v1.CreateSubnetRequest
-	20, // 45: kubenfv.kubevim.network.v1.NetworkService.GetSubnet:input_type -> kubenfv.kubevim.network.v1.GetSubnetRequest
-	21, // 46: kubenfv.kubevim.network.v1.NetworkService.ListSubnets:input_type -> kubenfv.kubevim.network.v1.ListSubnetsRequest
-	23, // 47: kubenfv.kubevim.network.v1.NetworkService.UpdateSubnet:input_type -> kubenfv.kubevim.network.v1.UpdateSubnetRequest
-	24, // 48: kubenfv.kubevim.network.v1.NetworkService.DeleteSubnet:input_type -> kubenfv.kubevim.network.v1.DeleteSubnetRequest
-	13, // 49: kubenfv.kubevim.network.v1.NetworkService.CreatePort:input_type -> kubenfv.kubevim.network.v1.CreatePortRequest
-	25, // 50: kubenfv.kubevim.network.v1.NetworkService.GetPort:input_type -> kubenfv.kubevim.network.v1.GetPortRequest
-	26, // 51: kubenfv.kubevim.network.v1.NetworkService.ListPorts:input_type -> kubenfv.kubevim.network.v1.ListPortsRequest
-	28, // 52: kubenfv.kubevim.network.v1.NetworkService.UpdatePort:input_type -> kubenfv.kubevim.network.v1.UpdatePortRequest
-	29, // 53: kubenfv.kubevim.network.v1.NetworkService.DeletePort:input_type -> kubenfv.kubevim.network.v1.DeletePortRequest
-	14, // 54: kubenfv.kubevim.network.v1.NetworkService.CreateTrunk:input_type -> kubenfv.kubevim.network.v1.CreateTrunkRequest
-	30, // 55: kubenfv.kubevim.network.v1.NetworkService.GetTrunk:input_type -> kubenfv.kubevim.network.v1.GetTrunkRequest
-	31, // 56: kubenfv.kubevim.network.v1.NetworkService.ListTrunks:input_type -> kubenfv.kubevim.network.v1.ListTrunksRequest
-	33, // 57: kubenfv.kubevim.network.v1.NetworkService.UpdateTrunk:input_type -> kubenfv.kubevim.network.v1.UpdateTrunkRequest
-	34, // 58: kubenfv.kubevim.network.v1.NetworkService.DeleteTrunk:input_type -> kubenfv.kubevim.network.v1.DeleteTrunkRequest
-	39, // 59: kubenfv.kubevim.network.v1.NetworkService.CreateAffinityGroup:input_type -> kubenfv.kubevim.network.v1.CreateAffinityGroupRequest
-	40, // 60: kubenfv.kubevim.network.v1.NetworkService.GetAffinityGroup:input_type -> kubenfv.kubevim.network.v1.GetAffinityGroupRequest
-	41, // 61: kubenfv.kubevim.network.v1.NetworkService.ListAffinityGroups:input_type -> kubenfv.kubevim.network.v1.ListAffinityGroupsRequest
-	43, // 62: kubenfv.kubevim.network.v1.NetworkService.DeleteAffinityGroup:input_type -> kubenfv.kubevim.network.v1.DeleteAffinityGroupRequest
-	3,  // 63: kubenfv.kubevim.network.v1.NetworkService.CreateNetwork:output_type -> kubenfv.kubevim.network.v1.Network
-	3,  // 64: kubenfv.kubevim.network.v1.NetworkService.GetNetwork:output_type -> kubenfv.kubevim.network.v1.Network
-	17, // 65: kubenfv.kubevim.network.v1.NetworkService.ListNetworks:output_type -> kubenfv.kubevim.network.v1.ListNetworksResponse
-	3,  // 66: kubenfv.kubevim.network.v1.NetworkService.UpdateNetwork:output_type -> kubenfv.kubevim.network.v1.Network
-	54, // 67: kubenfv.kubevim.network.v1.NetworkService.DeleteNetwork:output_type -> google.protobuf.Empty
-	6,  // 68: kubenfv.kubevim.network.v1.NetworkService.CreateSubnet:output_type -> kubenfv.kubevim.network.v1.Subnet
-	6,  // 69: kubenfv.kubevim.network.v1.NetworkService.GetSubnet:output_type -> kubenfv.kubevim.network.v1.Subnet
-	22, // 70: kubenfv.kubevim.network.v1.NetworkService.ListSubnets:output_type -> kubenfv.kubevim.network.v1.ListSubnetsResponse
-	6,  // 71: kubenfv.kubevim.network.v1.NetworkService.UpdateSubnet:output_type -> kubenfv.kubevim.network.v1.Subnet
-	54, // 72: kubenfv.kubevim.network.v1.NetworkService.DeleteSubnet:output_type -> google.protobuf.Empty
-	8,  // 73: kubenfv.kubevim.network.v1.NetworkService.CreatePort:output_type -> kubenfv.kubevim.network.v1.Port
-	8,  // 74: kubenfv.kubevim.network.v1.NetworkService.GetPort:output_type -> kubenfv.kubevim.network.v1.Port
-	27, // 75: kubenfv.kubevim.network.v1.NetworkService.ListPorts:output_type -> kubenfv.kubevim.network.v1.ListPortsResponse
-	8,  // 76: kubenfv.kubevim.network.v1.NetworkService.UpdatePort:output_type -> kubenfv.kubevim.network.v1.Port
-	54, // 77: kubenfv.kubevim.network.v1.NetworkService.DeletePort:output_type -> google.protobuf.Empty
-	9,  // 78: kubenfv.kubevim.network.v1.NetworkService.CreateTrunk:output_type -> kubenfv.kubevim.network.v1.Trunk
-	9,  // 79: kubenfv.kubevim.network.v1.NetworkService.GetTrunk:output_type -> kubenfv.kubevim.network.v1.Trunk
-	32, // 80: kubenfv.kubevim.network.v1.NetworkService.ListTrunks:output_type -> kubenfv.kubevim.network.v1.ListTrunksResponse
-	9,  // 81: kubenfv.kubevim.network.v1.NetworkService.UpdateTrunk:output_type -> kubenfv.kubevim.network.v1.Trunk
-	54, // 82: kubenfv.kubevim.network.v1.NetworkService.DeleteTrunk:output_type -> google.protobuf.Empty
-	53, // 83: kubenfv.kubevim.network.v1.NetworkService.CreateAffinityGroup:output_type -> kubenfv.kubevim.common.v1.AffinityGroup
-	53, // 84: kubenfv.kubevim.network.v1.NetworkService.GetAffinityGroup:output_type -> kubenfv.kubevim.common.v1.AffinityGroup
-	42, // 85: kubenfv.kubevim.network.v1.NetworkService.ListAffinityGroups:output_type -> kubenfv.kubevim.network.v1.ListAffinityGroupsResponse
-	54, // 86: kubenfv.kubevim.network.v1.NetworkService.DeleteAffinityGroup:output_type -> google.protobuf.Empty
-	63, // [63:87] is the sub-list for method output_type
-	39, // [39:63] is the sub-list for method input_type
-	39, // [39:39] is the sub-list for extension type_name
-	39, // [39:39] is the sub-list for extension extendee
-	0,  // [0:39] is the sub-list for field type_name
+	11, // 37: kubenfv.kubevim.network.v1.NetworkService.CreateNetwork:input_type -> kubenfv.kubevim.network.v1.CreateNetworkRequest
+	15, // 38: kubenfv.kubevim.network.v1.NetworkService.GetNetwork:input_type -> kubenfv.kubevim.network.v1.GetNetworkRequest
+	16, // 39: kubenfv.kubevim.network.v1.NetworkService.ListNetworks:input_type -> kubenfv.kubevim.network.v1.ListNetworksRequest
+	18, // 40: kubenfv.kubevim.network.v1.NetworkService.UpdateNetwork:input_type -> kubenfv.kubevim.network.v1.UpdateNetworkRequest
+	19, // 41: kubenfv.kubevim.network.v1.NetworkService.DeleteNetwork:input_type -> kubenfv.kubevim.network.v1.DeleteNetworkRequest
+	12, // 42: kubenfv.kubevim.network.v1.NetworkService.CreateSubnet:input_type -> kubenfv.kubevim.network.v1.CreateSubnetRequest
+	20, // 43: kubenfv.kubevim.network.v1.NetworkService.GetSubnet:input_type -> kubenfv.kubevim.network.v1.GetSubnetRequest
+	21, // 44: kubenfv.kubevim.network.v1.NetworkService.ListSubnets:input_type -> kubenfv.kubevim.network.v1.ListSubnetsRequest
+	23, // 45: kubenfv.kubevim.network.v1.NetworkService.UpdateSubnet:input_type -> kubenfv.kubevim.network.v1.UpdateSubnetRequest
+	24, // 46: kubenfv.kubevim.network.v1.NetworkService.DeleteSubnet:input_type -> kubenfv.kubevim.network.v1.DeleteSubnetRequest
+	13, // 47: kubenfv.kubevim.network.v1.NetworkService.CreatePort:input_type -> kubenfv.kubevim.network.v1.CreatePortRequest
+	25, // 48: kubenfv.kubevim.network.v1.NetworkService.GetPort:input_type -> kubenfv.kubevim.network.v1.GetPortRequest
+	26, // 49: kubenfv.kubevim.network.v1.NetworkService.ListPorts:input_type -> kubenfv.kubevim.network.v1.ListPortsRequest
+	28, // 50: kubenfv.kubevim.network.v1.NetworkService.UpdatePort:input_type -> kubenfv.kubevim.network.v1.UpdatePortRequest
+	29, // 51: kubenfv.kubevim.network.v1.NetworkService.DeletePort:input_type -> kubenfv.kubevim.network.v1.DeletePortRequest
+	14, // 52: kubenfv.kubevim.network.v1.NetworkService.CreateTrunk:input_type -> kubenfv.kubevim.network.v1.CreateTrunkRequest
+	30, // 53: kubenfv.kubevim.network.v1.NetworkService.GetTrunk:input_type -> kubenfv.kubevim.network.v1.GetTrunkRequest
+	31, // 54: kubenfv.kubevim.network.v1.NetworkService.ListTrunks:input_type -> kubenfv.kubevim.network.v1.ListTrunksRequest
+	33, // 55: kubenfv.kubevim.network.v1.NetworkService.UpdateTrunk:input_type -> kubenfv.kubevim.network.v1.UpdateTrunkRequest
+	34, // 56: kubenfv.kubevim.network.v1.NetworkService.DeleteTrunk:input_type -> kubenfv.kubevim.network.v1.DeleteTrunkRequest
+	48, // 57: kubenfv.kubevim.network.v1.NetworkService.CreateAffinityGroup:input_type -> kubenfv.kubevim.common.v1.CreateAffinityGroupRequest
+	49, // 58: kubenfv.kubevim.network.v1.NetworkService.GetAffinityGroup:input_type -> kubenfv.kubevim.common.v1.GetAffinityGroupRequest
+	50, // 59: kubenfv.kubevim.network.v1.NetworkService.ListAffinityGroups:input_type -> kubenfv.kubevim.common.v1.ListAffinityGroupsRequest
+	51, // 60: kubenfv.kubevim.network.v1.NetworkService.DeleteAffinityGroup:input_type -> kubenfv.kubevim.common.v1.DeleteAffinityGroupRequest
+	3,  // 61: kubenfv.kubevim.network.v1.NetworkService.CreateNetwork:output_type -> kubenfv.kubevim.network.v1.Network
+	3,  // 62: kubenfv.kubevim.network.v1.NetworkService.GetNetwork:output_type -> kubenfv.kubevim.network.v1.Network
+	17, // 63: kubenfv.kubevim.network.v1.NetworkService.ListNetworks:output_type -> kubenfv.kubevim.network.v1.ListNetworksResponse
+	3,  // 64: kubenfv.kubevim.network.v1.NetworkService.UpdateNetwork:output_type -> kubenfv.kubevim.network.v1.Network
+	52, // 65: kubenfv.kubevim.network.v1.NetworkService.DeleteNetwork:output_type -> google.protobuf.Empty
+	6,  // 66: kubenfv.kubevim.network.v1.NetworkService.CreateSubnet:output_type -> kubenfv.kubevim.network.v1.Subnet
+	6,  // 67: kubenfv.kubevim.network.v1.NetworkService.GetSubnet:output_type -> kubenfv.kubevim.network.v1.Subnet
+	22, // 68: kubenfv.kubevim.network.v1.NetworkService.ListSubnets:output_type -> kubenfv.kubevim.network.v1.ListSubnetsResponse
+	6,  // 69: kubenfv.kubevim.network.v1.NetworkService.UpdateSubnet:output_type -> kubenfv.kubevim.network.v1.Subnet
+	52, // 70: kubenfv.kubevim.network.v1.NetworkService.DeleteSubnet:output_type -> google.protobuf.Empty
+	8,  // 71: kubenfv.kubevim.network.v1.NetworkService.CreatePort:output_type -> kubenfv.kubevim.network.v1.Port
+	8,  // 72: kubenfv.kubevim.network.v1.NetworkService.GetPort:output_type -> kubenfv.kubevim.network.v1.Port
+	27, // 73: kubenfv.kubevim.network.v1.NetworkService.ListPorts:output_type -> kubenfv.kubevim.network.v1.ListPortsResponse
+	8,  // 74: kubenfv.kubevim.network.v1.NetworkService.UpdatePort:output_type -> kubenfv.kubevim.network.v1.Port
+	52, // 75: kubenfv.kubevim.network.v1.NetworkService.DeletePort:output_type -> google.protobuf.Empty
+	9,  // 76: kubenfv.kubevim.network.v1.NetworkService.CreateTrunk:output_type -> kubenfv.kubevim.network.v1.Trunk
+	9,  // 77: kubenfv.kubevim.network.v1.NetworkService.GetTrunk:output_type -> kubenfv.kubevim.network.v1.Trunk
+	32, // 78: kubenfv.kubevim.network.v1.NetworkService.ListTrunks:output_type -> kubenfv.kubevim.network.v1.ListTrunksResponse
+	9,  // 79: kubenfv.kubevim.network.v1.NetworkService.UpdateTrunk:output_type -> kubenfv.kubevim.network.v1.Trunk
+	52, // 80: kubenfv.kubevim.network.v1.NetworkService.DeleteTrunk:output_type -> google.protobuf.Empty
+	53, // 81: kubenfv.kubevim.network.v1.NetworkService.CreateAffinityGroup:output_type -> kubenfv.kubevim.common.v1.AffinityGroup
+	53, // 82: kubenfv.kubevim.network.v1.NetworkService.GetAffinityGroup:output_type -> kubenfv.kubevim.common.v1.AffinityGroup
+	54, // 83: kubenfv.kubevim.network.v1.NetworkService.ListAffinityGroups:output_type -> kubenfv.kubevim.common.v1.ListAffinityGroupsResponse
+	52, // 84: kubenfv.kubevim.network.v1.NetworkService.DeleteAffinityGroup:output_type -> google.protobuf.Empty
+	61, // [61:85] is the sub-list for method output_type
+	37, // [37:61] is the sub-list for method input_type
+	37, // [37:37] is the sub-list for extension type_name
+	37, // [37:37] is the sub-list for extension extendee
+	0,  // [0:37] is the sub-list for field type_name
 }
 
 func init() { file_kubenfv_kubevim_network_v1_network_proto_init() }
@@ -3435,7 +3166,7 @@ func file_kubenfv_kubevim_network_v1_network_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_kubenfv_kubevim_network_v1_network_proto_rawDesc), len(file_kubenfv_kubevim_network_v1_network_proto_rawDesc)),
 			NumEnums:      3,
-			NumMessages:   47,
+			NumMessages:   42,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

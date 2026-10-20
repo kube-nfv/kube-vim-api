@@ -364,6 +364,258 @@ func (x *AffinityGroup) GetScope() AffinityScope {
 	return AffinityScope_AFFINITY_SCOPE_UNSPECIFIED
 }
 
+type CreateAffinityGroupRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Group to create.
+	AffinityGroup *AffinityGroup `protobuf:"bytes,1,opt,name=affinity_group,json=affinityGroup,proto3" json:"affinity_group,omitempty"`
+	// Client-chosen UUID that makes the request idempotent (AIP-155).
+	RequestId     string `protobuf:"bytes,2,opt,name=request_id,json=requestId,proto3" json:"request_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CreateAffinityGroupRequest) Reset() {
+	*x = CreateAffinityGroupRequest{}
+	mi := &file_kubenfv_kubevim_common_v1_affinity_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CreateAffinityGroupRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CreateAffinityGroupRequest) ProtoMessage() {}
+
+func (x *CreateAffinityGroupRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_kubenfv_kubevim_common_v1_affinity_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CreateAffinityGroupRequest.ProtoReflect.Descriptor instead.
+func (*CreateAffinityGroupRequest) Descriptor() ([]byte, []int) {
+	return file_kubenfv_kubevim_common_v1_affinity_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *CreateAffinityGroupRequest) GetAffinityGroup() *AffinityGroup {
+	if x != nil {
+		return x.AffinityGroup
+	}
+	return nil
+}
+
+func (x *CreateAffinityGroupRequest) GetRequestId() string {
+	if x != nil {
+		return x.RequestId
+	}
+	return ""
+}
+
+type GetAffinityGroupRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Identifier of the group.
+	GroupId       string `protobuf:"bytes,1,opt,name=group_id,json=groupId,proto3" json:"group_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetAffinityGroupRequest) Reset() {
+	*x = GetAffinityGroupRequest{}
+	mi := &file_kubenfv_kubevim_common_v1_affinity_proto_msgTypes[4]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetAffinityGroupRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetAffinityGroupRequest) ProtoMessage() {}
+
+func (x *GetAffinityGroupRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_kubenfv_kubevim_common_v1_affinity_proto_msgTypes[4]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetAffinityGroupRequest.ProtoReflect.Descriptor instead.
+func (*GetAffinityGroupRequest) Descriptor() ([]byte, []int) {
+	return file_kubenfv_kubevim_common_v1_affinity_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *GetAffinityGroupRequest) GetGroupId() string {
+	if x != nil {
+		return x.GroupId
+	}
+	return ""
+}
+
+type ListAffinityGroupsRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Attribute-based filter expression (SOL 013 5.2).
+	Filter string `protobuf:"bytes,1,opt,name=filter,proto3" json:"filter,omitempty"`
+	// Marker of the page to return, from a previous response (SOL 013 5.4).
+	NextpageOpaqueMarker string `protobuf:"bytes,2,opt,name=nextpage_opaque_marker,proto3" json:"nextpage_opaque_marker,omitempty"`
+	unknownFields        protoimpl.UnknownFields
+	sizeCache            protoimpl.SizeCache
+}
+
+func (x *ListAffinityGroupsRequest) Reset() {
+	*x = ListAffinityGroupsRequest{}
+	mi := &file_kubenfv_kubevim_common_v1_affinity_proto_msgTypes[5]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListAffinityGroupsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListAffinityGroupsRequest) ProtoMessage() {}
+
+func (x *ListAffinityGroupsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_kubenfv_kubevim_common_v1_affinity_proto_msgTypes[5]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListAffinityGroupsRequest.ProtoReflect.Descriptor instead.
+func (*ListAffinityGroupsRequest) Descriptor() ([]byte, []int) {
+	return file_kubenfv_kubevim_common_v1_affinity_proto_rawDescGZIP(), []int{5}
+}
+
+func (x *ListAffinityGroupsRequest) GetFilter() string {
+	if x != nil {
+		return x.Filter
+	}
+	return ""
+}
+
+func (x *ListAffinityGroupsRequest) GetNextpageOpaqueMarker() string {
+	if x != nil {
+		return x.NextpageOpaqueMarker
+	}
+	return ""
+}
+
+type ListAffinityGroupsResponse struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Groups matching the filter.
+	AffinityGroups []*AffinityGroup `protobuf:"bytes,1,rep,name=affinity_groups,json=affinityGroups,proto3" json:"affinity_groups,omitempty"`
+	// Marker of the next page; empty on the last page (SOL 013 5.4).
+	NextpageOpaqueMarker string `protobuf:"bytes,2,opt,name=nextpage_opaque_marker,proto3" json:"nextpage_opaque_marker,omitempty"`
+	unknownFields        protoimpl.UnknownFields
+	sizeCache            protoimpl.SizeCache
+}
+
+func (x *ListAffinityGroupsResponse) Reset() {
+	*x = ListAffinityGroupsResponse{}
+	mi := &file_kubenfv_kubevim_common_v1_affinity_proto_msgTypes[6]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListAffinityGroupsResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListAffinityGroupsResponse) ProtoMessage() {}
+
+func (x *ListAffinityGroupsResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_kubenfv_kubevim_common_v1_affinity_proto_msgTypes[6]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListAffinityGroupsResponse.ProtoReflect.Descriptor instead.
+func (*ListAffinityGroupsResponse) Descriptor() ([]byte, []int) {
+	return file_kubenfv_kubevim_common_v1_affinity_proto_rawDescGZIP(), []int{6}
+}
+
+func (x *ListAffinityGroupsResponse) GetAffinityGroups() []*AffinityGroup {
+	if x != nil {
+		return x.AffinityGroups
+	}
+	return nil
+}
+
+func (x *ListAffinityGroupsResponse) GetNextpageOpaqueMarker() string {
+	if x != nil {
+		return x.NextpageOpaqueMarker
+	}
+	return ""
+}
+
+type DeleteAffinityGroupRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Identifier of the group.
+	GroupId       string `protobuf:"bytes,1,opt,name=group_id,json=groupId,proto3" json:"group_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DeleteAffinityGroupRequest) Reset() {
+	*x = DeleteAffinityGroupRequest{}
+	mi := &file_kubenfv_kubevim_common_v1_affinity_proto_msgTypes[7]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DeleteAffinityGroupRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeleteAffinityGroupRequest) ProtoMessage() {}
+
+func (x *DeleteAffinityGroupRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_kubenfv_kubevim_common_v1_affinity_proto_msgTypes[7]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeleteAffinityGroupRequest.ProtoReflect.Descriptor instead.
+func (*DeleteAffinityGroupRequest) Descriptor() ([]byte, []int) {
+	return file_kubenfv_kubevim_common_v1_affinity_proto_rawDescGZIP(), []int{7}
+}
+
+func (x *DeleteAffinityGroupRequest) GetGroupId() string {
+	if x != nil {
+		return x.GroupId
+	}
+	return ""
+}
+
 var File_kubenfv_kubevim_common_v1_affinity_proto protoreflect.FileDescriptor
 
 const file_kubenfv_kubevim_common_v1_affinity_proto_rawDesc = "" +
@@ -394,7 +646,22 @@ const file_kubenfv_kubevim_common_v1_affinity_proto_rawDesc = "" +
 	"\x15IFA006 7.4.1.6.2 typeR\x04type\x12g\n" +
 	"\x05scope\x18\x04 \x01(\x0e2(.kubenfv.kubevim.common.v1.AffinityScopeB'\xe2A\x01\x01\xbaH\x05\x82\x01\x02\x10\x01\xfaV\x18\n" +
 	"\x16IFA006 7.4.1.6.2 scopeR\x05scope:\xbe\x01\xfaV\xba\x01\n" +
-	"[IFA006 7.3.1.9, 7.4.1.6, 7.5.1.9 Create Resource Affinity Or AntiAffinity Constraints Group\x12[\b\x03\x10\x01\x1aUA resource with Get, List and Delete; IFA only creates groups and never removes them.*j\n" +
+	"[IFA006 7.3.1.9, 7.4.1.6, 7.5.1.9 Create Resource Affinity Or AntiAffinity Constraints Group\x12[\b\x03\x10\x01\x1aUA resource with Get, List and Delete; IFA only creates groups and never removes them.\"\xa9\x01\n" +
+	"\x1aCreateAffinityGroupRequest\x12[\n" +
+	"\x0eaffinity_group\x18\x01 \x01(\v2(.kubenfv.kubevim.common.v1.AffinityGroupB\n" +
+	"\xe2A\x01\x02\xbaH\x03\xc8\x01\x01R\raffinityGroup\x12.\n" +
+	"\n" +
+	"request_id\x18\x02 \x01(\tB\x0f\xe2A\x01\x01\xbaH\b\xd8\x01\x01r\x03\xb0\x01\x01R\trequestId\"B\n" +
+	"\x17GetAffinityGroupRequest\x12'\n" +
+	"\bgroup_id\x18\x01 \x01(\tB\f\xe2A\x01\x02\xbaH\x05r\x03\xb0\x01\x01R\agroupId\"w\n" +
+	"\x19ListAffinityGroupsRequest\x12\x1c\n" +
+	"\x06filter\x18\x01 \x01(\tB\x04\xe2A\x01\x01R\x06filter\x12<\n" +
+	"\x16nextpage_opaque_marker\x18\x02 \x01(\tB\x04\xe2A\x01\x01R\x16nextpage_opaque_marker\"\xa7\x01\n" +
+	"\x1aListAffinityGroupsResponse\x12Q\n" +
+	"\x0faffinity_groups\x18\x01 \x03(\v2(.kubenfv.kubevim.common.v1.AffinityGroupR\x0eaffinityGroups\x126\n" +
+	"\x16nextpage_opaque_marker\x18\x02 \x01(\tR\x16nextpage_opaque_marker\"E\n" +
+	"\x1aDeleteAffinityGroupRequest\x12'\n" +
+	"\bgroup_id\x18\x01 \x01(\tB\f\xe2A\x01\x02\xbaH\x05r\x03\xb0\x01\x01R\agroupId*j\n" +
 	"\fAffinityType\x12\x1d\n" +
 	"\x19AFFINITY_TYPE_UNSPECIFIED\x10\x00\x12\x1a\n" +
 	"\x16AFFINITY_TYPE_AFFINITY\x10\x01\x12\x1f\n" +
@@ -421,13 +688,18 @@ func file_kubenfv_kubevim_common_v1_affinity_proto_rawDescGZIP() []byte {
 }
 
 var file_kubenfv_kubevim_common_v1_affinity_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
-var file_kubenfv_kubevim_common_v1_affinity_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
+var file_kubenfv_kubevim_common_v1_affinity_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
 var file_kubenfv_kubevim_common_v1_affinity_proto_goTypes = []any{
 	(AffinityType)(0),                          // 0: kubenfv.kubevim.common.v1.AffinityType
 	(AffinityScope)(0),                         // 1: kubenfv.kubevim.common.v1.AffinityScope
 	(*AffinityOrAntiAffinityConstraint)(nil),   // 2: kubenfv.kubevim.common.v1.AffinityOrAntiAffinityConstraint
 	(*AffinityOrAntiAffinityResourceList)(nil), // 3: kubenfv.kubevim.common.v1.AffinityOrAntiAffinityResourceList
 	(*AffinityGroup)(nil),                      // 4: kubenfv.kubevim.common.v1.AffinityGroup
+	(*CreateAffinityGroupRequest)(nil),         // 5: kubenfv.kubevim.common.v1.CreateAffinityGroupRequest
+	(*GetAffinityGroupRequest)(nil),            // 6: kubenfv.kubevim.common.v1.GetAffinityGroupRequest
+	(*ListAffinityGroupsRequest)(nil),          // 7: kubenfv.kubevim.common.v1.ListAffinityGroupsRequest
+	(*ListAffinityGroupsResponse)(nil),         // 8: kubenfv.kubevim.common.v1.ListAffinityGroupsResponse
+	(*DeleteAffinityGroupRequest)(nil),         // 9: kubenfv.kubevim.common.v1.DeleteAffinityGroupRequest
 }
 var file_kubenfv_kubevim_common_v1_affinity_proto_depIdxs = []int32{
 	0, // 0: kubenfv.kubevim.common.v1.AffinityOrAntiAffinityConstraint.type:type_name -> kubenfv.kubevim.common.v1.AffinityType
@@ -435,11 +707,13 @@ var file_kubenfv_kubevim_common_v1_affinity_proto_depIdxs = []int32{
 	3, // 2: kubenfv.kubevim.common.v1.AffinityOrAntiAffinityConstraint.affinity_or_anti_affinity_resource_list:type_name -> kubenfv.kubevim.common.v1.AffinityOrAntiAffinityResourceList
 	0, // 3: kubenfv.kubevim.common.v1.AffinityGroup.type:type_name -> kubenfv.kubevim.common.v1.AffinityType
 	1, // 4: kubenfv.kubevim.common.v1.AffinityGroup.scope:type_name -> kubenfv.kubevim.common.v1.AffinityScope
-	5, // [5:5] is the sub-list for method output_type
-	5, // [5:5] is the sub-list for method input_type
-	5, // [5:5] is the sub-list for extension type_name
-	5, // [5:5] is the sub-list for extension extendee
-	0, // [0:5] is the sub-list for field type_name
+	4, // 5: kubenfv.kubevim.common.v1.CreateAffinityGroupRequest.affinity_group:type_name -> kubenfv.kubevim.common.v1.AffinityGroup
+	4, // 6: kubenfv.kubevim.common.v1.ListAffinityGroupsResponse.affinity_groups:type_name -> kubenfv.kubevim.common.v1.AffinityGroup
+	7, // [7:7] is the sub-list for method output_type
+	7, // [7:7] is the sub-list for method input_type
+	7, // [7:7] is the sub-list for extension type_name
+	7, // [7:7] is the sub-list for extension extendee
+	0, // [0:7] is the sub-list for field type_name
 }
 
 func init() { file_kubenfv_kubevim_common_v1_affinity_proto_init() }
@@ -457,7 +731,7 @@ func file_kubenfv_kubevim_common_v1_affinity_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_kubenfv_kubevim_common_v1_affinity_proto_rawDesc), len(file_kubenfv_kubevim_common_v1_affinity_proto_rawDesc)),
 			NumEnums:      2,
-			NumMessages:   3,
+			NumMessages:   8,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

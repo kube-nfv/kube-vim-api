@@ -93,6 +93,53 @@ message AffinityGroup {
   ];
 }
 
+message CreateAffinityGroupRequest {
+  // Group to create.
+  AffinityGroup affinity_group = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).required = true
+  ];
+  // Client-chosen UUID that makes the request idempotent (AIP-155).
+  string request_id = 2 [
+    (google.api.field_behavior) = OPTIONAL,
+    (buf.validate.field).string.uuid = true,
+    (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE
+  ];
+}
+
+message GetAffinityGroupRequest {
+  // Identifier of the group.
+  string group_id = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).string.uuid = true
+  ];
+}
+
+message ListAffinityGroupsRequest {
+  // Attribute-based filter expression (SOL 013 5.2).
+  string filter = 1 [(google.api.field_behavior) = OPTIONAL];
+  // Marker of the page to return, from a previous response (SOL 013 5.4).
+  string nextpage_opaque_marker = 2 [
+    json_name = "nextpage_opaque_marker",
+    (google.api.field_behavior) = OPTIONAL
+  ];
+}
+
+message ListAffinityGroupsResponse {
+  // Groups matching the filter.
+  repeated AffinityGroup affinity_groups = 1;
+  // Marker of the next page; empty on the last page (SOL 013 5.4).
+  string nextpage_opaque_marker = 2 [json_name = "nextpage_opaque_marker"];
+}
+
+message DeleteAffinityGroupRequest {
+  // Identifier of the group.
+  string group_id = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).string.uuid = true
+  ];
+}
+
 // Affinity or anti-affinity.
 enum AffinityType {
   AFFINITY_TYPE_UNSPECIFIED = 0;

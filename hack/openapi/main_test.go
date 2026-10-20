@@ -138,6 +138,24 @@ func TestBundle(t *testing.T) {
 	}
 }
 
+func TestOperationIDs(t *testing.T) {
+	ops := []map[string]any{
+		{"operationId": "ComputeService_CreateCompute"},
+		{"operationId": "ComputeService_CreateAffinityGroup"},
+		{"operationId": "NetworkService_CreateAffinityGroup"},
+	}
+	if err := shortenOperationIDs(ops); err != nil {
+		t.Fatal(err)
+	}
+	var got []string
+	for _, op := range ops {
+		got = append(got, op["operationId"].(string))
+	}
+	if want := "CreateCompute,Compute_CreateAffinityGroup,Network_CreateAffinityGroup"; strings.Join(got, ",") != want {
+		t.Errorf("operation ids = %v, want %s", got, want)
+	}
+}
+
 func TestDeterministic(t *testing.T) {
 	a, b := process(t), process(t)
 	for _, rel := range []string{"compute/v1/compute_service.openapi.json", "image/v1/image.openapi.json", bundleFile} {

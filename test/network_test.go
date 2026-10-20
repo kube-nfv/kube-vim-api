@@ -96,7 +96,7 @@ func TestNetworkValidation(t *testing.T) {
 			json: readFile(t, "testdata/network/update_trunk_request.json"), msg: &networkv1.UpdateTrunkRequest{}, valid: true,
 		},
 		"affinity group without type": {
-			json: `{"affinityGroup":{"groupName":"g"}}`, msg: &networkv1.CreateAffinityGroupRequest{},
+			json: `{"affinityGroup":{"groupName":"g"}}`, msg: &commonv1.CreateAffinityGroupRequest{},
 		},
 	} {
 		t.Run(name, func(t *testing.T) { checkValidation(t, tc.json, tc.msg, tc.valid) })

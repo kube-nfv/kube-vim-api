@@ -94,13 +94,13 @@ type NetworkServiceClient interface {
 	// Deletes a trunk.
 	DeleteTrunk(ctx context.Context, in *DeleteTrunkRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	// Creates a network affinity or anti-affinity group.
-	CreateAffinityGroup(ctx context.Context, in *CreateAffinityGroupRequest, opts ...grpc.CallOption) (*v1.AffinityGroup, error)
+	CreateAffinityGroup(ctx context.Context, in *v1.CreateAffinityGroupRequest, opts ...grpc.CallOption) (*v1.AffinityGroup, error)
 	// Returns one network affinity group.
-	GetAffinityGroup(ctx context.Context, in *GetAffinityGroupRequest, opts ...grpc.CallOption) (*v1.AffinityGroup, error)
+	GetAffinityGroup(ctx context.Context, in *v1.GetAffinityGroupRequest, opts ...grpc.CallOption) (*v1.AffinityGroup, error)
 	// Returns the network affinity groups.
-	ListAffinityGroups(ctx context.Context, in *ListAffinityGroupsRequest, opts ...grpc.CallOption) (*ListAffinityGroupsResponse, error)
+	ListAffinityGroups(ctx context.Context, in *v1.ListAffinityGroupsRequest, opts ...grpc.CallOption) (*v1.ListAffinityGroupsResponse, error)
 	// Deletes a network affinity group.
-	DeleteAffinityGroup(ctx context.Context, in *DeleteAffinityGroupRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	DeleteAffinityGroup(ctx context.Context, in *v1.DeleteAffinityGroupRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 }
 
 type networkServiceClient struct {
@@ -311,7 +311,7 @@ func (c *networkServiceClient) DeleteTrunk(ctx context.Context, in *DeleteTrunkR
 	return out, nil
 }
 
-func (c *networkServiceClient) CreateAffinityGroup(ctx context.Context, in *CreateAffinityGroupRequest, opts ...grpc.CallOption) (*v1.AffinityGroup, error) {
+func (c *networkServiceClient) CreateAffinityGroup(ctx context.Context, in *v1.CreateAffinityGroupRequest, opts ...grpc.CallOption) (*v1.AffinityGroup, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(v1.AffinityGroup)
 	err := c.cc.Invoke(ctx, NetworkService_CreateAffinityGroup_FullMethodName, in, out, cOpts...)
@@ -321,7 +321,7 @@ func (c *networkServiceClient) CreateAffinityGroup(ctx context.Context, in *Crea
 	return out, nil
 }
 
-func (c *networkServiceClient) GetAffinityGroup(ctx context.Context, in *GetAffinityGroupRequest, opts ...grpc.CallOption) (*v1.AffinityGroup, error) {
+func (c *networkServiceClient) GetAffinityGroup(ctx context.Context, in *v1.GetAffinityGroupRequest, opts ...grpc.CallOption) (*v1.AffinityGroup, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(v1.AffinityGroup)
 	err := c.cc.Invoke(ctx, NetworkService_GetAffinityGroup_FullMethodName, in, out, cOpts...)
@@ -331,9 +331,9 @@ func (c *networkServiceClient) GetAffinityGroup(ctx context.Context, in *GetAffi
 	return out, nil
 }
 
-func (c *networkServiceClient) ListAffinityGroups(ctx context.Context, in *ListAffinityGroupsRequest, opts ...grpc.CallOption) (*ListAffinityGroupsResponse, error) {
+func (c *networkServiceClient) ListAffinityGroups(ctx context.Context, in *v1.ListAffinityGroupsRequest, opts ...grpc.CallOption) (*v1.ListAffinityGroupsResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(ListAffinityGroupsResponse)
+	out := new(v1.ListAffinityGroupsResponse)
 	err := c.cc.Invoke(ctx, NetworkService_ListAffinityGroups_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -341,7 +341,7 @@ func (c *networkServiceClient) ListAffinityGroups(ctx context.Context, in *ListA
 	return out, nil
 }
 
-func (c *networkServiceClient) DeleteAffinityGroup(ctx context.Context, in *DeleteAffinityGroupRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+func (c *networkServiceClient) DeleteAffinityGroup(ctx context.Context, in *v1.DeleteAffinityGroupRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(emptypb.Empty)
 	err := c.cc.Invoke(ctx, NetworkService_DeleteAffinityGroup_FullMethodName, in, out, cOpts...)
@@ -398,13 +398,13 @@ type NetworkServiceServer interface {
 	// Deletes a trunk.
 	DeleteTrunk(context.Context, *DeleteTrunkRequest) (*emptypb.Empty, error)
 	// Creates a network affinity or anti-affinity group.
-	CreateAffinityGroup(context.Context, *CreateAffinityGroupRequest) (*v1.AffinityGroup, error)
+	CreateAffinityGroup(context.Context, *v1.CreateAffinityGroupRequest) (*v1.AffinityGroup, error)
 	// Returns one network affinity group.
-	GetAffinityGroup(context.Context, *GetAffinityGroupRequest) (*v1.AffinityGroup, error)
+	GetAffinityGroup(context.Context, *v1.GetAffinityGroupRequest) (*v1.AffinityGroup, error)
 	// Returns the network affinity groups.
-	ListAffinityGroups(context.Context, *ListAffinityGroupsRequest) (*ListAffinityGroupsResponse, error)
+	ListAffinityGroups(context.Context, *v1.ListAffinityGroupsRequest) (*v1.ListAffinityGroupsResponse, error)
 	// Deletes a network affinity group.
-	DeleteAffinityGroup(context.Context, *DeleteAffinityGroupRequest) (*emptypb.Empty, error)
+	DeleteAffinityGroup(context.Context, *v1.DeleteAffinityGroupRequest) (*emptypb.Empty, error)
 	mustEmbedUnimplementedNetworkServiceServer()
 }
 
@@ -475,16 +475,16 @@ func (UnimplementedNetworkServiceServer) UpdateTrunk(context.Context, *UpdateTru
 func (UnimplementedNetworkServiceServer) DeleteTrunk(context.Context, *DeleteTrunkRequest) (*emptypb.Empty, error) {
 	return nil, status.Error(codes.Unimplemented, "method DeleteTrunk not implemented")
 }
-func (UnimplementedNetworkServiceServer) CreateAffinityGroup(context.Context, *CreateAffinityGroupRequest) (*v1.AffinityGroup, error) {
+func (UnimplementedNetworkServiceServer) CreateAffinityGroup(context.Context, *v1.CreateAffinityGroupRequest) (*v1.AffinityGroup, error) {
 	return nil, status.Error(codes.Unimplemented, "method CreateAffinityGroup not implemented")
 }
-func (UnimplementedNetworkServiceServer) GetAffinityGroup(context.Context, *GetAffinityGroupRequest) (*v1.AffinityGroup, error) {
+func (UnimplementedNetworkServiceServer) GetAffinityGroup(context.Context, *v1.GetAffinityGroupRequest) (*v1.AffinityGroup, error) {
 	return nil, status.Error(codes.Unimplemented, "method GetAffinityGroup not implemented")
 }
-func (UnimplementedNetworkServiceServer) ListAffinityGroups(context.Context, *ListAffinityGroupsRequest) (*ListAffinityGroupsResponse, error) {
+func (UnimplementedNetworkServiceServer) ListAffinityGroups(context.Context, *v1.ListAffinityGroupsRequest) (*v1.ListAffinityGroupsResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method ListAffinityGroups not implemented")
 }
-func (UnimplementedNetworkServiceServer) DeleteAffinityGroup(context.Context, *DeleteAffinityGroupRequest) (*emptypb.Empty, error) {
+func (UnimplementedNetworkServiceServer) DeleteAffinityGroup(context.Context, *v1.DeleteAffinityGroupRequest) (*emptypb.Empty, error) {
 	return nil, status.Error(codes.Unimplemented, "method DeleteAffinityGroup not implemented")
 }
 func (UnimplementedNetworkServiceServer) mustEmbedUnimplementedNetworkServiceServer() {}
@@ -869,7 +869,7 @@ func _NetworkService_DeleteTrunk_Handler(srv interface{}, ctx context.Context, d
 }
 
 func _NetworkService_CreateAffinityGroup_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(CreateAffinityGroupRequest)
+	in := new(v1.CreateAffinityGroupRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -881,13 +881,13 @@ func _NetworkService_CreateAffinityGroup_Handler(srv interface{}, ctx context.Co
 		FullMethod: NetworkService_CreateAffinityGroup_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(NetworkServiceServer).CreateAffinityGroup(ctx, req.(*CreateAffinityGroupRequest))
+		return srv.(NetworkServiceServer).CreateAffinityGroup(ctx, req.(*v1.CreateAffinityGroupRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _NetworkService_GetAffinityGroup_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetAffinityGroupRequest)
+	in := new(v1.GetAffinityGroupRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -899,13 +899,13 @@ func _NetworkService_GetAffinityGroup_Handler(srv interface{}, ctx context.Conte
 		FullMethod: NetworkService_GetAffinityGroup_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(NetworkServiceServer).GetAffinityGroup(ctx, req.(*GetAffinityGroupRequest))
+		return srv.(NetworkServiceServer).GetAffinityGroup(ctx, req.(*v1.GetAffinityGroupRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _NetworkService_ListAffinityGroups_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ListAffinityGroupsRequest)
+	in := new(v1.ListAffinityGroupsRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -917,13 +917,13 @@ func _NetworkService_ListAffinityGroups_Handler(srv interface{}, ctx context.Con
 		FullMethod: NetworkService_ListAffinityGroups_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(NetworkServiceServer).ListAffinityGroups(ctx, req.(*ListAffinityGroupsRequest))
+		return srv.(NetworkServiceServer).ListAffinityGroups(ctx, req.(*v1.ListAffinityGroupsRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _NetworkService_DeleteAffinityGroup_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(DeleteAffinityGroupRequest)
+	in := new(v1.DeleteAffinityGroupRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -935,7 +935,7 @@ func _NetworkService_DeleteAffinityGroup_Handler(srv interface{}, ctx context.Co
 		FullMethod: NetworkService_DeleteAffinityGroup_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(NetworkServiceServer).DeleteAffinityGroup(ctx, req.(*DeleteAffinityGroupRequest))
+		return srv.(NetworkServiceServer).DeleteAffinityGroup(ctx, req.(*v1.DeleteAffinityGroupRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }

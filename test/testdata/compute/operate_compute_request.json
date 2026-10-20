@@ -1,0 +1,7 @@
+{
+  "computeId": "c0ffee00-1234-4abc-8def-0123456789ab",
+  "computeOperation": "COMPUTE_OPERATION_REVERT_TO_SNAPSHOT",
+  "computeOperationInputData": {
+    "snapshotId": "8e9f0a1b-2c3d-4e4f-8a5b-6c7d8e9f0a1b"
+  }
+}

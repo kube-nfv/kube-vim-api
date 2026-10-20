@@ -137,6 +137,22 @@
         ],
         "type": "string"
       },
+      "kubenfv.kubevim.common.v1.ListAffinityGroupsResponse": {
+        "properties": {
+          "affinityGroups": {
+            "description": "Groups matching the filter.",
+            "items": {
+              "$ref": "#/components/schemas/kubenfv.kubevim.common.v1.AffinityGroup"
+            },
+            "type": "array"
+          },
+          "nextpage_opaque_marker": {
+            "description": "Marker of the next page; empty on the last page (SOL 013 5.4).",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
       "kubenfv.kubevim.common.v1.OperationalState": {
         "description": "Operational state of a virtualised resource (IFA006).",
         "enum": [
@@ -162,22 +178,6 @@
           "startIp",
           "endIp"
         ],
-        "type": "object"
-      },
-      "kubenfv.kubevim.network.v1.ListAffinityGroupsResponse": {
-        "properties": {
-          "affinityGroups": {
-            "description": "Groups matching the filter.",
-            "items": {
-              "$ref": "#/components/schemas/kubenfv.kubevim.common.v1.AffinityGroup"
-            },
-            "type": "array"
-          },
-          "nextpage_opaque_marker": {
-            "description": "Marker of the next page; empty on the last page (SOL 013 5.4).",
-            "type": "string"
-          }
-        },
         "type": "object"
       },
       "kubenfv.kubevim.network.v1.ListNetworksResponse": {
@@ -742,7 +742,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/kubenfv.kubevim.network.v1.ListAffinityGroupsResponse"
+                  "$ref": "#/components/schemas/kubenfv.kubevim.common.v1.ListAffinityGroupsResponse"
                 }
               }
             },

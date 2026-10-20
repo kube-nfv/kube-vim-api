@@ -11,11 +11,12 @@ import (
 // every component name, e.g. "kubenfv.kubevim.compute.v1.".
 var packagePrefix = regexp.MustCompile(`^kubenfv\.kubevim\.\w+\.v\d+\.`)
 
-// bundle merges the per-API documents into one, with component names and
-// operation ids stripped of their proto package and service prefixes.
+// bundle merges the per-API documents into one, with component names stripped
+// of their proto package and operation ids of their service prefix.
 func bundle(docs []map[string]any, version string) (map[string]any, error) {
 	paths := map[string]any{}
 	comps := map[string]any{}
+	var ops []map[string]any
 	for _, doc := range docs {
 		doc = shortenRefs(doc).(map[string]any)
 		for _, path := range sortedKeys(child(doc, "paths")) {
@@ -25,9 +26,7 @@ func bundle(docs []map[string]any, version string) (map[string]any, error) {
 			item := child(doc, "paths")[path].(map[string]any)
 			for _, method := range httpMethods {
 				if op, ok := item[method].(map[string]any); ok {
-					if id, ok := op["operationId"].(string); ok {
-						op["operationId"] = id[strings.LastIndex(id, "_")+1:]
-					}
+					ops = append(ops, op)
 				}
 			}
 			paths[path] = item
@@ -51,12 +50,41 @@ func bundle(docs []map[string]any, version string) (map[string]any, error) {
 			}
 		}
 	}
+	if err := shortenOperationIDs(ops); err != nil {
+		return nil, err
+	}
 	return map[string]any{
 		"openapi":    docs[0]["openapi"],
 		"info":       map[string]any{"title": "Kube-VIM API", "version": version},
 		"paths":      paths,
 		"components": comps,
 	}, nil
+}
+
+// shortenOperationIDs turns "ComputeService_CreateCompute" into "CreateCompute".
+// A method name that more than one service uses keeps the service stem
+// ("Compute_CreateAffinityGroup"), since operation ids must be unique.
+func shortenOperationIDs(ops []map[string]any) error {
+	count := map[string]int{}
+	for _, op := range ops {
+		id, _ := op["operationId"].(string)
+		count[id[strings.LastIndex(id, "_")+1:]]++
+	}
+	seen := map[string]bool{}
+	for _, op := range ops {
+		id, _ := op["operationId"].(string)
+		service, method, _ := strings.Cut(id, "_")
+		short := method
+		if count[method] > 1 {
+			short = strings.TrimSuffix(service, "Service") + "_" + method
+		}
+		if seen[short] {
+			return fmt.Errorf("operation id %s is not unique", short)
+		}
+		seen[short] = true
+		op["operationId"] = short
+	}
+	return nil
 }
 
 // shortenRefs returns a copy of node with package prefixes stripped from $ref targets.

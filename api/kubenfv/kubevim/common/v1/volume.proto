@@ -1,0 +1,73 @@
+syntax = "proto3";
+
+package kubenfv.kubevim.common.v1;
+
+import "google/api/field_behavior.proto";
+import "kubenfv/kubevim/common/v1/common.proto";
+import "kubenfv/kubevim/common/v1/storage.proto";
+import "kubenfv/kubevim/options/v1/options.proto";
+
+// A virtualised storage resource, e.g. a disk of a compute resource.
+message Volume {
+  option (kubenfv.kubevim.options.v1.ifa_message) = {ref: "IFA006 8.4.7.2 VirtualStorage"};
+
+  // Identifier of the volume: a UUID, the Kubernetes UID of the object behind it.
+  string storage_id = 1 [
+    (google.api.field_behavior) = OUTPUT_ONLY,
+    (kubenfv.kubevim.options.v1.ifa_field) = {ref: "IFA006 8.4.7.2 VirtualStorage.storageId"}
+  ];
+  // Name of the volume.
+  string storage_name = 2 [
+    (google.api.field_behavior) = OPTIONAL,
+    (kubenfv.kubevim.options.v1.ifa_field) = {ref: "IFA006 8.4.7.2 VirtualStorage.storageName"}
+  ];
+  // Storage flavour the volume was created from.
+  string flavour_id = 3 [
+    (google.api.field_behavior) = OUTPUT_ONLY,
+    (kubenfv.kubevim.options.v1.ifa_field) = {
+      ref: "IFA006 8.4.7.2 VirtualStorage.flavourId"
+      departure: {
+        kind: KIND_RESTRICTION
+        translates: true
+        rationale: "Kube-VIM has no storage flavours; always empty."
+      }
+    }
+  ];
+  // Size, type and capabilities of the volume.
+  VirtualStorageData storage_data = 4 [
+    (google.api.field_behavior) = REQUIRED,
+    (kubenfv.kubevim.options.v1.ifa_field) = {
+      ref: "IFA006 8.4.7.2 VirtualStorage.typeOfStorage, sizeOfStorage, rdmaEnabled"
+      departure: {
+        kind: KIND_DEVIATION
+        translates: true
+        rationale: "The type, size and RDMA attributes are grouped as VirtualStorageData, as in allocation requests."
+      }
+    }
+  ];
+  // Resource that uses the volume, e.g. a compute resource; empty when not attached.
+  string owner_id = 5 [
+    (google.api.field_behavior) = OUTPUT_ONLY,
+    (kubenfv.kubevim.options.v1.ifa_field) = {ref: "IFA006 8.4.7.2 VirtualStorage.ownerId"}
+  ];
+  // Resource zone of the volume.
+  string zone_id = 6 [
+    (google.api.field_behavior) = OUTPUT_ONLY,
+    (kubenfv.kubevim.options.v1.ifa_field) = {ref: "IFA006 8.4.7.2 VirtualStorage.zoneId"}
+  ];
+  // Host of the volume; empty for distributed storage.
+  string host_id = 7 [
+    (google.api.field_behavior) = OUTPUT_ONLY,
+    (kubenfv.kubevim.options.v1.ifa_field) = {ref: "IFA006 8.4.7.2 VirtualStorage.hostId"}
+  ];
+  // Operational state of the volume.
+  OperationalState operational_state = 8 [
+    (google.api.field_behavior) = OUTPUT_ONLY,
+    (kubenfv.kubevim.options.v1.ifa_field) = {ref: "IFA006 8.4.7.2 VirtualStorage.operationalState"}
+  ];
+  // Metadata owned by the consumer and never interpreted by the VIM.
+  map<string, string> metadata = 9 [
+    (google.api.field_behavior) = OPTIONAL,
+    (kubenfv.kubevim.options.v1.ifa_field) = {ref: "IFA006 8.4.7.2 VirtualStorage.metadata"}
+  ];
+}
