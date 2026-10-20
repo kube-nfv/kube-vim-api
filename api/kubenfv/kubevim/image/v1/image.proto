@@ -7,6 +7,7 @@ import "google/api/annotations.proto";
 import "google/api/field_behavior.proto";
 import "google/protobuf/empty.proto";
 import "google/protobuf/timestamp.proto";
+import "kubenfv/kubevim/common/v1/quantity.proto";
 import "kubenfv/kubevim/options/v1/options.proto";
 import "protoc-gen-openapiv3/options/annotations.proto";
 
@@ -242,7 +243,7 @@ message Image {
   // Minimal disk size for the software image, in Kubernetes quantity format (e.g. "10Gi").
   string min_disk = 10 [
     (google.api.field_behavior) = OPTIONAL,
-    (buf.validate.field).string.pattern = "^(\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))))?$",
+    (buf.validate.field).string.(kubenfv.kubevim.common.v1.quantity) = true,
     (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE,
     (kubenfv.kubevim.options.v1.ifa_field) = {
       ref: "IFA005 8.2.2 SoftwareImageInformation.minDisk"
@@ -256,7 +257,7 @@ message Image {
   // Minimal RAM size for the software image, in Kubernetes quantity format (e.g. "2Gi").
   string min_ram = 11 [
     (google.api.field_behavior) = OPTIONAL,
-    (buf.validate.field).string.pattern = "^(\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))))?$",
+    (buf.validate.field).string.(kubenfv.kubevim.common.v1.quantity) = true,
     (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE,
     (kubenfv.kubevim.options.v1.ifa_field) = {
       ref: "IFA005 8.2.2 SoftwareImageInformation.minRam"
@@ -593,7 +594,7 @@ message BlankSource {
   // Disk size in Kubernetes quantity format, e.g. "20Gi".
   string size = 1 [
     (google.api.field_behavior) = REQUIRED,
-    (buf.validate.field).string.pattern = "^(\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))))?$"
+    (buf.validate.field).string.(kubenfv.kubevim.common.v1.quantity) = true
   ];
 }
 
@@ -750,11 +751,11 @@ message ImageUpdate {
   ];
   optional string min_disk = 4 [
     (google.api.field_behavior) = OPTIONAL,
-    (buf.validate.field).string.pattern = "^(\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))))?$"
+    (buf.validate.field).string.(kubenfv.kubevim.common.v1.quantity) = true
   ];
   optional string min_ram = 5 [
     (google.api.field_behavior) = OPTIONAL,
-    (buf.validate.field).string.pattern = "^(\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))))?$"
+    (buf.validate.field).string.(kubenfv.kubevim.common.v1.quantity) = true
   ];
   // User metadata entries to add or replace.
   map<string, string> user_metadata = 6 [(google.api.field_behavior) = OPTIONAL];

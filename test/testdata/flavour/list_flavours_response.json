@@ -1,0 +1,16 @@
+{
+  "flavours": [
+    {
+      "flavourId": "small",
+      "name": "small",
+      "isPublic": true,
+      "virtualMemory": {
+        "virtualMemSize": "2Gi"
+      },
+      "virtualCpu": {
+        "numVirtualCpu": 1
+      }
+    }
+  ],
+  "nextpage_opaque_marker": "bmV4dA"
+}

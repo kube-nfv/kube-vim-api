@@ -1,0 +1,76 @@
+syntax = "proto3";
+
+package kubenfv.kubevim.common.v1;
+
+import "buf/validate/validate.proto";
+import "google/api/field_behavior.proto";
+import "kubenfv/kubevim/common/v1/quantity.proto";
+import "kubenfv/kubevim/options/v1/options.proto";
+
+// Size, type and capabilities of a virtualised storage resource.
+message VirtualStorageData {
+  option (kubenfv.kubevim.options.v1.ifa_message) = {ref: "IFA006 8.4.6.3 VirtualStorageData"};
+
+  // Type of the storage resource.
+  TypeOfStorage type_of_storage = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).enum = {
+      defined_only: true
+      not_in: [0]
+    },
+    (kubenfv.kubevim.options.v1.ifa_field) = {
+      ref: "IFA006 8.4.6.3 VirtualStorageData.typeOfStorage"
+      departure: {
+        kind: KIND_DEVIATION
+        translates: true
+        rationale: "A closed enumeration instead of a free string."
+      }
+    }
+  ];
+  // Size of the storage resource, in Kubernetes quantity format (e.g. "20Gi").
+  string size_of_storage = 2 [
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).string.(kubenfv.kubevim.common.v1.quantity) = true,
+    (kubenfv.kubevim.options.v1.ifa_field) = {
+      ref: "IFA006 8.4.6.3 VirtualStorageData.sizeOfStorage"
+      departure: {
+        kind: KIND_DEVIATION
+        translates: true
+        rationale: "Kubernetes quantity string instead of a number in GB."
+      }
+    }
+  ];
+  // The storage supports RDMA.
+  bool rdma_enabled = 3 [
+    (google.api.field_behavior) = OPTIONAL,
+    (kubenfv.kubevim.options.v1.ifa_field) = {
+      ref: "IFA006 8.4.6.3 VirtualStorageData.rdmaEnabled"
+      departure: {
+        kind: KIND_RESTRICTION
+        translates: false
+        rationale: "Kube-VIM has no RDMA storage; true is rejected."
+      }
+    }
+  ];
+  // The software image is copied to this storage and the compute resource boots from it.
+  bool is_boot = 4 [
+    (google.api.field_behavior) = OPTIONAL,
+    (kubenfv.kubevim.options.v1.ifa_field) = {
+      departure: {
+        kind: KIND_EXTENSION
+        translates: true
+        rationale: "Marks which storage receives the software image; IFA has no boot disk marker."
+      }
+    }
+  ];
+}
+
+// Type of a virtualised storage resource.
+// Values may be added as Kubernetes storage support grows; clients should accept unknown values.
+enum TypeOfStorage {
+  TYPE_OF_STORAGE_UNSPECIFIED = 0;
+  // Persistent block volume (a Kubernetes persistent volume claim).
+  TYPE_OF_STORAGE_VOLUME = 1;
+  // Disk that lives only as long as the compute resource.
+  TYPE_OF_STORAGE_EPHEMERAL = 2;
+}

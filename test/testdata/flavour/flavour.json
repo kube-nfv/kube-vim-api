@@ -1,0 +1,40 @@
+{
+  "flavourId": "dataplane-large",
+  "name": "dataplane.large",
+  "isPublic": true,
+  "accelerationCapability": [
+    "nvidia.com/GA102GL_A10"
+  ],
+  "virtualMemory": {
+    "virtualMemSize": "16Gi",
+    "virtualMemOversubscriptionPolicy": "1:1",
+    "numaEnabled": true,
+    "hugepageSize": "1Gi"
+  },
+  "virtualCpu": {
+    "cpuArchitecture": "CPU_ARCHITECTURE_X86_64",
+    "numVirtualCpu": 8,
+    "virtualCpuPinning": {
+      "virtualCpuPinningPolicy": "VIRTUAL_CPU_PINNING_POLICY_DYNAMIC"
+    },
+    "topology": {
+      "sockets": 1,
+      "cores": 4,
+      "threads": 2
+    }
+  },
+  "storageAttributes": [
+    {
+      "typeOfStorage": "TYPE_OF_STORAGE_VOLUME",
+      "sizeOfStorage": "40Gi",
+      "isBoot": true
+    },
+    {
+      "typeOfStorage": "TYPE_OF_STORAGE_EPHEMERAL",
+      "sizeOfStorage": "10Gi"
+    }
+  ],
+  "metadata": {
+    "osm.etsi.org/flavour": "dp-large"
+  }
+}

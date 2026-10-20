@@ -9,6 +9,7 @@ package imagev1
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
 	_ "github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv3/options"
+	_ "github.com/kube-nfv/kube-vim-api/pkg/apis/common/v1"
 	_ "github.com/kube-nfv/kube-vim-api/pkg/apis/options/v1"
 	_ "google.golang.org/genproto/googleapis/api/annotations"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
@@ -2366,7 +2367,7 @@ var File_kubenfv_kubevim_image_v1_image_proto protoreflect.FileDescriptor
 
 const file_kubenfv_kubevim_image_v1_image_proto_rawDesc = "" +
 	"\n" +
-	"$kubenfv/kubevim/image/v1/image.proto\x12\x18kubenfv.kubevim.image.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a(kubenfv/kubevim/options/v1/options.proto\x1a.protoc-gen-openapiv3/options/annotations.proto\"\xc1\x19\n" +
+	"$kubenfv/kubevim/image/v1/image.proto\x12\x18kubenfv.kubevim.image.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a(kubenfv/kubevim/common/v1/quantity.proto\x1a(kubenfv/kubevim/options/v1/options.proto\x1a.protoc-gen-openapiv3/options/annotations.proto\"\xe1\x17\n" +
 	"\x05Image\x12j\n" +
 	"\x11software_image_id\x18\x01 \x01(\tB>\xe2A\x01\x03\xfaV7\n" +
 	"5IFA005 8.2.2 SoftwareImageInformation.softwareImageIdR\x0fsoftwareImageId\x12N\n" +
@@ -2388,11 +2389,11 @@ const file_kubenfv_kubevim_image_v1_image_proto_rawDesc = "" +
 	"/IFA005 8.2.2 SoftwareImageInformation.createdAtR\tcreatedAt\x12s\n" +
 	"\n" +
 	"updated_at\x18\t \x01(\v2\x1a.google.protobuf.TimestampB8\xe2A\x01\x03\xfaV1\n" +
-	"/IFA005 8.2.2 SoftwareImageInformation.updatedAtR\tupdatedAt\x12\x99\x02\n" +
+	"/IFA005 8.2.2 SoftwareImageInformation.updatedAtR\tupdatedAt\x12\xa9\x01\n" +
 	"\bmin_disk\x18\n" +
-	" \x01(\tB\xfd\x01\xe2A\x01\x01\xbaHx\xd8\x01\x01rs2q^(\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))))?$\xfaV{\n" +
-	"-IFA005 8.2.2 SoftwareImageInformation.minDisk\x12J\b\x03\x10\x01\x1aDKubernetes quantity string instead of a number with an implied unit.R\aminDisk\x12\x96\x02\n" +
-	"\amin_ram\x18\v \x01(\tB\xfc\x01\xe2A\x01\x01\xbaHx\xd8\x01\x01rs2q^(\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))))?$\xfaVz\n" +
+	" \x01(\tB\x8d\x01\xe2A\x01\x01\xbaH\b\xd8\x01\x01r\x03\xf8V\x01\xfaV{\n" +
+	"-IFA005 8.2.2 SoftwareImageInformation.minDisk\x12J\b\x03\x10\x01\x1aDKubernetes quantity string instead of a number with an implied unit.R\aminDisk\x12\xa6\x01\n" +
+	"\amin_ram\x18\v \x01(\tB\x8c\x01\xe2A\x01\x01\xbaH\b\xd8\x01\x01r\x03\xf8V\x01\xfaVz\n" +
 	",IFA005 8.2.2 SoftwareImageInformation.minRam\x12J\b\x03\x10\x01\x1aDKubernetes quantity string instead of a number with an implied unit.R\x06minRam\x12\x93\x01\n" +
 	"\x04size\x18\f \x01(\tB\x7f\xe2A\x01\x03\xfaVx\n" +
 	"*IFA005 8.2.2 SoftwareImageInformation.size\x12J\b\x03\x10\x01\x1aDKubernetes quantity string instead of a number with an implied unit.R\x04size\x12\xb2\x01\n" +
@@ -2482,9 +2483,9 @@ const file_kubenfv_kubevim_image_v1_image_proto_rawDesc = "" +
 	"\n" +
 	"upload_url\x18\x01 \x01(\tB\x04\xe2A\x01\x03R\tuploadUrl\x12'\n" +
 	"\fupload_token\x18\x02 \x01(\tB\x04\xe2A\x01\x03R\vuploadToken\x12N\n" +
-	"\x12upload_expire_time\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampB\x04\xe2A\x01\x03R\x10uploadExpireTime\"\xa0\x01\n" +
-	"\vBlankSource\x12\x90\x01\n" +
-	"\x04size\x18\x01 \x01(\tB|\xe2A\x01\x02\xbaHurs2q^(\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))))?$R\x04size\"\x88\x02\n" +
+	"\x12upload_expire_time\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampB\x04\xe2A\x01\x03R\x10uploadExpireTime\"/\n" +
+	"\vBlankSource\x12 \n" +
+	"\x04size\x18\x01 \x01(\tB\f\xe2A\x01\x02\xbaH\x05r\x03\xf8V\x01R\x04size\"\x88\x02\n" +
 	"\rImageIoSource\x12\x1e\n" +
 	"\x03url\x18\x01 \x01(\tB\f\xe2A\x01\x02\xbaH\x05r\x03\x88\x01\x01R\x03url\x12$\n" +
 	"\adisk_id\x18\x02 \x01(\tB\v\xe2A\x01\x02\xbaH\x04r\x02\x10\x01R\x06diskId\x12D\n" +
@@ -2524,13 +2525,13 @@ const file_kubenfv_kubevim_image_v1_image_proto_rawDesc = "" +
 	"\x12UpdateImageRequest\x127\n" +
 	"\x11software_image_id\x18\x01 \x01(\tB\v\xe2A\x01\x02\xbaH\x04r\x02\x10\x01R\x0fsoftwareImageId\x12I\n" +
 	"\x06update\x18\x02 \x01(\v2%.kubenfv.kubevim.image.v1.ImageUpdateB\n" +
-	"\xe2A\x01\x02\xbaH\x03\xc8\x01\x01R\x06update\"\xe3\a\n" +
+	"\xe2A\x01\x02\xbaH\x03\xc8\x01\x01R\x06update\"\x81\x06\n" +
 	"\vImageUpdate\x12$\n" +
 	"\x04name\x18\x01 \x01(\tB\v\xe2A\x01\x01\xbaH\x04r\x02\x10\x01H\x00R\x04name\x88\x01\x01\x12,\n" +
 	"\bprovider\x18\x02 \x01(\tB\v\xe2A\x01\x01\xbaH\x04r\x02\x10\x01H\x01R\bprovider\x88\x01\x01\x12*\n" +
-	"\aversion\x18\x03 \x01(\tB\v\xe2A\x01\x01\xbaH\x04r\x02\x10\x01H\x02R\aversion\x88\x01\x01\x12\x9c\x01\n" +
-	"\bmin_disk\x18\x04 \x01(\tB|\xe2A\x01\x01\xbaHurs2q^(\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))))?$H\x03R\aminDisk\x88\x01\x01\x12\x9a\x01\n" +
-	"\amin_ram\x18\x05 \x01(\tB|\xe2A\x01\x01\xbaHurs2q^(\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))))?$H\x04R\x06minRam\x88\x01\x01\x12b\n" +
+	"\aversion\x18\x03 \x01(\tB\v\xe2A\x01\x01\xbaH\x04r\x02\x10\x01H\x02R\aversion\x88\x01\x01\x12,\n" +
+	"\bmin_disk\x18\x04 \x01(\tB\f\xe2A\x01\x01\xbaH\x05r\x03\xf8V\x01H\x03R\aminDisk\x88\x01\x01\x12*\n" +
+	"\amin_ram\x18\x05 \x01(\tB\f\xe2A\x01\x01\xbaH\x05r\x03\xf8V\x01H\x04R\x06minRam\x88\x01\x01\x12b\n" +
 	"\ruser_metadata\x18\x06 \x03(\v27.kubenfv.kubevim.image.v1.ImageUpdate.UserMetadataEntryB\x04\xe2A\x01\x01R\fuserMetadata\x12D\n" +
 	"\x1cuser_metadata_keys_to_remove\x18\a \x03(\tB\x04\xe2A\x01\x01R\x18userMetadataKeysToRemove\x12Y\n" +
 	"\n" +

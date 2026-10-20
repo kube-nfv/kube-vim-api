@@ -1,0 +1,460 @@
+syntax = "proto3";
+
+package kubenfv.kubevim.flavour.v1;
+
+import "buf/validate/validate.proto";
+import "google/api/annotations.proto";
+import "google/api/field_behavior.proto";
+import "google/protobuf/empty.proto";
+import "kubenfv/kubevim/common/v1/quantity.proto";
+import "kubenfv/kubevim/common/v1/storage.proto";
+import "kubenfv/kubevim/options/v1/options.proto";
+import "protoc-gen-openapiv3/options/annotations.proto";
+
+option (grpc.gateway.protoc_gen_openapiv3.options.openapiv3_document) = {
+  info: {
+    title: "Kube-VIM compute flavour API"
+    version: "1.0.0"
+  }
+  components: {
+    security_schemes: {
+      key: "oauth2"
+      value: {
+        type: TYPE_OAUTH2
+        description: "OAuth 2.0 client credentials (SOL 013 8.3). The token URL is deployment specific."
+        flows: {
+          client_credentials: {
+            token_url: "https://idp.example.com/oauth2/token"
+            scopes: {
+              key: "flavour:v1:create"
+              value: "Create compute flavours"
+            }
+            scopes: {
+              key: "flavour:v1:query"
+              value: "Query compute flavours"
+            }
+            scopes: {
+              key: "flavour:v1:delete"
+              value: "Delete compute flavours"
+            }
+          }
+        }
+      }
+    }
+  }
+};
+option (kubenfv.kubevim.options.v1.api) = {
+  name: "flavour"
+  version: "1.0.0"
+};
+
+// Compute flavour management.
+service FlavourService {
+  option (kubenfv.kubevim.options.v1.ifa_service) = {ref: "IFA006 7.3.4 Virtualised Compute Flavour Management Interface"};
+
+  // Creates a compute flavour.
+  rpc CreateFlavour(CreateFlavourRequest) returns (Flavour) {
+    option (google.api.http) = {
+      post: "/flavour/v1/flavours"
+      body: "flavour"
+    };
+    option (grpc.gateway.protoc_gen_openapiv3.options.openapiv3_operation) = {
+      security: {
+        schemes: {
+          key: "oauth2"
+          value: {scopes: "flavour:v1:create"}
+        }
+      }
+    };
+    option (kubenfv.kubevim.options.v1.ifa_method) = {ref: "IFA006 7.3.4.2 Create Compute Flavour"};
+  }
+
+  // Returns one compute flavour.
+  rpc GetFlavour(GetFlavourRequest) returns (Flavour) {
+    option (google.api.http) = {get: "/flavour/v1/flavours/{flavour_id}"};
+    option (grpc.gateway.protoc_gen_openapiv3.options.openapiv3_operation) = {
+      security: {
+        schemes: {
+          key: "oauth2"
+          value: {scopes: "flavour:v1:query"}
+        }
+      }
+    };
+    option (kubenfv.kubevim.options.v1.ifa_method) = {
+      ref: "IFA006 7.3.4.3 Query Compute Flavour"
+      departure: {
+        kind: KIND_DEVIATION
+        translates: true
+        rationale: "Query Compute Flavour filtered by flavourId, as a read by identifier."
+      }
+    };
+  }
+
+  // Returns the compute flavours matching a filter.
+  rpc ListFlavours(ListFlavoursRequest) returns (ListFlavoursResponse) {
+    option (google.api.http) = {get: "/flavour/v1/flavours"};
+    option (grpc.gateway.protoc_gen_openapiv3.options.openapiv3_operation) = {
+      security: {
+        schemes: {
+          key: "oauth2"
+          value: {scopes: "flavour:v1:query"}
+        }
+      }
+    };
+    option (kubenfv.kubevim.options.v1.ifa_method) = {ref: "IFA006 7.3.4.3 Query Compute Flavour"};
+  }
+
+  // Deletes a compute flavour. Compute resources already created from it are not affected.
+  rpc DeleteFlavour(DeleteFlavourRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {delete: "/flavour/v1/flavours/{flavour_id}"};
+    option (grpc.gateway.protoc_gen_openapiv3.options.openapiv3_operation) = {
+      security: {
+        schemes: {
+          key: "oauth2"
+          value: {scopes: "flavour:v1:delete"}
+        }
+      }
+    };
+    option (kubenfv.kubevim.options.v1.ifa_method) = {ref: "IFA006 7.3.4.4 Delete Compute Flavour"};
+  }
+}
+
+// Memory, CPU and storage of the compute resources created from it.
+message Flavour {
+  option (kubenfv.kubevim.options.v1.ifa_message) = {
+    ref: "IFA006 8.4.2.2 VirtualComputeFlavour"
+    departure: {
+      kind: KIND_RESTRICTION
+      translates: false
+      rationale: "No virtualNetworkInterface: interfaces are given when the compute resource is created, so one flavour serves any network layout."
+    }
+  };
+
+  // Identifier of the flavour.
+  string flavour_id = 1 [
+    (google.api.field_behavior) = OUTPUT_ONLY,
+    (kubenfv.kubevim.options.v1.ifa_field) = {ref: "IFA006 8.4.2.2 VirtualComputeFlavour.flavourId"}
+  ];
+  // Name of the flavour, chosen by the consumer.
+  string name = 2 [
+    (google.api.field_behavior) = OPTIONAL,
+    (kubenfv.kubevim.options.v1.ifa_field) = {
+      departure: {
+        kind: KIND_EXTENSION
+        translates: true
+        rationale: "Lets consumers find a flavour by name; replaces the v0 attached-name metadata key."
+      }
+    }
+  ];
+  // The flavour is available to all clients; unset means true.
+  optional bool is_public = 3 [
+    (google.api.field_behavior) = OPTIONAL,
+    (kubenfv.kubevim.options.v1.ifa_field) = {
+      ref: "IFA006 8.4.2.2 VirtualComputeFlavour.isPublic"
+      departure: {
+        kind: KIND_RESTRICTION
+        translates: false
+        rationale: "Only public flavours until Kube-VIM has tenancy; false is rejected."
+      }
+    }
+  ];
+  // Acceleration capabilities, as Kubernetes device resource names (e.g. "nvidia.com/GA102GL_A10").
+  repeated string acceleration_capability = 4 [
+    (google.api.field_behavior) = OPTIONAL,
+    (kubenfv.kubevim.options.v1.ifa_field) = {
+      ref: "IFA006 8.4.2.2 VirtualComputeFlavour.accelerationCapability"
+      departure: {
+        kind: KIND_DEVIATION
+        translates: true
+        rationale: "IFA leaves the content unspecified; each entry names a device exposed by a Kubernetes device plugin."
+      }
+    }
+  ];
+  // Virtual memory.
+  VirtualMemoryData virtual_memory = 5 [
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).required = true,
+    (kubenfv.kubevim.options.v1.ifa_field) = {ref: "IFA006 8.4.2.2 VirtualComputeFlavour.virtualMemory"}
+  ];
+  // Virtual CPUs.
+  VirtualCpuData virtual_cpu = 6 [
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).required = true,
+    (kubenfv.kubevim.options.v1.ifa_field) = {ref: "IFA006 8.4.2.2 VirtualComputeFlavour.virtualCpu"}
+  ];
+  // Storage of the compute resource; at most one entry has is_boot set.
+  repeated kubenfv.kubevim.common.v1.VirtualStorageData storage_attributes = 7 [
+    (google.api.field_behavior) = OPTIONAL,
+    (buf.validate.field).cel = {
+      id: "flavour.one_boot_storage"
+      message: "at most one storage attribute can have isBoot set"
+      expression: "this.filter(s, s.is_boot).size() <= 1"
+    },
+    (kubenfv.kubevim.options.v1.ifa_field) = {ref: "IFA006 8.4.2.2 VirtualComputeFlavour.storageAttributes"}
+  ];
+  // Metadata owned by the consumer and never interpreted by the VIM.
+  map<string, string> metadata = 8 [
+    (google.api.field_behavior) = OPTIONAL,
+    (kubenfv.kubevim.options.v1.ifa_field) = {
+      departure: {
+        kind: KIND_EXTENSION
+        translates: true
+        rationale: "IFA flavours carry no metadata; consumers use it to tag flavours."
+      }
+    }
+  ];
+}
+
+// Virtual CPUs of a flavour.
+message VirtualCpuData {
+  option (kubenfv.kubevim.options.v1.ifa_message) = {ref: "IFA006 8.4.2.3 VirtualCpuData"};
+
+  // CPU architecture; the VIM default when unset.
+  CpuArchitecture cpu_architecture = 1 [
+    (google.api.field_behavior) = OPTIONAL,
+    (buf.validate.field).enum.defined_only = true,
+    (kubenfv.kubevim.options.v1.ifa_field) = {
+      ref: "IFA006 8.4.2.3 VirtualCpuData.cpuArchitecture"
+      departure: {
+        kind: KIND_DEVIATION
+        translates: true
+        rationale: "A closed enumeration instead of a free string."
+      }
+    }
+  ];
+  // Number of virtual CPUs.
+  uint32 num_virtual_cpu = 2 [
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).uint32.gt = 0,
+    (kubenfv.kubevim.options.v1.ifa_field) = {ref: "IFA006 8.4.2.3 VirtualCpuData.numVirtualCpu"}
+  ];
+  // Minimum CPU clock rate in MHz.
+  uint32 cpu_clock = 3 [
+    (google.api.field_behavior) = OPTIONAL,
+    (kubenfv.kubevim.options.v1.ifa_field) = {
+      ref: "IFA006 8.4.2.3 VirtualCpuData.cpuClock"
+      departure: {
+        kind: KIND_RESTRICTION
+        translates: false
+        rationale: "KubeVirt cannot guarantee a clock rate; a non-zero value is rejected."
+      }
+    }
+  ];
+  // CPU oversubscription as "<virtual>:<physical>", e.g. "4:1".
+  string virtual_cpu_oversubscription_policy = 4 [
+    (google.api.field_behavior) = OPTIONAL,
+    (buf.validate.field).string.pattern = "^[1-9][0-9]*:[1-9][0-9]*$",
+    (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE,
+    (kubenfv.kubevim.options.v1.ifa_field) = {
+      ref: "IFA006 8.4.2.3 VirtualCpuData.virtualCpuOversubscriptionPolicy"
+      departure: {
+        kind: KIND_RESTRICTION
+        translates: false
+        rationale: "KubeVirt sets the CPU allocation ratio for the whole cluster, not per flavour; a value is rejected."
+      }
+    }
+  ];
+  // CPU pinning.
+  VirtualCpuPinningData virtual_cpu_pinning = 5 [
+    (google.api.field_behavior) = OPTIONAL,
+    (kubenfv.kubevim.options.v1.ifa_field) = {ref: "IFA006 8.4.2.3 VirtualCpuData.virtualCpuPinning"}
+  ];
+  // CPU power state requirements.
+  string power_state_reqs = 6 [
+    (google.api.field_behavior) = OPTIONAL,
+    (kubenfv.kubevim.options.v1.ifa_field) = {
+      ref: "IFA006 8.4.2.3 VirtualCpuData.powerStateReqs"
+      departure: {
+        kind: KIND_RESTRICTION
+        translates: false
+        rationale: "Not supported by KubeVirt; a value is rejected."
+      }
+    }
+  ];
+  // Guest CPU topology; the product of its fields equals num_virtual_cpu.
+  CpuTopology topology = 7 [
+    (google.api.field_behavior) = OPTIONAL,
+    (kubenfv.kubevim.options.v1.ifa_field) = {
+      departure: {
+        kind: KIND_EXTENSION
+        translates: true
+        rationale: "VNFs that license or tune per socket or core need the guest topology."
+      }
+    }
+  ];
+
+  option (buf.validate.message).cel = {
+    id: "virtual_cpu.topology_matches"
+    message: "topology sockets * cores * threads must equal numVirtualCpu"
+    expression: "!has(this.topology) || this.topology.sockets * this.topology.cores * this.topology.threads == this.num_virtual_cpu"
+  };
+}
+
+// CPU architecture.
+// Values may be added as KubeVirt support grows; clients should accept unknown values.
+enum CpuArchitecture {
+  CPU_ARCHITECTURE_UNSPECIFIED = 0;
+  CPU_ARCHITECTURE_X86_64 = 1;
+  CPU_ARCHITECTURE_AARCH64 = 2;
+  CPU_ARCHITECTURE_S390X = 3;
+}
+
+// Guest CPU topology.
+message CpuTopology {
+  uint32 sockets = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).uint32.gt = 0
+  ];
+  uint32 cores = 2 [
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).uint32.gt = 0
+  ];
+  uint32 threads = 3 [
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).uint32.gt = 0
+  ];
+}
+
+// CPU pinning of a flavour.
+message VirtualCpuPinningData {
+  option (kubenfv.kubevim.options.v1.ifa_message) = {ref: "IFA006 8.4.2.4 VirtualCpuPinningData"};
+
+  // Pinning policy.
+  VirtualCpuPinningPolicy virtual_cpu_pinning_policy = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).enum = {
+      defined_only: true
+      not_in: [0]
+    },
+    (kubenfv.kubevim.options.v1.ifa_field) = {ref: "IFA006 8.4.2.4 VirtualCpuPinningData.virtualCpuPinningPolicy"}
+  ];
+  // Rules mapping virtual CPUs to logical CPUs for the static policy.
+  repeated string virtual_cpu_pinning_rules = 2 [
+    (google.api.field_behavior) = OPTIONAL,
+    (kubenfv.kubevim.options.v1.ifa_field) = {
+      ref: "IFA006 8.4.2.4 VirtualCpuPinningData.virtualCpuPinningRules"
+      departure: {
+        kind: KIND_RESTRICTION
+        translates: false
+        rationale: "KubeVirt places dedicated CPUs itself and cannot follow explicit rules; rules are rejected."
+      }
+    }
+  ];
+}
+
+// CPU pinning policy (IFA006 8.4.2.4).
+enum VirtualCpuPinningPolicy {
+  VIRTUAL_CPU_PINNING_POLICY_UNSPECIFIED = 0;
+  // Pinned to logical CPUs as virtual_cpu_pinning_rules define; rejected until rules are supported.
+  VIRTUAL_CPU_PINNING_POLICY_STATIC = 1;
+  // Pinned to dedicated logical CPUs that the VIM chooses (KubeVirt dedicated CPU placement).
+  VIRTUAL_CPU_PINNING_POLICY_DYNAMIC = 2;
+}
+
+// Virtual memory of a flavour.
+message VirtualMemoryData {
+  option (kubenfv.kubevim.options.v1.ifa_message) = {ref: "IFA006 8.4.2.5 VirtualMemoryData"};
+
+  // Amount of memory, in Kubernetes quantity format (e.g. "4Gi").
+  string virtual_mem_size = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).string.(kubenfv.kubevim.common.v1.quantity) = true,
+    (kubenfv.kubevim.options.v1.ifa_field) = {
+      ref: "IFA006 8.4.2.5 VirtualMemoryData.virtualMemSize"
+      departure: {
+        kind: KIND_DEVIATION
+        translates: true
+        rationale: "Kubernetes quantity string instead of a number in MB."
+      }
+    }
+  ];
+  // Memory oversubscription as "<virtual>:<physical>", e.g. "2:1".
+  string virtual_mem_oversubscription_policy = 2 [
+    (google.api.field_behavior) = OPTIONAL,
+    (buf.validate.field).string.pattern = "^[1-9][0-9]*:[1-9][0-9]*$",
+    (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE,
+    (kubenfv.kubevim.options.v1.ifa_field) = {ref: "IFA006 8.4.2.5 VirtualMemoryData.virtualMemOversubscriptionPolicy"}
+  ];
+  // Memory is allocated on the NUMA nodes of the pinned CPUs; needs dynamic pinning and hugepages.
+  optional bool numa_enabled = 3 [
+    (google.api.field_behavior) = OPTIONAL,
+    (kubenfv.kubevim.options.v1.ifa_field) = {ref: "IFA006 8.4.2.5 VirtualMemoryData.numaEnabled"}
+  ];
+  // Hugepage size backing the memory, "2Mi" or "1Gi"; regular pages when unset.
+  string hugepage_size = 4 [
+    (google.api.field_behavior) = OPTIONAL,
+    (buf.validate.field).string = {
+      in: [
+        "2Mi",
+        "1Gi"
+      ]
+    },
+    (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE,
+    (kubenfv.kubevim.options.v1.ifa_field) = {
+      departure: {
+        kind: KIND_EXTENSION
+        translates: true
+        rationale: "Data-plane VNFs need hugepages; IFA has no memory page size."
+      }
+    }
+  ];
+}
+
+message CreateFlavourRequest {
+  // Flavour to create.
+  Flavour flavour = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).required = true,
+    (kubenfv.kubevim.options.v1.ifa_field) = {ref: "IFA006 7.3.4.2.2 CreateComputeFlavourRequest.flavour"}
+  ];
+  // Identifier chosen by the consumer; the VIM assigns one when unset.
+  string flavour_id = 2 [
+    (google.api.field_behavior) = OPTIONAL,
+    (buf.validate.field).string = {pattern: "^[a-z0-9]([-a-z0-9]{0,61}[a-z0-9])?$"},
+    (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE,
+    (kubenfv.kubevim.options.v1.ifa_field) = {ref: "IFA006 8.4.2.2 VirtualComputeFlavour.flavourId"}
+  ];
+  // Client-chosen UUID that makes the request idempotent (AIP-155).
+  string request_id = 3 [
+    (google.api.field_behavior) = OPTIONAL,
+    (buf.validate.field).string.uuid = true,
+    (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE
+  ];
+}
+
+message GetFlavourRequest {
+  // Identifier of the flavour.
+  string flavour_id = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).string.min_len = 1
+  ];
+}
+
+message ListFlavoursRequest {
+  // Attribute-based filter expression (SOL 013 5.2).
+  string filter = 1 [
+    (google.api.field_behavior) = OPTIONAL,
+    (kubenfv.kubevim.options.v1.ifa_field) = {ref: "IFA006 7.3.4.3.2 QueryComputeFlavourRequest.queryComputeFlavourFilter"}
+  ];
+  // Marker of the page to return, from a previous response (SOL 013 5.4).
+  string nextpage_opaque_marker = 2 [
+    json_name = "nextpage_opaque_marker",
+    (google.api.field_behavior) = OPTIONAL
+  ];
+}
+
+message ListFlavoursResponse {
+  // Flavours matching the filter.
+  repeated Flavour flavours = 1 [(kubenfv.kubevim.options.v1.ifa_field) = {ref: "IFA006 7.3.4.3.3 QueryComputeFlavourResponse.flavours"}];
+  // Marker of the next page; empty on the last page (SOL 013 5.4).
+  string nextpage_opaque_marker = 2 [json_name = "nextpage_opaque_marker"];
+}
+
+message DeleteFlavourRequest {
+  // Identifier of the flavour.
+  string flavour_id = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).string.min_len = 1,
+    (kubenfv.kubevim.options.v1.ifa_field) = {ref: "IFA006 7.3.4.4.2 DeleteComputeFlavourRequest.computeFlavourId"}
+  ];
+}
