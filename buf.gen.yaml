@@ -1,0 +1,23 @@
+version: v2
+clean: true
+managed:
+  enabled: true
+  override:
+    - file_option: go_package_prefix
+      value: github.com/kube-nfv/kube-vim-api/pkg/apis
+    - file_option: go_package
+      path: kubenfv/kubevim/options/v1
+      value: github.com/kube-nfv/kube-vim-api/pkg/apis/options/v1;optionsv1
+plugins:
+  - local: protoc-gen-go
+    out: pkg/apis
+    opt: module=github.com/kube-nfv/kube-vim-api/pkg/apis
+  - local: protoc-gen-go-grpc
+    out: pkg/apis
+    opt: module=github.com/kube-nfv/kube-vim-api/pkg/apis
+  - local: protoc-gen-grpc-gateway
+    out: pkg/apis
+    opt: module=github.com/kube-nfv/kube-vim-api/pkg/apis
+  - local: protoc-gen-openapiv3
+    out: bin/openapi-raw
+    opt: disable_default_errors=true

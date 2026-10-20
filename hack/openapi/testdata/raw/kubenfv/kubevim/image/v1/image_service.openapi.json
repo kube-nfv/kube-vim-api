@@ -1,0 +1,165 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "image_service",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/image/v1/images": {
+      "post": {
+        "tags": [
+          "ImageService"
+        ],
+        "summary": "IFA 005 7.2.2 Add Image.",
+        "operationId": "ImageService_CreateImage",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/kubenfv.kubevim.image.v1.Image"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/kubenfv.kubevim.image.v1.Image"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "kubenfv.kubevim.image.v1.HttpSource": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "url"
+        ]
+      },
+      "kubenfv.kubevim.image.v1.Image": {
+        "type": "object",
+        "properties": {
+          "imageId": {
+            "type": "string",
+            "readOnly": true
+          },
+          "name": {
+            "type": "string"
+          },
+          "source": {
+            "$ref": "#/components/schemas/kubenfv.kubevim.image.v1.ImageSource"
+          }
+        },
+        "required": [
+          "name",
+          "source"
+        ]
+      },
+      "kubenfv.kubevim.image.v1.ImageSource": {
+        "type": "object",
+        "properties": {
+          "http": {
+            "$ref": "#/components/schemas/kubenfv.kubevim.image.v1.HttpSource"
+          },
+          "registry": {
+            "$ref": "#/components/schemas/kubenfv.kubevim.image.v1.RegistrySource"
+          },
+          "upload": {
+            "$ref": "#/components/schemas/kubenfv.kubevim.image.v1.UploadSource"
+          }
+        },
+        "oneOf": [
+          {
+            "type": "object",
+            "not": {
+              "anyOf": [
+                {
+                  "required": [
+                    "http"
+                  ]
+                },
+                {
+                  "required": [
+                    "registry"
+                  ]
+                },
+                {
+                  "required": [
+                    "upload"
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "type": "object",
+            "properties": {
+              "http": {
+                "$ref": "#/components/schemas/kubenfv.kubevim.image.v1.HttpSource"
+              }
+            },
+            "required": [
+              "http"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "registry": {
+                "$ref": "#/components/schemas/kubenfv.kubevim.image.v1.RegistrySource"
+              }
+            },
+            "required": [
+              "registry"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "upload": {
+                "$ref": "#/components/schemas/kubenfv.kubevim.image.v1.UploadSource"
+              }
+            },
+            "required": [
+              "upload"
+            ]
+          }
+        ]
+      },
+      "kubenfv.kubevim.image.v1.RegistrySource": {
+        "type": "object",
+        "properties": {
+          "image": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "image"
+        ]
+      },
+      "kubenfv.kubevim.image.v1.UploadSource": {
+        "type": "object"
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "ImageService",
+      "description": "Software image management (IFA 005 7.2)."
+    }
+  ]
+}
