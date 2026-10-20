@@ -27,6 +27,9 @@ managed:
     - file_option: go_package
       path: kubenfv/kubevim/compute/v1
       value: github.com/kube-nfv/kube-vim-api/pkg/apis/compute/v1;computev1
+    - file_option: go_package
+      path: kubenfv/kubevim/storage/v1
+      value: github.com/kube-nfv/kube-vim-api/pkg/apis/storage/v1;storagev1
 plugins:
   - local: protoc-gen-go
     out: pkg/apis

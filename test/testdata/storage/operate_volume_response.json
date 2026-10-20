@@ -1,0 +1,13 @@
+{
+  "storageData": {
+    "storageId": "a7b8c9d0-e1f2-4a3b-8c4d-5e6f7a8b9c0d",
+    "storageData": {
+      "typeOfStorage": "TYPE_OF_STORAGE_VOLUME",
+      "sizeOfStorage": "100Gi"
+    },
+    "operationalState": "OPERATIONAL_STATE_ENABLED"
+  },
+  "storageOperationOutputData": {
+    "snapshotId": "c9d0e1f2-a3b4-4c5d-8e6f-7a8b9c0d1e2f"
+  }
+}

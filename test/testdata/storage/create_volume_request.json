@@ -1,0 +1,10 @@
+{
+  "volume": {
+    "storageName": "router-1-data",
+    "storageData": {
+      "typeOfStorage": "TYPE_OF_STORAGE_VOLUME",
+      "sizeOfStorage": "100Gi"
+    }
+  },
+  "requestId": "b8c9d0e1-f2a3-4b4c-9d5e-6f7a8b9c0d1e"
+}

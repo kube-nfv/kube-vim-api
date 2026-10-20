@@ -2,6 +2,7 @@ syntax = "proto3";
 
 package kubenfv.kubevim.common.v1;
 
+import "buf/validate/validate.proto";
 import "google/api/field_behavior.proto";
 import "kubenfv/kubevim/common/v1/common.proto";
 import "kubenfv/kubevim/common/v1/storage.proto";
@@ -11,7 +12,8 @@ import "kubenfv/kubevim/options/v1/options.proto";
 message Volume {
   option (kubenfv.kubevim.options.v1.ifa_message) = {ref: "IFA006 8.4.7.2 VirtualStorage"};
 
-  // Identifier of the volume: a UUID, the Kubernetes UID of the object behind it.
+  // Identifier of the volume: a UUID, the Kubernetes UID of the object behind it. Ephemeral disks
+  // of a compute resource are not Kubernetes objects and use their disk name instead.
   string storage_id = 1 [
     (google.api.field_behavior) = OUTPUT_ONLY,
     (kubenfv.kubevim.options.v1.ifa_field) = {ref: "IFA006 8.4.7.2 VirtualStorage.storageId"}
@@ -36,8 +38,9 @@ message Volume {
   // Size, type and capabilities of the volume.
   VirtualStorageData storage_data = 4 [
     (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).required = true,
     (kubenfv.kubevim.options.v1.ifa_field) = {
-      ref: "IFA006 8.4.7.2 VirtualStorage.typeOfStorage, sizeOfStorage, rdmaEnabled"
+      ref: "IFA006 8.4.7.2 VirtualStorage.typeOfStorage, sizeOfStorage, rdmaEnabled; 8.4.6.2 VirtualStorageFlavour.storageAttributes"
       departure: {
         kind: KIND_DEVIATION
         translates: true

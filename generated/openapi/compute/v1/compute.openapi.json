@@ -227,7 +227,7 @@
             "description": "Size, type and capabilities of the volume."
           },
           "storageId": {
-            "description": "Identifier of the volume: a UUID, the Kubernetes UID of the object behind it.",
+            "description": "Identifier of the volume: a UUID, the Kubernetes UID of the object behind it. Ephemeral disks\nof a compute resource are not Kubernetes objects and use their disk name instead.",
             "readOnly": true,
             "type": "string"
           },

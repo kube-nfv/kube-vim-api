@@ -1,0 +1,528 @@
+syntax = "proto3";
+
+package kubenfv.kubevim.storage.v1;
+
+import "buf/validate/validate.proto";
+import "google/api/annotations.proto";
+import "google/api/field_behavior.proto";
+import "google/protobuf/empty.proto";
+import "kubenfv/kubevim/common/v1/affinity.proto";
+import "kubenfv/kubevim/common/v1/quantity.proto";
+import "kubenfv/kubevim/common/v1/volume.proto";
+import "kubenfv/kubevim/options/v1/options.proto";
+import "protoc-gen-openapiv3/options/annotations.proto";
+
+option (grpc.gateway.protoc_gen_openapiv3.options.openapiv3_document) = {
+  info: {
+    title: "Kube-VIM virtualised storage API"
+    version: "1.0.0"
+  }
+  components: {
+    security_schemes: {
+      key: "oauth2"
+      value: {
+        type: TYPE_OAUTH2
+        description: "OAuth 2.0 client credentials (SOL 013 8.3). The token URL is deployment specific."
+        flows: {
+          client_credentials: {
+            token_url: "https://idp.example.com/oauth2/token"
+            scopes: {
+              key: "storage:v1:allocate"
+              value: "Allocate volumes"
+            }
+            scopes: {
+              key: "storage:v1:query"
+              value: "Query volumes"
+            }
+            scopes: {
+              key: "storage:v1:update"
+              value: "Update volumes"
+            }
+            scopes: {
+              key: "storage:v1:terminate"
+              value: "Terminate volumes"
+            }
+            scopes: {
+              key: "storage:v1:operate"
+              value: "Snapshot volumes"
+            }
+            scopes: {
+              key: "storage:v1:scale"
+              value: "Resize volumes"
+            }
+            scopes: {
+              key: "storage:v1:migrate"
+              value: "Migrate volumes"
+            }
+          }
+        }
+      }
+    }
+  }
+};
+option (kubenfv.kubevim.options.v1.api) = {
+  name: "storage"
+  version: "1.0.0"
+};
+
+// Virtualised storage resources management: volumes.
+service StorageService {
+  option (kubenfv.kubevim.options.v1.ifa_service) = {ref: "IFA006 7.5.1 Virtualised Storage Resources Management Interface"};
+
+  // Creates a volume.
+  rpc CreateVolume(CreateVolumeRequest) returns (kubenfv.kubevim.common.v1.Volume) {
+    option (google.api.http) = {
+      post: "/storage/v1/volumes"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv3.options.openapiv3_operation) = {
+      security: {
+        schemes: {
+          key: "oauth2"
+          value: {scopes: "storage:v1:allocate"}
+        }
+      }
+    };
+    option (kubenfv.kubevim.options.v1.ifa_method) = {ref: "IFA006 7.5.1.2 Allocate Virtualised Storage Resource"};
+  }
+
+  // Returns one volume.
+  rpc GetVolume(GetVolumeRequest) returns (kubenfv.kubevim.common.v1.Volume) {
+    option (google.api.http) = {get: "/storage/v1/volumes/{storage_id}"};
+    option (grpc.gateway.protoc_gen_openapiv3.options.openapiv3_operation) = {
+      security: {
+        schemes: {
+          key: "oauth2"
+          value: {scopes: "storage:v1:query"}
+        }
+      }
+    };
+    option (kubenfv.kubevim.options.v1.ifa_method) = {
+      ref: "IFA006 7.5.1.3 Query Virtualised Storage Resource"
+      departure: {
+        kind: KIND_DEVIATION
+        translates: true
+        rationale: "Query filtered by storageId, as a read by identifier."
+      }
+    };
+  }
+
+  // Returns the volumes matching a filter.
+  rpc ListVolumes(ListVolumesRequest) returns (ListVolumesResponse) {
+    option (google.api.http) = {get: "/storage/v1/volumes"};
+    option (grpc.gateway.protoc_gen_openapiv3.options.openapiv3_operation) = {
+      security: {
+        schemes: {
+          key: "oauth2"
+          value: {scopes: "storage:v1:query"}
+        }
+      }
+    };
+    option (kubenfv.kubevim.options.v1.ifa_method) = {ref: "IFA006 7.5.1.3 Query Virtualised Storage Resource"};
+  }
+
+  // Updates a volume's name and metadata.
+  rpc UpdateVolume(UpdateVolumeRequest) returns (kubenfv.kubevim.common.v1.Volume) {
+    option (google.api.http) = {
+      patch: "/storage/v1/volumes/{storage_id}"
+      body: "update"
+    };
+    option (grpc.gateway.protoc_gen_openapiv3.options.openapiv3_operation) = {
+      security: {
+        schemes: {
+          key: "oauth2"
+          value: {scopes: "storage:v1:update"}
+        }
+      }
+    };
+    option (kubenfv.kubevim.options.v1.ifa_method) = {
+      ref: "IFA006 7.5.1.4 Update Virtualised Storage Resource"
+      departure: {
+        kind: KIND_DEVIATION
+        translates: true
+        rationale: "Only the changes set in VolumeUpdate apply; size changes go through ScaleVolume."
+      }
+    };
+  }
+
+  // Deletes a volume.
+  rpc DeleteVolume(DeleteVolumeRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {delete: "/storage/v1/volumes/{storage_id}"};
+    option (grpc.gateway.protoc_gen_openapiv3.options.openapiv3_operation) = {
+      security: {
+        schemes: {
+          key: "oauth2"
+          value: {scopes: "storage:v1:terminate"}
+        }
+      }
+    };
+    option (kubenfv.kubevim.options.v1.ifa_method) = {
+      ref: "IFA006 7.5.1.5 Terminate Virtualised Storage Resource"
+      departure: {
+        kind: KIND_DEVIATION
+        translates: true
+        rationale: "One resource per request (the path identifies it) instead of a list of identifiers."
+      }
+    };
+  }
+
+  // Runs a snapshot operation on a volume.
+  rpc OperateVolume(OperateVolumeRequest) returns (OperateVolumeResponse) {
+    option (google.api.http) = {
+      post: "/storage/v1/volumes/{storage_id}/operate"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv3.options.openapiv3_operation) = {
+      security: {
+        schemes: {
+          key: "oauth2"
+          value: {scopes: "storage:v1:operate"}
+        }
+      }
+    };
+    option (kubenfv.kubevim.options.v1.ifa_method) = {ref: "IFA006 7.5.1.6 Operate Virtualised Storage Resource"};
+  }
+
+  // Resizes a volume.
+  rpc ScaleVolume(ScaleVolumeRequest) returns (kubenfv.kubevim.common.v1.Volume) {
+    option (google.api.http) = {
+      post: "/storage/v1/volumes/{storage_id}/scale"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv3.options.openapiv3_operation) = {
+      security: {
+        schemes: {
+          key: "oauth2"
+          value: {scopes: "storage:v1:scale"}
+        }
+      }
+    };
+    option (kubenfv.kubevim.options.v1.ifa_method) = {ref: "IFA006 7.5.1.7 Scale Virtualised Storage Resource"};
+  }
+
+  // Moves a volume to other storage or another host.
+  rpc MigrateVolume(MigrateVolumeRequest) returns (kubenfv.kubevim.common.v1.Volume) {
+    option (google.api.http) = {
+      post: "/storage/v1/volumes/{storage_id}/migrate"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv3.options.openapiv3_operation) = {
+      security: {
+        schemes: {
+          key: "oauth2"
+          value: {scopes: "storage:v1:migrate"}
+        }
+      }
+    };
+    option (kubenfv.kubevim.options.v1.ifa_method) = {ref: "IFA006 7.5.1.8 Migrate Virtualised Storage Resource"};
+  }
+
+  // Creates a storage affinity or anti-affinity group.
+  rpc CreateAffinityGroup(kubenfv.kubevim.common.v1.CreateAffinityGroupRequest) returns (kubenfv.kubevim.common.v1.AffinityGroup) {
+    option (google.api.http) = {
+      post: "/storage/v1/affinityGroups"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv3.options.openapiv3_operation) = {
+      security: {
+        schemes: {
+          key: "oauth2"
+          value: {scopes: "storage:v1:allocate"}
+        }
+      }
+    };
+    option (kubenfv.kubevim.options.v1.ifa_method) = {ref: "IFA006 7.5.1.9 Create Virtualised Storage Resource Affinity Or AntiAffinity Constraints Group"};
+  }
+
+  // Returns one storage affinity group.
+  rpc GetAffinityGroup(kubenfv.kubevim.common.v1.GetAffinityGroupRequest) returns (kubenfv.kubevim.common.v1.AffinityGroup) {
+    option (google.api.http) = {get: "/storage/v1/affinityGroups/{group_id}"};
+    option (grpc.gateway.protoc_gen_openapiv3.options.openapiv3_operation) = {
+      security: {
+        schemes: {
+          key: "oauth2"
+          value: {scopes: "storage:v1:query"}
+        }
+      }
+    };
+    option (kubenfv.kubevim.options.v1.ifa_method) = {
+      departure: {
+        kind: KIND_EXTENSION
+        translates: true
+        rationale: "IFA can create groups but not read them back."
+      }
+    };
+  }
+
+  // Returns the storage affinity groups.
+  rpc ListAffinityGroups(kubenfv.kubevim.common.v1.ListAffinityGroupsRequest) returns (kubenfv.kubevim.common.v1.ListAffinityGroupsResponse) {
+    option (google.api.http) = {get: "/storage/v1/affinityGroups"};
+    option (grpc.gateway.protoc_gen_openapiv3.options.openapiv3_operation) = {
+      security: {
+        schemes: {
+          key: "oauth2"
+          value: {scopes: "storage:v1:query"}
+        }
+      }
+    };
+    option (kubenfv.kubevim.options.v1.ifa_method) = {
+      departure: {
+        kind: KIND_EXTENSION
+        translates: true
+        rationale: "IFA can create groups but not list them."
+      }
+    };
+  }
+
+  // Deletes a storage affinity group.
+  rpc DeleteAffinityGroup(kubenfv.kubevim.common.v1.DeleteAffinityGroupRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {delete: "/storage/v1/affinityGroups/{group_id}"};
+    option (grpc.gateway.protoc_gen_openapiv3.options.openapiv3_operation) = {
+      security: {
+        schemes: {
+          key: "oauth2"
+          value: {scopes: "storage:v1:terminate"}
+        }
+      }
+    };
+    option (kubenfv.kubevim.options.v1.ifa_method) = {
+      departure: {
+        kind: KIND_EXTENSION
+        translates: true
+        rationale: "IFA can create groups but not delete them."
+      }
+    };
+  }
+}
+
+message CreateVolumeRequest {
+  // Volume to create: name, size and type, metadata. Only TYPE_OF_STORAGE_VOLUME,
+  // without is_boot: ephemeral and boot disks belong to a compute resource.
+  kubenfv.kubevim.common.v1.Volume volume = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).required = true,
+    (buf.validate.field).cel = {
+      id: "volume.standalone"
+      message: "a standalone volume must be TYPE_OF_STORAGE_VOLUME without isBoot"
+      expression: "this.storage_data.type_of_storage == 1 && !this.storage_data.is_boot"
+    },
+    (kubenfv.kubevim.options.v1.ifa_field) = {ref: "IFA006 7.5.1.2.2 AllocateStorageRequest.storageData"}
+  ];
+  // Client-chosen UUID that makes the request idempotent (AIP-155).
+  string request_id = 2 [
+    (google.api.field_behavior) = OPTIONAL,
+    (buf.validate.field).string.uuid = true,
+    (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE
+  ];
+  // Resource reservation for this allocation.
+  string reservation_id = 3 [
+    (google.api.field_behavior) = OPTIONAL,
+    (kubenfv.kubevim.options.v1.ifa_field) = {
+      ref: "IFA006 7.5.1.2.2 AllocateStorageRequest.reservationId"
+      departure: {
+        kind: KIND_RESTRICTION
+        translates: false
+        rationale: "Kube-VIM has no reservations yet; a value is rejected."
+      }
+    }
+  ];
+  // Affinity or anti-affinity with other resources; all must be met.
+  repeated kubenfv.kubevim.common.v1.AffinityOrAntiAffinityConstraint affinity_or_anti_affinity_constraints = 4 [
+    (google.api.field_behavior) = OPTIONAL,
+    (kubenfv.kubevim.options.v1.ifa_field) = {ref: "IFA006 7.5.1.2.2 AllocateStorageRequest.affinityOrAntiAffinityConstraints"}
+  ];
+  // Location constraints, e.g. a resource zone.
+  string location_constraints = 5 [
+    (google.api.field_behavior) = OPTIONAL,
+    (kubenfv.kubevim.options.v1.ifa_field) = {
+      ref: "IFA006 7.5.1.2.2 AllocateStorageRequest.locationConstraints"
+      departure: {
+        kind: KIND_RESTRICTION
+        translates: false
+        rationale: "Kube-VIM exposes one VIM per edge instead of zones; a value is rejected."
+      }
+    }
+  ];
+  // Infrastructure resource group of the volume.
+  string resource_group_id = 6 [
+    (google.api.field_behavior) = OPTIONAL,
+    (kubenfv.kubevim.options.v1.ifa_field) = {
+      ref: "IFA006 7.5.1.2.2 AllocateStorageRequest.resourceGroupId"
+      departure: {
+        kind: KIND_RESTRICTION
+        translates: false
+        rationale: "No resource groups until Kube-VIM has tenancy; a value is rejected."
+      }
+    }
+  ];
+}
+
+message GetVolumeRequest {
+  // Identifier of the volume.
+  string storage_id = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).string.uuid = true
+  ];
+}
+
+message ListVolumesRequest {
+  // Attribute-based filter expression (SOL 013 5.2).
+  string filter = 1 [
+    (google.api.field_behavior) = OPTIONAL,
+    (kubenfv.kubevim.options.v1.ifa_field) = {ref: "IFA006 7.5.1.3.2 QueryStorageRequest.storageQueryFilter"}
+  ];
+  // Marker of the page to return, from a previous response (SOL 013 5.4).
+  string nextpage_opaque_marker = 2 [
+    json_name = "nextpage_opaque_marker",
+    (google.api.field_behavior) = OPTIONAL
+  ];
+}
+
+message ListVolumesResponse {
+  // Volumes matching the filter.
+  repeated kubenfv.kubevim.common.v1.Volume volumes = 1 [(kubenfv.kubevim.options.v1.ifa_field) = {ref: "IFA006 7.5.1.3.3 QueryStorageResponse.queryResult"}];
+  // Marker of the next page; empty on the last page (SOL 013 5.4).
+  string nextpage_opaque_marker = 2 [json_name = "nextpage_opaque_marker"];
+}
+
+message UpdateVolumeRequest {
+  // Identifier of the volume.
+  string storage_id = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).string.uuid = true,
+    (kubenfv.kubevim.options.v1.ifa_field) = {ref: "IFA006 7.5.1.4.2 UpdateStorageRequest.storageId"}
+  ];
+  // Changes to apply; fields left unset keep their value.
+  VolumeUpdate update = 2 [
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).required = true
+  ];
+}
+
+// Changes to a volume. Each field that is set replaces the current value.
+message VolumeUpdate {
+  option (kubenfv.kubevim.options.v1.ifa_message) = {
+    ref: "IFA006 7.5.1.4.2 UpdateStorageRequest"
+    departure: {
+      kind: KIND_DEVIATION
+      translates: true
+      rationale: "Name and metadata only; IFA's updateStorageData size change maps to ScaleVolume, and a type change needs a new volume."
+    }
+  };
+
+  optional string storage_name = 1 [
+    (google.api.field_behavior) = OPTIONAL,
+    (buf.validate.field).string.min_len = 1,
+    (kubenfv.kubevim.options.v1.ifa_field) = {
+      departure: {
+        kind: KIND_EXTENSION
+        translates: true
+        rationale: "Renames a volume; IFA has no name update."
+      }
+    }
+  ];
+  // Metadata entries to add or replace.
+  map<string, string> metadata = 2 [
+    (google.api.field_behavior) = OPTIONAL,
+    (kubenfv.kubevim.options.v1.ifa_field) = {ref: "IFA006 7.5.1.4.2 UpdateStorageRequest.metaData"}
+  ];
+  // Metadata keys to remove.
+  repeated string metadata_keys_to_remove = 3 [(google.api.field_behavior) = OPTIONAL];
+}
+
+message DeleteVolumeRequest {
+  // Identifier of the volume.
+  string storage_id = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).string.uuid = true,
+    (kubenfv.kubevim.options.v1.ifa_field) = {ref: "IFA006 7.5.1.5.2 TerminateStorageRequest.storageId"}
+  ];
+}
+
+message OperateVolumeRequest {
+  // Identifier of the volume.
+  string storage_id = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).string.uuid = true,
+    (kubenfv.kubevim.options.v1.ifa_field) = {ref: "IFA006 7.5.1.6.2 OperateStorageRequest.storageId"}
+  ];
+  // Operation to run.
+  StorageOperation storage_operation = 2 [
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).enum = {
+      defined_only: true
+      not_in: [0]
+    },
+    (kubenfv.kubevim.options.v1.ifa_field) = {
+      ref: "IFA006 7.5.1.6.2 OperateStorageRequest.storageOperation"
+      departure: {
+        kind: KIND_DEVIATION
+        translates: true
+        rationale: "A closed enumeration instead of a free string."
+      }
+    }
+  ];
+  // Operation parameters, e.g. "snapshotId" for REVERT_TO_SNAPSHOT and DELETE_SNAPSHOT.
+  map<string, string> storage_operation_input_data = 3 [
+    (google.api.field_behavior) = OPTIONAL,
+    (kubenfv.kubevim.options.v1.ifa_field) = {ref: "IFA006 7.5.1.6.2 OperateStorageRequest.storageOperationInputData"}
+  ];
+}
+
+message OperateVolumeResponse {
+  // Volume after the operation.
+  kubenfv.kubevim.common.v1.Volume storage_data = 1 [(kubenfv.kubevim.options.v1.ifa_field) = {ref: "IFA006 7.5.1.6.3 OperateStorageResponse.storageData"}];
+  // Operation results, e.g. "snapshotId" for CREATE_SNAPSHOT.
+  map<string, string> storage_operation_output_data = 2 [(kubenfv.kubevim.options.v1.ifa_field) = {ref: "IFA006 7.5.1.6.3 OperateStorageResponse.storageOperationOutputData"}];
+}
+
+// Operation on a volume (IFA006 7.5.1.6), realised with CSI volume snapshots.
+// Values may be added as Kubernetes storage support grows; clients should accept unknown values.
+enum StorageOperation {
+  STORAGE_OPERATION_UNSPECIFIED = 0;
+  STORAGE_OPERATION_CREATE_SNAPSHOT = 1;
+  STORAGE_OPERATION_REVERT_TO_SNAPSHOT = 2;
+  STORAGE_OPERATION_DELETE_SNAPSHOT = 3;
+}
+
+message ScaleVolumeRequest {
+  // Identifier of the volume.
+  string storage_id = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).string.uuid = true,
+    (kubenfv.kubevim.options.v1.ifa_field) = {ref: "IFA006 7.5.1.7.2 ScaleStorageRequest.storageId"}
+  ];
+  // New size in Kubernetes quantity format; volumes can only grow (persistent volume claim expansion).
+  string new_size = 2 [
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).string.(kubenfv.kubevim.common.v1.quantity) = true,
+    (kubenfv.kubevim.options.v1.ifa_field) = {
+      ref: "IFA006 7.5.1.7.2 ScaleStorageRequest.newSize"
+      departure: {
+        kind: KIND_DEVIATION
+        translates: true
+        rationale: "Kubernetes quantity string instead of a number; shrinking is rejected because Kubernetes cannot shrink volumes."
+      }
+    }
+  ];
+}
+
+message MigrateVolumeRequest {
+  // Identifier of the volume.
+  string storage_id = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).string.uuid = true,
+    (kubenfv.kubevim.options.v1.ifa_field) = {ref: "IFA006 7.5.1.8.2 MigrateStorageRequest.storageId"}
+  ];
+  // Where to migrate to, e.g. a storage class or a host.
+  string migration_constraint = 2 [
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).string.min_len = 1,
+    (kubenfv.kubevim.options.v1.ifa_field) = {ref: "IFA006 7.5.1.8.2 MigrateStorageRequest.migrationConstraint"}
+  ];
+  // Affinity or anti-affinity the new placement must meet.
+  repeated kubenfv.kubevim.common.v1.AffinityOrAntiAffinityConstraint affinity_or_anti_affinity_constraints = 3 [
+    (google.api.field_behavior) = OPTIONAL,
+    (kubenfv.kubevim.options.v1.ifa_field) = {ref: "IFA006 7.5.1.8.2 MigrateStorageRequest.affinityOrAntiAffinityConstraints"}
+  ];
+}

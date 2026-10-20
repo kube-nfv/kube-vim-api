@@ -7,6 +7,7 @@
 package commonv1
 
 import (
+	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
 	_ "github.com/kube-nfv/kube-vim-api/pkg/apis/options/v1"
 	_ "google.golang.org/genproto/googleapis/api/annotations"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
@@ -26,7 +27,8 @@ const (
 // A virtualised storage resource, e.g. a disk of a compute resource.
 type Volume struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// Identifier of the volume: a UUID, the Kubernetes UID of the object behind it.
+	// Identifier of the volume: a UUID, the Kubernetes UID of the object behind it. Ephemeral disks
+	// of a compute resource are not Kubernetes objects and use their disk name instead.
 	StorageId string `protobuf:"bytes,1,opt,name=storage_id,json=storageId,proto3" json:"storage_id,omitempty"`
 	// Name of the volume.
 	StorageName string `protobuf:"bytes,2,opt,name=storage_name,json=storageName,proto3" json:"storage_name,omitempty"`
@@ -145,7 +147,7 @@ var File_kubenfv_kubevim_common_v1_volume_proto protoreflect.FileDescriptor
 
 const file_kubenfv_kubevim_common_v1_volume_proto_rawDesc = "" +
 	"\n" +
-	"&kubenfv/kubevim/common/v1/volume.proto\x12\x19kubenfv.kubevim.common.v1\x1a\x1fgoogle/api/field_behavior.proto\x1a&kubenfv/kubevim/common/v1/common.proto\x1a'kubenfv/kubevim/common/v1/storage.proto\x1a(kubenfv/kubevim/options/v1/options.proto\"\x96\t\n" +
+	"&kubenfv/kubevim/common/v1/volume.proto\x12\x19kubenfv.kubevim.common.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a&kubenfv/kubevim/common/v1/common.proto\x1a'kubenfv/kubevim/common/v1/storage.proto\x1a(kubenfv/kubevim/options/v1/options.proto\"\xcd\t\n" +
 	"\x06Volume\x12O\n" +
 	"\n" +
 	"storage_id\x18\x01 \x01(\tB0\xe2A\x01\x03\xfaV)\n" +
@@ -154,9 +156,9 @@ const file_kubenfv_kubevim_common_v1_volume_proto_rawDesc = "" +
 	")IFA006 8.4.7.2 VirtualStorage.storageNameR\vstorageName\x12\x86\x01\n" +
 	"\n" +
 	"flavour_id\x18\x03 \x01(\tBg\xe2A\x01\x03\xfaV`\n" +
-	"'IFA006 8.4.7.2 VirtualStorage.flavourId\x125\b\x02\x10\x01\x1a/Kube-VIM has no storage flavours; always empty.R\tflavourId\x12\x8c\x02\n" +
-	"\fstorage_data\x18\x04 \x01(\v2-.kubenfv.kubevim.common.v1.VirtualStorageDataB\xb9\x01\xe2A\x01\x02\xfaV\xb1\x01\n" +
-	"GIFA006 8.4.7.2 VirtualStorage.typeOfStorage, sizeOfStorage, rdmaEnabled\x12f\b\x03\x10\x01\x1a`The type, size and RDMA attributes are grouped as VirtualStorageData, as in allocation requests.R\vstorageData\x12I\n" +
+	"'IFA006 8.4.7.2 VirtualStorage.flavourId\x125\b\x02\x10\x01\x1a/Kube-VIM has no storage flavours; always empty.R\tflavourId\x12\xc3\x02\n" +
+	"\fstorage_data\x18\x04 \x01(\v2-.kubenfv.kubevim.common.v1.VirtualStorageDataB\xf0\x01\xe2A\x01\x02\xbaH\x03\xc8\x01\x01\xfaV\xe2\x01\n" +
+	"xIFA006 8.4.7.2 VirtualStorage.typeOfStorage, sizeOfStorage, rdmaEnabled; 8.4.6.2 VirtualStorageFlavour.storageAttributes\x12f\b\x03\x10\x01\x1a`The type, size and RDMA attributes are grouped as VirtualStorageData, as in allocation requests.R\vstorageData\x12I\n" +
 	"\bowner_id\x18\x05 \x01(\tB.\xe2A\x01\x03\xfaV'\n" +
 	"%IFA006 8.4.7.2 VirtualStorage.ownerIdR\aownerId\x12F\n" +
 	"\azone_id\x18\x06 \x01(\tB-\xe2A\x01\x03\xfaV&\n" +
