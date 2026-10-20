@@ -21,6 +21,9 @@ managed:
     - file_option: go_package
       path: kubenfv/kubevim/flavour/v1
       value: github.com/kube-nfv/kube-vim-api/pkg/apis/flavour/v1;flavourv1
+    - file_option: go_package
+      path: kubenfv/kubevim/network/v1
+      value: github.com/kube-nfv/kube-vim-api/pkg/apis/network/v1;networkv1
 plugins:
   - local: protoc-gen-go
     out: pkg/apis

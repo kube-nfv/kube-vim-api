@@ -227,7 +227,7 @@
             "type": "string"
           },
           "softwareImageId": {
-            "description": "Identifier of the software image.",
+            "description": "Identifier of the software image: a UUID, the Kubernetes UID of the object behind it.",
             "readOnly": true,
             "type": "string"
           },
@@ -917,14 +917,6 @@
         "operationId": "ImageService_CreateImage",
         "parameters": [
           {
-            "description": "Client-chosen UUID that makes the request idempotent (AIP-155).",
-            "in": "query",
-            "name": "requestId",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
             "$ref": "#/components/parameters/Version"
           }
         ],
@@ -932,7 +924,20 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/kubenfv.kubevim.image.v1.Image"
+                "properties": {
+                  "image": {
+                    "$ref": "#/components/schemas/kubenfv.kubevim.image.v1.Image",
+                    "description": "Software image to add."
+                  },
+                  "requestId": {
+                    "description": "Client-chosen UUID that makes the request idempotent (AIP-155).",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "image"
+                ],
+                "type": "object"
               }
             }
           },

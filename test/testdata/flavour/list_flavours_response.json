@@ -1,8 +1,7 @@
 {
   "flavours": [
     {
-      "flavourId": "small",
-      "name": "small",
+            "name": "small",
       "isPublic": true,
       "virtualMemory": {
         "virtualMemSize": "2Gi"

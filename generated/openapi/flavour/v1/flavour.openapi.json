@@ -118,7 +118,7 @@
             "type": "array"
           },
           "flavourId": {
-            "description": "Identifier of the flavour.",
+            "description": "Identifier of the flavour: a UUID, the Kubernetes UID of the object behind it.",
             "readOnly": true,
             "type": "string"
           },
@@ -370,22 +370,6 @@
         "operationId": "FlavourService_CreateFlavour",
         "parameters": [
           {
-            "description": "Identifier chosen by the consumer; the VIM assigns one when unset.",
-            "in": "query",
-            "name": "flavourId",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "Client-chosen UUID that makes the request idempotent (AIP-155).",
-            "in": "query",
-            "name": "requestId",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
             "$ref": "#/components/parameters/Version"
           }
         ],
@@ -393,7 +377,20 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/kubenfv.kubevim.flavour.v1.Flavour"
+                "properties": {
+                  "flavour": {
+                    "$ref": "#/components/schemas/kubenfv.kubevim.flavour.v1.Flavour",
+                    "description": "Flavour to create."
+                  },
+                  "requestId": {
+                    "description": "Client-chosen UUID that makes the request idempotent (AIP-155).",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "flavour"
+                ],
+                "type": "object"
               }
             }
           },

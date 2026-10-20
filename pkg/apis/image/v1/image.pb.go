@@ -385,7 +385,7 @@ func (RegistrySource_PullMethod) EnumDescriptor() ([]byte, []int) {
 // A software image in the image repository managed by the VIM.
 type Image struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// Identifier of the software image.
+	// Identifier of the software image: a UUID, the Kubernetes UID of the object behind it.
 	SoftwareImageId string `protobuf:"bytes,1,opt,name=software_image_id,json=softwareImageId,proto3" json:"software_image_id,omitempty"`
 	// Name of the software image.
 	Name string `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
@@ -2511,9 +2511,9 @@ const file_kubenfv_kubevim_image_v1_image_proto_rawDesc = "" +
 	"\x05image\x18\x01 \x01(\v2\x1f.kubenfv.kubevim.image.v1.ImageB\n" +
 	"\xe2A\x01\x02\xbaH\x03\xc8\x01\x01R\x05image\x12.\n" +
 	"\n" +
-	"request_id\x18\x02 \x01(\tB\x0f\xe2A\x01\x01\xbaH\b\xd8\x01\x01r\x03\xb0\x01\x01R\trequestId\"J\n" +
-	"\x0fGetImageRequest\x127\n" +
-	"\x11software_image_id\x18\x01 \x01(\tB\v\xe2A\x01\x02\xbaH\x04r\x02\x10\x01R\x0fsoftwareImageId\"\xa6\x01\n" +
+	"request_id\x18\x02 \x01(\tB\x0f\xe2A\x01\x01\xbaH\b\xd8\x01\x01r\x03\xb0\x01\x01R\trequestId\"K\n" +
+	"\x0fGetImageRequest\x128\n" +
+	"\x11software_image_id\x18\x01 \x01(\tB\f\xe2A\x01\x02\xbaH\x05r\x03\xb0\x01\x01R\x0fsoftwareImageId\"\xa6\x01\n" +
 	"\x11ListImagesRequest\x12S\n" +
 	"\x06filter\x18\x01 \x01(\tB;\xe2A\x01\x01\xfaV4\n" +
 	"2IFA005 7.2.3.2 QueryImagesRequest.imageQueryFilterR\x06filter\x12<\n" +
@@ -2521,9 +2521,9 @@ const file_kubenfv_kubevim_image_v1_image_proto_rawDesc = "" +
 	"\x12ListImagesResponse\x12y\n" +
 	"\x06images\x18\x01 \x03(\v2\x1f.kubenfv.kubevim.image.v1.ImageB@\xfaV=\n" +
 	";IFA005 7.2.3.3 QueryImagesResponse.softwareImageInformationR\x06images\x126\n" +
-	"\x16nextpage_opaque_marker\x18\x02 \x01(\tR\x16nextpage_opaque_marker\"\x98\x01\n" +
-	"\x12UpdateImageRequest\x127\n" +
-	"\x11software_image_id\x18\x01 \x01(\tB\v\xe2A\x01\x02\xbaH\x04r\x02\x10\x01R\x0fsoftwareImageId\x12I\n" +
+	"\x16nextpage_opaque_marker\x18\x02 \x01(\tR\x16nextpage_opaque_marker\"\x99\x01\n" +
+	"\x12UpdateImageRequest\x128\n" +
+	"\x11software_image_id\x18\x01 \x01(\tB\f\xe2A\x01\x02\xbaH\x05r\x03\xb0\x01\x01R\x0fsoftwareImageId\x12I\n" +
 	"\x06update\x18\x02 \x01(\v2%.kubenfv.kubevim.image.v1.ImageUpdateB\n" +
 	"\xe2A\x01\x02\xbaH\x03\xc8\x01\x01R\x06update\"\x81\x06\n" +
 	"\vImageUpdate\x12$\n" +
@@ -2548,9 +2548,9 @@ const file_kubenfv_kubevim_image_v1_image_proto_rawDesc = "" +
 	"\t_min_diskB\n" +
 	"\n" +
 	"\b_min_ramB\r\n" +
-	"\v_visibility\"M\n" +
-	"\x12DeleteImageRequest\x127\n" +
-	"\x11software_image_id\x18\x01 \x01(\tB\v\xe2A\x01\x02\xbaH\x04r\x02\x10\x01R\x0fsoftwareImageId\"\x19\n" +
+	"\v_visibility\"N\n" +
+	"\x12DeleteImageRequest\x128\n" +
+	"\x11software_image_id\x18\x01 \x01(\tB\f\xe2A\x01\x02\xbaH\x05r\x03\xb0\x01\x01R\x0fsoftwareImageId\"\x19\n" +
 	"\x17ListImageSourcesRequest\"_\n" +
 	"\x18ListImageSourcesResponse\x12C\n" +
 	"\asources\x18\x01 \x03(\x0e2).kubenfv.kubevim.image.v1.ImageSourceTypeR\asources*s\n" +
@@ -2589,13 +2589,13 @@ const file_kubenfv_kubevim_image_v1_image_proto_rawDesc = "" +
 	"\x17IMAGE_SOURCE_TYPE_BLANK\x10\b\x12\x1d\n" +
 	"\x19IMAGE_SOURCE_TYPE_IMAGEIO\x10\t\x12\x1a\n" +
 	"\x16IMAGE_SOURCE_TYPE_VDDK\x10\n" +
-	"2\xa4\f\n" +
-	"\fImageService\x12\xb7\x01\n" +
-	"\vCreateImage\x12,.kubenfv.kubevim.image.v1.CreateImageRequest\x1a\x1f.kubenfv.kubevim.image.v1.Image\"Y\xfaP\x1cJ\x1a\n" +
+	"2\xa0\f\n" +
+	"\fImageService\x12\xb3\x01\n" +
+	"\vCreateImage\x12,.kubenfv.kubevim.image.v1.CreateImageRequest\x1a\x1f.kubenfv.kubevim.image.v1.Image\"U\xfaP\x1cJ\x1a\n" +
 	"\x18\n" +
 	"\x06oauth2\x12\x0e\n" +
 	"\fimage:v1:add\xfaV\x18\n" +
-	"\x16IFA005 7.2.2 Add Image\x82\xd3\xe4\x93\x02\x19:\x05image\"\x10/image/v1/images\x12\xc2\x01\n" +
+	"\x16IFA005 7.2.2 Add Image\x82\xd3\xe4\x93\x02\x15:\x01*\"\x10/image/v1/images\x12\xc2\x01\n" +
 	"\bGetImage\x12).kubenfv.kubevim.image.v1.GetImageRequest\x1a\x1f.kubenfv.kubevim.image.v1.Image\"j\xfaP\x1eJ\x1c\n" +
 	"\x1a\n" +
 	"\x06oauth2\x12\x10\n" +

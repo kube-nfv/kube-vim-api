@@ -50,9 +50,6 @@ func TestFlavourValidation(t *testing.T) {
 				`{"typeOfStorage":"TYPE_OF_STORAGE_VOLUME","sizeOfStorage":"10Gi","isBoot":true},` +
 				`{"typeOfStorage":"TYPE_OF_STORAGE_VOLUME","sizeOfStorage":"10Gi","isBoot":true}]}`),
 		},
-		"flavour id not a DNS label": {
-			json: `{"flavour":{"virtualMemory":{"virtualMemSize":"2Gi"},"virtualCpu":{"numVirtualCpu":1}},"flavourId":"Small_1"}`,
-		},
 	} {
 		t.Run(name, func(t *testing.T) { checkValidation(t, tc.json, &flavourv1.CreateFlavourRequest{}, tc.valid) })
 	}

@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package kubenfv.kubevim.common.v1;
+
+// Operational state of a virtualised resource (IFA006).
+enum OperationalState {
+  OPERATIONAL_STATE_UNSPECIFIED = 0;
+  OPERATIONAL_STATE_ENABLED = 1;
+  OPERATIONAL_STATE_DISABLED = 2;
+}
+
+// IP version of a network or subnet (IFA006 8.4.4.4).
+enum IpVersion {
+  IP_VERSION_UNSPECIFIED = 0;
+  IP_VERSION_IPV4 = 1;
+  IP_VERSION_IPV6 = 2;
+}

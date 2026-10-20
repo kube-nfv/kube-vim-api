@@ -1,0 +1,6 @@
+{
+  "groupId": "d4e5f6a7-b8c9-4d0e-9f1a-2b3c4d5e6f7a",
+  "groupName": "redundant-uplinks",
+  "type": "AFFINITY_TYPE_ANTI_AFFINITY",
+  "scope": "AFFINITY_SCOPE_PHYSICAL_NIC"
+}

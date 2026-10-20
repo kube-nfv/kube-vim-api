@@ -60,7 +60,7 @@ service ImageService {
   rpc CreateImage(CreateImageRequest) returns (Image) {
     option (google.api.http) = {
       post: "/image/v1/images"
-      body: "image"
+      body: "*"
     };
     option (grpc.gateway.protoc_gen_openapiv3.options.openapiv3_operation) = {
       security: {
@@ -171,7 +171,7 @@ service ImageService {
 message Image {
   option (kubenfv.kubevim.options.v1.ifa_message) = {ref: "IFA005 8.2.2 SoftwareImageInformation"};
 
-  // Identifier of the software image.
+  // Identifier of the software image: a UUID, the Kubernetes UID of the object behind it.
   string software_image_id = 1 [
     (google.api.field_behavior) = OUTPUT_ONLY,
     (kubenfv.kubevim.options.v1.ifa_field) = {ref: "IFA005 8.2.2 SoftwareImageInformation.softwareImageId"}
@@ -689,7 +689,7 @@ message GetImageRequest {
   // Identifier of the software image.
   string software_image_id = 1 [
     (google.api.field_behavior) = REQUIRED,
-    (buf.validate.field).string.min_len = 1
+    (buf.validate.field).string.uuid = true
   ];
 }
 
@@ -717,7 +717,7 @@ message UpdateImageRequest {
   // Identifier of the software image.
   string software_image_id = 1 [
     (google.api.field_behavior) = REQUIRED,
-    (buf.validate.field).string.min_len = 1
+    (buf.validate.field).string.uuid = true
   ];
   // Changes to apply; fields left unset keep their value.
   ImageUpdate update = 2 [
@@ -774,7 +774,7 @@ message DeleteImageRequest {
   // Identifier of the software image.
   string software_image_id = 1 [
     (google.api.field_behavior) = REQUIRED,
-    (buf.validate.field).string.min_len = 1
+    (buf.validate.field).string.uuid = true
   ];
 }
 

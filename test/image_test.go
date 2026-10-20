@@ -57,13 +57,16 @@ func TestImageValidation(t *testing.T) {
 			json: readFile(t, "testdata/image/update_image_request.json"), msg: &imagev1.UpdateImageRequest{}, valid: true,
 		},
 		"update nothing": {
-			json: `{"softwareImageId":"img-1","update":{}}`, msg: &imagev1.UpdateImageRequest{}, valid: true,
+			json: `{"softwareImageId":"11111111-2222-4333-8444-555555555555","update":{}}`, msg: &imagev1.UpdateImageRequest{}, valid: true,
 		},
 		"update empty name": {
-			json: `{"softwareImageId":"img-1","update":{"name":""}}`, msg: &imagev1.UpdateImageRequest{},
+			json: `{"softwareImageId":"11111111-2222-4333-8444-555555555555","update":{"name":""}}`, msg: &imagev1.UpdateImageRequest{},
+		},
+		"update id not a uuid": {
+			json: `{"softwareImageId":"img-1","update":{"name":"a"}}`, msg: &imagev1.UpdateImageRequest{},
 		},
 		"update unspecified visibility": {
-			json: `{"softwareImageId":"img-1","update":{"visibility":"VISIBILITY_UNSPECIFIED"}}`, msg: &imagev1.UpdateImageRequest{},
+			json: `{"softwareImageId":"11111111-2222-4333-8444-555555555555","update":{"visibility":"VISIBILITY_UNSPECIFIED"}}`, msg: &imagev1.UpdateImageRequest{},
 		},
 	} {
 		t.Run(name, func(t *testing.T) { checkValidation(t, tc.json, tc.msg, tc.valid) })

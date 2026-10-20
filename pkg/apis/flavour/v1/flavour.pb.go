@@ -136,7 +136,7 @@ func (VirtualCpuPinningPolicy) EnumDescriptor() ([]byte, []int) {
 // Memory, CPU and storage of the compute resources created from it.
 type Flavour struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// Identifier of the flavour.
+	// Identifier of the flavour: a UUID, the Kubernetes UID of the object behind it.
 	FlavourId string `protobuf:"bytes,1,opt,name=flavour_id,json=flavourId,proto3" json:"flavour_id,omitempty"`
 	// Name of the flavour, chosen by the consumer.
 	Name string `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
@@ -535,10 +535,8 @@ type CreateFlavourRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Flavour to create.
 	Flavour *Flavour `protobuf:"bytes,1,opt,name=flavour,proto3" json:"flavour,omitempty"`
-	// Identifier chosen by the consumer; the VIM assigns one when unset.
-	FlavourId string `protobuf:"bytes,2,opt,name=flavour_id,json=flavourId,proto3" json:"flavour_id,omitempty"`
 	// Client-chosen UUID that makes the request idempotent (AIP-155).
-	RequestId     string `protobuf:"bytes,3,opt,name=request_id,json=requestId,proto3" json:"request_id,omitempty"`
+	RequestId     string `protobuf:"bytes,2,opt,name=request_id,json=requestId,proto3" json:"request_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -578,13 +576,6 @@ func (x *CreateFlavourRequest) GetFlavour() *Flavour {
 		return x.Flavour
 	}
 	return nil
-}
-
-func (x *CreateFlavourRequest) GetFlavourId() string {
-	if x != nil {
-		return x.FlavourId
-	}
-	return ""
 }
 
 func (x *CreateFlavourRequest) GetRequestId() string {
@@ -796,11 +787,11 @@ var File_kubenfv_kubevim_flavour_v1_flavour_proto protoreflect.FileDescriptor
 
 const file_kubenfv_kubevim_flavour_v1_flavour_proto_rawDesc = "" +
 	"\n" +
-	"(kubenfv/kubevim/flavour/v1/flavour.proto\x12\x1akubenfv.kubevim.flavour.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a(kubenfv/kubevim/common/v1/quantity.proto\x1a'kubenfv/kubevim/common/v1/storage.proto\x1a(kubenfv/kubevim/options/v1/options.proto\x1a.protoc-gen-openapiv3/options/annotations.proto\"\xcf\f\n" +
-	"\aFlavour\x12V\n" +
+	"(kubenfv/kubevim/flavour/v1/flavour.proto\x12\x1akubenfv.kubevim.flavour.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a(kubenfv/kubevim/common/v1/quantity.proto\x1a'kubenfv/kubevim/common/v1/storage.proto\x1a(kubenfv/kubevim/options/v1/options.proto\x1a.protoc-gen-openapiv3/options/annotations.proto\"\xae\r\n" +
+	"\aFlavour\x12\xb4\x01\n" +
 	"\n" +
-	"flavour_id\x18\x01 \x01(\tB7\xe2A\x01\x03\xfaV0\n" +
-	".IFA006 8.4.2.2 VirtualComputeFlavour.flavourIdR\tflavourId\x12u\n" +
+	"flavour_id\x18\x01 \x01(\tB\x94\x01\xe2A\x01\x03\xfaV\x8c\x01\n" +
+	".IFA006 8.4.2.2 VirtualComputeFlavour.flavourId\x12Z\b\x02\x1aVAlways assigned by the VIM (the Kubernetes UID); IFA also lets the consumer choose it.R\tflavourId\x12u\n" +
 	"\x04name\x18\x02 \x01(\tBa\xe2A\x01\x01\xfaVZ\x12X\b\x01\x10\x01\x1aRLets consumers find a flavour by name; replaces the v0 attached-name metadata key.R\x04name\x12\xa1\x01\n" +
 	"\tis_public\x18\x03 \x01(\bB\x7f\xe2A\x01\x01\xfaVx\n" +
 	"-IFA006 8.4.2.2 VirtualComputeFlavour.isPublic\x12G\b\x02\x1aCOnly public flavours until Kube-VIM has tenancy; false is rejected.H\x00R\bisPublic\x88\x01\x01\x12\xeb\x01\n" +
@@ -857,18 +848,15 @@ const file_kubenfv_kubevim_flavour_v1_flavour_proto_rawDesc = "" +
 	"\rhugepage_size\x18\x04 \x01(\tB]\xe2A\x01\x01\xbaH\x0f\xd8\x01\x01r\n" +
 	"R\x032MiR\x031Gi\xfaVD\x12B\b\x01\x10\x01\x1a<Data-plane VNFs need hugepages; IFA has no memory page size.R\fhugepageSize:%\xfaV\"\n" +
 	" IFA006 8.4.2.5 VirtualMemoryDataB\x0f\n" +
-	"\r_numa_enabled\"\xd2\x02\n" +
+	"\r_numa_enabled\"\xcb\x01\n" +
 	"\x14CreateFlavourRequest\x12\x82\x01\n" +
 	"\aflavour\x18\x01 \x01(\v2#.kubenfv.kubevim.flavour.v1.FlavourBC\xe2A\x01\x02\xbaH\x03\xc8\x01\x01\xfaV6\n" +
-	"4IFA006 7.3.4.2.2 CreateComputeFlavourRequest.flavourR\aflavour\x12\x84\x01\n" +
+	"4IFA006 7.3.4.2.2 CreateComputeFlavourRequest.flavourR\aflavour\x12.\n" +
 	"\n" +
-	"flavour_id\x18\x02 \x01(\tBe\xe2A\x01\x01\xbaH+\xd8\x01\x01r&2$^[a-z0-9]([-a-z0-9]{0,61}[a-z0-9])?$\xfaV0\n" +
-	".IFA006 8.4.2.2 VirtualComputeFlavour.flavourIdR\tflavourId\x12.\n" +
+	"request_id\x18\x02 \x01(\tB\x0f\xe2A\x01\x01\xbaH\b\xd8\x01\x01r\x03\xb0\x01\x01R\trequestId\"@\n" +
+	"\x11GetFlavourRequest\x12+\n" +
 	"\n" +
-	"request_id\x18\x03 \x01(\tB\x0f\xe2A\x01\x01\xbaH\b\xd8\x01\x01r\x03\xb0\x01\x01R\trequestId\"?\n" +
-	"\x11GetFlavourRequest\x12*\n" +
-	"\n" +
-	"flavour_id\x18\x01 \x01(\tB\v\xe2A\x01\x02\xbaH\x04r\x02\x10\x01R\tflavourId\"\xbb\x01\n" +
+	"flavour_id\x18\x01 \x01(\tB\f\xe2A\x01\x02\xbaH\x05r\x03\xb0\x01\x01R\tflavourId\"\xbb\x01\n" +
 	"\x13ListFlavoursRequest\x12f\n" +
 	"\x06filter\x18\x01 \x01(\tBN\xe2A\x01\x01\xfaVG\n" +
 	"EIFA006 7.3.4.3.2 QueryComputeFlavourRequest.queryComputeFlavourFilterR\x06filter\x12<\n" +
@@ -876,10 +864,10 @@ const file_kubenfv_kubevim_flavour_v1_flavour_proto_rawDesc = "" +
 	"\x14ListFlavoursResponse\x12{\n" +
 	"\bflavours\x18\x01 \x03(\v2#.kubenfv.kubevim.flavour.v1.FlavourB:\xfaV7\n" +
 	"5IFA006 7.3.4.3.3 QueryComputeFlavourResponse.flavoursR\bflavours\x126\n" +
-	"\x16nextpage_opaque_marker\x18\x02 \x01(\tR\x16nextpage_opaque_marker\"\x84\x01\n" +
-	"\x14DeleteFlavourRequest\x12l\n" +
+	"\x16nextpage_opaque_marker\x18\x02 \x01(\tR\x16nextpage_opaque_marker\"\x85\x01\n" +
+	"\x14DeleteFlavourRequest\x12m\n" +
 	"\n" +
-	"flavour_id\x18\x01 \x01(\tBM\xe2A\x01\x02\xbaH\x04r\x02\x10\x01\xfaV?\n" +
+	"flavour_id\x18\x01 \x01(\tBN\xe2A\x01\x02\xbaH\x05r\x03\xb0\x01\x01\xfaV?\n" +
 	"=IFA006 7.3.4.4.2 DeleteComputeFlavourRequest.computeFlavourIdR\tflavourId*\x8a\x01\n" +
 	"\x0fCpuArchitecture\x12 \n" +
 	"\x1cCPU_ARCHITECTURE_UNSPECIFIED\x10\x00\x12\x1b\n" +
@@ -889,13 +877,13 @@ const file_kubenfv_kubevim_flavour_v1_flavour_proto_rawDesc = "" +
 	"\x17VirtualCpuPinningPolicy\x12*\n" +
 	"&VIRTUAL_CPU_PINNING_POLICY_UNSPECIFIED\x10\x00\x12%\n" +
 	"!VIRTUAL_CPU_PINNING_POLICY_STATIC\x10\x01\x12&\n" +
-	"\"VIRTUAL_CPU_PINNING_POLICY_DYNAMIC\x10\x022\x8d\b\n" +
-	"\x0eFlavourService\x12\xdb\x01\n" +
-	"\rCreateFlavour\x120.kubenfv.kubevim.flavour.v1.CreateFlavourRequest\x1a#.kubenfv.kubevim.flavour.v1.Flavour\"s\xfaP!J\x1f\n" +
+	"\"VIRTUAL_CPU_PINNING_POLICY_DYNAMIC\x10\x022\x87\b\n" +
+	"\x0eFlavourService\x12\xd5\x01\n" +
+	"\rCreateFlavour\x120.kubenfv.kubevim.flavour.v1.CreateFlavourRequest\x1a#.kubenfv.kubevim.flavour.v1.Flavour\"m\xfaP!J\x1f\n" +
 	"\x1d\n" +
 	"\x06oauth2\x12\x13\n" +
 	"\x11flavour:v1:create\xfaV'\n" +
-	"%IFA006 7.3.4.2 Create Compute Flavour\x82\xd3\xe4\x93\x02\x1f:\aflavour\"\x14/flavour/v1/flavours\x12\xa5\x02\n" +
+	"%IFA006 7.3.4.2 Create Compute Flavour\x82\xd3\xe4\x93\x02\x19:\x01*\"\x14/flavour/v1/flavours\x12\xa5\x02\n" +
 	"\n" +
 	"GetFlavour\x12-.kubenfv.kubevim.flavour.v1.GetFlavourRequest\x1a#.kubenfv.kubevim.flavour.v1.Flavour\"\xc2\x01\xfaP J\x1e\n" +
 	"\x1c\n" +

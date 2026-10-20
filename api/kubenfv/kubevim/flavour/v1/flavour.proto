@@ -56,7 +56,7 @@ service FlavourService {
   rpc CreateFlavour(CreateFlavourRequest) returns (Flavour) {
     option (google.api.http) = {
       post: "/flavour/v1/flavours"
-      body: "flavour"
+      body: "*"
     };
     option (grpc.gateway.protoc_gen_openapiv3.options.openapiv3_operation) = {
       security: {
@@ -130,10 +130,17 @@ message Flavour {
     }
   };
 
-  // Identifier of the flavour.
+  // Identifier of the flavour: a UUID, the Kubernetes UID of the object behind it.
   string flavour_id = 1 [
     (google.api.field_behavior) = OUTPUT_ONLY,
-    (kubenfv.kubevim.options.v1.ifa_field) = {ref: "IFA006 8.4.2.2 VirtualComputeFlavour.flavourId"}
+    (kubenfv.kubevim.options.v1.ifa_field) = {
+      ref: "IFA006 8.4.2.2 VirtualComputeFlavour.flavourId"
+      departure: {
+        kind: KIND_RESTRICTION
+        translates: false
+        rationale: "Always assigned by the VIM (the Kubernetes UID); IFA also lets the consumer choose it."
+      }
+    }
   ];
   // Name of the flavour, chosen by the consumer.
   string name = 2 [
@@ -407,15 +414,8 @@ message CreateFlavourRequest {
     (buf.validate.field).required = true,
     (kubenfv.kubevim.options.v1.ifa_field) = {ref: "IFA006 7.3.4.2.2 CreateComputeFlavourRequest.flavour"}
   ];
-  // Identifier chosen by the consumer; the VIM assigns one when unset.
-  string flavour_id = 2 [
-    (google.api.field_behavior) = OPTIONAL,
-    (buf.validate.field).string = {pattern: "^[a-z0-9]([-a-z0-9]{0,61}[a-z0-9])?$"},
-    (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE,
-    (kubenfv.kubevim.options.v1.ifa_field) = {ref: "IFA006 8.4.2.2 VirtualComputeFlavour.flavourId"}
-  ];
   // Client-chosen UUID that makes the request idempotent (AIP-155).
-  string request_id = 3 [
+  string request_id = 2 [
     (google.api.field_behavior) = OPTIONAL,
     (buf.validate.field).string.uuid = true,
     (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE
@@ -426,7 +426,7 @@ message GetFlavourRequest {
   // Identifier of the flavour.
   string flavour_id = 1 [
     (google.api.field_behavior) = REQUIRED,
-    (buf.validate.field).string.min_len = 1
+    (buf.validate.field).string.uuid = true
   ];
 }
 
@@ -454,7 +454,7 @@ message DeleteFlavourRequest {
   // Identifier of the flavour.
   string flavour_id = 1 [
     (google.api.field_behavior) = REQUIRED,
-    (buf.validate.field).string.min_len = 1,
+    (buf.validate.field).string.uuid = true,
     (kubenfv.kubevim.options.v1.ifa_field) = {ref: "IFA006 7.3.4.4.2 DeleteComputeFlavourRequest.computeFlavourId"}
   ];
 }

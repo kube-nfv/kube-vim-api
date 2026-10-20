@@ -60,4 +60,7 @@ func checkValidation(t *testing.T, data string, msg proto.Message, valid bool) {
 	if !valid && err == nil {
 		t.Error("want a validation error, got none")
 	}
+	if !valid && err != nil {
+		t.Logf("rejected: %v", err)
+	}
 }
