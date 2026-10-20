@@ -1,0 +1,13 @@
+{
+  "softwareImageId": "img-0b3f",
+  "update": {
+    "name": "ubuntu-24.04-lts",
+    "userMetadata": {
+      "tier": "gold"
+    },
+    "userMetadataKeysToRemove": [
+      "osm.etsi.org/vnfd"
+    ],
+    "visibility": "VISIBILITY_PRIVATE"
+  }
+}

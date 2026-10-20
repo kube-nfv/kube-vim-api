@@ -1,0 +1,29 @@
+{
+  "softwareImageId": "img-0b3f",
+  "name": "ubuntu-24.04",
+  "provider": "Canonical",
+  "version": "24.04",
+  "checksum": {
+    "algorithm": "SHA-256",
+    "hash": "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08"
+  },
+  "containerFormat": "CONTAINER_FORMAT_BARE",
+  "diskFormat": "DISK_FORMAT_QCOW2",
+  "createdAt": "2026-10-20T10:00:00Z",
+  "updatedAt": "2026-10-20T10:05:00Z",
+  "minDisk": "10Gi",
+  "minRam": "2Gi",
+  "size": "3584Mi",
+  "status": "IMAGE_STATUS_AVAILABLE",
+  "userMetadata": {
+    "osm.etsi.org/vnfd": "ubuntu-vnf"
+  },
+  "visibility": "VISIBILITY_PUBLIC",
+  "source": {
+    "http": {
+      "url": "https://cloud-images.ubuntu.com/noble/current/noble-server-cloudimg-amd64.img",
+      "credentialsRef": "ubuntu-mirror"
+    }
+  },
+  "progress": 100
+}

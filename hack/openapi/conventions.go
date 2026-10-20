@@ -85,8 +85,10 @@ func problemDetailsSchema() map[string]any {
 }
 
 // rewriteOneofs replaces protoc-gen-openapiv3's guarded oneof encoding, which
-// makes generated clients reject valid input, with a oneOf of named variants
-// that each hold exactly one member.
+// makes generated clients reject valid input. A message that is only a oneof
+// becomes a oneOf of named variants that each hold exactly one member; a oneof
+// among other fields stays as optional properties, with the exclusivity in the
+// description and enforced by the server.
 func rewriteOneofs(doc map[string]any) error {
 	schemas := child(child(doc, "components"), "schemas")
 	for _, name := range sortedKeys(schemas) {
@@ -99,13 +101,25 @@ func rewriteOneofs(doc map[string]any) error {
 		if guard, _ := alts[0].(map[string]any); guard["not"] == nil {
 			continue
 		}
-		var variants []any
+		var members []string
 		for _, alt := range alts[1:] {
 			req, _ := alt.(map[string]any)["required"].([]any)
 			if len(req) != 1 {
 				return fmt.Errorf("schema %s: unexpected oneof alternative %v", name, alt)
 			}
-			member := req[0].(string)
+			members = append(members, req[0].(string))
+		}
+		if len(props) > len(members) {
+			delete(s, "oneOf")
+			note := "Only one of " + strings.Join(members, ", ") + " may be set."
+			if d, ok := s["description"].(string); ok && d != "" {
+				note = d + " " + note
+			}
+			s["description"] = note
+			continue
+		}
+		var variants []any
+		for _, member := range members {
 			variant := name + strings.ToUpper(member[:1]) + member[1:]
 			if _, taken := schemas[variant]; taken {
 				return fmt.Errorf("schema %s: variant name %s already used", name, variant)

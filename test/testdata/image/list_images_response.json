@@ -1,0 +1,20 @@
+{
+  "images": [
+    {
+      "softwareImageId": "img-7c21",
+      "name": "router",
+      "provider": "Retelith",
+      "version": "2.1.0",
+      "status": "IMAGE_STATUS_IMPORTING",
+      "source": {
+        "registry": {
+          "url": "docker://registry.example.com/images/router:2.1.0",
+          "pullMethod": "PULL_METHOD_NODE",
+          "credentialsRef": "corp-registry"
+        }
+      },
+      "progress": 42
+    }
+  ],
+  "nextpage_opaque_marker": "c2Vjb25kLXBhZ2U"
+}

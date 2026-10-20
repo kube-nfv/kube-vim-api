@@ -12,7 +12,9 @@ go run ./hack/openapi -in bin/openapi-raw -out generated/openapi [-version 1.0.0
    - `Create*` answers 201 with a `Location` header.
    - `Delete*` answers 204 with no body.
    - Every operation gets a `default` error response of type `application/problem+json` (`ProblemDetails`, SOL 013 clause 6) and the `Version` request and response header (clause 9.4).
-2. **`oneof` as named variants.** The generator encodes a proto `oneof` with a "none set" guard that makes generated clients reject valid input. Each `oneof` becomes a `oneOf` of single-member variants (`ImageSourceHttp`, `ImageSourceRegistry`, ...) with `additionalProperties: false`, so clients accept exactly one member.
+2. **`oneof` without the guard.** The generator encodes a proto `oneof` with a "none set" guard that makes generated clients reject valid input.
+   - A message that is only a `oneof` (`ImageSource`) becomes a `oneOf` of single-member variants (`ImageSourceHttp`, `ImageSourceRegistry`, ...) with `additionalProperties: false`, so clients accept exactly one member.
+   - A `oneof` among other fields (`HttpSource` credentials next to `url`) stays as optional properties; the description says only one may be set, and the server enforces it.
 3. **Client bundle.** One document per API is kept as published. All of them are also merged into `kubevim.openapi.json`, with package prefixes stripped from schema names (`kubenfv.kubevim.compute.v1.Compute` becomes `Compute`) and service prefixes from operation ids (`ComputeService_CreateCompute` becomes `CreateCompute`). The Python client is generated from the bundle.
 
 Security schemes and scopes are not added here; they come from the `openapiv3_document` and `openapiv3_operation` annotations in the protos.
@@ -21,7 +23,7 @@ The schema only describes the REST behaviour. The kube-vim gateway is what retur
 
 ## Tests
 
-`go test ./hack/...` runs the tool on `testdata/raw`, real `protoc-gen-openapiv3` v2.32.0 output for draft compute and image APIs, and checks each rule above, the bundle and deterministic output.
+`go test ./hack/...` runs the tool on `testdata/raw`, real `protoc-gen-openapiv3` v2.32.0 output for a draft compute API and the image API, and checks each rule above, the bundle and deterministic output.
 
 ## When to change it
 

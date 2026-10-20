@@ -1,0 +1,7 @@
+{
+  "sources": [
+    "IMAGE_SOURCE_TYPE_HTTP",
+    "IMAGE_SOURCE_TYPE_REGISTRY",
+    "IMAGE_SOURCE_TYPE_UPLOAD"
+  ]
+}

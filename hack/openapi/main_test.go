@@ -8,8 +8,9 @@ import (
 	"testing"
 )
 
-// testdata/raw holds protoc-gen-openapiv3 v2.32.0 output for draft compute and
-// image APIs: AIP methods, a Delete returning Empty, a oneof and OAuth scopes.
+// testdata/raw holds protoc-gen-openapiv3 v2.32.0 output: a draft compute API
+// (AIP methods, a Delete returning Empty, OAuth scopes) and the image API
+// (a message that is only a oneof, and oneofs among other fields).
 
 func process(t *testing.T) string {
 	t.Helper()
@@ -76,7 +77,7 @@ func TestConventions(t *testing.T) {
 }
 
 func TestOneofVariants(t *testing.T) {
-	doc := load(t, filepath.Join(process(t), "image/v1/image_service.openapi.json"))
+	doc := load(t, filepath.Join(process(t), "image/v1/image.openapi.json"))
 	src := get(t, doc, "components", "schemas", "kubenfv.kubevim.image.v1.ImageSource").(map[string]any)
 	if _, ok := src["properties"]; ok {
 		t.Error("ImageSource keeps top-level properties")
@@ -85,15 +86,30 @@ func TestOneofVariants(t *testing.T) {
 	for _, v := range src["oneOf"].([]any) {
 		refs = append(refs, v.(map[string]any)["$ref"].(string))
 	}
-	want := "#/components/schemas/kubenfv.kubevim.image.v1.ImageSourceHttp," +
-		"#/components/schemas/kubenfv.kubevim.image.v1.ImageSourceRegistry," +
-		"#/components/schemas/kubenfv.kubevim.image.v1.ImageSourceUpload"
-	if got := strings.Join(refs, ","); got != want {
-		t.Errorf("oneOf = %s, want %s", got, want)
+	var want []string
+	for _, m := range []string{"Http", "S3", "Gcs", "Registry", "Pvc", "Snapshot", "Upload", "Blank", "Imageio", "Vddk"} {
+		want = append(want, "#/components/schemas/kubenfv.kubevim.image.v1.ImageSource"+m)
+	}
+	if got := strings.Join(refs, ","); got != strings.Join(want, ",") {
+		t.Errorf("oneOf = %s, want %s", got, strings.Join(want, ","))
 	}
 	v := get(t, doc, "components", "schemas", "kubenfv.kubevim.image.v1.ImageSourceHttp").(map[string]any)
 	if v["additionalProperties"] != false || v["required"].([]any)[0] != "http" {
 		t.Errorf("variant ImageSourceHttp = %v", v)
+	}
+}
+
+func TestOneofAmongFields(t *testing.T) {
+	doc := load(t, filepath.Join(process(t), "image/v1/image.openapi.json"))
+	s := get(t, doc, "components", "schemas", "kubenfv.kubevim.image.v1.HttpSource").(map[string]any)
+	if _, ok := s["oneOf"]; ok {
+		t.Error("HttpSource keeps the oneOf guard")
+	}
+	for _, p := range []string{"url", "caBundle", "basicAuth", "credentialsRef"} {
+		get(t, s, "properties", p)
+	}
+	if d := s["description"].(string); !strings.HasSuffix(d, "Only one of basicAuth, credentialsRef may be set.") {
+		t.Errorf("description = %q", d)
 	}
 }
 
@@ -124,7 +140,7 @@ func TestBundle(t *testing.T) {
 
 func TestDeterministic(t *testing.T) {
 	a, b := process(t), process(t)
-	for _, rel := range []string{"compute/v1/compute_service.openapi.json", "image/v1/image_service.openapi.json", bundleFile} {
+	for _, rel := range []string{"compute/v1/compute_service.openapi.json", "image/v1/image.openapi.json", bundleFile} {
 		x, _ := os.ReadFile(filepath.Join(a, rel))
 		y, _ := os.ReadFile(filepath.Join(b, rel))
 		if !bytes.Equal(x, y) {

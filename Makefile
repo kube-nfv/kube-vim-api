@@ -25,7 +25,7 @@ help: ## Display available commands.
 generate: buf protoc-gen-go protoc-gen-go-grpc protoc-gen-grpc-gateway protoc-gen-openapiv3 ## Generate Go code and OpenAPI schemas from the protos.
 	PATH="$(LOCALBIN):$$PATH" $(BUF) generate
 	rm -rf $(OPENAPI_DIR)
-	go run ./hack/openapi -in $(OPENAPI_RAW_DIR) -out $(OPENAPI_DIR)
+	GOWORK=off go run ./hack/openapi -in $(OPENAPI_RAW_DIR) -out $(OPENAPI_DIR)
 
 .PHONY: lint
 lint: buf ## Lint and format-check the protos.
@@ -34,7 +34,7 @@ lint: buf ## Lint and format-check the protos.
 
 .PHONY: test
 test: ## Run Go tests.
-	go test ./...
+	GOWORK=off go test ./...
 
 .PHONY: clean
 clean: ## Remove generated code and local tools.
