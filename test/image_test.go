@@ -19,6 +19,7 @@ func TestImageGoldenJSON(t *testing.T) {
 }
 
 func TestImageValidation(t *testing.T) {
+	const id = `"imageId":"11111111-2222-4333-8444-555555555555"`
 	for name, tc := range map[string]struct {
 		json  string
 		msg   golden
@@ -27,46 +28,49 @@ func TestImageValidation(t *testing.T) {
 		"create golden": {
 			json: readFile(t, "testdata/image/create_image_request.json"), msg: &imagev1.CreateImageRequest{}, valid: true,
 		},
+		"name and source only": {
+			json: `{"image":{"name":"a","source":{"upload":{}}}}`, msg: &imagev1.CreateImageRequest{}, valid: true,
+		},
 		"http with inline credentials": {
-			json:  `{"image":{"name":"a","provider":"p","version":"1","source":{"http":{"url":"https://example.com/a.img","basicAuth":{"username":"u","password":"s"}}}}}`,
+			json:  `{"image":{"name":"a","source":{"http":{"url":"https://example.com/a.img","basicAuth":{"username":"u","password":"s"}}}}}`,
 			msg:   &imagev1.CreateImageRequest{},
 			valid: true,
 		},
 		"no source": {
-			json: `{"image":{"name":"a","provider":"p","version":"1"}}`, msg: &imagev1.CreateImageRequest{},
+			json: `{"image":{"name":"a"}}`, msg: &imagev1.CreateImageRequest{},
 		},
 		"empty source": {
-			json: `{"image":{"name":"a","provider":"p","version":"1","source":{}}}`, msg: &imagev1.CreateImageRequest{},
+			json: `{"image":{"name":"a","source":{}}}`, msg: &imagev1.CreateImageRequest{},
 		},
 		"missing name": {
-			json: `{"image":{"provider":"p","version":"1","source":{"upload":{}}}}`, msg: &imagev1.CreateImageRequest{},
+			json: `{"image":{"source":{"upload":{}}}}`, msg: &imagev1.CreateImageRequest{},
 		},
 		"min disk not a quantity": {
-			json: `{"image":{"name":"a","provider":"p","version":"1","minDisk":"10GB","source":{"upload":{}}}}`, msg: &imagev1.CreateImageRequest{},
+			json: `{"image":{"name":"a","minDisk":"10GB","source":{"upload":{}}}}`, msg: &imagev1.CreateImageRequest{},
+		},
+		"blank size zero": {
+			json: `{"image":{"name":"a","source":{"blank":{"size":"0Gi"}}}}`, msg: &imagev1.CreateImageRequest{},
 		},
 		"request id not a uuid": {
-			json: `{"image":{"name":"a","provider":"p","version":"1","source":{"upload":{}}},"requestId":"abc"}`, msg: &imagev1.CreateImageRequest{},
+			json: `{"image":{"name":"a","source":{"upload":{}}},"requestId":"abc"}`, msg: &imagev1.CreateImageRequest{},
 		},
 		"http url not a uri": {
-			json: `{"image":{"name":"a","provider":"p","version":"1","source":{"http":{"url":"not a url"}}}}`, msg: &imagev1.CreateImageRequest{},
+			json: `{"image":{"name":"a","source":{"http":{"url":"not a url"}}}}`, msg: &imagev1.CreateImageRequest{},
 		},
-		"imageio without credentials": {
-			json: `{"image":{"name":"a","provider":"p","version":"1","source":{"imageio":{"url":"https://ovirt.example.com","diskId":"d1"}}}}`, msg: &imagev1.CreateImageRequest{},
+		"unknown firmware": {
+			json: `{"image":{"name":"a","source":{"upload":{}},"firmware":7}}`, msg: &imagev1.CreateImageRequest{},
 		},
 		"update golden": {
 			json: readFile(t, "testdata/image/update_image_request.json"), msg: &imagev1.UpdateImageRequest{}, valid: true,
 		},
 		"update nothing": {
-			json: `{"softwareImageId":"11111111-2222-4333-8444-555555555555","update":{}}`, msg: &imagev1.UpdateImageRequest{}, valid: true,
+			json: `{` + id + `,"update":{}}`, msg: &imagev1.UpdateImageRequest{}, valid: true,
 		},
 		"update empty name": {
-			json: `{"softwareImageId":"11111111-2222-4333-8444-555555555555","update":{"name":""}}`, msg: &imagev1.UpdateImageRequest{},
+			json: `{` + id + `,"update":{"name":""}}`, msg: &imagev1.UpdateImageRequest{},
 		},
 		"update id not a uuid": {
-			json: `{"softwareImageId":"img-1","update":{"name":"a"}}`, msg: &imagev1.UpdateImageRequest{},
-		},
-		"update unspecified visibility": {
-			json: `{"softwareImageId":"11111111-2222-4333-8444-555555555555","update":{"visibility":"VISIBILITY_UNSPECIFIED"}}`, msg: &imagev1.UpdateImageRequest{},
+			json: `{"imageId":"img-1","update":{"name":"a"}}`, msg: &imagev1.UpdateImageRequest{},
 		},
 	} {
 		t.Run(name, func(t *testing.T) { checkValidation(t, tc.json, tc.msg, tc.valid) })

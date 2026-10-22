@@ -1,13 +1,9 @@
 {
-  "softwareImageId": "5f0c9d2e-3a4b-4c1d-9e8f-0a1b2c3d4e5f",
+  "imageId": "5f0c9d2e-3a4b-4c1d-9e8f-0a1b2c3d4e5f",
   "update": {
     "name": "ubuntu-24.04-lts",
-    "userMetadata": {
+    "metadata": {
       "tier": "gold"
-    },
-    "userMetadataKeysToRemove": [
-      "osm.etsi.org/vnfd"
-    ],
-    "visibility": "VISIBILITY_PRIVATE"
+    }
   }
 }

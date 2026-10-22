@@ -68,13 +68,13 @@ func request_ImageService_GetImage_0(ctx context.Context, marshaler runtime.Mars
 		metadata runtime.ServerMetadata
 		err      error
 	)
-	val, ok := pathParams["software_image_id"]
+	val, ok := pathParams["image_id"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "software_image_id")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "image_id")
 	}
-	protoReq.SoftwareImageId, err = runtime.String(val)
+	protoReq.ImageId, err = runtime.String(val)
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "software_image_id", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "image_id", err)
 	}
 	if req.Body != nil {
 		_, _ = io.Copy(io.Discard, req.Body)
@@ -89,13 +89,13 @@ func local_request_ImageService_GetImage_0(ctx context.Context, marshaler runtim
 		metadata runtime.ServerMetadata
 		err      error
 	)
-	val, ok := pathParams["software_image_id"]
+	val, ok := pathParams["image_id"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "software_image_id")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "image_id")
 	}
-	protoReq.SoftwareImageId, err = runtime.String(val)
+	protoReq.ImageId, err = runtime.String(val)
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "software_image_id", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "image_id", err)
 	}
 	msg, err := server.GetImage(ctx, &protoReq)
 	return msg, metadata, err
@@ -145,13 +145,13 @@ func request_ImageService_UpdateImage_0(ctx context.Context, marshaler runtime.M
 	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq.Update); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-	val, ok := pathParams["software_image_id"]
+	val, ok := pathParams["image_id"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "software_image_id")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "image_id")
 	}
-	protoReq.SoftwareImageId, err = runtime.String(val)
+	protoReq.ImageId, err = runtime.String(val)
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "software_image_id", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "image_id", err)
 	}
 	if req.Body != nil {
 		_, _ = io.Copy(io.Discard, req.Body)
@@ -169,13 +169,13 @@ func local_request_ImageService_UpdateImage_0(ctx context.Context, marshaler run
 	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq.Update); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-	val, ok := pathParams["software_image_id"]
+	val, ok := pathParams["image_id"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "software_image_id")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "image_id")
 	}
-	protoReq.SoftwareImageId, err = runtime.String(val)
+	protoReq.ImageId, err = runtime.String(val)
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "software_image_id", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "image_id", err)
 	}
 	msg, err := server.UpdateImage(ctx, &protoReq)
 	return msg, metadata, err
@@ -187,13 +187,13 @@ func request_ImageService_DeleteImage_0(ctx context.Context, marshaler runtime.M
 		metadata runtime.ServerMetadata
 		err      error
 	)
-	val, ok := pathParams["software_image_id"]
+	val, ok := pathParams["image_id"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "software_image_id")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "image_id")
 	}
-	protoReq.SoftwareImageId, err = runtime.String(val)
+	protoReq.ImageId, err = runtime.String(val)
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "software_image_id", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "image_id", err)
 	}
 	if req.Body != nil {
 		_, _ = io.Copy(io.Discard, req.Body)
@@ -208,13 +208,13 @@ func local_request_ImageService_DeleteImage_0(ctx context.Context, marshaler run
 		metadata runtime.ServerMetadata
 		err      error
 	)
-	val, ok := pathParams["software_image_id"]
+	val, ok := pathParams["image_id"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "software_image_id")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "image_id")
 	}
-	protoReq.SoftwareImageId, err = runtime.String(val)
+	protoReq.ImageId, err = runtime.String(val)
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "software_image_id", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "image_id", err)
 	}
 	msg, err := server.DeleteImage(ctx, &protoReq)
 	return msg, metadata, err
@@ -273,7 +273,7 @@ func RegisterImageServiceHandlerServer(ctx context.Context, mux *runtime.ServeMu
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/kubenfv.kubevim.image.v1.ImageService/GetImage", runtime.WithHTTPPathPattern("/image/v1/images/{software_image_id}"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/kubenfv.kubevim.image.v1.ImageService/GetImage", runtime.WithHTTPPathPattern("/image/v1/images/{image_id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -313,7 +313,7 @@ func RegisterImageServiceHandlerServer(ctx context.Context, mux *runtime.ServeMu
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/kubenfv.kubevim.image.v1.ImageService/UpdateImage", runtime.WithHTTPPathPattern("/image/v1/images/{software_image_id}"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/kubenfv.kubevim.image.v1.ImageService/UpdateImage", runtime.WithHTTPPathPattern("/image/v1/images/{image_id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -333,7 +333,7 @@ func RegisterImageServiceHandlerServer(ctx context.Context, mux *runtime.ServeMu
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/kubenfv.kubevim.image.v1.ImageService/DeleteImage", runtime.WithHTTPPathPattern("/image/v1/images/{software_image_id}"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/kubenfv.kubevim.image.v1.ImageService/DeleteImage", runtime.WithHTTPPathPattern("/image/v1/images/{image_id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -428,7 +428,7 @@ func RegisterImageServiceHandlerClient(ctx context.Context, mux *runtime.ServeMu
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/kubenfv.kubevim.image.v1.ImageService/GetImage", runtime.WithHTTPPathPattern("/image/v1/images/{software_image_id}"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/kubenfv.kubevim.image.v1.ImageService/GetImage", runtime.WithHTTPPathPattern("/image/v1/images/{image_id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -462,7 +462,7 @@ func RegisterImageServiceHandlerClient(ctx context.Context, mux *runtime.ServeMu
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/kubenfv.kubevim.image.v1.ImageService/UpdateImage", runtime.WithHTTPPathPattern("/image/v1/images/{software_image_id}"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/kubenfv.kubevim.image.v1.ImageService/UpdateImage", runtime.WithHTTPPathPattern("/image/v1/images/{image_id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -479,7 +479,7 @@ func RegisterImageServiceHandlerClient(ctx context.Context, mux *runtime.ServeMu
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/kubenfv.kubevim.image.v1.ImageService/DeleteImage", runtime.WithHTTPPathPattern("/image/v1/images/{software_image_id}"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/kubenfv.kubevim.image.v1.ImageService/DeleteImage", runtime.WithHTTPPathPattern("/image/v1/images/{image_id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -514,10 +514,10 @@ func RegisterImageServiceHandlerClient(ctx context.Context, mux *runtime.ServeMu
 
 var (
 	pattern_ImageService_CreateImage_0      = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"image", "v1", "images"}, ""))
-	pattern_ImageService_GetImage_0         = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"image", "v1", "images", "software_image_id"}, ""))
+	pattern_ImageService_GetImage_0         = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"image", "v1", "images", "image_id"}, ""))
 	pattern_ImageService_ListImages_0       = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"image", "v1", "images"}, ""))
-	pattern_ImageService_UpdateImage_0      = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"image", "v1", "images", "software_image_id"}, ""))
-	pattern_ImageService_DeleteImage_0      = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"image", "v1", "images", "software_image_id"}, ""))
+	pattern_ImageService_UpdateImage_0      = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"image", "v1", "images", "image_id"}, ""))
+	pattern_ImageService_DeleteImage_0      = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"image", "v1", "images", "image_id"}, ""))
 	pattern_ImageService_ListImageSources_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"image", "v1", "imageSources"}, ""))
 )
 

@@ -413,6 +413,16 @@
         ],
         "type": "object"
       },
+      "DiskBus": {
+        "description": "Bus a boot disk is attached to.\nValues may be added as KubeVirt support grows; clients should accept unknown values.",
+        "enum": [
+          "DISK_BUS_UNSPECIFIED",
+          "DISK_BUS_VIRTIO",
+          "DISK_BUS_SATA",
+          "DISK_BUS_SCSI"
+        ],
+        "type": "string"
+      },
       "DiskFormat": {
         "description": "Disk format of a software image.\nValues may be added as CDI support grows; clients should accept unknown values.",
         "enum": [
@@ -421,6 +431,16 @@
           "DISK_FORMAT_QCOW2",
           "DISK_FORMAT_ISO",
           "DISK_FORMAT_VMDK"
+        ],
+        "type": "string"
+      },
+      "Firmware": {
+        "description": "Firmware a software image boots with.\nValues may be added as KubeVirt support grows; clients should accept unknown values.",
+        "enum": [
+          "FIRMWARE_UNSPECIFIED",
+          "FIRMWARE_BIOS",
+          "FIRMWARE_EFI",
+          "FIRMWARE_EFI_SECURE_BOOT"
         ],
         "type": "string"
       },
@@ -476,28 +496,6 @@
         ],
         "type": "object"
       },
-      "GcsSource": {
-        "description": "Google Cloud Storage download. Only one of serviceAccountKey, credentialsRef may be set.",
-        "properties": {
-          "credentialsRef": {
-            "description": "Name of a credential set the VIM loads from its own environment or files; the request carries no secret.",
-            "type": "string"
-          },
-          "serviceAccountKey": {
-            "description": "Inline service account key in JSON.",
-            "type": "string",
-            "writeOnly": true
-          },
-          "url": {
-            "description": "URL of the object, e.g. \"gs://bucket/image.qcow2\".",
-            "type": "string"
-          }
-        },
-        "required": [
-          "url"
-        ],
-        "type": "object"
-      },
       "HttpSource": {
         "description": "HTTP or HTTPS download. Only one of basicAuth, credentialsRef may be set.",
         "properties": {
@@ -539,7 +537,7 @@
                 "$ref": "#/components/schemas/Checksum"
               }
             ],
-            "description": "Checksum of the software image file.",
+            "description": "Checksum of the software image file; empty when the VIM cannot tell.",
             "readOnly": true
           },
           "containerFormat": {
@@ -548,7 +546,7 @@
                 "$ref": "#/components/schemas/ContainerFormat"
               }
             ],
-            "description": "Container format of the software image file.",
+            "description": "Container format of the software image file; unspecified when the VIM cannot tell.",
             "readOnly": true
           },
           "createdAt": {
@@ -557,14 +555,38 @@
             "readOnly": true,
             "type": "string"
           },
+          "diskBus": {
+            "$ref": "#/components/schemas/DiskBus",
+            "description": "Bus the boot disk is attached to; virtio when unset."
+          },
           "diskFormat": {
             "allOf": [
               {
                 "$ref": "#/components/schemas/DiskFormat"
               }
             ],
-            "description": "Disk format of the software image.",
+            "description": "Disk format of the software image; unspecified when the VIM cannot tell.",
             "readOnly": true
+          },
+          "firmware": {
+            "$ref": "#/components/schemas/Firmware",
+            "description": "Firmware the image boots with; the VIM default (EFI) when unset."
+          },
+          "imageId": {
+            "description": "Identifier of the software image: a UUID assigned by the VIM.",
+            "readOnly": true,
+            "type": "string"
+          },
+          "importPolicy": {
+            "$ref": "#/components/schemas/ImportPolicy",
+            "description": "When the VIM imports the software image; IMPORT_POLICY_EAGER when unset on creation."
+          },
+          "metadata": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Metadata set by the consumer and by the VIM; for keys under \"kubevim.kubenfv.io/\" that the VIM maintains, its value wins.",
+            "type": "object"
           },
           "minDisk": {
             "description": "Minimal disk size for the software image, in Kubernetes quantity format (e.g. \"10Gi\").",
@@ -575,7 +597,7 @@
             "type": "string"
           },
           "name": {
-            "description": "Name of the software image.",
+            "description": "Name of the software image, given by the consumer; not unique.",
             "type": "string"
           },
           "progress": {
@@ -588,23 +610,14 @@
             "description": "Provider of the software image.",
             "type": "string"
           },
-          "resourceGroupId": {
-            "description": "Infrastructure resource group the software image belongs to.",
-            "type": "string"
-          },
           "size": {
-            "description": "Size of the software image, in Kubernetes quantity format.",
-            "readOnly": true,
-            "type": "string"
-          },
-          "softwareImageId": {
-            "description": "Identifier of the software image: a UUID, the Kubernetes UID of the object behind it.",
+            "description": "Size of the software image, in Kubernetes quantity format; empty until imported.",
             "readOnly": true,
             "type": "string"
           },
           "source": {
             "$ref": "#/components/schemas/ImageSource",
-            "description": "Where the VIM imports the software image from."
+            "description": "Where the VIM imports the software image from; unset for images of a catalog backend."
           },
           "status": {
             "allOf": [
@@ -626,57 +639,14 @@
             "readOnly": true,
             "type": "string"
           },
-          "userMetadata": {
-            "additionalProperties": {
-              "type": "string"
-            },
-            "description": "User-defined metadata, owned by the consumer and never interpreted by the VIM.",
-            "type": "object"
-          },
           "version": {
             "description": "Version of the software image.",
             "type": "string"
-          },
-          "visibility": {
-            "$ref": "#/components/schemas/Visibility",
-            "description": "Visibility of the software image."
           }
         },
         "required": [
           "name",
-          "provider",
-          "version",
           "source"
-        ],
-        "type": "object"
-      },
-      "ImageIoSource": {
-        "description": "oVirt ImageIO import. Only one of basicAuth, credentialsRef may be set.",
-        "properties": {
-          "basicAuth": {
-            "$ref": "#/components/schemas/BasicAuth",
-            "description": "Inline username and password."
-          },
-          "caBundle": {
-            "description": "PEM CA bundle to verify the engine certificate.",
-            "type": "string"
-          },
-          "credentialsRef": {
-            "description": "Name of a credential set the VIM loads from its own environment or files; the request carries no secret.",
-            "type": "string"
-          },
-          "diskId": {
-            "description": "Identifier of the oVirt disk.",
-            "type": "string"
-          },
-          "url": {
-            "description": "URL of the oVirt engine API.",
-            "type": "string"
-          }
-        },
-        "required": [
-          "url",
-          "diskId"
         ],
         "type": "object"
       },
@@ -690,28 +660,13 @@
             "$ref": "#/components/schemas/ImageSourceS3"
           },
           {
-            "$ref": "#/components/schemas/ImageSourceGcs"
-          },
-          {
             "$ref": "#/components/schemas/ImageSourceRegistry"
-          },
-          {
-            "$ref": "#/components/schemas/ImageSourcePvc"
-          },
-          {
-            "$ref": "#/components/schemas/ImageSourceSnapshot"
           },
           {
             "$ref": "#/components/schemas/ImageSourceUpload"
           },
           {
             "$ref": "#/components/schemas/ImageSourceBlank"
-          },
-          {
-            "$ref": "#/components/schemas/ImageSourceImageio"
-          },
-          {
-            "$ref": "#/components/schemas/ImageSourceVddk"
           }
         ]
       },
@@ -728,19 +683,6 @@
         ],
         "type": "object"
       },
-      "ImageSourceGcs": {
-        "additionalProperties": false,
-        "properties": {
-          "gcs": {
-            "$ref": "#/components/schemas/GcsSource",
-            "description": "Download from Google Cloud Storage."
-          }
-        },
-        "required": [
-          "gcs"
-        ],
-        "type": "object"
-      },
       "ImageSourceHttp": {
         "additionalProperties": false,
         "properties": {
@@ -751,32 +693,6 @@
         },
         "required": [
           "http"
-        ],
-        "type": "object"
-      },
-      "ImageSourceImageio": {
-        "additionalProperties": false,
-        "properties": {
-          "imageio": {
-            "$ref": "#/components/schemas/ImageIoSource",
-            "description": "Import from oVirt ImageIO."
-          }
-        },
-        "required": [
-          "imageio"
-        ],
-        "type": "object"
-      },
-      "ImageSourcePvc": {
-        "additionalProperties": false,
-        "properties": {
-          "pvc": {
-            "$ref": "#/components/schemas/PvcSource",
-            "description": "Clone an existing persistent volume claim."
-          }
-        },
-        "required": [
-          "pvc"
         ],
         "type": "object"
       },
@@ -806,33 +722,15 @@
         ],
         "type": "object"
       },
-      "ImageSourceSnapshot": {
-        "additionalProperties": false,
-        "properties": {
-          "snapshot": {
-            "$ref": "#/components/schemas/SnapshotSource",
-            "description": "Restore an existing volume snapshot."
-          }
-        },
-        "required": [
-          "snapshot"
-        ],
-        "type": "object"
-      },
       "ImageSourceType": {
         "description": "Image source type, as reported by ListImageSources.\nValues may be added as CDI support grows; clients should accept unknown values.",
         "enum": [
           "IMAGE_SOURCE_TYPE_UNSPECIFIED",
           "IMAGE_SOURCE_TYPE_HTTP",
           "IMAGE_SOURCE_TYPE_S3",
-          "IMAGE_SOURCE_TYPE_GCS",
           "IMAGE_SOURCE_TYPE_REGISTRY",
-          "IMAGE_SOURCE_TYPE_PVC",
-          "IMAGE_SOURCE_TYPE_SNAPSHOT",
           "IMAGE_SOURCE_TYPE_UPLOAD",
-          "IMAGE_SOURCE_TYPE_BLANK",
-          "IMAGE_SOURCE_TYPE_IMAGEIO",
-          "IMAGE_SOURCE_TYPE_VDDK"
+          "IMAGE_SOURCE_TYPE_BLANK"
         ],
         "type": "string"
       },
@@ -849,19 +747,6 @@
         ],
         "type": "object"
       },
-      "ImageSourceVddk": {
-        "additionalProperties": false,
-        "properties": {
-          "vddk": {
-            "$ref": "#/components/schemas/VddkSource",
-            "description": "Import from VMware through VDDK."
-          }
-        },
-        "required": [
-          "vddk"
-        ],
-        "type": "object"
-      },
       "ImageStatus": {
         "description": "Status of a software image.\nValues may be added as CDI support grows; clients should accept unknown values.",
         "enum": [
@@ -875,42 +760,29 @@
         "type": "string"
       },
       "ImageUpdate": {
-        "description": "Changes to a software image. Each field that is set replaces the current value.",
+        "description": "Changes to a software image: a patch. The name is replaced when set; metadata entries are merged.",
         "properties": {
-          "minDisk": {
-            "type": "string"
-          },
-          "minRam": {
-            "type": "string"
-          },
-          "name": {
-            "type": "string"
-          },
-          "provider": {
-            "type": "string"
-          },
-          "userMetadata": {
+          "metadata": {
             "additionalProperties": {
               "type": "string"
             },
-            "description": "User metadata entries to add or replace.",
+            "description": "Metadata entries to add, or to overwrite when the key exists; keys not given are kept, and none is removed.",
             "type": "object"
           },
-          "userMetadataKeysToRemove": {
-            "description": "User metadata keys to remove.",
-            "items": {
-              "type": "string"
-            },
-            "type": "array"
-          },
-          "version": {
+          "name": {
             "type": "string"
-          },
-          "visibility": {
-            "$ref": "#/components/schemas/Visibility"
           }
         },
         "type": "object"
+      },
+      "ImportPolicy": {
+        "description": "When the VIM imports a software image.",
+        "enum": [
+          "IMPORT_POLICY_UNSPECIFIED",
+          "IMPORT_POLICY_EAGER",
+          "IMPORT_POLICY_ON_FIRST_USE"
+        ],
+        "type": "string"
       },
       "IpAddressPool": {
         "description": "Range of addresses a subnet allocates from.",
@@ -1501,22 +1373,6 @@
         ],
         "type": "object"
       },
-      "PvcSource": {
-        "description": "Clone of a Kubernetes persistent volume claim.",
-        "properties": {
-          "name": {
-            "type": "string"
-          },
-          "namespace": {
-            "type": "string"
-          }
-        },
-        "required": [
-          "namespace",
-          "name"
-        ],
-        "type": "object"
-      },
       "RegistrySource": {
         "description": "Container registry pull. Only one of basicAuth, credentialsRef may be set.",
         "properties": {
@@ -1611,22 +1467,6 @@
           "SEGMENTATION_TYPE_INHERIT"
         ],
         "type": "string"
-      },
-      "SnapshotSource": {
-        "description": "Restore of a Kubernetes volume snapshot.",
-        "properties": {
-          "name": {
-            "type": "string"
-          },
-          "namespace": {
-            "type": "string"
-          }
-        },
-        "required": [
-          "namespace",
-          "name"
-        ],
-        "type": "object"
       },
       "StorageOperation": {
         "description": "Operation on a volume (IFA006 7.5.1.6), realised with CSI volume snapshots.\nValues may be added as Kubernetes storage support grows; clients should accept unknown values.",
@@ -1892,45 +1732,6 @@
         ],
         "type": "string"
       },
-      "VddkSource": {
-        "description": "VMware import through VDDK. Only one of basicAuth, credentialsRef may be set.",
-        "properties": {
-          "backingFile": {
-            "description": "Path of the virtual disk backing file.",
-            "type": "string"
-          },
-          "basicAuth": {
-            "$ref": "#/components/schemas/BasicAuth",
-            "description": "Inline username and password."
-          },
-          "credentialsRef": {
-            "description": "Name of a credential set the VIM loads from its own environment or files; the request carries no secret.",
-            "type": "string"
-          },
-          "initImageUrl": {
-            "description": "Container image with the VDDK library; the VIM default when unset.",
-            "type": "string"
-          },
-          "thumbprint": {
-            "description": "SHA-1 thumbprint of the endpoint certificate.",
-            "type": "string"
-          },
-          "url": {
-            "description": "URL of the vCenter or ESXi endpoint.",
-            "type": "string"
-          },
-          "uuid": {
-            "description": "UUID of the virtual machine.",
-            "type": "string"
-          }
-        },
-        "required": [
-          "url",
-          "uuid",
-          "backingFile"
-        ],
-        "type": "object"
-      },
       "VirtualCpu": {
         "description": "Virtual CPUs of a compute resource.",
         "properties": {
@@ -2194,15 +1995,6 @@
           "sizeOfStorage"
         ],
         "type": "object"
-      },
-      "Visibility": {
-        "description": "Visibility of a software image (IFA005 7.2.2.2).",
-        "enum": [
-          "VISIBILITY_UNSPECIFIED",
-          "VISIBILITY_PRIVATE",
-          "VISIBILITY_PUBLIC"
-        ],
-        "type": "string"
       },
       "Volume": {
         "description": "A virtualised storage resource, e.g. a disk of a compute resource.",
@@ -3888,7 +3680,7 @@
             ]
           }
         ],
-        "summary": "Returns the software images matching a filter.",
+        "summary": "Returns the software images matching a filter, including images of catalog backends.",
         "tags": [
           "ImageService"
         ]
@@ -3981,14 +3773,14 @@
         ]
       }
     },
-    "/image/v1/images/{software_image_id}": {
+    "/image/v1/images/{image_id}": {
       "delete": {
         "operationId": "DeleteImage",
         "parameters": [
           {
             "description": "Identifier of the software image.",
             "in": "path",
-            "name": "software_image_id",
+            "name": "image_id",
             "required": true,
             "schema": {
               "type": "string"
@@ -4036,7 +3828,7 @@
             ]
           }
         ],
-        "summary": "Deletes a software image.",
+        "summary": "Deletes a software image and its imported copies.",
         "tags": [
           "ImageService"
         ]
@@ -4047,7 +3839,7 @@
           {
             "description": "Identifier of the software image.",
             "in": "path",
-            "name": "software_image_id",
+            "name": "image_id",
             "required": true,
             "schema": {
               "type": "string"
@@ -4113,7 +3905,7 @@
           {
             "description": "Identifier of the software image.",
             "in": "path",
-            "name": "software_image_id",
+            "name": "image_id",
             "required": true,
             "schema": {
               "type": "string"
@@ -4178,7 +3970,7 @@
             ]
           }
         ],
-        "summary": "Updates the metadata of a software image.",
+        "summary": "Updates the name and metadata of a software image.",
         "tags": [
           "ImageService"
         ]

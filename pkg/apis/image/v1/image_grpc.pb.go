@@ -38,11 +38,11 @@ type ImageServiceClient interface {
 	CreateImage(ctx context.Context, in *CreateImageRequest, opts ...grpc.CallOption) (*Image, error)
 	// Returns one software image.
 	GetImage(ctx context.Context, in *GetImageRequest, opts ...grpc.CallOption) (*Image, error)
-	// Returns the software images matching a filter.
+	// Returns the software images matching a filter, including images of catalog backends.
 	ListImages(ctx context.Context, in *ListImagesRequest, opts ...grpc.CallOption) (*ListImagesResponse, error)
-	// Updates the metadata of a software image.
+	// Updates the name and metadata of a software image.
 	UpdateImage(ctx context.Context, in *UpdateImageRequest, opts ...grpc.CallOption) (*Image, error)
-	// Deletes a software image.
+	// Deletes a software image and its imported copies.
 	DeleteImage(ctx context.Context, in *DeleteImageRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	// Returns the image source types this VIM accepts.
 	ListImageSources(ctx context.Context, in *ListImageSourcesRequest, opts ...grpc.CallOption) (*ListImageSourcesResponse, error)
@@ -126,11 +126,11 @@ type ImageServiceServer interface {
 	CreateImage(context.Context, *CreateImageRequest) (*Image, error)
 	// Returns one software image.
 	GetImage(context.Context, *GetImageRequest) (*Image, error)
-	// Returns the software images matching a filter.
+	// Returns the software images matching a filter, including images of catalog backends.
 	ListImages(context.Context, *ListImagesRequest) (*ListImagesResponse, error)
-	// Updates the metadata of a software image.
+	// Updates the name and metadata of a software image.
 	UpdateImage(context.Context, *UpdateImageRequest) (*Image, error)
-	// Deletes a software image.
+	// Deletes a software image and its imported copies.
 	DeleteImage(context.Context, *DeleteImageRequest) (*emptypb.Empty, error)
 	// Returns the image source types this VIM accepts.
 	ListImageSources(context.Context, *ListImageSourcesRequest) (*ListImageSourcesResponse, error)
