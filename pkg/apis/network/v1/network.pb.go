@@ -2554,189 +2554,189 @@ var File_kubenfv_kubevim_network_v1_network_proto protoreflect.FileDescriptor
 
 const file_kubenfv_kubevim_network_v1_network_proto_rawDesc = "" +
 	"\n" +
-	"(kubenfv/kubevim/network/v1/network.proto\x12\x1akubenfv.kubevim.network.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a(kubenfv/kubevim/common/v1/affinity.proto\x1a&kubenfv/kubevim/common/v1/common.proto\x1a(kubenfv/kubevim/options/v1/options.proto\x1a.protoc-gen-openapiv3/options/annotations.proto\"\xf3\x16\n" +
-	"\aNetwork\x12h\n" +
-	"\x13network_resource_id\x18\x01 \x01(\tB8\xe2A\x01\x03\xfaV1\n" +
-	"/IFA006 8.4.5.2 VirtualNetwork.networkResourceIdR\x11networkResourceId\x12n\n" +
-	"\x15network_resource_name\x18\x02 \x01(\tB:\xe2A\x01\x01\xfaV3\n" +
-	"1IFA006 8.4.5.2 VirtualNetwork.networkResourceNameR\x13networkResourceName\x12L\n" +
-	"\tsubnet_id\x18\x03 \x03(\tB/\xe2A\x01\x03\xfaV(\n" +
-	"&IFA006 8.4.5.2 VirtualNetwork.subnetIdR\bsubnetId\x12\xcf\x01\n" +
-	"\x0fnetwork_port_id\x18\x04 \x03(\tB\xa6\x01\xe2A\x01\x03\xfaV\x9e\x01\n" +
-	")IFA006 8.4.5.2 VirtualNetwork.networkPort\x12q\b\x03\x10\x01\x1akPort identifiers instead of embedded ports; ports are their own resource (ListPorts filtered by networkId).R\rnetworkPortId\x12\xa8\x01\n" +
-	"\tbandwidth\x18\x05 \x01(\rB\x89\x01\xe2A\x01\x01\xfaV\x81\x01\n" +
-	"+IFA006 8.4.4.2 VirtualNetworkData.bandwidth\x12R\b\x02\x1aNKube-OVN has no per-network bandwidth guarantee; a non-zero value is rejected.R\tbandwidth\x12\xca\x01\n" +
-	"\fnetwork_type\x18\x06 \x01(\x0e2'.kubenfv.kubevim.network.v1.NetworkTypeB~\xe2A\x02\x02\x05\xbaH\a\x82\x01\x04\x10\x01 \x00\xfaVl\n" +
-	"-IFA006 8.4.4.2 VirtualNetworkData.networkType\x12;\b\x03\x10\x01\x1a5A closed enumeration instead of an extensible string.R\vnetworkType\x12f\n" +
-	"\x10provider_network\x18\a \x01(\tB;\xe2A\x02\x01\x05\xfaV3\n" +
-	"1IFA006 8.4.4.2 VirtualNetworkData.providerNetworkR\x0fproviderNetwork\x12c\n" +
-	"\x0fsegmentation_id\x18\b \x01(\rB:\xe2A\x02\x01\x05\xfaV2\n" +
-	"0IFA006 8.4.4.2 VirtualNetworkData.segmentationIdR\x0esegmentationId\x12\xba\x01\n" +
-	"\vnetwork_qos\x18\t \x03(\v2&.kubenfv.kubevim.network.v1.NetworkQoSBq\xe2A\x01\x01\xfaVj\n" +
+	"(kubenfv/kubevim/network/v1/network.proto\x12\x1akubenfv.kubevim.network.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a(kubenfv/kubevim/common/v1/affinity.proto\x1a&kubenfv/kubevim/common/v1/common.proto\x1a(kubenfv/kubevim/options/v1/options.proto\x1a.protoc-gen-openapiv3/options/annotations.proto\"\x85\x17\n" +
+	"\aNetwork\x12i\n" +
+	"\x13network_resource_id\x18\x01 \x01(\tB9\xe2A\x01\x03\xfa\x8b\x191\n" +
+	"/IFA006 8.4.5.2 VirtualNetwork.networkResourceIdR\x11networkResourceId\x12o\n" +
+	"\x15network_resource_name\x18\x02 \x01(\tB;\xe2A\x01\x01\xfa\x8b\x193\n" +
+	"1IFA006 8.4.5.2 VirtualNetwork.networkResourceNameR\x13networkResourceName\x12M\n" +
+	"\tsubnet_id\x18\x03 \x03(\tB0\xe2A\x01\x03\xfa\x8b\x19(\n" +
+	"&IFA006 8.4.5.2 VirtualNetwork.subnetIdR\bsubnetId\x12\xd0\x01\n" +
+	"\x0fnetwork_port_id\x18\x04 \x03(\tB\xa7\x01\xe2A\x01\x03\xfa\x8b\x19\x9e\x01\n" +
+	")IFA006 8.4.5.2 VirtualNetwork.networkPort\x12q\b\x03\x10\x01\x1akPort identifiers instead of embedded ports; ports are their own resource (ListPorts filtered by networkId).R\rnetworkPortId\x12\xa9\x01\n" +
+	"\tbandwidth\x18\x05 \x01(\rB\x8a\x01\xe2A\x01\x01\xfa\x8b\x19\x81\x01\n" +
+	"+IFA006 8.4.4.2 VirtualNetworkData.bandwidth\x12R\b\x02\x1aNKube-OVN has no per-network bandwidth guarantee; a non-zero value is rejected.R\tbandwidth\x12\xcb\x01\n" +
+	"\fnetwork_type\x18\x06 \x01(\x0e2'.kubenfv.kubevim.network.v1.NetworkTypeB\x7f\xe2A\x02\x02\x05\xbaH\a\x82\x01\x04\x10\x01 \x00\xfa\x8b\x19l\n" +
+	"-IFA006 8.4.4.2 VirtualNetworkData.networkType\x12;\b\x03\x10\x01\x1a5A closed enumeration instead of an extensible string.R\vnetworkType\x12g\n" +
+	"\x10provider_network\x18\a \x01(\tB<\xe2A\x02\x01\x05\xfa\x8b\x193\n" +
+	"1IFA006 8.4.4.2 VirtualNetworkData.providerNetworkR\x0fproviderNetwork\x12d\n" +
+	"\x0fsegmentation_id\x18\b \x01(\rB;\xe2A\x02\x01\x05\xfa\x8b\x192\n" +
+	"0IFA006 8.4.4.2 VirtualNetworkData.segmentationIdR\x0esegmentationId\x12\xbb\x01\n" +
+	"\vnetwork_qos\x18\t \x03(\v2&.kubenfv.kubevim.network.v1.NetworkQoSBr\xe2A\x01\x01\xfa\x8b\x19j\n" +
 	",IFA006 8.4.4.2 VirtualNetworkData.networkQoS\x12:\b\x02\x1a6No network-level QoS in Kube-OVN; a value is rejected.R\n" +
-	"networkQoS\x12\xa1\x01\n" +
+	"networkQoS\x12\xa3\x01\n" +
 	"\tis_shared\x18\n" +
-	" \x01(\bB\x7f\xe2A\x01\x01\xfaVx\n" +
-	"*IFA006 8.4.4.2 VirtualNetworkData.isShared\x12J\b\x02\x1aFEvery network is shared until Kube-VIM has tenancy; false is rejected.H\x00R\bisShared\x88\x01\x01\x12\x8b\x01\n" +
-	"\x10sharing_criteria\x18\v \x01(\tB`\xe2A\x01\x01\xfaVY\n" +
-	"1IFA006 8.4.4.2 VirtualNetworkData.sharingCriteria\x12$\b\x02\x1a No tenancy; a value is rejected.R\x0fsharingCriteria\x12\x90\x01\n" +
-	"\x11layer3_attributes\x18\f \x03(\v2&.kubenfv.kubevim.network.v1.SubnetDataB;\xe2A\x01\x04\xfaV4\n" +
-	"2IFA006 8.4.4.2 VirtualNetworkData.layer3AttributesR\x10layer3Attributes\x12F\n" +
-	"\azone_id\x18\r \x01(\tB-\xe2A\x01\x03\xfaV&\n" +
-	"$IFA006 8.4.5.2 VirtualNetwork.zoneIdR\x06zoneId\x12\x91\x01\n" +
-	"\x11operational_state\x18\x0e \x01(\x0e2+.kubenfv.kubevim.common.v1.OperationalStateB7\xe2A\x01\x03\xfaV0\n" +
-	".IFA006 8.4.5.2 VirtualNetwork.operationalStateR\x10operationalState\x12\xc7\x01\n" +
-	"\bmetadata\x18\x0f \x03(\v21.kubenfv.kubevim.network.v1.Network.MetadataEntryBx\xe2A\x01\x01\xfaVq\n" +
-	"&IFA006 8.4.5.2 VirtualNetwork.metadata\x12G\b\x02\x10\x01\x1aAString values only, where IFA KeyValuePair allows any JSON value.R\bmetadata\x12\xbd\x01\n" +
-	"\x12connected_networks\x18\x10 \x03(\tB\x8d\x01\xe2A\x01\x01\xbaH\n" +
-	"\x92\x01\a\"\x05r\x03\xb0\x01\x01\xfaVy\n" +
+	" \x01(\bB\x80\x01\xe2A\x01\x01\xfa\x8b\x19x\n" +
+	"*IFA006 8.4.4.2 VirtualNetworkData.isShared\x12J\b\x02\x1aFEvery network is shared until Kube-VIM has tenancy; false is rejected.H\x00R\bisShared\x88\x01\x01\x12\x8c\x01\n" +
+	"\x10sharing_criteria\x18\v \x01(\tBa\xe2A\x01\x01\xfa\x8b\x19Y\n" +
+	"1IFA006 8.4.4.2 VirtualNetworkData.sharingCriteria\x12$\b\x02\x1a No tenancy; a value is rejected.R\x0fsharingCriteria\x12\x91\x01\n" +
+	"\x11layer3_attributes\x18\f \x03(\v2&.kubenfv.kubevim.network.v1.SubnetDataB<\xe2A\x01\x04\xfa\x8b\x194\n" +
+	"2IFA006 8.4.4.2 VirtualNetworkData.layer3AttributesR\x10layer3Attributes\x12G\n" +
+	"\azone_id\x18\r \x01(\tB.\xe2A\x01\x03\xfa\x8b\x19&\n" +
+	"$IFA006 8.4.5.2 VirtualNetwork.zoneIdR\x06zoneId\x12\x92\x01\n" +
+	"\x11operational_state\x18\x0e \x01(\x0e2+.kubenfv.kubevim.common.v1.OperationalStateB8\xe2A\x01\x03\xfa\x8b\x190\n" +
+	".IFA006 8.4.5.2 VirtualNetwork.operationalStateR\x10operationalState\x12\xc8\x01\n" +
+	"\bmetadata\x18\x0f \x03(\v21.kubenfv.kubevim.network.v1.Network.MetadataEntryBy\xe2A\x01\x01\xfa\x8b\x19q\n" +
+	"&IFA006 8.4.5.2 VirtualNetwork.metadata\x12G\b\x02\x10\x01\x1aAString values only, where IFA KeyValuePair allows any JSON value.R\bmetadata\x12\xbe\x01\n" +
+	"\x12connected_networks\x18\x10 \x03(\tB\x8e\x01\xe2A\x01\x01\xbaH\n" +
+	"\x92\x01\a\"\x05r\x03\xb0\x01\x01\xfa\x8b\x19y\n" +
 	"/IFA006 8.4.5.2 VirtualNetwork.connectedNetworks\x12F\b\x02\x1aBNetwork interconnection is not supported yet; a value is rejected.R\x11connectedNetworks\x1a;\n" +
 	"\rMetadataEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01:\xf5\x03\xbaH\xb3\x03\x1a\xb0\x01\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01:\xf6\x03\xbaH\xb3\x03\x1a\xb0\x01\n" +
 	"\x10network.provider\x12HVLAN and FLAT networks need a providerNetwork; GENEVE networks take none\x1aRthis.network_type == 1 ? this.provider_network == '' : this.provider_network != ''\x1a\xfd\x01\n" +
-	"\x14network.segmentation\x12pVLAN networks need a segmentationId from 1 to 4094; GENEVE and FLAT networks take none (GENEVE IDs are assigned)\x1asthis.network_type == 2 ? (this.segmentation_id >= 1u && this.segmentation_id <= 4094u) : this.segmentation_id == 0u\xfaV;\n" +
+	"\x14network.segmentation\x12pVLAN networks need a segmentationId from 1 to 4094; GENEVE and FLAT networks take none (GENEVE IDs are assigned)\x1asthis.network_type == 2 ? (this.segmentation_id >= 1u && this.segmentation_id <= 4094u) : this.segmentation_id == 0u\xfa\x8b\x19;\n" +
 	"9IFA006 8.4.5.2 VirtualNetwork, 8.4.4.2 VirtualNetworkDataB\f\n" +
 	"\n" +
 	"_is_shared\"W\n" +
 	"\n" +
 	"NetworkQoS\x12&\n" +
 	"\bqos_name\x18\x01 \x01(\tB\v\xe2A\x01\x02\xbaH\x04r\x02\x10\x01R\aqosName\x12!\n" +
-	"\tqos_value\x18\x02 \x01(\tB\x04\xe2A\x01\x02R\bqosValue\"\x88\b\n" +
+	"\tqos_value\x18\x02 \x01(\tB\x04\xe2A\x01\x02R\bqosValue\"\x8f\b\n" +
 	"\n" +
-	"SubnetData\x12\x82\x01\n" +
+	"SubnetData\x12\x83\x01\n" +
 	"\n" +
-	"ip_version\x18\x01 \x01(\x0e2$.kubenfv.kubevim.common.v1.IpVersionB=\xe2A\x01\x02\xbaH\a\x82\x01\x04\x10\x01 \x00\xfaV,\n" +
-	"*IFA006 8.4.4.4 NetworkSubnetData.ipVersionR\tipVersion\x12\\\n" +
+	"ip_version\x18\x01 \x01(\x0e2$.kubenfv.kubevim.common.v1.IpVersionB>\xe2A\x01\x02\xbaH\a\x82\x01\x04\x10\x01 \x00\xfa\x8b\x19,\n" +
+	"*IFA006 8.4.4.4 NetworkSubnetData.ipVersionR\tipVersion\x12]\n" +
 	"\n" +
-	"gateway_ip\x18\x02 \x01(\tB=\xe2A\x01\x01\xbaH\a\xd8\x01\x01r\x02p\x01\xfaV,\n" +
-	"*IFA006 8.4.4.4 NetworkSubnetData.gatewayIpR\tgatewayIp\x12J\n" +
-	"\x04cidr\x18\x03 \x01(\tB6\xe2A\x01\x02\xbaH\x05r\x03\xe8\x01\x01\xfaV'\n" +
-	"%IFA006 8.4.4.4 NetworkSubnetData.cidrR\x04cidr\x12d\n" +
-	"\x0fis_dhcp_enabled\x18\x04 \x01(\bB7\xe2A\x01\x01\xfaV0\n" +
-	".IFA006 8.4.4.4 NetworkSubnetData.isDhcpEnabledH\x00R\risDhcpEnabled\x88\x01\x01\x12\x83\x01\n" +
-	"\faddress_pool\x18\x05 \x03(\v2).kubenfv.kubevim.network.v1.IpAddressPoolB5\xe2A\x01\x01\xfaV.\n" +
-	",IFA006 8.4.4.4 NetworkSubnetData.addressPoolR\vaddressPool\x12\x84\x01\n" +
-	"\bmetadata\x18\x06 \x03(\v24.kubenfv.kubevim.network.v1.SubnetData.MetadataEntryB2\xe2A\x01\x01\xfaV+\n" +
+	"gateway_ip\x18\x02 \x01(\tB>\xe2A\x01\x01\xbaH\a\xd8\x01\x01r\x02p\x01\xfa\x8b\x19,\n" +
+	"*IFA006 8.4.4.4 NetworkSubnetData.gatewayIpR\tgatewayIp\x12K\n" +
+	"\x04cidr\x18\x03 \x01(\tB7\xe2A\x01\x02\xbaH\x05r\x03\xe8\x01\x01\xfa\x8b\x19'\n" +
+	"%IFA006 8.4.4.4 NetworkSubnetData.cidrR\x04cidr\x12e\n" +
+	"\x0fis_dhcp_enabled\x18\x04 \x01(\bB8\xe2A\x01\x01\xfa\x8b\x190\n" +
+	".IFA006 8.4.4.4 NetworkSubnetData.isDhcpEnabledH\x00R\risDhcpEnabled\x88\x01\x01\x12\x84\x01\n" +
+	"\faddress_pool\x18\x05 \x03(\v2).kubenfv.kubevim.network.v1.IpAddressPoolB6\xe2A\x01\x01\xfa\x8b\x19.\n" +
+	",IFA006 8.4.4.4 NetworkSubnetData.addressPoolR\vaddressPool\x12\x85\x01\n" +
+	"\bmetadata\x18\x06 \x03(\v24.kubenfv.kubevim.network.v1.SubnetData.MetadataEntryB3\xe2A\x01\x01\xfa\x8b\x19+\n" +
 	")IFA006 8.4.4.4 NetworkSubnetData.metadataR\bmetadata\x1a;\n" +
 	"\rMetadataEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01:\x86\x02\xbaH\xdd\x01\x1a\xda\x01\n" +
-	"\x11subnet.ip_version\x12'cidr and gatewayIp must match ipVersion\x1a\x9b\x01(this.ip_version == 1 ? this.cidr.isIpPrefix(4) : this.cidr.isIpPrefix(6)) && (this.gateway_ip == '' || this.gateway_ip.isIp(this.ip_version == 1 ? 4 : 6))\xfaV\"\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01:\x87\x02\xbaH\xdd\x01\x1a\xda\x01\n" +
+	"\x11subnet.ip_version\x12'cidr and gatewayIp must match ipVersion\x1a\x9b\x01(this.ip_version == 1 ? this.cidr.isIpPrefix(4) : this.cidr.isIpPrefix(6)) && (this.gateway_ip == '' || this.gateway_ip.isIp(this.ip_version == 1 ? 4 : 6))\xfa\x8b\x19\"\n" +
 	" IFA006 8.4.4.4 NetworkSubnetDataB\x12\n" +
-	"\x10_is_dhcp_enabled\"\xba\x03\n" +
-	"\x06Subnet\x12Q\n" +
-	"\vresource_id\x18\x01 \x01(\tB0\xe2A\x01\x03\xfaV)\n" +
+	"\x10_is_dhcp_enabled\"\xbe\x03\n" +
+	"\x06Subnet\x12R\n" +
+	"\vresource_id\x18\x01 \x01(\tB1\xe2A\x01\x03\xfa\x8b\x19)\n" +
 	"'IFA006 8.4.5.3 NetworkSubnet.resourceIdR\n" +
-	"resourceId\x12W\n" +
+	"resourceId\x12X\n" +
 	"\n" +
-	"network_id\x18\x02 \x01(\tB8\xe2A\x02\x02\x05\xbaH\x05r\x03\xb0\x01\x01\xfaV(\n" +
-	"&IFA006 8.4.5.3 NetworkSubnet.networkIdR\tnetworkId\x12\xc5\x01\n" +
-	"\x04data\x18\x03 \x01(\v2&.kubenfv.kubevim.network.v1.SubnetDataB\x88\x01\xe2A\x01\x02\xbaH\x03\xc8\x01\x01\xfaV{\n" +
-	"\x1cIFA006 8.4.5.3 NetworkSubnet\x12[\b\x03\x10\x01\x1aUThe NetworkSubnet attributes are grouped in one message shared with layer3Attributes.R\x04data:<\xfaV9\n" +
-	"7IFA006 8.4.5.3 NetworkSubnet, 8.4.4.4 NetworkSubnetData\"\xd3\x01\n" +
+	"network_id\x18\x02 \x01(\tB9\xe2A\x02\x02\x05\xbaH\x05r\x03\xb0\x01\x01\xfa\x8b\x19(\n" +
+	"&IFA006 8.4.5.3 NetworkSubnet.networkIdR\tnetworkId\x12\xc6\x01\n" +
+	"\x04data\x18\x03 \x01(\v2&.kubenfv.kubevim.network.v1.SubnetDataB\x89\x01\xe2A\x01\x02\xbaH\x03\xc8\x01\x01\xfa\x8b\x19{\n" +
+	"\x1cIFA006 8.4.5.3 NetworkSubnet\x12[\b\x03\x10\x01\x1aUThe NetworkSubnet attributes are grouped in one message shared with layer3Attributes.R\x04data:=\xfa\x8b\x199\n" +
+	"7IFA006 8.4.5.3 NetworkSubnet, 8.4.4.4 NetworkSubnetData\"\xd4\x01\n" +
 	"\rIpAddressPool\x12&\n" +
 	"\bstart_ip\x18\x01 \x01(\tB\v\xe2A\x01\x02\xbaH\x04r\x02p\x01R\astartIp\x12\"\n" +
-	"\x06end_ip\x18\x02 \x01(\tB\v\xe2A\x01\x02\xbaH\x04r\x02p\x01R\x05endIp:v\xfaVs\n" +
-	",IFA006 8.4.4.4 NetworkSubnetData.addressPool\x12C\b\x03\x10\x01\x1a=IFA leaves the content unspecified; a first and last address.\"\x9d\n" +
+	"\x06end_ip\x18\x02 \x01(\tB\v\xe2A\x01\x02\xbaH\x04r\x02p\x01R\x05endIp:w\xfa\x8b\x19s\n" +
+	",IFA006 8.4.4.4 NetworkSubnetData.addressPool\x12C\b\x03\x10\x01\x1a=IFA leaves the content unspecified; a first and last address.\"\xa8\n" +
 	"\n" +
-	"\x04Port\x12V\n" +
-	"\vresource_id\x18\x01 \x01(\tB5\xe2A\x01\x03\xfaV.\n" +
+	"\x04Port\x12W\n" +
+	"\vresource_id\x18\x01 \x01(\tB6\xe2A\x01\x03\xfa\x8b\x19.\n" +
 	",IFA006 8.4.5.4 VirtualNetworkPort.resourceIdR\n" +
-	"resourceId\x12\\\n" +
+	"resourceId\x12]\n" +
 	"\n" +
-	"network_id\x18\x02 \x01(\tB=\xe2A\x02\x02\x05\xbaH\x05r\x03\xb0\x01\x01\xfaV-\n" +
-	"+IFA006 8.4.5.4 VirtualNetworkPort.networkIdR\tnetworkId\x12o\n" +
-	"\x14attached_resource_id\x18\x03 \x01(\tB=\xe2A\x01\x03\xfaV6\n" +
-	"4IFA006 8.4.5.4 VirtualNetworkPort.attachedResourceIdR\x12attachedResourceId\x12\xb5\x01\n" +
-	"\tport_type\x18\x04 \x01(\x0e2$.kubenfv.kubevim.network.v1.PortTypeBr\xe2A\x02\x01\x05\xbaH\x05\x82\x01\x02\x10\x01\xfaVb\n" +
-	"*IFA006 8.4.5.4 VirtualNetworkPort.portType\x124\b\x03\x10\x01\x1a.A closed enumeration instead of a free string.R\bportType\x12R\n" +
-	"\tbandwidth\x18\x05 \x01(\rB4\xe2A\x01\x01\xfaV-\n" +
-	"+IFA006 8.4.5.4 VirtualNetworkPort.bandwidthR\tbandwidth\x12\xaf\x01\n" +
-	"\bport_qos\x18\x06 \x03(\v2&.kubenfv.kubevim.network.v1.NetworkQoSBl\xe2A\x01\x01\xfaVe\n" +
-	")IFA006 8.4.5.4 VirtualNetworkPort.portQoS\x128\b\x02\x1a4No per-port QoS parameters yet; a value is rejected.R\aportQoS\x12\x95\x01\n" +
-	"\x11operational_state\x18\a \x01(\x0e2+.kubenfv.kubevim.common.v1.OperationalStateB;\xe2A\x01\x03\xfaV4\n" +
-	"2IFA006 8.4.5.4 VirtualNetworkPort.operationalStateR\x10operationalState\x12\x91\x01\n" +
-	"\ttime_sync\x18\b \x03(\tBt\xe2A\x01\x01\xfaVm\n" +
-	"*IFA006 8.4.5.4 VirtualNetworkPort.timeSync\x12?\b\x02\x1a;Time synchronisation is not supported; a value is rejected.R\btimeSync\x12\x7f\n" +
-	"\bmetadata\x18\t \x03(\v2..kubenfv.kubevim.network.v1.Port.MetadataEntryB3\xe2A\x01\x01\xfaV,\n" +
+	"network_id\x18\x02 \x01(\tB>\xe2A\x02\x02\x05\xbaH\x05r\x03\xb0\x01\x01\xfa\x8b\x19-\n" +
+	"+IFA006 8.4.5.4 VirtualNetworkPort.networkIdR\tnetworkId\x12p\n" +
+	"\x14attached_resource_id\x18\x03 \x01(\tB>\xe2A\x01\x03\xfa\x8b\x196\n" +
+	"4IFA006 8.4.5.4 VirtualNetworkPort.attachedResourceIdR\x12attachedResourceId\x12\xb6\x01\n" +
+	"\tport_type\x18\x04 \x01(\x0e2$.kubenfv.kubevim.network.v1.PortTypeBs\xe2A\x02\x01\x05\xbaH\x05\x82\x01\x02\x10\x01\xfa\x8b\x19b\n" +
+	"*IFA006 8.4.5.4 VirtualNetworkPort.portType\x124\b\x03\x10\x01\x1a.A closed enumeration instead of a free string.R\bportType\x12S\n" +
+	"\tbandwidth\x18\x05 \x01(\rB5\xe2A\x01\x01\xfa\x8b\x19-\n" +
+	"+IFA006 8.4.5.4 VirtualNetworkPort.bandwidthR\tbandwidth\x12\xb0\x01\n" +
+	"\bport_qos\x18\x06 \x03(\v2&.kubenfv.kubevim.network.v1.NetworkQoSBm\xe2A\x01\x01\xfa\x8b\x19e\n" +
+	")IFA006 8.4.5.4 VirtualNetworkPort.portQoS\x128\b\x02\x1a4No per-port QoS parameters yet; a value is rejected.R\aportQoS\x12\x96\x01\n" +
+	"\x11operational_state\x18\a \x01(\x0e2+.kubenfv.kubevim.common.v1.OperationalStateB<\xe2A\x01\x03\xfa\x8b\x194\n" +
+	"2IFA006 8.4.5.4 VirtualNetworkPort.operationalStateR\x10operationalState\x12\x92\x01\n" +
+	"\ttime_sync\x18\b \x03(\tBu\xe2A\x01\x01\xfa\x8b\x19m\n" +
+	"*IFA006 8.4.5.4 VirtualNetworkPort.timeSync\x12?\b\x02\x1a;Time synchronisation is not supported; a value is rejected.R\btimeSync\x12\x80\x01\n" +
+	"\bmetadata\x18\t \x03(\v2..kubenfv.kubevim.network.v1.Port.MetadataEntryB4\xe2A\x01\x01\xfa\x8b\x19,\n" +
 	"*IFA006 8.4.5.4 VirtualNetworkPort.metadataR\bmetadata\x1a;\n" +
 	"\rMetadataEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01:F\xfaVC\n" +
-	"AIFA006 8.4.5.4 VirtualNetworkPort, 8.4.4.5 VirtualNetworkPortData\"\x98\x04\n" +
-	"\x05Trunk\x12`\n" +
-	"\x11trunk_resource_id\x18\x01 \x01(\tB4\xe2A\x01\x03\xfaV-\n" +
-	"+IFA006 8.4.5.5 VirtualTrunk.trunkResourceIdR\x0ftrunkResourceId\x12`\n" +
-	"\x0eparent_port_id\x18\x02 \x01(\tB:\xe2A\x02\x02\x05\xbaH\x05r\x03\xb0\x01\x01\xfaV*\n" +
-	"(IFA006 8.4.5.5 VirtualTrunk.parentPortIdR\fparentPortId\x12}\n" +
-	"\fsubport_list\x18\x03 \x03(\v2(.kubenfv.kubevim.network.v1.TrunkSubportB0\xe2A\x01\x01\xfaV)\n" +
-	"'IFA006 8.4.5.5 VirtualTrunk.subportListR\vsubportList\x12\x8f\x01\n" +
-	"\x11operational_state\x18\x04 \x01(\x0e2+.kubenfv.kubevim.common.v1.OperationalStateB5\xe2A\x01\x03\xfaV.\n" +
-	",IFA006 8.4.5.5 VirtualTrunk.operationalStateR\x10operationalState::\xfaV7\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01:G\xfa\x8b\x19C\n" +
+	"AIFA006 8.4.5.4 VirtualNetworkPort, 8.4.4.5 VirtualNetworkPortData\"\x9d\x04\n" +
+	"\x05Trunk\x12a\n" +
+	"\x11trunk_resource_id\x18\x01 \x01(\tB5\xe2A\x01\x03\xfa\x8b\x19-\n" +
+	"+IFA006 8.4.5.5 VirtualTrunk.trunkResourceIdR\x0ftrunkResourceId\x12a\n" +
+	"\x0eparent_port_id\x18\x02 \x01(\tB;\xe2A\x02\x02\x05\xbaH\x05r\x03\xb0\x01\x01\xfa\x8b\x19*\n" +
+	"(IFA006 8.4.5.5 VirtualTrunk.parentPortIdR\fparentPortId\x12~\n" +
+	"\fsubport_list\x18\x03 \x03(\v2(.kubenfv.kubevim.network.v1.TrunkSubportB1\xe2A\x01\x01\xfa\x8b\x19)\n" +
+	"'IFA006 8.4.5.5 VirtualTrunk.subportListR\vsubportList\x12\x90\x01\n" +
+	"\x11operational_state\x18\x04 \x01(\x0e2+.kubenfv.kubevim.common.v1.OperationalStateB6\xe2A\x01\x03\xfa\x8b\x19.\n" +
+	",IFA006 8.4.5.5 VirtualTrunk.operationalStateR\x10operationalState:;\xfa\x8b\x197\n" +
 	"5IFA006 8.4.5.5 VirtualTrunk, 8.4.4.6 VirtualTrunkData\"\x8f\x02\n" +
 	"\fTrunkSubport\x12+\n" +
 	"\n" +
 	"subport_id\x18\x01 \x01(\tB\f\xe2A\x01\x02\xbaH\x05r\x03\xb0\x01\x01R\tsubportId\x12g\n" +
 	"\x11segmentation_type\x18\x02 \x01(\x0e2,.kubenfv.kubevim.network.v1.SegmentationTypeB\f\xe2A\x01\x01\xbaH\x05\x82\x01\x02\x10\x01R\x10segmentationType\x12-\n" +
 	"\x0fsegmentation_id\x18\x03 \x01(\rB\x04\xe2A\x01\x02R\x0esegmentationId\x12:\n" +
-	"\x16is_automatic_discovery\x18\x04 \x01(\bB\x04\xe2A\x01\x01R\x14isAutomaticDiscovery\"\xab\b\n" +
-	"\x14CreateNetworkRequest\x12\x85\x01\n" +
-	"\anetwork\x18\x01 \x01(\v2#.kubenfv.kubevim.network.v1.NetworkBF\xe2A\x01\x02\xbaH\x03\xc8\x01\x01\xfaV9\n" +
+	"\x16is_automatic_discovery\x18\x04 \x01(\bB\x04\xe2A\x01\x01R\x14isAutomaticDiscovery\"\xb0\b\n" +
+	"\x14CreateNetworkRequest\x12\x86\x01\n" +
+	"\anetwork\x18\x01 \x01(\v2#.kubenfv.kubevim.network.v1.NetworkBG\xe2A\x01\x02\xbaH\x03\xc8\x01\x01\xfa\x8b\x199\n" +
 	"7IFA006 7.4.1.2.2 AllocateNetworkRequest.typeNetworkDataR\anetwork\x12.\n" +
 	"\n" +
-	"request_id\x18\x02 \x01(\tB\x0f\xe2A\x01\x01\xbaH\b\xd8\x01\x01r\x03\xb0\x01\x01R\trequestId\x12\xa1\x01\n" +
-	"\x0ereservation_id\x18\x03 \x01(\tBz\xe2A\x01\x01\xfaVs\n" +
-	"5IFA006 7.4.1.2.2 AllocateNetworkRequest.reservationId\x12:\b\x02\x1a6Kube-VIM has no reservations yet; a value is rejected.R\rreservationId\x12\xb2\x02\n" +
-	"%affinity_or_anti_affinity_constraints\x18\x04 \x03(\v2;.kubenfv.kubevim.common.v1.AffinityOrAntiAffinityConstraintB\xa2\x01\xe2A\x01\x01\xfaV\x9a\x01\n" +
-	"IIFA006 7.4.1.2.2 AllocateNetworkRequest.affinityOrAntiAffinityConstraints\x12M\b\x02\x1aINetwork placement constraints are not supported yet; a value is rejected.R!affinityOrAntiAffinityConstraints\x12\xc7\x01\n" +
-	"\x14location_constraints\x18\x05 \x01(\tB\x93\x01\xe2A\x01\x01\xfaV\x8b\x01\n" +
-	";IFA006 7.4.1.2.2 AllocateNetworkRequest.locationConstraints\x12L\b\x02\x1aHKube-VIM exposes one VIM per edge instead of zones; a value is rejected.R\x13locationConstraints\x12\xb7\x01\n" +
-	"\x11resource_group_id\x18\x06 \x01(\tB\x8a\x01\xe2A\x01\x01\xfaV\x82\x01\n" +
-	"7IFA006 7.4.1.2.2 AllocateNetworkRequest.resourceGroupId\x12G\b\x02\x1aCNo resource groups until Kube-VIM has tenancy; a value is rejected.R\x0fresourceGroupId\"\xa6\b\n" +
-	"\x13CreateSubnetRequest\x12\x81\x01\n" +
-	"\x06subnet\x18\x01 \x01(\v2\".kubenfv.kubevim.network.v1.SubnetBE\xe2A\x01\x02\xbaH\x03\xc8\x01\x01\xfaV8\n" +
+	"request_id\x18\x02 \x01(\tB\x0f\xe2A\x01\x01\xbaH\b\xd8\x01\x01r\x03\xb0\x01\x01R\trequestId\x12\xa2\x01\n" +
+	"\x0ereservation_id\x18\x03 \x01(\tB{\xe2A\x01\x01\xfa\x8b\x19s\n" +
+	"5IFA006 7.4.1.2.2 AllocateNetworkRequest.reservationId\x12:\b\x02\x1a6Kube-VIM has no reservations yet; a value is rejected.R\rreservationId\x12\xb3\x02\n" +
+	"%affinity_or_anti_affinity_constraints\x18\x04 \x03(\v2;.kubenfv.kubevim.common.v1.AffinityOrAntiAffinityConstraintB\xa3\x01\xe2A\x01\x01\xfa\x8b\x19\x9a\x01\n" +
+	"IIFA006 7.4.1.2.2 AllocateNetworkRequest.affinityOrAntiAffinityConstraints\x12M\b\x02\x1aINetwork placement constraints are not supported yet; a value is rejected.R!affinityOrAntiAffinityConstraints\x12\xc8\x01\n" +
+	"\x14location_constraints\x18\x05 \x01(\tB\x94\x01\xe2A\x01\x01\xfa\x8b\x19\x8b\x01\n" +
+	";IFA006 7.4.1.2.2 AllocateNetworkRequest.locationConstraints\x12L\b\x02\x1aHKube-VIM exposes one VIM per edge instead of zones; a value is rejected.R\x13locationConstraints\x12\xb8\x01\n" +
+	"\x11resource_group_id\x18\x06 \x01(\tB\x8b\x01\xe2A\x01\x01\xfa\x8b\x19\x82\x01\n" +
+	"7IFA006 7.4.1.2.2 AllocateNetworkRequest.resourceGroupId\x12G\b\x02\x1aCNo resource groups until Kube-VIM has tenancy; a value is rejected.R\x0fresourceGroupId\"\xab\b\n" +
+	"\x13CreateSubnetRequest\x12\x82\x01\n" +
+	"\x06subnet\x18\x01 \x01(\v2\".kubenfv.kubevim.network.v1.SubnetBF\xe2A\x01\x02\xbaH\x03\xc8\x01\x01\xfa\x8b\x198\n" +
 	"6IFA006 7.4.1.2.2 AllocateNetworkRequest.typeSubnetDataR\x06subnet\x12.\n" +
 	"\n" +
-	"request_id\x18\x02 \x01(\tB\x0f\xe2A\x01\x01\xbaH\b\xd8\x01\x01r\x03\xb0\x01\x01R\trequestId\x12\xa1\x01\n" +
-	"\x0ereservation_id\x18\x03 \x01(\tBz\xe2A\x01\x01\xfaVs\n" +
-	"5IFA006 7.4.1.2.2 AllocateNetworkRequest.reservationId\x12:\b\x02\x1a6Kube-VIM has no reservations yet; a value is rejected.R\rreservationId\x12\xb2\x02\n" +
-	"%affinity_or_anti_affinity_constraints\x18\x04 \x03(\v2;.kubenfv.kubevim.common.v1.AffinityOrAntiAffinityConstraintB\xa2\x01\xe2A\x01\x01\xfaV\x9a\x01\n" +
-	"IIFA006 7.4.1.2.2 AllocateNetworkRequest.affinityOrAntiAffinityConstraints\x12M\b\x02\x1aINetwork placement constraints are not supported yet; a value is rejected.R!affinityOrAntiAffinityConstraints\x12\xc7\x01\n" +
-	"\x14location_constraints\x18\x05 \x01(\tB\x93\x01\xe2A\x01\x01\xfaV\x8b\x01\n" +
-	";IFA006 7.4.1.2.2 AllocateNetworkRequest.locationConstraints\x12L\b\x02\x1aHKube-VIM exposes one VIM per edge instead of zones; a value is rejected.R\x13locationConstraints\x12\xb7\x01\n" +
-	"\x11resource_group_id\x18\x06 \x01(\tB\x8a\x01\xe2A\x01\x01\xfaV\x82\x01\n" +
-	"7IFA006 7.4.1.2.2 AllocateNetworkRequest.resourceGroupId\x12G\b\x02\x1aCNo resource groups until Kube-VIM has tenancy; a value is rejected.R\x0fresourceGroupId\"\xa3\b\n" +
-	"\x11CreatePortRequest\x12\x80\x01\n" +
-	"\x04port\x18\x01 \x01(\v2 .kubenfv.kubevim.network.v1.PortBJ\xe2A\x01\x02\xbaH\x03\xc8\x01\x01\xfaV=\n" +
+	"request_id\x18\x02 \x01(\tB\x0f\xe2A\x01\x01\xbaH\b\xd8\x01\x01r\x03\xb0\x01\x01R\trequestId\x12\xa2\x01\n" +
+	"\x0ereservation_id\x18\x03 \x01(\tB{\xe2A\x01\x01\xfa\x8b\x19s\n" +
+	"5IFA006 7.4.1.2.2 AllocateNetworkRequest.reservationId\x12:\b\x02\x1a6Kube-VIM has no reservations yet; a value is rejected.R\rreservationId\x12\xb3\x02\n" +
+	"%affinity_or_anti_affinity_constraints\x18\x04 \x03(\v2;.kubenfv.kubevim.common.v1.AffinityOrAntiAffinityConstraintB\xa3\x01\xe2A\x01\x01\xfa\x8b\x19\x9a\x01\n" +
+	"IIFA006 7.4.1.2.2 AllocateNetworkRequest.affinityOrAntiAffinityConstraints\x12M\b\x02\x1aINetwork placement constraints are not supported yet; a value is rejected.R!affinityOrAntiAffinityConstraints\x12\xc8\x01\n" +
+	"\x14location_constraints\x18\x05 \x01(\tB\x94\x01\xe2A\x01\x01\xfa\x8b\x19\x8b\x01\n" +
+	";IFA006 7.4.1.2.2 AllocateNetworkRequest.locationConstraints\x12L\b\x02\x1aHKube-VIM exposes one VIM per edge instead of zones; a value is rejected.R\x13locationConstraints\x12\xb8\x01\n" +
+	"\x11resource_group_id\x18\x06 \x01(\tB\x8b\x01\xe2A\x01\x01\xfa\x8b\x19\x82\x01\n" +
+	"7IFA006 7.4.1.2.2 AllocateNetworkRequest.resourceGroupId\x12G\b\x02\x1aCNo resource groups until Kube-VIM has tenancy; a value is rejected.R\x0fresourceGroupId\"\xa8\b\n" +
+	"\x11CreatePortRequest\x12\x81\x01\n" +
+	"\x04port\x18\x01 \x01(\v2 .kubenfv.kubevim.network.v1.PortBK\xe2A\x01\x02\xbaH\x03\xc8\x01\x01\xfa\x8b\x19=\n" +
 	";IFA006 7.4.1.2.2 AllocateNetworkRequest.typeNetworkPortDataR\x04port\x12.\n" +
 	"\n" +
-	"request_id\x18\x02 \x01(\tB\x0f\xe2A\x01\x01\xbaH\b\xd8\x01\x01r\x03\xb0\x01\x01R\trequestId\x12\xa1\x01\n" +
-	"\x0ereservation_id\x18\x03 \x01(\tBz\xe2A\x01\x01\xfaVs\n" +
-	"5IFA006 7.4.1.2.2 AllocateNetworkRequest.reservationId\x12:\b\x02\x1a6Kube-VIM has no reservations yet; a value is rejected.R\rreservationId\x12\xb2\x02\n" +
-	"%affinity_or_anti_affinity_constraints\x18\x04 \x03(\v2;.kubenfv.kubevim.common.v1.AffinityOrAntiAffinityConstraintB\xa2\x01\xe2A\x01\x01\xfaV\x9a\x01\n" +
-	"IIFA006 7.4.1.2.2 AllocateNetworkRequest.affinityOrAntiAffinityConstraints\x12M\b\x02\x1aINetwork placement constraints are not supported yet; a value is rejected.R!affinityOrAntiAffinityConstraints\x12\xc7\x01\n" +
-	"\x14location_constraints\x18\x05 \x01(\tB\x93\x01\xe2A\x01\x01\xfaV\x8b\x01\n" +
-	";IFA006 7.4.1.2.2 AllocateNetworkRequest.locationConstraints\x12L\b\x02\x1aHKube-VIM exposes one VIM per edge instead of zones; a value is rejected.R\x13locationConstraints\x12\xb7\x01\n" +
-	"\x11resource_group_id\x18\x06 \x01(\tB\x8a\x01\xe2A\x01\x01\xfaV\x82\x01\n" +
-	"7IFA006 7.4.1.2.2 AllocateNetworkRequest.resourceGroupId\x12G\b\x02\x1aCNo resource groups until Kube-VIM has tenancy; a value is rejected.R\x0fresourceGroupId\"\xa0\b\n" +
-	"\x12CreateTrunkRequest\x12}\n" +
-	"\x05trunk\x18\x01 \x01(\v2!.kubenfv.kubevim.network.v1.TrunkBD\xe2A\x01\x02\xbaH\x03\xc8\x01\x01\xfaV7\n" +
+	"request_id\x18\x02 \x01(\tB\x0f\xe2A\x01\x01\xbaH\b\xd8\x01\x01r\x03\xb0\x01\x01R\trequestId\x12\xa2\x01\n" +
+	"\x0ereservation_id\x18\x03 \x01(\tB{\xe2A\x01\x01\xfa\x8b\x19s\n" +
+	"5IFA006 7.4.1.2.2 AllocateNetworkRequest.reservationId\x12:\b\x02\x1a6Kube-VIM has no reservations yet; a value is rejected.R\rreservationId\x12\xb3\x02\n" +
+	"%affinity_or_anti_affinity_constraints\x18\x04 \x03(\v2;.kubenfv.kubevim.common.v1.AffinityOrAntiAffinityConstraintB\xa3\x01\xe2A\x01\x01\xfa\x8b\x19\x9a\x01\n" +
+	"IIFA006 7.4.1.2.2 AllocateNetworkRequest.affinityOrAntiAffinityConstraints\x12M\b\x02\x1aINetwork placement constraints are not supported yet; a value is rejected.R!affinityOrAntiAffinityConstraints\x12\xc8\x01\n" +
+	"\x14location_constraints\x18\x05 \x01(\tB\x94\x01\xe2A\x01\x01\xfa\x8b\x19\x8b\x01\n" +
+	";IFA006 7.4.1.2.2 AllocateNetworkRequest.locationConstraints\x12L\b\x02\x1aHKube-VIM exposes one VIM per edge instead of zones; a value is rejected.R\x13locationConstraints\x12\xb8\x01\n" +
+	"\x11resource_group_id\x18\x06 \x01(\tB\x8b\x01\xe2A\x01\x01\xfa\x8b\x19\x82\x01\n" +
+	"7IFA006 7.4.1.2.2 AllocateNetworkRequest.resourceGroupId\x12G\b\x02\x1aCNo resource groups until Kube-VIM has tenancy; a value is rejected.R\x0fresourceGroupId\"\xa5\b\n" +
+	"\x12CreateTrunkRequest\x12~\n" +
+	"\x05trunk\x18\x01 \x01(\v2!.kubenfv.kubevim.network.v1.TrunkBE\xe2A\x01\x02\xbaH\x03\xc8\x01\x01\xfa\x8b\x197\n" +
 	"5IFA006 7.4.1.2.2 AllocateNetworkRequest.typeTrunkDataR\x05trunk\x12.\n" +
 	"\n" +
-	"request_id\x18\x02 \x01(\tB\x0f\xe2A\x01\x01\xbaH\b\xd8\x01\x01r\x03\xb0\x01\x01R\trequestId\x12\xa1\x01\n" +
-	"\x0ereservation_id\x18\x03 \x01(\tBz\xe2A\x01\x01\xfaVs\n" +
-	"5IFA006 7.4.1.2.2 AllocateNetworkRequest.reservationId\x12:\b\x02\x1a6Kube-VIM has no reservations yet; a value is rejected.R\rreservationId\x12\xb2\x02\n" +
-	"%affinity_or_anti_affinity_constraints\x18\x04 \x03(\v2;.kubenfv.kubevim.common.v1.AffinityOrAntiAffinityConstraintB\xa2\x01\xe2A\x01\x01\xfaV\x9a\x01\n" +
-	"IIFA006 7.4.1.2.2 AllocateNetworkRequest.affinityOrAntiAffinityConstraints\x12M\b\x02\x1aINetwork placement constraints are not supported yet; a value is rejected.R!affinityOrAntiAffinityConstraints\x12\xc7\x01\n" +
-	"\x14location_constraints\x18\x05 \x01(\tB\x93\x01\xe2A\x01\x01\xfaV\x8b\x01\n" +
-	";IFA006 7.4.1.2.2 AllocateNetworkRequest.locationConstraints\x12L\b\x02\x1aHKube-VIM exposes one VIM per edge instead of zones; a value is rejected.R\x13locationConstraints\x12\xb7\x01\n" +
-	"\x11resource_group_id\x18\x06 \x01(\tB\x8a\x01\xe2A\x01\x01\xfaV\x82\x01\n" +
+	"request_id\x18\x02 \x01(\tB\x0f\xe2A\x01\x01\xbaH\b\xd8\x01\x01r\x03\xb0\x01\x01R\trequestId\x12\xa2\x01\n" +
+	"\x0ereservation_id\x18\x03 \x01(\tB{\xe2A\x01\x01\xfa\x8b\x19s\n" +
+	"5IFA006 7.4.1.2.2 AllocateNetworkRequest.reservationId\x12:\b\x02\x1a6Kube-VIM has no reservations yet; a value is rejected.R\rreservationId\x12\xb3\x02\n" +
+	"%affinity_or_anti_affinity_constraints\x18\x04 \x03(\v2;.kubenfv.kubevim.common.v1.AffinityOrAntiAffinityConstraintB\xa3\x01\xe2A\x01\x01\xfa\x8b\x19\x9a\x01\n" +
+	"IIFA006 7.4.1.2.2 AllocateNetworkRequest.affinityOrAntiAffinityConstraints\x12M\b\x02\x1aINetwork placement constraints are not supported yet; a value is rejected.R!affinityOrAntiAffinityConstraints\x12\xc8\x01\n" +
+	"\x14location_constraints\x18\x05 \x01(\tB\x94\x01\xe2A\x01\x01\xfa\x8b\x19\x8b\x01\n" +
+	";IFA006 7.4.1.2.2 AllocateNetworkRequest.locationConstraints\x12L\b\x02\x1aHKube-VIM exposes one VIM per edge instead of zones; a value is rejected.R\x13locationConstraints\x12\xb8\x01\n" +
+	"\x11resource_group_id\x18\x06 \x01(\tB\x8b\x01\xe2A\x01\x01\xfa\x8b\x19\x82\x01\n" +
 	"7IFA006 7.4.1.2.2 AllocateNetworkRequest.resourceGroupId\x12G\b\x02\x1aCNo resource groups until Kube-VIM has tenancy; a value is rejected.R\x0fresourceGroupId\"Q\n" +
 	"\x11GetNetworkRequest\x12<\n" +
-	"\x13network_resource_id\x18\x01 \x01(\tB\f\xe2A\x01\x02\xbaH\x05r\x03\xb0\x01\x01R\x11networkResourceId\"\xad\x01\n" +
-	"\x13ListNetworksRequest\x12X\n" +
-	"\x06filter\x18\x01 \x01(\tB@\xe2A\x01\x01\xfaV9\n" +
+	"\x13network_resource_id\x18\x01 \x01(\tB\f\xe2A\x01\x02\xbaH\x05r\x03\xb0\x01\x01R\x11networkResourceId\"\xae\x01\n" +
+	"\x13ListNetworksRequest\x12Y\n" +
+	"\x06filter\x18\x01 \x01(\tBA\xe2A\x01\x01\xfa\x8b\x199\n" +
 	"7IFA006 7.4.1.3.2 QueryNetworkRequest.queryNetworkFilterR\x06filter\x12<\n" +
 	"\x16nextpage_opaque_marker\x18\x02 \x01(\tB\x04\xe2A\x01\x01R\x16nextpage_opaque_marker\"\x8f\x01\n" +
 	"\x14ListNetworksResponse\x12?\n" +
@@ -2789,7 +2789,7 @@ const file_kubenfv_kubevim_network_v1_network_proto_rawDesc = "" +
 	"\x06update\x18\x02 \x01(\v2'.kubenfv.kubevim.network.v1.TrunkUpdateB\n" +
 	"\xe2A\x01\x02\xbaH\x03\xc8\x01\x01R\x06update\"=\n" +
 	"\x12DeleteTrunkRequest\x12'\n" +
-	"\btrunk_id\x18\x01 \x01(\tB\f\xe2A\x01\x02\xbaH\x05r\x03\xb0\x01\x01R\atrunkId\"\xe8\x04\n" +
+	"\btrunk_id\x18\x01 \x01(\tB\f\xe2A\x01\x02\xbaH\x05r\x03\xb0\x01\x01R\atrunkId\"\xe9\x04\n" +
 	"\rNetworkUpdate\x12D\n" +
 	"\x15network_resource_name\x18\x01 \x01(\tB\v\xe2A\x01\x01\xbaH\x04r\x02\x10\x01H\x00R\x13networkResourceName\x88\x01\x01\x12'\n" +
 	"\tbandwidth\x18\x02 \x01(\rB\x04\xe2A\x01\x01H\x01R\tbandwidth\x88\x01\x01\x12&\n" +
@@ -2798,13 +2798,13 @@ const file_kubenfv_kubevim_network_v1_network_proto_rawDesc = "" +
 	"\x17metadata_keys_to_remove\x18\x05 \x03(\tB\x04\xe2A\x01\x01R\x14metadataKeysToRemove\x1a;\n" +
 	"\rMetadataEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01:\xb4\x01\xfaV\xb0\x01\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01:\xb5\x01\xfa\x8b\x19\xb0\x01\n" +
 	"7IFA006 7.4.1.4.2 UpdateNetworkRequest.updateNetworkData\x12u\b\x03\x10\x01\x1aoOnly the updatable attributes, each optional; separation, provider network and segmentation need a new network.B\x18\n" +
 	"\x16_network_resource_nameB\f\n" +
 	"\n" +
 	"_bandwidthB\f\n" +
 	"\n" +
-	"_is_shared\"\xd8\x04\n" +
+	"_is_shared\"\xd9\x04\n" +
 	"\fSubnetUpdate\x12/\n" +
 	"\n" +
 	"gateway_ip\x18\x01 \x01(\tB\v\xe2A\x01\x01\xbaH\x04r\x02p\x01H\x00R\tgatewayIp\x88\x01\x01\x121\n" +
@@ -2814,10 +2814,10 @@ const file_kubenfv_kubevim_network_v1_network_proto_rawDesc = "" +
 	"\x17metadata_keys_to_remove\x18\x05 \x03(\tB\x04\xe2A\x01\x01R\x14metadataKeysToRemove\x1a;\n" +
 	"\rMetadataEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01:\x98\x01\xfaV\x94\x01\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01:\x99\x01\xfa\x8b\x19\x94\x01\n" +
 	"6IFA006 7.4.1.4.2 UpdateNetworkRequest.updateSubnetData\x12Z\b\x03\x10\x01\x1aTOnly the updatable attributes, each optional; IP version and CIDR need a new subnet.B\r\n" +
 	"\v_gateway_ipB\x12\n" +
-	"\x10_is_dhcp_enabled\"\xb1\x03\n" +
+	"\x10_is_dhcp_enabled\"\xb2\x03\n" +
 	"\n" +
 	"PortUpdate\x12'\n" +
 	"\tbandwidth\x18\x01 \x01(\rB\x04\xe2A\x01\x01H\x00R\tbandwidth\x88\x01\x01\x12V\n" +
@@ -2825,16 +2825,16 @@ const file_kubenfv_kubevim_network_v1_network_proto_rawDesc = "" +
 	"\x17metadata_keys_to_remove\x18\x03 \x03(\tB\x04\xe2A\x01\x01R\x14metadataKeysToRemove\x1a;\n" +
 	"\rMetadataEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01:\x99\x01\xfaV\x95\x01\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01:\x9a\x01\xfa\x8b\x19\x95\x01\n" +
 	"7IFA006 7.4.1.4.2 UpdateNetworkRequest.updateNetworkPort\x12Z\b\x03\x10\x01\x1aTOnly the updatable attributes, each optional; network and port type need a new port.B\f\n" +
 	"\n" +
-	"_bandwidth\"\x88\x03\n" +
-	"\vTrunkUpdate\x12\x85\x01\n" +
-	"\x0fsubports_to_add\x18\x01 \x03(\v2(.kubenfv.kubevim.network.v1.TrunkSubportB3\xe2A\x01\x01\xfaV,\n" +
-	"*IFA006 8.4.4.8 UpdateTrunkData.subportListR\rsubportsToAdd\x12n\n" +
-	"\x15subport_ids_to_remove\x18\x02 \x03(\tB;\xe2A\x01\x01\xbaH\n" +
-	"\x92\x01\a\"\x05r\x03\xb0\x01\x01\xfaV'\n" +
-	"%IFA006 8.4.4.8 UpdateTrunkData.portIdR\x12subportIdsToRemove:\x80\x01\xfaV}\n" +
+	"_bandwidth\"\x8b\x03\n" +
+	"\vTrunkUpdate\x12\x86\x01\n" +
+	"\x0fsubports_to_add\x18\x01 \x03(\v2(.kubenfv.kubevim.network.v1.TrunkSubportB4\xe2A\x01\x01\xfa\x8b\x19,\n" +
+	"*IFA006 8.4.4.8 UpdateTrunkData.subportListR\rsubportsToAdd\x12o\n" +
+	"\x15subport_ids_to_remove\x18\x02 \x03(\tB<\xe2A\x01\x01\xbaH\n" +
+	"\x92\x01\a\"\x05r\x03\xb0\x01\x01\xfa\x8b\x19'\n" +
+	"%IFA006 8.4.4.8 UpdateTrunkData.portIdR\x12subportIdsToRemove:\x81\x01\xfa\x8b\x19}\n" +
 	"\x1eIFA006 8.4.4.8 UpdateTrunkData\x12[\b\x03\x10\x01\x1aUAdds and removes subports in one request; IFA allows only one of the two per request.*r\n" +
 	"\vNetworkType\x12\x1c\n" +
 	"\x18NETWORK_TYPE_UNSPECIFIED\x10\x00\x12\x17\n" +
@@ -2850,131 +2850,131 @@ const file_kubenfv_kubevim_network_v1_network_proto_rawDesc = "" +
 	"\x16SEGMENTATION_TYPE_VLAN\x10\x01\x12\x1b\n" +
 	"\x17SEGMENTATION_TYPE_VXLAN\x10\x02\x12\x1b\n" +
 	"\x17SEGMENTATION_TYPE_NVGRE\x10\x03\x12\x1d\n" +
-	"\x19SEGMENTATION_TYPE_INHERIT\x10\x042\xc67\n" +
-	"\x0eNetworkService\x12\xac\x02\n" +
-	"\rCreateNetwork\x120.kubenfv.kubevim.network.v1.CreateNetworkRequest\x1a#.kubenfv.kubevim.network.v1.Network\"\xc3\x01\xfaP#J!\n" +
+	"\x19SEGMENTATION_TYPE_INHERIT\x10\x042\xdf7\n" +
+	"\x0eNetworkService\x12\xad\x02\n" +
+	"\rCreateNetwork\x120.kubenfv.kubevim.network.v1.CreateNetworkRequest\x1a#.kubenfv.kubevim.network.v1.Network\"\xc4\x01\xfaP#J!\n" +
 	"\x1f\n" +
 	"\x06oauth2\x12\x15\n" +
-	"\x13network:v1:allocate\xfaV{\n" +
-	"4IFA006 7.4.1.2 Allocate Virtualised Network Resource\x12C\b\x03\x10\x01\x1a=Allocate with networkResourceType NETWORK, as its own method.\x82\xd3\xe4\x93\x02\x19:\x01*\"\x14/network/v1/networks\x12\xac\x02\n" +
+	"\x13network:v1:allocate\xfa\x8b\x19{\n" +
+	"4IFA006 7.4.1.2 Allocate Virtualised Network Resource\x12C\b\x03\x10\x01\x1a=Allocate with networkResourceType NETWORK, as its own method.\x82\xd3\xe4\x93\x02\x19:\x01*\"\x14/network/v1/networks\x12\xad\x02\n" +
 	"\n" +
-	"GetNetwork\x12-.kubenfv.kubevim.network.v1.GetNetworkRequest\x1a#.kubenfv.kubevim.network.v1.Network\"\xc9\x01\xfaP J\x1e\n" +
+	"GetNetwork\x12-.kubenfv.kubevim.network.v1.GetNetworkRequest\x1a#.kubenfv.kubevim.network.v1.Network\"\xca\x01\xfaP J\x1e\n" +
 	"\x1c\n" +
 	"\x06oauth2\x12\x12\n" +
-	"\x10network:v1:query\xfaVq\n" +
-	"1IFA006 7.4.1.3 Query Virtualised Network Resource\x12<\b\x03\x10\x01\x1a6Query filtered by identifier, as a read by identifier.\x82\xd3\xe4\x93\x02,\x12*/network/v1/networks/{network_resource_id}\x12\xe8\x01\n" +
-	"\fListNetworks\x12/.kubenfv.kubevim.network.v1.ListNetworksRequest\x1a0.kubenfv.kubevim.network.v1.ListNetworksResponse\"u\xfaP J\x1e\n" +
+	"\x10network:v1:query\xfa\x8b\x19q\n" +
+	"1IFA006 7.4.1.3 Query Virtualised Network Resource\x12<\b\x03\x10\x01\x1a6Query filtered by identifier, as a read by identifier.\x82\xd3\xe4\x93\x02,\x12*/network/v1/networks/{network_resource_id}\x12\xe9\x01\n" +
+	"\fListNetworks\x12/.kubenfv.kubevim.network.v1.ListNetworksRequest\x1a0.kubenfv.kubevim.network.v1.ListNetworksResponse\"v\xfaP J\x1e\n" +
 	"\x1c\n" +
 	"\x06oauth2\x12\x12\n" +
-	"\x10network:v1:query\xfaV3\n" +
-	"1IFA006 7.4.1.3 Query Virtualised Network Resource\x82\xd3\xe4\x93\x02\x16\x12\x14/network/v1/networks\x12\xb3\x02\n" +
-	"\rUpdateNetwork\x120.kubenfv.kubevim.network.v1.UpdateNetworkRequest\x1a#.kubenfv.kubevim.network.v1.Network\"\xca\x01\xfaP!J\x1f\n" +
+	"\x10network:v1:query\xfa\x8b\x193\n" +
+	"1IFA006 7.4.1.3 Query Virtualised Network Resource\x82\xd3\xe4\x93\x02\x16\x12\x14/network/v1/networks\x12\xb4\x02\n" +
+	"\rUpdateNetwork\x120.kubenfv.kubevim.network.v1.UpdateNetworkRequest\x1a#.kubenfv.kubevim.network.v1.Network\"\xcb\x01\xfaP!J\x1f\n" +
 	"\x1d\n" +
 	"\x06oauth2\x12\x13\n" +
-	"\x11network:v1:update\xfaVi\n" +
-	"2IFA006 7.4.1.4 Update Virtualised Network Resource\x123\b\x03\x10\x01\x1a-Only the attributes set in the update change.\x82\xd3\xe4\x93\x024:\x06update2*/network/v1/networks/{network_resource_id}\x12\xcb\x02\n" +
-	"\rDeleteNetwork\x120.kubenfv.kubevim.network.v1.DeleteNetworkRequest\x1a\x16.google.protobuf.Empty\"\xef\x01\xfaP$J\"\n" +
+	"\x11network:v1:update\xfa\x8b\x19i\n" +
+	"2IFA006 7.4.1.4 Update Virtualised Network Resource\x123\b\x03\x10\x01\x1a-Only the attributes set in the update change.\x82\xd3\xe4\x93\x024:\x06update2*/network/v1/networks/{network_resource_id}\x12\xcc\x02\n" +
+	"\rDeleteNetwork\x120.kubenfv.kubevim.network.v1.DeleteNetworkRequest\x1a\x16.google.protobuf.Empty\"\xf0\x01\xfaP$J\"\n" +
 	" \n" +
 	"\x06oauth2\x12\x16\n" +
-	"\x14network:v1:terminate\xfaV\x92\x01\n" +
-	"5IFA006 7.4.1.5 Terminate Virtualised Network Resource\x12Y\b\x03\x10\x01\x1aSOne resource per request (the path identifies it) instead of a list of identifiers.\x82\xd3\xe4\x93\x02,**/network/v1/networks/{network_resource_id}\x12\xa7\x02\n" +
-	"\fCreateSubnet\x12/.kubenfv.kubevim.network.v1.CreateSubnetRequest\x1a\".kubenfv.kubevim.network.v1.Subnet\"\xc1\x01\xfaP#J!\n" +
+	"\x14network:v1:terminate\xfa\x8b\x19\x92\x01\n" +
+	"5IFA006 7.4.1.5 Terminate Virtualised Network Resource\x12Y\b\x03\x10\x01\x1aSOne resource per request (the path identifies it) instead of a list of identifiers.\x82\xd3\xe4\x93\x02,**/network/v1/networks/{network_resource_id}\x12\xa8\x02\n" +
+	"\fCreateSubnet\x12/.kubenfv.kubevim.network.v1.CreateSubnetRequest\x1a\".kubenfv.kubevim.network.v1.Subnet\"\xc2\x01\xfaP#J!\n" +
 	"\x1f\n" +
 	"\x06oauth2\x12\x15\n" +
-	"\x13network:v1:allocate\xfaVz\n" +
-	"4IFA006 7.4.1.2 Allocate Virtualised Network Resource\x12B\b\x03\x10\x01\x1a<Allocate with networkResourceType SUBNET, as its own method.\x82\xd3\xe4\x93\x02\x18:\x01*\"\x13/network/v1/subnets\x12\x9e\x02\n" +
-	"\tGetSubnet\x12,.kubenfv.kubevim.network.v1.GetSubnetRequest\x1a\".kubenfv.kubevim.network.v1.Subnet\"\xbe\x01\xfaP J\x1e\n" +
+	"\x13network:v1:allocate\xfa\x8b\x19z\n" +
+	"4IFA006 7.4.1.2 Allocate Virtualised Network Resource\x12B\b\x03\x10\x01\x1a<Allocate with networkResourceType SUBNET, as its own method.\x82\xd3\xe4\x93\x02\x18:\x01*\"\x13/network/v1/subnets\x12\x9f\x02\n" +
+	"\tGetSubnet\x12,.kubenfv.kubevim.network.v1.GetSubnetRequest\x1a\".kubenfv.kubevim.network.v1.Subnet\"\xbf\x01\xfaP J\x1e\n" +
 	"\x1c\n" +
 	"\x06oauth2\x12\x12\n" +
-	"\x10network:v1:query\xfaVq\n" +
-	"1IFA006 7.4.1.3 Query Virtualised Network Resource\x12<\b\x03\x10\x01\x1a6Query filtered by identifier, as a read by identifier.\x82\xd3\xe4\x93\x02!\x12\x1f/network/v1/subnets/{subnet_id}\x12\xb6\x02\n" +
-	"\vListSubnets\x12..kubenfv.kubevim.network.v1.ListSubnetsRequest\x1a/.kubenfv.kubevim.network.v1.ListSubnetsResponse\"\xc5\x01\xfaP J\x1e\n" +
+	"\x10network:v1:query\xfa\x8b\x19q\n" +
+	"1IFA006 7.4.1.3 Query Virtualised Network Resource\x12<\b\x03\x10\x01\x1a6Query filtered by identifier, as a read by identifier.\x82\xd3\xe4\x93\x02!\x12\x1f/network/v1/subnets/{subnet_id}\x12\xb7\x02\n" +
+	"\vListSubnets\x12..kubenfv.kubevim.network.v1.ListSubnetsRequest\x1a/.kubenfv.kubevim.network.v1.ListSubnetsResponse\"\xc6\x01\xfaP J\x1e\n" +
 	"\x1c\n" +
 	"\x06oauth2\x12\x12\n" +
-	"\x10network:v1:query\xfaV\x83\x01\n" +
-	"1IFA006 7.4.1.3 Query Virtualised Network Resource\x12N\b\x03\x10\x01\x1aHQuery per resource type; IFA returns networks and trunks from one query.\x82\xd3\xe4\x93\x02\x15\x12\x13/network/v1/subnets\x12\xa5\x02\n" +
-	"\fUpdateSubnet\x12/.kubenfv.kubevim.network.v1.UpdateSubnetRequest\x1a\".kubenfv.kubevim.network.v1.Subnet\"\xbf\x01\xfaP!J\x1f\n" +
+	"\x10network:v1:query\xfa\x8b\x19\x83\x01\n" +
+	"1IFA006 7.4.1.3 Query Virtualised Network Resource\x12N\b\x03\x10\x01\x1aHQuery per resource type; IFA returns networks and trunks from one query.\x82\xd3\xe4\x93\x02\x15\x12\x13/network/v1/subnets\x12\xa6\x02\n" +
+	"\fUpdateSubnet\x12/.kubenfv.kubevim.network.v1.UpdateSubnetRequest\x1a\".kubenfv.kubevim.network.v1.Subnet\"\xc0\x01\xfaP!J\x1f\n" +
 	"\x1d\n" +
 	"\x06oauth2\x12\x13\n" +
-	"\x11network:v1:update\xfaVi\n" +
-	"2IFA006 7.4.1.4 Update Virtualised Network Resource\x123\b\x03\x10\x01\x1a-Only the attributes set in the update change.\x82\xd3\xe4\x93\x02):\x06update2\x1f/network/v1/subnets/{subnet_id}\x12\xbe\x02\n" +
-	"\fDeleteSubnet\x12/.kubenfv.kubevim.network.v1.DeleteSubnetRequest\x1a\x16.google.protobuf.Empty\"\xe4\x01\xfaP$J\"\n" +
+	"\x11network:v1:update\xfa\x8b\x19i\n" +
+	"2IFA006 7.4.1.4 Update Virtualised Network Resource\x123\b\x03\x10\x01\x1a-Only the attributes set in the update change.\x82\xd3\xe4\x93\x02):\x06update2\x1f/network/v1/subnets/{subnet_id}\x12\xbf\x02\n" +
+	"\fDeleteSubnet\x12/.kubenfv.kubevim.network.v1.DeleteSubnetRequest\x1a\x16.google.protobuf.Empty\"\xe5\x01\xfaP$J\"\n" +
 	" \n" +
 	"\x06oauth2\x12\x16\n" +
-	"\x14network:v1:terminate\xfaV\x92\x01\n" +
-	"5IFA006 7.4.1.5 Terminate Virtualised Network Resource\x12Y\b\x03\x10\x01\x1aSOne resource per request (the path identifies it) instead of a list of identifiers.\x82\xd3\xe4\x93\x02!*\x1f/network/v1/subnets/{subnet_id}\x12\xa6\x02\n" +
+	"\x14network:v1:terminate\xfa\x8b\x19\x92\x01\n" +
+	"5IFA006 7.4.1.5 Terminate Virtualised Network Resource\x12Y\b\x03\x10\x01\x1aSOne resource per request (the path identifies it) instead of a list of identifiers.\x82\xd3\xe4\x93\x02!*\x1f/network/v1/subnets/{subnet_id}\x12\xa7\x02\n" +
 	"\n" +
-	"CreatePort\x12-.kubenfv.kubevim.network.v1.CreatePortRequest\x1a .kubenfv.kubevim.network.v1.Port\"\xc6\x01\xfaP#J!\n" +
+	"CreatePort\x12-.kubenfv.kubevim.network.v1.CreatePortRequest\x1a .kubenfv.kubevim.network.v1.Port\"\xc7\x01\xfaP#J!\n" +
 	"\x1f\n" +
 	"\x06oauth2\x12\x15\n" +
-	"\x13network:v1:allocate\xfaV\x80\x01\n" +
-	"4IFA006 7.4.1.2 Allocate Virtualised Network Resource\x12H\b\x03\x10\x01\x1aBAllocate with networkResourceType NETWORK_PORT, as its own method.\x82\xd3\xe4\x93\x02\x16:\x01*\"\x11/network/v1/ports\x12\x94\x02\n" +
-	"\aGetPort\x12*.kubenfv.kubevim.network.v1.GetPortRequest\x1a .kubenfv.kubevim.network.v1.Port\"\xba\x01\xfaP J\x1e\n" +
+	"\x13network:v1:allocate\xfa\x8b\x19\x80\x01\n" +
+	"4IFA006 7.4.1.2 Allocate Virtualised Network Resource\x12H\b\x03\x10\x01\x1aBAllocate with networkResourceType NETWORK_PORT, as its own method.\x82\xd3\xe4\x93\x02\x16:\x01*\"\x11/network/v1/ports\x12\x95\x02\n" +
+	"\aGetPort\x12*.kubenfv.kubevim.network.v1.GetPortRequest\x1a .kubenfv.kubevim.network.v1.Port\"\xbb\x01\xfaP J\x1e\n" +
 	"\x1c\n" +
 	"\x06oauth2\x12\x12\n" +
-	"\x10network:v1:query\xfaVq\n" +
-	"1IFA006 7.4.1.3 Query Virtualised Network Resource\x12<\b\x03\x10\x01\x1a6Query filtered by identifier, as a read by identifier.\x82\xd3\xe4\x93\x02\x1d\x12\x1b/network/v1/ports/{port_id}\x12\xae\x02\n" +
-	"\tListPorts\x12,.kubenfv.kubevim.network.v1.ListPortsRequest\x1a-.kubenfv.kubevim.network.v1.ListPortsResponse\"\xc3\x01\xfaP J\x1e\n" +
+	"\x10network:v1:query\xfa\x8b\x19q\n" +
+	"1IFA006 7.4.1.3 Query Virtualised Network Resource\x12<\b\x03\x10\x01\x1a6Query filtered by identifier, as a read by identifier.\x82\xd3\xe4\x93\x02\x1d\x12\x1b/network/v1/ports/{port_id}\x12\xaf\x02\n" +
+	"\tListPorts\x12,.kubenfv.kubevim.network.v1.ListPortsRequest\x1a-.kubenfv.kubevim.network.v1.ListPortsResponse\"\xc4\x01\xfaP J\x1e\n" +
 	"\x1c\n" +
 	"\x06oauth2\x12\x12\n" +
-	"\x10network:v1:query\xfaV\x83\x01\n" +
-	"1IFA006 7.4.1.3 Query Virtualised Network Resource\x12N\b\x03\x10\x01\x1aHQuery per resource type; IFA returns networks and trunks from one query.\x82\xd3\xe4\x93\x02\x13\x12\x11/network/v1/ports\x12\x9b\x02\n" +
+	"\x10network:v1:query\xfa\x8b\x19\x83\x01\n" +
+	"1IFA006 7.4.1.3 Query Virtualised Network Resource\x12N\b\x03\x10\x01\x1aHQuery per resource type; IFA returns networks and trunks from one query.\x82\xd3\xe4\x93\x02\x13\x12\x11/network/v1/ports\x12\x9c\x02\n" +
 	"\n" +
-	"UpdatePort\x12-.kubenfv.kubevim.network.v1.UpdatePortRequest\x1a .kubenfv.kubevim.network.v1.Port\"\xbb\x01\xfaP!J\x1f\n" +
+	"UpdatePort\x12-.kubenfv.kubevim.network.v1.UpdatePortRequest\x1a .kubenfv.kubevim.network.v1.Port\"\xbc\x01\xfaP!J\x1f\n" +
 	"\x1d\n" +
 	"\x06oauth2\x12\x13\n" +
-	"\x11network:v1:update\xfaVi\n" +
-	"2IFA006 7.4.1.4 Update Virtualised Network Resource\x123\b\x03\x10\x01\x1a-Only the attributes set in the update change.\x82\xd3\xe4\x93\x02%:\x06update2\x1b/network/v1/ports/{port_id}\x12\xb6\x02\n" +
+	"\x11network:v1:update\xfa\x8b\x19i\n" +
+	"2IFA006 7.4.1.4 Update Virtualised Network Resource\x123\b\x03\x10\x01\x1a-Only the attributes set in the update change.\x82\xd3\xe4\x93\x02%:\x06update2\x1b/network/v1/ports/{port_id}\x12\xb7\x02\n" +
 	"\n" +
-	"DeletePort\x12-.kubenfv.kubevim.network.v1.DeletePortRequest\x1a\x16.google.protobuf.Empty\"\xe0\x01\xfaP$J\"\n" +
+	"DeletePort\x12-.kubenfv.kubevim.network.v1.DeletePortRequest\x1a\x16.google.protobuf.Empty\"\xe1\x01\xfaP$J\"\n" +
 	" \n" +
 	"\x06oauth2\x12\x16\n" +
-	"\x14network:v1:terminate\xfaV\x92\x01\n" +
-	"5IFA006 7.4.1.5 Terminate Virtualised Network Resource\x12Y\b\x03\x10\x01\x1aSOne resource per request (the path identifies it) instead of a list of identifiers.\x82\xd3\xe4\x93\x02\x1d*\x1b/network/v1/ports/{port_id}\x12\xa2\x02\n" +
-	"\vCreateTrunk\x12..kubenfv.kubevim.network.v1.CreateTrunkRequest\x1a!.kubenfv.kubevim.network.v1.Trunk\"\xbf\x01\xfaP#J!\n" +
+	"\x14network:v1:terminate\xfa\x8b\x19\x92\x01\n" +
+	"5IFA006 7.4.1.5 Terminate Virtualised Network Resource\x12Y\b\x03\x10\x01\x1aSOne resource per request (the path identifies it) instead of a list of identifiers.\x82\xd3\xe4\x93\x02\x1d*\x1b/network/v1/ports/{port_id}\x12\xa3\x02\n" +
+	"\vCreateTrunk\x12..kubenfv.kubevim.network.v1.CreateTrunkRequest\x1a!.kubenfv.kubevim.network.v1.Trunk\"\xc0\x01\xfaP#J!\n" +
 	"\x1f\n" +
 	"\x06oauth2\x12\x15\n" +
-	"\x13network:v1:allocate\xfaVy\n" +
-	"4IFA006 7.4.1.2 Allocate Virtualised Network Resource\x12A\b\x03\x10\x01\x1a;Allocate with networkResourceType TRUNK, as its own method.\x82\xd3\xe4\x93\x02\x17:\x01*\"\x12/network/v1/trunks\x12\x99\x02\n" +
-	"\bGetTrunk\x12+.kubenfv.kubevim.network.v1.GetTrunkRequest\x1a!.kubenfv.kubevim.network.v1.Trunk\"\xbc\x01\xfaP J\x1e\n" +
+	"\x13network:v1:allocate\xfa\x8b\x19y\n" +
+	"4IFA006 7.4.1.2 Allocate Virtualised Network Resource\x12A\b\x03\x10\x01\x1a;Allocate with networkResourceType TRUNK, as its own method.\x82\xd3\xe4\x93\x02\x17:\x01*\"\x12/network/v1/trunks\x12\x9a\x02\n" +
+	"\bGetTrunk\x12+.kubenfv.kubevim.network.v1.GetTrunkRequest\x1a!.kubenfv.kubevim.network.v1.Trunk\"\xbd\x01\xfaP J\x1e\n" +
 	"\x1c\n" +
 	"\x06oauth2\x12\x12\n" +
-	"\x10network:v1:query\xfaVq\n" +
-	"1IFA006 7.4.1.3 Query Virtualised Network Resource\x12<\b\x03\x10\x01\x1a6Query filtered by identifier, as a read by identifier.\x82\xd3\xe4\x93\x02\x1f\x12\x1d/network/v1/trunks/{trunk_id}\x12\xb2\x02\n" +
+	"\x10network:v1:query\xfa\x8b\x19q\n" +
+	"1IFA006 7.4.1.3 Query Virtualised Network Resource\x12<\b\x03\x10\x01\x1a6Query filtered by identifier, as a read by identifier.\x82\xd3\xe4\x93\x02\x1f\x12\x1d/network/v1/trunks/{trunk_id}\x12\xb3\x02\n" +
 	"\n" +
-	"ListTrunks\x12-.kubenfv.kubevim.network.v1.ListTrunksRequest\x1a..kubenfv.kubevim.network.v1.ListTrunksResponse\"\xc4\x01\xfaP J\x1e\n" +
+	"ListTrunks\x12-.kubenfv.kubevim.network.v1.ListTrunksRequest\x1a..kubenfv.kubevim.network.v1.ListTrunksResponse\"\xc5\x01\xfaP J\x1e\n" +
 	"\x1c\n" +
 	"\x06oauth2\x12\x12\n" +
-	"\x10network:v1:query\xfaV\x83\x01\n" +
-	"1IFA006 7.4.1.3 Query Virtualised Network Resource\x12N\b\x03\x10\x01\x1aHQuery per resource type; IFA returns networks and trunks from one query.\x82\xd3\xe4\x93\x02\x14\x12\x12/network/v1/trunks\x12\xa0\x02\n" +
-	"\vUpdateTrunk\x12..kubenfv.kubevim.network.v1.UpdateTrunkRequest\x1a!.kubenfv.kubevim.network.v1.Trunk\"\xbd\x01\xfaP!J\x1f\n" +
+	"\x10network:v1:query\xfa\x8b\x19\x83\x01\n" +
+	"1IFA006 7.4.1.3 Query Virtualised Network Resource\x12N\b\x03\x10\x01\x1aHQuery per resource type; IFA returns networks and trunks from one query.\x82\xd3\xe4\x93\x02\x14\x12\x12/network/v1/trunks\x12\xa1\x02\n" +
+	"\vUpdateTrunk\x12..kubenfv.kubevim.network.v1.UpdateTrunkRequest\x1a!.kubenfv.kubevim.network.v1.Trunk\"\xbe\x01\xfaP!J\x1f\n" +
 	"\x1d\n" +
 	"\x06oauth2\x12\x13\n" +
-	"\x11network:v1:update\xfaVi\n" +
-	"2IFA006 7.4.1.4 Update Virtualised Network Resource\x123\b\x03\x10\x01\x1a-Only the attributes set in the update change.\x82\xd3\xe4\x93\x02':\x06update2\x1d/network/v1/trunks/{trunk_id}\x12\xba\x02\n" +
-	"\vDeleteTrunk\x12..kubenfv.kubevim.network.v1.DeleteTrunkRequest\x1a\x16.google.protobuf.Empty\"\xe2\x01\xfaP$J\"\n" +
+	"\x11network:v1:update\xfa\x8b\x19i\n" +
+	"2IFA006 7.4.1.4 Update Virtualised Network Resource\x123\b\x03\x10\x01\x1a-Only the attributes set in the update change.\x82\xd3\xe4\x93\x02':\x06update2\x1d/network/v1/trunks/{trunk_id}\x12\xbb\x02\n" +
+	"\vDeleteTrunk\x12..kubenfv.kubevim.network.v1.DeleteTrunkRequest\x1a\x16.google.protobuf.Empty\"\xe3\x01\xfaP$J\"\n" +
 	" \n" +
 	"\x06oauth2\x12\x16\n" +
-	"\x14network:v1:terminate\xfaV\x92\x01\n" +
-	"5IFA006 7.4.1.5 Terminate Virtualised Network Resource\x12Y\b\x03\x10\x01\x1aSOne resource per request (the path identifies it) instead of a list of identifiers.\x82\xd3\xe4\x93\x02\x1f*\x1d/network/v1/trunks/{trunk_id}\x12\xa6\x02\n" +
-	"\x13CreateAffinityGroup\x125.kubenfv.kubevim.common.v1.CreateAffinityGroupRequest\x1a(.kubenfv.kubevim.common.v1.AffinityGroup\"\xad\x01\xfaP#J!\n" +
+	"\x14network:v1:terminate\xfa\x8b\x19\x92\x01\n" +
+	"5IFA006 7.4.1.5 Terminate Virtualised Network Resource\x12Y\b\x03\x10\x01\x1aSOne resource per request (the path identifies it) instead of a list of identifiers.\x82\xd3\xe4\x93\x02\x1f*\x1d/network/v1/trunks/{trunk_id}\x12\xa7\x02\n" +
+	"\x13CreateAffinityGroup\x125.kubenfv.kubevim.common.v1.CreateAffinityGroupRequest\x1a(.kubenfv.kubevim.common.v1.AffinityGroup\"\xae\x01\xfaP#J!\n" +
 	"\x1f\n" +
 	"\x06oauth2\x12\x15\n" +
-	"\x13network:v1:allocate\xfaV_\n" +
-	"]IFA006 7.4.1.6 Create Virtualised Network Resource Affinity Or AntiAffinity Constraints Group\x82\xd3\xe4\x93\x02\x1f:\x01*\"\x1a/network/v1/affinityGroups\x12\xfb\x01\n" +
-	"\x10GetAffinityGroup\x122.kubenfv.kubevim.common.v1.GetAffinityGroupRequest\x1a(.kubenfv.kubevim.common.v1.AffinityGroup\"\x88\x01\xfaP J\x1e\n" +
+	"\x13network:v1:allocate\xfa\x8b\x19_\n" +
+	"]IFA006 7.4.1.6 Create Virtualised Network Resource Affinity Or AntiAffinity Constraints Group\x82\xd3\xe4\x93\x02\x1f:\x01*\"\x1a/network/v1/affinityGroups\x12\xfc\x01\n" +
+	"\x10GetAffinityGroup\x122.kubenfv.kubevim.common.v1.GetAffinityGroupRequest\x1a(.kubenfv.kubevim.common.v1.AffinityGroup\"\x89\x01\xfaP J\x1e\n" +
 	"\x1c\n" +
 	"\x06oauth2\x12\x12\n" +
-	"\x10network:v1:query\xfaV5\x123\b\x01\x10\x01\x1a-IFA can create groups but not read them back.\x82\xd3\xe4\x93\x02'\x12%/network/v1/affinityGroups/{group_id}\x12\xfb\x01\n" +
-	"\x12ListAffinityGroups\x124.kubenfv.kubevim.common.v1.ListAffinityGroupsRequest\x1a5.kubenfv.kubevim.common.v1.ListAffinityGroupsResponse\"x\xfaP J\x1e\n" +
+	"\x10network:v1:query\xfa\x8b\x195\x123\b\x01\x10\x01\x1a-IFA can create groups but not read them back.\x82\xd3\xe4\x93\x02'\x12%/network/v1/affinityGroups/{group_id}\x12\xfc\x01\n" +
+	"\x12ListAffinityGroups\x124.kubenfv.kubevim.common.v1.ListAffinityGroupsRequest\x1a5.kubenfv.kubevim.common.v1.ListAffinityGroupsResponse\"y\xfaP J\x1e\n" +
 	"\x1c\n" +
 	"\x06oauth2\x12\x12\n" +
-	"\x10network:v1:query\xfaV0\x12.\b\x01\x10\x01\x1a(IFA can create groups but not list them.\x82\xd3\xe4\x93\x02\x1c\x12\x1a/network/v1/affinityGroups\x12\xf0\x01\n" +
-	"\x13DeleteAffinityGroup\x125.kubenfv.kubevim.common.v1.DeleteAffinityGroupRequest\x1a\x16.google.protobuf.Empty\"\x89\x01\xfaP$J\"\n" +
+	"\x10network:v1:query\xfa\x8b\x190\x12.\b\x01\x10\x01\x1a(IFA can create groups but not list them.\x82\xd3\xe4\x93\x02\x1c\x12\x1a/network/v1/affinityGroups\x12\xf1\x01\n" +
+	"\x13DeleteAffinityGroup\x125.kubenfv.kubevim.common.v1.DeleteAffinityGroupRequest\x1a\x16.google.protobuf.Empty\"\x8a\x01\xfaP$J\"\n" +
 	" \n" +
 	"\x06oauth2\x12\x16\n" +
-	"\x14network:v1:terminate\xfaV2\x120\b\x01\x10\x01\x1a*IFA can create groups but not delete them.\x82\xd3\xe4\x93\x02'*%/network/v1/affinityGroups/{group_id}\x1aD\xfaVA\n" +
-	"?IFA006 7.4.1 Virtualised Network Resources Management InterfaceB\x91\x05\xfaP\x81\x03\n" +
+	"\x14network:v1:terminate\xfa\x8b\x192\x120\b\x01\x10\x01\x1a*IFA can create groups but not delete them.\x82\xd3\xe4\x93\x02'*%/network/v1/affinityGroups/{group_id}\x1aE\xfa\x8b\x19A\n" +
+	"?IFA006 7.4.1 Virtualised Network Resources Management InterfaceB\x92\x05\xfaP\x81\x03\n" +
 	")\n" +
 	" Kube-VIM virtualised network API:\x051.0.02\xd3\x02\n" +
 	"\xd0\x02\n" +
@@ -2982,7 +2982,7 @@ const file_kubenfv_kubevim_network_v1_network_proto_rawDesc = "" +
 	"\x13network:v1:allocate\x12\x1aAllocate network resources\"+\n" +
 	"\x10network:v1:query\x12\x17Query network resources\"3\n" +
 	"\x14network:v1:terminate\x12\x1bTerminate network resources\"-\n" +
-	"\x11network:v1:update\x12\x18Update network resources\xfaV\x10\n" +
+	"\x11network:v1:update\x12\x18Update network resources\xfa\x8b\x19\x10\n" +
 	"\anetwork\x12\x051.0.0\n" +
 	"\x1ecom.kubenfv.kubevim.network.v1B\fNetworkProtoP\x01Z>github.com/kube-nfv/kube-vim-api/pkg/apis/network/v1;networkv1\xa2\x02\x03KKN\xaa\x02\x1aKubenfv.Kubevim.Network.V1\xca\x02\x1aKubenfv\\Kubevim\\Network\\V1\xe2\x02&Kubenfv\\Kubevim\\Network\\V1\\GPBMetadata\xea\x02\x1dKubenfv::Kubevim::Network::V1b\x06proto3"
 

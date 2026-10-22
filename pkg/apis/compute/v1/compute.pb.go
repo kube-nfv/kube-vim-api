@@ -2104,281 +2104,281 @@ var File_kubenfv_kubevim_compute_v1_compute_proto protoreflect.FileDescriptor
 
 const file_kubenfv_kubevim_compute_v1_compute_proto_rawDesc = "" +
 	"\n" +
-	"(kubenfv/kubevim/compute/v1/compute.proto\x12\x1akubenfv.kubevim.compute.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a(kubenfv/kubevim/common/v1/affinity.proto\x1a&kubenfv/kubevim/common/v1/common.proto\x1a&kubenfv/kubevim/common/v1/volume.proto\x1a(kubenfv/kubevim/flavour/v1/flavour.proto\x1a(kubenfv/kubevim/options/v1/options.proto\x1a.protoc-gen-openapiv3/options/annotations.proto\"\xa6\x12\n" +
-	"\aCompute\x12O\n" +
+	"(kubenfv/kubevim/compute/v1/compute.proto\x12\x1akubenfv.kubevim.compute.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a(kubenfv/kubevim/common/v1/affinity.proto\x1a&kubenfv/kubevim/common/v1/common.proto\x1a&kubenfv/kubevim/common/v1/volume.proto\x1a(kubenfv/kubevim/flavour/v1/flavour.proto\x1a(kubenfv/kubevim/options/v1/options.proto\x1a.protoc-gen-openapiv3/options/annotations.proto\"\xb7\x12\n" +
+	"\aCompute\x12P\n" +
 	"\n" +
-	"compute_id\x18\x01 \x01(\tB0\xe2A\x01\x03\xfaV)\n" +
-	"'IFA006 8.4.3.2 VirtualCompute.computeIdR\tcomputeId\x12U\n" +
-	"\fcompute_name\x18\x02 \x01(\tB2\xe2A\x01\x01\xfaV+\n" +
-	")IFA006 8.4.3.2 VirtualCompute.computeNameR\vcomputeName\x12W\n" +
+	"compute_id\x18\x01 \x01(\tB1\xe2A\x01\x03\xfa\x8b\x19)\n" +
+	"'IFA006 8.4.3.2 VirtualCompute.computeIdR\tcomputeId\x12V\n" +
+	"\fcompute_name\x18\x02 \x01(\tB3\xe2A\x01\x01\xfa\x8b\x19+\n" +
+	")IFA006 8.4.3.2 VirtualCompute.computeNameR\vcomputeName\x12X\n" +
 	"\n" +
-	"flavour_id\x18\x03 \x01(\tB8\xe2A\x01\x02\xbaH\x05r\x03\xb0\x01\x01\xfaV)\n" +
-	"'IFA006 8.4.3.2 VirtualCompute.flavourIdR\tflavourId\x12\xe4\x01\n" +
-	"\x17acceleration_capability\x18\x04 \x03(\tB\xaa\x01\xe2A\x01\x03\xfaV\xa2\x01\n" +
-	"4IFA006 8.4.3.2 VirtualCompute.accelerationCapability\x12j\b\x03\x10\x01\x1adIFA leaves the content unspecified; each entry names a device exposed by a Kubernetes device plugin.R\x16accelerationCapability\x12z\n" +
-	"\vvirtual_cpu\x18\x05 \x01(\v2&.kubenfv.kubevim.compute.v1.VirtualCpuB1\xe2A\x01\x03\xfaV*\n" +
+	"flavour_id\x18\x03 \x01(\tB9\xe2A\x01\x02\xbaH\x05r\x03\xb0\x01\x01\xfa\x8b\x19)\n" +
+	"'IFA006 8.4.3.2 VirtualCompute.flavourIdR\tflavourId\x12\xe5\x01\n" +
+	"\x17acceleration_capability\x18\x04 \x03(\tB\xab\x01\xe2A\x01\x03\xfa\x8b\x19\xa2\x01\n" +
+	"4IFA006 8.4.3.2 VirtualCompute.accelerationCapability\x12j\b\x03\x10\x01\x1adIFA leaves the content unspecified; each entry names a device exposed by a Kubernetes device plugin.R\x16accelerationCapability\x12{\n" +
+	"\vvirtual_cpu\x18\x05 \x01(\v2&.kubenfv.kubevim.compute.v1.VirtualCpuB2\xe2A\x01\x03\xfa\x8b\x19*\n" +
 	"(IFA006 8.4.3.2 VirtualCompute.virtualCpuR\n" +
-	"virtualCpu\x12\x86\x01\n" +
-	"\x0evirtual_memory\x18\x06 \x01(\v2).kubenfv.kubevim.compute.v1.VirtualMemoryB4\xe2A\x01\x03\xfaV-\n" +
-	"+IFA006 8.4.3.2 VirtualCompute.virtualMemoryR\rvirtualMemory\x12\xaf\x01\n" +
-	"\x19virtual_network_interface\x18\a \x03(\v23.kubenfv.kubevim.compute.v1.VirtualNetworkInterfaceB>\xe2A\x01\x03\xfaV7\n" +
-	"5IFA006 8.4.3.2 VirtualCompute.virtualNetworkInterfaceR\x17virtualNetworkInterface\x12{\n" +
-	"\rvirtual_disks\x18\b \x03(\v2!.kubenfv.kubevim.common.v1.VolumeB3\xe2A\x01\x03\xfaV,\n" +
-	"*IFA006 8.4.3.2 VirtualCompute.virtualDisksR\fvirtualDisks\x12\\\n" +
-	"\vvc_image_id\x18\t \x01(\tB<\xe2A\x02\x01\x05\xbaH\b\xd8\x01\x01r\x03\xb0\x01\x01\xfaV)\n" +
-	"'IFA006 8.4.3.2 VirtualCompute.vcImageIdR\tvcImageId\x12F\n" +
+	"virtualCpu\x12\x87\x01\n" +
+	"\x0evirtual_memory\x18\x06 \x01(\v2).kubenfv.kubevim.compute.v1.VirtualMemoryB5\xe2A\x01\x03\xfa\x8b\x19-\n" +
+	"+IFA006 8.4.3.2 VirtualCompute.virtualMemoryR\rvirtualMemory\x12\xb0\x01\n" +
+	"\x19virtual_network_interface\x18\a \x03(\v23.kubenfv.kubevim.compute.v1.VirtualNetworkInterfaceB?\xe2A\x01\x03\xfa\x8b\x197\n" +
+	"5IFA006 8.4.3.2 VirtualCompute.virtualNetworkInterfaceR\x17virtualNetworkInterface\x12|\n" +
+	"\rvirtual_disks\x18\b \x03(\v2!.kubenfv.kubevim.common.v1.VolumeB4\xe2A\x01\x03\xfa\x8b\x19,\n" +
+	"*IFA006 8.4.3.2 VirtualCompute.virtualDisksR\fvirtualDisks\x12]\n" +
+	"\vvc_image_id\x18\t \x01(\tB=\xe2A\x02\x01\x05\xbaH\b\xd8\x01\x01r\x03\xb0\x01\x01\xfa\x8b\x19)\n" +
+	"'IFA006 8.4.3.2 VirtualCompute.vcImageIdR\tvcImageId\x12G\n" +
 	"\azone_id\x18\n" +
-	" \x01(\tB-\xe2A\x01\x03\xfaV&\n" +
-	"$IFA006 8.4.3.2 VirtualCompute.zoneIdR\x06zoneId\x12F\n" +
-	"\ahost_id\x18\v \x01(\tB-\xe2A\x01\x03\xfaV&\n" +
-	"$IFA006 8.4.3.2 VirtualCompute.hostIdR\x06hostId\x12\x91\x01\n" +
-	"\x11operational_state\x18\f \x01(\x0e2+.kubenfv.kubevim.common.v1.OperationalStateB7\xe2A\x01\x03\xfaV0\n" +
-	".IFA006 8.4.3.2 VirtualCompute.operationalStateR\x10operationalState\x12\xdb\x01\n" +
-	"\rrunning_state\x18\r \x01(\x0e2/.kubenfv.kubevim.compute.v1.ComputeRunningStateB\x84\x01\xe2A\x01\x03\xfaV}\n" +
-	"*IFA006 8.4.3.2 VirtualCompute.runningState\x12O\b\x03\x10\x01\x1aIAdds transitional and failure states; each maps to the nearest IFA state.R\frunningState\x12\xc7\x01\n" +
-	"\bmetadata\x18\x0e \x03(\v21.kubenfv.kubevim.compute.v1.Compute.MetadataEntryBx\xe2A\x01\x01\xfaVq\n" +
-	"&IFA006 8.4.3.2 VirtualCompute.metadata\x12G\b\x03\x10\x01\x1aAString values only, where IFA KeyValuePair allows any JSON value.R\bmetadata\x12\x87\x01\n" +
-	"\rstatus_detail\x18\x0f \x01(\tBb\xe2A\x01\x03\xfaV[\x12Y\b\x01\x10\x01\x1aSReports why a compute resource failed; replaces the v0 failure-reason metadata key.R\fstatusDetail\x12\xa9\x01\n" +
-	"\fvim_metadata\x18\x10 \x03(\v24.kubenfv.kubevim.compute.v1.Compute.VimMetadataEntryBP\xe2A\x01\x03\xfaVI\x12G\b\x01\x10\x01\x1aAVIM-side diagnostics kept apart from the consumer-owned metadata.R\vvimMetadata\x1a;\n" +
+	" \x01(\tB.\xe2A\x01\x03\xfa\x8b\x19&\n" +
+	"$IFA006 8.4.3.2 VirtualCompute.zoneIdR\x06zoneId\x12G\n" +
+	"\ahost_id\x18\v \x01(\tB.\xe2A\x01\x03\xfa\x8b\x19&\n" +
+	"$IFA006 8.4.3.2 VirtualCompute.hostIdR\x06hostId\x12\x92\x01\n" +
+	"\x11operational_state\x18\f \x01(\x0e2+.kubenfv.kubevim.common.v1.OperationalStateB8\xe2A\x01\x03\xfa\x8b\x190\n" +
+	".IFA006 8.4.3.2 VirtualCompute.operationalStateR\x10operationalState\x12\xdc\x01\n" +
+	"\rrunning_state\x18\r \x01(\x0e2/.kubenfv.kubevim.compute.v1.ComputeRunningStateB\x85\x01\xe2A\x01\x03\xfa\x8b\x19}\n" +
+	"*IFA006 8.4.3.2 VirtualCompute.runningState\x12O\b\x03\x10\x01\x1aIAdds transitional and failure states; each maps to the nearest IFA state.R\frunningState\x12\xc8\x01\n" +
+	"\bmetadata\x18\x0e \x03(\v21.kubenfv.kubevim.compute.v1.Compute.MetadataEntryBy\xe2A\x01\x01\xfa\x8b\x19q\n" +
+	"&IFA006 8.4.3.2 VirtualCompute.metadata\x12G\b\x03\x10\x01\x1aAString values only, where IFA KeyValuePair allows any JSON value.R\bmetadata\x12\x88\x01\n" +
+	"\rstatus_detail\x18\x0f \x01(\tBc\xe2A\x01\x03\xfa\x8b\x19[\x12Y\b\x01\x10\x01\x1aSReports why a compute resource failed; replaces the v0 failure-reason metadata key.R\fstatusDetail\x12\xaa\x01\n" +
+	"\fvim_metadata\x18\x10 \x03(\v24.kubenfv.kubevim.compute.v1.Compute.VimMetadataEntryBQ\xe2A\x01\x03\xfa\x8b\x19I\x12G\b\x01\x10\x01\x1aAVIM-side diagnostics kept apart from the consumer-owned metadata.R\vvimMetadata\x1a;\n" +
 	"\rMetadataEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
 	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\x1a>\n" +
 	"\x10VimMetadataEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01:\"\xfaV\x1f\n" +
-	"\x1dIFA006 8.4.3.2 VirtualCompute\"\x92\x05\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01:#\xfa\x8b\x19\x1f\n" +
+	"\x1dIFA006 8.4.3.2 VirtualCompute\"\x99\x05\n" +
 	"\n" +
-	"VirtualCpu\x12Y\n" +
-	"\x10cpu_architecture\x18\x01 \x01(\tB.\xfaV+\n" +
-	")IFA006 8.4.3.3 VirtualCpu.cpuArchitectureR\x0fcpuArchitecture\x12T\n" +
-	"\x0fnum_virtual_cpu\x18\x02 \x01(\rB,\xfaV)\n" +
-	"'IFA006 8.4.3.3 VirtualCpu.numVirtualCpuR\rnumVirtualCpu\x12D\n" +
-	"\tcpu_clock\x18\x03 \x01(\rB'\xfaV$\n" +
-	"\"IFA006 8.4.3.3 VirtualCpu.cpuClockR\bcpuClock\x12\x8e\x01\n" +
-	"#virtual_cpu_oversubscription_policy\x18\x04 \x01(\tB?\xfaV<\n" +
-	":IFA006 8.4.3.3 VirtualCpu.virtualCpuOversubscriptionPolicyR virtualCpuOversubscriptionPolicy\x12\x8f\x01\n" +
-	"\x13virtual_cpu_pinning\x18\x05 \x01(\v2-.kubenfv.kubevim.compute.v1.VirtualCpuPinningB0\xfaV-\n" +
-	"+IFA006 8.4.3.3 VirtualCpu.virtualCpuPinningR\x11virtualCpuPinning\x12J\n" +
-	"\vpower_state\x18\x06 \x01(\tB)\xfaV&\n" +
+	"VirtualCpu\x12Z\n" +
+	"\x10cpu_architecture\x18\x01 \x01(\tB/\xfa\x8b\x19+\n" +
+	")IFA006 8.4.3.3 VirtualCpu.cpuArchitectureR\x0fcpuArchitecture\x12U\n" +
+	"\x0fnum_virtual_cpu\x18\x02 \x01(\rB-\xfa\x8b\x19)\n" +
+	"'IFA006 8.4.3.3 VirtualCpu.numVirtualCpuR\rnumVirtualCpu\x12E\n" +
+	"\tcpu_clock\x18\x03 \x01(\rB(\xfa\x8b\x19$\n" +
+	"\"IFA006 8.4.3.3 VirtualCpu.cpuClockR\bcpuClock\x12\x8f\x01\n" +
+	"#virtual_cpu_oversubscription_policy\x18\x04 \x01(\tB@\xfa\x8b\x19<\n" +
+	":IFA006 8.4.3.3 VirtualCpu.virtualCpuOversubscriptionPolicyR virtualCpuOversubscriptionPolicy\x12\x90\x01\n" +
+	"\x13virtual_cpu_pinning\x18\x05 \x01(\v2-.kubenfv.kubevim.compute.v1.VirtualCpuPinningB1\xfa\x8b\x19-\n" +
+	"+IFA006 8.4.3.3 VirtualCpu.virtualCpuPinningR\x11virtualCpuPinning\x12K\n" +
+	"\vpower_state\x18\x06 \x01(\tB*\xfa\x8b\x19&\n" +
 	"$IFA006 8.4.3.3 VirtualCpu.powerStateR\n" +
-	"powerState:\x1e\xfaV\x1b\n" +
-	"\x19IFA006 8.4.3.3 VirtualCpu\"\xce\x04\n" +
-	"\x11VirtualCpuPinning\x12\x99\x01\n" +
-	"\x12cpu_pinning_policy\x18\x01 \x01(\x0e23.kubenfv.kubevim.flavour.v1.VirtualCpuPinningPolicyB6\xfaV3\n" +
-	"1IFA006 8.4.3.4 VirtualCpuPinning.cpuPinningPolicyR\x10cpuPinningPolicy\x12a\n" +
-	"\x11cpu_pinning_rules\x18\x02 \x03(\tB5\xfaV2\n" +
-	"0IFA006 8.4.3.4 VirtualCpuPinning.cpuPinningRulesR\x0fcpuPinningRules\x12\xd7\x01\n" +
-	"\acpu_map\x18\x03 \x03(\v29.kubenfv.kubevim.compute.v1.VirtualCpuPinning.CpuMapEntryB\x82\x01\xfaV\x7f\n" +
+	"powerState:\x1f\xfa\x8b\x19\x1b\n" +
+	"\x19IFA006 8.4.3.3 VirtualCpu\"\xd2\x04\n" +
+	"\x11VirtualCpuPinning\x12\x9a\x01\n" +
+	"\x12cpu_pinning_policy\x18\x01 \x01(\x0e23.kubenfv.kubevim.flavour.v1.VirtualCpuPinningPolicyB7\xfa\x8b\x193\n" +
+	"1IFA006 8.4.3.4 VirtualCpuPinning.cpuPinningPolicyR\x10cpuPinningPolicy\x12b\n" +
+	"\x11cpu_pinning_rules\x18\x02 \x03(\tB6\xfa\x8b\x192\n" +
+	"0IFA006 8.4.3.4 VirtualCpuPinning.cpuPinningRulesR\x0fcpuPinningRules\x12\xd8\x01\n" +
+	"\acpu_map\x18\x03 \x03(\v29.kubenfv.kubevim.compute.v1.VirtualCpuPinning.CpuMapEntryB\x83\x01\xfa\x8b\x19\x7f\n" +
 	"'IFA006 8.4.3.4 VirtualCpuPinning.cpuMap\x12T\b\x03\x10\x01\x1aNIFA leaves the content unspecified; a map from virtual to physical CPU number.R\x06cpuMap\x1a9\n" +
 	"\vCpuMapEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\rR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\rR\x05value:\x028\x01:%\xfaV\"\n" +
-	" IFA006 8.4.3.4 VirtualCpuPinning\"\x93\x04\n" +
-	"\rVirtualMemory\x12\x97\x01\n" +
-	"\x10virtual_mem_size\x18\x01 \x01(\tBm\xfaVj\n" +
-	"+IFA006 8.4.3.5 VirtualMemory.virtualMemSize\x12;\b\x03\x10\x01\x1a5Kubernetes quantity string instead of a number in MB.R\x0evirtualMemSize\x12\x91\x01\n" +
-	"#virtual_mem_oversubscription_policy\x18\x02 \x01(\tBB\xfaV?\n" +
-	"=IFA006 8.4.3.5 VirtualMemory.virtualMemOversubscriptionPolicyR virtualMemOversubscriptionPolicy\x12P\n" +
-	"\fnuma_enabled\x18\x03 \x01(\bB-\xfaV*\n" +
-	"(IFA006 8.4.3.5 VirtualMemory.numaEnabledR\vnumaEnabled\x12_\n" +
-	"\rhugepage_size\x18\x04 \x01(\tB:\xfaV7\x125\b\x01\x10\x01\x1a/Reports the hugepages requested by the flavour.R\fhugepageSize:!\xfaV\x1e\n" +
-	"\x1cIFA006 8.4.3.5 VirtualMemory\"\xf6\x10\n" +
-	"\x17VirtualNetworkInterface\x12W\n" +
-	"\vresource_id\x18\x01 \x01(\tB6\xfaV3\n" +
+	"\x05value\x18\x02 \x01(\rR\x05value:\x028\x01:&\xfa\x8b\x19\"\n" +
+	" IFA006 8.4.3.4 VirtualCpuPinning\"\x98\x04\n" +
+	"\rVirtualMemory\x12\x98\x01\n" +
+	"\x10virtual_mem_size\x18\x01 \x01(\tBn\xfa\x8b\x19j\n" +
+	"+IFA006 8.4.3.5 VirtualMemory.virtualMemSize\x12;\b\x03\x10\x01\x1a5Kubernetes quantity string instead of a number in MB.R\x0evirtualMemSize\x12\x92\x01\n" +
+	"#virtual_mem_oversubscription_policy\x18\x02 \x01(\tBC\xfa\x8b\x19?\n" +
+	"=IFA006 8.4.3.5 VirtualMemory.virtualMemOversubscriptionPolicyR virtualMemOversubscriptionPolicy\x12Q\n" +
+	"\fnuma_enabled\x18\x03 \x01(\bB.\xfa\x8b\x19*\n" +
+	"(IFA006 8.4.3.5 VirtualMemory.numaEnabledR\vnumaEnabled\x12`\n" +
+	"\rhugepage_size\x18\x04 \x01(\tB;\xfa\x8b\x197\x125\b\x01\x10\x01\x1a/Reports the hugepages requested by the flavour.R\fhugepageSize:\"\xfa\x8b\x19\x1e\n" +
+	"\x1cIFA006 8.4.3.5 VirtualMemory\"\x87\x11\n" +
+	"\x17VirtualNetworkInterface\x12X\n" +
+	"\vresource_id\x18\x01 \x01(\tB7\xfa\x8b\x193\n" +
 	"1IFA006 8.4.3.6 VirtualNetworkInterface.resourceIdR\n" +
-	"resourceId\x12N\n" +
-	"\bowner_id\x18\x02 \x01(\tB3\xfaV0\n" +
-	".IFA006 8.4.3.6 VirtualNetworkInterface.ownerIdR\aownerId\x12T\n" +
+	"resourceId\x12O\n" +
+	"\bowner_id\x18\x02 \x01(\tB4\xfa\x8b\x190\n" +
+	".IFA006 8.4.3.6 VirtualNetworkInterface.ownerIdR\aownerId\x12U\n" +
 	"\n" +
-	"network_id\x18\x03 \x01(\tB5\xfaV2\n" +
-	"0IFA006 8.4.3.6 VirtualNetworkInterface.networkIdR\tnetworkId\x12t\n" +
-	"\tsubnet_id\x18\x04 \x01(\tBW\xfaVT\x12R\b\x01\x10\x01\x1aLA network can have several subnets; the interface reports which one it uses.R\bsubnetId\x12a\n" +
-	"\x0fnetwork_port_id\x18\x05 \x01(\tB9\xfaV6\n" +
-	"4IFA006 8.4.3.6 VirtualNetworkInterface.networkPortIdR\rnetworkPortId\x12T\n" +
+	"network_id\x18\x03 \x01(\tB6\xfa\x8b\x192\n" +
+	"0IFA006 8.4.3.6 VirtualNetworkInterface.networkIdR\tnetworkId\x12u\n" +
+	"\tsubnet_id\x18\x04 \x01(\tBX\xfa\x8b\x19T\x12R\b\x01\x10\x01\x1aLA network can have several subnets; the interface reports which one it uses.R\bsubnetId\x12b\n" +
+	"\x0fnetwork_port_id\x18\x05 \x01(\tB:\xfa\x8b\x196\n" +
+	"4IFA006 8.4.3.6 VirtualNetworkInterface.networkPortIdR\rnetworkPortId\x12U\n" +
 	"\n" +
-	"ip_address\x18\x06 \x03(\tB5\xfaV2\n" +
-	"0IFA006 8.4.3.6 VirtualNetworkInterface.ipAddressR\tipAddress\x12\xce\x01\n" +
-	"\x10type_virtual_nic\x18\a \x01(\x0e2*.kubenfv.kubevim.compute.v1.TypeVirtualNicBx\xfaVu\n" +
-	"5IFA006 8.4.3.6 VirtualNetworkInterface.typeVirtualNic\x12<\b\x03\x10\x01\x1a6IFA leaves the type unspecified; a closed enumeration.R\x0etypeVirtualNic\x12l\n" +
-	"\x12type_configuration\x18\b \x03(\tB=\xfaV:\n" +
-	"8IFA006 8.4.3.6 VirtualNetworkInterface.typeConfigurationR\x11typeConfiguration\x12W\n" +
-	"\vmac_address\x18\t \x01(\tB6\xfaV3\n" +
+	"ip_address\x18\x06 \x03(\tB6\xfa\x8b\x192\n" +
+	"0IFA006 8.4.3.6 VirtualNetworkInterface.ipAddressR\tipAddress\x12\xcf\x01\n" +
+	"\x10type_virtual_nic\x18\a \x01(\x0e2*.kubenfv.kubevim.compute.v1.TypeVirtualNicBy\xfa\x8b\x19u\n" +
+	"5IFA006 8.4.3.6 VirtualNetworkInterface.typeVirtualNic\x12<\b\x03\x10\x01\x1a6IFA leaves the type unspecified; a closed enumeration.R\x0etypeVirtualNic\x12m\n" +
+	"\x12type_configuration\x18\b \x03(\tB>\xfa\x8b\x19:\n" +
+	"8IFA006 8.4.3.6 VirtualNetworkInterface.typeConfigurationR\x11typeConfiguration\x12X\n" +
+	"\vmac_address\x18\t \x01(\tB7\xfa\x8b\x193\n" +
 	"1IFA006 8.4.3.6 VirtualNetworkInterface.macAddressR\n" +
-	"macAddress\x12S\n" +
+	"macAddress\x12T\n" +
 	"\tbandwidth\x18\n" +
-	" \x01(\rB5\xfaV2\n" +
-	"0IFA006 8.4.3.6 VirtualNetworkInterface.bandwidthR\tbandwidth\x12{\n" +
-	"\x17acceleration_capability\x18\v \x03(\tBB\xfaV?\n" +
-	"=IFA006 8.4.3.6 VirtualNetworkInterface.accelerationCapabilityR\x16accelerationCapability\x12\x96\x01\n" +
-	"\x11operational_state\x18\f \x01(\x0e2+.kubenfv.kubevim.common.v1.OperationalStateB<\xfaV9\n" +
-	"7IFA006 8.4.3.6 VirtualNetworkInterface.operationalStateR\x10operationalState\x12\x93\x01\n" +
-	"\bmetadata\x18\r \x03(\v2A.kubenfv.kubevim.compute.v1.VirtualNetworkInterface.MetadataEntryB4\xfaV1\n" +
-	"/IFA006 8.4.3.6 VirtualNetworkInterface.metadataR\bmetadata\x12\x8f\x01\n" +
-	"\ris_management\x18\x0e \x01(\bBj\xfaVg\x12e\b\x01\x10\x01\x1a_Marks the management interface; replaces the v0 network.vm.kubevirt.io/management metadata key.R\fisManagement\x12\x9f\x01\n" +
-	"\x10host_pci_address\x18\x0f \x01(\tBu\xfaVr\x12p\b\x01\x10\x01\x1ajLets the consumer correlate an SR-IOV VF with the host NIC; replaces the v0 host-pci-address metadata key.R\x0ehostPciAddress\x12\xb5\x01\n" +
-	"\fvim_metadata\x18\x10 \x03(\v2D.kubenfv.kubevim.compute.v1.VirtualNetworkInterface.VimMetadataEntryBL\xfaVI\x12G\b\x01\x10\x01\x1aAVIM-side diagnostics kept apart from the consumer-owned metadata.R\vvimMetadata\x1a;\n" +
+	" \x01(\rB6\xfa\x8b\x192\n" +
+	"0IFA006 8.4.3.6 VirtualNetworkInterface.bandwidthR\tbandwidth\x12|\n" +
+	"\x17acceleration_capability\x18\v \x03(\tBC\xfa\x8b\x19?\n" +
+	"=IFA006 8.4.3.6 VirtualNetworkInterface.accelerationCapabilityR\x16accelerationCapability\x12\x97\x01\n" +
+	"\x11operational_state\x18\f \x01(\x0e2+.kubenfv.kubevim.common.v1.OperationalStateB=\xfa\x8b\x199\n" +
+	"7IFA006 8.4.3.6 VirtualNetworkInterface.operationalStateR\x10operationalState\x12\x94\x01\n" +
+	"\bmetadata\x18\r \x03(\v2A.kubenfv.kubevim.compute.v1.VirtualNetworkInterface.MetadataEntryB5\xfa\x8b\x191\n" +
+	"/IFA006 8.4.3.6 VirtualNetworkInterface.metadataR\bmetadata\x12\x90\x01\n" +
+	"\ris_management\x18\x0e \x01(\bBk\xfa\x8b\x19g\x12e\b\x01\x10\x01\x1a_Marks the management interface; replaces the v0 network.vm.kubevirt.io/management metadata key.R\fisManagement\x12\xa0\x01\n" +
+	"\x10host_pci_address\x18\x0f \x01(\tBv\xfa\x8b\x19r\x12p\b\x01\x10\x01\x1ajLets the consumer correlate an SR-IOV VF with the host NIC; replaces the v0 host-pci-address metadata key.R\x0ehostPciAddress\x12\xb6\x01\n" +
+	"\fvim_metadata\x18\x10 \x03(\v2D.kubenfv.kubevim.compute.v1.VirtualNetworkInterface.VimMetadataEntryBM\xfa\x8b\x19I\x12G\b\x01\x10\x01\x1aAVIM-side diagnostics kept apart from the consumer-owned metadata.R\vvimMetadata\x1a;\n" +
 	"\rMetadataEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
 	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\x1a>\n" +
 	"\x10VimMetadataEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01:+\xfaV(\n" +
-	"&IFA006 8.4.3.6 VirtualNetworkInterface\"\xeb\x11\n" +
-	"\x14NetworkInterfaceData\x12`\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01:,\xfa\x8b\x19(\n" +
+	"&IFA006 8.4.3.6 VirtualNetworkInterface\"\xf7\x11\n" +
+	"\x14NetworkInterfaceData\x12a\n" +
 	"\n" +
-	"network_id\x18\x01 \x01(\tBA\xe2A\x01\x01\xbaH\b\xd8\x01\x01r\x03\xb0\x01\x01\xfaV/\n" +
-	"-IFA006 8.4.3.7 VirtualInterfaceData.networkIdR\tnetworkId\x12v\n" +
-	"\tsubnet_id\x18\x02 \x01(\tBY\xe2A\x01\x01\xbaH\b\xd8\x01\x01r\x03\xb0\x01\x01\xfaVG\x12E\b\x01\x10\x01\x1a?Selects the subnet on networks with several, e.g. VPC networks.R\bsubnetId\x12t\n" +
-	"\x0fnetwork_port_id\x18\x03 \x01(\tBL\xe2A\x01\x01\xbaH\b\xd8\x01\x01r\x03\xb0\x01\x01\xfaV:\n" +
-	"8IFA006 8.4.2.6 VirtualNetworkInterfaceData.networkPortIdR\rnetworkPortId\x12\x8b\x02\n" +
-	"\x10type_virtual_nic\x18\x04 \x01(\x0e2*.kubenfv.kubevim.compute.v1.TypeVirtualNicB\xb4\x01\xe2A\x01\x01\xbaH\a\x82\x01\x04\x10\x01 \x04\xfaV\xa2\x01\n" +
-	"9IFA006 8.4.2.6 VirtualNetworkInterfaceData.typeVirtualNic\x12e\b\x03\x10\x01\x1a_IFA leaves the type unspecified; a closed enumeration, optional because the network implies it.R\x0etypeVirtualNic\x12\xa1\x01\n" +
-	"\x12type_configuration\x18\x05 \x03(\tBr\xe2A\x01\x01\xfaVk\n" +
-	"<IFA006 8.4.2.6 VirtualNetworkInterfaceData.typeConfiguration\x12+\b\x02\x1a'Not supported yet; a value is rejected.R\x11typeConfiguration\x12[\n" +
-	"\tbandwidth\x18\x06 \x01(\rB=\xe2A\x01\x01\xfaV6\n" +
-	"4IFA006 8.4.2.6 VirtualNetworkInterfaceData.bandwidthR\tbandwidth\x12\xb0\x01\n" +
-	"\x17acceleration_capability\x18\a \x03(\tBw\xe2A\x01\x01\xfaVp\n" +
-	"AIFA006 8.4.2.6 VirtualNetworkInterfaceData.accelerationCapability\x12+\b\x02\x1a'Not supported yet; a value is rejected.R\x16accelerationCapability\x12\xd5\x01\n" +
-	"\rip_assignment\x18\b \x01(\x0e2(.kubenfv.kubevim.compute.v1.IpAssignmentB\x85\x01\xe2A\x01\x01\xbaH\x05\x82\x01\x02\x10\x01\xfaVv\x12t\b\x01\x10\x01\x1anReplaces the v0 network.subnet.assignment metadata key; IFA implies the mode from whether addresses are given.R\fipAssignment\x12a\n" +
+	"network_id\x18\x01 \x01(\tBB\xe2A\x01\x01\xbaH\b\xd8\x01\x01r\x03\xb0\x01\x01\xfa\x8b\x19/\n" +
+	"-IFA006 8.4.3.7 VirtualInterfaceData.networkIdR\tnetworkId\x12w\n" +
+	"\tsubnet_id\x18\x02 \x01(\tBZ\xe2A\x01\x01\xbaH\b\xd8\x01\x01r\x03\xb0\x01\x01\xfa\x8b\x19G\x12E\b\x01\x10\x01\x1a?Selects the subnet on networks with several, e.g. VPC networks.R\bsubnetId\x12u\n" +
+	"\x0fnetwork_port_id\x18\x03 \x01(\tBM\xe2A\x01\x01\xbaH\b\xd8\x01\x01r\x03\xb0\x01\x01\xfa\x8b\x19:\n" +
+	"8IFA006 8.4.2.6 VirtualNetworkInterfaceData.networkPortIdR\rnetworkPortId\x12\x8c\x02\n" +
+	"\x10type_virtual_nic\x18\x04 \x01(\x0e2*.kubenfv.kubevim.compute.v1.TypeVirtualNicB\xb5\x01\xe2A\x01\x01\xbaH\a\x82\x01\x04\x10\x01 \x04\xfa\x8b\x19\xa2\x01\n" +
+	"9IFA006 8.4.2.6 VirtualNetworkInterfaceData.typeVirtualNic\x12e\b\x03\x10\x01\x1a_IFA leaves the type unspecified; a closed enumeration, optional because the network implies it.R\x0etypeVirtualNic\x12\xa2\x01\n" +
+	"\x12type_configuration\x18\x05 \x03(\tBs\xe2A\x01\x01\xfa\x8b\x19k\n" +
+	"<IFA006 8.4.2.6 VirtualNetworkInterfaceData.typeConfiguration\x12+\b\x02\x1a'Not supported yet; a value is rejected.R\x11typeConfiguration\x12\\\n" +
+	"\tbandwidth\x18\x06 \x01(\rB>\xe2A\x01\x01\xfa\x8b\x196\n" +
+	"4IFA006 8.4.2.6 VirtualNetworkInterfaceData.bandwidthR\tbandwidth\x12\xb1\x01\n" +
+	"\x17acceleration_capability\x18\a \x03(\tBx\xe2A\x01\x01\xfa\x8b\x19p\n" +
+	"AIFA006 8.4.2.6 VirtualNetworkInterfaceData.accelerationCapability\x12+\b\x02\x1a'Not supported yet; a value is rejected.R\x16accelerationCapability\x12\xd6\x01\n" +
+	"\rip_assignment\x18\b \x01(\x0e2(.kubenfv.kubevim.compute.v1.IpAssignmentB\x86\x01\xe2A\x01\x01\xbaH\x05\x82\x01\x02\x10\x01\xfa\x8b\x19v\x12t\b\x01\x10\x01\x1anReplaces the v0 network.subnet.assignment metadata key; IFA implies the mode from whether addresses are given.R\fipAssignment\x12b\n" +
 	"\n" +
-	"ip_address\x18\t \x03(\tBB\xe2A\x01\x01\xbaH\t\x92\x01\x06\"\x04r\x02p\x01\xfaV/\n" +
-	"-IFA006 8.4.3.7 VirtualInterfaceData.ipAddressR\tipAddress\x12\x86\x01\n" +
+	"ip_address\x18\t \x03(\tBC\xe2A\x01\x01\xbaH\t\x92\x01\x06\"\x04r\x02p\x01\xfa\x8b\x19/\n" +
+	"-IFA006 8.4.3.7 VirtualInterfaceData.ipAddressR\tipAddress\x12\x87\x01\n" +
 	"\vmac_address\x18\n" +
-	" \x01(\tBe\xe2A\x01\x01\xbaH+\xd8\x01\x01r&2$^([0-9a-fA-F]{2}:){5}[0-9a-fA-F]{2}$\xfaV0\n" +
+	" \x01(\tBf\xe2A\x01\x01\xbaH+\xd8\x01\x01r&2$^([0-9a-fA-F]{2}:){5}[0-9a-fA-F]{2}$\xfa\x8b\x190\n" +
 	".IFA006 8.4.3.7 VirtualInterfaceData.macAddressR\n" +
-	"macAddress\x12\x98\x01\n" +
-	"\bmetadata\x18\v \x03(\v2>.kubenfv.kubevim.compute.v1.NetworkInterfaceData.MetadataEntryB<\xe2A\x01\x01\xfaV5\n" +
+	"macAddress\x12\x99\x01\n" +
+	"\bmetadata\x18\v \x03(\v2>.kubenfv.kubevim.compute.v1.NetworkInterfaceData.MetadataEntryB=\xe2A\x01\x01\xfa\x8b\x195\n" +
 	"3IFA006 8.4.2.6 VirtualNetworkInterfaceData.metadataR\bmetadata\x1a;\n" +
 	"\rMetadataEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01:\xa4\x04\xbaH\xcf\x02\x1a\x95\x01\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01:\xa5\x04\xbaH\xcf\x02\x1a\x95\x01\n" +
 	"\x14interface.attachment\x120networkId, subnetId or networkPortId is required\x1aKthis.network_id != '' || this.subnet_id != '' || this.network_port_id != ''\x1a\xb4\x01\n" +
-	"\x17interface.ip_assignment\x12EipAddress is required for STATIC assignment and not allowed otherwise\x1aRthis.ip_assignment == 2 ? this.ip_address.size() > 0 : this.ip_address.size() == 0\xfaV\xcd\x01\n" +
-	"HIFA006 8.4.3.7 VirtualInterfaceData, 8.4.2.6 VirtualNetworkInterfaceData\x12\x80\x01\b\x03\x10\x01\x1azOne list on allocation: IFA's per-instance VirtualInterfaceData merged with the flavour-level VirtualNetworkInterfaceData.\"\xcd\x03\n" +
-	"\bUserData\x12I\n" +
-	"\acontent\x18\x01 \x01(\tB/\xe2A\x02\x02\x04\xbaH\x04r\x02\x10\x01\xfaV \n" +
-	"\x1eIFA006 8.4.10 UserData.contentR\acontent\x12\x80\x01\n" +
-	"\x06method\x18\x02 \x01(\x0e28.kubenfv.kubevim.compute.v1.UserDataTransportationMethodB.\xe2A\x01\x01\xbaH\x05\x82\x01\x02\x10\x01\xfaV\x1f\n" +
-	"\x1dIFA006 8.4.10 UserData.methodR\x06method\x12\xd5\x01\n" +
-	"\x10certificate_data\x18\x03 \x03(\v2+.kubenfv.kubevim.compute.v1.CertificateDataB}\xe2A\x01\x01\xfaVv\n" +
-	"&IFA006 8.4.10 UserData.certificateData\x12L\b\x02\x1aHDelegation-mode certificates are not supported yet; a value is rejected.R\x0fcertificateData:\x1b\xfaV\x18\n" +
-	"\x16IFA006 8.4.10 UserData\"\xfb\x02\n" +
+	"\x17interface.ip_assignment\x12EipAddress is required for STATIC assignment and not allowed otherwise\x1aRthis.ip_assignment == 2 ? this.ip_address.size() > 0 : this.ip_address.size() == 0\xfa\x8b\x19\xcd\x01\n" +
+	"HIFA006 8.4.3.7 VirtualInterfaceData, 8.4.2.6 VirtualNetworkInterfaceData\x12\x80\x01\b\x03\x10\x01\x1azOne list on allocation: IFA's per-instance VirtualInterfaceData merged with the flavour-level VirtualNetworkInterfaceData.\"\xd1\x03\n" +
+	"\bUserData\x12J\n" +
+	"\acontent\x18\x01 \x01(\tB0\xe2A\x02\x02\x04\xbaH\x04r\x02\x10\x01\xfa\x8b\x19 \n" +
+	"\x1eIFA006 8.4.10 UserData.contentR\acontent\x12\x81\x01\n" +
+	"\x06method\x18\x02 \x01(\x0e28.kubenfv.kubevim.compute.v1.UserDataTransportationMethodB/\xe2A\x01\x01\xbaH\x05\x82\x01\x02\x10\x01\xfa\x8b\x19\x1f\n" +
+	"\x1dIFA006 8.4.10 UserData.methodR\x06method\x12\xd6\x01\n" +
+	"\x10certificate_data\x18\x03 \x03(\v2+.kubenfv.kubevim.compute.v1.CertificateDataB~\xe2A\x01\x01\xfa\x8b\x19v\n" +
+	"&IFA006 8.4.10 UserData.certificateData\x12L\b\x02\x1aHDelegation-mode certificates are not supported yet; a value is rejected.R\x0fcertificateData:\x1c\xfa\x8b\x19\x18\n" +
+	"\x16IFA006 8.4.10 UserData\"\xfc\x02\n" +
 	"\x0fCertificateData\x12&\n" +
 	"\vprivate_key\x18\x01 \x01(\tB\x05\xe2A\x02\x01\x04R\n" +
 	"privateKey\x12/\n" +
 	"\x10certificate_file\x18\x02 \x01(\tB\x04\xe2A\x01\x01R\x0fcertificateFile\x12*\n" +
 	"\rkeystore_file\x18\x03 \x01(\tB\x05\xe2A\x02\x01\x04R\fkeystoreFile\x120\n" +
-	"\x11cert_subject_data\x18\x04 \x01(\tB\x04\xe2A\x01\x01R\x0fcertSubjectData\x12\xb0\x01\n" +
-	"\x18certificate_profile_name\x18\x05 \x01(\tBv\xe2A\x01\x01\xfaVo\n" +
-	"3IFA006 8.4.11 CertificateData.certifiateProfileName\x128\b\x03\x10\x01\x1a2Spelling corrected; IFA has certifiateProfileName.R\x16certificateProfileName\"\xb8\n" +
+	"\x11cert_subject_data\x18\x04 \x01(\tB\x04\xe2A\x01\x01R\x0fcertSubjectData\x12\xb1\x01\n" +
+	"\x18certificate_profile_name\x18\x05 \x01(\tBw\xe2A\x01\x01\xfa\x8b\x19o\n" +
+	"3IFA006 8.4.11 CertificateData.certifiateProfileName\x128\b\x03\x10\x01\x1a2Spelling corrected; IFA has certifiateProfileName.R\x16certificateProfileName\"\xbf\n" +
 	"\n" +
 	"\x14CreateComputeRequest\x12I\n" +
 	"\acompute\x18\x01 \x01(\v2#.kubenfv.kubevim.compute.v1.ComputeB\n" +
 	"\xe2A\x01\x02\xbaH\x03\xc8\x01\x01R\acompute\x12.\n" +
 	"\n" +
-	"request_id\x18\x02 \x01(\tB\x0f\xe2A\x01\x01\xbaH\b\xd8\x01\x01r\x03\xb0\x01\x01R\trequestId\x12\x97\x01\n" +
-	"\x0einterface_data\x18\x03 \x03(\v20.kubenfv.kubevim.compute.v1.NetworkInterfaceDataB>\xe2A\x01\x01\xfaV7\n" +
-	"5IFA006 7.3.1.2.2 AllocateComputeRequest.interfaceDataR\rinterfaceData\x12|\n" +
-	"\tuser_data\x18\x04 \x01(\v2$.kubenfv.kubevim.compute.v1.UserDataB9\xe2A\x01\x01\xfaV2\n" +
-	"0IFA006 7.3.1.2.2 AllocateComputeRequest.userDataR\buserData\x12w\n" +
-	"\x05start\x18\x05 \x01(\bB\\\xe2A\x01\x01\xfaVU\x12S\b\x01\x10\x01\x1aMCreates a compute resource without starting it, e.g. to attach volumes first.H\x00R\x05start\x88\x01\x01\x12\xa1\x01\n" +
-	"\x0ereservation_id\x18\x06 \x01(\tBz\xe2A\x01\x01\xfaVs\n" +
-	"5IFA006 7.3.1.2.2 AllocateComputeRequest.reservationId\x12:\b\x02\x1a6Kube-VIM has no reservations yet; a value is rejected.R\rreservationId\x12\xe1\x01\n" +
-	"%affinity_or_anti_affinity_constraints\x18\a \x03(\v2;.kubenfv.kubevim.common.v1.AffinityOrAntiAffinityConstraintBR\xe2A\x01\x01\xfaVK\n" +
-	"IIFA006 7.3.1.2.2 AllocateComputeRequest.affinityOrAntiAffinityConstraintsR!affinityOrAntiAffinityConstraints\x12\xc7\x01\n" +
-	"\x14location_constraints\x18\b \x01(\tB\x93\x01\xe2A\x01\x01\xfaV\x8b\x01\n" +
-	";IFA006 7.3.1.2.2 AllocateComputeRequest.locationConstraints\x12L\b\x02\x1aHKube-VIM exposes one VIM per edge instead of zones; a value is rejected.R\x13locationConstraints\x12\xb7\x01\n" +
-	"\x11resource_group_id\x18\t \x01(\tB\x8a\x01\xe2A\x01\x01\xfaV\x82\x01\n" +
+	"request_id\x18\x02 \x01(\tB\x0f\xe2A\x01\x01\xbaH\b\xd8\x01\x01r\x03\xb0\x01\x01R\trequestId\x12\x98\x01\n" +
+	"\x0einterface_data\x18\x03 \x03(\v20.kubenfv.kubevim.compute.v1.NetworkInterfaceDataB?\xe2A\x01\x01\xfa\x8b\x197\n" +
+	"5IFA006 7.3.1.2.2 AllocateComputeRequest.interfaceDataR\rinterfaceData\x12}\n" +
+	"\tuser_data\x18\x04 \x01(\v2$.kubenfv.kubevim.compute.v1.UserDataB:\xe2A\x01\x01\xfa\x8b\x192\n" +
+	"0IFA006 7.3.1.2.2 AllocateComputeRequest.userDataR\buserData\x12x\n" +
+	"\x05start\x18\x05 \x01(\bB]\xe2A\x01\x01\xfa\x8b\x19U\x12S\b\x01\x10\x01\x1aMCreates a compute resource without starting it, e.g. to attach volumes first.H\x00R\x05start\x88\x01\x01\x12\xa2\x01\n" +
+	"\x0ereservation_id\x18\x06 \x01(\tB{\xe2A\x01\x01\xfa\x8b\x19s\n" +
+	"5IFA006 7.3.1.2.2 AllocateComputeRequest.reservationId\x12:\b\x02\x1a6Kube-VIM has no reservations yet; a value is rejected.R\rreservationId\x12\xe2\x01\n" +
+	"%affinity_or_anti_affinity_constraints\x18\a \x03(\v2;.kubenfv.kubevim.common.v1.AffinityOrAntiAffinityConstraintBS\xe2A\x01\x01\xfa\x8b\x19K\n" +
+	"IIFA006 7.3.1.2.2 AllocateComputeRequest.affinityOrAntiAffinityConstraintsR!affinityOrAntiAffinityConstraints\x12\xc8\x01\n" +
+	"\x14location_constraints\x18\b \x01(\tB\x94\x01\xe2A\x01\x01\xfa\x8b\x19\x8b\x01\n" +
+	";IFA006 7.3.1.2.2 AllocateComputeRequest.locationConstraints\x12L\b\x02\x1aHKube-VIM exposes one VIM per edge instead of zones; a value is rejected.R\x13locationConstraints\x12\xb8\x01\n" +
+	"\x11resource_group_id\x18\t \x01(\tB\x8b\x01\xe2A\x01\x01\xfa\x8b\x19\x82\x01\n" +
 	"7IFA006 7.3.1.2.2 AllocateComputeRequest.resourceGroupId\x12G\b\x02\x1aCNo resource groups until Kube-VIM has tenancy; a value is rejected.R\x0fresourceGroupIdB\b\n" +
 	"\x06_start\"@\n" +
 	"\x11GetComputeRequest\x12+\n" +
 	"\n" +
-	"compute_id\x18\x01 \x01(\tB\f\xe2A\x01\x02\xbaH\x05r\x03\xb0\x01\x01R\tcomputeId\"\xad\x01\n" +
-	"\x13ListComputesRequest\x12X\n" +
-	"\x06filter\x18\x01 \x01(\tB@\xe2A\x01\x01\xfaV9\n" +
+	"compute_id\x18\x01 \x01(\tB\f\xe2A\x01\x02\xbaH\x05r\x03\xb0\x01\x01R\tcomputeId\"\xae\x01\n" +
+	"\x13ListComputesRequest\x12Y\n" +
+	"\x06filter\x18\x01 \x01(\tBA\xe2A\x01\x01\xfa\x8b\x199\n" +
 	"7IFA006 7.3.1.3.2 QueryComputeRequest.queryComputeFilterR\x06filter\x12<\n" +
-	"\x16nextpage_opaque_marker\x18\x02 \x01(\tB\x04\xe2A\x01\x01R\x16nextpage_opaque_marker\"\xc7\x01\n" +
-	"\x14ListComputesResponse\x12w\n" +
-	"\bcomputes\x18\x01 \x03(\v2#.kubenfv.kubevim.compute.v1.ComputeB6\xfaV3\n" +
+	"\x16nextpage_opaque_marker\x18\x02 \x01(\tB\x04\xe2A\x01\x01R\x16nextpage_opaque_marker\"\xc8\x01\n" +
+	"\x14ListComputesResponse\x12x\n" +
+	"\bcomputes\x18\x01 \x03(\v2#.kubenfv.kubevim.compute.v1.ComputeB7\xfa\x8b\x193\n" +
 	"1IFA006 7.3.1.3.3 QueryComputeResponse.queryResultR\bcomputes\x126\n" +
 	"\x16nextpage_opaque_marker\x18\x02 \x01(\tR\x16nextpage_opaque_marker\"\x92\x01\n" +
 	"\x14UpdateComputeRequest\x12+\n" +
 	"\n" +
 	"compute_id\x18\x01 \x01(\tB\f\xe2A\x01\x02\xbaH\x05r\x03\xb0\x01\x01R\tcomputeId\x12M\n" +
 	"\x06update\x18\x02 \x01(\v2).kubenfv.kubevim.compute.v1.ComputeUpdateB\n" +
-	"\xe2A\x01\x02\xbaH\x03\xc8\x01\x01R\x06update\"\xd2\t\n" +
-	"\rComputeUpdate\x12\xaf\x01\n" +
-	"\x19network_interfaces_to_add\x18\x01 \x03(\v20.kubenfv.kubevim.compute.v1.NetworkInterfaceDataBB\xe2A\x01\x01\xfaV;\n" +
-	"9IFA006 7.3.1.4.2 UpdateComputeRequest.networkInterfaceNewR\x16networkInterfacesToAdd\x12\x94\x01\n" +
-	"\x1fnetwork_interface_ids_to_remove\x18\x02 \x03(\tBN\xe2A\x01\x01\xbaH\t\x92\x01\x06\"\x04r\x02\x10\x01\xfaV;\x129\b\x01\x10\x01\x1a3Removes interfaces; IFA only updates them in place.R\x1bnetworkInterfaceIdsToRemove\x12\x9d\x02\n" +
-	"\x1cnetwork_interfaces_to_update\x18\x03 \x03(\v23.kubenfv.kubevim.compute.v1.VirtualNetworkInterfaceB\xa6\x01\xe2A\x01\x01\xfaV\x9e\x01\n" +
-	"<IFA006 7.3.1.4.2 UpdateComputeRequest.networkInterfaceUpdate\x12^\b\x02\x1aZIn-place interface changes are not supported; remove and add instead. A value is rejected.R\x19networkInterfacesToUpdate\x12\xa7\x01\n" +
-	"\vpower_state\x18\x04 \x01(\tB\x85\x01\xe2A\x01\x01\xfaV~\n" +
+	"\xe2A\x01\x02\xbaH\x03\xc8\x01\x01R\x06update\"\xd8\t\n" +
+	"\rComputeUpdate\x12\xb0\x01\n" +
+	"\x19network_interfaces_to_add\x18\x01 \x03(\v20.kubenfv.kubevim.compute.v1.NetworkInterfaceDataBC\xe2A\x01\x01\xfa\x8b\x19;\n" +
+	"9IFA006 7.3.1.4.2 UpdateComputeRequest.networkInterfaceNewR\x16networkInterfacesToAdd\x12\x95\x01\n" +
+	"\x1fnetwork_interface_ids_to_remove\x18\x02 \x03(\tBO\xe2A\x01\x01\xbaH\t\x92\x01\x06\"\x04r\x02\x10\x01\xfa\x8b\x19;\x129\b\x01\x10\x01\x1a3Removes interfaces; IFA only updates them in place.R\x1bnetworkInterfaceIdsToRemove\x12\x9e\x02\n" +
+	"\x1cnetwork_interfaces_to_update\x18\x03 \x03(\v23.kubenfv.kubevim.compute.v1.VirtualNetworkInterfaceB\xa7\x01\xe2A\x01\x01\xfa\x8b\x19\x9e\x01\n" +
+	"<IFA006 7.3.1.4.2 UpdateComputeRequest.networkInterfaceUpdate\x12^\b\x02\x1aZIn-place interface changes are not supported; remove and add instead. A value is rejected.R\x19networkInterfacesToUpdate\x12\xa8\x01\n" +
+	"\vpower_state\x18\x04 \x01(\tB\x86\x01\xe2A\x01\x01\xfa\x8b\x19~\n" +
 	"6IFA006 7.3.1.4.2 UpdateComputeRequest.powerStateUpdate\x12D\b\x02\x1a@Use OperateCompute to start, stop or pause; a value is rejected.R\n" +
-	"powerState\x12\x8c\x01\n" +
-	"\bmetadata\x18\x05 \x03(\v27.kubenfv.kubevim.compute.v1.ComputeUpdate.MetadataEntryB7\xe2A\x01\x01\xfaV0\n" +
+	"powerState\x12\x8d\x01\n" +
+	"\bmetadata\x18\x05 \x03(\v27.kubenfv.kubevim.compute.v1.ComputeUpdate.MetadataEntryB8\xe2A\x01\x01\xfa\x8b\x190\n" +
 	".IFA006 7.3.1.4.2 UpdateComputeRequest.metaDataR\bmetadata\x12;\n" +
 	"\x17metadata_keys_to_remove\x18\x06 \x03(\tB\x04\xe2A\x01\x01R\x14metadataKeysToRemove\x1a;\n" +
 	"\rMetadataEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01:\xa4\x01\xfaV\xa0\x01\n" +
-	"%IFA006 7.3.1.4.2 UpdateComputeRequest\x12w\b\x03\x10\x01\x1aqInterfaces to add and to remove by identifier; IFA's in-place interface updates and power state are restrictions.\"z\n" +
-	"\x14DeleteComputeRequest\x12b\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01:\xa5\x01\xfa\x8b\x19\xa0\x01\n" +
+	"%IFA006 7.3.1.4.2 UpdateComputeRequest\x12w\b\x03\x10\x01\x1aqInterfaces to add and to remove by identifier; IFA's in-place interface updates and power state are restrictions.\"{\n" +
+	"\x14DeleteComputeRequest\x12c\n" +
 	"\n" +
-	"compute_id\x18\x01 \x01(\tBC\xe2A\x01\x02\xbaH\x05r\x03\xb0\x01\x01\xfaV4\n" +
-	"2IFA006 7.3.1.5.2 TerminateComputeRequest.computeIdR\tcomputeId\"\x92\x05\n" +
-	"\x15OperateComputeRequest\x12`\n" +
+	"compute_id\x18\x01 \x01(\tBD\xe2A\x01\x02\xbaH\x05r\x03\xb0\x01\x01\xfa\x8b\x194\n" +
+	"2IFA006 7.3.1.5.2 TerminateComputeRequest.computeIdR\tcomputeId\"\x95\x05\n" +
+	"\x15OperateComputeRequest\x12a\n" +
 	"\n" +
-	"compute_id\x18\x01 \x01(\tBA\xe2A\x01\x02\xbaH\x05r\x03\xb0\x01\x01\xfaV2\n" +
-	"0IFA006 7.3.1.6.2 OperateComputeRequest.computeIdR\tcomputeId\x12\xe9\x01\n" +
-	"\x11compute_operation\x18\x02 \x01(\x0e2,.kubenfv.kubevim.compute.v1.ComputeOperationB\x8d\x01\xe2A\x01\x02\xbaH\a\x82\x01\x04\x10\x01 \x00\xfaV|\n" +
-	"7IFA006 7.3.1.6.2 OperateComputeRequest.computeOperation\x12A\b\x03\x10\x01\x1a;A closed enumeration instead of a free string, plus RESUME.R\x10computeOperation\x12\xdc\x01\n" +
-	"\x1ccompute_operation_input_data\x18\x03 \x03(\v2P.kubenfv.kubevim.compute.v1.OperateComputeRequest.ComputeOperationInputDataEntryBI\xe2A\x01\x01\xfaVB\n" +
+	"compute_id\x18\x01 \x01(\tBB\xe2A\x01\x02\xbaH\x05r\x03\xb0\x01\x01\xfa\x8b\x192\n" +
+	"0IFA006 7.3.1.6.2 OperateComputeRequest.computeIdR\tcomputeId\x12\xea\x01\n" +
+	"\x11compute_operation\x18\x02 \x01(\x0e2,.kubenfv.kubevim.compute.v1.ComputeOperationB\x8e\x01\xe2A\x01\x02\xbaH\a\x82\x01\x04\x10\x01 \x00\xfa\x8b\x19|\n" +
+	"7IFA006 7.3.1.6.2 OperateComputeRequest.computeOperation\x12A\b\x03\x10\x01\x1a;A closed enumeration instead of a free string, plus RESUME.R\x10computeOperation\x12\xdd\x01\n" +
+	"\x1ccompute_operation_input_data\x18\x03 \x03(\v2P.kubenfv.kubevim.compute.v1.OperateComputeRequest.ComputeOperationInputDataEntryBJ\xe2A\x01\x01\xfa\x8b\x19B\n" +
 	"@IFA006 7.3.1.6.2 OperateComputeRequest.computeOperationInputDataR\x19computeOperationInputData\x1aL\n" +
 	"\x1eComputeOperationInputDataEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\xcb\x03\n" +
-	"\x16OperateComputeResponse\x12\x80\x01\n" +
-	"\fcompute_data\x18\x01 \x01(\v2#.kubenfv.kubevim.compute.v1.ComputeB8\xfaV5\n" +
-	"3IFA006 7.3.1.6.3 OperateComputeResponse.computeDataR\vcomputeData\x12\xde\x01\n" +
-	"\x1dcompute_operation_output_data\x18\x02 \x03(\v2R.kubenfv.kubevim.compute.v1.OperateComputeResponse.ComputeOperationOutputDataEntryBG\xfaVD\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\xcd\x03\n" +
+	"\x16OperateComputeResponse\x12\x81\x01\n" +
+	"\fcompute_data\x18\x01 \x01(\v2#.kubenfv.kubevim.compute.v1.ComputeB9\xfa\x8b\x195\n" +
+	"3IFA006 7.3.1.6.3 OperateComputeResponse.computeDataR\vcomputeData\x12\xdf\x01\n" +
+	"\x1dcompute_operation_output_data\x18\x02 \x03(\v2R.kubenfv.kubevim.compute.v1.OperateComputeResponse.ComputeOperationOutputDataEntryBH\xfa\x8b\x19D\n" +
 	"BIFA006 7.3.1.6.3 OperateComputeResponse.computeOperationOutputDataR\x1acomputeOperationOutputData\x1aM\n" +
 	"\x1fComputeOperationOutputDataEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\xeb\x01\n" +
-	"\x13ScaleComputeRequest\x12^\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\xed\x01\n" +
+	"\x13ScaleComputeRequest\x12_\n" +
 	"\n" +
-	"compute_id\x18\x01 \x01(\tB?\xe2A\x01\x02\xbaH\x05r\x03\xb0\x01\x01\xfaV0\n" +
-	".IFA006 7.3.1.7.2 ScaleComputeRequest.computeIdR\tcomputeId\x12t\n" +
-	"\x12compute_flavour_id\x18\x02 \x01(\tBF\xe2A\x01\x02\xbaH\x05r\x03\xb0\x01\x01\xfaV7\n" +
-	"5IFA006 7.3.1.7.2 ScaleComputeRequest.computeFlavourIdR\x10computeFlavourId\"\xb1\x05\n" +
-	"\x15MigrateComputeRequest\x12`\n" +
+	"compute_id\x18\x01 \x01(\tB@\xe2A\x01\x02\xbaH\x05r\x03\xb0\x01\x01\xfa\x8b\x190\n" +
+	".IFA006 7.3.1.7.2 ScaleComputeRequest.computeIdR\tcomputeId\x12u\n" +
+	"\x12compute_flavour_id\x18\x02 \x01(\tBG\xe2A\x01\x02\xbaH\x05r\x03\xb0\x01\x01\xfa\x8b\x197\n" +
+	"5IFA006 7.3.1.7.2 ScaleComputeRequest.computeFlavourIdR\x10computeFlavourId\"\xb5\x05\n" +
+	"\x15MigrateComputeRequest\x12a\n" +
 	"\n" +
-	"compute_id\x18\x01 \x01(\tBA\xe2A\x01\x02\xbaH\x05r\x03\xb0\x01\x01\xfaV2\n" +
-	"0IFA006 7.3.1.8.2 MigrateComputeRequest.computeIdR\tcomputeId\x12\x99\x01\n" +
-	"\x0emigration_type\x18\x02 \x01(\x0e2).kubenfv.kubevim.compute.v1.MigrationTypeBG\xe2A\x01\x02\xbaH\a\x82\x01\x04\x10\x01 \x00\xfaV6\n" +
-	"4IFA006 7.3.1.8.2 MigrateComputeRequest.migrationTypeR\rmigrationType\x12\xb6\x01\n" +
-	"\x14migration_constraint\x18\x03 \x01(\tB\x82\x01\xe2A\x01\x01\xfaV{\n" +
-	":IFA006 7.3.1.8.2 MigrateComputeRequest.migrationConstraint\x12=\b\x02\x1a9The scheduler picks the target host; a value is rejected.R\x13migrationConstraint\x12\xe0\x01\n" +
-	"%affinity_or_anti_affinity_constraints\x18\x04 \x03(\v2;.kubenfv.kubevim.common.v1.AffinityOrAntiAffinityConstraintBQ\xe2A\x01\x01\xfaVJ\n" +
-	"HIFA006 7.3.1.8.2 MigrateComputeRequest.affinityOrAntiAffinityConstraintsR!affinityOrAntiAffinityConstraints\"\xee\x02\n" +
-	"\x13AttachVolumeRequest\x12s\n" +
+	"compute_id\x18\x01 \x01(\tBB\xe2A\x01\x02\xbaH\x05r\x03\xb0\x01\x01\xfa\x8b\x192\n" +
+	"0IFA006 7.3.1.8.2 MigrateComputeRequest.computeIdR\tcomputeId\x12\x9a\x01\n" +
+	"\x0emigration_type\x18\x02 \x01(\x0e2).kubenfv.kubevim.compute.v1.MigrationTypeBH\xe2A\x01\x02\xbaH\a\x82\x01\x04\x10\x01 \x00\xfa\x8b\x196\n" +
+	"4IFA006 7.3.1.8.2 MigrateComputeRequest.migrationTypeR\rmigrationType\x12\xb7\x01\n" +
+	"\x14migration_constraint\x18\x03 \x01(\tB\x83\x01\xe2A\x01\x01\xfa\x8b\x19{\n" +
+	":IFA006 7.3.1.8.2 MigrateComputeRequest.migrationConstraint\x12=\b\x02\x1a9The scheduler picks the target host; a value is rejected.R\x13migrationConstraint\x12\xe1\x01\n" +
+	"%affinity_or_anti_affinity_constraints\x18\x04 \x03(\v2;.kubenfv.kubevim.common.v1.AffinityOrAntiAffinityConstraintBR\xe2A\x01\x01\xfa\x8b\x19J\n" +
+	"HIFA006 7.3.1.8.2 MigrateComputeRequest.affinityOrAntiAffinityConstraintsR!affinityOrAntiAffinityConstraints\"\xf1\x02\n" +
+	"\x13AttachVolumeRequest\x12t\n" +
 	"\n" +
-	"compute_id\x18\x01 \x01(\tBT\xe2A\x01\x02\xbaH\x05r\x03\xb0\x01\x01\xfaVE\n" +
-	"CIFA006 7.3.1.10.2 AttachVirtualisedStorageResourceRequest.computeIdR\tcomputeId\x12s\n" +
+	"compute_id\x18\x01 \x01(\tBU\xe2A\x01\x02\xbaH\x05r\x03\xb0\x01\x01\xfa\x8b\x19E\n" +
+	"CIFA006 7.3.1.10.2 AttachVirtualisedStorageResourceRequest.computeIdR\tcomputeId\x12t\n" +
 	"\n" +
-	"storage_id\x18\x02 \x01(\tBT\xe2A\x01\x02\xbaH\x05r\x03\xb0\x01\x01\xfaVE\n" +
-	"CIFA006 7.3.1.10.2 AttachVirtualisedStorageResourceRequest.storageIdR\tstorageId\x12m\n" +
+	"storage_id\x18\x02 \x01(\tBU\xe2A\x01\x02\xbaH\x05r\x03\xb0\x01\x01\xfa\x8b\x19E\n" +
+	"CIFA006 7.3.1.10.2 AttachVirtualisedStorageResourceRequest.storageIdR\tstorageId\x12n\n" +
 	"\n" +
-	"mountpoint\x18\x03 \x01(\tBM\xe2A\x01\x01\xfaVF\n" +
+	"mountpoint\x18\x03 \x01(\tBN\xe2A\x01\x01\xfa\x8b\x19F\n" +
 	"DIFA006 7.3.1.10.2 AttachVirtualisedStorageResourceRequest.mountpointR\n" +
-	"mountpoint\"\xff\x01\n" +
-	"\x13DetachVolumeRequest\x12s\n" +
+	"mountpoint\"\x81\x02\n" +
+	"\x13DetachVolumeRequest\x12t\n" +
 	"\n" +
-	"compute_id\x18\x01 \x01(\tBT\xe2A\x01\x02\xbaH\x05r\x03\xb0\x01\x01\xfaVE\n" +
-	"CIFA006 7.3.1.11.2 DetachVirtualisedStorageResourceRequest.computeIdR\tcomputeId\x12s\n" +
+	"compute_id\x18\x01 \x01(\tBU\xe2A\x01\x02\xbaH\x05r\x03\xb0\x01\x01\xfa\x8b\x19E\n" +
+	"CIFA006 7.3.1.11.2 DetachVirtualisedStorageResourceRequest.computeIdR\tcomputeId\x12t\n" +
 	"\n" +
-	"storage_id\x18\x02 \x01(\tBT\xe2A\x01\x02\xbaH\x05r\x03\xb0\x01\x01\xfaVE\n" +
+	"storage_id\x18\x02 \x01(\tBU\xe2A\x01\x02\xbaH\x05r\x03\xb0\x01\x01\xfa\x8b\x19E\n" +
 	"CIFA006 7.3.1.11.2 DetachVirtualisedStorageResourceRequest.storageIdR\tstorageId*\xa4\x03\n" +
 	"\x13ComputeRunningState\x12%\n" +
 	"!COMPUTE_RUNNING_STATE_UNSPECIFIED\x10\x00\x12\"\n" +
@@ -2426,77 +2426,77 @@ const file_kubenfv_kubevim_compute_v1_compute_proto_rawDesc = "" +
 	"\rMigrationType\x12\x1e\n" +
 	"\x1aMIGRATION_TYPE_UNSPECIFIED\x10\x00\x12!\n" +
 	"\x1dMIGRATION_TYPE_LIVE_MIGRATION\x10\x01\x12$\n" +
-	" MIGRATION_TYPE_OFFLINE_MIGRATION\x10\x022\x9a\x1e\n" +
-	"\x0eComputeService\x12\xe6\x01\n" +
-	"\rCreateCompute\x120.kubenfv.kubevim.compute.v1.CreateComputeRequest\x1a#.kubenfv.kubevim.compute.v1.Compute\"~\xfaP#J!\n" +
+	" MIGRATION_TYPE_OFFLINE_MIGRATION\x10\x022\xa9\x1e\n" +
+	"\x0eComputeService\x12\xe7\x01\n" +
+	"\rCreateCompute\x120.kubenfv.kubevim.compute.v1.CreateComputeRequest\x1a#.kubenfv.kubevim.compute.v1.Compute\"\x7f\xfaP#J!\n" +
 	"\x1f\n" +
 	"\x06oauth2\x12\x15\n" +
-	"\x13compute:v1:allocate\xfaV6\n" +
-	"4IFA006 7.3.1.2 Allocate Virtualised Compute Resource\x82\xd3\xe4\x93\x02\x19:\x01*\"\x14/compute/v1/computes\x12\xa2\x02\n" +
+	"\x13compute:v1:allocate\xfa\x8b\x196\n" +
+	"4IFA006 7.3.1.2 Allocate Virtualised Compute Resource\x82\xd3\xe4\x93\x02\x19:\x01*\"\x14/compute/v1/computes\x12\xa3\x02\n" +
 	"\n" +
-	"GetCompute\x12-.kubenfv.kubevim.compute.v1.GetComputeRequest\x1a#.kubenfv.kubevim.compute.v1.Compute\"\xbf\x01\xfaP J\x1e\n" +
+	"GetCompute\x12-.kubenfv.kubevim.compute.v1.GetComputeRequest\x1a#.kubenfv.kubevim.compute.v1.Compute\"\xc0\x01\xfaP J\x1e\n" +
 	"\x1c\n" +
 	"\x06oauth2\x12\x12\n" +
-	"\x10compute:v1:query\xfaVp\n" +
-	"1IFA006 7.3.1.3 Query Virtualised Compute Resource\x12;\b\x03\x10\x01\x1a5Query filtered by computeId, as a read by identifier.\x82\xd3\xe4\x93\x02#\x12!/compute/v1/computes/{compute_id}\x12\xe8\x01\n" +
-	"\fListComputes\x12/.kubenfv.kubevim.compute.v1.ListComputesRequest\x1a0.kubenfv.kubevim.compute.v1.ListComputesResponse\"u\xfaP J\x1e\n" +
+	"\x10compute:v1:query\xfa\x8b\x19p\n" +
+	"1IFA006 7.3.1.3 Query Virtualised Compute Resource\x12;\b\x03\x10\x01\x1a5Query filtered by computeId, as a read by identifier.\x82\xd3\xe4\x93\x02#\x12!/compute/v1/computes/{compute_id}\x12\xe9\x01\n" +
+	"\fListComputes\x12/.kubenfv.kubevim.compute.v1.ListComputesRequest\x1a0.kubenfv.kubevim.compute.v1.ListComputesResponse\"v\xfaP J\x1e\n" +
 	"\x1c\n" +
 	"\x06oauth2\x12\x12\n" +
-	"\x10compute:v1:query\xfaV3\n" +
-	"1IFA006 7.3.1.3 Query Virtualised Compute Resource\x82\xd3\xe4\x93\x02\x16\x12\x14/compute/v1/computes\x12\xa9\x02\n" +
-	"\rUpdateCompute\x120.kubenfv.kubevim.compute.v1.UpdateComputeRequest\x1a#.kubenfv.kubevim.compute.v1.Compute\"\xc0\x01\xfaP!J\x1f\n" +
+	"\x10compute:v1:query\xfa\x8b\x193\n" +
+	"1IFA006 7.3.1.3 Query Virtualised Compute Resource\x82\xd3\xe4\x93\x02\x16\x12\x14/compute/v1/computes\x12\xaa\x02\n" +
+	"\rUpdateCompute\x120.kubenfv.kubevim.compute.v1.UpdateComputeRequest\x1a#.kubenfv.kubevim.compute.v1.Compute\"\xc1\x01\xfaP!J\x1f\n" +
 	"\x1d\n" +
 	"\x06oauth2\x12\x13\n" +
-	"\x11compute:v1:update\xfaVh\n" +
-	"2IFA006 7.3.1.4 Update Virtualised Compute Resource\x122\b\x03\x10\x01\x1a,Only the changes set in ComputeUpdate apply.\x82\xd3\xe4\x93\x02+:\x06update2!/compute/v1/computes/{compute_id}\x12\xc2\x02\n" +
-	"\rDeleteCompute\x120.kubenfv.kubevim.compute.v1.DeleteComputeRequest\x1a\x16.google.protobuf.Empty\"\xe6\x01\xfaP$J\"\n" +
+	"\x11compute:v1:update\xfa\x8b\x19h\n" +
+	"2IFA006 7.3.1.4 Update Virtualised Compute Resource\x122\b\x03\x10\x01\x1a,Only the changes set in ComputeUpdate apply.\x82\xd3\xe4\x93\x02+:\x06update2!/compute/v1/computes/{compute_id}\x12\xc3\x02\n" +
+	"\rDeleteCompute\x120.kubenfv.kubevim.compute.v1.DeleteComputeRequest\x1a\x16.google.protobuf.Empty\"\xe7\x01\xfaP$J\"\n" +
 	" \n" +
 	"\x06oauth2\x12\x16\n" +
-	"\x14compute:v1:terminate\xfaV\x92\x01\n" +
-	"5IFA006 7.3.1.5 Terminate Virtualised Compute Resource\x12Y\b\x03\x10\x01\x1aSOne resource per request (the path identifies it) instead of a list of identifiers.\x82\xd3\xe4\x93\x02#*!/compute/v1/computes/{compute_id}\x12\x8b\x02\n" +
-	"\x0eOperateCompute\x121.kubenfv.kubevim.compute.v1.OperateComputeRequest\x1a2.kubenfv.kubevim.compute.v1.OperateComputeResponse\"\x91\x01\xfaP\"J \n" +
+	"\x14compute:v1:terminate\xfa\x8b\x19\x92\x01\n" +
+	"5IFA006 7.3.1.5 Terminate Virtualised Compute Resource\x12Y\b\x03\x10\x01\x1aSOne resource per request (the path identifies it) instead of a list of identifiers.\x82\xd3\xe4\x93\x02#*!/compute/v1/computes/{compute_id}\x12\x8c\x02\n" +
+	"\x0eOperateCompute\x121.kubenfv.kubevim.compute.v1.OperateComputeRequest\x1a2.kubenfv.kubevim.compute.v1.OperateComputeResponse\"\x92\x01\xfaP\"J \n" +
 	"\x1e\n" +
 	"\x06oauth2\x12\x14\n" +
-	"\x12compute:v1:operate\xfaV5\n" +
-	"3IFA006 7.3.1.6 Operate Virtualised Compute Resource\x82\xd3\xe4\x93\x02.:\x01*\")/compute/v1/computes/{compute_id}/operate\x12\xf2\x01\n" +
-	"\fScaleCompute\x12/.kubenfv.kubevim.compute.v1.ScaleComputeRequest\x1a#.kubenfv.kubevim.compute.v1.Compute\"\x8b\x01\xfaP J\x1e\n" +
+	"\x12compute:v1:operate\xfa\x8b\x195\n" +
+	"3IFA006 7.3.1.6 Operate Virtualised Compute Resource\x82\xd3\xe4\x93\x02.:\x01*\")/compute/v1/computes/{compute_id}/operate\x12\xf3\x01\n" +
+	"\fScaleCompute\x12/.kubenfv.kubevim.compute.v1.ScaleComputeRequest\x1a#.kubenfv.kubevim.compute.v1.Compute\"\x8c\x01\xfaP J\x1e\n" +
 	"\x1c\n" +
 	"\x06oauth2\x12\x12\n" +
-	"\x10compute:v1:scale\xfaV3\n" +
-	"1IFA006 7.3.1.7 Scale Virtualised Compute Resource\x82\xd3\xe4\x93\x02,:\x01*\"'/compute/v1/computes/{compute_id}/scale\x12\xfc\x01\n" +
-	"\x0eMigrateCompute\x121.kubenfv.kubevim.compute.v1.MigrateComputeRequest\x1a#.kubenfv.kubevim.compute.v1.Compute\"\x91\x01\xfaP\"J \n" +
+	"\x10compute:v1:scale\xfa\x8b\x193\n" +
+	"1IFA006 7.3.1.7 Scale Virtualised Compute Resource\x82\xd3\xe4\x93\x02,:\x01*\"'/compute/v1/computes/{compute_id}/scale\x12\xfd\x01\n" +
+	"\x0eMigrateCompute\x121.kubenfv.kubevim.compute.v1.MigrateComputeRequest\x1a#.kubenfv.kubevim.compute.v1.Compute\"\x92\x01\xfaP\"J \n" +
 	"\x1e\n" +
 	"\x06oauth2\x12\x14\n" +
-	"\x12compute:v1:migrate\xfaV5\n" +
-	"3IFA006 7.3.1.8 Migrate Virtualised Compute Resource\x82\xd3\xe4\x93\x02.:\x01*\")/compute/v1/computes/{compute_id}/migrate\x12\xfc\x01\n" +
-	"\fAttachVolume\x12/.kubenfv.kubevim.compute.v1.AttachVolumeRequest\x1a#.kubenfv.kubevim.compute.v1.Compute\"\x95\x01\xfaP!J\x1f\n" +
+	"\x12compute:v1:migrate\xfa\x8b\x195\n" +
+	"3IFA006 7.3.1.8 Migrate Virtualised Compute Resource\x82\xd3\xe4\x93\x02.:\x01*\")/compute/v1/computes/{compute_id}/migrate\x12\xfd\x01\n" +
+	"\fAttachVolume\x12/.kubenfv.kubevim.compute.v1.AttachVolumeRequest\x1a#.kubenfv.kubevim.compute.v1.Compute\"\x96\x01\xfaP!J\x1f\n" +
 	"\x1d\n" +
 	"\x06oauth2\x12\x13\n" +
-	"\x11compute:v1:update\xfaV5\n" +
-	"3IFA006 7.3.1.10 Attach Virtualised Storage Resource\x82\xd3\xe4\x93\x023:\x01*\"./compute/v1/computes/{compute_id}/attachVolume\x12\xbe\x02\n" +
-	"\fDetachVolume\x12/.kubenfv.kubevim.compute.v1.DetachVolumeRequest\x1a#.kubenfv.kubevim.compute.v1.Compute\"\xd7\x01\xfaP!J\x1f\n" +
+	"\x11compute:v1:update\xfa\x8b\x195\n" +
+	"3IFA006 7.3.1.10 Attach Virtualised Storage Resource\x82\xd3\xe4\x93\x023:\x01*\"./compute/v1/computes/{compute_id}/attachVolume\x12\xbf\x02\n" +
+	"\fDetachVolume\x12/.kubenfv.kubevim.compute.v1.DetachVolumeRequest\x1a#.kubenfv.kubevim.compute.v1.Compute\"\xd8\x01\xfaP!J\x1f\n" +
 	"\x1d\n" +
 	"\x06oauth2\x12\x13\n" +
-	"\x11compute:v1:update\xfaVw\n" +
-	"3IFA006 7.3.1.11 Detach Virtualised Storage Resource\x12@\b\x03\x10\x01\x1a:Returns the updated compute resource; IFA returns nothing.\x82\xd3\xe4\x93\x023:\x01*\"./compute/v1/computes/{compute_id}/detachVolume\x12\xa6\x02\n" +
-	"\x13CreateAffinityGroup\x125.kubenfv.kubevim.common.v1.CreateAffinityGroupRequest\x1a(.kubenfv.kubevim.common.v1.AffinityGroup\"\xad\x01\xfaP#J!\n" +
+	"\x11compute:v1:update\xfa\x8b\x19w\n" +
+	"3IFA006 7.3.1.11 Detach Virtualised Storage Resource\x12@\b\x03\x10\x01\x1a:Returns the updated compute resource; IFA returns nothing.\x82\xd3\xe4\x93\x023:\x01*\"./compute/v1/computes/{compute_id}/detachVolume\x12\xa7\x02\n" +
+	"\x13CreateAffinityGroup\x125.kubenfv.kubevim.common.v1.CreateAffinityGroupRequest\x1a(.kubenfv.kubevim.common.v1.AffinityGroup\"\xae\x01\xfaP#J!\n" +
 	"\x1f\n" +
 	"\x06oauth2\x12\x15\n" +
-	"\x13compute:v1:allocate\xfaV_\n" +
-	"]IFA006 7.3.1.9 Create Virtualised Compute Resource Affinity Or AntiAffinity Constraints Group\x82\xd3\xe4\x93\x02\x1f:\x01*\"\x1a/compute/v1/affinityGroups\x12\xfb\x01\n" +
-	"\x10GetAffinityGroup\x122.kubenfv.kubevim.common.v1.GetAffinityGroupRequest\x1a(.kubenfv.kubevim.common.v1.AffinityGroup\"\x88\x01\xfaP J\x1e\n" +
+	"\x13compute:v1:allocate\xfa\x8b\x19_\n" +
+	"]IFA006 7.3.1.9 Create Virtualised Compute Resource Affinity Or AntiAffinity Constraints Group\x82\xd3\xe4\x93\x02\x1f:\x01*\"\x1a/compute/v1/affinityGroups\x12\xfc\x01\n" +
+	"\x10GetAffinityGroup\x122.kubenfv.kubevim.common.v1.GetAffinityGroupRequest\x1a(.kubenfv.kubevim.common.v1.AffinityGroup\"\x89\x01\xfaP J\x1e\n" +
 	"\x1c\n" +
 	"\x06oauth2\x12\x12\n" +
-	"\x10compute:v1:query\xfaV5\x123\b\x01\x10\x01\x1a-IFA can create groups but not read them back.\x82\xd3\xe4\x93\x02'\x12%/compute/v1/affinityGroups/{group_id}\x12\xfb\x01\n" +
-	"\x12ListAffinityGroups\x124.kubenfv.kubevim.common.v1.ListAffinityGroupsRequest\x1a5.kubenfv.kubevim.common.v1.ListAffinityGroupsResponse\"x\xfaP J\x1e\n" +
+	"\x10compute:v1:query\xfa\x8b\x195\x123\b\x01\x10\x01\x1a-IFA can create groups but not read them back.\x82\xd3\xe4\x93\x02'\x12%/compute/v1/affinityGroups/{group_id}\x12\xfc\x01\n" +
+	"\x12ListAffinityGroups\x124.kubenfv.kubevim.common.v1.ListAffinityGroupsRequest\x1a5.kubenfv.kubevim.common.v1.ListAffinityGroupsResponse\"y\xfaP J\x1e\n" +
 	"\x1c\n" +
 	"\x06oauth2\x12\x12\n" +
-	"\x10compute:v1:query\xfaV0\x12.\b\x01\x10\x01\x1a(IFA can create groups but not list them.\x82\xd3\xe4\x93\x02\x1c\x12\x1a/compute/v1/affinityGroups\x12\xf0\x01\n" +
-	"\x13DeleteAffinityGroup\x125.kubenfv.kubevim.common.v1.DeleteAffinityGroupRequest\x1a\x16.google.protobuf.Empty\"\x89\x01\xfaP$J\"\n" +
+	"\x10compute:v1:query\xfa\x8b\x190\x12.\b\x01\x10\x01\x1a(IFA can create groups but not list them.\x82\xd3\xe4\x93\x02\x1c\x12\x1a/compute/v1/affinityGroups\x12\xf1\x01\n" +
+	"\x13DeleteAffinityGroup\x125.kubenfv.kubevim.common.v1.DeleteAffinityGroupRequest\x1a\x16.google.protobuf.Empty\"\x8a\x01\xfaP$J\"\n" +
 	" \n" +
 	"\x06oauth2\x12\x16\n" +
-	"\x14compute:v1:terminate\xfaV2\x120\b\x01\x10\x01\x1a*IFA can create groups but not delete them.\x82\xd3\xe4\x93\x02'*%/compute/v1/affinityGroups/{group_id}\x1aD\xfaVA\n" +
-	"?IFA006 7.3.1 Virtualised Compute Resources Management InterfaceB\xbd\x06\xfaP\xad\x04\n" +
+	"\x14compute:v1:terminate\xfa\x8b\x192\x120\b\x01\x10\x01\x1a*IFA can create groups but not delete them.\x82\xd3\xe4\x93\x02'*%/compute/v1/affinityGroups/{group_id}\x1aE\xfa\x8b\x19A\n" +
+	"?IFA006 7.3.1 Virtualised Compute Resources Management InterfaceB\xbe\x06\xfaP\xad\x04\n" +
 	")\n" +
 	" Kube-VIM virtualised compute API:\x051.0.02\xff\x03\n" +
 	"\xfc\x03\n" +
@@ -2507,7 +2507,7 @@ const file_kubenfv_kubevim_compute_v1_compute_proto_rawDesc = "" +
 	"\x10compute:v1:query\x12\x17Query compute resources\"+\n" +
 	"\x10compute:v1:scale\x12\x17Scale compute resources\"3\n" +
 	"\x14compute:v1:terminate\x12\x1bTerminate compute resources\"J\n" +
-	"\x11compute:v1:update\x125Update compute resources and attach or detach volumes\xfaV\x10\n" +
+	"\x11compute:v1:update\x125Update compute resources and attach or detach volumes\xfa\x8b\x19\x10\n" +
 	"\acompute\x12\x051.0.0\n" +
 	"\x1ecom.kubenfv.kubevim.compute.v1B\fComputeProtoP\x01Z>github.com/kube-nfv/kube-vim-api/pkg/apis/compute/v1;computev1\xa2\x02\x03KKC\xaa\x02\x1aKubenfv.Kubevim.Compute.V1\xca\x02\x1aKubenfv\\Kubevim\\Compute\\V1\xe2\x02&Kubenfv\\Kubevim\\Compute\\V1\\GPBMetadata\xea\x02\x1dKubenfv::Kubevim::Compute::V1b\x06proto3"
 

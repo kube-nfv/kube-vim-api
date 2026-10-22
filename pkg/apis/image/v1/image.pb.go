@@ -2367,53 +2367,53 @@ var File_kubenfv_kubevim_image_v1_image_proto protoreflect.FileDescriptor
 
 const file_kubenfv_kubevim_image_v1_image_proto_rawDesc = "" +
 	"\n" +
-	"$kubenfv/kubevim/image/v1/image.proto\x12\x18kubenfv.kubevim.image.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a(kubenfv/kubevim/common/v1/quantity.proto\x1a(kubenfv/kubevim/options/v1/options.proto\x1a.protoc-gen-openapiv3/options/annotations.proto\"\xe1\x17\n" +
-	"\x05Image\x12j\n" +
-	"\x11software_image_id\x18\x01 \x01(\tB>\xe2A\x01\x03\xfaV7\n" +
-	"5IFA005 8.2.2 SoftwareImageInformation.softwareImageIdR\x0fsoftwareImageId\x12N\n" +
-	"\x04name\x18\x02 \x01(\tB:\xe2A\x01\x02\xbaH\x04r\x02\x10\x01\xfaV,\n" +
-	"*IFA005 8.2.2 SoftwareImageInformation.nameR\x04name\x12Z\n" +
-	"\bprovider\x18\x03 \x01(\tB>\xe2A\x01\x02\xbaH\x04r\x02\x10\x01\xfaV0\n" +
-	".IFA005 8.2.2 SoftwareImageInformation.providerR\bprovider\x12W\n" +
-	"\aversion\x18\x04 \x01(\tB=\xe2A\x01\x02\xbaH\x04r\x02\x10\x01\xfaV/\n" +
-	"-IFA005 8.2.2 SoftwareImageInformation.versionR\aversion\x12\xcc\x01\n" +
-	"\bchecksum\x18\x05 \x01(\v2\".kubenfv.kubevim.image.v1.ChecksumB\x8b\x01\xe2A\x01\x03\xfaV\x83\x01\n" +
-	".IFA005 8.2.2 SoftwareImageInformation.checksum\x12Q\b\x03\x10\x01\x1aKIFA leaves the type unspecified; uses the SOL 013 7.1.7 Checksum structure.R\bchecksum\x12\xd2\x01\n" +
-	"\x10container_format\x18\x06 \x01(\x0e2).kubenfv.kubevim.image.v1.ContainerFormatB|\xe2A\x01\x03\xfaVu\n" +
-	"5IFA005 8.2.2 SoftwareImageInformation.containerFormat\x12<\b\x03\x10\x01\x1a6IFA leaves the type unspecified; a closed enumeration.R\x0fcontainerFormat\x12\xbe\x01\n" +
-	"\vdisk_format\x18\a \x01(\x0e2$.kubenfv.kubevim.image.v1.DiskFormatBw\xe2A\x01\x03\xfaVp\n" +
+	"$kubenfv/kubevim/image/v1/image.proto\x12\x18kubenfv.kubevim.image.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a%kubenfv/kubevim/common/v1/rules.proto\x1a(kubenfv/kubevim/options/v1/options.proto\x1a.protoc-gen-openapiv3/options/annotations.proto\"\xf8\x17\n" +
+	"\x05Image\x12k\n" +
+	"\x11software_image_id\x18\x01 \x01(\tB?\xe2A\x01\x03\xfa\x8b\x197\n" +
+	"5IFA005 8.2.2 SoftwareImageInformation.softwareImageIdR\x0fsoftwareImageId\x12O\n" +
+	"\x04name\x18\x02 \x01(\tB;\xe2A\x01\x02\xbaH\x04r\x02\x10\x01\xfa\x8b\x19,\n" +
+	"*IFA005 8.2.2 SoftwareImageInformation.nameR\x04name\x12[\n" +
+	"\bprovider\x18\x03 \x01(\tB?\xe2A\x01\x02\xbaH\x04r\x02\x10\x01\xfa\x8b\x190\n" +
+	".IFA005 8.2.2 SoftwareImageInformation.providerR\bprovider\x12X\n" +
+	"\aversion\x18\x04 \x01(\tB>\xe2A\x01\x02\xbaH\x04r\x02\x10\x01\xfa\x8b\x19/\n" +
+	"-IFA005 8.2.2 SoftwareImageInformation.versionR\aversion\x12\xcd\x01\n" +
+	"\bchecksum\x18\x05 \x01(\v2\".kubenfv.kubevim.image.v1.ChecksumB\x8c\x01\xe2A\x01\x03\xfa\x8b\x19\x83\x01\n" +
+	".IFA005 8.2.2 SoftwareImageInformation.checksum\x12Q\b\x03\x10\x01\x1aKIFA leaves the type unspecified; uses the SOL 013 7.1.7 Checksum structure.R\bchecksum\x12\xd3\x01\n" +
+	"\x10container_format\x18\x06 \x01(\x0e2).kubenfv.kubevim.image.v1.ContainerFormatB}\xe2A\x01\x03\xfa\x8b\x19u\n" +
+	"5IFA005 8.2.2 SoftwareImageInformation.containerFormat\x12<\b\x03\x10\x01\x1a6IFA leaves the type unspecified; a closed enumeration.R\x0fcontainerFormat\x12\xbf\x01\n" +
+	"\vdisk_format\x18\a \x01(\x0e2$.kubenfv.kubevim.image.v1.DiskFormatBx\xe2A\x01\x03\xfa\x8b\x19p\n" +
 	"0IFA005 8.2.2 SoftwareImageInformation.diskFormat\x12<\b\x03\x10\x01\x1a6IFA leaves the type unspecified; a closed enumeration.R\n" +
-	"diskFormat\x12s\n" +
+	"diskFormat\x12t\n" +
 	"\n" +
-	"created_at\x18\b \x01(\v2\x1a.google.protobuf.TimestampB8\xe2A\x01\x03\xfaV1\n" +
-	"/IFA005 8.2.2 SoftwareImageInformation.createdAtR\tcreatedAt\x12s\n" +
+	"created_at\x18\b \x01(\v2\x1a.google.protobuf.TimestampB9\xe2A\x01\x03\xfa\x8b\x191\n" +
+	"/IFA005 8.2.2 SoftwareImageInformation.createdAtR\tcreatedAt\x12t\n" +
 	"\n" +
-	"updated_at\x18\t \x01(\v2\x1a.google.protobuf.TimestampB8\xe2A\x01\x03\xfaV1\n" +
-	"/IFA005 8.2.2 SoftwareImageInformation.updatedAtR\tupdatedAt\x12\xa9\x01\n" +
+	"updated_at\x18\t \x01(\v2\x1a.google.protobuf.TimestampB9\xe2A\x01\x03\xfa\x8b\x191\n" +
+	"/IFA005 8.2.2 SoftwareImageInformation.updatedAtR\tupdatedAt\x12\xab\x01\n" +
 	"\bmin_disk\x18\n" +
-	" \x01(\tB\x8d\x01\xe2A\x01\x01\xbaH\b\xd8\x01\x01r\x03\xf8V\x01\xfaV{\n" +
-	"-IFA005 8.2.2 SoftwareImageInformation.minDisk\x12J\b\x03\x10\x01\x1aDKubernetes quantity string instead of a number with an implied unit.R\aminDisk\x12\xa6\x01\n" +
-	"\amin_ram\x18\v \x01(\tB\x8c\x01\xe2A\x01\x01\xbaH\b\xd8\x01\x01r\x03\xf8V\x01\xfaVz\n" +
-	",IFA005 8.2.2 SoftwareImageInformation.minRam\x12J\b\x03\x10\x01\x1aDKubernetes quantity string instead of a number with an implied unit.R\x06minRam\x12\x93\x01\n" +
-	"\x04size\x18\f \x01(\tB\x7f\xe2A\x01\x03\xfaVx\n" +
-	"*IFA005 8.2.2 SoftwareImageInformation.size\x12J\b\x03\x10\x01\x1aDKubernetes quantity string instead of a number with an implied unit.R\x04size\x12\xb2\x01\n" +
-	"\x06status\x18\r \x01(\x0e2%.kubenfv.kubevim.image.v1.ImageStatusBs\xe2A\x01\x03\xfaVl\n" +
-	",IFA005 8.2.2 SoftwareImageInformation.status\x12<\b\x03\x10\x01\x1a6IFA leaves the type unspecified; a closed enumeration.R\x06status\x12\xdd\x01\n" +
-	"\ruser_metadata\x18\x0e \x03(\v21.kubenfv.kubevim.image.v1.Image.UserMetadataEntryB\x84\x01\xe2A\x01\x01\xfaV}\n" +
-	"2IFA005 8.2.2 SoftwareImageInformation.userMetadata\x12G\b\x02\x10\x01\x1aAString values only, where IFA KeyValuePair allows any JSON value.R\fuserMetadata\x12\xc8\x01\n" +
+	" \x01(\tB\x8f\x01\xe2A\x01\x01\xbaH\t\xd8\x01\x01r\x04\xf8\x8b\x19\x01\xfa\x8b\x19{\n" +
+	"-IFA005 8.2.2 SoftwareImageInformation.minDisk\x12J\b\x03\x10\x01\x1aDKubernetes quantity string instead of a number with an implied unit.R\aminDisk\x12\xa8\x01\n" +
+	"\amin_ram\x18\v \x01(\tB\x8e\x01\xe2A\x01\x01\xbaH\t\xd8\x01\x01r\x04\xf8\x8b\x19\x01\xfa\x8b\x19z\n" +
+	",IFA005 8.2.2 SoftwareImageInformation.minRam\x12J\b\x03\x10\x01\x1aDKubernetes quantity string instead of a number with an implied unit.R\x06minRam\x12\x95\x01\n" +
+	"\x04size\x18\f \x01(\tB\x80\x01\xe2A\x01\x03\xfa\x8b\x19x\n" +
+	"*IFA005 8.2.2 SoftwareImageInformation.size\x12J\b\x03\x10\x01\x1aDKubernetes quantity string instead of a number with an implied unit.R\x04size\x12\xb3\x01\n" +
+	"\x06status\x18\r \x01(\x0e2%.kubenfv.kubevim.image.v1.ImageStatusBt\xe2A\x01\x03\xfa\x8b\x19l\n" +
+	",IFA005 8.2.2 SoftwareImageInformation.status\x12<\b\x03\x10\x01\x1a6IFA leaves the type unspecified; a closed enumeration.R\x06status\x12\xde\x01\n" +
+	"\ruser_metadata\x18\x0e \x03(\v21.kubenfv.kubevim.image.v1.Image.UserMetadataEntryB\x85\x01\xe2A\x01\x01\xfa\x8b\x19}\n" +
+	"2IFA005 8.2.2 SoftwareImageInformation.userMetadata\x12G\b\x02\x10\x01\x1aAString values only, where IFA KeyValuePair allows any JSON value.R\fuserMetadata\x12\xc9\x01\n" +
 	"\n" +
-	"visibility\x18\x0f \x01(\x0e2$.kubenfv.kubevim.image.v1.VisibilityB\x81\x01\xe2A\x01\x01\xfaVz\n" +
+	"visibility\x18\x0f \x01(\x0e2$.kubenfv.kubevim.image.v1.VisibilityB\x82\x01\xe2A\x01\x01\xfa\x8b\x19z\n" +
 	")IFA005 7.2.2.2 AddImageRequest.visibility\x12M\b\x03\x10\x01\x1aGAn Add Image input in IFA, kept on the resource so it can be read back.R\n" +
-	"visibility\x12\xc3\x01\n" +
-	"\x11resource_group_id\x18\x10 \x01(\tB\x96\x01\xe2A\x02\x01\x05\xfaV\x8d\x01\n" +
-	".IFA005 7.2.2.2 AddImageRequest.resourceGroupId\x12[\b\x02\x1aWKube-VIM has no infrastructure resource groups yet; a request that sets it is rejected.R\x0fresourceGroupId\x12\xd7\x01\n" +
-	"\x06source\x18\x11 \x01(\v2%.kubenfv.kubevim.image.v1.ImageSourceB\x97\x01\xe2A\x02\x02\x05\xbaH\x03\xc8\x01\x01\xfaV\x88\x01\n" +
-	",IFA005 7.2.2.2 AddImageRequest.softwareImage\x12X\b\x03\x10\x01\x1aRA source to import from, or an upload, instead of the image binary in the request.R\x06source\x12m\n" +
-	"\bprogress\x18\x12 \x01(\x05BQ\xe2A\x01\x03\xfaVJ\x12H\b\x01\x10\x01\x1aBImports run asynchronously; clients poll progress on the resource.R\bprogress\x12Q\n" +
-	"\rstatus_detail\x18\x13 \x01(\tB,\xe2A\x01\x03\xfaV%\x12#\b\x01\x10\x01\x1a\x1dReports why an import failed.R\fstatusDetail\x1a?\n" +
+	"visibility\x12\xc4\x01\n" +
+	"\x11resource_group_id\x18\x10 \x01(\tB\x97\x01\xe2A\x02\x01\x05\xfa\x8b\x19\x8d\x01\n" +
+	".IFA005 7.2.2.2 AddImageRequest.resourceGroupId\x12[\b\x02\x1aWKube-VIM has no infrastructure resource groups yet; a request that sets it is rejected.R\x0fresourceGroupId\x12\xd8\x01\n" +
+	"\x06source\x18\x11 \x01(\v2%.kubenfv.kubevim.image.v1.ImageSourceB\x98\x01\xe2A\x02\x02\x05\xbaH\x03\xc8\x01\x01\xfa\x8b\x19\x88\x01\n" +
+	",IFA005 7.2.2.2 AddImageRequest.softwareImage\x12X\b\x03\x10\x01\x1aRA source to import from, or an upload, instead of the image binary in the request.R\x06source\x12n\n" +
+	"\bprogress\x18\x12 \x01(\x05BR\xe2A\x01\x03\xfa\x8b\x19J\x12H\b\x01\x10\x01\x1aBImports run asynchronously; clients poll progress on the resource.R\bprogress\x12R\n" +
+	"\rstatus_detail\x18\x13 \x01(\tB-\xe2A\x01\x03\xfa\x8b\x19%\x12#\b\x01\x10\x01\x1a\x1dReports why an import failed.R\fstatusDetail\x1a?\n" +
 	"\x11UserMetadataEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01:*\xfaV'\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01:+\xfa\x8b\x19'\n" +
 	"%IFA005 8.2.2 SoftwareImageInformation\"H\n" +
 	"\bChecksum\x12\"\n" +
 	"\talgorithm\x18\x01 \x01(\tB\x04\xe2A\x01\x03R\talgorithm\x12\x18\n" +
@@ -2483,9 +2483,9 @@ const file_kubenfv_kubevim_image_v1_image_proto_rawDesc = "" +
 	"\n" +
 	"upload_url\x18\x01 \x01(\tB\x04\xe2A\x01\x03R\tuploadUrl\x12'\n" +
 	"\fupload_token\x18\x02 \x01(\tB\x04\xe2A\x01\x03R\vuploadToken\x12N\n" +
-	"\x12upload_expire_time\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampB\x04\xe2A\x01\x03R\x10uploadExpireTime\"/\n" +
-	"\vBlankSource\x12 \n" +
-	"\x04size\x18\x01 \x01(\tB\f\xe2A\x01\x02\xbaH\x05r\x03\xf8V\x01R\x04size\"\x88\x02\n" +
+	"\x12upload_expire_time\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampB\x04\xe2A\x01\x03R\x10uploadExpireTime\"0\n" +
+	"\vBlankSource\x12!\n" +
+	"\x04size\x18\x01 \x01(\tB\r\xe2A\x01\x02\xbaH\x06r\x04\xf8\x8b\x19\x01R\x04size\"\x88\x02\n" +
 	"\rImageIoSource\x12\x1e\n" +
 	"\x03url\x18\x01 \x01(\tB\f\xe2A\x01\x02\xbaH\x05r\x03\x88\x01\x01R\x03url\x12$\n" +
 	"\adisk_id\x18\x02 \x01(\tB\v\xe2A\x01\x02\xbaH\x04r\x02\x10\x01R\x06diskId\x12D\n" +
@@ -2513,25 +2513,25 @@ const file_kubenfv_kubevim_image_v1_image_proto_rawDesc = "" +
 	"\n" +
 	"request_id\x18\x02 \x01(\tB\x0f\xe2A\x01\x01\xbaH\b\xd8\x01\x01r\x03\xb0\x01\x01R\trequestId\"K\n" +
 	"\x0fGetImageRequest\x128\n" +
-	"\x11software_image_id\x18\x01 \x01(\tB\f\xe2A\x01\x02\xbaH\x05r\x03\xb0\x01\x01R\x0fsoftwareImageId\"\xa6\x01\n" +
-	"\x11ListImagesRequest\x12S\n" +
-	"\x06filter\x18\x01 \x01(\tB;\xe2A\x01\x01\xfaV4\n" +
+	"\x11software_image_id\x18\x01 \x01(\tB\f\xe2A\x01\x02\xbaH\x05r\x03\xb0\x01\x01R\x0fsoftwareImageId\"\xa7\x01\n" +
+	"\x11ListImagesRequest\x12T\n" +
+	"\x06filter\x18\x01 \x01(\tB<\xe2A\x01\x01\xfa\x8b\x194\n" +
 	"2IFA005 7.2.3.2 QueryImagesRequest.imageQueryFilterR\x06filter\x12<\n" +
-	"\x16nextpage_opaque_marker\x18\x02 \x01(\tB\x04\xe2A\x01\x01R\x16nextpage_opaque_marker\"\xc7\x01\n" +
-	"\x12ListImagesResponse\x12y\n" +
-	"\x06images\x18\x01 \x03(\v2\x1f.kubenfv.kubevim.image.v1.ImageB@\xfaV=\n" +
+	"\x16nextpage_opaque_marker\x18\x02 \x01(\tB\x04\xe2A\x01\x01R\x16nextpage_opaque_marker\"\xc8\x01\n" +
+	"\x12ListImagesResponse\x12z\n" +
+	"\x06images\x18\x01 \x03(\v2\x1f.kubenfv.kubevim.image.v1.ImageBA\xfa\x8b\x19=\n" +
 	";IFA005 7.2.3.3 QueryImagesResponse.softwareImageInformationR\x06images\x126\n" +
 	"\x16nextpage_opaque_marker\x18\x02 \x01(\tR\x16nextpage_opaque_marker\"\x99\x01\n" +
 	"\x12UpdateImageRequest\x128\n" +
 	"\x11software_image_id\x18\x01 \x01(\tB\f\xe2A\x01\x02\xbaH\x05r\x03\xb0\x01\x01R\x0fsoftwareImageId\x12I\n" +
 	"\x06update\x18\x02 \x01(\v2%.kubenfv.kubevim.image.v1.ImageUpdateB\n" +
-	"\xe2A\x01\x02\xbaH\x03\xc8\x01\x01R\x06update\"\x81\x06\n" +
+	"\xe2A\x01\x02\xbaH\x03\xc8\x01\x01R\x06update\"\x84\x06\n" +
 	"\vImageUpdate\x12$\n" +
 	"\x04name\x18\x01 \x01(\tB\v\xe2A\x01\x01\xbaH\x04r\x02\x10\x01H\x00R\x04name\x88\x01\x01\x12,\n" +
 	"\bprovider\x18\x02 \x01(\tB\v\xe2A\x01\x01\xbaH\x04r\x02\x10\x01H\x01R\bprovider\x88\x01\x01\x12*\n" +
-	"\aversion\x18\x03 \x01(\tB\v\xe2A\x01\x01\xbaH\x04r\x02\x10\x01H\x02R\aversion\x88\x01\x01\x12,\n" +
-	"\bmin_disk\x18\x04 \x01(\tB\f\xe2A\x01\x01\xbaH\x05r\x03\xf8V\x01H\x03R\aminDisk\x88\x01\x01\x12*\n" +
-	"\amin_ram\x18\x05 \x01(\tB\f\xe2A\x01\x01\xbaH\x05r\x03\xf8V\x01H\x04R\x06minRam\x88\x01\x01\x12b\n" +
+	"\aversion\x18\x03 \x01(\tB\v\xe2A\x01\x01\xbaH\x04r\x02\x10\x01H\x02R\aversion\x88\x01\x01\x12-\n" +
+	"\bmin_disk\x18\x04 \x01(\tB\r\xe2A\x01\x01\xbaH\x06r\x04\xf8\x8b\x19\x01H\x03R\aminDisk\x88\x01\x01\x12+\n" +
+	"\amin_ram\x18\x05 \x01(\tB\r\xe2A\x01\x01\xbaH\x06r\x04\xf8\x8b\x19\x01H\x04R\x06minRam\x88\x01\x01\x12b\n" +
 	"\ruser_metadata\x18\x06 \x03(\v27.kubenfv.kubevim.image.v1.ImageUpdate.UserMetadataEntryB\x04\xe2A\x01\x01R\fuserMetadata\x12D\n" +
 	"\x1cuser_metadata_keys_to_remove\x18\a \x03(\tB\x04\xe2A\x01\x01R\x18userMetadataKeysToRemove\x12Y\n" +
 	"\n" +
@@ -2539,7 +2539,7 @@ const file_kubenfv_kubevim_image_v1_image_proto_rawDesc = "" +
 	"visibility\x88\x01\x01\x1a?\n" +
 	"\x11UserMetadataEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01:\x87\x01\xfaV\x83\x01\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01:\x88\x01\xfa\x8b\x19\x83\x01\n" +
 	"!IFA005 7.2.5.2 UpdateImageRequest\x12^\b\x03\x10\x01\x1aXOnly the updatable attributes, each optional, instead of the full softwareImageMetadata.B\a\n" +
 	"\x05_nameB\v\n" +
 	"\t_providerB\n" +
@@ -2589,39 +2589,39 @@ const file_kubenfv_kubevim_image_v1_image_proto_rawDesc = "" +
 	"\x17IMAGE_SOURCE_TYPE_BLANK\x10\b\x12\x1d\n" +
 	"\x19IMAGE_SOURCE_TYPE_IMAGEIO\x10\t\x12\x1a\n" +
 	"\x16IMAGE_SOURCE_TYPE_VDDK\x10\n" +
-	"2\xa0\f\n" +
-	"\fImageService\x12\xb3\x01\n" +
-	"\vCreateImage\x12,.kubenfv.kubevim.image.v1.CreateImageRequest\x1a\x1f.kubenfv.kubevim.image.v1.Image\"U\xfaP\x1cJ\x1a\n" +
+	"2\xa7\f\n" +
+	"\fImageService\x12\xb4\x01\n" +
+	"\vCreateImage\x12,.kubenfv.kubevim.image.v1.CreateImageRequest\x1a\x1f.kubenfv.kubevim.image.v1.Image\"V\xfaP\x1cJ\x1a\n" +
 	"\x18\n" +
 	"\x06oauth2\x12\x0e\n" +
-	"\fimage:v1:add\xfaV\x18\n" +
-	"\x16IFA005 7.2.2 Add Image\x82\xd3\xe4\x93\x02\x15:\x01*\"\x10/image/v1/images\x12\xc2\x01\n" +
-	"\bGetImage\x12).kubenfv.kubevim.image.v1.GetImageRequest\x1a\x1f.kubenfv.kubevim.image.v1.Image\"j\xfaP\x1eJ\x1c\n" +
+	"\fimage:v1:add\xfa\x8b\x19\x18\n" +
+	"\x16IFA005 7.2.2 Add Image\x82\xd3\xe4\x93\x02\x15:\x01*\"\x10/image/v1/images\x12\xc3\x01\n" +
+	"\bGetImage\x12).kubenfv.kubevim.image.v1.GetImageRequest\x1a\x1f.kubenfv.kubevim.image.v1.Image\"k\xfaP\x1eJ\x1c\n" +
 	"\x1a\n" +
 	"\x06oauth2\x12\x10\n" +
-	"\x0eimage:v1:query\xfaV\x1a\n" +
-	"\x18IFA005 7.2.4 Query Image\x82\xd3\xe4\x93\x02&\x12$/image/v1/images/{software_image_id}\x12\xc0\x01\n" +
+	"\x0eimage:v1:query\xfa\x8b\x19\x1a\n" +
+	"\x18IFA005 7.2.4 Query Image\x82\xd3\xe4\x93\x02&\x12$/image/v1/images/{software_image_id}\x12\xc1\x01\n" +
 	"\n" +
-	"ListImages\x12+.kubenfv.kubevim.image.v1.ListImagesRequest\x1a,.kubenfv.kubevim.image.v1.ListImagesResponse\"W\xfaP\x1eJ\x1c\n" +
+	"ListImages\x12+.kubenfv.kubevim.image.v1.ListImagesRequest\x1a,.kubenfv.kubevim.image.v1.ListImagesResponse\"X\xfaP\x1eJ\x1c\n" +
 	"\x1a\n" +
 	"\x06oauth2\x12\x10\n" +
-	"\x0eimage:v1:query\xfaV\x1b\n" +
-	"\x19IFA005 7.2.3 Query Images\x82\xd3\xe4\x93\x02\x12\x12\x10/image/v1/images\x12\xe0\x02\n" +
-	"\vUpdateImage\x12,.kubenfv.kubevim.image.v1.UpdateImageRequest\x1a\x1f.kubenfv.kubevim.image.v1.Image\"\x81\x02\xfaP\x1fJ\x1d\n" +
+	"\x0eimage:v1:query\xfa\x8b\x19\x1b\n" +
+	"\x19IFA005 7.2.3 Query Images\x82\xd3\xe4\x93\x02\x12\x12\x10/image/v1/images\x12\xe1\x02\n" +
+	"\vUpdateImage\x12,.kubenfv.kubevim.image.v1.UpdateImageRequest\x1a\x1f.kubenfv.kubevim.image.v1.Image\"\x82\x02\xfaP\x1fJ\x1d\n" +
 	"\x1b\n" +
 	"\x06oauth2\x12\x11\n" +
-	"\x0fimage:v1:update\xfaV\xa7\x01\n" +
-	"\x19IFA005 7.2.5 Update Image\x12\x89\x01\b\x03\x10\x01\x1a\x82\x01Partial update: only the attributes set in ImageUpdate change, instead of sending the full userMetadata and softwareImageMetadata.\x82\xd3\xe4\x93\x02.:\x06update2$/image/v1/images/{software_image_id}\x12\xa8\x02\n" +
-	"\vDeleteImage\x12,.kubenfv.kubevim.image.v1.DeleteImageRequest\x1a\x16.google.protobuf.Empty\"\xd2\x01\xfaP\x1fJ\x1d\n" +
+	"\x0fimage:v1:update\xfa\x8b\x19\xa7\x01\n" +
+	"\x19IFA005 7.2.5 Update Image\x12\x89\x01\b\x03\x10\x01\x1a\x82\x01Partial update: only the attributes set in ImageUpdate change, instead of sending the full userMetadata and softwareImageMetadata.\x82\xd3\xe4\x93\x02.:\x06update2$/image/v1/images/{software_image_id}\x12\xa9\x02\n" +
+	"\vDeleteImage\x12,.kubenfv.kubevim.image.v1.DeleteImageRequest\x1a\x16.google.protobuf.Empty\"\xd3\x01\xfaP\x1fJ\x1d\n" +
 	"\x1b\n" +
 	"\x06oauth2\x12\x11\n" +
-	"\x0fimage:v1:delete\xfaV\x80\x01\n" +
-	"\x19IFA005 7.2.6 Delete Image\x12c\b\x03\x10\x01\x1a]Returns no body (204) instead of deletedId; the deleted identifier is the one in the request.\x82\xd3\xe4\x93\x02&*$/image/v1/images/{software_image_id}\x12\x8e\x02\n" +
-	"\x10ListImageSources\x121.kubenfv.kubevim.image.v1.ListImageSourcesRequest\x1a2.kubenfv.kubevim.image.v1.ListImageSourcesResponse\"\x92\x01\xfaP\x1eJ\x1c\n" +
+	"\x0fimage:v1:delete\xfa\x8b\x19\x80\x01\n" +
+	"\x19IFA005 7.2.6 Delete Image\x12c\b\x03\x10\x01\x1a]Returns no body (204) instead of deletedId; the deleted identifier is the one in the request.\x82\xd3\xe4\x93\x02&*$/image/v1/images/{software_image_id}\x12\x8f\x02\n" +
+	"\x10ListImageSources\x121.kubenfv.kubevim.image.v1.ListImageSourcesRequest\x1a2.kubenfv.kubevim.image.v1.ListImageSourcesResponse\"\x93\x01\xfaP\x1eJ\x1c\n" +
 	"\x1a\n" +
 	"\x06oauth2\x12\x10\n" +
-	"\x0eimage:v1:query\xfaVP\x12N\b\x01\x10\x01\x1aHImage sources are separate features; clients discover which are enabled.\x82\xd3\xe4\x93\x02\x18\x12\x16/image/v1/imageSources\x1a3\xfaV0\n" +
-	".IFA005 7.2 Software Image Management interfaceB\xda\x04\xfaP\xdc\x02\n" +
+	"\x0eimage:v1:query\xfa\x8b\x19P\x12N\b\x01\x10\x01\x1aHImage sources are separate features; clients discover which are enabled.\x82\xd3\xe4\x93\x02\x18\x12\x16/image/v1/imageSources\x1a4\xfa\x8b\x190\n" +
+	".IFA005 7.2 Software Image Management interfaceB\xdb\x04\xfaP\xdc\x02\n" +
 	"$\n" +
 	"\x1bKube-VIM software image API:\x051.0.02\xb3\x02\n" +
 	"\xb0\x02\n" +
@@ -2629,7 +2629,7 @@ const file_kubenfv_kubevim_image_v1_image_proto_rawDesc = "" +
 	"\fimage:v1:add\x12\x13Add software images\")\n" +
 	"\x0fimage:v1:delete\x12\x16Delete software images\"'\n" +
 	"\x0eimage:v1:query\x12\x15Query software images\")\n" +
-	"\x0fimage:v1:update\x12\x16Update software images\xfaV\x0e\n" +
+	"\x0fimage:v1:update\x12\x16Update software images\xfa\x8b\x19\x0e\n" +
 	"\x05image\x12\x051.0.0\n" +
 	"\x1ccom.kubenfv.kubevim.image.v1B\n" +
 	"ImageProtoP\x01Z:github.com/kube-nfv/kube-vim-api/pkg/apis/image/v1;imagev1\xa2\x02\x03KKI\xaa\x02\x18Kubenfv.Kubevim.Image.V1\xca\x02\x18Kubenfv\\Kubevim\\Image\\V1\xe2\x02$Kubenfv\\Kubevim\\Image\\V1\\GPBMetadata\xea\x02\x1bKubenfv::Kubevim::Image::V1b\x06proto3"

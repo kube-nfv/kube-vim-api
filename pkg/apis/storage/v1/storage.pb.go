@@ -725,149 +725,149 @@ var File_kubenfv_kubevim_storage_v1_storage_proto protoreflect.FileDescriptor
 
 const file_kubenfv_kubevim_storage_v1_storage_proto_rawDesc = "" +
 	"\n" +
-	"(kubenfv/kubevim/storage/v1/storage.proto\x12\x1akubenfv.kubevim.storage.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a(kubenfv/kubevim/common/v1/affinity.proto\x1a(kubenfv/kubevim/common/v1/quantity.proto\x1a&kubenfv/kubevim/common/v1/volume.proto\x1a(kubenfv/kubevim/options/v1/options.proto\x1a.protoc-gen-openapiv3/options/annotations.proto\"\xf3\b\n" +
-	"\x13CreateVolumeRequest\x12\x9f\x02\n" +
-	"\x06volume\x18\x01 \x01(\v2!.kubenfv.kubevim.common.v1.VolumeB\xe3\x01\xe2A\x01\x02\xbaH\xa3\x01\xba\x01\x9c\x01\n" +
-	"\x11volume.standalone\x12Aa standalone volume must be TYPE_OF_STORAGE_VOLUME without isBoot\x1aDthis.storage_data.type_of_storage == 1 && !this.storage_data.is_boot\xc8\x01\x01\xfaV5\n" +
+	"(kubenfv/kubevim/storage/v1/storage.proto\x12\x1akubenfv.kubevim.storage.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a(kubenfv/kubevim/common/v1/affinity.proto\x1a%kubenfv/kubevim/common/v1/rules.proto\x1a&kubenfv/kubevim/common/v1/volume.proto\x1a(kubenfv/kubevim/options/v1/options.proto\x1a.protoc-gen-openapiv3/options/annotations.proto\"\xf8\b\n" +
+	"\x13CreateVolumeRequest\x12\xa0\x02\n" +
+	"\x06volume\x18\x01 \x01(\v2!.kubenfv.kubevim.common.v1.VolumeB\xe4\x01\xe2A\x01\x02\xbaH\xa3\x01\xba\x01\x9c\x01\n" +
+	"\x11volume.standalone\x12Aa standalone volume must be TYPE_OF_STORAGE_VOLUME without isBoot\x1aDthis.storage_data.type_of_storage == 1 && !this.storage_data.is_boot\xc8\x01\x01\xfa\x8b\x195\n" +
 	"3IFA006 7.5.1.2.2 AllocateStorageRequest.storageDataR\x06volume\x12.\n" +
 	"\n" +
-	"request_id\x18\x02 \x01(\tB\x0f\xe2A\x01\x01\xbaH\b\xd8\x01\x01r\x03\xb0\x01\x01R\trequestId\x12\xa1\x01\n" +
-	"\x0ereservation_id\x18\x03 \x01(\tBz\xe2A\x01\x01\xfaVs\n" +
-	"5IFA006 7.5.1.2.2 AllocateStorageRequest.reservationId\x12:\b\x02\x1a6Kube-VIM has no reservations yet; a value is rejected.R\rreservationId\x12\xe1\x01\n" +
-	"%affinity_or_anti_affinity_constraints\x18\x04 \x03(\v2;.kubenfv.kubevim.common.v1.AffinityOrAntiAffinityConstraintBR\xe2A\x01\x01\xfaVK\n" +
-	"IIFA006 7.5.1.2.2 AllocateStorageRequest.affinityOrAntiAffinityConstraintsR!affinityOrAntiAffinityConstraints\x12\xc7\x01\n" +
-	"\x14location_constraints\x18\x05 \x01(\tB\x93\x01\xe2A\x01\x01\xfaV\x8b\x01\n" +
-	";IFA006 7.5.1.2.2 AllocateStorageRequest.locationConstraints\x12L\b\x02\x1aHKube-VIM exposes one VIM per edge instead of zones; a value is rejected.R\x13locationConstraints\x12\xb7\x01\n" +
-	"\x11resource_group_id\x18\x06 \x01(\tB\x8a\x01\xe2A\x01\x01\xfaV\x82\x01\n" +
+	"request_id\x18\x02 \x01(\tB\x0f\xe2A\x01\x01\xbaH\b\xd8\x01\x01r\x03\xb0\x01\x01R\trequestId\x12\xa2\x01\n" +
+	"\x0ereservation_id\x18\x03 \x01(\tB{\xe2A\x01\x01\xfa\x8b\x19s\n" +
+	"5IFA006 7.5.1.2.2 AllocateStorageRequest.reservationId\x12:\b\x02\x1a6Kube-VIM has no reservations yet; a value is rejected.R\rreservationId\x12\xe2\x01\n" +
+	"%affinity_or_anti_affinity_constraints\x18\x04 \x03(\v2;.kubenfv.kubevim.common.v1.AffinityOrAntiAffinityConstraintBS\xe2A\x01\x01\xfa\x8b\x19K\n" +
+	"IIFA006 7.5.1.2.2 AllocateStorageRequest.affinityOrAntiAffinityConstraintsR!affinityOrAntiAffinityConstraints\x12\xc8\x01\n" +
+	"\x14location_constraints\x18\x05 \x01(\tB\x94\x01\xe2A\x01\x01\xfa\x8b\x19\x8b\x01\n" +
+	";IFA006 7.5.1.2.2 AllocateStorageRequest.locationConstraints\x12L\b\x02\x1aHKube-VIM exposes one VIM per edge instead of zones; a value is rejected.R\x13locationConstraints\x12\xb8\x01\n" +
+	"\x11resource_group_id\x18\x06 \x01(\tB\x8b\x01\xe2A\x01\x01\xfa\x8b\x19\x82\x01\n" +
 	"7IFA006 7.5.1.2.2 AllocateStorageRequest.resourceGroupId\x12G\b\x02\x1aCNo resource groups until Kube-VIM has tenancy; a value is rejected.R\x0fresourceGroupId\"?\n" +
 	"\x10GetVolumeRequest\x12+\n" +
 	"\n" +
-	"storage_id\x18\x01 \x01(\tB\f\xe2A\x01\x02\xbaH\x05r\x03\xb0\x01\x01R\tstorageId\"\xac\x01\n" +
-	"\x12ListVolumesRequest\x12X\n" +
-	"\x06filter\x18\x01 \x01(\tB@\xe2A\x01\x01\xfaV9\n" +
+	"storage_id\x18\x01 \x01(\tB\f\xe2A\x01\x02\xbaH\x05r\x03\xb0\x01\x01R\tstorageId\"\xad\x01\n" +
+	"\x12ListVolumesRequest\x12Y\n" +
+	"\x06filter\x18\x01 \x01(\tBA\xe2A\x01\x01\xfa\x8b\x199\n" +
 	"7IFA006 7.5.1.3.2 QueryStorageRequest.storageQueryFilterR\x06filter\x12<\n" +
-	"\x16nextpage_opaque_marker\x18\x02 \x01(\tB\x04\xe2A\x01\x01R\x16nextpage_opaque_marker\"\xc2\x01\n" +
-	"\x13ListVolumesResponse\x12s\n" +
-	"\avolumes\x18\x01 \x03(\v2!.kubenfv.kubevim.common.v1.VolumeB6\xfaV3\n" +
+	"\x16nextpage_opaque_marker\x18\x02 \x01(\tB\x04\xe2A\x01\x01R\x16nextpage_opaque_marker\"\xc3\x01\n" +
+	"\x13ListVolumesResponse\x12t\n" +
+	"\avolumes\x18\x01 \x03(\v2!.kubenfv.kubevim.common.v1.VolumeB7\xfa\x8b\x193\n" +
 	"1IFA006 7.5.1.3.3 QueryStorageResponse.queryResultR\avolumes\x126\n" +
-	"\x16nextpage_opaque_marker\x18\x02 \x01(\tR\x16nextpage_opaque_marker\"\xc4\x01\n" +
-	"\x13UpdateVolumeRequest\x12_\n" +
+	"\x16nextpage_opaque_marker\x18\x02 \x01(\tR\x16nextpage_opaque_marker\"\xc5\x01\n" +
+	"\x13UpdateVolumeRequest\x12`\n" +
 	"\n" +
-	"storage_id\x18\x01 \x01(\tB@\xe2A\x01\x02\xbaH\x05r\x03\xb0\x01\x01\xfaV1\n" +
+	"storage_id\x18\x01 \x01(\tBA\xe2A\x01\x02\xbaH\x05r\x03\xb0\x01\x01\xfa\x8b\x191\n" +
 	"/IFA006 7.5.1.4.2 UpdateStorageRequest.storageIdR\tstorageId\x12L\n" +
 	"\x06update\x18\x02 \x01(\v2(.kubenfv.kubevim.storage.v1.VolumeUpdateB\n" +
-	"\xe2A\x01\x02\xbaH\x03\xc8\x01\x01R\x06update\"\xbc\x04\n" +
-	"\fVolumeUpdate\x12g\n" +
-	"\fstorage_name\x18\x01 \x01(\tB?\xe2A\x01\x01\xbaH\x04r\x02\x10\x01\xfaV1\x12/\b\x01\x10\x01\x1a)Renames a volume; IFA has no name update.H\x00R\vstorageName\x88\x01\x01\x12\x8b\x01\n" +
-	"\bmetadata\x18\x02 \x03(\v26.kubenfv.kubevim.storage.v1.VolumeUpdate.MetadataEntryB7\xe2A\x01\x01\xfaV0\n" +
+	"\xe2A\x01\x02\xbaH\x03\xc8\x01\x01R\x06update\"\xbf\x04\n" +
+	"\fVolumeUpdate\x12h\n" +
+	"\fstorage_name\x18\x01 \x01(\tB@\xe2A\x01\x01\xbaH\x04r\x02\x10\x01\xfa\x8b\x191\x12/\b\x01\x10\x01\x1a)Renames a volume; IFA has no name update.H\x00R\vstorageName\x88\x01\x01\x12\x8c\x01\n" +
+	"\bmetadata\x18\x02 \x03(\v26.kubenfv.kubevim.storage.v1.VolumeUpdate.MetadataEntryB8\xe2A\x01\x01\xfa\x8b\x190\n" +
 	".IFA006 7.5.1.4.2 UpdateStorageRequest.metaDataR\bmetadata\x12;\n" +
 	"\x17metadata_keys_to_remove\x18\x03 \x03(\tB\x04\xe2A\x01\x01R\x14metadataKeysToRemove\x1a;\n" +
 	"\rMetadataEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01:\xa9\x01\xfaV\xa5\x01\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01:\xaa\x01\xfa\x8b\x19\xa5\x01\n" +
 	"%IFA006 7.5.1.4.2 UpdateStorageRequest\x12|\b\x03\x10\x01\x1avName and metadata only; IFA's updateStorageData size change maps to ScaleVolume, and a type change needs a new volume.B\x0f\n" +
-	"\r_storage_name\"y\n" +
-	"\x13DeleteVolumeRequest\x12b\n" +
+	"\r_storage_name\"z\n" +
+	"\x13DeleteVolumeRequest\x12c\n" +
 	"\n" +
-	"storage_id\x18\x01 \x01(\tBC\xe2A\x01\x02\xbaH\x05r\x03\xb0\x01\x01\xfaV4\n" +
-	"2IFA006 7.5.1.5.2 TerminateStorageRequest.storageIdR\tstorageId\"\x83\x05\n" +
-	"\x14OperateVolumeRequest\x12`\n" +
+	"storage_id\x18\x01 \x01(\tBD\xe2A\x01\x02\xbaH\x05r\x03\xb0\x01\x01\xfa\x8b\x194\n" +
+	"2IFA006 7.5.1.5.2 TerminateStorageRequest.storageIdR\tstorageId\"\x86\x05\n" +
+	"\x14OperateVolumeRequest\x12a\n" +
 	"\n" +
-	"storage_id\x18\x01 \x01(\tBA\xe2A\x01\x02\xbaH\x05r\x03\xb0\x01\x01\xfaV2\n" +
-	"0IFA006 7.5.1.6.2 OperateStorageRequest.storageIdR\tstorageId\x12\xdc\x01\n" +
-	"\x11storage_operation\x18\x02 \x01(\x0e2,.kubenfv.kubevim.storage.v1.StorageOperationB\x80\x01\xe2A\x01\x02\xbaH\a\x82\x01\x04\x10\x01 \x00\xfaVo\n" +
-	"7IFA006 7.5.1.6.2 OperateStorageRequest.storageOperation\x124\b\x03\x10\x01\x1a.A closed enumeration instead of a free string.R\x10storageOperation\x12\xdb\x01\n" +
-	"\x1cstorage_operation_input_data\x18\x03 \x03(\v2O.kubenfv.kubevim.storage.v1.OperateVolumeRequest.StorageOperationInputDataEntryBI\xe2A\x01\x01\xfaVB\n" +
+	"storage_id\x18\x01 \x01(\tBB\xe2A\x01\x02\xbaH\x05r\x03\xb0\x01\x01\xfa\x8b\x192\n" +
+	"0IFA006 7.5.1.6.2 OperateStorageRequest.storageIdR\tstorageId\x12\xdd\x01\n" +
+	"\x11storage_operation\x18\x02 \x01(\x0e2,.kubenfv.kubevim.storage.v1.StorageOperationB\x81\x01\xe2A\x01\x02\xbaH\a\x82\x01\x04\x10\x01 \x00\xfa\x8b\x19o\n" +
+	"7IFA006 7.5.1.6.2 OperateStorageRequest.storageOperation\x124\b\x03\x10\x01\x1a.A closed enumeration instead of a free string.R\x10storageOperation\x12\xdc\x01\n" +
+	"\x1cstorage_operation_input_data\x18\x03 \x03(\v2O.kubenfv.kubevim.storage.v1.OperateVolumeRequest.StorageOperationInputDataEntryBJ\xe2A\x01\x01\xfa\x8b\x19B\n" +
 	"@IFA006 7.5.1.6.2 OperateStorageRequest.storageOperationInputDataR\x19storageOperationInputData\x1aL\n" +
 	"\x1eStorageOperationInputDataEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\xc6\x03\n" +
-	"\x15OperateVolumeResponse\x12~\n" +
-	"\fstorage_data\x18\x01 \x01(\v2!.kubenfv.kubevim.common.v1.VolumeB8\xfaV5\n" +
-	"3IFA006 7.5.1.6.3 OperateStorageResponse.storageDataR\vstorageData\x12\xdd\x01\n" +
-	"\x1dstorage_operation_output_data\x18\x02 \x03(\v2Q.kubenfv.kubevim.storage.v1.OperateVolumeResponse.StorageOperationOutputDataEntryBG\xfaVD\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\xc8\x03\n" +
+	"\x15OperateVolumeResponse\x12\x7f\n" +
+	"\fstorage_data\x18\x01 \x01(\v2!.kubenfv.kubevim.common.v1.VolumeB9\xfa\x8b\x195\n" +
+	"3IFA006 7.5.1.6.3 OperateStorageResponse.storageDataR\vstorageData\x12\xde\x01\n" +
+	"\x1dstorage_operation_output_data\x18\x02 \x03(\v2Q.kubenfv.kubevim.storage.v1.OperateVolumeResponse.StorageOperationOutputDataEntryBH\xfa\x8b\x19D\n" +
 	"BIFA006 7.5.1.6.3 OperateStorageResponse.storageOperationOutputDataR\x1astorageOperationOutputData\x1aM\n" +
 	"\x1fStorageOperationOutputDataEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\xc8\x02\n" +
-	"\x12ScaleVolumeRequest\x12^\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\xcb\x02\n" +
+	"\x12ScaleVolumeRequest\x12_\n" +
 	"\n" +
-	"storage_id\x18\x01 \x01(\tB?\xe2A\x01\x02\xbaH\x05r\x03\xb0\x01\x01\xfaV0\n" +
-	".IFA006 7.5.1.7.2 ScaleStorageRequest.storageIdR\tstorageId\x12\xd1\x01\n" +
-	"\bnew_size\x18\x02 \x01(\tB\xb5\x01\xe2A\x01\x02\xbaH\x05r\x03\xf8V\x01\xfaV\xa5\x01\n" +
-	",IFA006 7.5.1.7.2 ScaleStorageRequest.newSize\x12u\b\x03\x10\x01\x1aoKubernetes quantity string instead of a number; shrinking is rejected because Kubernetes cannot shrink volumes.R\anewSize\"\xda\x03\n" +
-	"\x14MigrateVolumeRequest\x12`\n" +
+	"storage_id\x18\x01 \x01(\tB@\xe2A\x01\x02\xbaH\x05r\x03\xb0\x01\x01\xfa\x8b\x190\n" +
+	".IFA006 7.5.1.7.2 ScaleStorageRequest.storageIdR\tstorageId\x12\xd3\x01\n" +
+	"\bnew_size\x18\x02 \x01(\tB\xb7\x01\xe2A\x01\x02\xbaH\x06r\x04\xf8\x8b\x19\x01\xfa\x8b\x19\xa5\x01\n" +
+	",IFA006 7.5.1.7.2 ScaleStorageRequest.newSize\x12u\b\x03\x10\x01\x1aoKubernetes quantity string instead of a number; shrinking is rejected because Kubernetes cannot shrink volumes.R\anewSize\"\xdd\x03\n" +
+	"\x14MigrateVolumeRequest\x12a\n" +
 	"\n" +
-	"storage_id\x18\x01 \x01(\tBA\xe2A\x01\x02\xbaH\x05r\x03\xb0\x01\x01\xfaV2\n" +
-	"0IFA006 7.5.1.8.2 MigrateStorageRequest.storageIdR\tstorageId\x12}\n" +
-	"\x14migration_constraint\x18\x02 \x01(\tBJ\xe2A\x01\x02\xbaH\x04r\x02\x10\x01\xfaV<\n" +
-	":IFA006 7.5.1.8.2 MigrateStorageRequest.migrationConstraintR\x13migrationConstraint\x12\xe0\x01\n" +
-	"%affinity_or_anti_affinity_constraints\x18\x03 \x03(\v2;.kubenfv.kubevim.common.v1.AffinityOrAntiAffinityConstraintBQ\xe2A\x01\x01\xfaVJ\n" +
+	"storage_id\x18\x01 \x01(\tBB\xe2A\x01\x02\xbaH\x05r\x03\xb0\x01\x01\xfa\x8b\x192\n" +
+	"0IFA006 7.5.1.8.2 MigrateStorageRequest.storageIdR\tstorageId\x12~\n" +
+	"\x14migration_constraint\x18\x02 \x01(\tBK\xe2A\x01\x02\xbaH\x04r\x02\x10\x01\xfa\x8b\x19<\n" +
+	":IFA006 7.5.1.8.2 MigrateStorageRequest.migrationConstraintR\x13migrationConstraint\x12\xe1\x01\n" +
+	"%affinity_or_anti_affinity_constraints\x18\x03 \x03(\v2;.kubenfv.kubevim.common.v1.AffinityOrAntiAffinityConstraintBR\xe2A\x01\x01\xfa\x8b\x19J\n" +
 	"HIFA006 7.5.1.8.2 MigrateStorageRequest.affinityOrAntiAffinityConstraintsR!affinityOrAntiAffinityConstraints*\xad\x01\n" +
 	"\x10StorageOperation\x12!\n" +
 	"\x1dSTORAGE_OPERATION_UNSPECIFIED\x10\x00\x12%\n" +
 	"!STORAGE_OPERATION_CREATE_SNAPSHOT\x10\x01\x12(\n" +
 	"$STORAGE_OPERATION_REVERT_TO_SNAPSHOT\x10\x02\x12%\n" +
-	"!STORAGE_OPERATION_DELETE_SNAPSHOT\x10\x032\xdb\x19\n" +
-	"\x0eStorageService\x12\xe1\x01\n" +
-	"\fCreateVolume\x12/.kubenfv.kubevim.storage.v1.CreateVolumeRequest\x1a!.kubenfv.kubevim.common.v1.Volume\"}\xfaP#J!\n" +
+	"!STORAGE_OPERATION_DELETE_SNAPSHOT\x10\x032\xe8\x19\n" +
+	"\x0eStorageService\x12\xe2\x01\n" +
+	"\fCreateVolume\x12/.kubenfv.kubevim.storage.v1.CreateVolumeRequest\x1a!.kubenfv.kubevim.common.v1.Volume\"~\xfaP#J!\n" +
 	"\x1f\n" +
 	"\x06oauth2\x12\x15\n" +
-	"\x13storage:v1:allocate\xfaV6\n" +
-	"4IFA006 7.5.1.2 Allocate Virtualised Storage Resource\x82\xd3\xe4\x93\x02\x18:\x01*\"\x13/storage/v1/volumes\x12\x9d\x02\n" +
-	"\tGetVolume\x12,.kubenfv.kubevim.storage.v1.GetVolumeRequest\x1a!.kubenfv.kubevim.common.v1.Volume\"\xbe\x01\xfaP J\x1e\n" +
+	"\x13storage:v1:allocate\xfa\x8b\x196\n" +
+	"4IFA006 7.5.1.2 Allocate Virtualised Storage Resource\x82\xd3\xe4\x93\x02\x18:\x01*\"\x13/storage/v1/volumes\x12\x9e\x02\n" +
+	"\tGetVolume\x12,.kubenfv.kubevim.storage.v1.GetVolumeRequest\x1a!.kubenfv.kubevim.common.v1.Volume\"\xbf\x01\xfaP J\x1e\n" +
 	"\x1c\n" +
 	"\x06oauth2\x12\x12\n" +
-	"\x10storage:v1:query\xfaVp\n" +
-	"1IFA006 7.5.1.3 Query Virtualised Storage Resource\x12;\b\x03\x10\x01\x1a5Query filtered by storageId, as a read by identifier.\x82\xd3\xe4\x93\x02\"\x12 /storage/v1/volumes/{storage_id}\x12\xe4\x01\n" +
-	"\vListVolumes\x12..kubenfv.kubevim.storage.v1.ListVolumesRequest\x1a/.kubenfv.kubevim.storage.v1.ListVolumesResponse\"t\xfaP J\x1e\n" +
+	"\x10storage:v1:query\xfa\x8b\x19p\n" +
+	"1IFA006 7.5.1.3 Query Virtualised Storage Resource\x12;\b\x03\x10\x01\x1a5Query filtered by storageId, as a read by identifier.\x82\xd3\xe4\x93\x02\"\x12 /storage/v1/volumes/{storage_id}\x12\xe5\x01\n" +
+	"\vListVolumes\x12..kubenfv.kubevim.storage.v1.ListVolumesRequest\x1a/.kubenfv.kubevim.storage.v1.ListVolumesResponse\"u\xfaP J\x1e\n" +
 	"\x1c\n" +
 	"\x06oauth2\x12\x12\n" +
-	"\x10storage:v1:query\xfaV3\n" +
-	"1IFA006 7.5.1.3 Query Virtualised Storage Resource\x82\xd3\xe4\x93\x02\x15\x12\x13/storage/v1/volumes\x12\xc9\x02\n" +
-	"\fUpdateVolume\x12/.kubenfv.kubevim.storage.v1.UpdateVolumeRequest\x1a!.kubenfv.kubevim.common.v1.Volume\"\xe4\x01\xfaP!J\x1f\n" +
+	"\x10storage:v1:query\xfa\x8b\x193\n" +
+	"1IFA006 7.5.1.3 Query Virtualised Storage Resource\x82\xd3\xe4\x93\x02\x15\x12\x13/storage/v1/volumes\x12\xca\x02\n" +
+	"\fUpdateVolume\x12/.kubenfv.kubevim.storage.v1.UpdateVolumeRequest\x1a!.kubenfv.kubevim.common.v1.Volume\"\xe5\x01\xfaP!J\x1f\n" +
 	"\x1d\n" +
 	"\x06oauth2\x12\x13\n" +
-	"\x11storage:v1:update\xfaV\x8c\x01\n" +
-	"2IFA006 7.5.1.4 Update Virtualised Storage Resource\x12V\b\x03\x10\x01\x1aPOnly the changes set in VolumeUpdate apply; size changes go through ScaleVolume.\x82\xd3\xe4\x93\x02*:\x06update2 /storage/v1/volumes/{storage_id}\x12\xbf\x02\n" +
-	"\fDeleteVolume\x12/.kubenfv.kubevim.storage.v1.DeleteVolumeRequest\x1a\x16.google.protobuf.Empty\"\xe5\x01\xfaP$J\"\n" +
+	"\x11storage:v1:update\xfa\x8b\x19\x8c\x01\n" +
+	"2IFA006 7.5.1.4 Update Virtualised Storage Resource\x12V\b\x03\x10\x01\x1aPOnly the changes set in VolumeUpdate apply; size changes go through ScaleVolume.\x82\xd3\xe4\x93\x02*:\x06update2 /storage/v1/volumes/{storage_id}\x12\xc0\x02\n" +
+	"\fDeleteVolume\x12/.kubenfv.kubevim.storage.v1.DeleteVolumeRequest\x1a\x16.google.protobuf.Empty\"\xe6\x01\xfaP$J\"\n" +
 	" \n" +
 	"\x06oauth2\x12\x16\n" +
-	"\x14storage:v1:terminate\xfaV\x92\x01\n" +
-	"5IFA006 7.5.1.5 Terminate Virtualised Storage Resource\x12Y\b\x03\x10\x01\x1aSOne resource per request (the path identifies it) instead of a list of identifiers.\x82\xd3\xe4\x93\x02\"* /storage/v1/volumes/{storage_id}\x12\x87\x02\n" +
-	"\rOperateVolume\x120.kubenfv.kubevim.storage.v1.OperateVolumeRequest\x1a1.kubenfv.kubevim.storage.v1.OperateVolumeResponse\"\x90\x01\xfaP\"J \n" +
+	"\x14storage:v1:terminate\xfa\x8b\x19\x92\x01\n" +
+	"5IFA006 7.5.1.5 Terminate Virtualised Storage Resource\x12Y\b\x03\x10\x01\x1aSOne resource per request (the path identifies it) instead of a list of identifiers.\x82\xd3\xe4\x93\x02\"* /storage/v1/volumes/{storage_id}\x12\x88\x02\n" +
+	"\rOperateVolume\x120.kubenfv.kubevim.storage.v1.OperateVolumeRequest\x1a1.kubenfv.kubevim.storage.v1.OperateVolumeResponse\"\x91\x01\xfaP\"J \n" +
 	"\x1e\n" +
 	"\x06oauth2\x12\x14\n" +
-	"\x12storage:v1:operate\xfaV5\n" +
-	"3IFA006 7.5.1.6 Operate Virtualised Storage Resource\x82\xd3\xe4\x93\x02-:\x01*\"(/storage/v1/volumes/{storage_id}/operate\x12\xed\x01\n" +
-	"\vScaleVolume\x12..kubenfv.kubevim.storage.v1.ScaleVolumeRequest\x1a!.kubenfv.kubevim.common.v1.Volume\"\x8a\x01\xfaP J\x1e\n" +
+	"\x12storage:v1:operate\xfa\x8b\x195\n" +
+	"3IFA006 7.5.1.6 Operate Virtualised Storage Resource\x82\xd3\xe4\x93\x02-:\x01*\"(/storage/v1/volumes/{storage_id}/operate\x12\xee\x01\n" +
+	"\vScaleVolume\x12..kubenfv.kubevim.storage.v1.ScaleVolumeRequest\x1a!.kubenfv.kubevim.common.v1.Volume\"\x8b\x01\xfaP J\x1e\n" +
 	"\x1c\n" +
 	"\x06oauth2\x12\x12\n" +
-	"\x10storage:v1:scale\xfaV3\n" +
-	"1IFA006 7.5.1.7 Scale Virtualised Storage Resource\x82\xd3\xe4\x93\x02+:\x01*\"&/storage/v1/volumes/{storage_id}/scale\x12\xf7\x01\n" +
-	"\rMigrateVolume\x120.kubenfv.kubevim.storage.v1.MigrateVolumeRequest\x1a!.kubenfv.kubevim.common.v1.Volume\"\x90\x01\xfaP\"J \n" +
+	"\x10storage:v1:scale\xfa\x8b\x193\n" +
+	"1IFA006 7.5.1.7 Scale Virtualised Storage Resource\x82\xd3\xe4\x93\x02+:\x01*\"&/storage/v1/volumes/{storage_id}/scale\x12\xf8\x01\n" +
+	"\rMigrateVolume\x120.kubenfv.kubevim.storage.v1.MigrateVolumeRequest\x1a!.kubenfv.kubevim.common.v1.Volume\"\x91\x01\xfaP\"J \n" +
 	"\x1e\n" +
 	"\x06oauth2\x12\x14\n" +
-	"\x12storage:v1:migrate\xfaV5\n" +
-	"3IFA006 7.5.1.8 Migrate Virtualised Storage Resource\x82\xd3\xe4\x93\x02-:\x01*\"(/storage/v1/volumes/{storage_id}/migrate\x12\xa6\x02\n" +
-	"\x13CreateAffinityGroup\x125.kubenfv.kubevim.common.v1.CreateAffinityGroupRequest\x1a(.kubenfv.kubevim.common.v1.AffinityGroup\"\xad\x01\xfaP#J!\n" +
+	"\x12storage:v1:migrate\xfa\x8b\x195\n" +
+	"3IFA006 7.5.1.8 Migrate Virtualised Storage Resource\x82\xd3\xe4\x93\x02-:\x01*\"(/storage/v1/volumes/{storage_id}/migrate\x12\xa7\x02\n" +
+	"\x13CreateAffinityGroup\x125.kubenfv.kubevim.common.v1.CreateAffinityGroupRequest\x1a(.kubenfv.kubevim.common.v1.AffinityGroup\"\xae\x01\xfaP#J!\n" +
 	"\x1f\n" +
 	"\x06oauth2\x12\x15\n" +
-	"\x13storage:v1:allocate\xfaV_\n" +
-	"]IFA006 7.5.1.9 Create Virtualised Storage Resource Affinity Or AntiAffinity Constraints Group\x82\xd3\xe4\x93\x02\x1f:\x01*\"\x1a/storage/v1/affinityGroups\x12\xfb\x01\n" +
-	"\x10GetAffinityGroup\x122.kubenfv.kubevim.common.v1.GetAffinityGroupRequest\x1a(.kubenfv.kubevim.common.v1.AffinityGroup\"\x88\x01\xfaP J\x1e\n" +
+	"\x13storage:v1:allocate\xfa\x8b\x19_\n" +
+	"]IFA006 7.5.1.9 Create Virtualised Storage Resource Affinity Or AntiAffinity Constraints Group\x82\xd3\xe4\x93\x02\x1f:\x01*\"\x1a/storage/v1/affinityGroups\x12\xfc\x01\n" +
+	"\x10GetAffinityGroup\x122.kubenfv.kubevim.common.v1.GetAffinityGroupRequest\x1a(.kubenfv.kubevim.common.v1.AffinityGroup\"\x89\x01\xfaP J\x1e\n" +
 	"\x1c\n" +
 	"\x06oauth2\x12\x12\n" +
-	"\x10storage:v1:query\xfaV5\x123\b\x01\x10\x01\x1a-IFA can create groups but not read them back.\x82\xd3\xe4\x93\x02'\x12%/storage/v1/affinityGroups/{group_id}\x12\xfb\x01\n" +
-	"\x12ListAffinityGroups\x124.kubenfv.kubevim.common.v1.ListAffinityGroupsRequest\x1a5.kubenfv.kubevim.common.v1.ListAffinityGroupsResponse\"x\xfaP J\x1e\n" +
+	"\x10storage:v1:query\xfa\x8b\x195\x123\b\x01\x10\x01\x1a-IFA can create groups but not read them back.\x82\xd3\xe4\x93\x02'\x12%/storage/v1/affinityGroups/{group_id}\x12\xfc\x01\n" +
+	"\x12ListAffinityGroups\x124.kubenfv.kubevim.common.v1.ListAffinityGroupsRequest\x1a5.kubenfv.kubevim.common.v1.ListAffinityGroupsResponse\"y\xfaP J\x1e\n" +
 	"\x1c\n" +
 	"\x06oauth2\x12\x12\n" +
-	"\x10storage:v1:query\xfaV0\x12.\b\x01\x10\x01\x1a(IFA can create groups but not list them.\x82\xd3\xe4\x93\x02\x1c\x12\x1a/storage/v1/affinityGroups\x12\xf0\x01\n" +
-	"\x13DeleteAffinityGroup\x125.kubenfv.kubevim.common.v1.DeleteAffinityGroupRequest\x1a\x16.google.protobuf.Empty\"\x89\x01\xfaP$J\"\n" +
+	"\x10storage:v1:query\xfa\x8b\x190\x12.\b\x01\x10\x01\x1a(IFA can create groups but not list them.\x82\xd3\xe4\x93\x02\x1c\x12\x1a/storage/v1/affinityGroups\x12\xf1\x01\n" +
+	"\x13DeleteAffinityGroup\x125.kubenfv.kubevim.common.v1.DeleteAffinityGroupRequest\x1a\x16.google.protobuf.Empty\"\x8a\x01\xfaP$J\"\n" +
 	" \n" +
 	"\x06oauth2\x12\x16\n" +
-	"\x14storage:v1:terminate\xfaV2\x120\b\x01\x10\x01\x1a*IFA can create groups but not delete them.\x82\xd3\xe4\x93\x02'*%/storage/v1/affinityGroups/{group_id}\x1aD\xfaVA\n" +
-	"?IFA006 7.5.1 Virtualised Storage Resources Management InterfaceB\xdc\x05\xfaP\xcc\x03\n" +
+	"\x14storage:v1:terminate\xfa\x8b\x192\x120\b\x01\x10\x01\x1a*IFA can create groups but not delete them.\x82\xd3\xe4\x93\x02'*%/storage/v1/affinityGroups/{group_id}\x1aE\xfa\x8b\x19A\n" +
+	"?IFA006 7.5.1 Virtualised Storage Resources Management InterfaceB\xdd\x05\xfaP\xcc\x03\n" +
 	")\n" +
 	" Kube-VIM virtualised storage API:\x051.0.02\x9e\x03\n" +
 	"\x9b\x03\n" +
@@ -878,7 +878,7 @@ const file_kubenfv_kubevim_storage_v1_storage_proto_rawDesc = "" +
 	"\x10storage:v1:query\x12\rQuery volumes\"\"\n" +
 	"\x10storage:v1:scale\x12\x0eResize volumes\")\n" +
 	"\x14storage:v1:terminate\x12\x11Terminate volumes\"#\n" +
-	"\x11storage:v1:update\x12\x0eUpdate volumes\xfaV\x10\n" +
+	"\x11storage:v1:update\x12\x0eUpdate volumes\xfa\x8b\x19\x10\n" +
 	"\astorage\x12\x051.0.0\n" +
 	"\x1ecom.kubenfv.kubevim.storage.v1B\fStorageProtoP\x01Z>github.com/kube-nfv/kube-vim-api/pkg/apis/storage/v1;storagev1\xa2\x02\x03KKS\xaa\x02\x1aKubenfv.Kubevim.Storage.V1\xca\x02\x1aKubenfv\\Kubevim\\Storage\\V1\xe2\x02&Kubenfv\\Kubevim\\Storage\\V1\\GPBMetadata\xea\x02\x1dKubenfv::Kubevim::Storage::V1b\x06proto3"
 

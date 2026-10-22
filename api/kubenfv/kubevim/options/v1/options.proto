@@ -4,42 +4,42 @@ package kubenfv.kubevim.options.v1;
 
 import "google/protobuf/descriptor.proto";
 
-// Extension number 1391 is requested in the protobuf global extension registry
-// (https://github.com/protocolbuffers/protobuf/blob/main/docs/options.md).
+// Extension number 51391 is from the private range (50000 to 99999) until the API
+// is stable; a number from the protobuf global extension registry replaces it then.
 
 extend google.protobuf.FileOptions {
   // API identity of the services in this file.
-  Api api = 1391;
+  Api api = 51391;
 }
 
 extend google.protobuf.ServiceOptions {
   // IFA interface this service maps to.
-  Ifa ifa_service = 1391;
+  Ifa ifa_service = 51391;
 }
 
 extend google.protobuf.MethodOptions {
   // IFA operation this RPC maps to.
-  Ifa ifa_method = 1391;
+  Ifa ifa_method = 51391;
 }
 
 extend google.protobuf.MessageOptions {
   // IFA information element this message maps to.
-  Ifa ifa_message = 1391;
+  Ifa ifa_message = 51391;
 }
 
 extend google.protobuf.FieldOptions {
   // IFA attribute this field maps to.
-  Ifa ifa_field = 1391;
+  Ifa ifa_field = 51391;
 }
 
 extend google.protobuf.EnumOptions {
   // IFA enumeration this enum maps to.
-  Ifa ifa_enum = 1391;
+  Ifa ifa_enum = 51391;
 }
 
 extend google.protobuf.EnumValueOptions {
   // IFA value this enum value maps to.
-  Ifa ifa_enum_value = 1391;
+  Ifa ifa_enum_value = 51391;
 }
 
 // API identity per ETSI GS NFV-SOL 013.

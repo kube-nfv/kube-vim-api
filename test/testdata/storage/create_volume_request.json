@@ -1,6 +1,6 @@
 {
   "volume": {
-    "storageName": "router-1-data",
+    "volumeName": "router-1-data",
     "storageData": {
       "typeOfStorage": "TYPE_OF_STORAGE_VOLUME",
       "sizeOfStorage": "100Gi"

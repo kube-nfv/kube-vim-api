@@ -7,7 +7,7 @@ import "google/api/annotations.proto";
 import "google/api/field_behavior.proto";
 import "google/protobuf/empty.proto";
 import "google/protobuf/timestamp.proto";
-import "kubenfv/kubevim/common/v1/quantity.proto";
+import "kubenfv/kubevim/common/v1/rules.proto";
 import "kubenfv/kubevim/options/v1/options.proto";
 import "protoc-gen-openapiv3/options/annotations.proto";
 

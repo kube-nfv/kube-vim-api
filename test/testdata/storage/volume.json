@@ -1,11 +1,11 @@
 {
-  "storageId": "a7b8c9d0-e1f2-4a3b-8c4d-5e6f7a8b9c0d",
-  "storageName": "router-1-data",
+  "volumeId": "a7b8c9d0-e1f2-4a3b-8c4d-5e6f7a8b9c0d",
+  "volumeName": "router-1-data",
   "storageData": {
     "typeOfStorage": "TYPE_OF_STORAGE_VOLUME",
     "sizeOfStorage": "100Gi"
   },
-  "ownerId": "c0ffee00-1234-4abc-8def-0123456789ab",
+  "computeId": "c0ffee00-1234-4abc-8def-0123456789ab",
   "operationalState": "OPERATIONAL_STATE_ENABLED",
   "metadata": {
     "osm.etsi.org/vdu": "router"

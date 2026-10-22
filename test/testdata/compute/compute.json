@@ -46,14 +46,14 @@
   ],
   "virtualDisks": [
     {
-      "storageId": "5a6b7c8d-9e0f-4a1b-8c2d-3e4f5a6b7c8d",
-      "storageName": "router-1-boot",
+      "volumeId": "5a6b7c8d-9e0f-4a1b-8c2d-3e4f5a6b7c8d",
+      "volumeName": "router-1-boot",
       "storageData": {
         "typeOfStorage": "TYPE_OF_STORAGE_VOLUME",
         "sizeOfStorage": "40Gi",
         "isBoot": true
       },
-      "ownerId": "c0ffee00-1234-4abc-8def-0123456789ab",
+      "computeId": "c0ffee00-1234-4abc-8def-0123456789ab",
       "operationalState": "OPERATIONAL_STATE_ENABLED"
     }
   ],

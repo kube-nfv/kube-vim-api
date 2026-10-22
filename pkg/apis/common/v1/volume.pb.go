@@ -27,25 +27,23 @@ const (
 // A virtualised storage resource, e.g. a disk of a compute resource.
 type Volume struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// Identifier of the volume: a UUID, the Kubernetes UID of the object behind it. Ephemeral disks
-	// of a compute resource are not Kubernetes objects and use their disk name instead.
-	StorageId string `protobuf:"bytes,1,opt,name=storage_id,json=storageId,proto3" json:"storage_id,omitempty"`
-	// Name of the volume.
-	StorageName string `protobuf:"bytes,2,opt,name=storage_name,json=storageName,proto3" json:"storage_name,omitempty"`
-	// Storage flavour the volume was created from.
-	FlavourId string `protobuf:"bytes,3,opt,name=flavour_id,json=flavourId,proto3" json:"flavour_id,omitempty"`
+	// Identifier of the volume: a UUID assigned by the VIM. Ephemeral disks of a compute
+	// resource are not resources of their own and use their disk name instead.
+	VolumeId string `protobuf:"bytes,1,opt,name=volume_id,json=volumeId,proto3" json:"volume_id,omitempty"`
+	// Name of the volume, given by the consumer; not unique.
+	VolumeName string `protobuf:"bytes,2,opt,name=volume_name,json=volumeName,proto3" json:"volume_name,omitempty"`
 	// Size, type and capabilities of the volume.
-	StorageData *VirtualStorageData `protobuf:"bytes,4,opt,name=storage_data,json=storageData,proto3" json:"storage_data,omitempty"`
-	// Resource that uses the volume, e.g. a compute resource; empty when not attached.
-	OwnerId string `protobuf:"bytes,5,opt,name=owner_id,json=ownerId,proto3" json:"owner_id,omitempty"`
+	StorageData *VirtualStorageData `protobuf:"bytes,3,opt,name=storage_data,json=storageData,proto3" json:"storage_data,omitempty"`
+	// Compute resource that uses the volume; empty when not attached.
+	ComputeId string `protobuf:"bytes,4,opt,name=compute_id,json=computeId,proto3" json:"compute_id,omitempty"`
 	// Resource zone of the volume.
-	ZoneId string `protobuf:"bytes,6,opt,name=zone_id,json=zoneId,proto3" json:"zone_id,omitempty"`
+	ZoneId string `protobuf:"bytes,5,opt,name=zone_id,json=zoneId,proto3" json:"zone_id,omitempty"`
 	// Host of the volume; empty for distributed storage.
-	HostId string `protobuf:"bytes,7,opt,name=host_id,json=hostId,proto3" json:"host_id,omitempty"`
+	HostId string `protobuf:"bytes,6,opt,name=host_id,json=hostId,proto3" json:"host_id,omitempty"`
 	// Operational state of the volume.
-	OperationalState OperationalState `protobuf:"varint,8,opt,name=operational_state,json=operationalState,proto3,enum=kubenfv.kubevim.common.v1.OperationalState" json:"operational_state,omitempty"`
-	// Metadata owned by the consumer and never interpreted by the VIM.
-	Metadata      map[string]string `protobuf:"bytes,9,rep,name=metadata,proto3" json:"metadata,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	OperationalState OperationalState `protobuf:"varint,7,opt,name=operational_state,json=operationalState,proto3,enum=kubenfv.kubevim.common.v1.OperationalState" json:"operational_state,omitempty"`
+	// Metadata set by the consumer and by the VIM; for keys under "kubevim.kubenfv.io/" that the VIM maintains, its value wins.
+	Metadata      map[string]string `protobuf:"bytes,8,rep,name=metadata,proto3" json:"metadata,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -80,23 +78,16 @@ func (*Volume) Descriptor() ([]byte, []int) {
 	return file_kubenfv_kubevim_common_v1_volume_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *Volume) GetStorageId() string {
+func (x *Volume) GetVolumeId() string {
 	if x != nil {
-		return x.StorageId
+		return x.VolumeId
 	}
 	return ""
 }
 
-func (x *Volume) GetStorageName() string {
+func (x *Volume) GetVolumeName() string {
 	if x != nil {
-		return x.StorageName
-	}
-	return ""
-}
-
-func (x *Volume) GetFlavourId() string {
-	if x != nil {
-		return x.FlavourId
+		return x.VolumeName
 	}
 	return ""
 }
@@ -108,9 +99,9 @@ func (x *Volume) GetStorageData() *VirtualStorageData {
 	return nil
 }
 
-func (x *Volume) GetOwnerId() string {
+func (x *Volume) GetComputeId() string {
 	if x != nil {
-		return x.OwnerId
+		return x.ComputeId
 	}
 	return ""
 }
@@ -147,31 +138,29 @@ var File_kubenfv_kubevim_common_v1_volume_proto protoreflect.FileDescriptor
 
 const file_kubenfv_kubevim_common_v1_volume_proto_rawDesc = "" +
 	"\n" +
-	"&kubenfv/kubevim/common/v1/volume.proto\x12\x19kubenfv.kubevim.common.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a&kubenfv/kubevim/common/v1/common.proto\x1a'kubenfv/kubevim/common/v1/storage.proto\x1a(kubenfv/kubevim/options/v1/options.proto\"\xcd\t\n" +
-	"\x06Volume\x12O\n" +
+	"&kubenfv/kubevim/common/v1/volume.proto\x12\x19kubenfv.kubevim.common.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a&kubenfv/kubevim/common/v1/common.proto\x1a%kubenfv/kubevim/common/v1/rules.proto\x1a'kubenfv/kubevim/common/v1/storage.proto\x1a(kubenfv/kubevim/options/v1/options.proto\"\x81\v\n" +
+	"\x06Volume\x12\x92\x01\n" +
+	"\tvolume_id\x18\x01 \x01(\tBu\xe2A\x01\x03\xfa\x8b\x19m\n" +
+	"'IFA006 8.4.7.2 VirtualStorage.storageId\x12B\b\x03\x10\x01\x1a<Renamed to the resource name; identifiers are <resource>_id.R\bvolumeId\x12\x94\x01\n" +
+	"\vvolume_name\x18\x02 \x01(\tBs\xe2A\x01\x01\xfa\x8b\x19k\n" +
+	")IFA006 8.4.7.2 VirtualStorage.storageName\x12>\b\x03\x10\x01\x1a8Renamed to the resource name; names are <resource>_name.R\n" +
+	"volumeName\x12\xbe\x02\n" +
+	"\fstorage_data\x18\x03 \x01(\v2-.kubenfv.kubevim.common.v1.VirtualStorageDataB\xeb\x01\xe2A\x01\x02\xbaH\x03\xc8\x01\x01\xfa\x8b\x19\xdc\x01\n" +
+	"xIFA006 8.4.7.2 VirtualStorage.typeOfStorage, sizeOfStorage, rdmaEnabled; 8.4.6.2 VirtualStorageFlavour.storageAttributes\x12`\b\x03\x10\x01\x1aZThe type and size attributes are grouped as VirtualStorageData, as in allocation requests.R\vstorageData\x12\xac\x01\n" +
 	"\n" +
-	"storage_id\x18\x01 \x01(\tB0\xe2A\x01\x03\xfaV)\n" +
-	"'IFA006 8.4.7.2 VirtualStorage.storageIdR\tstorageId\x12U\n" +
-	"\fstorage_name\x18\x02 \x01(\tB2\xe2A\x01\x01\xfaV+\n" +
-	")IFA006 8.4.7.2 VirtualStorage.storageNameR\vstorageName\x12\x86\x01\n" +
-	"\n" +
-	"flavour_id\x18\x03 \x01(\tBg\xe2A\x01\x03\xfaV`\n" +
-	"'IFA006 8.4.7.2 VirtualStorage.flavourId\x125\b\x02\x10\x01\x1a/Kube-VIM has no storage flavours; always empty.R\tflavourId\x12\xc3\x02\n" +
-	"\fstorage_data\x18\x04 \x01(\v2-.kubenfv.kubevim.common.v1.VirtualStorageDataB\xf0\x01\xe2A\x01\x02\xbaH\x03\xc8\x01\x01\xfaV\xe2\x01\n" +
-	"xIFA006 8.4.7.2 VirtualStorage.typeOfStorage, sizeOfStorage, rdmaEnabled; 8.4.6.2 VirtualStorageFlavour.storageAttributes\x12f\b\x03\x10\x01\x1a`The type, size and RDMA attributes are grouped as VirtualStorageData, as in allocation requests.R\vstorageData\x12I\n" +
-	"\bowner_id\x18\x05 \x01(\tB.\xe2A\x01\x03\xfaV'\n" +
-	"%IFA006 8.4.7.2 VirtualStorage.ownerIdR\aownerId\x12F\n" +
-	"\azone_id\x18\x06 \x01(\tB-\xe2A\x01\x03\xfaV&\n" +
-	"$IFA006 8.4.7.2 VirtualStorage.zoneIdR\x06zoneId\x12F\n" +
-	"\ahost_id\x18\a \x01(\tB-\xe2A\x01\x03\xfaV&\n" +
-	"$IFA006 8.4.7.2 VirtualStorage.hostIdR\x06hostId\x12\x91\x01\n" +
-	"\x11operational_state\x18\b \x01(\x0e2+.kubenfv.kubevim.common.v1.OperationalStateB7\xe2A\x01\x03\xfaV0\n" +
-	".IFA006 8.4.7.2 VirtualStorage.operationalStateR\x10operationalState\x12|\n" +
-	"\bmetadata\x18\t \x03(\v2/.kubenfv.kubevim.common.v1.Volume.MetadataEntryB/\xe2A\x01\x01\xfaV(\n" +
-	"&IFA006 8.4.7.2 VirtualStorage.metadataR\bmetadata\x1a;\n" +
+	"compute_id\x18\x04 \x01(\tB\x8c\x01\xe2A\x01\x03\xfa\x8b\x19\x83\x01\n" +
+	"%IFA006 8.4.7.2 VirtualStorage.ownerId\x12Z\b\x03\x10\x01\x1aTRenamed to the referenced resource's identifier; only compute resources own volumes.R\tcomputeId\x12G\n" +
+	"\azone_id\x18\x05 \x01(\tB.\xe2A\x01\x03\xfa\x8b\x19&\n" +
+	"$IFA006 8.4.7.2 VirtualStorage.zoneIdR\x06zoneId\x12G\n" +
+	"\ahost_id\x18\x06 \x01(\tB.\xe2A\x01\x03\xfa\x8b\x19&\n" +
+	"$IFA006 8.4.7.2 VirtualStorage.hostIdR\x06hostId\x12\x92\x01\n" +
+	"\x11operational_state\x18\a \x01(\x0e2+.kubenfv.kubevim.common.v1.OperationalStateB8\xe2A\x01\x03\xfa\x8b\x190\n" +
+	".IFA006 8.4.7.2 VirtualStorage.operationalStateR\x10operationalState\x12\xd1\x01\n" +
+	"\bmetadata\x18\b \x03(\v2/.kubenfv.kubevim.common.v1.Volume.MetadataEntryB\x83\x01\xe2A\x01\x01\xbaH\a\x9a\x01\x04\xf8\x8b\x19\x01\xfa\x8b\x19q\n" +
+	"&IFA006 8.4.7.2 VirtualStorage.metadata\x12G\b\x02\x10\x01\x1aAString values only, where IFA KeyValuePair allows any JSON value.R\bmetadata\x1a;\n" +
 	"\rMetadataEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01:\"\xfaV\x1f\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01:#\xfa\x8b\x19\x1f\n" +
 	"\x1dIFA006 8.4.7.2 VirtualStorageB\xf1\x01\n" +
 	"\x1dcom.kubenfv.kubevim.common.v1B\vVolumeProtoP\x01Z<github.com/kube-nfv/kube-vim-api/pkg/apis/common/v1;commonv1\xa2\x02\x03KKC\xaa\x02\x19Kubenfv.Kubevim.Common.V1\xca\x02\x19Kubenfv\\Kubevim\\Common\\V1\xe2\x02%Kubenfv\\Kubevim\\Common\\V1\\GPBMetadata\xea\x02\x1cKubenfv::Kubevim::Common::V1b\x06proto3"
 
@@ -211,6 +200,7 @@ func file_kubenfv_kubevim_common_v1_volume_proto_init() {
 		return
 	}
 	file_kubenfv_kubevim_common_v1_common_proto_init()
+	file_kubenfv_kubevim_common_v1_rules_proto_init()
 	file_kubenfv_kubevim_common_v1_storage_proto_init()
 	type x struct{}
 	out := protoimpl.TypeBuilder{

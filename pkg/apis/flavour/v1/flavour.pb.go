@@ -787,87 +787,87 @@ var File_kubenfv_kubevim_flavour_v1_flavour_proto protoreflect.FileDescriptor
 
 const file_kubenfv_kubevim_flavour_v1_flavour_proto_rawDesc = "" +
 	"\n" +
-	"(kubenfv/kubevim/flavour/v1/flavour.proto\x12\x1akubenfv.kubevim.flavour.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a(kubenfv/kubevim/common/v1/quantity.proto\x1a'kubenfv/kubevim/common/v1/storage.proto\x1a(kubenfv/kubevim/options/v1/options.proto\x1a.protoc-gen-openapiv3/options/annotations.proto\"\xae\r\n" +
-	"\aFlavour\x12\xb4\x01\n" +
+	"(kubenfv/kubevim/flavour/v1/flavour.proto\x12\x1akubenfv.kubevim.flavour.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a%kubenfv/kubevim/common/v1/rules.proto\x1a'kubenfv/kubevim/common/v1/storage.proto\x1a(kubenfv/kubevim/options/v1/options.proto\x1a.protoc-gen-openapiv3/options/annotations.proto\"\xb8\r\n" +
+	"\aFlavour\x12\xb5\x01\n" +
 	"\n" +
-	"flavour_id\x18\x01 \x01(\tB\x94\x01\xe2A\x01\x03\xfaV\x8c\x01\n" +
-	".IFA006 8.4.2.2 VirtualComputeFlavour.flavourId\x12Z\b\x02\x1aVAlways assigned by the VIM (the Kubernetes UID); IFA also lets the consumer choose it.R\tflavourId\x12u\n" +
-	"\x04name\x18\x02 \x01(\tBa\xe2A\x01\x01\xfaVZ\x12X\b\x01\x10\x01\x1aRLets consumers find a flavour by name; replaces the v0 attached-name metadata key.R\x04name\x12\xa1\x01\n" +
-	"\tis_public\x18\x03 \x01(\bB\x7f\xe2A\x01\x01\xfaVx\n" +
-	"-IFA006 8.4.2.2 VirtualComputeFlavour.isPublic\x12G\b\x02\x1aCOnly public flavours until Kube-VIM has tenancy; false is rejected.H\x00R\bisPublic\x88\x01\x01\x12\xeb\x01\n" +
-	"\x17acceleration_capability\x18\x04 \x03(\tB\xb1\x01\xe2A\x01\x01\xfaV\xa9\x01\n" +
-	";IFA006 8.4.2.2 VirtualComputeFlavour.accelerationCapability\x12j\b\x03\x10\x01\x1adIFA leaves the content unspecified; each entry names a device exposed by a Kubernetes device plugin.R\x16accelerationCapability\x12\x97\x01\n" +
-	"\x0evirtual_memory\x18\x05 \x01(\v2-.kubenfv.kubevim.flavour.v1.VirtualMemoryDataBA\xe2A\x01\x02\xbaH\x03\xc8\x01\x01\xfaV4\n" +
-	"2IFA006 8.4.2.2 VirtualComputeFlavour.virtualMemoryR\rvirtualMemory\x12\x8b\x01\n" +
-	"\vvirtual_cpu\x18\x06 \x01(\v2*.kubenfv.kubevim.flavour.v1.VirtualCpuDataB>\xe2A\x01\x02\xbaH\x03\xc8\x01\x01\xfaV1\n" +
+	"flavour_id\x18\x01 \x01(\tB\x95\x01\xe2A\x01\x03\xfa\x8b\x19\x8c\x01\n" +
+	".IFA006 8.4.2.2 VirtualComputeFlavour.flavourId\x12Z\b\x02\x1aVAlways assigned by the VIM (the Kubernetes UID); IFA also lets the consumer choose it.R\tflavourId\x12v\n" +
+	"\x04name\x18\x02 \x01(\tBb\xe2A\x01\x01\xfa\x8b\x19Z\x12X\b\x01\x10\x01\x1aRLets consumers find a flavour by name; replaces the v0 attached-name metadata key.R\x04name\x12\xa3\x01\n" +
+	"\tis_public\x18\x03 \x01(\bB\x80\x01\xe2A\x01\x01\xfa\x8b\x19x\n" +
+	"-IFA006 8.4.2.2 VirtualComputeFlavour.isPublic\x12G\b\x02\x1aCOnly public flavours until Kube-VIM has tenancy; false is rejected.H\x00R\bisPublic\x88\x01\x01\x12\xec\x01\n" +
+	"\x17acceleration_capability\x18\x04 \x03(\tB\xb2\x01\xe2A\x01\x01\xfa\x8b\x19\xa9\x01\n" +
+	";IFA006 8.4.2.2 VirtualComputeFlavour.accelerationCapability\x12j\b\x03\x10\x01\x1adIFA leaves the content unspecified; each entry names a device exposed by a Kubernetes device plugin.R\x16accelerationCapability\x12\x98\x01\n" +
+	"\x0evirtual_memory\x18\x05 \x01(\v2-.kubenfv.kubevim.flavour.v1.VirtualMemoryDataBB\xe2A\x01\x02\xbaH\x03\xc8\x01\x01\xfa\x8b\x194\n" +
+	"2IFA006 8.4.2.2 VirtualComputeFlavour.virtualMemoryR\rvirtualMemory\x12\x8c\x01\n" +
+	"\vvirtual_cpu\x18\x06 \x01(\v2*.kubenfv.kubevim.flavour.v1.VirtualCpuDataB?\xe2A\x01\x02\xbaH\x03\xc8\x01\x01\xfa\x8b\x191\n" +
 	"/IFA006 8.4.2.2 VirtualComputeFlavour.virtualCpuR\n" +
-	"virtualCpu\x12\x98\x02\n" +
-	"\x12storage_attributes\x18\a \x03(\v2-.kubenfv.kubevim.common.v1.VirtualStorageDataB\xb9\x01\xe2A\x01\x01\xbaHw\xba\x01t\n" +
-	"\x18flavour.one_boot_storage\x121at most one storage attribute can have isBoot set\x1a%this.filter(s, s.is_boot).size() <= 1\xfaV8\n" +
-	"6IFA006 8.4.2.2 VirtualComputeFlavour.storageAttributesR\x11storageAttributes\x12\x9f\x01\n" +
-	"\bmetadata\x18\b \x03(\v21.kubenfv.kubevim.flavour.v1.Flavour.MetadataEntryBP\xe2A\x01\x01\xfaVI\x12G\b\x01\x10\x01\x1aAIFA flavours carry no metadata; consumers use it to tag flavours.R\bmetadata\x1a;\n" +
+	"virtualCpu\x12\x99\x02\n" +
+	"\x12storage_attributes\x18\a \x03(\v2-.kubenfv.kubevim.common.v1.VirtualStorageDataB\xba\x01\xe2A\x01\x01\xbaHw\xba\x01t\n" +
+	"\x18flavour.one_boot_storage\x121at most one storage attribute can have isBoot set\x1a%this.filter(s, s.is_boot).size() <= 1\xfa\x8b\x198\n" +
+	"6IFA006 8.4.2.2 VirtualComputeFlavour.storageAttributesR\x11storageAttributes\x12\xa0\x01\n" +
+	"\bmetadata\x18\b \x03(\v21.kubenfv.kubevim.flavour.v1.Flavour.MetadataEntryBQ\xe2A\x01\x01\xfa\x8b\x19I\x12G\b\x01\x10\x01\x1aAIFA flavours carry no metadata; consumers use it to tag flavours.R\bmetadata\x1a;\n" +
 	"\rMetadataEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01:\xb2\x01\xfaV\xae\x01\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01:\xb3\x01\xfa\x8b\x19\xae\x01\n" +
 	"$IFA006 8.4.2.2 VirtualComputeFlavour\x12\x85\x01\b\x02\x1a\x80\x01No virtualNetworkInterface: interfaces are given when the compute resource is created, so one flavour serves any network layout.B\f\n" +
 	"\n" +
-	"_is_public\"\xd1\v\n" +
-	"\x0eVirtualCpuData\x12\xcc\x01\n" +
-	"\x10cpu_architecture\x18\x01 \x01(\x0e2+.kubenfv.kubevim.flavour.v1.CpuArchitectureBt\xe2A\x01\x01\xbaH\x05\x82\x01\x02\x10\x01\xfaVe\n" +
-	"-IFA006 8.4.2.3 VirtualCpuData.cpuArchitecture\x124\b\x03\x10\x01\x1a.A closed enumeration instead of a free string.R\x0fcpuArchitecture\x12c\n" +
-	"\x0fnum_virtual_cpu\x18\x02 \x01(\rB;\xe2A\x01\x02\xbaH\x04*\x02 \x00\xfaV-\n" +
-	"+IFA006 8.4.2.3 VirtualCpuData.numVirtualCpuR\rnumVirtualCpu\x12\x97\x01\n" +
-	"\tcpu_clock\x18\x03 \x01(\rBz\xe2A\x01\x01\xfaVs\n" +
-	"&IFA006 8.4.2.3 VirtualCpuData.cpuClock\x12I\b\x02\x1aEKubeVirt cannot guarantee a clock rate; a non-zero value is rejected.R\bcpuClock\x12\xa4\x02\n" +
-	"#virtual_cpu_oversubscription_policy\x18\x04 \x01(\tB\xd4\x01\xe2A\x01\x01\xbaH \xd8\x01\x01r\x1b2\x19^[1-9][0-9]*:[1-9][0-9]*$\xfaV\xa9\x01\n" +
-	">IFA006 8.4.2.3 VirtualCpuData.virtualCpuOversubscriptionPolicy\x12g\b\x02\x1acKubeVirt sets the CPU allocation ratio for the whole cluster, not per flavour; a value is rejected.R virtualCpuOversubscriptionPolicy\x12\x9b\x01\n" +
-	"\x13virtual_cpu_pinning\x18\x05 \x01(\v21.kubenfv.kubevim.flavour.v1.VirtualCpuPinningDataB8\xe2A\x01\x01\xfaV1\n" +
-	"/IFA006 8.4.2.3 VirtualCpuData.virtualCpuPinningR\x11virtualCpuPinning\x12\x94\x01\n" +
-	"\x10power_state_reqs\x18\x06 \x01(\tBj\xe2A\x01\x01\xfaVc\n" +
-	",IFA006 8.4.2.3 VirtualCpuData.powerStateReqs\x123\b\x02\x1a/Not supported by KubeVirt; a value is rejected.R\x0epowerStateReqs\x12\x99\x01\n" +
-	"\btopology\x18\a \x01(\v2'.kubenfv.kubevim.flavour.v1.CpuTopologyBT\xe2A\x01\x01\xfaVM\x12K\b\x01\x10\x01\x1aEVNFs that license or tune per socket or core need the guest topology.R\btopology:\xf8\x01\xbaH\xd2\x01\x1a\xcf\x01\n" +
-	"\x1cvirtual_cpu.topology_matches\x12;topology sockets * cores * threads must equal numVirtualCpu\x1ar!has(this.topology) || this.topology.sockets * this.topology.cores * this.topology.threads == this.num_virtual_cpu\xfaV\x1f\n" +
+	"_is_public\"\xd9\v\n" +
+	"\x0eVirtualCpuData\x12\xcd\x01\n" +
+	"\x10cpu_architecture\x18\x01 \x01(\x0e2+.kubenfv.kubevim.flavour.v1.CpuArchitectureBu\xe2A\x01\x01\xbaH\x05\x82\x01\x02\x10\x01\xfa\x8b\x19e\n" +
+	"-IFA006 8.4.2.3 VirtualCpuData.cpuArchitecture\x124\b\x03\x10\x01\x1a.A closed enumeration instead of a free string.R\x0fcpuArchitecture\x12d\n" +
+	"\x0fnum_virtual_cpu\x18\x02 \x01(\rB<\xe2A\x01\x02\xbaH\x04*\x02 \x00\xfa\x8b\x19-\n" +
+	"+IFA006 8.4.2.3 VirtualCpuData.numVirtualCpuR\rnumVirtualCpu\x12\x98\x01\n" +
+	"\tcpu_clock\x18\x03 \x01(\rB{\xe2A\x01\x01\xfa\x8b\x19s\n" +
+	"&IFA006 8.4.2.3 VirtualCpuData.cpuClock\x12I\b\x02\x1aEKubeVirt cannot guarantee a clock rate; a non-zero value is rejected.R\bcpuClock\x12\xa5\x02\n" +
+	"#virtual_cpu_oversubscription_policy\x18\x04 \x01(\tB\xd5\x01\xe2A\x01\x01\xbaH \xd8\x01\x01r\x1b2\x19^[1-9][0-9]*:[1-9][0-9]*$\xfa\x8b\x19\xa9\x01\n" +
+	">IFA006 8.4.2.3 VirtualCpuData.virtualCpuOversubscriptionPolicy\x12g\b\x02\x1acKubeVirt sets the CPU allocation ratio for the whole cluster, not per flavour; a value is rejected.R virtualCpuOversubscriptionPolicy\x12\x9c\x01\n" +
+	"\x13virtual_cpu_pinning\x18\x05 \x01(\v21.kubenfv.kubevim.flavour.v1.VirtualCpuPinningDataB9\xe2A\x01\x01\xfa\x8b\x191\n" +
+	"/IFA006 8.4.2.3 VirtualCpuData.virtualCpuPinningR\x11virtualCpuPinning\x12\x95\x01\n" +
+	"\x10power_state_reqs\x18\x06 \x01(\tBk\xe2A\x01\x01\xfa\x8b\x19c\n" +
+	",IFA006 8.4.2.3 VirtualCpuData.powerStateReqs\x123\b\x02\x1a/Not supported by KubeVirt; a value is rejected.R\x0epowerStateReqs\x12\x9a\x01\n" +
+	"\btopology\x18\a \x01(\v2'.kubenfv.kubevim.flavour.v1.CpuTopologyBU\xe2A\x01\x01\xfa\x8b\x19M\x12K\b\x01\x10\x01\x1aEVNFs that license or tune per socket or core need the guest topology.R\btopology:\xf9\x01\xbaH\xd2\x01\x1a\xcf\x01\n" +
+	"\x1cvirtual_cpu.topology_matches\x12;topology sockets * cores * threads must equal numVirtualCpu\x1ar!has(this.topology) || this.topology.sockets * this.topology.cores * this.topology.threads == this.num_virtual_cpu\xfa\x8b\x19\x1f\n" +
 	"\x1dIFA006 8.4.2.3 VirtualCpuData\"~\n" +
 	"\vCpuTopology\x12%\n" +
 	"\asockets\x18\x01 \x01(\rB\v\xe2A\x01\x02\xbaH\x04*\x02 \x00R\asockets\x12!\n" +
 	"\x05cores\x18\x02 \x01(\rB\v\xe2A\x01\x02\xbaH\x04*\x02 \x00R\x05cores\x12%\n" +
-	"\athreads\x18\x03 \x01(\rB\v\xe2A\x01\x02\xbaH\x04*\x02 \x00R\athreads\"\xeb\x03\n" +
-	"\x15VirtualCpuPinningData\x12\xc1\x01\n" +
-	"\x1avirtual_cpu_pinning_policy\x18\x01 \x01(\x0e23.kubenfv.kubevim.flavour.v1.VirtualCpuPinningPolicyBO\xe2A\x01\x02\xbaH\a\x82\x01\x04\x10\x01 \x00\xfaV>\n" +
-	"<IFA006 8.4.2.4 VirtualCpuPinningData.virtualCpuPinningPolicyR\x17virtualCpuPinningPolicy\x12\xe2\x01\n" +
-	"\x19virtual_cpu_pinning_rules\x18\x02 \x03(\tB\xa6\x01\xe2A\x01\x01\xfaV\x9e\x01\n" +
-	";IFA006 8.4.2.4 VirtualCpuPinningData.virtualCpuPinningRules\x12_\b\x02\x1a[KubeVirt places dedicated CPUs itself and cannot follow explicit rules; rules are rejected.R\x16virtualCpuPinningRules:)\xfaV&\n" +
-	"$IFA006 8.4.2.4 VirtualCpuPinningData\"\x98\x05\n" +
-	"\x11VirtualMemoryData\x12\xa7\x01\n" +
-	"\x10virtual_mem_size\x18\x01 \x01(\tB}\xe2A\x01\x02\xbaH\x05r\x03\xf8V\x01\xfaVn\n" +
-	"/IFA006 8.4.2.5 VirtualMemoryData.virtualMemSize\x12;\b\x03\x10\x01\x1a5Kubernetes quantity string instead of a number in MB.R\x0evirtualMemSize\x12\xbc\x01\n" +
-	"#virtual_mem_oversubscription_policy\x18\x02 \x01(\tBm\xe2A\x01\x01\xbaH \xd8\x01\x01r\x1b2\x19^[1-9][0-9]*:[1-9][0-9]*$\xfaVC\n" +
-	"AIFA006 8.4.2.5 VirtualMemoryData.virtualMemOversubscriptionPolicyR virtualMemOversubscriptionPolicy\x12]\n" +
-	"\fnuma_enabled\x18\x03 \x01(\bB5\xe2A\x01\x01\xfaV.\n" +
-	",IFA006 8.4.2.5 VirtualMemoryData.numaEnabledH\x00R\vnumaEnabled\x88\x01\x01\x12\x82\x01\n" +
-	"\rhugepage_size\x18\x04 \x01(\tB]\xe2A\x01\x01\xbaH\x0f\xd8\x01\x01r\n" +
-	"R\x032MiR\x031Gi\xfaVD\x12B\b\x01\x10\x01\x1a<Data-plane VNFs need hugepages; IFA has no memory page size.R\fhugepageSize:%\xfaV\"\n" +
+	"\athreads\x18\x03 \x01(\rB\v\xe2A\x01\x02\xbaH\x04*\x02 \x00R\athreads\"\xee\x03\n" +
+	"\x15VirtualCpuPinningData\x12\xc2\x01\n" +
+	"\x1avirtual_cpu_pinning_policy\x18\x01 \x01(\x0e23.kubenfv.kubevim.flavour.v1.VirtualCpuPinningPolicyBP\xe2A\x01\x02\xbaH\a\x82\x01\x04\x10\x01 \x00\xfa\x8b\x19>\n" +
+	"<IFA006 8.4.2.4 VirtualCpuPinningData.virtualCpuPinningPolicyR\x17virtualCpuPinningPolicy\x12\xe3\x01\n" +
+	"\x19virtual_cpu_pinning_rules\x18\x02 \x03(\tB\xa7\x01\xe2A\x01\x01\xfa\x8b\x19\x9e\x01\n" +
+	";IFA006 8.4.2.4 VirtualCpuPinningData.virtualCpuPinningRules\x12_\b\x02\x1a[KubeVirt places dedicated CPUs itself and cannot follow explicit rules; rules are rejected.R\x16virtualCpuPinningRules:*\xfa\x8b\x19&\n" +
+	"$IFA006 8.4.2.4 VirtualCpuPinningData\"\x9e\x05\n" +
+	"\x11VirtualMemoryData\x12\xa9\x01\n" +
+	"\x10virtual_mem_size\x18\x01 \x01(\tB\x7f\xe2A\x01\x02\xbaH\x06r\x04\xf8\x8b\x19\x01\xfa\x8b\x19n\n" +
+	"/IFA006 8.4.2.5 VirtualMemoryData.virtualMemSize\x12;\b\x03\x10\x01\x1a5Kubernetes quantity string instead of a number in MB.R\x0evirtualMemSize\x12\xbd\x01\n" +
+	"#virtual_mem_oversubscription_policy\x18\x02 \x01(\tBn\xe2A\x01\x01\xbaH \xd8\x01\x01r\x1b2\x19^[1-9][0-9]*:[1-9][0-9]*$\xfa\x8b\x19C\n" +
+	"AIFA006 8.4.2.5 VirtualMemoryData.virtualMemOversubscriptionPolicyR virtualMemOversubscriptionPolicy\x12^\n" +
+	"\fnuma_enabled\x18\x03 \x01(\bB6\xe2A\x01\x01\xfa\x8b\x19.\n" +
+	",IFA006 8.4.2.5 VirtualMemoryData.numaEnabledH\x00R\vnumaEnabled\x88\x01\x01\x12\x83\x01\n" +
+	"\rhugepage_size\x18\x04 \x01(\tB^\xe2A\x01\x01\xbaH\x0f\xd8\x01\x01r\n" +
+	"R\x032MiR\x031Gi\xfa\x8b\x19D\x12B\b\x01\x10\x01\x1a<Data-plane VNFs need hugepages; IFA has no memory page size.R\fhugepageSize:&\xfa\x8b\x19\"\n" +
 	" IFA006 8.4.2.5 VirtualMemoryDataB\x0f\n" +
-	"\r_numa_enabled\"\xcb\x01\n" +
-	"\x14CreateFlavourRequest\x12\x82\x01\n" +
-	"\aflavour\x18\x01 \x01(\v2#.kubenfv.kubevim.flavour.v1.FlavourBC\xe2A\x01\x02\xbaH\x03\xc8\x01\x01\xfaV6\n" +
+	"\r_numa_enabled\"\xcc\x01\n" +
+	"\x14CreateFlavourRequest\x12\x83\x01\n" +
+	"\aflavour\x18\x01 \x01(\v2#.kubenfv.kubevim.flavour.v1.FlavourBD\xe2A\x01\x02\xbaH\x03\xc8\x01\x01\xfa\x8b\x196\n" +
 	"4IFA006 7.3.4.2.2 CreateComputeFlavourRequest.flavourR\aflavour\x12.\n" +
 	"\n" +
 	"request_id\x18\x02 \x01(\tB\x0f\xe2A\x01\x01\xbaH\b\xd8\x01\x01r\x03\xb0\x01\x01R\trequestId\"@\n" +
 	"\x11GetFlavourRequest\x12+\n" +
 	"\n" +
-	"flavour_id\x18\x01 \x01(\tB\f\xe2A\x01\x02\xbaH\x05r\x03\xb0\x01\x01R\tflavourId\"\xbb\x01\n" +
-	"\x13ListFlavoursRequest\x12f\n" +
-	"\x06filter\x18\x01 \x01(\tBN\xe2A\x01\x01\xfaVG\n" +
+	"flavour_id\x18\x01 \x01(\tB\f\xe2A\x01\x02\xbaH\x05r\x03\xb0\x01\x01R\tflavourId\"\xbc\x01\n" +
+	"\x13ListFlavoursRequest\x12g\n" +
+	"\x06filter\x18\x01 \x01(\tBO\xe2A\x01\x01\xfa\x8b\x19G\n" +
 	"EIFA006 7.3.4.3.2 QueryComputeFlavourRequest.queryComputeFlavourFilterR\x06filter\x12<\n" +
-	"\x16nextpage_opaque_marker\x18\x02 \x01(\tB\x04\xe2A\x01\x01R\x16nextpage_opaque_marker\"\xcb\x01\n" +
-	"\x14ListFlavoursResponse\x12{\n" +
-	"\bflavours\x18\x01 \x03(\v2#.kubenfv.kubevim.flavour.v1.FlavourB:\xfaV7\n" +
+	"\x16nextpage_opaque_marker\x18\x02 \x01(\tB\x04\xe2A\x01\x01R\x16nextpage_opaque_marker\"\xcc\x01\n" +
+	"\x14ListFlavoursResponse\x12|\n" +
+	"\bflavours\x18\x01 \x03(\v2#.kubenfv.kubevim.flavour.v1.FlavourB;\xfa\x8b\x197\n" +
 	"5IFA006 7.3.4.3.3 QueryComputeFlavourResponse.flavoursR\bflavours\x126\n" +
-	"\x16nextpage_opaque_marker\x18\x02 \x01(\tR\x16nextpage_opaque_marker\"\x85\x01\n" +
-	"\x14DeleteFlavourRequest\x12m\n" +
+	"\x16nextpage_opaque_marker\x18\x02 \x01(\tR\x16nextpage_opaque_marker\"\x86\x01\n" +
+	"\x14DeleteFlavourRequest\x12n\n" +
 	"\n" +
-	"flavour_id\x18\x01 \x01(\tBN\xe2A\x01\x02\xbaH\x05r\x03\xb0\x01\x01\xfaV?\n" +
+	"flavour_id\x18\x01 \x01(\tBO\xe2A\x01\x02\xbaH\x05r\x03\xb0\x01\x01\xfa\x8b\x19?\n" +
 	"=IFA006 7.3.4.4.2 DeleteComputeFlavourRequest.computeFlavourIdR\tflavourId*\x8a\x01\n" +
 	"\x0fCpuArchitecture\x12 \n" +
 	"\x1cCPU_ARCHITECTURE_UNSPECIFIED\x10\x00\x12\x1b\n" +
@@ -877,37 +877,37 @@ const file_kubenfv_kubevim_flavour_v1_flavour_proto_rawDesc = "" +
 	"\x17VirtualCpuPinningPolicy\x12*\n" +
 	"&VIRTUAL_CPU_PINNING_POLICY_UNSPECIFIED\x10\x00\x12%\n" +
 	"!VIRTUAL_CPU_PINNING_POLICY_STATIC\x10\x01\x12&\n" +
-	"\"VIRTUAL_CPU_PINNING_POLICY_DYNAMIC\x10\x022\x87\b\n" +
-	"\x0eFlavourService\x12\xd5\x01\n" +
-	"\rCreateFlavour\x120.kubenfv.kubevim.flavour.v1.CreateFlavourRequest\x1a#.kubenfv.kubevim.flavour.v1.Flavour\"m\xfaP!J\x1f\n" +
+	"\"VIRTUAL_CPU_PINNING_POLICY_DYNAMIC\x10\x022\x8c\b\n" +
+	"\x0eFlavourService\x12\xd6\x01\n" +
+	"\rCreateFlavour\x120.kubenfv.kubevim.flavour.v1.CreateFlavourRequest\x1a#.kubenfv.kubevim.flavour.v1.Flavour\"n\xfaP!J\x1f\n" +
 	"\x1d\n" +
 	"\x06oauth2\x12\x13\n" +
-	"\x11flavour:v1:create\xfaV'\n" +
-	"%IFA006 7.3.4.2 Create Compute Flavour\x82\xd3\xe4\x93\x02\x19:\x01*\"\x14/flavour/v1/flavours\x12\xa5\x02\n" +
+	"\x11flavour:v1:create\xfa\x8b\x19'\n" +
+	"%IFA006 7.3.4.2 Create Compute Flavour\x82\xd3\xe4\x93\x02\x19:\x01*\"\x14/flavour/v1/flavours\x12\xa6\x02\n" +
 	"\n" +
-	"GetFlavour\x12-.kubenfv.kubevim.flavour.v1.GetFlavourRequest\x1a#.kubenfv.kubevim.flavour.v1.Flavour\"\xc2\x01\xfaP J\x1e\n" +
+	"GetFlavour\x12-.kubenfv.kubevim.flavour.v1.GetFlavourRequest\x1a#.kubenfv.kubevim.flavour.v1.Flavour\"\xc3\x01\xfaP J\x1e\n" +
 	"\x1c\n" +
 	"\x06oauth2\x12\x12\n" +
-	"\x10flavour:v1:query\xfaVs\n" +
-	"$IFA006 7.3.4.3 Query Compute Flavour\x12K\b\x03\x10\x01\x1aEQuery Compute Flavour filtered by flavourId, as a read by identifier.\x82\xd3\xe4\x93\x02#\x12!/flavour/v1/flavours/{flavour_id}\x12\xdb\x01\n" +
-	"\fListFlavours\x12/.kubenfv.kubevim.flavour.v1.ListFlavoursRequest\x1a0.kubenfv.kubevim.flavour.v1.ListFlavoursResponse\"h\xfaP J\x1e\n" +
+	"\x10flavour:v1:query\xfa\x8b\x19s\n" +
+	"$IFA006 7.3.4.3 Query Compute Flavour\x12K\b\x03\x10\x01\x1aEQuery Compute Flavour filtered by flavourId, as a read by identifier.\x82\xd3\xe4\x93\x02#\x12!/flavour/v1/flavours/{flavour_id}\x12\xdc\x01\n" +
+	"\fListFlavours\x12/.kubenfv.kubevim.flavour.v1.ListFlavoursRequest\x1a0.kubenfv.kubevim.flavour.v1.ListFlavoursResponse\"i\xfaP J\x1e\n" +
 	"\x1c\n" +
 	"\x06oauth2\x12\x12\n" +
-	"\x10flavour:v1:query\xfaV&\n" +
-	"$IFA006 7.3.4.3 Query Compute Flavour\x82\xd3\xe4\x93\x02\x16\x12\x14/flavour/v1/flavours\x12\xd2\x01\n" +
-	"\rDeleteFlavour\x120.kubenfv.kubevim.flavour.v1.DeleteFlavourRequest\x1a\x16.google.protobuf.Empty\"w\xfaP!J\x1f\n" +
+	"\x10flavour:v1:query\xfa\x8b\x19&\n" +
+	"$IFA006 7.3.4.3 Query Compute Flavour\x82\xd3\xe4\x93\x02\x16\x12\x14/flavour/v1/flavours\x12\xd3\x01\n" +
+	"\rDeleteFlavour\x120.kubenfv.kubevim.flavour.v1.DeleteFlavourRequest\x1a\x16.google.protobuf.Empty\"x\xfaP!J\x1f\n" +
 	"\x1d\n" +
 	"\x06oauth2\x12\x13\n" +
-	"\x11flavour:v1:delete\xfaV'\n" +
-	"%IFA006 7.3.4.4 Delete Compute Flavour\x82\xd3\xe4\x93\x02#*!/flavour/v1/flavours/{flavour_id}\x1aB\xfaV?\n" +
-	"=IFA006 7.3.4 Virtualised Compute Flavour Management InterfaceB\xd1\x04\xfaP\xc1\x02\n" +
+	"\x11flavour:v1:delete\xfa\x8b\x19'\n" +
+	"%IFA006 7.3.4.4 Delete Compute Flavour\x82\xd3\xe4\x93\x02#*!/flavour/v1/flavours/{flavour_id}\x1aC\xfa\x8b\x19?\n" +
+	"=IFA006 7.3.4 Virtualised Compute Flavour Management InterfaceB\xd2\x04\xfaP\xc1\x02\n" +
 	"%\n" +
 	"\x1cKube-VIM compute flavour API:\x051.0.02\x97\x02\n" +
 	"\x94\x02\n" +
 	"\x06oauth2\x12\x89\x02\b\x04\x12QOAuth 2.0 client credentials (SOL 013 8.3). The token URL is deployment specific.:\xb1\x01\x1a\xae\x01\x12$https://idp.example.com/oauth2/token\",\n" +
 	"\x11flavour:v1:create\x12\x17Create compute flavours\",\n" +
 	"\x11flavour:v1:delete\x12\x17Delete compute flavours\"*\n" +
-	"\x10flavour:v1:query\x12\x16Query compute flavours\xfaV\x10\n" +
+	"\x10flavour:v1:query\x12\x16Query compute flavours\xfa\x8b\x19\x10\n" +
 	"\aflavour\x12\x051.0.0\n" +
 	"\x1ecom.kubenfv.kubevim.flavour.v1B\fFlavourProtoP\x01Z>github.com/kube-nfv/kube-vim-api/pkg/apis/flavour/v1;flavourv1\xa2\x02\x03KKF\xaa\x02\x1aKubenfv.Kubevim.Flavour.V1\xca\x02\x1aKubenfv\\Kubevim\\Flavour\\V1\xe2\x02&Kubenfv\\Kubevim\\Flavour\\V1\\GPBMetadata\xea\x02\x1dKubenfv::Kubevim::Flavour::V1b\x06proto3"
 

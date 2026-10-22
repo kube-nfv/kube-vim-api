@@ -55,10 +55,6 @@
             "description": "The software image is copied to this storage and the compute resource boots from it.",
             "type": "boolean"
           },
-          "rdmaEnabled": {
-            "description": "The storage supports RDMA.",
-            "type": "boolean"
-          },
           "sizeOfStorage": {
             "description": "Size of the storage resource, in Kubernetes quantity format (e.g. \"20Gi\").",
             "type": "string"

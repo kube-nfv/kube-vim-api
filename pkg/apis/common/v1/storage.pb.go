@@ -84,10 +84,8 @@ type VirtualStorageData struct {
 	TypeOfStorage TypeOfStorage `protobuf:"varint,1,opt,name=type_of_storage,json=typeOfStorage,proto3,enum=kubenfv.kubevim.common.v1.TypeOfStorage" json:"type_of_storage,omitempty"`
 	// Size of the storage resource, in Kubernetes quantity format (e.g. "20Gi").
 	SizeOfStorage string `protobuf:"bytes,2,opt,name=size_of_storage,json=sizeOfStorage,proto3" json:"size_of_storage,omitempty"`
-	// The storage supports RDMA.
-	RdmaEnabled bool `protobuf:"varint,3,opt,name=rdma_enabled,json=rdmaEnabled,proto3" json:"rdma_enabled,omitempty"`
 	// The software image is copied to this storage and the compute resource boots from it.
-	IsBoot        bool `protobuf:"varint,4,opt,name=is_boot,json=isBoot,proto3" json:"is_boot,omitempty"`
+	IsBoot        bool `protobuf:"varint,3,opt,name=is_boot,json=isBoot,proto3" json:"is_boot,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -136,13 +134,6 @@ func (x *VirtualStorageData) GetSizeOfStorage() string {
 	return ""
 }
 
-func (x *VirtualStorageData) GetRdmaEnabled() bool {
-	if x != nil {
-		return x.RdmaEnabled
-	}
-	return false
-}
-
 func (x *VirtualStorageData) GetIsBoot() bool {
 	if x != nil {
 		return x.IsBoot
@@ -154,15 +145,13 @@ var File_kubenfv_kubevim_common_v1_storage_proto protoreflect.FileDescriptor
 
 const file_kubenfv_kubevim_common_v1_storage_proto_rawDesc = "" +
 	"\n" +
-	"'kubenfv/kubevim/common/v1/storage.proto\x12\x19kubenfv.kubevim.common.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a(kubenfv/kubevim/common/v1/quantity.proto\x1a(kubenfv/kubevim/options/v1/options.proto\"\xb9\x05\n" +
-	"\x12VirtualStorageData\x12\xca\x01\n" +
-	"\x0ftype_of_storage\x18\x01 \x01(\x0e2(.kubenfv.kubevim.common.v1.TypeOfStorageBx\xe2A\x01\x02\xbaH\a\x82\x01\x04\x10\x01 \x00\xfaVg\n" +
-	"/IFA006 8.4.6.3 VirtualStorageData.typeOfStorage\x124\b\x03\x10\x01\x1a.A closed enumeration instead of a free string.R\rtypeOfStorage\x12\xa5\x01\n" +
-	"\x0fsize_of_storage\x18\x02 \x01(\tB}\xe2A\x01\x02\xbaH\x05r\x03\xf8V\x01\xfaVn\n" +
-	"/IFA006 8.4.6.3 VirtualStorageData.sizeOfStorage\x12;\b\x03\x10\x01\x1a5Kubernetes quantity string instead of a number in GB.R\rsizeOfStorage\x12\x8e\x01\n" +
-	"\frdma_enabled\x18\x03 \x01(\bBk\xe2A\x01\x01\xfaVd\n" +
-	"-IFA006 8.4.6.3 VirtualStorageData.rdmaEnabled\x123\b\x02\x1a/Kube-VIM has no RDMA storage; true is rejected.R\vrdmaEnabled\x12u\n" +
-	"\ais_boot\x18\x04 \x01(\bB\\\xe2A\x01\x01\xfaVU\x12S\b\x01\x10\x01\x1aMMarks which storage receives the software image; IFA has no boot disk marker.R\x06isBoot:&\xfaV#\n" +
+	"'kubenfv/kubevim/common/v1/storage.proto\x12\x19kubenfv.kubevim.common.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a%kubenfv/kubevim/common/v1/rules.proto\x1a(kubenfv/kubevim/options/v1/options.proto\"\xad\x04\n" +
+	"\x12VirtualStorageData\x12\xcb\x01\n" +
+	"\x0ftype_of_storage\x18\x01 \x01(\x0e2(.kubenfv.kubevim.common.v1.TypeOfStorageBy\xe2A\x01\x02\xbaH\a\x82\x01\x04\x10\x01 \x00\xfa\x8b\x19g\n" +
+	"/IFA006 8.4.6.3 VirtualStorageData.typeOfStorage\x124\b\x03\x10\x01\x1a.A closed enumeration instead of a free string.R\rtypeOfStorage\x12\xa7\x01\n" +
+	"\x0fsize_of_storage\x18\x02 \x01(\tB\x7f\xe2A\x01\x02\xbaH\x06r\x04\xf8\x8b\x19\x01\xfa\x8b\x19n\n" +
+	"/IFA006 8.4.6.3 VirtualStorageData.sizeOfStorage\x12;\b\x03\x10\x01\x1a5Kubernetes quantity string instead of a number in GB.R\rsizeOfStorage\x12v\n" +
+	"\ais_boot\x18\x03 \x01(\bB]\xe2A\x01\x01\xfa\x8b\x19U\x12S\b\x01\x10\x01\x1aMMarks which storage receives the software image; IFA has no boot disk marker.R\x06isBoot:'\xfa\x8b\x19#\n" +
 	"!IFA006 8.4.6.3 VirtualStorageData*k\n" +
 	"\rTypeOfStorage\x12\x1f\n" +
 	"\x1bTYPE_OF_STORAGE_UNSPECIFIED\x10\x00\x12\x1a\n" +
@@ -202,7 +191,7 @@ func file_kubenfv_kubevim_common_v1_storage_proto_init() {
 	if File_kubenfv_kubevim_common_v1_storage_proto != nil {
 		return
 	}
-	file_kubenfv_kubevim_common_v1_quantity_proto_init()
+	file_kubenfv_kubevim_common_v1_rules_proto_init()
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

@@ -2180,10 +2180,6 @@
             "description": "The software image is copied to this storage and the compute resource boots from it.",
             "type": "boolean"
           },
-          "rdmaEnabled": {
-            "description": "The storage supports RDMA.",
-            "type": "boolean"
-          },
           "sizeOfStorage": {
             "description": "Size of the storage resource, in Kubernetes quantity format (e.g. \"20Gi\").",
             "type": "string"
@@ -2211,8 +2207,8 @@
       "Volume": {
         "description": "A virtualised storage resource, e.g. a disk of a compute resource.",
         "properties": {
-          "flavourId": {
-            "description": "Storage flavour the volume was created from.",
+          "computeId": {
+            "description": "Compute resource that uses the volume; empty when not attached.",
             "readOnly": true,
             "type": "string"
           },
@@ -2225,7 +2221,7 @@
             "additionalProperties": {
               "type": "string"
             },
-            "description": "Metadata owned by the consumer and never interpreted by the VIM.",
+            "description": "Metadata set by the consumer and by the VIM; for keys under \"kubevim.kubenfv.io/\" that the VIM maintains, its value wins.",
             "type": "object"
           },
           "operationalState": {
@@ -2237,22 +2233,17 @@
             "description": "Operational state of the volume.",
             "readOnly": true
           },
-          "ownerId": {
-            "description": "Resource that uses the volume, e.g. a compute resource; empty when not attached.",
-            "readOnly": true,
-            "type": "string"
-          },
           "storageData": {
             "$ref": "#/components/schemas/VirtualStorageData",
             "description": "Size, type and capabilities of the volume."
           },
-          "storageId": {
-            "description": "Identifier of the volume: a UUID, the Kubernetes UID of the object behind it. Ephemeral disks\nof a compute resource are not Kubernetes objects and use their disk name instead.",
+          "volumeId": {
+            "description": "Identifier of the volume: a UUID assigned by the VIM. Ephemeral disks of a compute\nresource are not resources of their own and use their disk name instead.",
             "readOnly": true,
             "type": "string"
           },
-          "storageName": {
-            "description": "Name of the volume.",
+          "volumeName": {
+            "description": "Name of the volume, given by the consumer; not unique.",
             "type": "string"
           },
           "zoneId": {

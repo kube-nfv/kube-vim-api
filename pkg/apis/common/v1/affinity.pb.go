@@ -620,32 +620,32 @@ var File_kubenfv_kubevim_common_v1_affinity_proto protoreflect.FileDescriptor
 
 const file_kubenfv_kubevim_common_v1_affinity_proto_rawDesc = "" +
 	"\n" +
-	"(kubenfv/kubevim/common/v1/affinity.proto\x12\x19kubenfv.kubevim.common.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a(kubenfv/kubevim/options/v1/options.proto\"\xaf\x06\n" +
-	" AffinityOrAntiAffinityConstraint\x12\x84\x01\n" +
-	"\x04type\x18\x01 \x01(\x0e2'.kubenfv.kubevim.common.v1.AffinityTypeBG\xe2A\x01\x02\xbaH\a\x82\x01\x04\x10\x01 \x00\xfaV6\n" +
-	"4IFA006 8.4.8.2 AffinityOrAntiAffinityConstraint.typeR\x04type\x12\x86\x01\n" +
-	"\x05scope\x18\x02 \x01(\x0e2(.kubenfv.kubevim.common.v1.AffinityScopeBF\xe2A\x01\x01\xbaH\x05\x82\x01\x02\x10\x01\xfaV7\n" +
-	"5IFA006 8.4.8.2 AffinityOrAntiAffinityConstraint.scopeR\x05scope\x12\xed\x01\n" +
-	"'affinity_or_anti_affinity_resource_list\x18\x03 \x01(\v2=.kubenfv.kubevim.common.v1.AffinityOrAntiAffinityResourceListBW\xfaVT\n" +
-	"RIFA006 8.4.8.2 AffinityOrAntiAffinityConstraint.affinityOrAntiAffinityResourceListH\x00R\"affinityOrAntiAffinityResourceList\x12\xc0\x01\n" +
-	"+affinity_or_anti_affinity_resource_group_id\x18\x04 \x01(\tBb\xbaH\x05r\x03\xb0\x01\x01\xfaVW\n" +
-	"UIFA006 8.4.8.2 AffinityOrAntiAffinityConstraint.affinityOrAntiAffinityResourceGroupIdH\x00R%affinityOrAntiAffinityResourceGroupId:4\xfaV1\n" +
+	"(kubenfv/kubevim/common/v1/affinity.proto\x12\x19kubenfv.kubevim.common.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a(kubenfv/kubevim/options/v1/options.proto\"\xb4\x06\n" +
+	" AffinityOrAntiAffinityConstraint\x12\x85\x01\n" +
+	"\x04type\x18\x01 \x01(\x0e2'.kubenfv.kubevim.common.v1.AffinityTypeBH\xe2A\x01\x02\xbaH\a\x82\x01\x04\x10\x01 \x00\xfa\x8b\x196\n" +
+	"4IFA006 8.4.8.2 AffinityOrAntiAffinityConstraint.typeR\x04type\x12\x87\x01\n" +
+	"\x05scope\x18\x02 \x01(\x0e2(.kubenfv.kubevim.common.v1.AffinityScopeBG\xe2A\x01\x01\xbaH\x05\x82\x01\x02\x10\x01\xfa\x8b\x197\n" +
+	"5IFA006 8.4.8.2 AffinityOrAntiAffinityConstraint.scopeR\x05scope\x12\xee\x01\n" +
+	"'affinity_or_anti_affinity_resource_list\x18\x03 \x01(\v2=.kubenfv.kubevim.common.v1.AffinityOrAntiAffinityResourceListBX\xfa\x8b\x19T\n" +
+	"RIFA006 8.4.8.2 AffinityOrAntiAffinityConstraint.affinityOrAntiAffinityResourceListH\x00R\"affinityOrAntiAffinityResourceList\x12\xc1\x01\n" +
+	"+affinity_or_anti_affinity_resource_group_id\x18\x04 \x01(\tBc\xbaH\x05r\x03\xb0\x01\x01\xfa\x8b\x19W\n" +
+	"UIFA006 8.4.8.2 AffinityOrAntiAffinityConstraint.affinityOrAntiAffinityResourceGroupIdH\x00R%affinityOrAntiAffinityResourceGroupId:5\xfa\x8b\x191\n" +
 	"/IFA006 8.4.8.2 AffinityOrAntiAffinityConstraintB\x12\n" +
-	"\tresources\x12\x05\xbaH\x02\b\x01\"\x9b\x01\n" +
-	"\"AffinityOrAntiAffinityResourceList\x12u\n" +
-	"\vresource_id\x18\x01 \x03(\tBT\xe2A\x01\x02\xbaH\f\x92\x01\t\b\x01\"\x05r\x03\xb0\x01\x01\xfaV>\n" +
+	"\tresources\x12\x05\xbaH\x02\b\x01\"\x9c\x01\n" +
+	"\"AffinityOrAntiAffinityResourceList\x12v\n" +
+	"\vresource_id\x18\x01 \x03(\tBU\xe2A\x01\x02\xbaH\f\x92\x01\t\b\x01\"\x05r\x03\xb0\x01\x01\xfa\x8b\x19>\n" +
 	"<IFA006 8.4.8.3 AffinityOrAntiAffinityResourceList.resourceIdR\n" +
-	"resourceId\"\xa9\x04\n" +
-	"\rAffinityGroup\x12<\n" +
-	"\bgroup_id\x18\x01 \x01(\tB!\xe2A\x01\x03\xfaV\x1a\n" +
-	"\x18IFA006 7.4.1.6.3 groupIdR\agroupId\x12I\n" +
+	"resourceId\"\xae\x04\n" +
+	"\rAffinityGroup\x12=\n" +
+	"\bgroup_id\x18\x01 \x01(\tB\"\xe2A\x01\x03\xfa\x8b\x19\x1a\n" +
+	"\x18IFA006 7.4.1.6.3 groupIdR\agroupId\x12J\n" +
 	"\n" +
-	"group_name\x18\x02 \x01(\tB*\xe2A\x01\x02\xbaH\x04r\x02\x10\x01\xfaV\x1c\n" +
-	"\x1aIFA006 7.4.1.6.2 groupNameR\tgroupName\x12e\n" +
-	"\x04type\x18\x03 \x01(\x0e2'.kubenfv.kubevim.common.v1.AffinityTypeB(\xe2A\x01\x02\xbaH\a\x82\x01\x04\x10\x01 \x00\xfaV\x17\n" +
-	"\x15IFA006 7.4.1.6.2 typeR\x04type\x12g\n" +
-	"\x05scope\x18\x04 \x01(\x0e2(.kubenfv.kubevim.common.v1.AffinityScopeB'\xe2A\x01\x01\xbaH\x05\x82\x01\x02\x10\x01\xfaV\x18\n" +
-	"\x16IFA006 7.4.1.6.2 scopeR\x05scope:\xbe\x01\xfaV\xba\x01\n" +
+	"group_name\x18\x02 \x01(\tB+\xe2A\x01\x02\xbaH\x04r\x02\x10\x01\xfa\x8b\x19\x1c\n" +
+	"\x1aIFA006 7.4.1.6.2 groupNameR\tgroupName\x12f\n" +
+	"\x04type\x18\x03 \x01(\x0e2'.kubenfv.kubevim.common.v1.AffinityTypeB)\xe2A\x01\x02\xbaH\a\x82\x01\x04\x10\x01 \x00\xfa\x8b\x19\x17\n" +
+	"\x15IFA006 7.4.1.6.2 typeR\x04type\x12h\n" +
+	"\x05scope\x18\x04 \x01(\x0e2(.kubenfv.kubevim.common.v1.AffinityScopeB(\xe2A\x01\x01\xbaH\x05\x82\x01\x02\x10\x01\xfa\x8b\x19\x18\n" +
+	"\x16IFA006 7.4.1.6.2 scopeR\x05scope:\xbf\x01\xfa\x8b\x19\xba\x01\n" +
 	"[IFA006 7.3.1.9, 7.4.1.6, 7.5.1.9 Create Resource Affinity Or AntiAffinity Constraints Group\x12[\b\x03\x10\x01\x1aUA resource with Get, List and Delete; IFA only creates groups and never removes them.\"\xa9\x01\n" +
 	"\x1aCreateAffinityGroupRequest\x12[\n" +
 	"\x0eaffinity_group\x18\x01 \x01(\v2(.kubenfv.kubevim.common.v1.AffinityGroupB\n" +

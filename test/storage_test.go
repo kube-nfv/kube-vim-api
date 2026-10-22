@@ -29,7 +29,7 @@ func TestStorageValidation(t *testing.T) {
 			json: readFile(t, "testdata/storage/create_volume_request.json"), msg: &storagev1.CreateVolumeRequest{}, valid: true,
 		},
 		"no storage data": {
-			json: `{"volume":{"storageName":"a"}}`, msg: &storagev1.CreateVolumeRequest{},
+			json: `{"volume":{"volumeName":"a"}}`, msg: &storagev1.CreateVolumeRequest{},
 		},
 		"ephemeral volume": {
 			json: volume(`{"typeOfStorage":"TYPE_OF_STORAGE_EPHEMERAL","sizeOfStorage":"10Gi"}`), msg: &storagev1.CreateVolumeRequest{},

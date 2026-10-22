@@ -4,7 +4,7 @@ package kubenfv.kubevim.common.v1;
 
 import "buf/validate/validate.proto";
 import "google/api/field_behavior.proto";
-import "kubenfv/kubevim/common/v1/quantity.proto";
+import "kubenfv/kubevim/common/v1/rules.proto";
 import "kubenfv/kubevim/options/v1/options.proto";
 
 // Size, type and capabilities of a virtualised storage resource.
@@ -40,20 +40,8 @@ message VirtualStorageData {
       }
     }
   ];
-  // The storage supports RDMA.
-  bool rdma_enabled = 3 [
-    (google.api.field_behavior) = OPTIONAL,
-    (kubenfv.kubevim.options.v1.ifa_field) = {
-      ref: "IFA006 8.4.6.3 VirtualStorageData.rdmaEnabled"
-      departure: {
-        kind: KIND_RESTRICTION
-        translates: false
-        rationale: "Kube-VIM has no RDMA storage; true is rejected."
-      }
-    }
-  ];
   // The software image is copied to this storage and the compute resource boots from it.
-  bool is_boot = 4 [
+  bool is_boot = 3 [
     (google.api.field_behavior) = OPTIONAL,
     (kubenfv.kubevim.options.v1.ifa_field) = {
       departure: {

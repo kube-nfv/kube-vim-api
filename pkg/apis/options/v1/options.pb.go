@@ -256,57 +256,57 @@ var file_kubenfv_kubevim_options_v1_options_proto_extTypes = []protoimpl.Extensi
 	{
 		ExtendedType:  (*descriptorpb.FileOptions)(nil),
 		ExtensionType: (*Api)(nil),
-		Field:         1391,
+		Field:         51391,
 		Name:          "kubenfv.kubevim.options.v1.api",
-		Tag:           "bytes,1391,opt,name=api",
+		Tag:           "bytes,51391,opt,name=api",
 		Filename:      "kubenfv/kubevim/options/v1/options.proto",
 	},
 	{
 		ExtendedType:  (*descriptorpb.ServiceOptions)(nil),
 		ExtensionType: (*Ifa)(nil),
-		Field:         1391,
+		Field:         51391,
 		Name:          "kubenfv.kubevim.options.v1.ifa_service",
-		Tag:           "bytes,1391,opt,name=ifa_service",
+		Tag:           "bytes,51391,opt,name=ifa_service",
 		Filename:      "kubenfv/kubevim/options/v1/options.proto",
 	},
 	{
 		ExtendedType:  (*descriptorpb.MethodOptions)(nil),
 		ExtensionType: (*Ifa)(nil),
-		Field:         1391,
+		Field:         51391,
 		Name:          "kubenfv.kubevim.options.v1.ifa_method",
-		Tag:           "bytes,1391,opt,name=ifa_method",
+		Tag:           "bytes,51391,opt,name=ifa_method",
 		Filename:      "kubenfv/kubevim/options/v1/options.proto",
 	},
 	{
 		ExtendedType:  (*descriptorpb.MessageOptions)(nil),
 		ExtensionType: (*Ifa)(nil),
-		Field:         1391,
+		Field:         51391,
 		Name:          "kubenfv.kubevim.options.v1.ifa_message",
-		Tag:           "bytes,1391,opt,name=ifa_message",
+		Tag:           "bytes,51391,opt,name=ifa_message",
 		Filename:      "kubenfv/kubevim/options/v1/options.proto",
 	},
 	{
 		ExtendedType:  (*descriptorpb.FieldOptions)(nil),
 		ExtensionType: (*Ifa)(nil),
-		Field:         1391,
+		Field:         51391,
 		Name:          "kubenfv.kubevim.options.v1.ifa_field",
-		Tag:           "bytes,1391,opt,name=ifa_field",
+		Tag:           "bytes,51391,opt,name=ifa_field",
 		Filename:      "kubenfv/kubevim/options/v1/options.proto",
 	},
 	{
 		ExtendedType:  (*descriptorpb.EnumOptions)(nil),
 		ExtensionType: (*Ifa)(nil),
-		Field:         1391,
+		Field:         51391,
 		Name:          "kubenfv.kubevim.options.v1.ifa_enum",
-		Tag:           "bytes,1391,opt,name=ifa_enum",
+		Tag:           "bytes,51391,opt,name=ifa_enum",
 		Filename:      "kubenfv/kubevim/options/v1/options.proto",
 	},
 	{
 		ExtendedType:  (*descriptorpb.EnumValueOptions)(nil),
 		ExtensionType: (*Ifa)(nil),
-		Field:         1391,
+		Field:         51391,
 		Name:          "kubenfv.kubevim.options.v1.ifa_enum_value",
-		Tag:           "bytes,1391,opt,name=ifa_enum_value",
+		Tag:           "bytes,51391,opt,name=ifa_enum_value",
 		Filename:      "kubenfv/kubevim/options/v1/options.proto",
 	},
 }
@@ -315,7 +315,7 @@ var file_kubenfv_kubevim_options_v1_options_proto_extTypes = []protoimpl.Extensi
 var (
 	// API identity of the services in this file.
 	//
-	// optional kubenfv.kubevim.options.v1.Api api = 1391;
+	// optional kubenfv.kubevim.options.v1.Api api = 51391;
 	E_Api = &file_kubenfv_kubevim_options_v1_options_proto_extTypes[0]
 )
 
@@ -323,7 +323,7 @@ var (
 var (
 	// IFA interface this service maps to.
 	//
-	// optional kubenfv.kubevim.options.v1.Ifa ifa_service = 1391;
+	// optional kubenfv.kubevim.options.v1.Ifa ifa_service = 51391;
 	E_IfaService = &file_kubenfv_kubevim_options_v1_options_proto_extTypes[1]
 )
 
@@ -331,7 +331,7 @@ var (
 var (
 	// IFA operation this RPC maps to.
 	//
-	// optional kubenfv.kubevim.options.v1.Ifa ifa_method = 1391;
+	// optional kubenfv.kubevim.options.v1.Ifa ifa_method = 51391;
 	E_IfaMethod = &file_kubenfv_kubevim_options_v1_options_proto_extTypes[2]
 )
 
@@ -339,7 +339,7 @@ var (
 var (
 	// IFA information element this message maps to.
 	//
-	// optional kubenfv.kubevim.options.v1.Ifa ifa_message = 1391;
+	// optional kubenfv.kubevim.options.v1.Ifa ifa_message = 51391;
 	E_IfaMessage = &file_kubenfv_kubevim_options_v1_options_proto_extTypes[3]
 )
 
@@ -347,7 +347,7 @@ var (
 var (
 	// IFA attribute this field maps to.
 	//
-	// optional kubenfv.kubevim.options.v1.Ifa ifa_field = 1391;
+	// optional kubenfv.kubevim.options.v1.Ifa ifa_field = 51391;
 	E_IfaField = &file_kubenfv_kubevim_options_v1_options_proto_extTypes[4]
 )
 
@@ -355,7 +355,7 @@ var (
 var (
 	// IFA enumeration this enum maps to.
 	//
-	// optional kubenfv.kubevim.options.v1.Ifa ifa_enum = 1391;
+	// optional kubenfv.kubevim.options.v1.Ifa ifa_enum = 51391;
 	E_IfaEnum = &file_kubenfv_kubevim_options_v1_options_proto_extTypes[5]
 )
 
@@ -363,7 +363,7 @@ var (
 var (
 	// IFA value this enum value maps to.
 	//
-	// optional kubenfv.kubevim.options.v1.Ifa ifa_enum_value = 1391;
+	// optional kubenfv.kubevim.options.v1.Ifa ifa_enum_value = 51391;
 	E_IfaEnumValue = &file_kubenfv_kubevim_options_v1_options_proto_extTypes[6]
 )
 
@@ -388,24 +388,17 @@ const file_kubenfv_kubevim_options_v1_options_proto_rawDesc = "" +
 	"\x10KIND_UNSPECIFIED\x10\x00\x12\x12\n" +
 	"\x0eKIND_EXTENSION\x10\x01\x12\x14\n" +
 	"\x10KIND_RESTRICTION\x10\x02\x12\x12\n" +
-	"\x0eKIND_DEVIATION\x10\x03:P\n" +
-	"\x03api\x12\x1c.google.protobuf.FileOptions\x18\xef\n" +
-	" \x01(\v2\x1f.kubenfv.kubevim.options.v1.ApiR\x03api:b\n" +
-	"\vifa_service\x12\x1f.google.protobuf.ServiceOptions\x18\xef\n" +
-	" \x01(\v2\x1f.kubenfv.kubevim.options.v1.IfaR\n" +
-	"ifaService:_\n" +
+	"\x0eKIND_DEVIATION\x10\x03:Q\n" +
+	"\x03api\x12\x1c.google.protobuf.FileOptions\x18\xbf\x91\x03 \x01(\v2\x1f.kubenfv.kubevim.options.v1.ApiR\x03api:c\n" +
+	"\vifa_service\x12\x1f.google.protobuf.ServiceOptions\x18\xbf\x91\x03 \x01(\v2\x1f.kubenfv.kubevim.options.v1.IfaR\n" +
+	"ifaService:`\n" +
 	"\n" +
-	"ifa_method\x12\x1e.google.protobuf.MethodOptions\x18\xef\n" +
-	" \x01(\v2\x1f.kubenfv.kubevim.options.v1.IfaR\tifaMethod:b\n" +
-	"\vifa_message\x12\x1f.google.protobuf.MessageOptions\x18\xef\n" +
-	" \x01(\v2\x1f.kubenfv.kubevim.options.v1.IfaR\n" +
-	"ifaMessage:\\\n" +
-	"\tifa_field\x12\x1d.google.protobuf.FieldOptions\x18\xef\n" +
-	" \x01(\v2\x1f.kubenfv.kubevim.options.v1.IfaR\bifaField:Y\n" +
-	"\bifa_enum\x12\x1c.google.protobuf.EnumOptions\x18\xef\n" +
-	" \x01(\v2\x1f.kubenfv.kubevim.options.v1.IfaR\aifaEnum:i\n" +
-	"\x0eifa_enum_value\x12!.google.protobuf.EnumValueOptions\x18\xef\n" +
-	" \x01(\v2\x1f.kubenfv.kubevim.options.v1.IfaR\fifaEnumValueB\xf9\x01\n" +
+	"ifa_method\x12\x1e.google.protobuf.MethodOptions\x18\xbf\x91\x03 \x01(\v2\x1f.kubenfv.kubevim.options.v1.IfaR\tifaMethod:c\n" +
+	"\vifa_message\x12\x1f.google.protobuf.MessageOptions\x18\xbf\x91\x03 \x01(\v2\x1f.kubenfv.kubevim.options.v1.IfaR\n" +
+	"ifaMessage:]\n" +
+	"\tifa_field\x12\x1d.google.protobuf.FieldOptions\x18\xbf\x91\x03 \x01(\v2\x1f.kubenfv.kubevim.options.v1.IfaR\bifaField:Z\n" +
+	"\bifa_enum\x12\x1c.google.protobuf.EnumOptions\x18\xbf\x91\x03 \x01(\v2\x1f.kubenfv.kubevim.options.v1.IfaR\aifaEnum:j\n" +
+	"\x0eifa_enum_value\x12!.google.protobuf.EnumValueOptions\x18\xbf\x91\x03 \x01(\v2\x1f.kubenfv.kubevim.options.v1.IfaR\fifaEnumValueB\xf9\x01\n" +
 	"\x1ecom.kubenfv.kubevim.options.v1B\fOptionsProtoP\x01Z>github.com/kube-nfv/kube-vim-api/pkg/apis/options/v1;optionsv1\xa2\x02\x03KKO\xaa\x02\x1aKubenfv.Kubevim.Options.V1\xca\x02\x1aKubenfv\\Kubevim\\Options\\V1\xe2\x02&Kubenfv\\Kubevim\\Options\\V1\\GPBMetadata\xea\x02\x1dKubenfv::Kubevim::Options::V1b\x06proto3"
 
 var (
