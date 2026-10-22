@@ -12,16 +12,19 @@ func TestComputeGoldenJSON(t *testing.T) {
 		"create_compute_request.json":  &computev1.CreateComputeRequest{},
 		"operate_compute_request.json": &computev1.OperateComputeRequest{},
 		"update_compute_request.json":  &computev1.UpdateComputeRequest{},
-		"migrate_compute_request.json": &computev1.MigrateComputeRequest{},
+		"snapshot.json":                &computev1.Snapshot{},
+		"placement_group.json":         &computev1.PlacementGroup{},
 	} {
 		t.Run(file, func(t *testing.T) { checkGolden(t, "testdata/compute/"+file, msg) })
 	}
 }
 
 func TestComputeValidation(t *testing.T) {
-	const flavour = `"flavourId":"9a8b7c6d-5e4f-4a3b-9c2d-1e0f9a8b7c6d"`
+	const ids = `"flavourId":"9a8b7c6d-5e4f-4a3b-9c2d-1e0f9a8b7c6d","imageId":"5f0c9d2e-3a4b-4c1d-9e8f-0a1b2c3d4e5f"`
 	const network = `"networkId":"e5f6a7b8-c9d0-4e1f-8a2b-3c4d5e6f7a8b"`
-	create := func(rest string) string { return `{"compute":{` + flavour + `}` + rest + `}` }
+	const compute = `"computeId":"c0ffee00-1234-4abc-8def-0123456789ab"`
+	create := func(rest string) string { return `{"compute":{` + ids + `}` + rest + `}` }
+	iface := func(fields string) string { return create(`,"networkInterfaces":[{` + network + fields + `}]`) }
 	for name, tc := range map[string]struct {
 		json  string
 		msg   golden
@@ -32,33 +35,48 @@ func TestComputeValidation(t *testing.T) {
 		},
 		"create minimal": {json: create(``), msg: &computev1.CreateComputeRequest{}, valid: true},
 		"no flavour": {
-			json: `{"compute":{"computeName":"a"}}`, msg: &computev1.CreateComputeRequest{},
+			json: `{"compute":{"imageId":"5f0c9d2e-3a4b-4c1d-9e8f-0a1b2c3d4e5f"}}`, msg: &computev1.CreateComputeRequest{},
+		},
+		"no image": {
+			json: `{"compute":{"flavourId":"9a8b7c6d-5e4f-4a3b-9c2d-1e0f9a8b7c6d"}}`, msg: &computev1.CreateComputeRequest{},
 		},
 		"flavour id not a uuid": {
-			json: `{"compute":{"flavourId":"small"}}`, msg: &computev1.CreateComputeRequest{},
+			json: `{"compute":{"flavourId":"small","imageId":"5f0c9d2e-3a4b-4c1d-9e8f-0a1b2c3d4e5f"}}`, msg: &computev1.CreateComputeRequest{},
 		},
-		"interface by subnet only": {
-			json:  create(`,"interfaceData":[{"subnetId":"4f3e2d1c-0b9a-4f8e-9d7c-6b5a4f3e2d1c"}]`),
+		"placement group not a uuid": {
+			json: `{"compute":{` + ids + `,"placementGroupIds":["ha"]}}`, msg: &computev1.CreateComputeRequest{},
+		},
+		"interface without network": {
+			json: create(`,"networkInterfaces":[{"name":"data0"}]`), msg: &computev1.CreateComputeRequest{},
+		},
+		"masquerade requested": {
+			json: iface(`,"typeVirtualNic":"TYPE_VIRTUAL_NIC_MASQUERADE"`), msg: &computev1.CreateComputeRequest{},
+		},
+		"interface name not a label": {
+			json: iface(`,"name":"Data_0"`), msg: &computev1.CreateComputeRequest{},
+		},
+		"duplicate interface names": {
+			json: create(`,"networkInterfaces":[{` + network + `,"name":"data0"},{` + network + `,"name":"data0"}]`), msg: &computev1.CreateComputeRequest{},
+		},
+		"two unnamed interfaces on one network": {
+			json:  create(`,"networkInterfaces":[{` + network + `},{` + network + `}]`),
 			msg:   &computev1.CreateComputeRequest{},
 			valid: true,
 		},
-		"masquerade requested": {
-			json: create(`,"interfaceData":[{` + network + `,"typeVirtualNic":"TYPE_VIRTUAL_NIC_MASQUERADE"}]`), msg: &computev1.CreateComputeRequest{},
-		},
-		"interface without network, subnet or port": {
-			json: create(`,"interfaceData":[{"ipAssignment":"IP_ASSIGNMENT_AUTOMATIC"}]`), msg: &computev1.CreateComputeRequest{},
-		},
 		"static assignment without addresses": {
-			json: create(`,"interfaceData":[{` + network + `,"ipAssignment":"IP_ASSIGNMENT_STATIC"}]`), msg: &computev1.CreateComputeRequest{},
+			json: iface(`,"ipAssignment":"IP_ASSIGNMENT_STATIC"`), msg: &computev1.CreateComputeRequest{},
 		},
 		"addresses without static assignment": {
-			json: create(`,"interfaceData":[{` + network + `,"ipAddress":["10.0.0.5"]}]`), msg: &computev1.CreateComputeRequest{},
+			json: iface(`,"ipAddresses":["10.0.0.5"]`), msg: &computev1.CreateComputeRequest{},
+		},
+		"two ipv4 addresses": {
+			json: iface(`,"ipAssignment":"IP_ASSIGNMENT_STATIC","ipAddresses":["10.0.0.5","10.0.0.6"]`), msg: &computev1.CreateComputeRequest{},
 		},
 		"bad ip address": {
-			json: create(`,"interfaceData":[{` + network + `,"ipAssignment":"IP_ASSIGNMENT_STATIC","ipAddress":["10.0.0"]}]`), msg: &computev1.CreateComputeRequest{},
+			json: iface(`,"ipAssignment":"IP_ASSIGNMENT_STATIC","ipAddresses":["10.0.0"]`), msg: &computev1.CreateComputeRequest{},
 		},
 		"bad mac address": {
-			json: create(`,"interfaceData":[{` + network + `,"macAddress":"02-00-00-aa-bb-01"}]`), msg: &computev1.CreateComputeRequest{},
+			json: iface(`,"macAddress":"02-00-00-aa-bb-01"`), msg: &computev1.CreateComputeRequest{},
 		},
 		"empty user data": {
 			json: create(`,"userData":{"content":""}`), msg: &computev1.CreateComputeRequest{},
@@ -67,21 +85,34 @@ func TestComputeValidation(t *testing.T) {
 			json: readFile(t, "testdata/compute/operate_compute_request.json"), msg: &computev1.OperateComputeRequest{}, valid: true,
 		},
 		"operate without operation": {
-			json: `{"computeId":"c0ffee00-1234-4abc-8def-0123456789ab"}`, msg: &computev1.OperateComputeRequest{},
+			json: `{` + compute + `}`, msg: &computev1.OperateComputeRequest{},
 		},
 		"update golden": {
 			json: readFile(t, "testdata/compute/update_compute_request.json"), msg: &computev1.UpdateComputeRequest{}, valid: true,
 		},
-		"migrate without type": {
-			json: `{"computeId":"c0ffee00-1234-4abc-8def-0123456789ab"}`, msg: &computev1.MigrateComputeRequest{},
-		},
 		"scale flavour not a uuid": {
-			json: `{"computeId":"c0ffee00-1234-4abc-8def-0123456789ab","computeFlavourId":"large"}`, msg: &computev1.ScaleComputeRequest{},
+			json: `{` + compute + `,"flavourId":"large"}`, msg: &computev1.ScaleComputeRequest{},
 		},
 		"attach volume": {
-			json:  `{"computeId":"c0ffee00-1234-4abc-8def-0123456789ab","storageId":"5a6b7c8d-9e0f-4a1b-8c2d-3e4f5a6b7c8d"}`,
+			json:  `{` + compute + `,"volumeId":"5a6b7c8d-9e0f-4a1b-8c2d-3e4f5a6b7c8d"}`,
 			msg:   &computev1.AttachVolumeRequest{},
 			valid: true,
+		},
+		"create snapshot": {
+			json:  `{` + compute + `,"snapshot":{"snapshotName":"before-upgrade"}}`,
+			msg:   &computev1.CreateSnapshotRequest{},
+			valid: true,
+		},
+		"revert snapshot id not a uuid": {
+			json: `{` + compute + `,"snapshotId":"snap-1"}`, msg: &computev1.RevertSnapshotRequest{},
+		},
+		"placement group": {
+			json:  `{"placementGroup":{"type":"PLACEMENT_TYPE_ANTI_AFFINITY","enforcement":"PLACEMENT_ENFORCEMENT_PREFERRED"}}`,
+			msg:   &computev1.CreatePlacementGroupRequest{},
+			valid: true,
+		},
+		"placement group without type": {
+			json: `{"placementGroup":{"placementGroupName":"g"}}`, msg: &computev1.CreatePlacementGroupRequest{},
 		},
 	} {
 		t.Run(name, func(t *testing.T) { checkValidation(t, tc.json, tc.msg, tc.valid) })

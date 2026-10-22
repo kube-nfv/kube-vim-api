@@ -1,17 +1,18 @@
 {
   "computeId": "c0ffee00-1234-4abc-8def-0123456789ab",
   "update": {
+    "computeName": "router-1-renamed",
+    "metadata": {
+      "owner": "team-a"
+    },
     "networkInterfacesToAdd": [
       {
-        "networkPortId": "6b5a4f3e-2d1c-4b0a-9f8e-7d6c5b4a3f2e",
-        "ipAssignment": "IP_ASSIGNMENT_NONE"
+        "name": "data2",
+        "networkId": "6b5a4f3e-2d1c-4b0a-9f8e-7d6c5b4a3f2e"
       }
     ],
-    "networkInterfaceIdsToRemove": [
-      "net2"
-    ],
-    "metadata": {
-      "tier": "edge"
-    }
+    "networkInterfaceNamesToRemove": [
+      "data1"
+    ]
   }
 }

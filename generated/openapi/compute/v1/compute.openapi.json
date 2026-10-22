@@ -39,110 +39,15 @@
         ],
         "type": "object"
       },
-      "kubenfv.kubevim.common.v1.AffinityGroup": {
-        "description": "Producer-managed group of resources placed with affinity or anti-affinity.",
-        "properties": {
-          "groupId": {
-            "description": "Identifier of the group: a UUID, the Kubernetes UID of the object behind it.",
-            "readOnly": true,
-            "type": "string"
-          },
-          "groupName": {
-            "description": "Name of the group, given by the consumer.",
-            "type": "string"
-          },
-          "scope": {
-            "$ref": "#/components/schemas/kubenfv.kubevim.common.v1.AffinityScope",
-            "description": "Scope of the group; NFVI node when unset."
-          },
-          "type": {
-            "$ref": "#/components/schemas/kubenfv.kubevim.common.v1.AffinityType",
-            "description": "Affinity or anti-affinity."
-          }
-        },
-        "required": [
-          "groupName",
-          "type"
-        ],
-        "type": "object"
-      },
-      "kubenfv.kubevim.common.v1.AffinityOrAntiAffinityConstraint": {
-        "description": "Affinity or anti-affinity of a resource being allocated with other resources. Only one of affinityOrAntiAffinityResourceList, affinityOrAntiAffinityResourceGroupId may be set.",
-        "properties": {
-          "affinityOrAntiAffinityResourceGroupId": {
-            "description": "Identifier of an affinity group created with CreateAffinityGroup.",
-            "type": "string"
-          },
-          "affinityOrAntiAffinityResourceList": {
-            "$ref": "#/components/schemas/kubenfv.kubevim.common.v1.AffinityOrAntiAffinityResourceList",
-            "description": "Consumer-managed list of resource identifiers."
-          },
-          "scope": {
-            "$ref": "#/components/schemas/kubenfv.kubevim.common.v1.AffinityScope",
-            "description": "Scope of the constraint; NFVI node when unset."
-          },
-          "type": {
-            "$ref": "#/components/schemas/kubenfv.kubevim.common.v1.AffinityType",
-            "description": "Affinity or anti-affinity."
-          }
-        },
-        "required": [
-          "type"
-        ],
-        "type": "object"
-      },
-      "kubenfv.kubevim.common.v1.AffinityOrAntiAffinityResourceList": {
-        "description": "Consumer-managed list of resources (IFA006 8.4.8.3).",
-        "properties": {
-          "resourceId": {
-            "description": "Identifiers of virtualised resources.",
-            "items": {
-              "type": "string"
-            },
-            "type": "array"
-          }
-        },
-        "required": [
-          "resourceId"
-        ],
-        "type": "object"
-      },
-      "kubenfv.kubevim.common.v1.AffinityScope": {
-        "description": "Scope of an affinity or anti-affinity constraint (IFA006 8.4.8.2). Which\nvalues apply depends on the resource: compute uses NFVI_POP and NFVI_NODE;\nports add VIRTUAL_SWITCH_OR_ROUTER, PHYSICAL_NIC and PHYSICAL_NETWORK;\nnetworks use PHYSICAL_NIC, PHYSICAL_NETWORK and NFVI_NODE.",
+      "kubenfv.kubevim.common.v1.CpuArchitecture": {
+        "description": "CPU architecture.\nValues may be added as KubeVirt support grows; clients should accept unknown values.",
         "enum": [
-          "AFFINITY_SCOPE_UNSPECIFIED",
-          "AFFINITY_SCOPE_NFVI_POP",
-          "AFFINITY_SCOPE_NFVI_NODE",
-          "AFFINITY_SCOPE_VIRTUAL_SWITCH_OR_ROUTER",
-          "AFFINITY_SCOPE_PHYSICAL_NIC",
-          "AFFINITY_SCOPE_PHYSICAL_NETWORK"
+          "CPU_ARCHITECTURE_UNSPECIFIED",
+          "CPU_ARCHITECTURE_X86_64",
+          "CPU_ARCHITECTURE_AARCH64",
+          "CPU_ARCHITECTURE_S390X"
         ],
         "type": "string"
-      },
-      "kubenfv.kubevim.common.v1.AffinityType": {
-        "description": "Affinity or anti-affinity.",
-        "enum": [
-          "AFFINITY_TYPE_UNSPECIFIED",
-          "AFFINITY_TYPE_AFFINITY",
-          "AFFINITY_TYPE_ANTI_AFFINITY"
-        ],
-        "type": "string"
-      },
-      "kubenfv.kubevim.common.v1.ListAffinityGroupsResponse": {
-        "properties": {
-          "affinityGroups": {
-            "description": "Groups matching the filter.",
-            "items": {
-              "$ref": "#/components/schemas/kubenfv.kubevim.common.v1.AffinityGroup"
-            },
-            "type": "array"
-          },
-          "nextpage_opaque_marker": {
-            "description": "Marker of the next page; empty on the last page (SOL 013 5.4).",
-            "type": "string"
-          }
-        },
-        "type": "object"
       },
       "kubenfv.kubevim.common.v1.OperationalState": {
         "description": "Operational state of a virtualised resource (IFA006).",
@@ -159,6 +64,14 @@
           "TYPE_OF_STORAGE_UNSPECIFIED",
           "TYPE_OF_STORAGE_VOLUME",
           "TYPE_OF_STORAGE_EPHEMERAL"
+        ],
+        "type": "string"
+      },
+      "kubenfv.kubevim.common.v1.VirtualCpuPinningPolicy": {
+        "description": "CPU pinning policy (IFA006 8.4.2.4). IFA's STATIC policy with explicit rules is left out:\nKubeVirt places dedicated CPUs itself.",
+        "enum": [
+          "VIRTUAL_CPU_PINNING_POLICY_UNSPECIFIED",
+          "VIRTUAL_CPU_PINNING_POLICY_DYNAMIC"
         ],
         "type": "string"
       },
@@ -237,56 +150,28 @@
         ],
         "type": "object"
       },
-      "kubenfv.kubevim.compute.v1.CertificateData": {
-        "description": "Certificate material for a VNF in delegation mode (IFA006 8.4.11).",
-        "properties": {
-          "certSubjectData": {
-            "description": "Subject to be signed.",
-            "type": "string"
-          },
-          "certificateFile": {
-            "description": "Signed certificate with the public key and chain.",
-            "type": "string"
-          },
-          "certificateProfileName": {
-            "description": "Certificate profile to sign with.",
-            "type": "string"
-          },
-          "keystoreFile": {
-            "description": "Keystore with key, certificate and chain, e.g. PKCS#12.",
-            "type": "string",
-            "writeOnly": true
-          },
-          "privateKey": {
-            "description": "Private key paired with the signed public key; with certificate_file, or keystore_file alone.",
-            "type": "string",
-            "writeOnly": true
-          }
-        },
-        "type": "object"
-      },
       "kubenfv.kubevim.compute.v1.Compute": {
         "description": "A virtualised compute resource: a virtual machine.",
         "properties": {
-          "accelerationCapability": {
-            "description": "Acceleration capabilities in use, as Kubernetes device resource names.",
-            "items": {
-              "type": "string"
-            },
-            "readOnly": true,
-            "type": "array"
-          },
           "computeId": {
-            "description": "Identifier of the compute resource: a UUID, the Kubernetes UID of the object behind it.",
+            "description": "Identifier of the compute resource: a UUID assigned by the VIM.",
             "readOnly": true,
             "type": "string"
           },
           "computeName": {
-            "description": "Name of the compute resource, given by the consumer. The VIM normalises it to a DNS label\nand defaults it to the image name followed by \"-vm\".",
+            "description": "Name of the compute resource, given by the consumer; not unique.",
             "type": "string"
           },
+          "disks": {
+            "description": "Disks of the compute resource: the boot disk, disks from the flavour and attached volumes.",
+            "items": {
+              "$ref": "#/components/schemas/kubenfv.kubevim.common.v1.Volume"
+            },
+            "readOnly": true,
+            "type": "array"
+          },
           "flavourId": {
-            "description": "Flavour the compute resource is sized by.",
+            "description": "Flavour the compute resource is sized by; it needs exactly one boot storage attribute.",
             "type": "string"
           },
           "hostId": {
@@ -294,12 +179,24 @@
             "readOnly": true,
             "type": "string"
           },
+          "imageId": {
+            "description": "Software image the compute resource boots from.",
+            "type": "string"
+          },
           "metadata": {
             "additionalProperties": {
               "type": "string"
             },
-            "description": "Metadata owned by the consumer and never interpreted by the VIM.",
+            "description": "Metadata set by the consumer and by the VIM; for keys under \"kubevim.kubenfv.io/\" that the VIM maintains, its value wins.",
             "type": "object"
+          },
+          "networkInterfaces": {
+            "description": "Network interfaces, the management interface first; no other order is guaranteed.",
+            "items": {
+              "$ref": "#/components/schemas/kubenfv.kubevim.compute.v1.VirtualNetworkInterface"
+            },
+            "readOnly": true,
+            "type": "array"
           },
           "operationalState": {
             "allOf": [
@@ -309,6 +206,18 @@
             ],
             "description": "Administrative state of the compute resource.",
             "readOnly": true
+          },
+          "placementGroupIds": {
+            "description": "Placement groups the compute resource belongs to, joined at creation.",
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "restartRequired": {
+            "description": "A change (a flavour beyond the hotplug limits, or interfaces of a VM that cannot live-migrate) applies on the next restart.",
+            "readOnly": true,
+            "type": "boolean"
           },
           "runningState": {
             "allOf": [
@@ -324,18 +233,6 @@
             "readOnly": true,
             "type": "string"
           },
-          "vcImageId": {
-            "description": "Software image the compute resource boots from; empty for an empty container.",
-            "type": "string"
-          },
-          "vimMetadata": {
-            "additionalProperties": {
-              "type": "string"
-            },
-            "description": "Auxiliary information from the VIM, e.g. KubeVirt status; keys are listed in the metadata key registry.",
-            "readOnly": true,
-            "type": "object"
-          },
           "virtualCpu": {
             "allOf": [
               {
@@ -344,14 +241,6 @@
             ],
             "description": "Virtual CPUs of the compute resource.",
             "readOnly": true
-          },
-          "virtualDisks": {
-            "description": "Volumes attached to the compute resource, including its boot disk.",
-            "items": {
-              "$ref": "#/components/schemas/kubenfv.kubevim.common.v1.Volume"
-            },
-            "readOnly": true,
-            "type": "array"
           },
           "virtualMemory": {
             "allOf": [
@@ -362,14 +251,6 @@
             "description": "Virtual memory of the compute resource.",
             "readOnly": true
           },
-          "virtualNetworkInterface": {
-            "description": "Network interfaces of the compute resource.",
-            "items": {
-              "$ref": "#/components/schemas/kubenfv.kubevim.compute.v1.VirtualNetworkInterface"
-            },
-            "readOnly": true,
-            "type": "array"
-          },
           "zoneId": {
             "description": "Resource zone of the compute resource.",
             "readOnly": true,
@@ -377,25 +258,22 @@
           }
         },
         "required": [
-          "flavourId"
+          "flavourId",
+          "imageId"
         ],
         "type": "object"
       },
       "kubenfv.kubevim.compute.v1.ComputeOperation": {
-        "description": "Operation on a compute resource (IFA006 7.3.1.6).\nValues may be added as KubeVirt support grows; clients should accept unknown values.",
+        "description": "Operation on the running state of a compute resource (IFA006 7.3.1.6).\nValues may be added as KubeVirt support grows; clients should accept unknown values.",
         "enum": [
           "COMPUTE_OPERATION_UNSPECIFIED",
           "COMPUTE_OPERATION_START",
           "COMPUTE_OPERATION_STOP",
           "COMPUTE_OPERATION_PAUSE",
           "COMPUTE_OPERATION_RESUME",
-          "COMPUTE_OPERATION_SUSPEND",
           "COMPUTE_OPERATION_REBOOT",
           "COMPUTE_OPERATION_QUIESCE",
-          "COMPUTE_OPERATION_UNQUIESCE",
-          "COMPUTE_OPERATION_CREATE_SNAPSHOT",
-          "COMPUTE_OPERATION_REVERT_TO_SNAPSHOT",
-          "COMPUTE_OPERATION_DELETE_SNAPSHOT"
+          "COMPUTE_OPERATION_UNQUIESCE"
         ],
         "type": "string"
       },
@@ -408,7 +286,6 @@
           "COMPUTE_RUNNING_STATE_STOPPING",
           "COMPUTE_RUNNING_STATE_STOPPED",
           "COMPUTE_RUNNING_STATE_PAUSED",
-          "COMPUTE_RUNNING_STATE_SUSPENDED",
           "COMPUTE_RUNNING_STATE_REBOOTING",
           "COMPUTE_RUNNING_STATE_MIGRATING",
           "COMPUTE_RUNNING_STATE_FAILED",
@@ -417,46 +294,31 @@
         "type": "string"
       },
       "kubenfv.kubevim.compute.v1.ComputeUpdate": {
-        "description": "Changes to a compute resource.",
+        "description": "Changes to a compute resource: a patch. The name is replaced when set, metadata entries are\nmerged, and interfaces are added (hotplug) or removed by name.",
         "properties": {
+          "computeName": {
+            "type": "string"
+          },
           "metadata": {
             "additionalProperties": {
               "type": "string"
             },
-            "description": "Metadata entries to add or replace.",
+            "description": "Metadata entries to add, or to overwrite when the key exists; keys not given are kept, and none is removed.",
             "type": "object"
           },
-          "metadataKeysToRemove": {
-            "description": "Metadata keys to remove.",
-            "items": {
-              "type": "string"
-            },
-            "type": "array"
-          },
-          "networkInterfaceIdsToRemove": {
-            "description": "Network interfaces to remove, by resource_id (the interface name).",
+          "networkInterfaceNamesToRemove": {
+            "description": "Names of network interfaces to remove.",
             "items": {
               "type": "string"
             },
             "type": "array"
           },
           "networkInterfacesToAdd": {
-            "description": "Network interfaces to add (hotplug).",
+            "description": "Network interfaces to add.",
             "items": {
               "$ref": "#/components/schemas/kubenfv.kubevim.compute.v1.NetworkInterfaceData"
             },
             "type": "array"
-          },
-          "networkInterfacesToUpdate": {
-            "description": "Interfaces to change in place, e.g. re-attach to another port.",
-            "items": {
-              "$ref": "#/components/schemas/kubenfv.kubevim.compute.v1.VirtualNetworkInterface"
-            },
-            "type": "array"
-          },
-          "powerState": {
-            "description": "Target power state.",
-            "type": "string"
           }
         },
         "type": "object"
@@ -487,32 +349,48 @@
         },
         "type": "object"
       },
-      "kubenfv.kubevim.compute.v1.MigrationType": {
-        "description": "Type of migration (IFA006 7.3.1.8).",
-        "enum": [
-          "MIGRATION_TYPE_UNSPECIFIED",
-          "MIGRATION_TYPE_LIVE_MIGRATION",
-          "MIGRATION_TYPE_OFFLINE_MIGRATION"
-        ],
-        "type": "string"
-      },
-      "kubenfv.kubevim.compute.v1.NetworkInterfaceData": {
-        "description": "A network interface requested for a new compute resource.",
+      "kubenfv.kubevim.compute.v1.ListPlacementGroupsResponse": {
         "properties": {
-          "accelerationCapability": {
-            "description": "Acceleration capabilities, as Kubernetes device resource names.",
+          "nextpage_opaque_marker": {
+            "description": "Marker of the next page; empty on the last page (SOL 013 5.4).",
+            "type": "string"
+          },
+          "placementGroups": {
+            "description": "Groups matching the filter.",
             "items": {
-              "type": "string"
+              "$ref": "#/components/schemas/kubenfv.kubevim.compute.v1.PlacementGroup"
             },
             "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "kubenfv.kubevim.compute.v1.ListSnapshotsResponse": {
+        "properties": {
+          "nextpage_opaque_marker": {
+            "description": "Marker of the next page; empty on the last page (SOL 013 5.4).",
+            "type": "string"
           },
+          "snapshots": {
+            "description": "Snapshots matching the filter.",
+            "items": {
+              "$ref": "#/components/schemas/kubenfv.kubevim.compute.v1.Snapshot"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "kubenfv.kubevim.compute.v1.NetworkInterfaceData": {
+        "description": "A network interface requested for a compute resource.",
+        "properties": {
           "bandwidth": {
-            "description": "Bandwidth limit in Mbps; 0 means no limit.",
+            "description": "Rate limit in Mbps; 0 means no limit.",
             "format": "int64",
             "type": "integer"
           },
-          "ipAddress": {
-            "description": "Addresses for the static assignment.",
+          "ipAddresses": {
+            "description": "Addresses for the static assignment: at most one per IP version.",
             "items": {
               "type": "string"
             },
@@ -520,60 +398,167 @@
           },
           "ipAssignment": {
             "$ref": "#/components/schemas/kubenfv.kubevim.compute.v1.IpAssignment",
-            "description": "How the interface gets its addresses."
+            "description": "How the interface gets its addresses; automatic when unset."
           },
           "macAddress": {
             "description": "MAC address; the VIM assigns one when unset.",
             "type": "string"
           },
-          "metadata": {
-            "additionalProperties": {
-              "type": "string"
-            },
-            "description": "Metadata owned by the consumer and never interpreted by the VIM.",
-            "type": "object"
+          "model": {
+            "$ref": "#/components/schemas/kubenfv.kubevim.compute.v1.NicModel",
+            "description": "NIC model the guest sees; virtio when unset."
+          },
+          "name": {
+            "description": "Name of the interface, unique within the compute resource; the VIM chooses one when unset.",
+            "type": "string"
           },
           "networkId": {
-            "description": "Network to attach to; one of network_id, subnet_id and network_port_id is required.",
+            "description": "Network to attach to; the interface gets one address per subnet of the network.",
             "type": "string"
-          },
-          "networkPortId": {
-            "description": "Existing port to attach to.",
-            "type": "string"
-          },
-          "subnetId": {
-            "description": "Subnet to take addresses from; identifies the network on its own when network_id is unset.",
-            "type": "string"
-          },
-          "typeConfiguration": {
-            "description": "Extra configuration for the interface type.",
-            "items": {
-              "type": "string"
-            },
-            "type": "array"
           },
           "typeVirtualNic": {
             "$ref": "#/components/schemas/kubenfv.kubevim.compute.v1.TypeVirtualNic",
             "description": "How the interface is realised; the VIM chooses from the network when unset."
           }
         },
+        "required": [
+          "networkId"
+        ],
         "type": "object"
       },
-      "kubenfv.kubevim.compute.v1.OperateComputeResponse": {
+      "kubenfv.kubevim.compute.v1.NicModel": {
+        "description": "NIC model the guest sees.\nValues may be added as KubeVirt support grows; clients should accept unknown values.",
+        "enum": [
+          "NIC_MODEL_UNSPECIFIED",
+          "NIC_MODEL_VIRTIO",
+          "NIC_MODEL_E1000",
+          "NIC_MODEL_E1000E"
+        ],
+        "type": "string"
+      },
+      "kubenfv.kubevim.compute.v1.PlacementEnforcement": {
+        "description": "Whether a placement policy must hold.",
+        "enum": [
+          "PLACEMENT_ENFORCEMENT_UNSPECIFIED",
+          "PLACEMENT_ENFORCEMENT_REQUIRED",
+          "PLACEMENT_ENFORCEMENT_PREFERRED"
+        ],
+        "type": "string"
+      },
+      "kubenfv.kubevim.compute.v1.PlacementGroup": {
+        "description": "A group of compute resources placed together or apart (decision 0005).",
         "properties": {
-          "computeData": {
-            "$ref": "#/components/schemas/kubenfv.kubevim.compute.v1.Compute",
-            "description": "Compute resource after the operation."
+          "computeIds": {
+            "description": "Compute resources in the group.",
+            "items": {
+              "type": "string"
+            },
+            "readOnly": true,
+            "type": "array"
           },
-          "computeOperationOutputData": {
+          "enforcement": {
+            "$ref": "#/components/schemas/kubenfv.kubevim.compute.v1.PlacementEnforcement",
+            "description": "Whether the policy must hold or is applied when possible; PLACEMENT_ENFORCEMENT_REQUIRED when unset."
+          },
+          "metadata": {
             "additionalProperties": {
               "type": "string"
             },
-            "description": "Operation results, e.g. \"snapshotId\" for CREATE_SNAPSHOT.",
+            "description": "Metadata set by the consumer and by the VIM; for keys under \"kubevim.kubenfv.io/\" that the VIM maintains, its value wins.",
             "type": "object"
+          },
+          "placementGroupId": {
+            "description": "Identifier of the group: a UUID assigned by the VIM.",
+            "readOnly": true,
+            "type": "string"
+          },
+          "placementGroupName": {
+            "description": "Name of the group, given by the consumer; not unique.",
+            "type": "string"
+          },
+          "scope": {
+            "$ref": "#/components/schemas/kubenfv.kubevim.compute.v1.PlacementScope",
+            "description": "Topology domain the policy applies to; PLACEMENT_SCOPE_NODE when unset."
+          },
+          "type": {
+            "$ref": "#/components/schemas/kubenfv.kubevim.compute.v1.PlacementType",
+            "description": "Whether members are placed together or apart."
+          }
+        },
+        "required": [
+          "type"
+        ],
+        "type": "object"
+      },
+      "kubenfv.kubevim.compute.v1.PlacementScope": {
+        "description": "Topology domain a placement policy applies to.\nValues may be added; clients should accept unknown values.",
+        "enum": [
+          "PLACEMENT_SCOPE_UNSPECIFIED",
+          "PLACEMENT_SCOPE_NODE",
+          "PLACEMENT_SCOPE_ZONE"
+        ],
+        "type": "string"
+      },
+      "kubenfv.kubevim.compute.v1.PlacementType": {
+        "description": "Whether members of a placement group are placed together or apart.",
+        "enum": [
+          "PLACEMENT_TYPE_UNSPECIFIED",
+          "PLACEMENT_TYPE_AFFINITY",
+          "PLACEMENT_TYPE_ANTI_AFFINITY"
+        ],
+        "type": "string"
+      },
+      "kubenfv.kubevim.compute.v1.Snapshot": {
+        "description": "A snapshot of a compute resource (KubeVirt VirtualMachineSnapshot).",
+        "properties": {
+          "computeId": {
+            "description": "Compute resource the snapshot was taken of.",
+            "readOnly": true,
+            "type": "string"
+          },
+          "createdAt": {
+            "description": "Time the snapshot was taken.",
+            "format": "date-time",
+            "readOnly": true,
+            "type": "string"
+          },
+          "metadata": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Metadata set by the consumer and by the VIM; for keys under \"kubevim.kubenfv.io/\" that the VIM maintains, its value wins.",
+            "type": "object"
+          },
+          "snapshotId": {
+            "description": "Identifier of the snapshot: a UUID assigned by the VIM.",
+            "readOnly": true,
+            "type": "string"
+          },
+          "snapshotName": {
+            "description": "Name of the snapshot, given by the consumer; not unique.",
+            "type": "string"
+          },
+          "status": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/kubenfv.kubevim.compute.v1.SnapshotStatus"
+              }
+            ],
+            "description": "Status of the snapshot.",
+            "readOnly": true
           }
         },
         "type": "object"
+      },
+      "kubenfv.kubevim.compute.v1.SnapshotStatus": {
+        "description": "Status of a snapshot.\nValues may be added as KubeVirt support grows; clients should accept unknown values.",
+        "enum": [
+          "SNAPSHOT_STATUS_UNSPECIFIED",
+          "SNAPSHOT_STATUS_CREATING",
+          "SNAPSHOT_STATUS_READY",
+          "SNAPSHOT_STATUS_FAILED"
+        ],
+        "type": "string"
       },
       "kubenfv.kubevim.compute.v1.TypeVirtualNic": {
         "description": "How a network interface is realised.\nValues may be added as KubeVirt support grows; clients should accept unknown values.",
@@ -581,7 +566,6 @@
           "TYPE_VIRTUAL_NIC_UNSPECIFIED",
           "TYPE_VIRTUAL_NIC_BRIDGE",
           "TYPE_VIRTUAL_NIC_SRIOV",
-          "TYPE_VIRTUAL_NIC_PCI_PASSTHROUGH",
           "TYPE_VIRTUAL_NIC_MASQUERADE"
         ],
         "type": "string"
@@ -589,13 +573,6 @@
       "kubenfv.kubevim.compute.v1.UserData": {
         "description": "User data passed to the compute resource at boot time.",
         "properties": {
-          "certificateData": {
-            "description": "Certificates for the VNF (delegation mode).",
-            "items": {
-              "$ref": "#/components/schemas/kubenfv.kubevim.compute.v1.CertificateData"
-            },
-            "type": "array"
-          },
           "content": {
             "description": "User data, e.g. a cloud-init document; transparent to the VIM.",
             "type": "string",
@@ -625,22 +602,11 @@
         "description": "Virtual CPUs of a compute resource.",
         "properties": {
           "cpuArchitecture": {
-            "type": "string"
-          },
-          "cpuClock": {
-            "description": "Minimum CPU clock rate in MHz; 0 when not guaranteed.",
-            "format": "int64",
-            "type": "integer"
+            "$ref": "#/components/schemas/kubenfv.kubevim.common.v1.CpuArchitecture"
           },
           "numVirtualCpu": {
             "format": "int64",
             "type": "integer"
-          },
-          "powerState": {
-            "type": "string"
-          },
-          "virtualCpuOversubscriptionPolicy": {
-            "type": "string"
           },
           "virtualCpuPinning": {
             "$ref": "#/components/schemas/kubenfv.kubevim.compute.v1.VirtualCpuPinning"
@@ -656,17 +622,11 @@
               "format": "int64",
               "type": "integer"
             },
-            "description": "Physical CPU each virtual CPU is pinned to.",
+            "description": "Physical CPU each virtual CPU is pinned to; empty when the VIM cannot tell.",
             "type": "object"
           },
           "cpuPinningPolicy": {
-            "$ref": "#/components/schemas/kubenfv.kubevim.flavour.v1.VirtualCpuPinningPolicy"
-          },
-          "cpuPinningRules": {
-            "items": {
-              "type": "string"
-            },
-            "type": "array"
+            "$ref": "#/components/schemas/kubenfv.kubevim.common.v1.VirtualCpuPinningPolicy"
           }
         },
         "type": "object"
@@ -694,23 +654,21 @@
       "kubenfv.kubevim.compute.v1.VirtualNetworkInterface": {
         "description": "A network interface of a compute resource.",
         "properties": {
-          "accelerationCapability": {
-            "items": {
-              "type": "string"
-            },
-            "type": "array"
-          },
           "bandwidth": {
-            "description": "Bandwidth in Mbps; 0 when not limited.",
+            "description": "Rate limit in Mbps; 0 when not limited.",
             "format": "int64",
             "type": "integer"
           },
-          "hostPciAddress": {
-            "description": "PCI address of the device on the host, for SR-IOV and passthrough interfaces.",
+          "computeId": {
+            "description": "Compute resource the interface belongs to.",
             "type": "string"
           },
-          "ipAddress": {
-            "description": "Addresses of the interface; may be empty until DHCP or the guest configures them.",
+          "hostPciAddress": {
+            "description": "PCI address of the device on the host, for SR-IOV interfaces.",
+            "type": "string"
+          },
+          "ipAddresses": {
+            "description": "Addresses of the interface, one per subnet of its network; may be empty until DHCP or the guest configures them.",
             "items": {
               "type": "string"
             },
@@ -721,62 +679,30 @@
             "type": "boolean"
           },
           "macAddress": {
+            "description": "MAC address; empty until known.",
             "type": "string"
           },
-          "metadata": {
-            "additionalProperties": {
-              "type": "string"
-            },
-            "type": "object"
+          "model": {
+            "$ref": "#/components/schemas/kubenfv.kubevim.compute.v1.NicModel",
+            "description": "NIC model the guest sees."
+          },
+          "name": {
+            "description": "Name of the interface, unique within the compute resource: the one given at creation, or one the VIM chose.",
+            "type": "string"
           },
           "networkId": {
-            "type": "string"
-          },
-          "networkPortId": {
+            "description": "Network the interface is attached to; empty for the management interface.",
             "type": "string"
           },
           "operationalState": {
             "$ref": "#/components/schemas/kubenfv.kubevim.common.v1.OperationalState",
             "description": "ENABLED once the interface is attached and ready."
           },
-          "ownerId": {
-            "description": "Compute resource the interface belongs to.",
-            "type": "string"
-          },
-          "resourceId": {
-            "description": "Identifier of the interface: its name, unique within the compute resource (e.g. \"net1\").",
-            "type": "string"
-          },
-          "subnetId": {
-            "description": "Subnet the interface takes its addresses from.",
-            "type": "string"
-          },
-          "typeConfiguration": {
-            "items": {
-              "type": "string"
-            },
-            "type": "array"
-          },
           "typeVirtualNic": {
             "$ref": "#/components/schemas/kubenfv.kubevim.compute.v1.TypeVirtualNic"
-          },
-          "vimMetadata": {
-            "additionalProperties": {
-              "type": "string"
-            },
-            "description": "Auxiliary information from the VIM; keys are listed in the metadata key registry.",
-            "type": "object"
           }
         },
         "type": "object"
-      },
-      "kubenfv.kubevim.flavour.v1.VirtualCpuPinningPolicy": {
-        "description": "CPU pinning policy (IFA006 8.4.2.4). IFA's STATIC policy with explicit rules is left out:\nKubeVirt places dedicated CPUs itself.",
-        "enum": [
-          "VIRTUAL_CPU_PINNING_POLICY_UNSPECIFIED",
-          "VIRTUAL_CPU_PINNING_POLICY_DYNAMIC"
-        ],
-        "type": "string"
       }
     },
     "securitySchemes": {
@@ -806,295 +732,6 @@
   },
   "openapi": "3.1.0",
   "paths": {
-    "/compute/v1/affinityGroups": {
-      "get": {
-        "operationId": "ComputeService_ListAffinityGroups",
-        "parameters": [
-          {
-            "description": "Attribute-based filter expression (SOL 013 5.2).",
-            "in": "query",
-            "name": "filter",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "Marker of the page to return, from a previous response (SOL 013 5.4).",
-            "in": "query",
-            "name": "nextpage_opaque_marker",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "$ref": "#/components/parameters/Version"
-          }
-        ],
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/kubenfv.kubevim.common.v1.ListAffinityGroupsResponse"
-                }
-              }
-            },
-            "description": "A successful response.",
-            "headers": {
-              "Version": {
-                "description": "API version used (SOL 013 9.4).",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "default": {
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              }
-            },
-            "description": "Error (SOL 013 6).",
-            "headers": {
-              "Version": {
-                "description": "API version used (SOL 013 9.4).",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "oauth2": [
-              "compute:v1:query"
-            ]
-          }
-        ],
-        "summary": "Returns the compute affinity groups.",
-        "tags": [
-          "ComputeService"
-        ]
-      },
-      "post": {
-        "operationId": "ComputeService_CreateAffinityGroup",
-        "parameters": [
-          {
-            "$ref": "#/components/parameters/Version"
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "properties": {
-                  "affinityGroup": {
-                    "$ref": "#/components/schemas/kubenfv.kubevim.common.v1.AffinityGroup",
-                    "description": "Group to create."
-                  },
-                  "requestId": {
-                    "description": "Client-chosen UUID that makes the request idempotent (AIP-155).",
-                    "type": "string"
-                  }
-                },
-                "required": [
-                  "affinityGroup"
-                ],
-                "type": "object"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "201": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/kubenfv.kubevim.common.v1.AffinityGroup"
-                }
-              }
-            },
-            "description": "Producer-managed group of resources placed with affinity or anti-affinity.",
-            "headers": {
-              "Location": {
-                "description": "URI of the created resource.",
-                "schema": {
-                  "format": "uri",
-                  "type": "string"
-                }
-              },
-              "Version": {
-                "description": "API version used (SOL 013 9.4).",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "default": {
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              }
-            },
-            "description": "Error (SOL 013 6).",
-            "headers": {
-              "Version": {
-                "description": "API version used (SOL 013 9.4).",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "oauth2": [
-              "compute:v1:allocate"
-            ]
-          }
-        ],
-        "summary": "Creates a compute affinity or anti-affinity group.",
-        "tags": [
-          "ComputeService"
-        ]
-      }
-    },
-    "/compute/v1/affinityGroups/{group_id}": {
-      "delete": {
-        "operationId": "ComputeService_DeleteAffinityGroup",
-        "parameters": [
-          {
-            "description": "Identifier of the group.",
-            "in": "path",
-            "name": "group_id",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "$ref": "#/components/parameters/Version"
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "No Content",
-            "headers": {
-              "Version": {
-                "description": "API version used (SOL 013 9.4).",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "default": {
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              }
-            },
-            "description": "Error (SOL 013 6).",
-            "headers": {
-              "Version": {
-                "description": "API version used (SOL 013 9.4).",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "oauth2": [
-              "compute:v1:terminate"
-            ]
-          }
-        ],
-        "summary": "Deletes a compute affinity group.",
-        "tags": [
-          "ComputeService"
-        ]
-      },
-      "get": {
-        "operationId": "ComputeService_GetAffinityGroup",
-        "parameters": [
-          {
-            "description": "Identifier of the group.",
-            "in": "path",
-            "name": "group_id",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "$ref": "#/components/parameters/Version"
-          }
-        ],
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/kubenfv.kubevim.common.v1.AffinityGroup"
-                }
-              }
-            },
-            "description": "Producer-managed group of resources placed with affinity or anti-affinity.",
-            "headers": {
-              "Version": {
-                "description": "API version used (SOL 013 9.4).",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "default": {
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              }
-            },
-            "description": "Error (SOL 013 6).",
-            "headers": {
-              "Version": {
-                "description": "API version used (SOL 013 9.4).",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "oauth2": [
-              "compute:v1:query"
-            ]
-          }
-        ],
-        "summary": "Returns one compute affinity group.",
-        "tags": [
-          "ComputeService"
-        ]
-      }
-    },
     "/compute/v1/computes": {
       "get": {
         "operationId": "ComputeService_ListComputes",
@@ -1181,38 +818,19 @@
             "application/json": {
               "schema": {
                 "properties": {
-                  "affinityOrAntiAffinityConstraints": {
-                    "description": "Affinity or anti-affinity with other compute resources; all must be met.",
-                    "items": {
-                      "$ref": "#/components/schemas/kubenfv.kubevim.common.v1.AffinityOrAntiAffinityConstraint"
-                    },
-                    "type": "array"
-                  },
                   "compute": {
                     "$ref": "#/components/schemas/kubenfv.kubevim.compute.v1.Compute",
-                    "description": "Compute resource to create: name, flavour, image and metadata."
+                    "description": "Compute resource to create: name, flavour, image, placement groups and metadata."
                   },
-                  "interfaceData": {
-                    "description": "Network interfaces, in guest order.",
+                  "networkInterfaces": {
+                    "description": "Network interfaces in addition to the management interface.",
                     "items": {
                       "$ref": "#/components/schemas/kubenfv.kubevim.compute.v1.NetworkInterfaceData"
                     },
                     "type": "array"
                   },
-                  "locationConstraints": {
-                    "description": "Location constraints, e.g. a resource zone.",
-                    "type": "string"
-                  },
                   "requestId": {
                     "description": "Client-chosen UUID that makes the request idempotent (AIP-155).",
-                    "type": "string"
-                  },
-                  "reservationId": {
-                    "description": "Resource reservation for this allocation.",
-                    "type": "string"
-                  },
-                  "resourceGroupId": {
-                    "description": "Infrastructure resource group of the compute resource.",
                     "type": "string"
                   },
                   "start": {
@@ -1488,7 +1106,7 @@
             ]
           }
         ],
-        "summary": "Updates a compute resource: adds or removes network interfaces and changes metadata.",
+        "summary": "Updates a compute resource: its name and metadata, and adds or removes network interfaces.",
         "tags": [
           "ComputeService"
         ]
@@ -1516,17 +1134,13 @@
             "application/json": {
               "schema": {
                 "properties": {
-                  "mountpoint": {
-                    "description": "Where the volume appears in the guest, e.g. a disk serial; the VIM chooses when unset.",
-                    "type": "string"
-                  },
-                  "storageId": {
+                  "volumeId": {
                     "description": "Identifier of the volume to attach.",
                     "type": "string"
                   }
                 },
                 "required": [
-                  "storageId"
+                  "volumeId"
                 ],
                 "type": "object"
               }
@@ -1607,13 +1221,13 @@
             "application/json": {
               "schema": {
                 "properties": {
-                  "storageId": {
+                  "volumeId": {
                     "description": "Identifier of the volume to detach.",
                     "type": "string"
                   }
                 },
                 "required": [
-                  "storageId"
+                  "volumeId"
                 ],
                 "type": "object"
               }
@@ -1693,26 +1307,6 @@
           "content": {
             "application/json": {
               "schema": {
-                "properties": {
-                  "affinityOrAntiAffinityConstraints": {
-                    "description": "Affinity or anti-affinity the new placement must meet.",
-                    "items": {
-                      "$ref": "#/components/schemas/kubenfv.kubevim.common.v1.AffinityOrAntiAffinityConstraint"
-                    },
-                    "type": "array"
-                  },
-                  "migrationConstraint": {
-                    "description": "Where to migrate to, e.g. a resource zone.",
-                    "type": "string"
-                  },
-                  "migrationType": {
-                    "$ref": "#/components/schemas/kubenfv.kubevim.compute.v1.MigrationType",
-                    "description": "Live or offline migration."
-                  }
-                },
-                "required": [
-                  "migrationType"
-                ],
                 "type": "object"
               }
             }
@@ -1764,7 +1358,7 @@
             ]
           }
         ],
-        "summary": "Moves a compute resource to another host.",
+        "summary": "Moves a running compute resource to another host (live migration).",
         "tags": [
           "ComputeService"
         ]
@@ -1795,13 +1389,6 @@
                   "computeOperation": {
                     "$ref": "#/components/schemas/kubenfv.kubevim.compute.v1.ComputeOperation",
                     "description": "Operation to run."
-                  },
-                  "computeOperationInputData": {
-                    "additionalProperties": {
-                      "type": "string"
-                    },
-                    "description": "Operation parameters, e.g. \"snapshotId\" for REVERT_TO_SNAPSHOT and DELETE_SNAPSHOT.",
-                    "type": "object"
                   }
                 },
                 "required": [
@@ -1818,11 +1405,11 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/kubenfv.kubevim.compute.v1.OperateComputeResponse"
+                  "$ref": "#/components/schemas/kubenfv.kubevim.compute.v1.Compute"
                 }
               }
             },
-            "description": "A successful response.",
+            "description": "A virtualised compute resource: a virtual machine.",
             "headers": {
               "Version": {
                 "description": "API version used (SOL 013 9.4).",
@@ -1858,7 +1445,7 @@
             ]
           }
         ],
-        "summary": "Runs an operation on a compute resource, e.g. start, stop or reboot.",
+        "summary": "Changes the running state of a compute resource, e.g. start, stop or reboot.",
         "tags": [
           "ComputeService"
         ]
@@ -1886,13 +1473,13 @@
             "application/json": {
               "schema": {
                 "properties": {
-                  "computeFlavourId": {
+                  "flavourId": {
                     "description": "Flavour to resize to.",
                     "type": "string"
                   }
                 },
                 "required": [
-                  "computeFlavourId"
+                  "flavourId"
                 ],
                 "type": "object"
               }
@@ -1945,7 +1532,705 @@
             ]
           }
         ],
-        "summary": "Changes the flavour of a compute resource.",
+        "summary": "Changes the flavour of a compute resource; live where KubeVirt can hotplug, otherwise restart_required is set.",
+        "tags": [
+          "ComputeService"
+        ]
+      }
+    },
+    "/compute/v1/computes/{compute_id}/snapshots": {
+      "get": {
+        "operationId": "ComputeService_ListSnapshots",
+        "parameters": [
+          {
+            "description": "Compute resource the snapshots belong to.",
+            "in": "path",
+            "name": "compute_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Attribute-based filter expression (SOL 013 5.2).",
+            "in": "query",
+            "name": "filter",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Marker of the page to return, from a previous response (SOL 013 5.4).",
+            "in": "query",
+            "name": "nextpage_opaque_marker",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/Version"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/kubenfv.kubevim.compute.v1.ListSnapshotsResponse"
+                }
+              }
+            },
+            "description": "A successful response.",
+            "headers": {
+              "Version": {
+                "description": "API version used (SOL 013 9.4).",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Error (SOL 013 6).",
+            "headers": {
+              "Version": {
+                "description": "API version used (SOL 013 9.4).",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "compute:v1:query"
+            ]
+          }
+        ],
+        "summary": "Returns the snapshots of a compute resource.",
+        "tags": [
+          "ComputeService"
+        ]
+      },
+      "post": {
+        "operationId": "ComputeService_CreateSnapshot",
+        "parameters": [
+          {
+            "description": "Compute resource to take the snapshot of.",
+            "in": "path",
+            "name": "compute_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/Version"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "requestId": {
+                    "description": "Client-chosen UUID that makes the request idempotent (AIP-155).",
+                    "type": "string"
+                  },
+                  "snapshot": {
+                    "$ref": "#/components/schemas/kubenfv.kubevim.compute.v1.Snapshot",
+                    "description": "Snapshot to create: name and metadata."
+                  }
+                },
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/kubenfv.kubevim.compute.v1.Snapshot"
+                }
+              }
+            },
+            "description": "A snapshot of a compute resource (KubeVirt VirtualMachineSnapshot).",
+            "headers": {
+              "Location": {
+                "description": "URI of the created resource.",
+                "schema": {
+                  "format": "uri",
+                  "type": "string"
+                }
+              },
+              "Version": {
+                "description": "API version used (SOL 013 9.4).",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Error (SOL 013 6).",
+            "headers": {
+              "Version": {
+                "description": "API version used (SOL 013 9.4).",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "compute:v1:operate"
+            ]
+          }
+        ],
+        "summary": "Creates a snapshot of a compute resource.",
+        "tags": [
+          "ComputeService"
+        ]
+      }
+    },
+    "/compute/v1/computes/{compute_id}/snapshots/{snapshot_id}": {
+      "delete": {
+        "operationId": "ComputeService_DeleteSnapshot",
+        "parameters": [
+          {
+            "description": "Compute resource the snapshot belongs to.",
+            "in": "path",
+            "name": "compute_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Identifier of the snapshot.",
+            "in": "path",
+            "name": "snapshot_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/Version"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content",
+            "headers": {
+              "Version": {
+                "description": "API version used (SOL 013 9.4).",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Error (SOL 013 6).",
+            "headers": {
+              "Version": {
+                "description": "API version used (SOL 013 9.4).",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "compute:v1:operate"
+            ]
+          }
+        ],
+        "summary": "Deletes a snapshot of a compute resource.",
+        "tags": [
+          "ComputeService"
+        ]
+      },
+      "get": {
+        "operationId": "ComputeService_GetSnapshot",
+        "parameters": [
+          {
+            "description": "Compute resource the snapshot belongs to.",
+            "in": "path",
+            "name": "compute_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Identifier of the snapshot.",
+            "in": "path",
+            "name": "snapshot_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/Version"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/kubenfv.kubevim.compute.v1.Snapshot"
+                }
+              }
+            },
+            "description": "A snapshot of a compute resource (KubeVirt VirtualMachineSnapshot).",
+            "headers": {
+              "Version": {
+                "description": "API version used (SOL 013 9.4).",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Error (SOL 013 6).",
+            "headers": {
+              "Version": {
+                "description": "API version used (SOL 013 9.4).",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "compute:v1:query"
+            ]
+          }
+        ],
+        "summary": "Returns one snapshot of a compute resource.",
+        "tags": [
+          "ComputeService"
+        ]
+      }
+    },
+    "/compute/v1/computes/{compute_id}/snapshots/{snapshot_id}/revert": {
+      "post": {
+        "operationId": "ComputeService_RevertSnapshot",
+        "parameters": [
+          {
+            "description": "Compute resource to revert; it must be stopped.",
+            "in": "path",
+            "name": "compute_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Identifier of the snapshot to revert to.",
+            "in": "path",
+            "name": "snapshot_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/Version"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/kubenfv.kubevim.compute.v1.Compute"
+                }
+              }
+            },
+            "description": "A virtualised compute resource: a virtual machine.",
+            "headers": {
+              "Version": {
+                "description": "API version used (SOL 013 9.4).",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Error (SOL 013 6).",
+            "headers": {
+              "Version": {
+                "description": "API version used (SOL 013 9.4).",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "compute:v1:operate"
+            ]
+          }
+        ],
+        "summary": "Reverts a stopped compute resource to a snapshot.",
+        "tags": [
+          "ComputeService"
+        ]
+      }
+    },
+    "/compute/v1/placementGroups": {
+      "get": {
+        "operationId": "ComputeService_ListPlacementGroups",
+        "parameters": [
+          {
+            "description": "Attribute-based filter expression (SOL 013 5.2).",
+            "in": "query",
+            "name": "filter",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Marker of the page to return, from a previous response (SOL 013 5.4).",
+            "in": "query",
+            "name": "nextpage_opaque_marker",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/Version"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/kubenfv.kubevim.compute.v1.ListPlacementGroupsResponse"
+                }
+              }
+            },
+            "description": "A successful response.",
+            "headers": {
+              "Version": {
+                "description": "API version used (SOL 013 9.4).",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Error (SOL 013 6).",
+            "headers": {
+              "Version": {
+                "description": "API version used (SOL 013 9.4).",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "compute:v1:query"
+            ]
+          }
+        ],
+        "summary": "Returns the placement groups.",
+        "tags": [
+          "ComputeService"
+        ]
+      },
+      "post": {
+        "operationId": "ComputeService_CreatePlacementGroup",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Version"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "placementGroup": {
+                    "$ref": "#/components/schemas/kubenfv.kubevim.compute.v1.PlacementGroup",
+                    "description": "Group to create."
+                  },
+                  "requestId": {
+                    "description": "Client-chosen UUID that makes the request idempotent (AIP-155).",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "placementGroup"
+                ],
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/kubenfv.kubevim.compute.v1.PlacementGroup"
+                }
+              }
+            },
+            "description": "A group of compute resources placed together or apart (decision 0005).",
+            "headers": {
+              "Location": {
+                "description": "URI of the created resource.",
+                "schema": {
+                  "format": "uri",
+                  "type": "string"
+                }
+              },
+              "Version": {
+                "description": "API version used (SOL 013 9.4).",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Error (SOL 013 6).",
+            "headers": {
+              "Version": {
+                "description": "API version used (SOL 013 9.4).",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "compute:v1:allocate"
+            ]
+          }
+        ],
+        "summary": "Creates a placement group.",
+        "tags": [
+          "ComputeService"
+        ]
+      }
+    },
+    "/compute/v1/placementGroups/{placement_group_id}": {
+      "delete": {
+        "operationId": "ComputeService_DeletePlacementGroup",
+        "parameters": [
+          {
+            "description": "Identifier of the group.",
+            "in": "path",
+            "name": "placement_group_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/Version"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content",
+            "headers": {
+              "Version": {
+                "description": "API version used (SOL 013 9.4).",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Error (SOL 013 6).",
+            "headers": {
+              "Version": {
+                "description": "API version used (SOL 013 9.4).",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "compute:v1:terminate"
+            ]
+          }
+        ],
+        "summary": "Deletes a placement group that has no members.",
+        "tags": [
+          "ComputeService"
+        ]
+      },
+      "get": {
+        "operationId": "ComputeService_GetPlacementGroup",
+        "parameters": [
+          {
+            "description": "Identifier of the group.",
+            "in": "path",
+            "name": "placement_group_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/Version"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/kubenfv.kubevim.compute.v1.PlacementGroup"
+                }
+              }
+            },
+            "description": "A group of compute resources placed together or apart (decision 0005).",
+            "headers": {
+              "Version": {
+                "description": "API version used (SOL 013 9.4).",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Error (SOL 013 6).",
+            "headers": {
+              "Version": {
+                "description": "API version used (SOL 013 9.4).",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "compute:v1:query"
+            ]
+          }
+        ],
+        "summary": "Returns one placement group.",
         "tags": [
           "ComputeService"
         ]

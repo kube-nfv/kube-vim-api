@@ -27,109 +27,6 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// CPU architecture.
-// Values may be added as KubeVirt support grows; clients should accept unknown values.
-type CpuArchitecture int32
-
-const (
-	CpuArchitecture_CPU_ARCHITECTURE_UNSPECIFIED CpuArchitecture = 0
-	CpuArchitecture_CPU_ARCHITECTURE_X86_64      CpuArchitecture = 1
-	CpuArchitecture_CPU_ARCHITECTURE_AARCH64     CpuArchitecture = 2
-	CpuArchitecture_CPU_ARCHITECTURE_S390X       CpuArchitecture = 3
-)
-
-// Enum value maps for CpuArchitecture.
-var (
-	CpuArchitecture_name = map[int32]string{
-		0: "CPU_ARCHITECTURE_UNSPECIFIED",
-		1: "CPU_ARCHITECTURE_X86_64",
-		2: "CPU_ARCHITECTURE_AARCH64",
-		3: "CPU_ARCHITECTURE_S390X",
-	}
-	CpuArchitecture_value = map[string]int32{
-		"CPU_ARCHITECTURE_UNSPECIFIED": 0,
-		"CPU_ARCHITECTURE_X86_64":      1,
-		"CPU_ARCHITECTURE_AARCH64":     2,
-		"CPU_ARCHITECTURE_S390X":       3,
-	}
-)
-
-func (x CpuArchitecture) Enum() *CpuArchitecture {
-	p := new(CpuArchitecture)
-	*p = x
-	return p
-}
-
-func (x CpuArchitecture) String() string {
-	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
-}
-
-func (CpuArchitecture) Descriptor() protoreflect.EnumDescriptor {
-	return file_kubenfv_kubevim_flavour_v1_flavour_proto_enumTypes[0].Descriptor()
-}
-
-func (CpuArchitecture) Type() protoreflect.EnumType {
-	return &file_kubenfv_kubevim_flavour_v1_flavour_proto_enumTypes[0]
-}
-
-func (x CpuArchitecture) Number() protoreflect.EnumNumber {
-	return protoreflect.EnumNumber(x)
-}
-
-// Deprecated: Use CpuArchitecture.Descriptor instead.
-func (CpuArchitecture) EnumDescriptor() ([]byte, []int) {
-	return file_kubenfv_kubevim_flavour_v1_flavour_proto_rawDescGZIP(), []int{0}
-}
-
-// CPU pinning policy (IFA006 8.4.2.4). IFA's STATIC policy with explicit rules is left out:
-// KubeVirt places dedicated CPUs itself.
-type VirtualCpuPinningPolicy int32
-
-const (
-	VirtualCpuPinningPolicy_VIRTUAL_CPU_PINNING_POLICY_UNSPECIFIED VirtualCpuPinningPolicy = 0
-	// Pinned to dedicated logical CPUs that the VIM chooses (KubeVirt dedicated CPU placement).
-	VirtualCpuPinningPolicy_VIRTUAL_CPU_PINNING_POLICY_DYNAMIC VirtualCpuPinningPolicy = 1
-)
-
-// Enum value maps for VirtualCpuPinningPolicy.
-var (
-	VirtualCpuPinningPolicy_name = map[int32]string{
-		0: "VIRTUAL_CPU_PINNING_POLICY_UNSPECIFIED",
-		1: "VIRTUAL_CPU_PINNING_POLICY_DYNAMIC",
-	}
-	VirtualCpuPinningPolicy_value = map[string]int32{
-		"VIRTUAL_CPU_PINNING_POLICY_UNSPECIFIED": 0,
-		"VIRTUAL_CPU_PINNING_POLICY_DYNAMIC":     1,
-	}
-)
-
-func (x VirtualCpuPinningPolicy) Enum() *VirtualCpuPinningPolicy {
-	p := new(VirtualCpuPinningPolicy)
-	*p = x
-	return p
-}
-
-func (x VirtualCpuPinningPolicy) String() string {
-	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
-}
-
-func (VirtualCpuPinningPolicy) Descriptor() protoreflect.EnumDescriptor {
-	return file_kubenfv_kubevim_flavour_v1_flavour_proto_enumTypes[1].Descriptor()
-}
-
-func (VirtualCpuPinningPolicy) Type() protoreflect.EnumType {
-	return &file_kubenfv_kubevim_flavour_v1_flavour_proto_enumTypes[1]
-}
-
-func (x VirtualCpuPinningPolicy) Number() protoreflect.EnumNumber {
-	return protoreflect.EnumNumber(x)
-}
-
-// Deprecated: Use VirtualCpuPinningPolicy.Descriptor instead.
-func (VirtualCpuPinningPolicy) EnumDescriptor() ([]byte, []int) {
-	return file_kubenfv_kubevim_flavour_v1_flavour_proto_rawDescGZIP(), []int{1}
-}
-
 // Memory, CPU and storage of the compute resources created from it.
 type Flavour struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
@@ -226,7 +123,7 @@ func (x *Flavour) GetMetadata() map[string]string {
 type VirtualCpuData struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// CPU architecture; the VIM default when unset.
-	CpuArchitecture CpuArchitecture `protobuf:"varint,1,opt,name=cpu_architecture,json=cpuArchitecture,proto3,enum=kubenfv.kubevim.flavour.v1.CpuArchitecture" json:"cpu_architecture,omitempty"`
+	CpuArchitecture v1.CpuArchitecture `protobuf:"varint,1,opt,name=cpu_architecture,json=cpuArchitecture,proto3,enum=kubenfv.kubevim.common.v1.CpuArchitecture" json:"cpu_architecture,omitempty"`
 	// Number of virtual CPUs.
 	NumVirtualCpu uint32 `protobuf:"varint,2,opt,name=num_virtual_cpu,json=numVirtualCpu,proto3" json:"num_virtual_cpu,omitempty"`
 	// CPU pinning.
@@ -268,11 +165,11 @@ func (*VirtualCpuData) Descriptor() ([]byte, []int) {
 	return file_kubenfv_kubevim_flavour_v1_flavour_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *VirtualCpuData) GetCpuArchitecture() CpuArchitecture {
+func (x *VirtualCpuData) GetCpuArchitecture() v1.CpuArchitecture {
 	if x != nil {
 		return x.CpuArchitecture
 	}
-	return CpuArchitecture_CPU_ARCHITECTURE_UNSPECIFIED
+	return v1.CpuArchitecture(0)
 }
 
 func (x *VirtualCpuData) GetNumVirtualCpu() uint32 {
@@ -361,7 +258,7 @@ func (x *CpuTopology) GetThreads() uint32 {
 type VirtualCpuPinningData struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Pinning policy.
-	VirtualCpuPinningPolicy VirtualCpuPinningPolicy `protobuf:"varint,1,opt,name=virtual_cpu_pinning_policy,json=virtualCpuPinningPolicy,proto3,enum=kubenfv.kubevim.flavour.v1.VirtualCpuPinningPolicy" json:"virtual_cpu_pinning_policy,omitempty"`
+	VirtualCpuPinningPolicy v1.VirtualCpuPinningPolicy `protobuf:"varint,1,opt,name=virtual_cpu_pinning_policy,json=virtualCpuPinningPolicy,proto3,enum=kubenfv.kubevim.common.v1.VirtualCpuPinningPolicy" json:"virtual_cpu_pinning_policy,omitempty"`
 	unknownFields           protoimpl.UnknownFields
 	sizeCache               protoimpl.SizeCache
 }
@@ -396,11 +293,11 @@ func (*VirtualCpuPinningData) Descriptor() ([]byte, []int) {
 	return file_kubenfv_kubevim_flavour_v1_flavour_proto_rawDescGZIP(), []int{3}
 }
 
-func (x *VirtualCpuPinningData) GetVirtualCpuPinningPolicy() VirtualCpuPinningPolicy {
+func (x *VirtualCpuPinningData) GetVirtualCpuPinningPolicy() v1.VirtualCpuPinningPolicy {
 	if x != nil {
 		return x.VirtualCpuPinningPolicy
 	}
-	return VirtualCpuPinningPolicy_VIRTUAL_CPU_PINNING_POLICY_UNSPECIFIED
+	return v1.VirtualCpuPinningPolicy(0)
 }
 
 // Virtual memory of a flavour.
@@ -732,7 +629,7 @@ var File_kubenfv_kubevim_flavour_v1_flavour_proto protoreflect.FileDescriptor
 
 const file_kubenfv_kubevim_flavour_v1_flavour_proto_rawDesc = "" +
 	"\n" +
-	"(kubenfv/kubevim/flavour/v1/flavour.proto\x12\x1akubenfv.kubevim.flavour.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a%kubenfv/kubevim/common/v1/rules.proto\x1a'kubenfv/kubevim/common/v1/storage.proto\x1a(kubenfv/kubevim/options/v1/options.proto\x1a.protoc-gen-openapiv3/options/annotations.proto\"\xf1\f\n" +
+	"(kubenfv/kubevim/flavour/v1/flavour.proto\x12\x1akubenfv.kubevim.flavour.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a#kubenfv/kubevim/common/v1/cpu.proto\x1a%kubenfv/kubevim/common/v1/rules.proto\x1a'kubenfv/kubevim/common/v1/storage.proto\x1a(kubenfv/kubevim/options/v1/options.proto\x1a.protoc-gen-openapiv3/options/annotations.proto\"\xf1\f\n" +
 	"\aFlavour\x12\x9e\x01\n" +
 	"\n" +
 	"flavour_id\x18\x01 \x01(\tB\x7f\xe2A\x01\x03\xfa\x8b\x19w\n" +
@@ -751,9 +648,9 @@ const file_kubenfv_kubevim_flavour_v1_flavour_proto_rawDesc = "" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
 	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01:\x8f\x04\xbaH\xd8\x02\x1a\xd5\x02\n" +
 	"\fflavour.numa\x128numaEnabled needs dynamic CPU pinning and a hugepageSize\x1a\x8a\x02!has(this.virtual_memory) || !has(this.virtual_memory.numa_enabled) || !this.virtual_memory.numa_enabled || (has(this.virtual_cpu.virtual_cpu_pinning) && this.virtual_cpu.virtual_cpu_pinning.virtual_cpu_pinning_policy == 1 && this.virtual_memory.hugepage_size != '')\xfa\x8b\x19\xae\x01\n" +
-	"$IFA006 8.4.2.2 VirtualComputeFlavour\x12\x85\x01\b\x02\x1a\x80\x01No virtualNetworkInterface: interfaces are given when the compute resource is created, so one flavour serves any network layout.\"\xfe\x06\n" +
-	"\x0eVirtualCpuData\x12\xcd\x01\n" +
-	"\x10cpu_architecture\x18\x01 \x01(\x0e2+.kubenfv.kubevim.flavour.v1.CpuArchitectureBu\xe2A\x01\x01\xbaH\x05\x82\x01\x02\x10\x01\xfa\x8b\x19e\n" +
+	"$IFA006 8.4.2.2 VirtualComputeFlavour\x12\x85\x01\b\x02\x1a\x80\x01No virtualNetworkInterface: interfaces are given when the compute resource is created, so one flavour serves any network layout.\"\xfd\x06\n" +
+	"\x0eVirtualCpuData\x12\xcc\x01\n" +
+	"\x10cpu_architecture\x18\x01 \x01(\x0e2*.kubenfv.kubevim.common.v1.CpuArchitectureBu\xe2A\x01\x01\xbaH\x05\x82\x01\x02\x10\x01\xfa\x8b\x19e\n" +
 	"-IFA006 8.4.2.3 VirtualCpuData.cpuArchitecture\x124\b\x03\x10\x01\x1a.A closed enumeration instead of a free string.R\x0fcpuArchitecture\x12d\n" +
 	"\x0fnum_virtual_cpu\x18\x02 \x01(\rB<\xe2A\x01\x02\xbaH\x04*\x02 \x00\xfa\x8b\x19-\n" +
 	"+IFA006 8.4.2.3 VirtualCpuData.numVirtualCpuR\rnumVirtualCpu\x12\x9c\x01\n" +
@@ -765,9 +662,9 @@ const file_kubenfv_kubevim_flavour_v1_flavour_proto_rawDesc = "" +
 	"\vCpuTopology\x12%\n" +
 	"\asockets\x18\x01 \x01(\rB\v\xe2A\x01\x02\xbaH\x04*\x02 \x00R\asockets\x12!\n" +
 	"\x05cores\x18\x02 \x01(\rB\v\xe2A\x01\x02\xbaH\x04*\x02 \x00R\x05cores\x12%\n" +
-	"\athreads\x18\x03 \x01(\rB\v\xe2A\x01\x02\xbaH\x04*\x02 \x00R\athreads\"\x88\x02\n" +
-	"\x15VirtualCpuPinningData\x12\xc2\x01\n" +
-	"\x1avirtual_cpu_pinning_policy\x18\x01 \x01(\x0e23.kubenfv.kubevim.flavour.v1.VirtualCpuPinningPolicyBP\xe2A\x01\x02\xbaH\a\x82\x01\x04\x10\x01 \x00\xfa\x8b\x19>\n" +
+	"\athreads\x18\x03 \x01(\rB\v\xe2A\x01\x02\xbaH\x04*\x02 \x00R\athreads\"\x87\x02\n" +
+	"\x15VirtualCpuPinningData\x12\xc1\x01\n" +
+	"\x1avirtual_cpu_pinning_policy\x18\x01 \x01(\x0e22.kubenfv.kubevim.common.v1.VirtualCpuPinningPolicyBP\xe2A\x01\x02\xbaH\a\x82\x01\x04\x10\x01 \x00\xfa\x8b\x19>\n" +
 	"<IFA006 8.4.2.4 VirtualCpuPinningData.virtualCpuPinningPolicyR\x17virtualCpuPinningPolicy:*\xfa\x8b\x19&\n" +
 	"$IFA006 8.4.2.4 VirtualCpuPinningData\"\xf9\x06\n" +
 	"\x11VirtualMemoryData\x12\xa9\x01\n" +
@@ -801,15 +698,7 @@ const file_kubenfv_kubevim_flavour_v1_flavour_proto_rawDesc = "" +
 	"\x14DeleteFlavourRequest\x12n\n" +
 	"\n" +
 	"flavour_id\x18\x01 \x01(\tBO\xe2A\x01\x02\xbaH\x05r\x03\xb0\x01\x01\xfa\x8b\x19?\n" +
-	"=IFA006 7.3.4.4.2 DeleteComputeFlavourRequest.computeFlavourIdR\tflavourId*\x8a\x01\n" +
-	"\x0fCpuArchitecture\x12 \n" +
-	"\x1cCPU_ARCHITECTURE_UNSPECIFIED\x10\x00\x12\x1b\n" +
-	"\x17CPU_ARCHITECTURE_X86_64\x10\x01\x12\x1c\n" +
-	"\x18CPU_ARCHITECTURE_AARCH64\x10\x02\x12\x1a\n" +
-	"\x16CPU_ARCHITECTURE_S390X\x10\x03*m\n" +
-	"\x17VirtualCpuPinningPolicy\x12*\n" +
-	"&VIRTUAL_CPU_PINNING_POLICY_UNSPECIFIED\x10\x00\x12&\n" +
-	"\"VIRTUAL_CPU_PINNING_POLICY_DYNAMIC\x10\x012\x8c\b\n" +
+	"=IFA006 7.3.4.4.2 DeleteComputeFlavourRequest.computeFlavourIdR\tflavourId2\x8c\b\n" +
 	"\x0eFlavourService\x12\xd6\x01\n" +
 	"\rCreateFlavour\x120.kubenfv.kubevim.flavour.v1.CreateFlavourRequest\x1a#.kubenfv.kubevim.flavour.v1.Flavour\"n\xfaP!J\x1f\n" +
 	"\x1d\n" +
@@ -855,43 +744,42 @@ func file_kubenfv_kubevim_flavour_v1_flavour_proto_rawDescGZIP() []byte {
 	return file_kubenfv_kubevim_flavour_v1_flavour_proto_rawDescData
 }
 
-var file_kubenfv_kubevim_flavour_v1_flavour_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
 var file_kubenfv_kubevim_flavour_v1_flavour_proto_msgTypes = make([]protoimpl.MessageInfo, 11)
 var file_kubenfv_kubevim_flavour_v1_flavour_proto_goTypes = []any{
-	(CpuArchitecture)(0),          // 0: kubenfv.kubevim.flavour.v1.CpuArchitecture
-	(VirtualCpuPinningPolicy)(0),  // 1: kubenfv.kubevim.flavour.v1.VirtualCpuPinningPolicy
-	(*Flavour)(nil),               // 2: kubenfv.kubevim.flavour.v1.Flavour
-	(*VirtualCpuData)(nil),        // 3: kubenfv.kubevim.flavour.v1.VirtualCpuData
-	(*CpuTopology)(nil),           // 4: kubenfv.kubevim.flavour.v1.CpuTopology
-	(*VirtualCpuPinningData)(nil), // 5: kubenfv.kubevim.flavour.v1.VirtualCpuPinningData
-	(*VirtualMemoryData)(nil),     // 6: kubenfv.kubevim.flavour.v1.VirtualMemoryData
-	(*CreateFlavourRequest)(nil),  // 7: kubenfv.kubevim.flavour.v1.CreateFlavourRequest
-	(*GetFlavourRequest)(nil),     // 8: kubenfv.kubevim.flavour.v1.GetFlavourRequest
-	(*ListFlavoursRequest)(nil),   // 9: kubenfv.kubevim.flavour.v1.ListFlavoursRequest
-	(*ListFlavoursResponse)(nil),  // 10: kubenfv.kubevim.flavour.v1.ListFlavoursResponse
-	(*DeleteFlavourRequest)(nil),  // 11: kubenfv.kubevim.flavour.v1.DeleteFlavourRequest
-	nil,                           // 12: kubenfv.kubevim.flavour.v1.Flavour.MetadataEntry
-	(*v1.VirtualStorageData)(nil), // 13: kubenfv.kubevim.common.v1.VirtualStorageData
-	(*emptypb.Empty)(nil),         // 14: google.protobuf.Empty
+	(*Flavour)(nil),                 // 0: kubenfv.kubevim.flavour.v1.Flavour
+	(*VirtualCpuData)(nil),          // 1: kubenfv.kubevim.flavour.v1.VirtualCpuData
+	(*CpuTopology)(nil),             // 2: kubenfv.kubevim.flavour.v1.CpuTopology
+	(*VirtualCpuPinningData)(nil),   // 3: kubenfv.kubevim.flavour.v1.VirtualCpuPinningData
+	(*VirtualMemoryData)(nil),       // 4: kubenfv.kubevim.flavour.v1.VirtualMemoryData
+	(*CreateFlavourRequest)(nil),    // 5: kubenfv.kubevim.flavour.v1.CreateFlavourRequest
+	(*GetFlavourRequest)(nil),       // 6: kubenfv.kubevim.flavour.v1.GetFlavourRequest
+	(*ListFlavoursRequest)(nil),     // 7: kubenfv.kubevim.flavour.v1.ListFlavoursRequest
+	(*ListFlavoursResponse)(nil),    // 8: kubenfv.kubevim.flavour.v1.ListFlavoursResponse
+	(*DeleteFlavourRequest)(nil),    // 9: kubenfv.kubevim.flavour.v1.DeleteFlavourRequest
+	nil,                             // 10: kubenfv.kubevim.flavour.v1.Flavour.MetadataEntry
+	(*v1.VirtualStorageData)(nil),   // 11: kubenfv.kubevim.common.v1.VirtualStorageData
+	(v1.CpuArchitecture)(0),         // 12: kubenfv.kubevim.common.v1.CpuArchitecture
+	(v1.VirtualCpuPinningPolicy)(0), // 13: kubenfv.kubevim.common.v1.VirtualCpuPinningPolicy
+	(*emptypb.Empty)(nil),           // 14: google.protobuf.Empty
 }
 var file_kubenfv_kubevim_flavour_v1_flavour_proto_depIdxs = []int32{
-	6,  // 0: kubenfv.kubevim.flavour.v1.Flavour.virtual_memory:type_name -> kubenfv.kubevim.flavour.v1.VirtualMemoryData
-	3,  // 1: kubenfv.kubevim.flavour.v1.Flavour.virtual_cpu:type_name -> kubenfv.kubevim.flavour.v1.VirtualCpuData
-	13, // 2: kubenfv.kubevim.flavour.v1.Flavour.storage_attributes:type_name -> kubenfv.kubevim.common.v1.VirtualStorageData
-	12, // 3: kubenfv.kubevim.flavour.v1.Flavour.metadata:type_name -> kubenfv.kubevim.flavour.v1.Flavour.MetadataEntry
-	0,  // 4: kubenfv.kubevim.flavour.v1.VirtualCpuData.cpu_architecture:type_name -> kubenfv.kubevim.flavour.v1.CpuArchitecture
-	5,  // 5: kubenfv.kubevim.flavour.v1.VirtualCpuData.virtual_cpu_pinning:type_name -> kubenfv.kubevim.flavour.v1.VirtualCpuPinningData
-	4,  // 6: kubenfv.kubevim.flavour.v1.VirtualCpuData.topology:type_name -> kubenfv.kubevim.flavour.v1.CpuTopology
-	1,  // 7: kubenfv.kubevim.flavour.v1.VirtualCpuPinningData.virtual_cpu_pinning_policy:type_name -> kubenfv.kubevim.flavour.v1.VirtualCpuPinningPolicy
-	2,  // 8: kubenfv.kubevim.flavour.v1.CreateFlavourRequest.flavour:type_name -> kubenfv.kubevim.flavour.v1.Flavour
-	2,  // 9: kubenfv.kubevim.flavour.v1.ListFlavoursResponse.flavours:type_name -> kubenfv.kubevim.flavour.v1.Flavour
-	7,  // 10: kubenfv.kubevim.flavour.v1.FlavourService.CreateFlavour:input_type -> kubenfv.kubevim.flavour.v1.CreateFlavourRequest
-	8,  // 11: kubenfv.kubevim.flavour.v1.FlavourService.GetFlavour:input_type -> kubenfv.kubevim.flavour.v1.GetFlavourRequest
-	9,  // 12: kubenfv.kubevim.flavour.v1.FlavourService.ListFlavours:input_type -> kubenfv.kubevim.flavour.v1.ListFlavoursRequest
-	11, // 13: kubenfv.kubevim.flavour.v1.FlavourService.DeleteFlavour:input_type -> kubenfv.kubevim.flavour.v1.DeleteFlavourRequest
-	2,  // 14: kubenfv.kubevim.flavour.v1.FlavourService.CreateFlavour:output_type -> kubenfv.kubevim.flavour.v1.Flavour
-	2,  // 15: kubenfv.kubevim.flavour.v1.FlavourService.GetFlavour:output_type -> kubenfv.kubevim.flavour.v1.Flavour
-	10, // 16: kubenfv.kubevim.flavour.v1.FlavourService.ListFlavours:output_type -> kubenfv.kubevim.flavour.v1.ListFlavoursResponse
+	4,  // 0: kubenfv.kubevim.flavour.v1.Flavour.virtual_memory:type_name -> kubenfv.kubevim.flavour.v1.VirtualMemoryData
+	1,  // 1: kubenfv.kubevim.flavour.v1.Flavour.virtual_cpu:type_name -> kubenfv.kubevim.flavour.v1.VirtualCpuData
+	11, // 2: kubenfv.kubevim.flavour.v1.Flavour.storage_attributes:type_name -> kubenfv.kubevim.common.v1.VirtualStorageData
+	10, // 3: kubenfv.kubevim.flavour.v1.Flavour.metadata:type_name -> kubenfv.kubevim.flavour.v1.Flavour.MetadataEntry
+	12, // 4: kubenfv.kubevim.flavour.v1.VirtualCpuData.cpu_architecture:type_name -> kubenfv.kubevim.common.v1.CpuArchitecture
+	3,  // 5: kubenfv.kubevim.flavour.v1.VirtualCpuData.virtual_cpu_pinning:type_name -> kubenfv.kubevim.flavour.v1.VirtualCpuPinningData
+	2,  // 6: kubenfv.kubevim.flavour.v1.VirtualCpuData.topology:type_name -> kubenfv.kubevim.flavour.v1.CpuTopology
+	13, // 7: kubenfv.kubevim.flavour.v1.VirtualCpuPinningData.virtual_cpu_pinning_policy:type_name -> kubenfv.kubevim.common.v1.VirtualCpuPinningPolicy
+	0,  // 8: kubenfv.kubevim.flavour.v1.CreateFlavourRequest.flavour:type_name -> kubenfv.kubevim.flavour.v1.Flavour
+	0,  // 9: kubenfv.kubevim.flavour.v1.ListFlavoursResponse.flavours:type_name -> kubenfv.kubevim.flavour.v1.Flavour
+	5,  // 10: kubenfv.kubevim.flavour.v1.FlavourService.CreateFlavour:input_type -> kubenfv.kubevim.flavour.v1.CreateFlavourRequest
+	6,  // 11: kubenfv.kubevim.flavour.v1.FlavourService.GetFlavour:input_type -> kubenfv.kubevim.flavour.v1.GetFlavourRequest
+	7,  // 12: kubenfv.kubevim.flavour.v1.FlavourService.ListFlavours:input_type -> kubenfv.kubevim.flavour.v1.ListFlavoursRequest
+	9,  // 13: kubenfv.kubevim.flavour.v1.FlavourService.DeleteFlavour:input_type -> kubenfv.kubevim.flavour.v1.DeleteFlavourRequest
+	0,  // 14: kubenfv.kubevim.flavour.v1.FlavourService.CreateFlavour:output_type -> kubenfv.kubevim.flavour.v1.Flavour
+	0,  // 15: kubenfv.kubevim.flavour.v1.FlavourService.GetFlavour:output_type -> kubenfv.kubevim.flavour.v1.Flavour
+	8,  // 16: kubenfv.kubevim.flavour.v1.FlavourService.ListFlavours:output_type -> kubenfv.kubevim.flavour.v1.ListFlavoursResponse
 	14, // 17: kubenfv.kubevim.flavour.v1.FlavourService.DeleteFlavour:output_type -> google.protobuf.Empty
 	14, // [14:18] is the sub-list for method output_type
 	10, // [10:14] is the sub-list for method input_type
@@ -911,14 +799,13 @@ func file_kubenfv_kubevim_flavour_v1_flavour_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_kubenfv_kubevim_flavour_v1_flavour_proto_rawDesc), len(file_kubenfv_kubevim_flavour_v1_flavour_proto_rawDesc)),
-			NumEnums:      2,
+			NumEnums:      0,
 			NumMessages:   11,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
 		GoTypes:           file_kubenfv_kubevim_flavour_v1_flavour_proto_goTypes,
 		DependencyIndexes: file_kubenfv_kubevim_flavour_v1_flavour_proto_depIdxs,
-		EnumInfos:         file_kubenfv_kubevim_flavour_v1_flavour_proto_enumTypes,
 		MessageInfos:      file_kubenfv_kubevim_flavour_v1_flavour_proto_msgTypes,
 	}.Build()
 	File_kubenfv_kubevim_flavour_v1_flavour_proto = out.File

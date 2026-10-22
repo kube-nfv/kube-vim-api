@@ -6,6 +6,7 @@ import "buf/validate/validate.proto";
 import "google/api/annotations.proto";
 import "google/api/field_behavior.proto";
 import "google/protobuf/empty.proto";
+import "kubenfv/kubevim/common/v1/cpu.proto";
 import "kubenfv/kubevim/common/v1/rules.proto";
 import "kubenfv/kubevim/common/v1/storage.proto";
 import "kubenfv/kubevim/options/v1/options.proto";
@@ -201,7 +202,7 @@ message VirtualCpuData {
   option (kubenfv.kubevim.options.v1.ifa_message) = {ref: "IFA006 8.4.2.3 VirtualCpuData"};
 
   // CPU architecture; the VIM default when unset.
-  CpuArchitecture cpu_architecture = 1 [
+  kubenfv.kubevim.common.v1.CpuArchitecture cpu_architecture = 1 [
     (google.api.field_behavior) = OPTIONAL,
     (buf.validate.field).enum.defined_only = true,
     (kubenfv.kubevim.options.v1.ifa_field) = {
@@ -244,15 +245,6 @@ message VirtualCpuData {
   };
 }
 
-// CPU architecture.
-// Values may be added as KubeVirt support grows; clients should accept unknown values.
-enum CpuArchitecture {
-  CPU_ARCHITECTURE_UNSPECIFIED = 0;
-  CPU_ARCHITECTURE_X86_64 = 1;
-  CPU_ARCHITECTURE_AARCH64 = 2;
-  CPU_ARCHITECTURE_S390X = 3;
-}
-
 // Guest CPU topology.
 message CpuTopology {
   uint32 sockets = 1 [
@@ -274,7 +266,7 @@ message VirtualCpuPinningData {
   option (kubenfv.kubevim.options.v1.ifa_message) = {ref: "IFA006 8.4.2.4 VirtualCpuPinningData"};
 
   // Pinning policy.
-  VirtualCpuPinningPolicy virtual_cpu_pinning_policy = 1 [
+  kubenfv.kubevim.common.v1.VirtualCpuPinningPolicy virtual_cpu_pinning_policy = 1 [
     (google.api.field_behavior) = REQUIRED,
     (buf.validate.field).enum = {
       defined_only: true
@@ -282,14 +274,6 @@ message VirtualCpuPinningData {
     },
     (kubenfv.kubevim.options.v1.ifa_field) = {ref: "IFA006 8.4.2.4 VirtualCpuPinningData.virtualCpuPinningPolicy"}
   ];
-}
-
-// CPU pinning policy (IFA006 8.4.2.4). IFA's STATIC policy with explicit rules is left out:
-// KubeVirt places dedicated CPUs itself.
-enum VirtualCpuPinningPolicy {
-  VIRTUAL_CPU_PINNING_POLICY_UNSPECIFIED = 0;
-  // Pinned to dedicated logical CPUs that the VIM chooses (KubeVirt dedicated CPU placement).
-  VIRTUAL_CPU_PINNING_POLICY_DYNAMIC = 1;
 }
 
 // Virtual memory of a flavour.

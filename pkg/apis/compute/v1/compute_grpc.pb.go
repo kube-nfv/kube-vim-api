@@ -8,7 +8,6 @@ package computev1
 
 import (
 	context "context"
-	v1 "github.com/kube-nfv/kube-vim-api/pkg/apis/common/v1"
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
@@ -21,20 +20,25 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	ComputeService_CreateCompute_FullMethodName       = "/kubenfv.kubevim.compute.v1.ComputeService/CreateCompute"
-	ComputeService_GetCompute_FullMethodName          = "/kubenfv.kubevim.compute.v1.ComputeService/GetCompute"
-	ComputeService_ListComputes_FullMethodName        = "/kubenfv.kubevim.compute.v1.ComputeService/ListComputes"
-	ComputeService_UpdateCompute_FullMethodName       = "/kubenfv.kubevim.compute.v1.ComputeService/UpdateCompute"
-	ComputeService_DeleteCompute_FullMethodName       = "/kubenfv.kubevim.compute.v1.ComputeService/DeleteCompute"
-	ComputeService_OperateCompute_FullMethodName      = "/kubenfv.kubevim.compute.v1.ComputeService/OperateCompute"
-	ComputeService_ScaleCompute_FullMethodName        = "/kubenfv.kubevim.compute.v1.ComputeService/ScaleCompute"
-	ComputeService_MigrateCompute_FullMethodName      = "/kubenfv.kubevim.compute.v1.ComputeService/MigrateCompute"
-	ComputeService_AttachVolume_FullMethodName        = "/kubenfv.kubevim.compute.v1.ComputeService/AttachVolume"
-	ComputeService_DetachVolume_FullMethodName        = "/kubenfv.kubevim.compute.v1.ComputeService/DetachVolume"
-	ComputeService_CreateAffinityGroup_FullMethodName = "/kubenfv.kubevim.compute.v1.ComputeService/CreateAffinityGroup"
-	ComputeService_GetAffinityGroup_FullMethodName    = "/kubenfv.kubevim.compute.v1.ComputeService/GetAffinityGroup"
-	ComputeService_ListAffinityGroups_FullMethodName  = "/kubenfv.kubevim.compute.v1.ComputeService/ListAffinityGroups"
-	ComputeService_DeleteAffinityGroup_FullMethodName = "/kubenfv.kubevim.compute.v1.ComputeService/DeleteAffinityGroup"
+	ComputeService_CreateCompute_FullMethodName        = "/kubenfv.kubevim.compute.v1.ComputeService/CreateCompute"
+	ComputeService_GetCompute_FullMethodName           = "/kubenfv.kubevim.compute.v1.ComputeService/GetCompute"
+	ComputeService_ListComputes_FullMethodName         = "/kubenfv.kubevim.compute.v1.ComputeService/ListComputes"
+	ComputeService_UpdateCompute_FullMethodName        = "/kubenfv.kubevim.compute.v1.ComputeService/UpdateCompute"
+	ComputeService_DeleteCompute_FullMethodName        = "/kubenfv.kubevim.compute.v1.ComputeService/DeleteCompute"
+	ComputeService_OperateCompute_FullMethodName       = "/kubenfv.kubevim.compute.v1.ComputeService/OperateCompute"
+	ComputeService_ScaleCompute_FullMethodName         = "/kubenfv.kubevim.compute.v1.ComputeService/ScaleCompute"
+	ComputeService_MigrateCompute_FullMethodName       = "/kubenfv.kubevim.compute.v1.ComputeService/MigrateCompute"
+	ComputeService_AttachVolume_FullMethodName         = "/kubenfv.kubevim.compute.v1.ComputeService/AttachVolume"
+	ComputeService_DetachVolume_FullMethodName         = "/kubenfv.kubevim.compute.v1.ComputeService/DetachVolume"
+	ComputeService_CreateSnapshot_FullMethodName       = "/kubenfv.kubevim.compute.v1.ComputeService/CreateSnapshot"
+	ComputeService_GetSnapshot_FullMethodName          = "/kubenfv.kubevim.compute.v1.ComputeService/GetSnapshot"
+	ComputeService_ListSnapshots_FullMethodName        = "/kubenfv.kubevim.compute.v1.ComputeService/ListSnapshots"
+	ComputeService_DeleteSnapshot_FullMethodName       = "/kubenfv.kubevim.compute.v1.ComputeService/DeleteSnapshot"
+	ComputeService_RevertSnapshot_FullMethodName       = "/kubenfv.kubevim.compute.v1.ComputeService/RevertSnapshot"
+	ComputeService_CreatePlacementGroup_FullMethodName = "/kubenfv.kubevim.compute.v1.ComputeService/CreatePlacementGroup"
+	ComputeService_GetPlacementGroup_FullMethodName    = "/kubenfv.kubevim.compute.v1.ComputeService/GetPlacementGroup"
+	ComputeService_ListPlacementGroups_FullMethodName  = "/kubenfv.kubevim.compute.v1.ComputeService/ListPlacementGroups"
+	ComputeService_DeletePlacementGroup_FullMethodName = "/kubenfv.kubevim.compute.v1.ComputeService/DeletePlacementGroup"
 )
 
 // ComputeServiceClient is the client API for ComputeService service.
@@ -49,28 +53,38 @@ type ComputeServiceClient interface {
 	GetCompute(ctx context.Context, in *GetComputeRequest, opts ...grpc.CallOption) (*Compute, error)
 	// Returns the compute resources matching a filter.
 	ListComputes(ctx context.Context, in *ListComputesRequest, opts ...grpc.CallOption) (*ListComputesResponse, error)
-	// Updates a compute resource: adds or removes network interfaces and changes metadata.
+	// Updates a compute resource: its name and metadata, and adds or removes network interfaces.
 	UpdateCompute(ctx context.Context, in *UpdateComputeRequest, opts ...grpc.CallOption) (*Compute, error)
 	// Deletes a compute resource.
 	DeleteCompute(ctx context.Context, in *DeleteComputeRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
-	// Runs an operation on a compute resource, e.g. start, stop or reboot.
-	OperateCompute(ctx context.Context, in *OperateComputeRequest, opts ...grpc.CallOption) (*OperateComputeResponse, error)
-	// Changes the flavour of a compute resource.
+	// Changes the running state of a compute resource, e.g. start, stop or reboot.
+	OperateCompute(ctx context.Context, in *OperateComputeRequest, opts ...grpc.CallOption) (*Compute, error)
+	// Changes the flavour of a compute resource; live where KubeVirt can hotplug, otherwise restart_required is set.
 	ScaleCompute(ctx context.Context, in *ScaleComputeRequest, opts ...grpc.CallOption) (*Compute, error)
-	// Moves a compute resource to another host.
+	// Moves a running compute resource to another host (live migration).
 	MigrateCompute(ctx context.Context, in *MigrateComputeRequest, opts ...grpc.CallOption) (*Compute, error)
 	// Attaches a volume to a compute resource.
 	AttachVolume(ctx context.Context, in *AttachVolumeRequest, opts ...grpc.CallOption) (*Compute, error)
 	// Detaches a volume from a compute resource.
 	DetachVolume(ctx context.Context, in *DetachVolumeRequest, opts ...grpc.CallOption) (*Compute, error)
-	// Creates a compute affinity or anti-affinity group.
-	CreateAffinityGroup(ctx context.Context, in *v1.CreateAffinityGroupRequest, opts ...grpc.CallOption) (*v1.AffinityGroup, error)
-	// Returns one compute affinity group.
-	GetAffinityGroup(ctx context.Context, in *v1.GetAffinityGroupRequest, opts ...grpc.CallOption) (*v1.AffinityGroup, error)
-	// Returns the compute affinity groups.
-	ListAffinityGroups(ctx context.Context, in *v1.ListAffinityGroupsRequest, opts ...grpc.CallOption) (*v1.ListAffinityGroupsResponse, error)
-	// Deletes a compute affinity group.
-	DeleteAffinityGroup(ctx context.Context, in *v1.DeleteAffinityGroupRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	// Creates a snapshot of a compute resource.
+	CreateSnapshot(ctx context.Context, in *CreateSnapshotRequest, opts ...grpc.CallOption) (*Snapshot, error)
+	// Returns one snapshot of a compute resource.
+	GetSnapshot(ctx context.Context, in *GetSnapshotRequest, opts ...grpc.CallOption) (*Snapshot, error)
+	// Returns the snapshots of a compute resource.
+	ListSnapshots(ctx context.Context, in *ListSnapshotsRequest, opts ...grpc.CallOption) (*ListSnapshotsResponse, error)
+	// Deletes a snapshot of a compute resource.
+	DeleteSnapshot(ctx context.Context, in *DeleteSnapshotRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	// Reverts a stopped compute resource to a snapshot.
+	RevertSnapshot(ctx context.Context, in *RevertSnapshotRequest, opts ...grpc.CallOption) (*Compute, error)
+	// Creates a placement group.
+	CreatePlacementGroup(ctx context.Context, in *CreatePlacementGroupRequest, opts ...grpc.CallOption) (*PlacementGroup, error)
+	// Returns one placement group.
+	GetPlacementGroup(ctx context.Context, in *GetPlacementGroupRequest, opts ...grpc.CallOption) (*PlacementGroup, error)
+	// Returns the placement groups.
+	ListPlacementGroups(ctx context.Context, in *ListPlacementGroupsRequest, opts ...grpc.CallOption) (*ListPlacementGroupsResponse, error)
+	// Deletes a placement group that has no members.
+	DeletePlacementGroup(ctx context.Context, in *DeletePlacementGroupRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 }
 
 type computeServiceClient struct {
@@ -131,9 +145,9 @@ func (c *computeServiceClient) DeleteCompute(ctx context.Context, in *DeleteComp
 	return out, nil
 }
 
-func (c *computeServiceClient) OperateCompute(ctx context.Context, in *OperateComputeRequest, opts ...grpc.CallOption) (*OperateComputeResponse, error) {
+func (c *computeServiceClient) OperateCompute(ctx context.Context, in *OperateComputeRequest, opts ...grpc.CallOption) (*Compute, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(OperateComputeResponse)
+	out := new(Compute)
 	err := c.cc.Invoke(ctx, ComputeService_OperateCompute_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -181,40 +195,90 @@ func (c *computeServiceClient) DetachVolume(ctx context.Context, in *DetachVolum
 	return out, nil
 }
 
-func (c *computeServiceClient) CreateAffinityGroup(ctx context.Context, in *v1.CreateAffinityGroupRequest, opts ...grpc.CallOption) (*v1.AffinityGroup, error) {
+func (c *computeServiceClient) CreateSnapshot(ctx context.Context, in *CreateSnapshotRequest, opts ...grpc.CallOption) (*Snapshot, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(v1.AffinityGroup)
-	err := c.cc.Invoke(ctx, ComputeService_CreateAffinityGroup_FullMethodName, in, out, cOpts...)
+	out := new(Snapshot)
+	err := c.cc.Invoke(ctx, ComputeService_CreateSnapshot_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *computeServiceClient) GetAffinityGroup(ctx context.Context, in *v1.GetAffinityGroupRequest, opts ...grpc.CallOption) (*v1.AffinityGroup, error) {
+func (c *computeServiceClient) GetSnapshot(ctx context.Context, in *GetSnapshotRequest, opts ...grpc.CallOption) (*Snapshot, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(v1.AffinityGroup)
-	err := c.cc.Invoke(ctx, ComputeService_GetAffinityGroup_FullMethodName, in, out, cOpts...)
+	out := new(Snapshot)
+	err := c.cc.Invoke(ctx, ComputeService_GetSnapshot_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *computeServiceClient) ListAffinityGroups(ctx context.Context, in *v1.ListAffinityGroupsRequest, opts ...grpc.CallOption) (*v1.ListAffinityGroupsResponse, error) {
+func (c *computeServiceClient) ListSnapshots(ctx context.Context, in *ListSnapshotsRequest, opts ...grpc.CallOption) (*ListSnapshotsResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(v1.ListAffinityGroupsResponse)
-	err := c.cc.Invoke(ctx, ComputeService_ListAffinityGroups_FullMethodName, in, out, cOpts...)
+	out := new(ListSnapshotsResponse)
+	err := c.cc.Invoke(ctx, ComputeService_ListSnapshots_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *computeServiceClient) DeleteAffinityGroup(ctx context.Context, in *v1.DeleteAffinityGroupRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+func (c *computeServiceClient) DeleteSnapshot(ctx context.Context, in *DeleteSnapshotRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(emptypb.Empty)
-	err := c.cc.Invoke(ctx, ComputeService_DeleteAffinityGroup_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, ComputeService_DeleteSnapshot_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *computeServiceClient) RevertSnapshot(ctx context.Context, in *RevertSnapshotRequest, opts ...grpc.CallOption) (*Compute, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(Compute)
+	err := c.cc.Invoke(ctx, ComputeService_RevertSnapshot_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *computeServiceClient) CreatePlacementGroup(ctx context.Context, in *CreatePlacementGroupRequest, opts ...grpc.CallOption) (*PlacementGroup, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(PlacementGroup)
+	err := c.cc.Invoke(ctx, ComputeService_CreatePlacementGroup_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *computeServiceClient) GetPlacementGroup(ctx context.Context, in *GetPlacementGroupRequest, opts ...grpc.CallOption) (*PlacementGroup, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(PlacementGroup)
+	err := c.cc.Invoke(ctx, ComputeService_GetPlacementGroup_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *computeServiceClient) ListPlacementGroups(ctx context.Context, in *ListPlacementGroupsRequest, opts ...grpc.CallOption) (*ListPlacementGroupsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ListPlacementGroupsResponse)
+	err := c.cc.Invoke(ctx, ComputeService_ListPlacementGroups_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *computeServiceClient) DeletePlacementGroup(ctx context.Context, in *DeletePlacementGroupRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, ComputeService_DeletePlacementGroup_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -233,28 +297,38 @@ type ComputeServiceServer interface {
 	GetCompute(context.Context, *GetComputeRequest) (*Compute, error)
 	// Returns the compute resources matching a filter.
 	ListComputes(context.Context, *ListComputesRequest) (*ListComputesResponse, error)
-	// Updates a compute resource: adds or removes network interfaces and changes metadata.
+	// Updates a compute resource: its name and metadata, and adds or removes network interfaces.
 	UpdateCompute(context.Context, *UpdateComputeRequest) (*Compute, error)
 	// Deletes a compute resource.
 	DeleteCompute(context.Context, *DeleteComputeRequest) (*emptypb.Empty, error)
-	// Runs an operation on a compute resource, e.g. start, stop or reboot.
-	OperateCompute(context.Context, *OperateComputeRequest) (*OperateComputeResponse, error)
-	// Changes the flavour of a compute resource.
+	// Changes the running state of a compute resource, e.g. start, stop or reboot.
+	OperateCompute(context.Context, *OperateComputeRequest) (*Compute, error)
+	// Changes the flavour of a compute resource; live where KubeVirt can hotplug, otherwise restart_required is set.
 	ScaleCompute(context.Context, *ScaleComputeRequest) (*Compute, error)
-	// Moves a compute resource to another host.
+	// Moves a running compute resource to another host (live migration).
 	MigrateCompute(context.Context, *MigrateComputeRequest) (*Compute, error)
 	// Attaches a volume to a compute resource.
 	AttachVolume(context.Context, *AttachVolumeRequest) (*Compute, error)
 	// Detaches a volume from a compute resource.
 	DetachVolume(context.Context, *DetachVolumeRequest) (*Compute, error)
-	// Creates a compute affinity or anti-affinity group.
-	CreateAffinityGroup(context.Context, *v1.CreateAffinityGroupRequest) (*v1.AffinityGroup, error)
-	// Returns one compute affinity group.
-	GetAffinityGroup(context.Context, *v1.GetAffinityGroupRequest) (*v1.AffinityGroup, error)
-	// Returns the compute affinity groups.
-	ListAffinityGroups(context.Context, *v1.ListAffinityGroupsRequest) (*v1.ListAffinityGroupsResponse, error)
-	// Deletes a compute affinity group.
-	DeleteAffinityGroup(context.Context, *v1.DeleteAffinityGroupRequest) (*emptypb.Empty, error)
+	// Creates a snapshot of a compute resource.
+	CreateSnapshot(context.Context, *CreateSnapshotRequest) (*Snapshot, error)
+	// Returns one snapshot of a compute resource.
+	GetSnapshot(context.Context, *GetSnapshotRequest) (*Snapshot, error)
+	// Returns the snapshots of a compute resource.
+	ListSnapshots(context.Context, *ListSnapshotsRequest) (*ListSnapshotsResponse, error)
+	// Deletes a snapshot of a compute resource.
+	DeleteSnapshot(context.Context, *DeleteSnapshotRequest) (*emptypb.Empty, error)
+	// Reverts a stopped compute resource to a snapshot.
+	RevertSnapshot(context.Context, *RevertSnapshotRequest) (*Compute, error)
+	// Creates a placement group.
+	CreatePlacementGroup(context.Context, *CreatePlacementGroupRequest) (*PlacementGroup, error)
+	// Returns one placement group.
+	GetPlacementGroup(context.Context, *GetPlacementGroupRequest) (*PlacementGroup, error)
+	// Returns the placement groups.
+	ListPlacementGroups(context.Context, *ListPlacementGroupsRequest) (*ListPlacementGroupsResponse, error)
+	// Deletes a placement group that has no members.
+	DeletePlacementGroup(context.Context, *DeletePlacementGroupRequest) (*emptypb.Empty, error)
 	mustEmbedUnimplementedComputeServiceServer()
 }
 
@@ -280,7 +354,7 @@ func (UnimplementedComputeServiceServer) UpdateCompute(context.Context, *UpdateC
 func (UnimplementedComputeServiceServer) DeleteCompute(context.Context, *DeleteComputeRequest) (*emptypb.Empty, error) {
 	return nil, status.Error(codes.Unimplemented, "method DeleteCompute not implemented")
 }
-func (UnimplementedComputeServiceServer) OperateCompute(context.Context, *OperateComputeRequest) (*OperateComputeResponse, error) {
+func (UnimplementedComputeServiceServer) OperateCompute(context.Context, *OperateComputeRequest) (*Compute, error) {
 	return nil, status.Error(codes.Unimplemented, "method OperateCompute not implemented")
 }
 func (UnimplementedComputeServiceServer) ScaleCompute(context.Context, *ScaleComputeRequest) (*Compute, error) {
@@ -295,17 +369,32 @@ func (UnimplementedComputeServiceServer) AttachVolume(context.Context, *AttachVo
 func (UnimplementedComputeServiceServer) DetachVolume(context.Context, *DetachVolumeRequest) (*Compute, error) {
 	return nil, status.Error(codes.Unimplemented, "method DetachVolume not implemented")
 }
-func (UnimplementedComputeServiceServer) CreateAffinityGroup(context.Context, *v1.CreateAffinityGroupRequest) (*v1.AffinityGroup, error) {
-	return nil, status.Error(codes.Unimplemented, "method CreateAffinityGroup not implemented")
+func (UnimplementedComputeServiceServer) CreateSnapshot(context.Context, *CreateSnapshotRequest) (*Snapshot, error) {
+	return nil, status.Error(codes.Unimplemented, "method CreateSnapshot not implemented")
 }
-func (UnimplementedComputeServiceServer) GetAffinityGroup(context.Context, *v1.GetAffinityGroupRequest) (*v1.AffinityGroup, error) {
-	return nil, status.Error(codes.Unimplemented, "method GetAffinityGroup not implemented")
+func (UnimplementedComputeServiceServer) GetSnapshot(context.Context, *GetSnapshotRequest) (*Snapshot, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetSnapshot not implemented")
 }
-func (UnimplementedComputeServiceServer) ListAffinityGroups(context.Context, *v1.ListAffinityGroupsRequest) (*v1.ListAffinityGroupsResponse, error) {
-	return nil, status.Error(codes.Unimplemented, "method ListAffinityGroups not implemented")
+func (UnimplementedComputeServiceServer) ListSnapshots(context.Context, *ListSnapshotsRequest) (*ListSnapshotsResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ListSnapshots not implemented")
 }
-func (UnimplementedComputeServiceServer) DeleteAffinityGroup(context.Context, *v1.DeleteAffinityGroupRequest) (*emptypb.Empty, error) {
-	return nil, status.Error(codes.Unimplemented, "method DeleteAffinityGroup not implemented")
+func (UnimplementedComputeServiceServer) DeleteSnapshot(context.Context, *DeleteSnapshotRequest) (*emptypb.Empty, error) {
+	return nil, status.Error(codes.Unimplemented, "method DeleteSnapshot not implemented")
+}
+func (UnimplementedComputeServiceServer) RevertSnapshot(context.Context, *RevertSnapshotRequest) (*Compute, error) {
+	return nil, status.Error(codes.Unimplemented, "method RevertSnapshot not implemented")
+}
+func (UnimplementedComputeServiceServer) CreatePlacementGroup(context.Context, *CreatePlacementGroupRequest) (*PlacementGroup, error) {
+	return nil, status.Error(codes.Unimplemented, "method CreatePlacementGroup not implemented")
+}
+func (UnimplementedComputeServiceServer) GetPlacementGroup(context.Context, *GetPlacementGroupRequest) (*PlacementGroup, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetPlacementGroup not implemented")
+}
+func (UnimplementedComputeServiceServer) ListPlacementGroups(context.Context, *ListPlacementGroupsRequest) (*ListPlacementGroupsResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ListPlacementGroups not implemented")
+}
+func (UnimplementedComputeServiceServer) DeletePlacementGroup(context.Context, *DeletePlacementGroupRequest) (*emptypb.Empty, error) {
+	return nil, status.Error(codes.Unimplemented, "method DeletePlacementGroup not implemented")
 }
 func (UnimplementedComputeServiceServer) mustEmbedUnimplementedComputeServiceServer() {}
 func (UnimplementedComputeServiceServer) testEmbeddedByValue()                        {}
@@ -508,74 +597,164 @@ func _ComputeService_DetachVolume_Handler(srv interface{}, ctx context.Context, 
 	return interceptor(ctx, in, info, handler)
 }
 
-func _ComputeService_CreateAffinityGroup_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(v1.CreateAffinityGroupRequest)
+func _ComputeService_CreateSnapshot_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateSnapshotRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(ComputeServiceServer).CreateAffinityGroup(ctx, in)
+		return srv.(ComputeServiceServer).CreateSnapshot(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: ComputeService_CreateAffinityGroup_FullMethodName,
+		FullMethod: ComputeService_CreateSnapshot_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ComputeServiceServer).CreateAffinityGroup(ctx, req.(*v1.CreateAffinityGroupRequest))
+		return srv.(ComputeServiceServer).CreateSnapshot(ctx, req.(*CreateSnapshotRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _ComputeService_GetAffinityGroup_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(v1.GetAffinityGroupRequest)
+func _ComputeService_GetSnapshot_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetSnapshotRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(ComputeServiceServer).GetAffinityGroup(ctx, in)
+		return srv.(ComputeServiceServer).GetSnapshot(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: ComputeService_GetAffinityGroup_FullMethodName,
+		FullMethod: ComputeService_GetSnapshot_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ComputeServiceServer).GetAffinityGroup(ctx, req.(*v1.GetAffinityGroupRequest))
+		return srv.(ComputeServiceServer).GetSnapshot(ctx, req.(*GetSnapshotRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _ComputeService_ListAffinityGroups_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(v1.ListAffinityGroupsRequest)
+func _ComputeService_ListSnapshots_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListSnapshotsRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(ComputeServiceServer).ListAffinityGroups(ctx, in)
+		return srv.(ComputeServiceServer).ListSnapshots(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: ComputeService_ListAffinityGroups_FullMethodName,
+		FullMethod: ComputeService_ListSnapshots_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ComputeServiceServer).ListAffinityGroups(ctx, req.(*v1.ListAffinityGroupsRequest))
+		return srv.(ComputeServiceServer).ListSnapshots(ctx, req.(*ListSnapshotsRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _ComputeService_DeleteAffinityGroup_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(v1.DeleteAffinityGroupRequest)
+func _ComputeService_DeleteSnapshot_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteSnapshotRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(ComputeServiceServer).DeleteAffinityGroup(ctx, in)
+		return srv.(ComputeServiceServer).DeleteSnapshot(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: ComputeService_DeleteAffinityGroup_FullMethodName,
+		FullMethod: ComputeService_DeleteSnapshot_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ComputeServiceServer).DeleteAffinityGroup(ctx, req.(*v1.DeleteAffinityGroupRequest))
+		return srv.(ComputeServiceServer).DeleteSnapshot(ctx, req.(*DeleteSnapshotRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ComputeService_RevertSnapshot_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RevertSnapshotRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ComputeServiceServer).RevertSnapshot(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ComputeService_RevertSnapshot_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ComputeServiceServer).RevertSnapshot(ctx, req.(*RevertSnapshotRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ComputeService_CreatePlacementGroup_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreatePlacementGroupRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ComputeServiceServer).CreatePlacementGroup(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ComputeService_CreatePlacementGroup_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ComputeServiceServer).CreatePlacementGroup(ctx, req.(*CreatePlacementGroupRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ComputeService_GetPlacementGroup_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetPlacementGroupRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ComputeServiceServer).GetPlacementGroup(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ComputeService_GetPlacementGroup_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ComputeServiceServer).GetPlacementGroup(ctx, req.(*GetPlacementGroupRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ComputeService_ListPlacementGroups_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListPlacementGroupsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ComputeServiceServer).ListPlacementGroups(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ComputeService_ListPlacementGroups_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ComputeServiceServer).ListPlacementGroups(ctx, req.(*ListPlacementGroupsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ComputeService_DeletePlacementGroup_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeletePlacementGroupRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ComputeServiceServer).DeletePlacementGroup(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ComputeService_DeletePlacementGroup_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ComputeServiceServer).DeletePlacementGroup(ctx, req.(*DeletePlacementGroupRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -628,20 +807,40 @@ var ComputeService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _ComputeService_DetachVolume_Handler,
 		},
 		{
-			MethodName: "CreateAffinityGroup",
-			Handler:    _ComputeService_CreateAffinityGroup_Handler,
+			MethodName: "CreateSnapshot",
+			Handler:    _ComputeService_CreateSnapshot_Handler,
 		},
 		{
-			MethodName: "GetAffinityGroup",
-			Handler:    _ComputeService_GetAffinityGroup_Handler,
+			MethodName: "GetSnapshot",
+			Handler:    _ComputeService_GetSnapshot_Handler,
 		},
 		{
-			MethodName: "ListAffinityGroups",
-			Handler:    _ComputeService_ListAffinityGroups_Handler,
+			MethodName: "ListSnapshots",
+			Handler:    _ComputeService_ListSnapshots_Handler,
 		},
 		{
-			MethodName: "DeleteAffinityGroup",
-			Handler:    _ComputeService_DeleteAffinityGroup_Handler,
+			MethodName: "DeleteSnapshot",
+			Handler:    _ComputeService_DeleteSnapshot_Handler,
+		},
+		{
+			MethodName: "RevertSnapshot",
+			Handler:    _ComputeService_RevertSnapshot_Handler,
+		},
+		{
+			MethodName: "CreatePlacementGroup",
+			Handler:    _ComputeService_CreatePlacementGroup_Handler,
+		},
+		{
+			MethodName: "GetPlacementGroup",
+			Handler:    _ComputeService_GetPlacementGroup_Handler,
+		},
+		{
+			MethodName: "ListPlacementGroups",
+			Handler:    _ComputeService_ListPlacementGroups_Handler,
+		},
+		{
+			MethodName: "DeletePlacementGroup",
+			Handler:    _ComputeService_DeletePlacementGroup_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

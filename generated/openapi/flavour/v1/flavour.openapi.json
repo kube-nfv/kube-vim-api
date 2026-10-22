@@ -39,12 +39,30 @@
         ],
         "type": "object"
       },
+      "kubenfv.kubevim.common.v1.CpuArchitecture": {
+        "description": "CPU architecture.\nValues may be added as KubeVirt support grows; clients should accept unknown values.",
+        "enum": [
+          "CPU_ARCHITECTURE_UNSPECIFIED",
+          "CPU_ARCHITECTURE_X86_64",
+          "CPU_ARCHITECTURE_AARCH64",
+          "CPU_ARCHITECTURE_S390X"
+        ],
+        "type": "string"
+      },
       "kubenfv.kubevim.common.v1.TypeOfStorage": {
         "description": "Type of a virtualised storage resource.\nValues may be added as Kubernetes storage support grows; clients should accept unknown values.",
         "enum": [
           "TYPE_OF_STORAGE_UNSPECIFIED",
           "TYPE_OF_STORAGE_VOLUME",
           "TYPE_OF_STORAGE_EPHEMERAL"
+        ],
+        "type": "string"
+      },
+      "kubenfv.kubevim.common.v1.VirtualCpuPinningPolicy": {
+        "description": "CPU pinning policy (IFA006 8.4.2.4). IFA's STATIC policy with explicit rules is left out:\nKubeVirt places dedicated CPUs itself.",
+        "enum": [
+          "VIRTUAL_CPU_PINNING_POLICY_UNSPECIFIED",
+          "VIRTUAL_CPU_PINNING_POLICY_DYNAMIC"
         ],
         "type": "string"
       },
@@ -69,16 +87,6 @@
           "sizeOfStorage"
         ],
         "type": "object"
-      },
-      "kubenfv.kubevim.flavour.v1.CpuArchitecture": {
-        "description": "CPU architecture.\nValues may be added as KubeVirt support grows; clients should accept unknown values.",
-        "enum": [
-          "CPU_ARCHITECTURE_UNSPECIFIED",
-          "CPU_ARCHITECTURE_X86_64",
-          "CPU_ARCHITECTURE_AARCH64",
-          "CPU_ARCHITECTURE_S390X"
-        ],
-        "type": "string"
       },
       "kubenfv.kubevim.flavour.v1.CpuTopology": {
         "description": "Guest CPU topology.",
@@ -164,7 +172,7 @@
         "description": "Virtual CPUs of a flavour.",
         "properties": {
           "cpuArchitecture": {
-            "$ref": "#/components/schemas/kubenfv.kubevim.flavour.v1.CpuArchitecture",
+            "$ref": "#/components/schemas/kubenfv.kubevim.common.v1.CpuArchitecture",
             "description": "CPU architecture; the VIM default when unset."
           },
           "numVirtualCpu": {
@@ -190,7 +198,7 @@
         "description": "CPU pinning of a flavour.",
         "properties": {
           "virtualCpuPinningPolicy": {
-            "$ref": "#/components/schemas/kubenfv.kubevim.flavour.v1.VirtualCpuPinningPolicy",
+            "$ref": "#/components/schemas/kubenfv.kubevim.common.v1.VirtualCpuPinningPolicy",
             "description": "Pinning policy."
           }
         },
@@ -198,14 +206,6 @@
           "virtualCpuPinningPolicy"
         ],
         "type": "object"
-      },
-      "kubenfv.kubevim.flavour.v1.VirtualCpuPinningPolicy": {
-        "description": "CPU pinning policy (IFA006 8.4.2.4). IFA's STATIC policy with explicit rules is left out:\nKubeVirt places dedicated CPUs itself.",
-        "enum": [
-          "VIRTUAL_CPU_PINNING_POLICY_UNSPECIFIED",
-          "VIRTUAL_CPU_PINNING_POLICY_DYNAMIC"
-        ],
-        "type": "string"
       },
       "kubenfv.kubevim.flavour.v1.VirtualMemoryData": {
         "description": "Virtual memory of a flavour.",
