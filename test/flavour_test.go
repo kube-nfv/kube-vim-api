@@ -45,6 +45,27 @@ func TestFlavourValidation(t *testing.T) {
 		"storage without type": {
 			json: create(`{"virtualMemory":{"virtualMemSize":"2Gi"},"virtualCpu":{"numVirtualCpu":1},"storageAttributes":[{"sizeOfStorage":"10Gi"}]}`),
 		},
+		"numa without pinning": {
+			json: create(`{"virtualMemory":{"virtualMemSize":"2Gi","numaEnabled":true,"hugepageSize":"1Gi"},"virtualCpu":{"numVirtualCpu":1}}`),
+		},
+		"numa without hugepages": {
+			json: create(`{"virtualMemory":{"virtualMemSize":"2Gi","numaEnabled":true},"virtualCpu":{"numVirtualCpu":1,"virtualCpuPinning":{"virtualCpuPinningPolicy":"VIRTUAL_CPU_PINNING_POLICY_DYNAMIC"}}}`),
+		},
+		"numa disabled without pinning": {
+			json:  create(`{"virtualMemory":{"virtualMemSize":"2Gi","numaEnabled":false},"virtualCpu":{"numVirtualCpu":1}}`),
+			valid: true,
+		},
+		"oversubscription 2:1": {
+			json:  create(`{"virtualMemory":{"virtualMemSize":"2Gi","virtualMemOversubscriptionPolicy":"2:1"},"virtualCpu":{"numVirtualCpu":1}}`),
+			valid: true,
+		},
+		"oversubscription below 1:1": {
+			json: create(`{"virtualMemory":{"virtualMemSize":"2Gi","virtualMemOversubscriptionPolicy":"1:2"},"virtualCpu":{"numVirtualCpu":1}}`),
+		},
+		"reserved metadata key": {
+			json:  create(`{"virtualMemory":{"virtualMemSize":"2Gi"},"virtualCpu":{"numVirtualCpu":1},"metadata":{"kubevim.kubenfv.io/tier":"gold"}}`),
+			valid: true,
+		},
 		"two boot storages": {
 			json: create(`{"virtualMemory":{"virtualMemSize":"2Gi"},"virtualCpu":{"numVirtualCpu":1},"storageAttributes":[` +
 				`{"typeOfStorage":"TYPE_OF_STORAGE_VOLUME","sizeOfStorage":"10Gi","isBoot":true},` +

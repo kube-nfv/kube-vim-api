@@ -4,6 +4,7 @@ package test
 
 import (
 	"encoding/json"
+	"errors"
 	"os"
 	"reflect"
 	"testing"
@@ -59,6 +60,10 @@ func checkValidation(t *testing.T, data string, msg proto.Message, valid bool) {
 	}
 	if !valid && err == nil {
 		t.Error("want a validation error, got none")
+	}
+	var verr *protovalidate.ValidationError
+	if !valid && err != nil && !errors.As(err, &verr) {
+		t.Errorf("want a validation error, got %v", err)
 	}
 	if !valid && err != nil {
 		t.Logf("rejected: %v", err)

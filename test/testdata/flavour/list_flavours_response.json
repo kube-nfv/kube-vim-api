@@ -1,8 +1,8 @@
 {
   "flavours": [
     {
-            "name": "small",
-      "isPublic": true,
+      "flavourId": "1b2c3d4e-5f6a-4b7c-8d9e-0f1a2b3c4d5e",
+      "flavourName": "small",
       "virtualMemory": {
         "virtualMemSize": "2Gi"
       },

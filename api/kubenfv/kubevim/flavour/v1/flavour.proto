@@ -130,7 +130,7 @@ message Flavour {
     }
   };
 
-  // Identifier of the flavour: a UUID, the Kubernetes UID of the object behind it.
+  // Identifier of the flavour: a UUID assigned by the VIM.
   string flavour_id = 1 [
     (google.api.field_behavior) = OUTPUT_ONLY,
     (kubenfv.kubevim.options.v1.ifa_field) = {
@@ -138,12 +138,12 @@ message Flavour {
       departure: {
         kind: KIND_RESTRICTION
         translates: false
-        rationale: "Always assigned by the VIM (the Kubernetes UID); IFA also lets the consumer choose it."
+        rationale: "Always assigned by the VIM; IFA also lets the consumer choose it."
       }
     }
   ];
-  // Name of the flavour, chosen by the consumer.
-  string name = 2 [
+  // Name of the flavour, given by the consumer; not unique.
+  string flavour_name = 2 [
     (google.api.field_behavior) = OPTIONAL,
     (kubenfv.kubevim.options.v1.ifa_field) = {
       departure: {
@@ -153,44 +153,21 @@ message Flavour {
       }
     }
   ];
-  // The flavour is available to all clients; unset means true.
-  optional bool is_public = 3 [
-    (google.api.field_behavior) = OPTIONAL,
-    (kubenfv.kubevim.options.v1.ifa_field) = {
-      ref: "IFA006 8.4.2.2 VirtualComputeFlavour.isPublic"
-      departure: {
-        kind: KIND_RESTRICTION
-        translates: false
-        rationale: "Only public flavours until Kube-VIM has tenancy; false is rejected."
-      }
-    }
-  ];
-  // Acceleration capabilities, as Kubernetes device resource names (e.g. "nvidia.com/GA102GL_A10").
-  repeated string acceleration_capability = 4 [
-    (google.api.field_behavior) = OPTIONAL,
-    (kubenfv.kubevim.options.v1.ifa_field) = {
-      ref: "IFA006 8.4.2.2 VirtualComputeFlavour.accelerationCapability"
-      departure: {
-        kind: KIND_DEVIATION
-        translates: true
-        rationale: "IFA leaves the content unspecified; each entry names a device exposed by a Kubernetes device plugin."
-      }
-    }
-  ];
   // Virtual memory.
-  VirtualMemoryData virtual_memory = 5 [
+  VirtualMemoryData virtual_memory = 3 [
     (google.api.field_behavior) = REQUIRED,
     (buf.validate.field).required = true,
     (kubenfv.kubevim.options.v1.ifa_field) = {ref: "IFA006 8.4.2.2 VirtualComputeFlavour.virtualMemory"}
   ];
   // Virtual CPUs.
-  VirtualCpuData virtual_cpu = 6 [
+  VirtualCpuData virtual_cpu = 4 [
     (google.api.field_behavior) = REQUIRED,
     (buf.validate.field).required = true,
     (kubenfv.kubevim.options.v1.ifa_field) = {ref: "IFA006 8.4.2.2 VirtualComputeFlavour.virtualCpu"}
   ];
-  // Storage of the compute resource; at most one entry has is_boot set.
-  repeated kubenfv.kubevim.common.v1.VirtualStorageData storage_attributes = 7 [
+  // Storage of the compute resource: the boot disk (is_boot) and further disks, created with
+  // each compute resource. A compute resource needs exactly one boot disk.
+  repeated kubenfv.kubevim.common.v1.VirtualStorageData storage_attributes = 5 [
     (google.api.field_behavior) = OPTIONAL,
     (buf.validate.field).cel = {
       id: "flavour.one_boot_storage"
@@ -199,17 +176,24 @@ message Flavour {
     },
     (kubenfv.kubevim.options.v1.ifa_field) = {ref: "IFA006 8.4.2.2 VirtualComputeFlavour.storageAttributes"}
   ];
-  // Metadata owned by the consumer and never interpreted by the VIM.
-  map<string, string> metadata = 8 [
+  // Metadata set by the consumer and by the VIM; for keys under "kubevim.kubenfv.io/" that the VIM maintains, its value wins.
+  map<string, string> metadata = 6 [
     (google.api.field_behavior) = OPTIONAL,
+    (buf.validate.field).map.(kubenfv.kubevim.common.v1.metadata) = true,
     (kubenfv.kubevim.options.v1.ifa_field) = {
       departure: {
         kind: KIND_EXTENSION
         translates: true
-        rationale: "IFA flavours carry no metadata; consumers use it to tag flavours."
+        rationale: "IFA flavours carry no metadata; metadata is on every resource."
       }
     }
   ];
+
+  option (buf.validate.message).cel = {
+    id: "flavour.numa"
+    message: "numaEnabled needs dynamic CPU pinning and a hugepageSize"
+    expression: "!has(this.virtual_memory) || !has(this.virtual_memory.numa_enabled) || !this.virtual_memory.numa_enabled || (has(this.virtual_cpu.virtual_cpu_pinning) && this.virtual_cpu.virtual_cpu_pinning.virtual_cpu_pinning_policy == 1 && this.virtual_memory.hugepage_size != '')"
+  };
 }
 
 // Virtual CPUs of a flavour.
@@ -235,51 +219,14 @@ message VirtualCpuData {
     (buf.validate.field).uint32.gt = 0,
     (kubenfv.kubevim.options.v1.ifa_field) = {ref: "IFA006 8.4.2.3 VirtualCpuData.numVirtualCpu"}
   ];
-  // Minimum CPU clock rate in MHz.
-  uint32 cpu_clock = 3 [
-    (google.api.field_behavior) = OPTIONAL,
-    (kubenfv.kubevim.options.v1.ifa_field) = {
-      ref: "IFA006 8.4.2.3 VirtualCpuData.cpuClock"
-      departure: {
-        kind: KIND_RESTRICTION
-        translates: false
-        rationale: "KubeVirt cannot guarantee a clock rate; a non-zero value is rejected."
-      }
-    }
-  ];
-  // CPU oversubscription as "<virtual>:<physical>", e.g. "4:1".
-  string virtual_cpu_oversubscription_policy = 4 [
-    (google.api.field_behavior) = OPTIONAL,
-    (buf.validate.field).string.pattern = "^[1-9][0-9]*:[1-9][0-9]*$",
-    (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE,
-    (kubenfv.kubevim.options.v1.ifa_field) = {
-      ref: "IFA006 8.4.2.3 VirtualCpuData.virtualCpuOversubscriptionPolicy"
-      departure: {
-        kind: KIND_RESTRICTION
-        translates: false
-        rationale: "KubeVirt sets the CPU allocation ratio for the whole cluster, not per flavour; a value is rejected."
-      }
-    }
-  ];
   // CPU pinning.
-  VirtualCpuPinningData virtual_cpu_pinning = 5 [
+  VirtualCpuPinningData virtual_cpu_pinning = 3 [
     (google.api.field_behavior) = OPTIONAL,
     (kubenfv.kubevim.options.v1.ifa_field) = {ref: "IFA006 8.4.2.3 VirtualCpuData.virtualCpuPinning"}
   ];
-  // CPU power state requirements.
-  string power_state_reqs = 6 [
-    (google.api.field_behavior) = OPTIONAL,
-    (kubenfv.kubevim.options.v1.ifa_field) = {
-      ref: "IFA006 8.4.2.3 VirtualCpuData.powerStateReqs"
-      departure: {
-        kind: KIND_RESTRICTION
-        translates: false
-        rationale: "Not supported by KubeVirt; a value is rejected."
-      }
-    }
-  ];
-  // Guest CPU topology; the product of its fields equals num_virtual_cpu.
-  CpuTopology topology = 7 [
+  // Guest CPU topology; the product of its fields equals num_virtual_cpu. The VIM rejects a
+  // topology its backend cannot express (KubeVirt takes the vCPU count and a preferred layout).
+  CpuTopology topology = 4 [
     (google.api.field_behavior) = OPTIONAL,
     (kubenfv.kubevim.options.v1.ifa_field) = {
       departure: {
@@ -335,27 +282,14 @@ message VirtualCpuPinningData {
     },
     (kubenfv.kubevim.options.v1.ifa_field) = {ref: "IFA006 8.4.2.4 VirtualCpuPinningData.virtualCpuPinningPolicy"}
   ];
-  // Rules mapping virtual CPUs to logical CPUs for the static policy.
-  repeated string virtual_cpu_pinning_rules = 2 [
-    (google.api.field_behavior) = OPTIONAL,
-    (kubenfv.kubevim.options.v1.ifa_field) = {
-      ref: "IFA006 8.4.2.4 VirtualCpuPinningData.virtualCpuPinningRules"
-      departure: {
-        kind: KIND_RESTRICTION
-        translates: false
-        rationale: "KubeVirt places dedicated CPUs itself and cannot follow explicit rules; rules are rejected."
-      }
-    }
-  ];
 }
 
-// CPU pinning policy (IFA006 8.4.2.4).
+// CPU pinning policy (IFA006 8.4.2.4). IFA's STATIC policy with explicit rules is left out:
+// KubeVirt places dedicated CPUs itself.
 enum VirtualCpuPinningPolicy {
   VIRTUAL_CPU_PINNING_POLICY_UNSPECIFIED = 0;
-  // Pinned to logical CPUs as virtual_cpu_pinning_rules define; rejected until rules are supported.
-  VIRTUAL_CPU_PINNING_POLICY_STATIC = 1;
   // Pinned to dedicated logical CPUs that the VIM chooses (KubeVirt dedicated CPU placement).
-  VIRTUAL_CPU_PINNING_POLICY_DYNAMIC = 2;
+  VIRTUAL_CPU_PINNING_POLICY_DYNAMIC = 1;
 }
 
 // Virtual memory of a flavour.
@@ -375,10 +309,15 @@ message VirtualMemoryData {
       }
     }
   ];
-  // Memory oversubscription as "<virtual>:<physical>", e.g. "2:1".
+  // Memory oversubscription as "<virtual>:<physical>", at least 1:1, e.g. "2:1" (KubeVirt overcommitPercent).
   string virtual_mem_oversubscription_policy = 2 [
     (google.api.field_behavior) = OPTIONAL,
-    (buf.validate.field).string.pattern = "^[1-9][0-9]*:[1-9][0-9]*$",
+    (buf.validate.field).string.pattern = "^[1-9][0-9]{0,5}:[1-9][0-9]{0,5}$",
+    (buf.validate.field).cel = {
+      id: "virtual_memory.oversubscription_at_least_one"
+      message: "the virtual part must be at least the physical part"
+      expression: "!this.matches('^[1-9][0-9]{0,5}:[1-9][0-9]{0,5}$') || int(this.split(':')[0]) >= int(this.split(':')[1])"
+    },
     (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE,
     (kubenfv.kubevim.options.v1.ifa_field) = {ref: "IFA006 8.4.2.5 VirtualMemoryData.virtualMemOversubscriptionPolicy"}
   ];

@@ -106,35 +106,24 @@
       "kubenfv.kubevim.flavour.v1.Flavour": {
         "description": "Memory, CPU and storage of the compute resources created from it.",
         "properties": {
-          "accelerationCapability": {
-            "description": "Acceleration capabilities, as Kubernetes device resource names (e.g. \"nvidia.com/GA102GL_A10\").",
-            "items": {
-              "type": "string"
-            },
-            "type": "array"
-          },
           "flavourId": {
-            "description": "Identifier of the flavour: a UUID, the Kubernetes UID of the object behind it.",
+            "description": "Identifier of the flavour: a UUID assigned by the VIM.",
             "readOnly": true,
             "type": "string"
           },
-          "isPublic": {
-            "description": "The flavour is available to all clients; unset means true.",
-            "type": "boolean"
+          "flavourName": {
+            "description": "Name of the flavour, given by the consumer; not unique.",
+            "type": "string"
           },
           "metadata": {
             "additionalProperties": {
               "type": "string"
             },
-            "description": "Metadata owned by the consumer and never interpreted by the VIM.",
+            "description": "Metadata set by the consumer and by the VIM; for keys under \"kubevim.kubenfv.io/\" that the VIM maintains, its value wins.",
             "type": "object"
           },
-          "name": {
-            "description": "Name of the flavour, chosen by the consumer.",
-            "type": "string"
-          },
           "storageAttributes": {
-            "description": "Storage of the compute resource; at most one entry has is_boot set.",
+            "description": "Storage of the compute resource: the boot disk (is_boot) and further disks, created with\neach compute resource. A compute resource needs exactly one boot disk.",
             "items": {
               "$ref": "#/components/schemas/kubenfv.kubevim.common.v1.VirtualStorageData"
             },
@@ -178,27 +167,14 @@
             "$ref": "#/components/schemas/kubenfv.kubevim.flavour.v1.CpuArchitecture",
             "description": "CPU architecture; the VIM default when unset."
           },
-          "cpuClock": {
-            "description": "Minimum CPU clock rate in MHz.",
-            "format": "int64",
-            "type": "integer"
-          },
           "numVirtualCpu": {
             "description": "Number of virtual CPUs.",
             "format": "int64",
             "type": "integer"
           },
-          "powerStateReqs": {
-            "description": "CPU power state requirements.",
-            "type": "string"
-          },
           "topology": {
             "$ref": "#/components/schemas/kubenfv.kubevim.flavour.v1.CpuTopology",
-            "description": "Guest CPU topology; the product of its fields equals num_virtual_cpu."
-          },
-          "virtualCpuOversubscriptionPolicy": {
-            "description": "CPU oversubscription as \"<virtual>:<physical>\", e.g. \"4:1\".",
-            "type": "string"
+            "description": "Guest CPU topology; the product of its fields equals num_virtual_cpu. The VIM rejects a\ntopology its backend cannot express (KubeVirt takes the vCPU count and a preferred layout)."
           },
           "virtualCpuPinning": {
             "$ref": "#/components/schemas/kubenfv.kubevim.flavour.v1.VirtualCpuPinningData",
@@ -216,13 +192,6 @@
           "virtualCpuPinningPolicy": {
             "$ref": "#/components/schemas/kubenfv.kubevim.flavour.v1.VirtualCpuPinningPolicy",
             "description": "Pinning policy."
-          },
-          "virtualCpuPinningRules": {
-            "description": "Rules mapping virtual CPUs to logical CPUs for the static policy.",
-            "items": {
-              "type": "string"
-            },
-            "type": "array"
           }
         },
         "required": [
@@ -231,10 +200,9 @@
         "type": "object"
       },
       "kubenfv.kubevim.flavour.v1.VirtualCpuPinningPolicy": {
-        "description": "CPU pinning policy (IFA006 8.4.2.4).",
+        "description": "CPU pinning policy (IFA006 8.4.2.4). IFA's STATIC policy with explicit rules is left out:\nKubeVirt places dedicated CPUs itself.",
         "enum": [
           "VIRTUAL_CPU_PINNING_POLICY_UNSPECIFIED",
-          "VIRTUAL_CPU_PINNING_POLICY_STATIC",
           "VIRTUAL_CPU_PINNING_POLICY_DYNAMIC"
         ],
         "type": "string"
@@ -251,7 +219,7 @@
             "type": "boolean"
           },
           "virtualMemOversubscriptionPolicy": {
-            "description": "Memory oversubscription as \"<virtual>:<physical>\", e.g. \"2:1\".",
+            "description": "Memory oversubscription as \"<virtual>:<physical>\", at least 1:1, e.g. \"2:1\" (KubeVirt overcommitPercent).",
             "type": "string"
           },
           "virtualMemSize": {

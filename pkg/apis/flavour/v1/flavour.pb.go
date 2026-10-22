@@ -81,28 +81,25 @@ func (CpuArchitecture) EnumDescriptor() ([]byte, []int) {
 	return file_kubenfv_kubevim_flavour_v1_flavour_proto_rawDescGZIP(), []int{0}
 }
 
-// CPU pinning policy (IFA006 8.4.2.4).
+// CPU pinning policy (IFA006 8.4.2.4). IFA's STATIC policy with explicit rules is left out:
+// KubeVirt places dedicated CPUs itself.
 type VirtualCpuPinningPolicy int32
 
 const (
 	VirtualCpuPinningPolicy_VIRTUAL_CPU_PINNING_POLICY_UNSPECIFIED VirtualCpuPinningPolicy = 0
-	// Pinned to logical CPUs as virtual_cpu_pinning_rules define; rejected until rules are supported.
-	VirtualCpuPinningPolicy_VIRTUAL_CPU_PINNING_POLICY_STATIC VirtualCpuPinningPolicy = 1
 	// Pinned to dedicated logical CPUs that the VIM chooses (KubeVirt dedicated CPU placement).
-	VirtualCpuPinningPolicy_VIRTUAL_CPU_PINNING_POLICY_DYNAMIC VirtualCpuPinningPolicy = 2
+	VirtualCpuPinningPolicy_VIRTUAL_CPU_PINNING_POLICY_DYNAMIC VirtualCpuPinningPolicy = 1
 )
 
 // Enum value maps for VirtualCpuPinningPolicy.
 var (
 	VirtualCpuPinningPolicy_name = map[int32]string{
 		0: "VIRTUAL_CPU_PINNING_POLICY_UNSPECIFIED",
-		1: "VIRTUAL_CPU_PINNING_POLICY_STATIC",
-		2: "VIRTUAL_CPU_PINNING_POLICY_DYNAMIC",
+		1: "VIRTUAL_CPU_PINNING_POLICY_DYNAMIC",
 	}
 	VirtualCpuPinningPolicy_value = map[string]int32{
 		"VIRTUAL_CPU_PINNING_POLICY_UNSPECIFIED": 0,
-		"VIRTUAL_CPU_PINNING_POLICY_STATIC":      1,
-		"VIRTUAL_CPU_PINNING_POLICY_DYNAMIC":     2,
+		"VIRTUAL_CPU_PINNING_POLICY_DYNAMIC":     1,
 	}
 )
 
@@ -136,22 +133,19 @@ func (VirtualCpuPinningPolicy) EnumDescriptor() ([]byte, []int) {
 // Memory, CPU and storage of the compute resources created from it.
 type Flavour struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// Identifier of the flavour: a UUID, the Kubernetes UID of the object behind it.
+	// Identifier of the flavour: a UUID assigned by the VIM.
 	FlavourId string `protobuf:"bytes,1,opt,name=flavour_id,json=flavourId,proto3" json:"flavour_id,omitempty"`
-	// Name of the flavour, chosen by the consumer.
-	Name string `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
-	// The flavour is available to all clients; unset means true.
-	IsPublic *bool `protobuf:"varint,3,opt,name=is_public,json=isPublic,proto3,oneof" json:"is_public,omitempty"`
-	// Acceleration capabilities, as Kubernetes device resource names (e.g. "nvidia.com/GA102GL_A10").
-	AccelerationCapability []string `protobuf:"bytes,4,rep,name=acceleration_capability,json=accelerationCapability,proto3" json:"acceleration_capability,omitempty"`
+	// Name of the flavour, given by the consumer; not unique.
+	FlavourName string `protobuf:"bytes,2,opt,name=flavour_name,json=flavourName,proto3" json:"flavour_name,omitempty"`
 	// Virtual memory.
-	VirtualMemory *VirtualMemoryData `protobuf:"bytes,5,opt,name=virtual_memory,json=virtualMemory,proto3" json:"virtual_memory,omitempty"`
+	VirtualMemory *VirtualMemoryData `protobuf:"bytes,3,opt,name=virtual_memory,json=virtualMemory,proto3" json:"virtual_memory,omitempty"`
 	// Virtual CPUs.
-	VirtualCpu *VirtualCpuData `protobuf:"bytes,6,opt,name=virtual_cpu,json=virtualCpu,proto3" json:"virtual_cpu,omitempty"`
-	// Storage of the compute resource; at most one entry has is_boot set.
-	StorageAttributes []*v1.VirtualStorageData `protobuf:"bytes,7,rep,name=storage_attributes,json=storageAttributes,proto3" json:"storage_attributes,omitempty"`
-	// Metadata owned by the consumer and never interpreted by the VIM.
-	Metadata      map[string]string `protobuf:"bytes,8,rep,name=metadata,proto3" json:"metadata,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	VirtualCpu *VirtualCpuData `protobuf:"bytes,4,opt,name=virtual_cpu,json=virtualCpu,proto3" json:"virtual_cpu,omitempty"`
+	// Storage of the compute resource: the boot disk (is_boot) and further disks, created with
+	// each compute resource. A compute resource needs exactly one boot disk.
+	StorageAttributes []*v1.VirtualStorageData `protobuf:"bytes,5,rep,name=storage_attributes,json=storageAttributes,proto3" json:"storage_attributes,omitempty"`
+	// Metadata set by the consumer and by the VIM; for keys under "kubevim.kubenfv.io/" that the VIM maintains, its value wins.
+	Metadata      map[string]string `protobuf:"bytes,6,rep,name=metadata,proto3" json:"metadata,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -193,25 +187,11 @@ func (x *Flavour) GetFlavourId() string {
 	return ""
 }
 
-func (x *Flavour) GetName() string {
+func (x *Flavour) GetFlavourName() string {
 	if x != nil {
-		return x.Name
+		return x.FlavourName
 	}
 	return ""
-}
-
-func (x *Flavour) GetIsPublic() bool {
-	if x != nil && x.IsPublic != nil {
-		return *x.IsPublic
-	}
-	return false
-}
-
-func (x *Flavour) GetAccelerationCapability() []string {
-	if x != nil {
-		return x.AccelerationCapability
-	}
-	return nil
 }
 
 func (x *Flavour) GetVirtualMemory() *VirtualMemoryData {
@@ -249,16 +229,11 @@ type VirtualCpuData struct {
 	CpuArchitecture CpuArchitecture `protobuf:"varint,1,opt,name=cpu_architecture,json=cpuArchitecture,proto3,enum=kubenfv.kubevim.flavour.v1.CpuArchitecture" json:"cpu_architecture,omitempty"`
 	// Number of virtual CPUs.
 	NumVirtualCpu uint32 `protobuf:"varint,2,opt,name=num_virtual_cpu,json=numVirtualCpu,proto3" json:"num_virtual_cpu,omitempty"`
-	// Minimum CPU clock rate in MHz.
-	CpuClock uint32 `protobuf:"varint,3,opt,name=cpu_clock,json=cpuClock,proto3" json:"cpu_clock,omitempty"`
-	// CPU oversubscription as "<virtual>:<physical>", e.g. "4:1".
-	VirtualCpuOversubscriptionPolicy string `protobuf:"bytes,4,opt,name=virtual_cpu_oversubscription_policy,json=virtualCpuOversubscriptionPolicy,proto3" json:"virtual_cpu_oversubscription_policy,omitempty"`
 	// CPU pinning.
-	VirtualCpuPinning *VirtualCpuPinningData `protobuf:"bytes,5,opt,name=virtual_cpu_pinning,json=virtualCpuPinning,proto3" json:"virtual_cpu_pinning,omitempty"`
-	// CPU power state requirements.
-	PowerStateReqs string `protobuf:"bytes,6,opt,name=power_state_reqs,json=powerStateReqs,proto3" json:"power_state_reqs,omitempty"`
-	// Guest CPU topology; the product of its fields equals num_virtual_cpu.
-	Topology      *CpuTopology `protobuf:"bytes,7,opt,name=topology,proto3" json:"topology,omitempty"`
+	VirtualCpuPinning *VirtualCpuPinningData `protobuf:"bytes,3,opt,name=virtual_cpu_pinning,json=virtualCpuPinning,proto3" json:"virtual_cpu_pinning,omitempty"`
+	// Guest CPU topology; the product of its fields equals num_virtual_cpu. The VIM rejects a
+	// topology its backend cannot express (KubeVirt takes the vCPU count and a preferred layout).
+	Topology      *CpuTopology `protobuf:"bytes,4,opt,name=topology,proto3" json:"topology,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -307,32 +282,11 @@ func (x *VirtualCpuData) GetNumVirtualCpu() uint32 {
 	return 0
 }
 
-func (x *VirtualCpuData) GetCpuClock() uint32 {
-	if x != nil {
-		return x.CpuClock
-	}
-	return 0
-}
-
-func (x *VirtualCpuData) GetVirtualCpuOversubscriptionPolicy() string {
-	if x != nil {
-		return x.VirtualCpuOversubscriptionPolicy
-	}
-	return ""
-}
-
 func (x *VirtualCpuData) GetVirtualCpuPinning() *VirtualCpuPinningData {
 	if x != nil {
 		return x.VirtualCpuPinning
 	}
 	return nil
-}
-
-func (x *VirtualCpuData) GetPowerStateReqs() string {
-	if x != nil {
-		return x.PowerStateReqs
-	}
-	return ""
 }
 
 func (x *VirtualCpuData) GetTopology() *CpuTopology {
@@ -408,10 +362,8 @@ type VirtualCpuPinningData struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Pinning policy.
 	VirtualCpuPinningPolicy VirtualCpuPinningPolicy `protobuf:"varint,1,opt,name=virtual_cpu_pinning_policy,json=virtualCpuPinningPolicy,proto3,enum=kubenfv.kubevim.flavour.v1.VirtualCpuPinningPolicy" json:"virtual_cpu_pinning_policy,omitempty"`
-	// Rules mapping virtual CPUs to logical CPUs for the static policy.
-	VirtualCpuPinningRules []string `protobuf:"bytes,2,rep,name=virtual_cpu_pinning_rules,json=virtualCpuPinningRules,proto3" json:"virtual_cpu_pinning_rules,omitempty"`
-	unknownFields          protoimpl.UnknownFields
-	sizeCache              protoimpl.SizeCache
+	unknownFields           protoimpl.UnknownFields
+	sizeCache               protoimpl.SizeCache
 }
 
 func (x *VirtualCpuPinningData) Reset() {
@@ -451,19 +403,12 @@ func (x *VirtualCpuPinningData) GetVirtualCpuPinningPolicy() VirtualCpuPinningPo
 	return VirtualCpuPinningPolicy_VIRTUAL_CPU_PINNING_POLICY_UNSPECIFIED
 }
 
-func (x *VirtualCpuPinningData) GetVirtualCpuPinningRules() []string {
-	if x != nil {
-		return x.VirtualCpuPinningRules
-	}
-	return nil
-}
-
 // Virtual memory of a flavour.
 type VirtualMemoryData struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Amount of memory, in Kubernetes quantity format (e.g. "4Gi").
 	VirtualMemSize string `protobuf:"bytes,1,opt,name=virtual_mem_size,json=virtualMemSize,proto3" json:"virtual_mem_size,omitempty"`
-	// Memory oversubscription as "<virtual>:<physical>", e.g. "2:1".
+	// Memory oversubscription as "<virtual>:<physical>", at least 1:1, e.g. "2:1" (KubeVirt overcommitPercent).
 	VirtualMemOversubscriptionPolicy string `protobuf:"bytes,2,opt,name=virtual_mem_oversubscription_policy,json=virtualMemOversubscriptionPolicy,proto3" json:"virtual_mem_oversubscription_policy,omitempty"`
 	// Memory is allocated on the NUMA nodes of the pinned CPUs; needs dynamic pinning and hugepages.
 	NumaEnabled *bool `protobuf:"varint,3,opt,name=numa_enabled,json=numaEnabled,proto3,oneof" json:"numa_enabled,omitempty"`
@@ -787,61 +732,49 @@ var File_kubenfv_kubevim_flavour_v1_flavour_proto protoreflect.FileDescriptor
 
 const file_kubenfv_kubevim_flavour_v1_flavour_proto_rawDesc = "" +
 	"\n" +
-	"(kubenfv/kubevim/flavour/v1/flavour.proto\x12\x1akubenfv.kubevim.flavour.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a%kubenfv/kubevim/common/v1/rules.proto\x1a'kubenfv/kubevim/common/v1/storage.proto\x1a(kubenfv/kubevim/options/v1/options.proto\x1a.protoc-gen-openapiv3/options/annotations.proto\"\xb8\r\n" +
-	"\aFlavour\x12\xb5\x01\n" +
+	"(kubenfv/kubevim/flavour/v1/flavour.proto\x12\x1akubenfv.kubevim.flavour.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a%kubenfv/kubevim/common/v1/rules.proto\x1a'kubenfv/kubevim/common/v1/storage.proto\x1a(kubenfv/kubevim/options/v1/options.proto\x1a.protoc-gen-openapiv3/options/annotations.proto\"\xf1\f\n" +
+	"\aFlavour\x12\x9e\x01\n" +
 	"\n" +
-	"flavour_id\x18\x01 \x01(\tB\x95\x01\xe2A\x01\x03\xfa\x8b\x19\x8c\x01\n" +
-	".IFA006 8.4.2.2 VirtualComputeFlavour.flavourId\x12Z\b\x02\x1aVAlways assigned by the VIM (the Kubernetes UID); IFA also lets the consumer choose it.R\tflavourId\x12v\n" +
-	"\x04name\x18\x02 \x01(\tBb\xe2A\x01\x01\xfa\x8b\x19Z\x12X\b\x01\x10\x01\x1aRLets consumers find a flavour by name; replaces the v0 attached-name metadata key.R\x04name\x12\xa3\x01\n" +
-	"\tis_public\x18\x03 \x01(\bB\x80\x01\xe2A\x01\x01\xfa\x8b\x19x\n" +
-	"-IFA006 8.4.2.2 VirtualComputeFlavour.isPublic\x12G\b\x02\x1aCOnly public flavours until Kube-VIM has tenancy; false is rejected.H\x00R\bisPublic\x88\x01\x01\x12\xec\x01\n" +
-	"\x17acceleration_capability\x18\x04 \x03(\tB\xb2\x01\xe2A\x01\x01\xfa\x8b\x19\xa9\x01\n" +
-	";IFA006 8.4.2.2 VirtualComputeFlavour.accelerationCapability\x12j\b\x03\x10\x01\x1adIFA leaves the content unspecified; each entry names a device exposed by a Kubernetes device plugin.R\x16accelerationCapability\x12\x98\x01\n" +
-	"\x0evirtual_memory\x18\x05 \x01(\v2-.kubenfv.kubevim.flavour.v1.VirtualMemoryDataBB\xe2A\x01\x02\xbaH\x03\xc8\x01\x01\xfa\x8b\x194\n" +
+	"flavour_id\x18\x01 \x01(\tB\x7f\xe2A\x01\x03\xfa\x8b\x19w\n" +
+	".IFA006 8.4.2.2 VirtualComputeFlavour.flavourId\x12E\b\x02\x1aAAlways assigned by the VIM; IFA also lets the consumer choose it.R\tflavourId\x12\x85\x01\n" +
+	"\fflavour_name\x18\x02 \x01(\tBb\xe2A\x01\x01\xfa\x8b\x19Z\x12X\b\x01\x10\x01\x1aRLets consumers find a flavour by name; replaces the v0 attached-name metadata key.R\vflavourName\x12\x98\x01\n" +
+	"\x0evirtual_memory\x18\x03 \x01(\v2-.kubenfv.kubevim.flavour.v1.VirtualMemoryDataBB\xe2A\x01\x02\xbaH\x03\xc8\x01\x01\xfa\x8b\x194\n" +
 	"2IFA006 8.4.2.2 VirtualComputeFlavour.virtualMemoryR\rvirtualMemory\x12\x8c\x01\n" +
-	"\vvirtual_cpu\x18\x06 \x01(\v2*.kubenfv.kubevim.flavour.v1.VirtualCpuDataB?\xe2A\x01\x02\xbaH\x03\xc8\x01\x01\xfa\x8b\x191\n" +
+	"\vvirtual_cpu\x18\x04 \x01(\v2*.kubenfv.kubevim.flavour.v1.VirtualCpuDataB?\xe2A\x01\x02\xbaH\x03\xc8\x01\x01\xfa\x8b\x191\n" +
 	"/IFA006 8.4.2.2 VirtualComputeFlavour.virtualCpuR\n" +
 	"virtualCpu\x12\x99\x02\n" +
-	"\x12storage_attributes\x18\a \x03(\v2-.kubenfv.kubevim.common.v1.VirtualStorageDataB\xba\x01\xe2A\x01\x01\xbaHw\xba\x01t\n" +
+	"\x12storage_attributes\x18\x05 \x03(\v2-.kubenfv.kubevim.common.v1.VirtualStorageDataB\xba\x01\xe2A\x01\x01\xbaHw\xba\x01t\n" +
 	"\x18flavour.one_boot_storage\x121at most one storage attribute can have isBoot set\x1a%this.filter(s, s.is_boot).size() <= 1\xfa\x8b\x198\n" +
-	"6IFA006 8.4.2.2 VirtualComputeFlavour.storageAttributesR\x11storageAttributes\x12\xa0\x01\n" +
-	"\bmetadata\x18\b \x03(\v21.kubenfv.kubevim.flavour.v1.Flavour.MetadataEntryBQ\xe2A\x01\x01\xfa\x8b\x19I\x12G\b\x01\x10\x01\x1aAIFA flavours carry no metadata; consumers use it to tag flavours.R\bmetadata\x1a;\n" +
+	"6IFA006 8.4.2.2 VirtualComputeFlavour.storageAttributesR\x11storageAttributes\x12\xa7\x01\n" +
+	"\bmetadata\x18\x06 \x03(\v21.kubenfv.kubevim.flavour.v1.Flavour.MetadataEntryBX\xe2A\x01\x01\xbaH\a\x9a\x01\x04\xf8\x8b\x19\x01\xfa\x8b\x19F\x12D\b\x01\x10\x01\x1a>IFA flavours carry no metadata; metadata is on every resource.R\bmetadata\x1a;\n" +
 	"\rMetadataEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01:\xb3\x01\xfa\x8b\x19\xae\x01\n" +
-	"$IFA006 8.4.2.2 VirtualComputeFlavour\x12\x85\x01\b\x02\x1a\x80\x01No virtualNetworkInterface: interfaces are given when the compute resource is created, so one flavour serves any network layout.B\f\n" +
-	"\n" +
-	"_is_public\"\xd9\v\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01:\x8f\x04\xbaH\xd8\x02\x1a\xd5\x02\n" +
+	"\fflavour.numa\x128numaEnabled needs dynamic CPU pinning and a hugepageSize\x1a\x8a\x02!has(this.virtual_memory) || !has(this.virtual_memory.numa_enabled) || !this.virtual_memory.numa_enabled || (has(this.virtual_cpu.virtual_cpu_pinning) && this.virtual_cpu.virtual_cpu_pinning.virtual_cpu_pinning_policy == 1 && this.virtual_memory.hugepage_size != '')\xfa\x8b\x19\xae\x01\n" +
+	"$IFA006 8.4.2.2 VirtualComputeFlavour\x12\x85\x01\b\x02\x1a\x80\x01No virtualNetworkInterface: interfaces are given when the compute resource is created, so one flavour serves any network layout.\"\xfe\x06\n" +
 	"\x0eVirtualCpuData\x12\xcd\x01\n" +
 	"\x10cpu_architecture\x18\x01 \x01(\x0e2+.kubenfv.kubevim.flavour.v1.CpuArchitectureBu\xe2A\x01\x01\xbaH\x05\x82\x01\x02\x10\x01\xfa\x8b\x19e\n" +
 	"-IFA006 8.4.2.3 VirtualCpuData.cpuArchitecture\x124\b\x03\x10\x01\x1a.A closed enumeration instead of a free string.R\x0fcpuArchitecture\x12d\n" +
 	"\x0fnum_virtual_cpu\x18\x02 \x01(\rB<\xe2A\x01\x02\xbaH\x04*\x02 \x00\xfa\x8b\x19-\n" +
-	"+IFA006 8.4.2.3 VirtualCpuData.numVirtualCpuR\rnumVirtualCpu\x12\x98\x01\n" +
-	"\tcpu_clock\x18\x03 \x01(\rB{\xe2A\x01\x01\xfa\x8b\x19s\n" +
-	"&IFA006 8.4.2.3 VirtualCpuData.cpuClock\x12I\b\x02\x1aEKubeVirt cannot guarantee a clock rate; a non-zero value is rejected.R\bcpuClock\x12\xa5\x02\n" +
-	"#virtual_cpu_oversubscription_policy\x18\x04 \x01(\tB\xd5\x01\xe2A\x01\x01\xbaH \xd8\x01\x01r\x1b2\x19^[1-9][0-9]*:[1-9][0-9]*$\xfa\x8b\x19\xa9\x01\n" +
-	">IFA006 8.4.2.3 VirtualCpuData.virtualCpuOversubscriptionPolicy\x12g\b\x02\x1acKubeVirt sets the CPU allocation ratio for the whole cluster, not per flavour; a value is rejected.R virtualCpuOversubscriptionPolicy\x12\x9c\x01\n" +
-	"\x13virtual_cpu_pinning\x18\x05 \x01(\v21.kubenfv.kubevim.flavour.v1.VirtualCpuPinningDataB9\xe2A\x01\x01\xfa\x8b\x191\n" +
-	"/IFA006 8.4.2.3 VirtualCpuData.virtualCpuPinningR\x11virtualCpuPinning\x12\x95\x01\n" +
-	"\x10power_state_reqs\x18\x06 \x01(\tBk\xe2A\x01\x01\xfa\x8b\x19c\n" +
-	",IFA006 8.4.2.3 VirtualCpuData.powerStateReqs\x123\b\x02\x1a/Not supported by KubeVirt; a value is rejected.R\x0epowerStateReqs\x12\x9a\x01\n" +
-	"\btopology\x18\a \x01(\v2'.kubenfv.kubevim.flavour.v1.CpuTopologyBU\xe2A\x01\x01\xfa\x8b\x19M\x12K\b\x01\x10\x01\x1aEVNFs that license or tune per socket or core need the guest topology.R\btopology:\xf9\x01\xbaH\xd2\x01\x1a\xcf\x01\n" +
+	"+IFA006 8.4.2.3 VirtualCpuData.numVirtualCpuR\rnumVirtualCpu\x12\x9c\x01\n" +
+	"\x13virtual_cpu_pinning\x18\x03 \x01(\v21.kubenfv.kubevim.flavour.v1.VirtualCpuPinningDataB9\xe2A\x01\x01\xfa\x8b\x191\n" +
+	"/IFA006 8.4.2.3 VirtualCpuData.virtualCpuPinningR\x11virtualCpuPinning\x12\x9a\x01\n" +
+	"\btopology\x18\x04 \x01(\v2'.kubenfv.kubevim.flavour.v1.CpuTopologyBU\xe2A\x01\x01\xfa\x8b\x19M\x12K\b\x01\x10\x01\x1aEVNFs that license or tune per socket or core need the guest topology.R\btopology:\xf9\x01\xbaH\xd2\x01\x1a\xcf\x01\n" +
 	"\x1cvirtual_cpu.topology_matches\x12;topology sockets * cores * threads must equal numVirtualCpu\x1ar!has(this.topology) || this.topology.sockets * this.topology.cores * this.topology.threads == this.num_virtual_cpu\xfa\x8b\x19\x1f\n" +
 	"\x1dIFA006 8.4.2.3 VirtualCpuData\"~\n" +
 	"\vCpuTopology\x12%\n" +
 	"\asockets\x18\x01 \x01(\rB\v\xe2A\x01\x02\xbaH\x04*\x02 \x00R\asockets\x12!\n" +
 	"\x05cores\x18\x02 \x01(\rB\v\xe2A\x01\x02\xbaH\x04*\x02 \x00R\x05cores\x12%\n" +
-	"\athreads\x18\x03 \x01(\rB\v\xe2A\x01\x02\xbaH\x04*\x02 \x00R\athreads\"\xee\x03\n" +
+	"\athreads\x18\x03 \x01(\rB\v\xe2A\x01\x02\xbaH\x04*\x02 \x00R\athreads\"\x88\x02\n" +
 	"\x15VirtualCpuPinningData\x12\xc2\x01\n" +
 	"\x1avirtual_cpu_pinning_policy\x18\x01 \x01(\x0e23.kubenfv.kubevim.flavour.v1.VirtualCpuPinningPolicyBP\xe2A\x01\x02\xbaH\a\x82\x01\x04\x10\x01 \x00\xfa\x8b\x19>\n" +
-	"<IFA006 8.4.2.4 VirtualCpuPinningData.virtualCpuPinningPolicyR\x17virtualCpuPinningPolicy\x12\xe3\x01\n" +
-	"\x19virtual_cpu_pinning_rules\x18\x02 \x03(\tB\xa7\x01\xe2A\x01\x01\xfa\x8b\x19\x9e\x01\n" +
-	";IFA006 8.4.2.4 VirtualCpuPinningData.virtualCpuPinningRules\x12_\b\x02\x1a[KubeVirt places dedicated CPUs itself and cannot follow explicit rules; rules are rejected.R\x16virtualCpuPinningRules:*\xfa\x8b\x19&\n" +
-	"$IFA006 8.4.2.4 VirtualCpuPinningData\"\x9e\x05\n" +
+	"<IFA006 8.4.2.4 VirtualCpuPinningData.virtualCpuPinningPolicyR\x17virtualCpuPinningPolicy:*\xfa\x8b\x19&\n" +
+	"$IFA006 8.4.2.4 VirtualCpuPinningData\"\xf9\x06\n" +
 	"\x11VirtualMemoryData\x12\xa9\x01\n" +
 	"\x10virtual_mem_size\x18\x01 \x01(\tB\x7f\xe2A\x01\x02\xbaH\x06r\x04\xf8\x8b\x19\x01\xfa\x8b\x19n\n" +
-	"/IFA006 8.4.2.5 VirtualMemoryData.virtualMemSize\x12;\b\x03\x10\x01\x1a5Kubernetes quantity string instead of a number in MB.R\x0evirtualMemSize\x12\xbd\x01\n" +
-	"#virtual_mem_oversubscription_policy\x18\x02 \x01(\tBn\xe2A\x01\x01\xbaH \xd8\x01\x01r\x1b2\x19^[1-9][0-9]*:[1-9][0-9]*$\xfa\x8b\x19C\n" +
+	"/IFA006 8.4.2.5 VirtualMemoryData.virtualMemSize\x12;\b\x03\x10\x01\x1a5Kubernetes quantity string instead of a number in MB.R\x0evirtualMemSize\x12\x98\x03\n" +
+	"#virtual_mem_oversubscription_policy\x18\x02 \x01(\tB\xc8\x02\xe2A\x01\x01\xbaH\xf9\x01\xba\x01\xcd\x01\n" +
+	",virtual_memory.oversubscription_at_least_one\x123the virtual part must be at least the physical part\x1ah!this.matches('^[1-9][0-9]{0,5}:[1-9][0-9]{0,5}$') || int(this.split(':')[0]) >= int(this.split(':')[1])\xd8\x01\x01r#2!^[1-9][0-9]{0,5}:[1-9][0-9]{0,5}$\xfa\x8b\x19C\n" +
 	"AIFA006 8.4.2.5 VirtualMemoryData.virtualMemOversubscriptionPolicyR virtualMemOversubscriptionPolicy\x12^\n" +
 	"\fnuma_enabled\x18\x03 \x01(\bB6\xe2A\x01\x01\xfa\x8b\x19.\n" +
 	",IFA006 8.4.2.5 VirtualMemoryData.numaEnabledH\x00R\vnumaEnabled\x88\x01\x01\x12\x83\x01\n" +
@@ -873,11 +806,10 @@ const file_kubenfv_kubevim_flavour_v1_flavour_proto_rawDesc = "" +
 	"\x1cCPU_ARCHITECTURE_UNSPECIFIED\x10\x00\x12\x1b\n" +
 	"\x17CPU_ARCHITECTURE_X86_64\x10\x01\x12\x1c\n" +
 	"\x18CPU_ARCHITECTURE_AARCH64\x10\x02\x12\x1a\n" +
-	"\x16CPU_ARCHITECTURE_S390X\x10\x03*\x94\x01\n" +
+	"\x16CPU_ARCHITECTURE_S390X\x10\x03*m\n" +
 	"\x17VirtualCpuPinningPolicy\x12*\n" +
-	"&VIRTUAL_CPU_PINNING_POLICY_UNSPECIFIED\x10\x00\x12%\n" +
-	"!VIRTUAL_CPU_PINNING_POLICY_STATIC\x10\x01\x12&\n" +
-	"\"VIRTUAL_CPU_PINNING_POLICY_DYNAMIC\x10\x022\x8c\b\n" +
+	"&VIRTUAL_CPU_PINNING_POLICY_UNSPECIFIED\x10\x00\x12&\n" +
+	"\"VIRTUAL_CPU_PINNING_POLICY_DYNAMIC\x10\x012\x8c\b\n" +
 	"\x0eFlavourService\x12\xd6\x01\n" +
 	"\rCreateFlavour\x120.kubenfv.kubevim.flavour.v1.CreateFlavourRequest\x1a#.kubenfv.kubevim.flavour.v1.Flavour\"n\xfaP!J\x1f\n" +
 	"\x1d\n" +
@@ -973,7 +905,6 @@ func file_kubenfv_kubevim_flavour_v1_flavour_proto_init() {
 	if File_kubenfv_kubevim_flavour_v1_flavour_proto != nil {
 		return
 	}
-	file_kubenfv_kubevim_flavour_v1_flavour_proto_msgTypes[0].OneofWrappers = []any{}
 	file_kubenfv_kubevim_flavour_v1_flavour_proto_msgTypes[4].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
