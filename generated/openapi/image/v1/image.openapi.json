@@ -125,6 +125,19 @@
         ],
         "type": "string"
       },
+      "kubenfv.kubevim.image.v1.GlanceSource": {
+        "description": "Image in the Glance catalog configured in the VIM; the VIM holds the Glance endpoint and credentials.",
+        "properties": {
+          "glanceImageId": {
+            "description": "Identifier of the image in Glance.",
+            "type": "string"
+          }
+        },
+        "required": [
+          "glanceImageId"
+        ],
+        "type": "object"
+      },
       "kubenfv.kubevim.image.v1.HttpSource": {
         "description": "HTTP or HTTPS download. Only one of basicAuth, credentialsRef may be set.",
         "properties": {
@@ -246,7 +259,7 @@
           },
           "source": {
             "$ref": "#/components/schemas/kubenfv.kubevim.image.v1.ImageSource",
-            "description": "Where the VIM imports the software image from; unset for images of a catalog backend."
+            "description": "Where the VIM imports the software image from; images of a catalog backend name their catalog entry."
           },
           "status": {
             "allOf": [
@@ -296,6 +309,12 @@
           },
           {
             "$ref": "#/components/schemas/kubenfv.kubevim.image.v1.ImageSourceBlank"
+          },
+          {
+            "$ref": "#/components/schemas/kubenfv.kubevim.image.v1.ImageSourceGlance"
+          },
+          {
+            "$ref": "#/components/schemas/kubenfv.kubevim.image.v1.ImageSourceLocal"
           }
         ]
       },
@@ -312,6 +331,19 @@
         ],
         "type": "object"
       },
+      "kubenfv.kubevim.image.v1.ImageSourceGlance": {
+        "additionalProperties": false,
+        "properties": {
+          "glance": {
+            "$ref": "#/components/schemas/kubenfv.kubevim.image.v1.GlanceSource",
+            "description": "Import an image of the Glance catalog configured in the VIM."
+          }
+        },
+        "required": [
+          "glance"
+        ],
+        "type": "object"
+      },
       "kubenfv.kubevim.image.v1.ImageSourceHttp": {
         "additionalProperties": false,
         "properties": {
@@ -322,6 +354,19 @@
         },
         "required": [
           "http"
+        ],
+        "type": "object"
+      },
+      "kubenfv.kubevim.image.v1.ImageSourceLocal": {
+        "additionalProperties": false,
+        "properties": {
+          "local": {
+            "$ref": "#/components/schemas/kubenfv.kubevim.image.v1.LocalSource",
+            "description": "Import an image file of the local catalog configured in the VIM."
+          }
+        },
+        "required": [
+          "local"
         ],
         "type": "object"
       },
@@ -359,7 +404,9 @@
           "IMAGE_SOURCE_TYPE_S3",
           "IMAGE_SOURCE_TYPE_REGISTRY",
           "IMAGE_SOURCE_TYPE_UPLOAD",
-          "IMAGE_SOURCE_TYPE_BLANK"
+          "IMAGE_SOURCE_TYPE_BLANK",
+          "IMAGE_SOURCE_TYPE_GLANCE",
+          "IMAGE_SOURCE_TYPE_LOCAL"
         ],
         "type": "string"
       },
@@ -439,6 +486,19 @@
             "type": "string"
           }
         },
+        "type": "object"
+      },
+      "kubenfv.kubevim.image.v1.LocalSource": {
+        "description": "Image file in the local catalog directory configured in the VIM.",
+        "properties": {
+          "fileName": {
+            "description": "Name of the file in the catalog directory, without a path.",
+            "type": "string"
+          }
+        },
+        "required": [
+          "fileName"
+        ],
         "type": "object"
       },
       "kubenfv.kubevim.image.v1.RegistrySource": {

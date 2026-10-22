@@ -375,6 +375,8 @@ const (
 	ImageSourceType_IMAGE_SOURCE_TYPE_REGISTRY    ImageSourceType = 3
 	ImageSourceType_IMAGE_SOURCE_TYPE_UPLOAD      ImageSourceType = 4
 	ImageSourceType_IMAGE_SOURCE_TYPE_BLANK       ImageSourceType = 5
+	ImageSourceType_IMAGE_SOURCE_TYPE_GLANCE      ImageSourceType = 6
+	ImageSourceType_IMAGE_SOURCE_TYPE_LOCAL       ImageSourceType = 7
 )
 
 // Enum value maps for ImageSourceType.
@@ -386,6 +388,8 @@ var (
 		3: "IMAGE_SOURCE_TYPE_REGISTRY",
 		4: "IMAGE_SOURCE_TYPE_UPLOAD",
 		5: "IMAGE_SOURCE_TYPE_BLANK",
+		6: "IMAGE_SOURCE_TYPE_GLANCE",
+		7: "IMAGE_SOURCE_TYPE_LOCAL",
 	}
 	ImageSourceType_value = map[string]int32{
 		"IMAGE_SOURCE_TYPE_UNSPECIFIED": 0,
@@ -394,6 +398,8 @@ var (
 		"IMAGE_SOURCE_TYPE_REGISTRY":    3,
 		"IMAGE_SOURCE_TYPE_UPLOAD":      4,
 		"IMAGE_SOURCE_TYPE_BLANK":       5,
+		"IMAGE_SOURCE_TYPE_GLANCE":      6,
+		"IMAGE_SOURCE_TYPE_LOCAL":       7,
 	}
 )
 
@@ -511,7 +517,7 @@ type Image struct {
 	StatusDetail string `protobuf:"bytes,15,opt,name=status_detail,json=statusDetail,proto3" json:"status_detail,omitempty"`
 	// Metadata set by the consumer and by the VIM; for keys under "kubevim.kubenfv.io/" that the VIM maintains, its value wins.
 	Metadata map[string]string `protobuf:"bytes,16,rep,name=metadata,proto3" json:"metadata,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
-	// Where the VIM imports the software image from; unset for images of a catalog backend.
+	// Where the VIM imports the software image from; images of a catalog backend name their catalog entry.
 	Source *ImageSource `protobuf:"bytes,17,opt,name=source,proto3" json:"source,omitempty"`
 	// When the VIM imports the software image; IMPORT_POLICY_EAGER when unset on creation.
 	ImportPolicy ImportPolicy `protobuf:"varint,18,opt,name=import_policy,json=importPolicy,proto3,enum=kubenfv.kubevim.image.v1.ImportPolicy" json:"import_policy,omitempty"`
@@ -758,6 +764,8 @@ type ImageSource struct {
 	//	*ImageSource_Registry
 	//	*ImageSource_Upload
 	//	*ImageSource_Blank
+	//	*ImageSource_Glance
+	//	*ImageSource_Local
 	Source        isImageSource_Source `protobuf_oneof:"source"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -845,6 +853,24 @@ func (x *ImageSource) GetBlank() *BlankSource {
 	return nil
 }
 
+func (x *ImageSource) GetGlance() *GlanceSource {
+	if x != nil {
+		if x, ok := x.Source.(*ImageSource_Glance); ok {
+			return x.Glance
+		}
+	}
+	return nil
+}
+
+func (x *ImageSource) GetLocal() *LocalSource {
+	if x != nil {
+		if x, ok := x.Source.(*ImageSource_Local); ok {
+			return x.Local
+		}
+	}
+	return nil
+}
+
 type isImageSource_Source interface {
 	isImageSource_Source()
 }
@@ -874,6 +900,16 @@ type ImageSource_Blank struct {
 	Blank *BlankSource `protobuf:"bytes,5,opt,name=blank,proto3,oneof"`
 }
 
+type ImageSource_Glance struct {
+	// Import an image of the Glance catalog configured in the VIM.
+	Glance *GlanceSource `protobuf:"bytes,6,opt,name=glance,proto3,oneof"`
+}
+
+type ImageSource_Local struct {
+	// Import an image file of the local catalog configured in the VIM.
+	Local *LocalSource `protobuf:"bytes,7,opt,name=local,proto3,oneof"`
+}
+
 func (*ImageSource_Http) isImageSource_Source() {}
 
 func (*ImageSource_S3) isImageSource_Source() {}
@@ -883,6 +919,10 @@ func (*ImageSource_Registry) isImageSource_Source() {}
 func (*ImageSource_Upload) isImageSource_Source() {}
 
 func (*ImageSource_Blank) isImageSource_Source() {}
+
+func (*ImageSource_Glance) isImageSource_Source() {}
+
+func (*ImageSource_Local) isImageSource_Source() {}
 
 // Username and password for a source that needs them.
 type BasicAuth struct {
@@ -1443,6 +1483,98 @@ func (x *BlankSource) GetSize() string {
 	return ""
 }
 
+// Image in the Glance catalog configured in the VIM; the VIM holds the Glance endpoint and credentials.
+type GlanceSource struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Identifier of the image in Glance.
+	GlanceImageId string `protobuf:"bytes,1,opt,name=glance_image_id,json=glanceImageId,proto3" json:"glance_image_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GlanceSource) Reset() {
+	*x = GlanceSource{}
+	mi := &file_kubenfv_kubevim_image_v1_image_proto_msgTypes[10]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GlanceSource) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GlanceSource) ProtoMessage() {}
+
+func (x *GlanceSource) ProtoReflect() protoreflect.Message {
+	mi := &file_kubenfv_kubevim_image_v1_image_proto_msgTypes[10]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GlanceSource.ProtoReflect.Descriptor instead.
+func (*GlanceSource) Descriptor() ([]byte, []int) {
+	return file_kubenfv_kubevim_image_v1_image_proto_rawDescGZIP(), []int{10}
+}
+
+func (x *GlanceSource) GetGlanceImageId() string {
+	if x != nil {
+		return x.GlanceImageId
+	}
+	return ""
+}
+
+// Image file in the local catalog directory configured in the VIM.
+type LocalSource struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Name of the file in the catalog directory, without a path.
+	FileName      string `protobuf:"bytes,1,opt,name=file_name,json=fileName,proto3" json:"file_name,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *LocalSource) Reset() {
+	*x = LocalSource{}
+	mi := &file_kubenfv_kubevim_image_v1_image_proto_msgTypes[11]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *LocalSource) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*LocalSource) ProtoMessage() {}
+
+func (x *LocalSource) ProtoReflect() protoreflect.Message {
+	mi := &file_kubenfv_kubevim_image_v1_image_proto_msgTypes[11]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use LocalSource.ProtoReflect.Descriptor instead.
+func (*LocalSource) Descriptor() ([]byte, []int) {
+	return file_kubenfv_kubevim_image_v1_image_proto_rawDescGZIP(), []int{11}
+}
+
+func (x *LocalSource) GetFileName() string {
+	if x != nil {
+		return x.FileName
+	}
+	return ""
+}
+
 type CreateImageRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Software image to add.
@@ -1455,7 +1587,7 @@ type CreateImageRequest struct {
 
 func (x *CreateImageRequest) Reset() {
 	*x = CreateImageRequest{}
-	mi := &file_kubenfv_kubevim_image_v1_image_proto_msgTypes[10]
+	mi := &file_kubenfv_kubevim_image_v1_image_proto_msgTypes[12]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1467,7 +1599,7 @@ func (x *CreateImageRequest) String() string {
 func (*CreateImageRequest) ProtoMessage() {}
 
 func (x *CreateImageRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_kubenfv_kubevim_image_v1_image_proto_msgTypes[10]
+	mi := &file_kubenfv_kubevim_image_v1_image_proto_msgTypes[12]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1480,7 +1612,7 @@ func (x *CreateImageRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateImageRequest.ProtoReflect.Descriptor instead.
 func (*CreateImageRequest) Descriptor() ([]byte, []int) {
-	return file_kubenfv_kubevim_image_v1_image_proto_rawDescGZIP(), []int{10}
+	return file_kubenfv_kubevim_image_v1_image_proto_rawDescGZIP(), []int{12}
 }
 
 func (x *CreateImageRequest) GetImage() *Image {
@@ -1507,7 +1639,7 @@ type GetImageRequest struct {
 
 func (x *GetImageRequest) Reset() {
 	*x = GetImageRequest{}
-	mi := &file_kubenfv_kubevim_image_v1_image_proto_msgTypes[11]
+	mi := &file_kubenfv_kubevim_image_v1_image_proto_msgTypes[13]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1519,7 +1651,7 @@ func (x *GetImageRequest) String() string {
 func (*GetImageRequest) ProtoMessage() {}
 
 func (x *GetImageRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_kubenfv_kubevim_image_v1_image_proto_msgTypes[11]
+	mi := &file_kubenfv_kubevim_image_v1_image_proto_msgTypes[13]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1532,7 +1664,7 @@ func (x *GetImageRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetImageRequest.ProtoReflect.Descriptor instead.
 func (*GetImageRequest) Descriptor() ([]byte, []int) {
-	return file_kubenfv_kubevim_image_v1_image_proto_rawDescGZIP(), []int{11}
+	return file_kubenfv_kubevim_image_v1_image_proto_rawDescGZIP(), []int{13}
 }
 
 func (x *GetImageRequest) GetImageId() string {
@@ -1554,7 +1686,7 @@ type ListImagesRequest struct {
 
 func (x *ListImagesRequest) Reset() {
 	*x = ListImagesRequest{}
-	mi := &file_kubenfv_kubevim_image_v1_image_proto_msgTypes[12]
+	mi := &file_kubenfv_kubevim_image_v1_image_proto_msgTypes[14]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1566,7 +1698,7 @@ func (x *ListImagesRequest) String() string {
 func (*ListImagesRequest) ProtoMessage() {}
 
 func (x *ListImagesRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_kubenfv_kubevim_image_v1_image_proto_msgTypes[12]
+	mi := &file_kubenfv_kubevim_image_v1_image_proto_msgTypes[14]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1579,7 +1711,7 @@ func (x *ListImagesRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListImagesRequest.ProtoReflect.Descriptor instead.
 func (*ListImagesRequest) Descriptor() ([]byte, []int) {
-	return file_kubenfv_kubevim_image_v1_image_proto_rawDescGZIP(), []int{12}
+	return file_kubenfv_kubevim_image_v1_image_proto_rawDescGZIP(), []int{14}
 }
 
 func (x *ListImagesRequest) GetFilter() string {
@@ -1608,7 +1740,7 @@ type ListImagesResponse struct {
 
 func (x *ListImagesResponse) Reset() {
 	*x = ListImagesResponse{}
-	mi := &file_kubenfv_kubevim_image_v1_image_proto_msgTypes[13]
+	mi := &file_kubenfv_kubevim_image_v1_image_proto_msgTypes[15]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1620,7 +1752,7 @@ func (x *ListImagesResponse) String() string {
 func (*ListImagesResponse) ProtoMessage() {}
 
 func (x *ListImagesResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_kubenfv_kubevim_image_v1_image_proto_msgTypes[13]
+	mi := &file_kubenfv_kubevim_image_v1_image_proto_msgTypes[15]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1633,7 +1765,7 @@ func (x *ListImagesResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListImagesResponse.ProtoReflect.Descriptor instead.
 func (*ListImagesResponse) Descriptor() ([]byte, []int) {
-	return file_kubenfv_kubevim_image_v1_image_proto_rawDescGZIP(), []int{13}
+	return file_kubenfv_kubevim_image_v1_image_proto_rawDescGZIP(), []int{15}
 }
 
 func (x *ListImagesResponse) GetImages() []*Image {
@@ -1662,7 +1794,7 @@ type UpdateImageRequest struct {
 
 func (x *UpdateImageRequest) Reset() {
 	*x = UpdateImageRequest{}
-	mi := &file_kubenfv_kubevim_image_v1_image_proto_msgTypes[14]
+	mi := &file_kubenfv_kubevim_image_v1_image_proto_msgTypes[16]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1674,7 +1806,7 @@ func (x *UpdateImageRequest) String() string {
 func (*UpdateImageRequest) ProtoMessage() {}
 
 func (x *UpdateImageRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_kubenfv_kubevim_image_v1_image_proto_msgTypes[14]
+	mi := &file_kubenfv_kubevim_image_v1_image_proto_msgTypes[16]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1687,7 +1819,7 @@ func (x *UpdateImageRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateImageRequest.ProtoReflect.Descriptor instead.
 func (*UpdateImageRequest) Descriptor() ([]byte, []int) {
-	return file_kubenfv_kubevim_image_v1_image_proto_rawDescGZIP(), []int{14}
+	return file_kubenfv_kubevim_image_v1_image_proto_rawDescGZIP(), []int{16}
 }
 
 func (x *UpdateImageRequest) GetImageId() string {
@@ -1716,7 +1848,7 @@ type ImageUpdate struct {
 
 func (x *ImageUpdate) Reset() {
 	*x = ImageUpdate{}
-	mi := &file_kubenfv_kubevim_image_v1_image_proto_msgTypes[15]
+	mi := &file_kubenfv_kubevim_image_v1_image_proto_msgTypes[17]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1728,7 +1860,7 @@ func (x *ImageUpdate) String() string {
 func (*ImageUpdate) ProtoMessage() {}
 
 func (x *ImageUpdate) ProtoReflect() protoreflect.Message {
-	mi := &file_kubenfv_kubevim_image_v1_image_proto_msgTypes[15]
+	mi := &file_kubenfv_kubevim_image_v1_image_proto_msgTypes[17]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1741,7 +1873,7 @@ func (x *ImageUpdate) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ImageUpdate.ProtoReflect.Descriptor instead.
 func (*ImageUpdate) Descriptor() ([]byte, []int) {
-	return file_kubenfv_kubevim_image_v1_image_proto_rawDescGZIP(), []int{15}
+	return file_kubenfv_kubevim_image_v1_image_proto_rawDescGZIP(), []int{17}
 }
 
 func (x *ImageUpdate) GetName() string {
@@ -1768,7 +1900,7 @@ type DeleteImageRequest struct {
 
 func (x *DeleteImageRequest) Reset() {
 	*x = DeleteImageRequest{}
-	mi := &file_kubenfv_kubevim_image_v1_image_proto_msgTypes[16]
+	mi := &file_kubenfv_kubevim_image_v1_image_proto_msgTypes[18]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1780,7 +1912,7 @@ func (x *DeleteImageRequest) String() string {
 func (*DeleteImageRequest) ProtoMessage() {}
 
 func (x *DeleteImageRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_kubenfv_kubevim_image_v1_image_proto_msgTypes[16]
+	mi := &file_kubenfv_kubevim_image_v1_image_proto_msgTypes[18]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1793,7 +1925,7 @@ func (x *DeleteImageRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteImageRequest.ProtoReflect.Descriptor instead.
 func (*DeleteImageRequest) Descriptor() ([]byte, []int) {
-	return file_kubenfv_kubevim_image_v1_image_proto_rawDescGZIP(), []int{16}
+	return file_kubenfv_kubevim_image_v1_image_proto_rawDescGZIP(), []int{18}
 }
 
 func (x *DeleteImageRequest) GetImageId() string {
@@ -1811,7 +1943,7 @@ type ListImageSourcesRequest struct {
 
 func (x *ListImageSourcesRequest) Reset() {
 	*x = ListImageSourcesRequest{}
-	mi := &file_kubenfv_kubevim_image_v1_image_proto_msgTypes[17]
+	mi := &file_kubenfv_kubevim_image_v1_image_proto_msgTypes[19]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1823,7 +1955,7 @@ func (x *ListImageSourcesRequest) String() string {
 func (*ListImageSourcesRequest) ProtoMessage() {}
 
 func (x *ListImageSourcesRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_kubenfv_kubevim_image_v1_image_proto_msgTypes[17]
+	mi := &file_kubenfv_kubevim_image_v1_image_proto_msgTypes[19]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1836,7 +1968,7 @@ func (x *ListImageSourcesRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListImageSourcesRequest.ProtoReflect.Descriptor instead.
 func (*ListImageSourcesRequest) Descriptor() ([]byte, []int) {
-	return file_kubenfv_kubevim_image_v1_image_proto_rawDescGZIP(), []int{17}
+	return file_kubenfv_kubevim_image_v1_image_proto_rawDescGZIP(), []int{19}
 }
 
 type ListImageSourcesResponse struct {
@@ -1849,7 +1981,7 @@ type ListImageSourcesResponse struct {
 
 func (x *ListImageSourcesResponse) Reset() {
 	*x = ListImageSourcesResponse{}
-	mi := &file_kubenfv_kubevim_image_v1_image_proto_msgTypes[18]
+	mi := &file_kubenfv_kubevim_image_v1_image_proto_msgTypes[20]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1861,7 +1993,7 @@ func (x *ListImageSourcesResponse) String() string {
 func (*ListImageSourcesResponse) ProtoMessage() {}
 
 func (x *ListImageSourcesResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_kubenfv_kubevim_image_v1_image_proto_msgTypes[18]
+	mi := &file_kubenfv_kubevim_image_v1_image_proto_msgTypes[20]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1874,7 +2006,7 @@ func (x *ListImageSourcesResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListImageSourcesResponse.ProtoReflect.Descriptor instead.
 func (*ListImageSourcesResponse) Descriptor() ([]byte, []int) {
-	return file_kubenfv_kubevim_image_v1_image_proto_rawDescGZIP(), []int{18}
+	return file_kubenfv_kubevim_image_v1_image_proto_rawDescGZIP(), []int{20}
 }
 
 func (x *ListImageSourcesResponse) GetSources() []ImageSourceType {
@@ -1935,13 +2067,15 @@ const file_kubenfv_kubevim_image_v1_image_proto_rawDesc = "" +
 	"%IFA005 8.2.2 SoftwareImageInformation\"H\n" +
 	"\bChecksum\x12\"\n" +
 	"\talgorithm\x18\x01 \x01(\tB\x04\xe2A\x01\x03R\talgorithm\x12\x18\n" +
-	"\x04hash\x18\x02 \x01(\tB\x04\xe2A\x01\x03R\x04hash\"\xd9\x02\n" +
+	"\x04hash\x18\x02 \x01(\tB\x04\xe2A\x01\x03R\x04hash\"\xda\x03\n" +
 	"\vImageSource\x12:\n" +
 	"\x04http\x18\x01 \x01(\v2$.kubenfv.kubevim.image.v1.HttpSourceH\x00R\x04http\x124\n" +
 	"\x02s3\x18\x02 \x01(\v2\".kubenfv.kubevim.image.v1.S3SourceH\x00R\x02s3\x12F\n" +
 	"\bregistry\x18\x03 \x01(\v2(.kubenfv.kubevim.image.v1.RegistrySourceH\x00R\bregistry\x12@\n" +
 	"\x06upload\x18\x04 \x01(\v2&.kubenfv.kubevim.image.v1.UploadSourceH\x00R\x06upload\x12=\n" +
-	"\x05blank\x18\x05 \x01(\v2%.kubenfv.kubevim.image.v1.BlankSourceH\x00R\x05blankB\x0f\n" +
+	"\x05blank\x18\x05 \x01(\v2%.kubenfv.kubevim.image.v1.BlankSourceH\x00R\x05blank\x12@\n" +
+	"\x06glance\x18\x06 \x01(\v2&.kubenfv.kubevim.image.v1.GlanceSourceH\x00R\x06glance\x12=\n" +
+	"\x05local\x18\a \x01(\v2%.kubenfv.kubevim.image.v1.LocalSourceH\x00R\x05localB\x0f\n" +
 	"\x06source\x12\x05\xbaH\x02\b\x01\"P\n" +
 	"\tBasicAuth\x12 \n" +
 	"\busername\x18\x01 \x01(\tB\x04\xe2A\x01\x02R\busername\x12!\n" +
@@ -1986,7 +2120,11 @@ const file_kubenfv_kubevim_image_v1_image_proto_rawDesc = "" +
 	"\fupload_token\x18\x02 \x01(\tB\x04\xe2A\x01\x03R\vuploadToken\x12N\n" +
 	"\x12upload_expire_time\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampB\x04\xe2A\x01\x03R\x10uploadExpireTime\"0\n" +
 	"\vBlankSource\x12!\n" +
-	"\x04size\x18\x01 \x01(\tB\r\xe2A\x01\x02\xbaH\x06r\x04\xf8\x8b\x19\x01R\x04size\"\x87\x01\n" +
+	"\x04size\x18\x01 \x01(\tB\r\xe2A\x01\x02\xbaH\x06r\x04\xf8\x8b\x19\x01R\x04size\"D\n" +
+	"\fGlanceSource\x124\n" +
+	"\x0fglance_image_id\x18\x01 \x01(\tB\f\xe2A\x01\x02\xbaH\x05r\x03\xb0\x01\x01R\rglanceImageId\"J\n" +
+	"\vLocalSource\x12;\n" +
+	"\tfile_name\x18\x01 \x01(\tB\x1e\xe2A\x01\x02\xbaH\x17r\x15\x10\x01\x18\xff\x012\a^[^/]+$Z\x01.Z\x02..R\bfileName\"\x87\x01\n" +
 	"\x12CreateImageRequest\x12A\n" +
 	"\x05image\x18\x01 \x01(\v2\x1f.kubenfv.kubevim.image.v1.ImageB\n" +
 	"\xe2A\x01\x02\xbaH\x03\xc8\x01\x01R\x05image\x12.\n" +
@@ -2050,14 +2188,16 @@ const file_kubenfv_kubevim_image_v1_image_proto_rawDesc = "" +
 	"\x14DISK_BUS_UNSPECIFIED\x10\x00\x12\x13\n" +
 	"\x0fDISK_BUS_VIRTIO\x10\x01\x12\x11\n" +
 	"\rDISK_BUS_SATA\x10\x02\x12\x11\n" +
-	"\rDISK_BUS_SCSI\x10\x03*\xc5\x01\n" +
+	"\rDISK_BUS_SCSI\x10\x03*\x80\x02\n" +
 	"\x0fImageSourceType\x12!\n" +
 	"\x1dIMAGE_SOURCE_TYPE_UNSPECIFIED\x10\x00\x12\x1a\n" +
 	"\x16IMAGE_SOURCE_TYPE_HTTP\x10\x01\x12\x18\n" +
 	"\x14IMAGE_SOURCE_TYPE_S3\x10\x02\x12\x1e\n" +
 	"\x1aIMAGE_SOURCE_TYPE_REGISTRY\x10\x03\x12\x1c\n" +
 	"\x18IMAGE_SOURCE_TYPE_UPLOAD\x10\x04\x12\x1b\n" +
-	"\x17IMAGE_SOURCE_TYPE_BLANK\x10\x052\x86\f\n" +
+	"\x17IMAGE_SOURCE_TYPE_BLANK\x10\x05\x12\x1c\n" +
+	"\x18IMAGE_SOURCE_TYPE_GLANCE\x10\x06\x12\x1b\n" +
+	"\x17IMAGE_SOURCE_TYPE_LOCAL\x10\a2\x86\f\n" +
 	"\fImageService\x12\xb4\x01\n" +
 	"\vCreateImage\x12,.kubenfv.kubevim.image.v1.CreateImageRequest\x1a\x1f.kubenfv.kubevim.image.v1.Image\"V\xfaP\x1cJ\x1a\n" +
 	"\x18\n" +
@@ -2115,7 +2255,7 @@ func file_kubenfv_kubevim_image_v1_image_proto_rawDescGZIP() []byte {
 }
 
 var file_kubenfv_kubevim_image_v1_image_proto_enumTypes = make([]protoimpl.EnumInfo, 8)
-var file_kubenfv_kubevim_image_v1_image_proto_msgTypes = make([]protoimpl.MessageInfo, 21)
+var file_kubenfv_kubevim_image_v1_image_proto_msgTypes = make([]protoimpl.MessageInfo, 23)
 var file_kubenfv_kubevim_image_v1_image_proto_goTypes = []any{
 	(ContainerFormat)(0),             // 0: kubenfv.kubevim.image.v1.ContainerFormat
 	(DiskFormat)(0),                  // 1: kubenfv.kubevim.image.v1.DiskFormat
@@ -2135,28 +2275,30 @@ var file_kubenfv_kubevim_image_v1_image_proto_goTypes = []any{
 	(*RegistrySource)(nil),           // 15: kubenfv.kubevim.image.v1.RegistrySource
 	(*UploadSource)(nil),             // 16: kubenfv.kubevim.image.v1.UploadSource
 	(*BlankSource)(nil),              // 17: kubenfv.kubevim.image.v1.BlankSource
-	(*CreateImageRequest)(nil),       // 18: kubenfv.kubevim.image.v1.CreateImageRequest
-	(*GetImageRequest)(nil),          // 19: kubenfv.kubevim.image.v1.GetImageRequest
-	(*ListImagesRequest)(nil),        // 20: kubenfv.kubevim.image.v1.ListImagesRequest
-	(*ListImagesResponse)(nil),       // 21: kubenfv.kubevim.image.v1.ListImagesResponse
-	(*UpdateImageRequest)(nil),       // 22: kubenfv.kubevim.image.v1.UpdateImageRequest
-	(*ImageUpdate)(nil),              // 23: kubenfv.kubevim.image.v1.ImageUpdate
-	(*DeleteImageRequest)(nil),       // 24: kubenfv.kubevim.image.v1.DeleteImageRequest
-	(*ListImageSourcesRequest)(nil),  // 25: kubenfv.kubevim.image.v1.ListImageSourcesRequest
-	(*ListImageSourcesResponse)(nil), // 26: kubenfv.kubevim.image.v1.ListImageSourcesResponse
-	nil,                              // 27: kubenfv.kubevim.image.v1.Image.MetadataEntry
-	nil,                              // 28: kubenfv.kubevim.image.v1.ImageUpdate.MetadataEntry
-	(*timestamppb.Timestamp)(nil),    // 29: google.protobuf.Timestamp
-	(*emptypb.Empty)(nil),            // 30: google.protobuf.Empty
+	(*GlanceSource)(nil),             // 18: kubenfv.kubevim.image.v1.GlanceSource
+	(*LocalSource)(nil),              // 19: kubenfv.kubevim.image.v1.LocalSource
+	(*CreateImageRequest)(nil),       // 20: kubenfv.kubevim.image.v1.CreateImageRequest
+	(*GetImageRequest)(nil),          // 21: kubenfv.kubevim.image.v1.GetImageRequest
+	(*ListImagesRequest)(nil),        // 22: kubenfv.kubevim.image.v1.ListImagesRequest
+	(*ListImagesResponse)(nil),       // 23: kubenfv.kubevim.image.v1.ListImagesResponse
+	(*UpdateImageRequest)(nil),       // 24: kubenfv.kubevim.image.v1.UpdateImageRequest
+	(*ImageUpdate)(nil),              // 25: kubenfv.kubevim.image.v1.ImageUpdate
+	(*DeleteImageRequest)(nil),       // 26: kubenfv.kubevim.image.v1.DeleteImageRequest
+	(*ListImageSourcesRequest)(nil),  // 27: kubenfv.kubevim.image.v1.ListImageSourcesRequest
+	(*ListImageSourcesResponse)(nil), // 28: kubenfv.kubevim.image.v1.ListImageSourcesResponse
+	nil,                              // 29: kubenfv.kubevim.image.v1.Image.MetadataEntry
+	nil,                              // 30: kubenfv.kubevim.image.v1.ImageUpdate.MetadataEntry
+	(*timestamppb.Timestamp)(nil),    // 31: google.protobuf.Timestamp
+	(*emptypb.Empty)(nil),            // 32: google.protobuf.Empty
 }
 var file_kubenfv_kubevim_image_v1_image_proto_depIdxs = []int32{
 	9,  // 0: kubenfv.kubevim.image.v1.Image.checksum:type_name -> kubenfv.kubevim.image.v1.Checksum
 	0,  // 1: kubenfv.kubevim.image.v1.Image.container_format:type_name -> kubenfv.kubevim.image.v1.ContainerFormat
 	1,  // 2: kubenfv.kubevim.image.v1.Image.disk_format:type_name -> kubenfv.kubevim.image.v1.DiskFormat
-	29, // 3: kubenfv.kubevim.image.v1.Image.created_at:type_name -> google.protobuf.Timestamp
-	29, // 4: kubenfv.kubevim.image.v1.Image.updated_at:type_name -> google.protobuf.Timestamp
+	31, // 3: kubenfv.kubevim.image.v1.Image.created_at:type_name -> google.protobuf.Timestamp
+	31, // 4: kubenfv.kubevim.image.v1.Image.updated_at:type_name -> google.protobuf.Timestamp
 	2,  // 5: kubenfv.kubevim.image.v1.Image.status:type_name -> kubenfv.kubevim.image.v1.ImageStatus
-	27, // 6: kubenfv.kubevim.image.v1.Image.metadata:type_name -> kubenfv.kubevim.image.v1.Image.MetadataEntry
+	29, // 6: kubenfv.kubevim.image.v1.Image.metadata:type_name -> kubenfv.kubevim.image.v1.Image.MetadataEntry
 	10, // 7: kubenfv.kubevim.image.v1.Image.source:type_name -> kubenfv.kubevim.image.v1.ImageSource
 	3,  // 8: kubenfv.kubevim.image.v1.Image.import_policy:type_name -> kubenfv.kubevim.image.v1.ImportPolicy
 	4,  // 9: kubenfv.kubevim.image.v1.Image.firmware:type_name -> kubenfv.kubevim.image.v1.Firmware
@@ -2166,33 +2308,35 @@ var file_kubenfv_kubevim_image_v1_image_proto_depIdxs = []int32{
 	15, // 13: kubenfv.kubevim.image.v1.ImageSource.registry:type_name -> kubenfv.kubevim.image.v1.RegistrySource
 	16, // 14: kubenfv.kubevim.image.v1.ImageSource.upload:type_name -> kubenfv.kubevim.image.v1.UploadSource
 	17, // 15: kubenfv.kubevim.image.v1.ImageSource.blank:type_name -> kubenfv.kubevim.image.v1.BlankSource
-	11, // 16: kubenfv.kubevim.image.v1.HttpSource.basic_auth:type_name -> kubenfv.kubevim.image.v1.BasicAuth
-	14, // 17: kubenfv.kubevim.image.v1.S3Source.access_key:type_name -> kubenfv.kubevim.image.v1.S3AccessKey
-	7,  // 18: kubenfv.kubevim.image.v1.RegistrySource.pull_method:type_name -> kubenfv.kubevim.image.v1.RegistrySource.PullMethod
-	11, // 19: kubenfv.kubevim.image.v1.RegistrySource.basic_auth:type_name -> kubenfv.kubevim.image.v1.BasicAuth
-	29, // 20: kubenfv.kubevim.image.v1.UploadSource.upload_expire_time:type_name -> google.protobuf.Timestamp
-	8,  // 21: kubenfv.kubevim.image.v1.CreateImageRequest.image:type_name -> kubenfv.kubevim.image.v1.Image
-	8,  // 22: kubenfv.kubevim.image.v1.ListImagesResponse.images:type_name -> kubenfv.kubevim.image.v1.Image
-	23, // 23: kubenfv.kubevim.image.v1.UpdateImageRequest.update:type_name -> kubenfv.kubevim.image.v1.ImageUpdate
-	28, // 24: kubenfv.kubevim.image.v1.ImageUpdate.metadata:type_name -> kubenfv.kubevim.image.v1.ImageUpdate.MetadataEntry
-	6,  // 25: kubenfv.kubevim.image.v1.ListImageSourcesResponse.sources:type_name -> kubenfv.kubevim.image.v1.ImageSourceType
-	18, // 26: kubenfv.kubevim.image.v1.ImageService.CreateImage:input_type -> kubenfv.kubevim.image.v1.CreateImageRequest
-	19, // 27: kubenfv.kubevim.image.v1.ImageService.GetImage:input_type -> kubenfv.kubevim.image.v1.GetImageRequest
-	20, // 28: kubenfv.kubevim.image.v1.ImageService.ListImages:input_type -> kubenfv.kubevim.image.v1.ListImagesRequest
-	22, // 29: kubenfv.kubevim.image.v1.ImageService.UpdateImage:input_type -> kubenfv.kubevim.image.v1.UpdateImageRequest
-	24, // 30: kubenfv.kubevim.image.v1.ImageService.DeleteImage:input_type -> kubenfv.kubevim.image.v1.DeleteImageRequest
-	25, // 31: kubenfv.kubevim.image.v1.ImageService.ListImageSources:input_type -> kubenfv.kubevim.image.v1.ListImageSourcesRequest
-	8,  // 32: kubenfv.kubevim.image.v1.ImageService.CreateImage:output_type -> kubenfv.kubevim.image.v1.Image
-	8,  // 33: kubenfv.kubevim.image.v1.ImageService.GetImage:output_type -> kubenfv.kubevim.image.v1.Image
-	21, // 34: kubenfv.kubevim.image.v1.ImageService.ListImages:output_type -> kubenfv.kubevim.image.v1.ListImagesResponse
-	8,  // 35: kubenfv.kubevim.image.v1.ImageService.UpdateImage:output_type -> kubenfv.kubevim.image.v1.Image
-	30, // 36: kubenfv.kubevim.image.v1.ImageService.DeleteImage:output_type -> google.protobuf.Empty
-	26, // 37: kubenfv.kubevim.image.v1.ImageService.ListImageSources:output_type -> kubenfv.kubevim.image.v1.ListImageSourcesResponse
-	32, // [32:38] is the sub-list for method output_type
-	26, // [26:32] is the sub-list for method input_type
-	26, // [26:26] is the sub-list for extension type_name
-	26, // [26:26] is the sub-list for extension extendee
-	0,  // [0:26] is the sub-list for field type_name
+	18, // 16: kubenfv.kubevim.image.v1.ImageSource.glance:type_name -> kubenfv.kubevim.image.v1.GlanceSource
+	19, // 17: kubenfv.kubevim.image.v1.ImageSource.local:type_name -> kubenfv.kubevim.image.v1.LocalSource
+	11, // 18: kubenfv.kubevim.image.v1.HttpSource.basic_auth:type_name -> kubenfv.kubevim.image.v1.BasicAuth
+	14, // 19: kubenfv.kubevim.image.v1.S3Source.access_key:type_name -> kubenfv.kubevim.image.v1.S3AccessKey
+	7,  // 20: kubenfv.kubevim.image.v1.RegistrySource.pull_method:type_name -> kubenfv.kubevim.image.v1.RegistrySource.PullMethod
+	11, // 21: kubenfv.kubevim.image.v1.RegistrySource.basic_auth:type_name -> kubenfv.kubevim.image.v1.BasicAuth
+	31, // 22: kubenfv.kubevim.image.v1.UploadSource.upload_expire_time:type_name -> google.protobuf.Timestamp
+	8,  // 23: kubenfv.kubevim.image.v1.CreateImageRequest.image:type_name -> kubenfv.kubevim.image.v1.Image
+	8,  // 24: kubenfv.kubevim.image.v1.ListImagesResponse.images:type_name -> kubenfv.kubevim.image.v1.Image
+	25, // 25: kubenfv.kubevim.image.v1.UpdateImageRequest.update:type_name -> kubenfv.kubevim.image.v1.ImageUpdate
+	30, // 26: kubenfv.kubevim.image.v1.ImageUpdate.metadata:type_name -> kubenfv.kubevim.image.v1.ImageUpdate.MetadataEntry
+	6,  // 27: kubenfv.kubevim.image.v1.ListImageSourcesResponse.sources:type_name -> kubenfv.kubevim.image.v1.ImageSourceType
+	20, // 28: kubenfv.kubevim.image.v1.ImageService.CreateImage:input_type -> kubenfv.kubevim.image.v1.CreateImageRequest
+	21, // 29: kubenfv.kubevim.image.v1.ImageService.GetImage:input_type -> kubenfv.kubevim.image.v1.GetImageRequest
+	22, // 30: kubenfv.kubevim.image.v1.ImageService.ListImages:input_type -> kubenfv.kubevim.image.v1.ListImagesRequest
+	24, // 31: kubenfv.kubevim.image.v1.ImageService.UpdateImage:input_type -> kubenfv.kubevim.image.v1.UpdateImageRequest
+	26, // 32: kubenfv.kubevim.image.v1.ImageService.DeleteImage:input_type -> kubenfv.kubevim.image.v1.DeleteImageRequest
+	27, // 33: kubenfv.kubevim.image.v1.ImageService.ListImageSources:input_type -> kubenfv.kubevim.image.v1.ListImageSourcesRequest
+	8,  // 34: kubenfv.kubevim.image.v1.ImageService.CreateImage:output_type -> kubenfv.kubevim.image.v1.Image
+	8,  // 35: kubenfv.kubevim.image.v1.ImageService.GetImage:output_type -> kubenfv.kubevim.image.v1.Image
+	23, // 36: kubenfv.kubevim.image.v1.ImageService.ListImages:output_type -> kubenfv.kubevim.image.v1.ListImagesResponse
+	8,  // 37: kubenfv.kubevim.image.v1.ImageService.UpdateImage:output_type -> kubenfv.kubevim.image.v1.Image
+	32, // 38: kubenfv.kubevim.image.v1.ImageService.DeleteImage:output_type -> google.protobuf.Empty
+	28, // 39: kubenfv.kubevim.image.v1.ImageService.ListImageSources:output_type -> kubenfv.kubevim.image.v1.ListImageSourcesResponse
+	34, // [34:40] is the sub-list for method output_type
+	28, // [28:34] is the sub-list for method input_type
+	28, // [28:28] is the sub-list for extension type_name
+	28, // [28:28] is the sub-list for extension extendee
+	0,  // [0:28] is the sub-list for field type_name
 }
 
 func init() { file_kubenfv_kubevim_image_v1_image_proto_init() }
@@ -2206,6 +2350,8 @@ func file_kubenfv_kubevim_image_v1_image_proto_init() {
 		(*ImageSource_Registry)(nil),
 		(*ImageSource_Upload)(nil),
 		(*ImageSource_Blank)(nil),
+		(*ImageSource_Glance)(nil),
+		(*ImageSource_Local)(nil),
 	}
 	file_kubenfv_kubevim_image_v1_image_proto_msgTypes[4].OneofWrappers = []any{
 		(*HttpSource_BasicAuth)(nil),
@@ -2219,14 +2365,14 @@ func file_kubenfv_kubevim_image_v1_image_proto_init() {
 		(*RegistrySource_BasicAuth)(nil),
 		(*RegistrySource_CredentialsRef)(nil),
 	}
-	file_kubenfv_kubevim_image_v1_image_proto_msgTypes[15].OneofWrappers = []any{}
+	file_kubenfv_kubevim_image_v1_image_proto_msgTypes[17].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_kubenfv_kubevim_image_v1_image_proto_rawDesc), len(file_kubenfv_kubevim_image_v1_image_proto_rawDesc)),
 			NumEnums:      8,
-			NumMessages:   21,
+			NumMessages:   23,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

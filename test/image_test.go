@@ -60,6 +60,23 @@ func TestImageValidation(t *testing.T) {
 		"unknown firmware": {
 			json: `{"image":{"name":"a","source":{"upload":{}},"firmware":7}}`, msg: &imagev1.CreateImageRequest{},
 		},
+		"glance source": {
+			json:  `{"image":{"name":"a","source":{"glance":{"glanceImageId":"2b1c0d9e-8f7a-4b6c-9d5e-4f3a2b1c0d9e"}},"importPolicy":"IMPORT_POLICY_ON_FIRST_USE"}}`,
+			msg:   &imagev1.CreateImageRequest{},
+			valid: true,
+		},
+		"glance id not a uuid": {
+			json: `{"image":{"name":"a","source":{"glance":{"glanceImageId":"cirros"}}}}`, msg: &imagev1.CreateImageRequest{},
+		},
+		"local source": {
+			json: `{"image":{"name":"a","source":{"local":{"fileName":"cirros-0.6.2.qcow2"}}}}`, msg: &imagev1.CreateImageRequest{}, valid: true,
+		},
+		"local file with a path": {
+			json: `{"image":{"name":"a","source":{"local":{"fileName":"../etc/passwd"}}}}`, msg: &imagev1.CreateImageRequest{},
+		},
+		"local file dot dot": {
+			json: `{"image":{"name":"a","source":{"local":{"fileName":".."}}}}`, msg: &imagev1.CreateImageRequest{},
+		},
 		"update golden": {
 			json: readFile(t, "testdata/image/update_image_request.json"), msg: &imagev1.UpdateImageRequest{}, valid: true,
 		},

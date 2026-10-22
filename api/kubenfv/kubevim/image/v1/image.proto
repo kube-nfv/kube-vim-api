@@ -346,7 +346,7 @@ message Image {
       }
     }
   ];
-  // Where the VIM imports the software image from; unset for images of a catalog backend.
+  // Where the VIM imports the software image from; images of a catalog backend name their catalog entry.
   ImageSource source = 17 [
     (google.api.field_behavior) = REQUIRED,
     (google.api.field_behavior) = IMMUTABLE,
@@ -488,6 +488,10 @@ message ImageSource {
     UploadSource upload = 4;
     // Create an empty disk.
     BlankSource blank = 5;
+    // Import an image of the Glance catalog configured in the VIM.
+    GlanceSource glance = 6;
+    // Import an image file of the local catalog configured in the VIM.
+    LocalSource local = 7;
   }
 }
 
@@ -601,6 +605,32 @@ message BlankSource {
   ];
 }
 
+// Image in the Glance catalog configured in the VIM; the VIM holds the Glance endpoint and credentials.
+message GlanceSource {
+  // Identifier of the image in Glance.
+  string glance_image_id = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).string.uuid = true
+  ];
+}
+
+// Image file in the local catalog directory configured in the VIM.
+message LocalSource {
+  // Name of the file in the catalog directory, without a path.
+  string file_name = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).string = {
+      min_len: 1
+      max_len: 255
+      pattern: "^[^/]+$"
+      not_in: [
+        ".",
+        ".."
+      ]
+    }
+  ];
+}
+
 // Image source type, as reported by ListImageSources.
 // Values may be added as CDI support grows; clients should accept unknown values.
 enum ImageSourceType {
@@ -610,6 +640,8 @@ enum ImageSourceType {
   IMAGE_SOURCE_TYPE_REGISTRY = 3;
   IMAGE_SOURCE_TYPE_UPLOAD = 4;
   IMAGE_SOURCE_TYPE_BLANK = 5;
+  IMAGE_SOURCE_TYPE_GLANCE = 6;
+  IMAGE_SOURCE_TYPE_LOCAL = 7;
 }
 
 message CreateImageRequest {
