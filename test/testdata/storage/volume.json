@@ -3,11 +3,13 @@
   "volumeName": "router-1-data",
   "storageData": {
     "typeOfStorage": "TYPE_OF_STORAGE_VOLUME",
-    "sizeOfStorage": "100Gi"
+    "sizeOfStorage": "100Gi",
+    "storageClass": "local-nvme"
   },
   "computeId": "c0ffee00-1234-4abc-8def-0123456789ab",
+  "hostId": "worker-2",
   "operationalState": "OPERATIONAL_STATE_ENABLED",
   "metadata": {
-    "osm.etsi.org/vdu": "router"
+    "kubevim.kubenfv.io/pvc-name": "router-1-data"
   }
 }

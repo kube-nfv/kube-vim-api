@@ -51,6 +51,22 @@ message VirtualStorageData {
       }
     }
   ];
+  // Kubernetes storage class of the storage, one labelled kubevim.kubenfv.io/storage=true; the VIM default when unset.
+  string storage_class = 4 [
+    (google.api.field_behavior) = OPTIONAL,
+    (buf.validate.field).string = {
+      max_len: 253
+      pattern: "^[a-z0-9]([-a-z0-9.]*[a-z0-9])?$"
+    },
+    (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE,
+    (kubenfv.kubevim.options.v1.ifa_field) = {
+      departure: {
+        kind: KIND_EXTENSION
+        translates: true
+        rationale: "Nodes and zones offer different storage; consumers choose it by storage class instead of IFA storage affinity."
+      }
+    }
+  ];
 }
 
 // Type of a virtualised storage resource.

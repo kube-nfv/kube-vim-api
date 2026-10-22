@@ -21,18 +21,18 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	StorageService_CreateVolume_FullMethodName        = "/kubenfv.kubevim.storage.v1.StorageService/CreateVolume"
-	StorageService_GetVolume_FullMethodName           = "/kubenfv.kubevim.storage.v1.StorageService/GetVolume"
-	StorageService_ListVolumes_FullMethodName         = "/kubenfv.kubevim.storage.v1.StorageService/ListVolumes"
-	StorageService_UpdateVolume_FullMethodName        = "/kubenfv.kubevim.storage.v1.StorageService/UpdateVolume"
-	StorageService_DeleteVolume_FullMethodName        = "/kubenfv.kubevim.storage.v1.StorageService/DeleteVolume"
-	StorageService_OperateVolume_FullMethodName       = "/kubenfv.kubevim.storage.v1.StorageService/OperateVolume"
-	StorageService_ScaleVolume_FullMethodName         = "/kubenfv.kubevim.storage.v1.StorageService/ScaleVolume"
-	StorageService_MigrateVolume_FullMethodName       = "/kubenfv.kubevim.storage.v1.StorageService/MigrateVolume"
-	StorageService_CreateAffinityGroup_FullMethodName = "/kubenfv.kubevim.storage.v1.StorageService/CreateAffinityGroup"
-	StorageService_GetAffinityGroup_FullMethodName    = "/kubenfv.kubevim.storage.v1.StorageService/GetAffinityGroup"
-	StorageService_ListAffinityGroups_FullMethodName  = "/kubenfv.kubevim.storage.v1.StorageService/ListAffinityGroups"
-	StorageService_DeleteAffinityGroup_FullMethodName = "/kubenfv.kubevim.storage.v1.StorageService/DeleteAffinityGroup"
+	StorageService_CreateVolume_FullMethodName         = "/kubenfv.kubevim.storage.v1.StorageService/CreateVolume"
+	StorageService_GetVolume_FullMethodName            = "/kubenfv.kubevim.storage.v1.StorageService/GetVolume"
+	StorageService_ListVolumes_FullMethodName          = "/kubenfv.kubevim.storage.v1.StorageService/ListVolumes"
+	StorageService_UpdateVolume_FullMethodName         = "/kubenfv.kubevim.storage.v1.StorageService/UpdateVolume"
+	StorageService_DeleteVolume_FullMethodName         = "/kubenfv.kubevim.storage.v1.StorageService/DeleteVolume"
+	StorageService_ScaleVolume_FullMethodName          = "/kubenfv.kubevim.storage.v1.StorageService/ScaleVolume"
+	StorageService_MigrateVolume_FullMethodName        = "/kubenfv.kubevim.storage.v1.StorageService/MigrateVolume"
+	StorageService_CreateVolumeSnapshot_FullMethodName = "/kubenfv.kubevim.storage.v1.StorageService/CreateVolumeSnapshot"
+	StorageService_GetVolumeSnapshot_FullMethodName    = "/kubenfv.kubevim.storage.v1.StorageService/GetVolumeSnapshot"
+	StorageService_ListVolumeSnapshots_FullMethodName  = "/kubenfv.kubevim.storage.v1.StorageService/ListVolumeSnapshots"
+	StorageService_DeleteVolumeSnapshot_FullMethodName = "/kubenfv.kubevim.storage.v1.StorageService/DeleteVolumeSnapshot"
+	StorageService_RevertVolumeSnapshot_FullMethodName = "/kubenfv.kubevim.storage.v1.StorageService/RevertVolumeSnapshot"
 )
 
 // StorageServiceClient is the client API for StorageService service.
@@ -47,24 +47,24 @@ type StorageServiceClient interface {
 	GetVolume(ctx context.Context, in *GetVolumeRequest, opts ...grpc.CallOption) (*v1.Volume, error)
 	// Returns the volumes matching a filter.
 	ListVolumes(ctx context.Context, in *ListVolumesRequest, opts ...grpc.CallOption) (*ListVolumesResponse, error)
-	// Updates a volume's name and metadata.
+	// Updates the name and metadata of a volume.
 	UpdateVolume(ctx context.Context, in *UpdateVolumeRequest, opts ...grpc.CallOption) (*v1.Volume, error)
 	// Deletes a volume.
 	DeleteVolume(ctx context.Context, in *DeleteVolumeRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
-	// Runs a snapshot operation on a volume.
-	OperateVolume(ctx context.Context, in *OperateVolumeRequest, opts ...grpc.CallOption) (*OperateVolumeResponse, error)
-	// Resizes a volume.
+	// Grows a volume.
 	ScaleVolume(ctx context.Context, in *ScaleVolumeRequest, opts ...grpc.CallOption) (*v1.Volume, error)
-	// Moves a volume to other storage or another host.
+	// Moves a volume to another storage class.
 	MigrateVolume(ctx context.Context, in *MigrateVolumeRequest, opts ...grpc.CallOption) (*v1.Volume, error)
-	// Creates a storage affinity or anti-affinity group.
-	CreateAffinityGroup(ctx context.Context, in *v1.CreateAffinityGroupRequest, opts ...grpc.CallOption) (*v1.AffinityGroup, error)
-	// Returns one storage affinity group.
-	GetAffinityGroup(ctx context.Context, in *v1.GetAffinityGroupRequest, opts ...grpc.CallOption) (*v1.AffinityGroup, error)
-	// Returns the storage affinity groups.
-	ListAffinityGroups(ctx context.Context, in *v1.ListAffinityGroupsRequest, opts ...grpc.CallOption) (*v1.ListAffinityGroupsResponse, error)
-	// Deletes a storage affinity group.
-	DeleteAffinityGroup(ctx context.Context, in *v1.DeleteAffinityGroupRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	// Creates a snapshot of a volume.
+	CreateVolumeSnapshot(ctx context.Context, in *CreateVolumeSnapshotRequest, opts ...grpc.CallOption) (*VolumeSnapshot, error)
+	// Returns one snapshot of a volume.
+	GetVolumeSnapshot(ctx context.Context, in *GetVolumeSnapshotRequest, opts ...grpc.CallOption) (*VolumeSnapshot, error)
+	// Returns the snapshots of a volume.
+	ListVolumeSnapshots(ctx context.Context, in *ListVolumeSnapshotsRequest, opts ...grpc.CallOption) (*ListVolumeSnapshotsResponse, error)
+	// Deletes a snapshot of a volume.
+	DeleteVolumeSnapshot(ctx context.Context, in *DeleteVolumeSnapshotRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	// Reverts a volume that no running compute resource uses to a snapshot.
+	RevertVolumeSnapshot(ctx context.Context, in *RevertVolumeSnapshotRequest, opts ...grpc.CallOption) (*v1.Volume, error)
 }
 
 type storageServiceClient struct {
@@ -125,16 +125,6 @@ func (c *storageServiceClient) DeleteVolume(ctx context.Context, in *DeleteVolum
 	return out, nil
 }
 
-func (c *storageServiceClient) OperateVolume(ctx context.Context, in *OperateVolumeRequest, opts ...grpc.CallOption) (*OperateVolumeResponse, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(OperateVolumeResponse)
-	err := c.cc.Invoke(ctx, StorageService_OperateVolume_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 func (c *storageServiceClient) ScaleVolume(ctx context.Context, in *ScaleVolumeRequest, opts ...grpc.CallOption) (*v1.Volume, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(v1.Volume)
@@ -155,40 +145,50 @@ func (c *storageServiceClient) MigrateVolume(ctx context.Context, in *MigrateVol
 	return out, nil
 }
 
-func (c *storageServiceClient) CreateAffinityGroup(ctx context.Context, in *v1.CreateAffinityGroupRequest, opts ...grpc.CallOption) (*v1.AffinityGroup, error) {
+func (c *storageServiceClient) CreateVolumeSnapshot(ctx context.Context, in *CreateVolumeSnapshotRequest, opts ...grpc.CallOption) (*VolumeSnapshot, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(v1.AffinityGroup)
-	err := c.cc.Invoke(ctx, StorageService_CreateAffinityGroup_FullMethodName, in, out, cOpts...)
+	out := new(VolumeSnapshot)
+	err := c.cc.Invoke(ctx, StorageService_CreateVolumeSnapshot_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *storageServiceClient) GetAffinityGroup(ctx context.Context, in *v1.GetAffinityGroupRequest, opts ...grpc.CallOption) (*v1.AffinityGroup, error) {
+func (c *storageServiceClient) GetVolumeSnapshot(ctx context.Context, in *GetVolumeSnapshotRequest, opts ...grpc.CallOption) (*VolumeSnapshot, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(v1.AffinityGroup)
-	err := c.cc.Invoke(ctx, StorageService_GetAffinityGroup_FullMethodName, in, out, cOpts...)
+	out := new(VolumeSnapshot)
+	err := c.cc.Invoke(ctx, StorageService_GetVolumeSnapshot_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *storageServiceClient) ListAffinityGroups(ctx context.Context, in *v1.ListAffinityGroupsRequest, opts ...grpc.CallOption) (*v1.ListAffinityGroupsResponse, error) {
+func (c *storageServiceClient) ListVolumeSnapshots(ctx context.Context, in *ListVolumeSnapshotsRequest, opts ...grpc.CallOption) (*ListVolumeSnapshotsResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(v1.ListAffinityGroupsResponse)
-	err := c.cc.Invoke(ctx, StorageService_ListAffinityGroups_FullMethodName, in, out, cOpts...)
+	out := new(ListVolumeSnapshotsResponse)
+	err := c.cc.Invoke(ctx, StorageService_ListVolumeSnapshots_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *storageServiceClient) DeleteAffinityGroup(ctx context.Context, in *v1.DeleteAffinityGroupRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+func (c *storageServiceClient) DeleteVolumeSnapshot(ctx context.Context, in *DeleteVolumeSnapshotRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(emptypb.Empty)
-	err := c.cc.Invoke(ctx, StorageService_DeleteAffinityGroup_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, StorageService_DeleteVolumeSnapshot_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *storageServiceClient) RevertVolumeSnapshot(ctx context.Context, in *RevertVolumeSnapshotRequest, opts ...grpc.CallOption) (*v1.Volume, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(v1.Volume)
+	err := c.cc.Invoke(ctx, StorageService_RevertVolumeSnapshot_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -207,24 +207,24 @@ type StorageServiceServer interface {
 	GetVolume(context.Context, *GetVolumeRequest) (*v1.Volume, error)
 	// Returns the volumes matching a filter.
 	ListVolumes(context.Context, *ListVolumesRequest) (*ListVolumesResponse, error)
-	// Updates a volume's name and metadata.
+	// Updates the name and metadata of a volume.
 	UpdateVolume(context.Context, *UpdateVolumeRequest) (*v1.Volume, error)
 	// Deletes a volume.
 	DeleteVolume(context.Context, *DeleteVolumeRequest) (*emptypb.Empty, error)
-	// Runs a snapshot operation on a volume.
-	OperateVolume(context.Context, *OperateVolumeRequest) (*OperateVolumeResponse, error)
-	// Resizes a volume.
+	// Grows a volume.
 	ScaleVolume(context.Context, *ScaleVolumeRequest) (*v1.Volume, error)
-	// Moves a volume to other storage or another host.
+	// Moves a volume to another storage class.
 	MigrateVolume(context.Context, *MigrateVolumeRequest) (*v1.Volume, error)
-	// Creates a storage affinity or anti-affinity group.
-	CreateAffinityGroup(context.Context, *v1.CreateAffinityGroupRequest) (*v1.AffinityGroup, error)
-	// Returns one storage affinity group.
-	GetAffinityGroup(context.Context, *v1.GetAffinityGroupRequest) (*v1.AffinityGroup, error)
-	// Returns the storage affinity groups.
-	ListAffinityGroups(context.Context, *v1.ListAffinityGroupsRequest) (*v1.ListAffinityGroupsResponse, error)
-	// Deletes a storage affinity group.
-	DeleteAffinityGroup(context.Context, *v1.DeleteAffinityGroupRequest) (*emptypb.Empty, error)
+	// Creates a snapshot of a volume.
+	CreateVolumeSnapshot(context.Context, *CreateVolumeSnapshotRequest) (*VolumeSnapshot, error)
+	// Returns one snapshot of a volume.
+	GetVolumeSnapshot(context.Context, *GetVolumeSnapshotRequest) (*VolumeSnapshot, error)
+	// Returns the snapshots of a volume.
+	ListVolumeSnapshots(context.Context, *ListVolumeSnapshotsRequest) (*ListVolumeSnapshotsResponse, error)
+	// Deletes a snapshot of a volume.
+	DeleteVolumeSnapshot(context.Context, *DeleteVolumeSnapshotRequest) (*emptypb.Empty, error)
+	// Reverts a volume that no running compute resource uses to a snapshot.
+	RevertVolumeSnapshot(context.Context, *RevertVolumeSnapshotRequest) (*v1.Volume, error)
 	mustEmbedUnimplementedStorageServiceServer()
 }
 
@@ -250,26 +250,26 @@ func (UnimplementedStorageServiceServer) UpdateVolume(context.Context, *UpdateVo
 func (UnimplementedStorageServiceServer) DeleteVolume(context.Context, *DeleteVolumeRequest) (*emptypb.Empty, error) {
 	return nil, status.Error(codes.Unimplemented, "method DeleteVolume not implemented")
 }
-func (UnimplementedStorageServiceServer) OperateVolume(context.Context, *OperateVolumeRequest) (*OperateVolumeResponse, error) {
-	return nil, status.Error(codes.Unimplemented, "method OperateVolume not implemented")
-}
 func (UnimplementedStorageServiceServer) ScaleVolume(context.Context, *ScaleVolumeRequest) (*v1.Volume, error) {
 	return nil, status.Error(codes.Unimplemented, "method ScaleVolume not implemented")
 }
 func (UnimplementedStorageServiceServer) MigrateVolume(context.Context, *MigrateVolumeRequest) (*v1.Volume, error) {
 	return nil, status.Error(codes.Unimplemented, "method MigrateVolume not implemented")
 }
-func (UnimplementedStorageServiceServer) CreateAffinityGroup(context.Context, *v1.CreateAffinityGroupRequest) (*v1.AffinityGroup, error) {
-	return nil, status.Error(codes.Unimplemented, "method CreateAffinityGroup not implemented")
+func (UnimplementedStorageServiceServer) CreateVolumeSnapshot(context.Context, *CreateVolumeSnapshotRequest) (*VolumeSnapshot, error) {
+	return nil, status.Error(codes.Unimplemented, "method CreateVolumeSnapshot not implemented")
 }
-func (UnimplementedStorageServiceServer) GetAffinityGroup(context.Context, *v1.GetAffinityGroupRequest) (*v1.AffinityGroup, error) {
-	return nil, status.Error(codes.Unimplemented, "method GetAffinityGroup not implemented")
+func (UnimplementedStorageServiceServer) GetVolumeSnapshot(context.Context, *GetVolumeSnapshotRequest) (*VolumeSnapshot, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetVolumeSnapshot not implemented")
 }
-func (UnimplementedStorageServiceServer) ListAffinityGroups(context.Context, *v1.ListAffinityGroupsRequest) (*v1.ListAffinityGroupsResponse, error) {
-	return nil, status.Error(codes.Unimplemented, "method ListAffinityGroups not implemented")
+func (UnimplementedStorageServiceServer) ListVolumeSnapshots(context.Context, *ListVolumeSnapshotsRequest) (*ListVolumeSnapshotsResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ListVolumeSnapshots not implemented")
 }
-func (UnimplementedStorageServiceServer) DeleteAffinityGroup(context.Context, *v1.DeleteAffinityGroupRequest) (*emptypb.Empty, error) {
-	return nil, status.Error(codes.Unimplemented, "method DeleteAffinityGroup not implemented")
+func (UnimplementedStorageServiceServer) DeleteVolumeSnapshot(context.Context, *DeleteVolumeSnapshotRequest) (*emptypb.Empty, error) {
+	return nil, status.Error(codes.Unimplemented, "method DeleteVolumeSnapshot not implemented")
+}
+func (UnimplementedStorageServiceServer) RevertVolumeSnapshot(context.Context, *RevertVolumeSnapshotRequest) (*v1.Volume, error) {
+	return nil, status.Error(codes.Unimplemented, "method RevertVolumeSnapshot not implemented")
 }
 func (UnimplementedStorageServiceServer) mustEmbedUnimplementedStorageServiceServer() {}
 func (UnimplementedStorageServiceServer) testEmbeddedByValue()                        {}
@@ -382,24 +382,6 @@ func _StorageService_DeleteVolume_Handler(srv interface{}, ctx context.Context, 
 	return interceptor(ctx, in, info, handler)
 }
 
-func _StorageService_OperateVolume_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(OperateVolumeRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(StorageServiceServer).OperateVolume(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: StorageService_OperateVolume_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(StorageServiceServer).OperateVolume(ctx, req.(*OperateVolumeRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 func _StorageService_ScaleVolume_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(ScaleVolumeRequest)
 	if err := dec(in); err != nil {
@@ -436,74 +418,92 @@ func _StorageService_MigrateVolume_Handler(srv interface{}, ctx context.Context,
 	return interceptor(ctx, in, info, handler)
 }
 
-func _StorageService_CreateAffinityGroup_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(v1.CreateAffinityGroupRequest)
+func _StorageService_CreateVolumeSnapshot_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateVolumeSnapshotRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(StorageServiceServer).CreateAffinityGroup(ctx, in)
+		return srv.(StorageServiceServer).CreateVolumeSnapshot(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: StorageService_CreateAffinityGroup_FullMethodName,
+		FullMethod: StorageService_CreateVolumeSnapshot_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(StorageServiceServer).CreateAffinityGroup(ctx, req.(*v1.CreateAffinityGroupRequest))
+		return srv.(StorageServiceServer).CreateVolumeSnapshot(ctx, req.(*CreateVolumeSnapshotRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _StorageService_GetAffinityGroup_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(v1.GetAffinityGroupRequest)
+func _StorageService_GetVolumeSnapshot_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetVolumeSnapshotRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(StorageServiceServer).GetAffinityGroup(ctx, in)
+		return srv.(StorageServiceServer).GetVolumeSnapshot(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: StorageService_GetAffinityGroup_FullMethodName,
+		FullMethod: StorageService_GetVolumeSnapshot_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(StorageServiceServer).GetAffinityGroup(ctx, req.(*v1.GetAffinityGroupRequest))
+		return srv.(StorageServiceServer).GetVolumeSnapshot(ctx, req.(*GetVolumeSnapshotRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _StorageService_ListAffinityGroups_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(v1.ListAffinityGroupsRequest)
+func _StorageService_ListVolumeSnapshots_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListVolumeSnapshotsRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(StorageServiceServer).ListAffinityGroups(ctx, in)
+		return srv.(StorageServiceServer).ListVolumeSnapshots(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: StorageService_ListAffinityGroups_FullMethodName,
+		FullMethod: StorageService_ListVolumeSnapshots_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(StorageServiceServer).ListAffinityGroups(ctx, req.(*v1.ListAffinityGroupsRequest))
+		return srv.(StorageServiceServer).ListVolumeSnapshots(ctx, req.(*ListVolumeSnapshotsRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _StorageService_DeleteAffinityGroup_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(v1.DeleteAffinityGroupRequest)
+func _StorageService_DeleteVolumeSnapshot_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteVolumeSnapshotRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(StorageServiceServer).DeleteAffinityGroup(ctx, in)
+		return srv.(StorageServiceServer).DeleteVolumeSnapshot(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: StorageService_DeleteAffinityGroup_FullMethodName,
+		FullMethod: StorageService_DeleteVolumeSnapshot_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(StorageServiceServer).DeleteAffinityGroup(ctx, req.(*v1.DeleteAffinityGroupRequest))
+		return srv.(StorageServiceServer).DeleteVolumeSnapshot(ctx, req.(*DeleteVolumeSnapshotRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _StorageService_RevertVolumeSnapshot_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RevertVolumeSnapshotRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(StorageServiceServer).RevertVolumeSnapshot(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: StorageService_RevertVolumeSnapshot_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(StorageServiceServer).RevertVolumeSnapshot(ctx, req.(*RevertVolumeSnapshotRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -536,10 +536,6 @@ var StorageService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _StorageService_DeleteVolume_Handler,
 		},
 		{
-			MethodName: "OperateVolume",
-			Handler:    _StorageService_OperateVolume_Handler,
-		},
-		{
 			MethodName: "ScaleVolume",
 			Handler:    _StorageService_ScaleVolume_Handler,
 		},
@@ -548,20 +544,24 @@ var StorageService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _StorageService_MigrateVolume_Handler,
 		},
 		{
-			MethodName: "CreateAffinityGroup",
-			Handler:    _StorageService_CreateAffinityGroup_Handler,
+			MethodName: "CreateVolumeSnapshot",
+			Handler:    _StorageService_CreateVolumeSnapshot_Handler,
 		},
 		{
-			MethodName: "GetAffinityGroup",
-			Handler:    _StorageService_GetAffinityGroup_Handler,
+			MethodName: "GetVolumeSnapshot",
+			Handler:    _StorageService_GetVolumeSnapshot_Handler,
 		},
 		{
-			MethodName: "ListAffinityGroups",
-			Handler:    _StorageService_ListAffinityGroups_Handler,
+			MethodName: "ListVolumeSnapshots",
+			Handler:    _StorageService_ListVolumeSnapshots_Handler,
 		},
 		{
-			MethodName: "DeleteAffinityGroup",
-			Handler:    _StorageService_DeleteAffinityGroup_Handler,
+			MethodName: "DeleteVolumeSnapshot",
+			Handler:    _StorageService_DeleteVolumeSnapshot_Handler,
+		},
+		{
+			MethodName: "RevertVolumeSnapshot",
+			Handler:    _StorageService_RevertVolumeSnapshot_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

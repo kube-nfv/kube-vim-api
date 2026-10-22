@@ -275,7 +275,7 @@ service ComputeService {
   }
 
   // Creates a snapshot of a compute resource.
-  rpc CreateSnapshot(CreateSnapshotRequest) returns (Snapshot) {
+  rpc CreateComputeSnapshot(CreateComputeSnapshotRequest) returns (ComputeSnapshot) {
     option (google.api.http) = {
       post: "/compute/v1/computes/{compute_id}/snapshots"
       body: "*"
@@ -299,7 +299,7 @@ service ComputeService {
   }
 
   // Returns one snapshot of a compute resource.
-  rpc GetSnapshot(GetSnapshotRequest) returns (Snapshot) {
+  rpc GetComputeSnapshot(GetComputeSnapshotRequest) returns (ComputeSnapshot) {
     option (google.api.http) = {get: "/compute/v1/computes/{compute_id}/snapshots/{snapshot_id}"};
     option (grpc.gateway.protoc_gen_openapiv3.options.openapiv3_operation) = {
       security: {
@@ -319,7 +319,7 @@ service ComputeService {
   }
 
   // Returns the snapshots of a compute resource.
-  rpc ListSnapshots(ListSnapshotsRequest) returns (ListSnapshotsResponse) {
+  rpc ListComputeSnapshots(ListComputeSnapshotsRequest) returns (ListComputeSnapshotsResponse) {
     option (google.api.http) = {get: "/compute/v1/computes/{compute_id}/snapshots"};
     option (grpc.gateway.protoc_gen_openapiv3.options.openapiv3_operation) = {
       security: {
@@ -339,7 +339,7 @@ service ComputeService {
   }
 
   // Deletes a snapshot of a compute resource.
-  rpc DeleteSnapshot(DeleteSnapshotRequest) returns (google.protobuf.Empty) {
+  rpc DeleteComputeSnapshot(DeleteComputeSnapshotRequest) returns (google.protobuf.Empty) {
     option (google.api.http) = {delete: "/compute/v1/computes/{compute_id}/snapshots/{snapshot_id}"};
     option (grpc.gateway.protoc_gen_openapiv3.options.openapiv3_operation) = {
       security: {
@@ -360,7 +360,7 @@ service ComputeService {
   }
 
   // Reverts a stopped compute resource to a snapshot.
-  rpc RevertSnapshot(RevertSnapshotRequest) returns (Compute) {
+  rpc RevertComputeSnapshot(RevertComputeSnapshotRequest) returns (Compute) {
     option (google.api.http) = {
       post: "/compute/v1/computes/{compute_id}/snapshots/{snapshot_id}/revert"
       body: "*"
@@ -1217,7 +1217,7 @@ message DetachVolumeRequest {
 }
 
 // A snapshot of a compute resource (KubeVirt VirtualMachineSnapshot).
-message Snapshot {
+message ComputeSnapshot {
   option (kubenfv.kubevim.options.v1.ifa_message) = {
     departure: {
       kind: KIND_DEVIATION
@@ -1235,7 +1235,7 @@ message Snapshot {
   // Time the snapshot was taken.
   google.protobuf.Timestamp created_at = 4 [(google.api.field_behavior) = OUTPUT_ONLY];
   // Status of the snapshot.
-  SnapshotStatus status = 5 [(google.api.field_behavior) = OUTPUT_ONLY];
+  kubenfv.kubevim.common.v1.SnapshotStatus status = 5 [(google.api.field_behavior) = OUTPUT_ONLY];
   // Metadata set by the consumer and by the VIM; for keys under "kubevim.kubenfv.io/" that the VIM maintains, its value wins.
   map<string, string> metadata = 6 [
     (google.api.field_behavior) = OPTIONAL,
@@ -1243,23 +1243,14 @@ message Snapshot {
   ];
 }
 
-// Status of a snapshot.
-// Values may be added as KubeVirt support grows; clients should accept unknown values.
-enum SnapshotStatus {
-  SNAPSHOT_STATUS_UNSPECIFIED = 0;
-  SNAPSHOT_STATUS_CREATING = 1;
-  SNAPSHOT_STATUS_READY = 2;
-  SNAPSHOT_STATUS_FAILED = 3;
-}
-
-message CreateSnapshotRequest {
+message CreateComputeSnapshotRequest {
   // Compute resource to take the snapshot of.
   string compute_id = 1 [
     (google.api.field_behavior) = REQUIRED,
     (buf.validate.field).string.uuid = true
   ];
   // Snapshot to create: name and metadata.
-  Snapshot snapshot = 2 [(google.api.field_behavior) = OPTIONAL];
+  ComputeSnapshot snapshot = 2 [(google.api.field_behavior) = OPTIONAL];
   // Client-chosen UUID that makes the request idempotent (AIP-155).
   string request_id = 3 [
     (google.api.field_behavior) = OPTIONAL,
@@ -1268,7 +1259,7 @@ message CreateSnapshotRequest {
   ];
 }
 
-message GetSnapshotRequest {
+message GetComputeSnapshotRequest {
   // Compute resource the snapshot belongs to.
   string compute_id = 1 [
     (google.api.field_behavior) = REQUIRED,
@@ -1281,7 +1272,7 @@ message GetSnapshotRequest {
   ];
 }
 
-message ListSnapshotsRequest {
+message ListComputeSnapshotsRequest {
   // Compute resource the snapshots belong to.
   string compute_id = 1 [
     (google.api.field_behavior) = REQUIRED,
@@ -1296,14 +1287,14 @@ message ListSnapshotsRequest {
   ];
 }
 
-message ListSnapshotsResponse {
+message ListComputeSnapshotsResponse {
   // Snapshots matching the filter.
-  repeated Snapshot snapshots = 1;
+  repeated ComputeSnapshot snapshots = 1;
   // Marker of the next page; empty on the last page (SOL 013 5.4).
   string nextpage_opaque_marker = 2 [json_name = "nextpage_opaque_marker"];
 }
 
-message DeleteSnapshotRequest {
+message DeleteComputeSnapshotRequest {
   // Compute resource the snapshot belongs to.
   string compute_id = 1 [
     (google.api.field_behavior) = REQUIRED,
@@ -1316,7 +1307,7 @@ message DeleteSnapshotRequest {
   ];
 }
 
-message RevertSnapshotRequest {
+message RevertComputeSnapshotRequest {
   // Compute resource to revert; it must be stopped.
   string compute_id = 1 [
     (google.api.field_behavior) = REQUIRED,

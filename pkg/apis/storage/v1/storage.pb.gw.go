@@ -16,7 +16,6 @@ import (
 
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/utilities"
-	"github.com/kube-nfv/kube-vim-api/pkg/apis/common/v1"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/grpclog"
@@ -69,13 +68,13 @@ func request_StorageService_GetVolume_0(ctx context.Context, marshaler runtime.M
 		metadata runtime.ServerMetadata
 		err      error
 	)
-	val, ok := pathParams["storage_id"]
+	val, ok := pathParams["volume_id"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "storage_id")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "volume_id")
 	}
-	protoReq.StorageId, err = runtime.String(val)
+	protoReq.VolumeId, err = runtime.String(val)
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "storage_id", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "volume_id", err)
 	}
 	if req.Body != nil {
 		_, _ = io.Copy(io.Discard, req.Body)
@@ -90,13 +89,13 @@ func local_request_StorageService_GetVolume_0(ctx context.Context, marshaler run
 		metadata runtime.ServerMetadata
 		err      error
 	)
-	val, ok := pathParams["storage_id"]
+	val, ok := pathParams["volume_id"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "storage_id")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "volume_id")
 	}
-	protoReq.StorageId, err = runtime.String(val)
+	protoReq.VolumeId, err = runtime.String(val)
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "storage_id", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "volume_id", err)
 	}
 	msg, err := server.GetVolume(ctx, &protoReq)
 	return msg, metadata, err
@@ -146,13 +145,13 @@ func request_StorageService_UpdateVolume_0(ctx context.Context, marshaler runtim
 	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq.Update); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-	val, ok := pathParams["storage_id"]
+	val, ok := pathParams["volume_id"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "storage_id")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "volume_id")
 	}
-	protoReq.StorageId, err = runtime.String(val)
+	protoReq.VolumeId, err = runtime.String(val)
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "storage_id", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "volume_id", err)
 	}
 	if req.Body != nil {
 		_, _ = io.Copy(io.Discard, req.Body)
@@ -170,13 +169,13 @@ func local_request_StorageService_UpdateVolume_0(ctx context.Context, marshaler 
 	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq.Update); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-	val, ok := pathParams["storage_id"]
+	val, ok := pathParams["volume_id"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "storage_id")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "volume_id")
 	}
-	protoReq.StorageId, err = runtime.String(val)
+	protoReq.VolumeId, err = runtime.String(val)
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "storage_id", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "volume_id", err)
 	}
 	msg, err := server.UpdateVolume(ctx, &protoReq)
 	return msg, metadata, err
@@ -188,13 +187,13 @@ func request_StorageService_DeleteVolume_0(ctx context.Context, marshaler runtim
 		metadata runtime.ServerMetadata
 		err      error
 	)
-	val, ok := pathParams["storage_id"]
+	val, ok := pathParams["volume_id"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "storage_id")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "volume_id")
 	}
-	protoReq.StorageId, err = runtime.String(val)
+	protoReq.VolumeId, err = runtime.String(val)
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "storage_id", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "volume_id", err)
 	}
 	if req.Body != nil {
 		_, _ = io.Copy(io.Discard, req.Body)
@@ -209,60 +208,15 @@ func local_request_StorageService_DeleteVolume_0(ctx context.Context, marshaler 
 		metadata runtime.ServerMetadata
 		err      error
 	)
-	val, ok := pathParams["storage_id"]
+	val, ok := pathParams["volume_id"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "storage_id")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "volume_id")
 	}
-	protoReq.StorageId, err = runtime.String(val)
+	protoReq.VolumeId, err = runtime.String(val)
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "storage_id", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "volume_id", err)
 	}
 	msg, err := server.DeleteVolume(ctx, &protoReq)
-	return msg, metadata, err
-}
-
-func request_StorageService_OperateVolume_0(ctx context.Context, marshaler runtime.Marshaler, client StorageServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var (
-		protoReq OperateVolumeRequest
-		metadata runtime.ServerMetadata
-		err      error
-	)
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
-	}
-	val, ok := pathParams["storage_id"]
-	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "storage_id")
-	}
-	protoReq.StorageId, err = runtime.String(val)
-	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "storage_id", err)
-	}
-	if req.Body != nil {
-		_, _ = io.Copy(io.Discard, req.Body)
-	}
-	msg, err := client.OperateVolume(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
-	return msg, metadata, err
-}
-
-func local_request_StorageService_OperateVolume_0(ctx context.Context, marshaler runtime.Marshaler, server StorageServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var (
-		protoReq OperateVolumeRequest
-		metadata runtime.ServerMetadata
-		err      error
-	)
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
-	}
-	val, ok := pathParams["storage_id"]
-	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "storage_id")
-	}
-	protoReq.StorageId, err = runtime.String(val)
-	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "storage_id", err)
-	}
-	msg, err := server.OperateVolume(ctx, &protoReq)
 	return msg, metadata, err
 }
 
@@ -275,13 +229,13 @@ func request_StorageService_ScaleVolume_0(ctx context.Context, marshaler runtime
 	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-	val, ok := pathParams["storage_id"]
+	val, ok := pathParams["volume_id"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "storage_id")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "volume_id")
 	}
-	protoReq.StorageId, err = runtime.String(val)
+	protoReq.VolumeId, err = runtime.String(val)
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "storage_id", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "volume_id", err)
 	}
 	if req.Body != nil {
 		_, _ = io.Copy(io.Discard, req.Body)
@@ -299,13 +253,13 @@ func local_request_StorageService_ScaleVolume_0(ctx context.Context, marshaler r
 	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-	val, ok := pathParams["storage_id"]
+	val, ok := pathParams["volume_id"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "storage_id")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "volume_id")
 	}
-	protoReq.StorageId, err = runtime.String(val)
+	protoReq.VolumeId, err = runtime.String(val)
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "storage_id", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "volume_id", err)
 	}
 	msg, err := server.ScaleVolume(ctx, &protoReq)
 	return msg, metadata, err
@@ -320,13 +274,13 @@ func request_StorageService_MigrateVolume_0(ctx context.Context, marshaler runti
 	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-	val, ok := pathParams["storage_id"]
+	val, ok := pathParams["volume_id"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "storage_id")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "volume_id")
 	}
-	protoReq.StorageId, err = runtime.String(val)
+	protoReq.VolumeId, err = runtime.String(val)
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "storage_id", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "volume_id", err)
 	}
 	if req.Body != nil {
 		_, _ = io.Copy(io.Discard, req.Body)
@@ -344,155 +298,284 @@ func local_request_StorageService_MigrateVolume_0(ctx context.Context, marshaler
 	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-	val, ok := pathParams["storage_id"]
+	val, ok := pathParams["volume_id"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "storage_id")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "volume_id")
 	}
-	protoReq.StorageId, err = runtime.String(val)
+	protoReq.VolumeId, err = runtime.String(val)
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "storage_id", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "volume_id", err)
 	}
 	msg, err := server.MigrateVolume(ctx, &protoReq)
 	return msg, metadata, err
 }
 
-func request_StorageService_CreateAffinityGroup_0(ctx context.Context, marshaler runtime.Marshaler, client StorageServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_StorageService_CreateVolumeSnapshot_0(ctx context.Context, marshaler runtime.Marshaler, client StorageServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var (
-		protoReq commonv1.CreateAffinityGroupRequest
+		protoReq CreateVolumeSnapshotRequest
 		metadata runtime.ServerMetadata
+		err      error
 	)
 	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
+	val, ok := pathParams["volume_id"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "volume_id")
+	}
+	protoReq.VolumeId, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "volume_id", err)
+	}
 	if req.Body != nil {
 		_, _ = io.Copy(io.Discard, req.Body)
 	}
-	msg, err := client.CreateAffinityGroup(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	msg, err := client.CreateVolumeSnapshot(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
 }
 
-func local_request_StorageService_CreateAffinityGroup_0(ctx context.Context, marshaler runtime.Marshaler, server StorageServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func local_request_StorageService_CreateVolumeSnapshot_0(ctx context.Context, marshaler runtime.Marshaler, server StorageServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var (
-		protoReq commonv1.CreateAffinityGroupRequest
+		protoReq CreateVolumeSnapshotRequest
 		metadata runtime.ServerMetadata
+		err      error
 	)
 	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-	msg, err := server.CreateAffinityGroup(ctx, &protoReq)
+	val, ok := pathParams["volume_id"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "volume_id")
+	}
+	protoReq.VolumeId, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "volume_id", err)
+	}
+	msg, err := server.CreateVolumeSnapshot(ctx, &protoReq)
 	return msg, metadata, err
 }
 
-func request_StorageService_GetAffinityGroup_0(ctx context.Context, marshaler runtime.Marshaler, client StorageServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_StorageService_GetVolumeSnapshot_0(ctx context.Context, marshaler runtime.Marshaler, client StorageServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var (
-		protoReq commonv1.GetAffinityGroupRequest
+		protoReq GetVolumeSnapshotRequest
 		metadata runtime.ServerMetadata
 		err      error
 	)
-	val, ok := pathParams["group_id"]
+	val, ok := pathParams["volume_id"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "group_id")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "volume_id")
 	}
-	protoReq.GroupId, err = runtime.String(val)
+	protoReq.VolumeId, err = runtime.String(val)
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "group_id", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "volume_id", err)
+	}
+	val, ok = pathParams["snapshot_id"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "snapshot_id")
+	}
+	protoReq.SnapshotId, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "snapshot_id", err)
 	}
 	if req.Body != nil {
 		_, _ = io.Copy(io.Discard, req.Body)
 	}
-	msg, err := client.GetAffinityGroup(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	msg, err := client.GetVolumeSnapshot(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
 }
 
-func local_request_StorageService_GetAffinityGroup_0(ctx context.Context, marshaler runtime.Marshaler, server StorageServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func local_request_StorageService_GetVolumeSnapshot_0(ctx context.Context, marshaler runtime.Marshaler, server StorageServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var (
-		protoReq commonv1.GetAffinityGroupRequest
+		protoReq GetVolumeSnapshotRequest
 		metadata runtime.ServerMetadata
 		err      error
 	)
-	val, ok := pathParams["group_id"]
+	val, ok := pathParams["volume_id"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "group_id")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "volume_id")
 	}
-	protoReq.GroupId, err = runtime.String(val)
+	protoReq.VolumeId, err = runtime.String(val)
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "group_id", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "volume_id", err)
 	}
-	msg, err := server.GetAffinityGroup(ctx, &protoReq)
+	val, ok = pathParams["snapshot_id"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "snapshot_id")
+	}
+	protoReq.SnapshotId, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "snapshot_id", err)
+	}
+	msg, err := server.GetVolumeSnapshot(ctx, &protoReq)
 	return msg, metadata, err
 }
 
-var filter_StorageService_ListAffinityGroups_0 = &utilities.DoubleArray{Encoding: map[string]int{}, Base: []int(nil), Check: []int(nil)}
+var filter_StorageService_ListVolumeSnapshots_0 = &utilities.DoubleArray{Encoding: map[string]int{"volume_id": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
 
-func request_StorageService_ListAffinityGroups_0(ctx context.Context, marshaler runtime.Marshaler, client StorageServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_StorageService_ListVolumeSnapshots_0(ctx context.Context, marshaler runtime.Marshaler, client StorageServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var (
-		protoReq commonv1.ListAffinityGroupsRequest
+		protoReq ListVolumeSnapshotsRequest
 		metadata runtime.ServerMetadata
+		err      error
 	)
+	val, ok := pathParams["volume_id"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "volume_id")
+	}
+	protoReq.VolumeId, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "volume_id", err)
+	}
 	if err := req.ParseForm(); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_StorageService_ListAffinityGroups_0); err != nil {
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_StorageService_ListVolumeSnapshots_0); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 	if req.Body != nil {
 		_, _ = io.Copy(io.Discard, req.Body)
 	}
-	msg, err := client.ListAffinityGroups(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	msg, err := client.ListVolumeSnapshots(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
 }
 
-func local_request_StorageService_ListAffinityGroups_0(ctx context.Context, marshaler runtime.Marshaler, server StorageServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func local_request_StorageService_ListVolumeSnapshots_0(ctx context.Context, marshaler runtime.Marshaler, server StorageServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var (
-		protoReq commonv1.ListAffinityGroupsRequest
+		protoReq ListVolumeSnapshotsRequest
 		metadata runtime.ServerMetadata
+		err      error
 	)
+	val, ok := pathParams["volume_id"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "volume_id")
+	}
+	protoReq.VolumeId, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "volume_id", err)
+	}
 	if err := req.ParseForm(); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_StorageService_ListAffinityGroups_0); err != nil {
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_StorageService_ListVolumeSnapshots_0); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-	msg, err := server.ListAffinityGroups(ctx, &protoReq)
+	msg, err := server.ListVolumeSnapshots(ctx, &protoReq)
 	return msg, metadata, err
 }
 
-func request_StorageService_DeleteAffinityGroup_0(ctx context.Context, marshaler runtime.Marshaler, client StorageServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_StorageService_DeleteVolumeSnapshot_0(ctx context.Context, marshaler runtime.Marshaler, client StorageServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var (
-		protoReq commonv1.DeleteAffinityGroupRequest
+		protoReq DeleteVolumeSnapshotRequest
 		metadata runtime.ServerMetadata
 		err      error
 	)
-	val, ok := pathParams["group_id"]
+	val, ok := pathParams["volume_id"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "group_id")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "volume_id")
 	}
-	protoReq.GroupId, err = runtime.String(val)
+	protoReq.VolumeId, err = runtime.String(val)
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "group_id", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "volume_id", err)
+	}
+	val, ok = pathParams["snapshot_id"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "snapshot_id")
+	}
+	protoReq.SnapshotId, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "snapshot_id", err)
 	}
 	if req.Body != nil {
 		_, _ = io.Copy(io.Discard, req.Body)
 	}
-	msg, err := client.DeleteAffinityGroup(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	msg, err := client.DeleteVolumeSnapshot(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
 }
 
-func local_request_StorageService_DeleteAffinityGroup_0(ctx context.Context, marshaler runtime.Marshaler, server StorageServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func local_request_StorageService_DeleteVolumeSnapshot_0(ctx context.Context, marshaler runtime.Marshaler, server StorageServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var (
-		protoReq commonv1.DeleteAffinityGroupRequest
+		protoReq DeleteVolumeSnapshotRequest
 		metadata runtime.ServerMetadata
 		err      error
 	)
-	val, ok := pathParams["group_id"]
+	val, ok := pathParams["volume_id"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "group_id")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "volume_id")
 	}
-	protoReq.GroupId, err = runtime.String(val)
+	protoReq.VolumeId, err = runtime.String(val)
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "group_id", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "volume_id", err)
 	}
-	msg, err := server.DeleteAffinityGroup(ctx, &protoReq)
+	val, ok = pathParams["snapshot_id"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "snapshot_id")
+	}
+	protoReq.SnapshotId, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "snapshot_id", err)
+	}
+	msg, err := server.DeleteVolumeSnapshot(ctx, &protoReq)
+	return msg, metadata, err
+}
+
+func request_StorageService_RevertVolumeSnapshot_0(ctx context.Context, marshaler runtime.Marshaler, client StorageServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var (
+		protoReq RevertVolumeSnapshotRequest
+		metadata runtime.ServerMetadata
+		err      error
+	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	val, ok := pathParams["volume_id"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "volume_id")
+	}
+	protoReq.VolumeId, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "volume_id", err)
+	}
+	val, ok = pathParams["snapshot_id"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "snapshot_id")
+	}
+	protoReq.SnapshotId, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "snapshot_id", err)
+	}
+	if req.Body != nil {
+		_, _ = io.Copy(io.Discard, req.Body)
+	}
+	msg, err := client.RevertVolumeSnapshot(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+}
+
+func local_request_StorageService_RevertVolumeSnapshot_0(ctx context.Context, marshaler runtime.Marshaler, server StorageServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var (
+		protoReq RevertVolumeSnapshotRequest
+		metadata runtime.ServerMetadata
+		err      error
+	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	val, ok := pathParams["volume_id"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "volume_id")
+	}
+	protoReq.VolumeId, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "volume_id", err)
+	}
+	val, ok = pathParams["snapshot_id"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "snapshot_id")
+	}
+	protoReq.SnapshotId, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "snapshot_id", err)
+	}
+	msg, err := server.RevertVolumeSnapshot(ctx, &protoReq)
 	return msg, metadata, err
 }
 
@@ -528,7 +611,7 @@ func RegisterStorageServiceHandlerServer(ctx context.Context, mux *runtime.Serve
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/kubenfv.kubevim.storage.v1.StorageService/GetVolume", runtime.WithHTTPPathPattern("/storage/v1/volumes/{storage_id}"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/kubenfv.kubevim.storage.v1.StorageService/GetVolume", runtime.WithHTTPPathPattern("/storage/v1/volumes/{volume_id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -568,7 +651,7 @@ func RegisterStorageServiceHandlerServer(ctx context.Context, mux *runtime.Serve
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/kubenfv.kubevim.storage.v1.StorageService/UpdateVolume", runtime.WithHTTPPathPattern("/storage/v1/volumes/{storage_id}"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/kubenfv.kubevim.storage.v1.StorageService/UpdateVolume", runtime.WithHTTPPathPattern("/storage/v1/volumes/{volume_id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -588,7 +671,7 @@ func RegisterStorageServiceHandlerServer(ctx context.Context, mux *runtime.Serve
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/kubenfv.kubevim.storage.v1.StorageService/DeleteVolume", runtime.WithHTTPPathPattern("/storage/v1/volumes/{storage_id}"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/kubenfv.kubevim.storage.v1.StorageService/DeleteVolume", runtime.WithHTTPPathPattern("/storage/v1/volumes/{volume_id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -602,33 +685,13 @@ func RegisterStorageServiceHandlerServer(ctx context.Context, mux *runtime.Serve
 		}
 		forward_StorageService_DeleteVolume_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
-	mux.Handle(http.MethodPost, pattern_StorageService_OperateVolume_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
-		ctx, cancel := context.WithCancel(req.Context())
-		defer cancel()
-		var stream runtime.ServerTransportStream
-		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
-		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/kubenfv.kubevim.storage.v1.StorageService/OperateVolume", runtime.WithHTTPPathPattern("/storage/v1/volumes/{storage_id}/operate"))
-		if err != nil {
-			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
-			return
-		}
-		resp, md, err := local_request_StorageService_OperateVolume_0(annotatedContext, inboundMarshaler, server, req, pathParams)
-		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
-		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
-		if err != nil {
-			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
-			return
-		}
-		forward_StorageService_OperateVolume_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-	})
 	mux.Handle(http.MethodPost, pattern_StorageService_ScaleVolume_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/kubenfv.kubevim.storage.v1.StorageService/ScaleVolume", runtime.WithHTTPPathPattern("/storage/v1/volumes/{storage_id}/scale"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/kubenfv.kubevim.storage.v1.StorageService/ScaleVolume", runtime.WithHTTPPathPattern("/storage/v1/volumes/{volume_id}/scale"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -648,7 +711,7 @@ func RegisterStorageServiceHandlerServer(ctx context.Context, mux *runtime.Serve
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/kubenfv.kubevim.storage.v1.StorageService/MigrateVolume", runtime.WithHTTPPathPattern("/storage/v1/volumes/{storage_id}/migrate"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/kubenfv.kubevim.storage.v1.StorageService/MigrateVolume", runtime.WithHTTPPathPattern("/storage/v1/volumes/{volume_id}/migrate"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -662,85 +725,105 @@ func RegisterStorageServiceHandlerServer(ctx context.Context, mux *runtime.Serve
 		}
 		forward_StorageService_MigrateVolume_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
-	mux.Handle(http.MethodPost, pattern_StorageService_CreateAffinityGroup_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_StorageService_CreateVolumeSnapshot_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/kubenfv.kubevim.storage.v1.StorageService/CreateAffinityGroup", runtime.WithHTTPPathPattern("/storage/v1/affinityGroups"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/kubenfv.kubevim.storage.v1.StorageService/CreateVolumeSnapshot", runtime.WithHTTPPathPattern("/storage/v1/volumes/{volume_id}/snapshots"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_StorageService_CreateAffinityGroup_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_StorageService_CreateVolumeSnapshot_0(annotatedContext, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		forward_StorageService_CreateAffinityGroup_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_StorageService_CreateVolumeSnapshot_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
-	mux.Handle(http.MethodGet, pattern_StorageService_GetAffinityGroup_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodGet, pattern_StorageService_GetVolumeSnapshot_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/kubenfv.kubevim.storage.v1.StorageService/GetAffinityGroup", runtime.WithHTTPPathPattern("/storage/v1/affinityGroups/{group_id}"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/kubenfv.kubevim.storage.v1.StorageService/GetVolumeSnapshot", runtime.WithHTTPPathPattern("/storage/v1/volumes/{volume_id}/snapshots/{snapshot_id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_StorageService_GetAffinityGroup_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_StorageService_GetVolumeSnapshot_0(annotatedContext, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		forward_StorageService_GetAffinityGroup_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_StorageService_GetVolumeSnapshot_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
-	mux.Handle(http.MethodGet, pattern_StorageService_ListAffinityGroups_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodGet, pattern_StorageService_ListVolumeSnapshots_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/kubenfv.kubevim.storage.v1.StorageService/ListAffinityGroups", runtime.WithHTTPPathPattern("/storage/v1/affinityGroups"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/kubenfv.kubevim.storage.v1.StorageService/ListVolumeSnapshots", runtime.WithHTTPPathPattern("/storage/v1/volumes/{volume_id}/snapshots"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_StorageService_ListAffinityGroups_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_StorageService_ListVolumeSnapshots_0(annotatedContext, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		forward_StorageService_ListAffinityGroups_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_StorageService_ListVolumeSnapshots_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
-	mux.Handle(http.MethodDelete, pattern_StorageService_DeleteAffinityGroup_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodDelete, pattern_StorageService_DeleteVolumeSnapshot_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/kubenfv.kubevim.storage.v1.StorageService/DeleteAffinityGroup", runtime.WithHTTPPathPattern("/storage/v1/affinityGroups/{group_id}"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/kubenfv.kubevim.storage.v1.StorageService/DeleteVolumeSnapshot", runtime.WithHTTPPathPattern("/storage/v1/volumes/{volume_id}/snapshots/{snapshot_id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_StorageService_DeleteAffinityGroup_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_StorageService_DeleteVolumeSnapshot_0(annotatedContext, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		forward_StorageService_DeleteAffinityGroup_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_StorageService_DeleteVolumeSnapshot_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+	})
+	mux.Handle(http.MethodPost, pattern_StorageService_RevertVolumeSnapshot_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		var stream runtime.ServerTransportStream
+		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/kubenfv.kubevim.storage.v1.StorageService/RevertVolumeSnapshot", runtime.WithHTTPPathPattern("/storage/v1/volumes/{volume_id}/snapshots/{snapshot_id}/revert"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_StorageService_RevertVolumeSnapshot_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		forward_StorageService_RevertVolumeSnapshot_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
 
 	return nil
@@ -803,7 +886,7 @@ func RegisterStorageServiceHandlerClient(ctx context.Context, mux *runtime.Serve
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/kubenfv.kubevim.storage.v1.StorageService/GetVolume", runtime.WithHTTPPathPattern("/storage/v1/volumes/{storage_id}"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/kubenfv.kubevim.storage.v1.StorageService/GetVolume", runtime.WithHTTPPathPattern("/storage/v1/volumes/{volume_id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -837,7 +920,7 @@ func RegisterStorageServiceHandlerClient(ctx context.Context, mux *runtime.Serve
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/kubenfv.kubevim.storage.v1.StorageService/UpdateVolume", runtime.WithHTTPPathPattern("/storage/v1/volumes/{storage_id}"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/kubenfv.kubevim.storage.v1.StorageService/UpdateVolume", runtime.WithHTTPPathPattern("/storage/v1/volumes/{volume_id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -854,7 +937,7 @@ func RegisterStorageServiceHandlerClient(ctx context.Context, mux *runtime.Serve
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/kubenfv.kubevim.storage.v1.StorageService/DeleteVolume", runtime.WithHTTPPathPattern("/storage/v1/volumes/{storage_id}"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/kubenfv.kubevim.storage.v1.StorageService/DeleteVolume", runtime.WithHTTPPathPattern("/storage/v1/volumes/{volume_id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -867,28 +950,11 @@ func RegisterStorageServiceHandlerClient(ctx context.Context, mux *runtime.Serve
 		}
 		forward_StorageService_DeleteVolume_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
-	mux.Handle(http.MethodPost, pattern_StorageService_OperateVolume_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
-		ctx, cancel := context.WithCancel(req.Context())
-		defer cancel()
-		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/kubenfv.kubevim.storage.v1.StorageService/OperateVolume", runtime.WithHTTPPathPattern("/storage/v1/volumes/{storage_id}/operate"))
-		if err != nil {
-			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
-			return
-		}
-		resp, md, err := request_StorageService_OperateVolume_0(annotatedContext, inboundMarshaler, client, req, pathParams)
-		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
-		if err != nil {
-			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
-			return
-		}
-		forward_StorageService_OperateVolume_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-	})
 	mux.Handle(http.MethodPost, pattern_StorageService_ScaleVolume_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/kubenfv.kubevim.storage.v1.StorageService/ScaleVolume", runtime.WithHTTPPathPattern("/storage/v1/volumes/{storage_id}/scale"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/kubenfv.kubevim.storage.v1.StorageService/ScaleVolume", runtime.WithHTTPPathPattern("/storage/v1/volumes/{volume_id}/scale"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -905,7 +971,7 @@ func RegisterStorageServiceHandlerClient(ctx context.Context, mux *runtime.Serve
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/kubenfv.kubevim.storage.v1.StorageService/MigrateVolume", runtime.WithHTTPPathPattern("/storage/v1/volumes/{storage_id}/migrate"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/kubenfv.kubevim.storage.v1.StorageService/MigrateVolume", runtime.WithHTTPPathPattern("/storage/v1/volumes/{volume_id}/migrate"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -918,103 +984,120 @@ func RegisterStorageServiceHandlerClient(ctx context.Context, mux *runtime.Serve
 		}
 		forward_StorageService_MigrateVolume_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
-	mux.Handle(http.MethodPost, pattern_StorageService_CreateAffinityGroup_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_StorageService_CreateVolumeSnapshot_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/kubenfv.kubevim.storage.v1.StorageService/CreateAffinityGroup", runtime.WithHTTPPathPattern("/storage/v1/affinityGroups"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/kubenfv.kubevim.storage.v1.StorageService/CreateVolumeSnapshot", runtime.WithHTTPPathPattern("/storage/v1/volumes/{volume_id}/snapshots"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_StorageService_CreateAffinityGroup_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_StorageService_CreateVolumeSnapshot_0(annotatedContext, inboundMarshaler, client, req, pathParams)
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		forward_StorageService_CreateAffinityGroup_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_StorageService_CreateVolumeSnapshot_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
-	mux.Handle(http.MethodGet, pattern_StorageService_GetAffinityGroup_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodGet, pattern_StorageService_GetVolumeSnapshot_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/kubenfv.kubevim.storage.v1.StorageService/GetAffinityGroup", runtime.WithHTTPPathPattern("/storage/v1/affinityGroups/{group_id}"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/kubenfv.kubevim.storage.v1.StorageService/GetVolumeSnapshot", runtime.WithHTTPPathPattern("/storage/v1/volumes/{volume_id}/snapshots/{snapshot_id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_StorageService_GetAffinityGroup_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_StorageService_GetVolumeSnapshot_0(annotatedContext, inboundMarshaler, client, req, pathParams)
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		forward_StorageService_GetAffinityGroup_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_StorageService_GetVolumeSnapshot_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
-	mux.Handle(http.MethodGet, pattern_StorageService_ListAffinityGroups_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodGet, pattern_StorageService_ListVolumeSnapshots_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/kubenfv.kubevim.storage.v1.StorageService/ListAffinityGroups", runtime.WithHTTPPathPattern("/storage/v1/affinityGroups"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/kubenfv.kubevim.storage.v1.StorageService/ListVolumeSnapshots", runtime.WithHTTPPathPattern("/storage/v1/volumes/{volume_id}/snapshots"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_StorageService_ListAffinityGroups_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_StorageService_ListVolumeSnapshots_0(annotatedContext, inboundMarshaler, client, req, pathParams)
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		forward_StorageService_ListAffinityGroups_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_StorageService_ListVolumeSnapshots_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
-	mux.Handle(http.MethodDelete, pattern_StorageService_DeleteAffinityGroup_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodDelete, pattern_StorageService_DeleteVolumeSnapshot_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/kubenfv.kubevim.storage.v1.StorageService/DeleteAffinityGroup", runtime.WithHTTPPathPattern("/storage/v1/affinityGroups/{group_id}"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/kubenfv.kubevim.storage.v1.StorageService/DeleteVolumeSnapshot", runtime.WithHTTPPathPattern("/storage/v1/volumes/{volume_id}/snapshots/{snapshot_id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_StorageService_DeleteAffinityGroup_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_StorageService_DeleteVolumeSnapshot_0(annotatedContext, inboundMarshaler, client, req, pathParams)
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		forward_StorageService_DeleteAffinityGroup_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_StorageService_DeleteVolumeSnapshot_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+	})
+	mux.Handle(http.MethodPost, pattern_StorageService_RevertVolumeSnapshot_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/kubenfv.kubevim.storage.v1.StorageService/RevertVolumeSnapshot", runtime.WithHTTPPathPattern("/storage/v1/volumes/{volume_id}/snapshots/{snapshot_id}/revert"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_StorageService_RevertVolumeSnapshot_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		forward_StorageService_RevertVolumeSnapshot_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
 	return nil
 }
 
 var (
-	pattern_StorageService_CreateVolume_0        = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"storage", "v1", "volumes"}, ""))
-	pattern_StorageService_GetVolume_0           = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"storage", "v1", "volumes", "storage_id"}, ""))
-	pattern_StorageService_ListVolumes_0         = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"storage", "v1", "volumes"}, ""))
-	pattern_StorageService_UpdateVolume_0        = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"storage", "v1", "volumes", "storage_id"}, ""))
-	pattern_StorageService_DeleteVolume_0        = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"storage", "v1", "volumes", "storage_id"}, ""))
-	pattern_StorageService_OperateVolume_0       = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"storage", "v1", "volumes", "storage_id", "operate"}, ""))
-	pattern_StorageService_ScaleVolume_0         = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"storage", "v1", "volumes", "storage_id", "scale"}, ""))
-	pattern_StorageService_MigrateVolume_0       = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"storage", "v1", "volumes", "storage_id", "migrate"}, ""))
-	pattern_StorageService_CreateAffinityGroup_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"storage", "v1", "affinityGroups"}, ""))
-	pattern_StorageService_GetAffinityGroup_0    = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"storage", "v1", "affinityGroups", "group_id"}, ""))
-	pattern_StorageService_ListAffinityGroups_0  = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"storage", "v1", "affinityGroups"}, ""))
-	pattern_StorageService_DeleteAffinityGroup_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"storage", "v1", "affinityGroups", "group_id"}, ""))
+	pattern_StorageService_CreateVolume_0         = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"storage", "v1", "volumes"}, ""))
+	pattern_StorageService_GetVolume_0            = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"storage", "v1", "volumes", "volume_id"}, ""))
+	pattern_StorageService_ListVolumes_0          = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"storage", "v1", "volumes"}, ""))
+	pattern_StorageService_UpdateVolume_0         = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"storage", "v1", "volumes", "volume_id"}, ""))
+	pattern_StorageService_DeleteVolume_0         = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"storage", "v1", "volumes", "volume_id"}, ""))
+	pattern_StorageService_ScaleVolume_0          = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"storage", "v1", "volumes", "volume_id", "scale"}, ""))
+	pattern_StorageService_MigrateVolume_0        = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"storage", "v1", "volumes", "volume_id", "migrate"}, ""))
+	pattern_StorageService_CreateVolumeSnapshot_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"storage", "v1", "volumes", "volume_id", "snapshots"}, ""))
+	pattern_StorageService_GetVolumeSnapshot_0    = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4, 1, 0, 4, 1, 5, 5}, []string{"storage", "v1", "volumes", "volume_id", "snapshots", "snapshot_id"}, ""))
+	pattern_StorageService_ListVolumeSnapshots_0  = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"storage", "v1", "volumes", "volume_id", "snapshots"}, ""))
+	pattern_StorageService_DeleteVolumeSnapshot_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4, 1, 0, 4, 1, 5, 5}, []string{"storage", "v1", "volumes", "volume_id", "snapshots", "snapshot_id"}, ""))
+	pattern_StorageService_RevertVolumeSnapshot_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4, 1, 0, 4, 1, 5, 5, 2, 6}, []string{"storage", "v1", "volumes", "volume_id", "snapshots", "snapshot_id", "revert"}, ""))
 )
 
 var (
-	forward_StorageService_CreateVolume_0        = runtime.ForwardResponseMessage
-	forward_StorageService_GetVolume_0           = runtime.ForwardResponseMessage
-	forward_StorageService_ListVolumes_0         = runtime.ForwardResponseMessage
-	forward_StorageService_UpdateVolume_0        = runtime.ForwardResponseMessage
-	forward_StorageService_DeleteVolume_0        = runtime.ForwardResponseMessage
-	forward_StorageService_OperateVolume_0       = runtime.ForwardResponseMessage
-	forward_StorageService_ScaleVolume_0         = runtime.ForwardResponseMessage
-	forward_StorageService_MigrateVolume_0       = runtime.ForwardResponseMessage
-	forward_StorageService_CreateAffinityGroup_0 = runtime.ForwardResponseMessage
-	forward_StorageService_GetAffinityGroup_0    = runtime.ForwardResponseMessage
-	forward_StorageService_ListAffinityGroups_0  = runtime.ForwardResponseMessage
-	forward_StorageService_DeleteAffinityGroup_0 = runtime.ForwardResponseMessage
+	forward_StorageService_CreateVolume_0         = runtime.ForwardResponseMessage
+	forward_StorageService_GetVolume_0            = runtime.ForwardResponseMessage
+	forward_StorageService_ListVolumes_0          = runtime.ForwardResponseMessage
+	forward_StorageService_UpdateVolume_0         = runtime.ForwardResponseMessage
+	forward_StorageService_DeleteVolume_0         = runtime.ForwardResponseMessage
+	forward_StorageService_ScaleVolume_0          = runtime.ForwardResponseMessage
+	forward_StorageService_MigrateVolume_0        = runtime.ForwardResponseMessage
+	forward_StorageService_CreateVolumeSnapshot_0 = runtime.ForwardResponseMessage
+	forward_StorageService_GetVolumeSnapshot_0    = runtime.ForwardResponseMessage
+	forward_StorageService_ListVolumeSnapshots_0  = runtime.ForwardResponseMessage
+	forward_StorageService_DeleteVolumeSnapshot_0 = runtime.ForwardResponseMessage
+	forward_StorageService_RevertVolumeSnapshot_0 = runtime.ForwardResponseMessage
 )

@@ -15,6 +15,7 @@ import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	emptypb "google.golang.org/protobuf/types/known/emptypb"
+	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
 	reflect "reflect"
 	sync "sync"
 	unsafe "unsafe"
@@ -27,77 +28,15 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// Operation on a volume (IFA006 7.5.1.6), realised with CSI volume snapshots.
-// Values may be added as Kubernetes storage support grows; clients should accept unknown values.
-type StorageOperation int32
-
-const (
-	StorageOperation_STORAGE_OPERATION_UNSPECIFIED        StorageOperation = 0
-	StorageOperation_STORAGE_OPERATION_CREATE_SNAPSHOT    StorageOperation = 1
-	StorageOperation_STORAGE_OPERATION_REVERT_TO_SNAPSHOT StorageOperation = 2
-	StorageOperation_STORAGE_OPERATION_DELETE_SNAPSHOT    StorageOperation = 3
-)
-
-// Enum value maps for StorageOperation.
-var (
-	StorageOperation_name = map[int32]string{
-		0: "STORAGE_OPERATION_UNSPECIFIED",
-		1: "STORAGE_OPERATION_CREATE_SNAPSHOT",
-		2: "STORAGE_OPERATION_REVERT_TO_SNAPSHOT",
-		3: "STORAGE_OPERATION_DELETE_SNAPSHOT",
-	}
-	StorageOperation_value = map[string]int32{
-		"STORAGE_OPERATION_UNSPECIFIED":        0,
-		"STORAGE_OPERATION_CREATE_SNAPSHOT":    1,
-		"STORAGE_OPERATION_REVERT_TO_SNAPSHOT": 2,
-		"STORAGE_OPERATION_DELETE_SNAPSHOT":    3,
-	}
-)
-
-func (x StorageOperation) Enum() *StorageOperation {
-	p := new(StorageOperation)
-	*p = x
-	return p
-}
-
-func (x StorageOperation) String() string {
-	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
-}
-
-func (StorageOperation) Descriptor() protoreflect.EnumDescriptor {
-	return file_kubenfv_kubevim_storage_v1_storage_proto_enumTypes[0].Descriptor()
-}
-
-func (StorageOperation) Type() protoreflect.EnumType {
-	return &file_kubenfv_kubevim_storage_v1_storage_proto_enumTypes[0]
-}
-
-func (x StorageOperation) Number() protoreflect.EnumNumber {
-	return protoreflect.EnumNumber(x)
-}
-
-// Deprecated: Use StorageOperation.Descriptor instead.
-func (StorageOperation) EnumDescriptor() ([]byte, []int) {
-	return file_kubenfv_kubevim_storage_v1_storage_proto_rawDescGZIP(), []int{0}
-}
-
 type CreateVolumeRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// Volume to create: name, size and type, metadata. Only TYPE_OF_STORAGE_VOLUME,
+	// Volume to create: name, size, type, storage class and metadata. Only TYPE_OF_STORAGE_VOLUME,
 	// without is_boot: ephemeral and boot disks belong to a compute resource.
 	Volume *v1.Volume `protobuf:"bytes,1,opt,name=volume,proto3" json:"volume,omitempty"`
 	// Client-chosen UUID that makes the request idempotent (AIP-155).
-	RequestId string `protobuf:"bytes,2,opt,name=request_id,json=requestId,proto3" json:"request_id,omitempty"`
-	// Resource reservation for this allocation.
-	ReservationId string `protobuf:"bytes,3,opt,name=reservation_id,json=reservationId,proto3" json:"reservation_id,omitempty"`
-	// Affinity or anti-affinity with other resources; all must be met.
-	AffinityOrAntiAffinityConstraints []*v1.AffinityOrAntiAffinityConstraint `protobuf:"bytes,4,rep,name=affinity_or_anti_affinity_constraints,json=affinityOrAntiAffinityConstraints,proto3" json:"affinity_or_anti_affinity_constraints,omitempty"`
-	// Location constraints, e.g. a resource zone.
-	LocationConstraints string `protobuf:"bytes,5,opt,name=location_constraints,json=locationConstraints,proto3" json:"location_constraints,omitempty"`
-	// Infrastructure resource group of the volume.
-	ResourceGroupId string `protobuf:"bytes,6,opt,name=resource_group_id,json=resourceGroupId,proto3" json:"resource_group_id,omitempty"`
-	unknownFields   protoimpl.UnknownFields
-	sizeCache       protoimpl.SizeCache
+	RequestId     string `protobuf:"bytes,2,opt,name=request_id,json=requestId,proto3" json:"request_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
 func (x *CreateVolumeRequest) Reset() {
@@ -144,38 +83,10 @@ func (x *CreateVolumeRequest) GetRequestId() string {
 	return ""
 }
 
-func (x *CreateVolumeRequest) GetReservationId() string {
-	if x != nil {
-		return x.ReservationId
-	}
-	return ""
-}
-
-func (x *CreateVolumeRequest) GetAffinityOrAntiAffinityConstraints() []*v1.AffinityOrAntiAffinityConstraint {
-	if x != nil {
-		return x.AffinityOrAntiAffinityConstraints
-	}
-	return nil
-}
-
-func (x *CreateVolumeRequest) GetLocationConstraints() string {
-	if x != nil {
-		return x.LocationConstraints
-	}
-	return ""
-}
-
-func (x *CreateVolumeRequest) GetResourceGroupId() string {
-	if x != nil {
-		return x.ResourceGroupId
-	}
-	return ""
-}
-
 type GetVolumeRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Identifier of the volume.
-	StorageId     string `protobuf:"bytes,1,opt,name=storage_id,json=storageId,proto3" json:"storage_id,omitempty"`
+	VolumeId      string `protobuf:"bytes,1,opt,name=volume_id,json=volumeId,proto3" json:"volume_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -210,9 +121,9 @@ func (*GetVolumeRequest) Descriptor() ([]byte, []int) {
 	return file_kubenfv_kubevim_storage_v1_storage_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *GetVolumeRequest) GetStorageId() string {
+func (x *GetVolumeRequest) GetVolumeId() string {
 	if x != nil {
-		return x.StorageId
+		return x.VolumeId
 	}
 	return ""
 }
@@ -328,7 +239,7 @@ func (x *ListVolumesResponse) GetNextpageOpaqueMarker() string {
 type UpdateVolumeRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Identifier of the volume.
-	StorageId string `protobuf:"bytes,1,opt,name=storage_id,json=storageId,proto3" json:"storage_id,omitempty"`
+	VolumeId string `protobuf:"bytes,1,opt,name=volume_id,json=volumeId,proto3" json:"volume_id,omitempty"`
 	// Changes to apply; fields left unset keep their value.
 	Update        *VolumeUpdate `protobuf:"bytes,2,opt,name=update,proto3" json:"update,omitempty"`
 	unknownFields protoimpl.UnknownFields
@@ -365,9 +276,9 @@ func (*UpdateVolumeRequest) Descriptor() ([]byte, []int) {
 	return file_kubenfv_kubevim_storage_v1_storage_proto_rawDescGZIP(), []int{4}
 }
 
-func (x *UpdateVolumeRequest) GetStorageId() string {
+func (x *UpdateVolumeRequest) GetVolumeId() string {
 	if x != nil {
-		return x.StorageId
+		return x.VolumeId
 	}
 	return ""
 }
@@ -379,16 +290,14 @@ func (x *UpdateVolumeRequest) GetUpdate() *VolumeUpdate {
 	return nil
 }
 
-// Changes to a volume. Each field that is set replaces the current value.
+// Changes to a volume: a patch. The name is replaced when set; metadata entries are merged.
 type VolumeUpdate struct {
-	state       protoimpl.MessageState `protogen:"open.v1"`
-	StorageName *string                `protobuf:"bytes,1,opt,name=storage_name,json=storageName,proto3,oneof" json:"storage_name,omitempty"`
-	// Metadata entries to add or replace.
-	Metadata map[string]string `protobuf:"bytes,2,rep,name=metadata,proto3" json:"metadata,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
-	// Metadata keys to remove.
-	MetadataKeysToRemove []string `protobuf:"bytes,3,rep,name=metadata_keys_to_remove,json=metadataKeysToRemove,proto3" json:"metadata_keys_to_remove,omitempty"`
-	unknownFields        protoimpl.UnknownFields
-	sizeCache            protoimpl.SizeCache
+	state      protoimpl.MessageState `protogen:"open.v1"`
+	VolumeName *string                `protobuf:"bytes,1,opt,name=volume_name,json=volumeName,proto3,oneof" json:"volume_name,omitempty"`
+	// Metadata entries to add, or to overwrite when the key exists; keys not given are kept, and none is removed.
+	Metadata      map[string]string `protobuf:"bytes,2,rep,name=metadata,proto3" json:"metadata,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
 func (x *VolumeUpdate) Reset() {
@@ -421,9 +330,9 @@ func (*VolumeUpdate) Descriptor() ([]byte, []int) {
 	return file_kubenfv_kubevim_storage_v1_storage_proto_rawDescGZIP(), []int{5}
 }
 
-func (x *VolumeUpdate) GetStorageName() string {
-	if x != nil && x.StorageName != nil {
-		return *x.StorageName
+func (x *VolumeUpdate) GetVolumeName() string {
+	if x != nil && x.VolumeName != nil {
+		return *x.VolumeName
 	}
 	return ""
 }
@@ -435,17 +344,10 @@ func (x *VolumeUpdate) GetMetadata() map[string]string {
 	return nil
 }
 
-func (x *VolumeUpdate) GetMetadataKeysToRemove() []string {
-	if x != nil {
-		return x.MetadataKeysToRemove
-	}
-	return nil
-}
-
 type DeleteVolumeRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Identifier of the volume.
-	StorageId     string `protobuf:"bytes,1,opt,name=storage_id,json=storageId,proto3" json:"storage_id,omitempty"`
+	VolumeId      string `protobuf:"bytes,1,opt,name=volume_id,json=volumeId,proto3" json:"volume_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -480,134 +382,17 @@ func (*DeleteVolumeRequest) Descriptor() ([]byte, []int) {
 	return file_kubenfv_kubevim_storage_v1_storage_proto_rawDescGZIP(), []int{6}
 }
 
-func (x *DeleteVolumeRequest) GetStorageId() string {
+func (x *DeleteVolumeRequest) GetVolumeId() string {
 	if x != nil {
-		return x.StorageId
+		return x.VolumeId
 	}
 	return ""
-}
-
-type OperateVolumeRequest struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// Identifier of the volume.
-	StorageId string `protobuf:"bytes,1,opt,name=storage_id,json=storageId,proto3" json:"storage_id,omitempty"`
-	// Operation to run.
-	StorageOperation StorageOperation `protobuf:"varint,2,opt,name=storage_operation,json=storageOperation,proto3,enum=kubenfv.kubevim.storage.v1.StorageOperation" json:"storage_operation,omitempty"`
-	// Operation parameters, e.g. "snapshotId" for REVERT_TO_SNAPSHOT and DELETE_SNAPSHOT.
-	StorageOperationInputData map[string]string `protobuf:"bytes,3,rep,name=storage_operation_input_data,json=storageOperationInputData,proto3" json:"storage_operation_input_data,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
-	unknownFields             protoimpl.UnknownFields
-	sizeCache                 protoimpl.SizeCache
-}
-
-func (x *OperateVolumeRequest) Reset() {
-	*x = OperateVolumeRequest{}
-	mi := &file_kubenfv_kubevim_storage_v1_storage_proto_msgTypes[7]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *OperateVolumeRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*OperateVolumeRequest) ProtoMessage() {}
-
-func (x *OperateVolumeRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_kubenfv_kubevim_storage_v1_storage_proto_msgTypes[7]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use OperateVolumeRequest.ProtoReflect.Descriptor instead.
-func (*OperateVolumeRequest) Descriptor() ([]byte, []int) {
-	return file_kubenfv_kubevim_storage_v1_storage_proto_rawDescGZIP(), []int{7}
-}
-
-func (x *OperateVolumeRequest) GetStorageId() string {
-	if x != nil {
-		return x.StorageId
-	}
-	return ""
-}
-
-func (x *OperateVolumeRequest) GetStorageOperation() StorageOperation {
-	if x != nil {
-		return x.StorageOperation
-	}
-	return StorageOperation_STORAGE_OPERATION_UNSPECIFIED
-}
-
-func (x *OperateVolumeRequest) GetStorageOperationInputData() map[string]string {
-	if x != nil {
-		return x.StorageOperationInputData
-	}
-	return nil
-}
-
-type OperateVolumeResponse struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// Volume after the operation.
-	StorageData *v1.Volume `protobuf:"bytes,1,opt,name=storage_data,json=storageData,proto3" json:"storage_data,omitempty"`
-	// Operation results, e.g. "snapshotId" for CREATE_SNAPSHOT.
-	StorageOperationOutputData map[string]string `protobuf:"bytes,2,rep,name=storage_operation_output_data,json=storageOperationOutputData,proto3" json:"storage_operation_output_data,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
-	unknownFields              protoimpl.UnknownFields
-	sizeCache                  protoimpl.SizeCache
-}
-
-func (x *OperateVolumeResponse) Reset() {
-	*x = OperateVolumeResponse{}
-	mi := &file_kubenfv_kubevim_storage_v1_storage_proto_msgTypes[8]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *OperateVolumeResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*OperateVolumeResponse) ProtoMessage() {}
-
-func (x *OperateVolumeResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_kubenfv_kubevim_storage_v1_storage_proto_msgTypes[8]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use OperateVolumeResponse.ProtoReflect.Descriptor instead.
-func (*OperateVolumeResponse) Descriptor() ([]byte, []int) {
-	return file_kubenfv_kubevim_storage_v1_storage_proto_rawDescGZIP(), []int{8}
-}
-
-func (x *OperateVolumeResponse) GetStorageData() *v1.Volume {
-	if x != nil {
-		return x.StorageData
-	}
-	return nil
-}
-
-func (x *OperateVolumeResponse) GetStorageOperationOutputData() map[string]string {
-	if x != nil {
-		return x.StorageOperationOutputData
-	}
-	return nil
 }
 
 type ScaleVolumeRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Identifier of the volume.
-	StorageId string `protobuf:"bytes,1,opt,name=storage_id,json=storageId,proto3" json:"storage_id,omitempty"`
+	VolumeId string `protobuf:"bytes,1,opt,name=volume_id,json=volumeId,proto3" json:"volume_id,omitempty"`
 	// New size in Kubernetes quantity format; volumes can only grow (persistent volume claim expansion).
 	NewSize       string `protobuf:"bytes,2,opt,name=new_size,json=newSize,proto3" json:"new_size,omitempty"`
 	unknownFields protoimpl.UnknownFields
@@ -616,7 +401,7 @@ type ScaleVolumeRequest struct {
 
 func (x *ScaleVolumeRequest) Reset() {
 	*x = ScaleVolumeRequest{}
-	mi := &file_kubenfv_kubevim_storage_v1_storage_proto_msgTypes[9]
+	mi := &file_kubenfv_kubevim_storage_v1_storage_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -628,7 +413,7 @@ func (x *ScaleVolumeRequest) String() string {
 func (*ScaleVolumeRequest) ProtoMessage() {}
 
 func (x *ScaleVolumeRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_kubenfv_kubevim_storage_v1_storage_proto_msgTypes[9]
+	mi := &file_kubenfv_kubevim_storage_v1_storage_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -641,12 +426,12 @@ func (x *ScaleVolumeRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ScaleVolumeRequest.ProtoReflect.Descriptor instead.
 func (*ScaleVolumeRequest) Descriptor() ([]byte, []int) {
-	return file_kubenfv_kubevim_storage_v1_storage_proto_rawDescGZIP(), []int{9}
+	return file_kubenfv_kubevim_storage_v1_storage_proto_rawDescGZIP(), []int{7}
 }
 
-func (x *ScaleVolumeRequest) GetStorageId() string {
+func (x *ScaleVolumeRequest) GetVolumeId() string {
 	if x != nil {
-		return x.StorageId
+		return x.VolumeId
 	}
 	return ""
 }
@@ -661,18 +446,16 @@ func (x *ScaleVolumeRequest) GetNewSize() string {
 type MigrateVolumeRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Identifier of the volume.
-	StorageId string `protobuf:"bytes,1,opt,name=storage_id,json=storageId,proto3" json:"storage_id,omitempty"`
-	// Where to migrate to, e.g. a storage class or a host.
-	MigrationConstraint string `protobuf:"bytes,2,opt,name=migration_constraint,json=migrationConstraint,proto3" json:"migration_constraint,omitempty"`
-	// Affinity or anti-affinity the new placement must meet.
-	AffinityOrAntiAffinityConstraints []*v1.AffinityOrAntiAffinityConstraint `protobuf:"bytes,3,rep,name=affinity_or_anti_affinity_constraints,json=affinityOrAntiAffinityConstraints,proto3" json:"affinity_or_anti_affinity_constraints,omitempty"`
-	unknownFields                     protoimpl.UnknownFields
-	sizeCache                         protoimpl.SizeCache
+	VolumeId string `protobuf:"bytes,1,opt,name=volume_id,json=volumeId,proto3" json:"volume_id,omitempty"`
+	// Storage class to move the volume to, one labelled kubevim.kubenfv.io/storage=true.
+	StorageClass  string `protobuf:"bytes,2,opt,name=storage_class,json=storageClass,proto3" json:"storage_class,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
 func (x *MigrateVolumeRequest) Reset() {
 	*x = MigrateVolumeRequest{}
-	mi := &file_kubenfv_kubevim_storage_v1_storage_proto_msgTypes[10]
+	mi := &file_kubenfv_kubevim_storage_v1_storage_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -684,7 +467,7 @@ func (x *MigrateVolumeRequest) String() string {
 func (*MigrateVolumeRequest) ProtoMessage() {}
 
 func (x *MigrateVolumeRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_kubenfv_kubevim_storage_v1_storage_proto_msgTypes[10]
+	mi := &file_kubenfv_kubevim_storage_v1_storage_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -697,52 +480,469 @@ func (x *MigrateVolumeRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MigrateVolumeRequest.ProtoReflect.Descriptor instead.
 func (*MigrateVolumeRequest) Descriptor() ([]byte, []int) {
+	return file_kubenfv_kubevim_storage_v1_storage_proto_rawDescGZIP(), []int{8}
+}
+
+func (x *MigrateVolumeRequest) GetVolumeId() string {
+	if x != nil {
+		return x.VolumeId
+	}
+	return ""
+}
+
+func (x *MigrateVolumeRequest) GetStorageClass() string {
+	if x != nil {
+		return x.StorageClass
+	}
+	return ""
+}
+
+// A snapshot of a volume (Kubernetes VolumeSnapshot).
+type VolumeSnapshot struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Identifier of the snapshot: a UUID assigned by the VIM.
+	SnapshotId string `protobuf:"bytes,1,opt,name=snapshot_id,json=snapshotId,proto3" json:"snapshot_id,omitempty"`
+	// Name of the snapshot, given by the consumer; not unique.
+	SnapshotName string `protobuf:"bytes,2,opt,name=snapshot_name,json=snapshotName,proto3" json:"snapshot_name,omitempty"`
+	// Volume the snapshot was taken of.
+	VolumeId string `protobuf:"bytes,3,opt,name=volume_id,json=volumeId,proto3" json:"volume_id,omitempty"`
+	// Time the snapshot was taken.
+	CreatedAt *timestamppb.Timestamp `protobuf:"bytes,4,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	// Status of the snapshot.
+	Status v1.SnapshotStatus `protobuf:"varint,5,opt,name=status,proto3,enum=kubenfv.kubevim.common.v1.SnapshotStatus" json:"status,omitempty"`
+	// Metadata set by the consumer and by the VIM; for keys under "kubevim.kubenfv.io/" that the VIM maintains, its value wins.
+	Metadata      map[string]string `protobuf:"bytes,6,rep,name=metadata,proto3" json:"metadata,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *VolumeSnapshot) Reset() {
+	*x = VolumeSnapshot{}
+	mi := &file_kubenfv_kubevim_storage_v1_storage_proto_msgTypes[9]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *VolumeSnapshot) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*VolumeSnapshot) ProtoMessage() {}
+
+func (x *VolumeSnapshot) ProtoReflect() protoreflect.Message {
+	mi := &file_kubenfv_kubevim_storage_v1_storage_proto_msgTypes[9]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use VolumeSnapshot.ProtoReflect.Descriptor instead.
+func (*VolumeSnapshot) Descriptor() ([]byte, []int) {
+	return file_kubenfv_kubevim_storage_v1_storage_proto_rawDescGZIP(), []int{9}
+}
+
+func (x *VolumeSnapshot) GetSnapshotId() string {
+	if x != nil {
+		return x.SnapshotId
+	}
+	return ""
+}
+
+func (x *VolumeSnapshot) GetSnapshotName() string {
+	if x != nil {
+		return x.SnapshotName
+	}
+	return ""
+}
+
+func (x *VolumeSnapshot) GetVolumeId() string {
+	if x != nil {
+		return x.VolumeId
+	}
+	return ""
+}
+
+func (x *VolumeSnapshot) GetCreatedAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.CreatedAt
+	}
+	return nil
+}
+
+func (x *VolumeSnapshot) GetStatus() v1.SnapshotStatus {
+	if x != nil {
+		return x.Status
+	}
+	return v1.SnapshotStatus(0)
+}
+
+func (x *VolumeSnapshot) GetMetadata() map[string]string {
+	if x != nil {
+		return x.Metadata
+	}
+	return nil
+}
+
+type CreateVolumeSnapshotRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Volume to take the snapshot of.
+	VolumeId string `protobuf:"bytes,1,opt,name=volume_id,json=volumeId,proto3" json:"volume_id,omitempty"`
+	// Snapshot to create: name and metadata.
+	Snapshot *VolumeSnapshot `protobuf:"bytes,2,opt,name=snapshot,proto3" json:"snapshot,omitempty"`
+	// Client-chosen UUID that makes the request idempotent (AIP-155).
+	RequestId     string `protobuf:"bytes,3,opt,name=request_id,json=requestId,proto3" json:"request_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CreateVolumeSnapshotRequest) Reset() {
+	*x = CreateVolumeSnapshotRequest{}
+	mi := &file_kubenfv_kubevim_storage_v1_storage_proto_msgTypes[10]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CreateVolumeSnapshotRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CreateVolumeSnapshotRequest) ProtoMessage() {}
+
+func (x *CreateVolumeSnapshotRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_kubenfv_kubevim_storage_v1_storage_proto_msgTypes[10]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CreateVolumeSnapshotRequest.ProtoReflect.Descriptor instead.
+func (*CreateVolumeSnapshotRequest) Descriptor() ([]byte, []int) {
 	return file_kubenfv_kubevim_storage_v1_storage_proto_rawDescGZIP(), []int{10}
 }
 
-func (x *MigrateVolumeRequest) GetStorageId() string {
+func (x *CreateVolumeSnapshotRequest) GetVolumeId() string {
 	if x != nil {
-		return x.StorageId
+		return x.VolumeId
 	}
 	return ""
 }
 
-func (x *MigrateVolumeRequest) GetMigrationConstraint() string {
+func (x *CreateVolumeSnapshotRequest) GetSnapshot() *VolumeSnapshot {
 	if x != nil {
-		return x.MigrationConstraint
-	}
-	return ""
-}
-
-func (x *MigrateVolumeRequest) GetAffinityOrAntiAffinityConstraints() []*v1.AffinityOrAntiAffinityConstraint {
-	if x != nil {
-		return x.AffinityOrAntiAffinityConstraints
+		return x.Snapshot
 	}
 	return nil
+}
+
+func (x *CreateVolumeSnapshotRequest) GetRequestId() string {
+	if x != nil {
+		return x.RequestId
+	}
+	return ""
+}
+
+type GetVolumeSnapshotRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Volume the snapshot belongs to.
+	VolumeId string `protobuf:"bytes,1,opt,name=volume_id,json=volumeId,proto3" json:"volume_id,omitempty"`
+	// Identifier of the snapshot.
+	SnapshotId    string `protobuf:"bytes,2,opt,name=snapshot_id,json=snapshotId,proto3" json:"snapshot_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetVolumeSnapshotRequest) Reset() {
+	*x = GetVolumeSnapshotRequest{}
+	mi := &file_kubenfv_kubevim_storage_v1_storage_proto_msgTypes[11]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetVolumeSnapshotRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetVolumeSnapshotRequest) ProtoMessage() {}
+
+func (x *GetVolumeSnapshotRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_kubenfv_kubevim_storage_v1_storage_proto_msgTypes[11]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetVolumeSnapshotRequest.ProtoReflect.Descriptor instead.
+func (*GetVolumeSnapshotRequest) Descriptor() ([]byte, []int) {
+	return file_kubenfv_kubevim_storage_v1_storage_proto_rawDescGZIP(), []int{11}
+}
+
+func (x *GetVolumeSnapshotRequest) GetVolumeId() string {
+	if x != nil {
+		return x.VolumeId
+	}
+	return ""
+}
+
+func (x *GetVolumeSnapshotRequest) GetSnapshotId() string {
+	if x != nil {
+		return x.SnapshotId
+	}
+	return ""
+}
+
+type ListVolumeSnapshotsRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Volume the snapshots belong to.
+	VolumeId string `protobuf:"bytes,1,opt,name=volume_id,json=volumeId,proto3" json:"volume_id,omitempty"`
+	// Attribute-based filter expression (SOL 013 5.2).
+	Filter string `protobuf:"bytes,2,opt,name=filter,proto3" json:"filter,omitempty"`
+	// Marker of the page to return, from a previous response (SOL 013 5.4).
+	NextpageOpaqueMarker string `protobuf:"bytes,3,opt,name=nextpage_opaque_marker,proto3" json:"nextpage_opaque_marker,omitempty"`
+	unknownFields        protoimpl.UnknownFields
+	sizeCache            protoimpl.SizeCache
+}
+
+func (x *ListVolumeSnapshotsRequest) Reset() {
+	*x = ListVolumeSnapshotsRequest{}
+	mi := &file_kubenfv_kubevim_storage_v1_storage_proto_msgTypes[12]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListVolumeSnapshotsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListVolumeSnapshotsRequest) ProtoMessage() {}
+
+func (x *ListVolumeSnapshotsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_kubenfv_kubevim_storage_v1_storage_proto_msgTypes[12]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListVolumeSnapshotsRequest.ProtoReflect.Descriptor instead.
+func (*ListVolumeSnapshotsRequest) Descriptor() ([]byte, []int) {
+	return file_kubenfv_kubevim_storage_v1_storage_proto_rawDescGZIP(), []int{12}
+}
+
+func (x *ListVolumeSnapshotsRequest) GetVolumeId() string {
+	if x != nil {
+		return x.VolumeId
+	}
+	return ""
+}
+
+func (x *ListVolumeSnapshotsRequest) GetFilter() string {
+	if x != nil {
+		return x.Filter
+	}
+	return ""
+}
+
+func (x *ListVolumeSnapshotsRequest) GetNextpageOpaqueMarker() string {
+	if x != nil {
+		return x.NextpageOpaqueMarker
+	}
+	return ""
+}
+
+type ListVolumeSnapshotsResponse struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Snapshots matching the filter.
+	Snapshots []*VolumeSnapshot `protobuf:"bytes,1,rep,name=snapshots,proto3" json:"snapshots,omitempty"`
+	// Marker of the next page; empty on the last page (SOL 013 5.4).
+	NextpageOpaqueMarker string `protobuf:"bytes,2,opt,name=nextpage_opaque_marker,proto3" json:"nextpage_opaque_marker,omitempty"`
+	unknownFields        protoimpl.UnknownFields
+	sizeCache            protoimpl.SizeCache
+}
+
+func (x *ListVolumeSnapshotsResponse) Reset() {
+	*x = ListVolumeSnapshotsResponse{}
+	mi := &file_kubenfv_kubevim_storage_v1_storage_proto_msgTypes[13]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListVolumeSnapshotsResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListVolumeSnapshotsResponse) ProtoMessage() {}
+
+func (x *ListVolumeSnapshotsResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_kubenfv_kubevim_storage_v1_storage_proto_msgTypes[13]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListVolumeSnapshotsResponse.ProtoReflect.Descriptor instead.
+func (*ListVolumeSnapshotsResponse) Descriptor() ([]byte, []int) {
+	return file_kubenfv_kubevim_storage_v1_storage_proto_rawDescGZIP(), []int{13}
+}
+
+func (x *ListVolumeSnapshotsResponse) GetSnapshots() []*VolumeSnapshot {
+	if x != nil {
+		return x.Snapshots
+	}
+	return nil
+}
+
+func (x *ListVolumeSnapshotsResponse) GetNextpageOpaqueMarker() string {
+	if x != nil {
+		return x.NextpageOpaqueMarker
+	}
+	return ""
+}
+
+type DeleteVolumeSnapshotRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Volume the snapshot belongs to.
+	VolumeId string `protobuf:"bytes,1,opt,name=volume_id,json=volumeId,proto3" json:"volume_id,omitempty"`
+	// Identifier of the snapshot.
+	SnapshotId    string `protobuf:"bytes,2,opt,name=snapshot_id,json=snapshotId,proto3" json:"snapshot_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DeleteVolumeSnapshotRequest) Reset() {
+	*x = DeleteVolumeSnapshotRequest{}
+	mi := &file_kubenfv_kubevim_storage_v1_storage_proto_msgTypes[14]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DeleteVolumeSnapshotRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeleteVolumeSnapshotRequest) ProtoMessage() {}
+
+func (x *DeleteVolumeSnapshotRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_kubenfv_kubevim_storage_v1_storage_proto_msgTypes[14]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeleteVolumeSnapshotRequest.ProtoReflect.Descriptor instead.
+func (*DeleteVolumeSnapshotRequest) Descriptor() ([]byte, []int) {
+	return file_kubenfv_kubevim_storage_v1_storage_proto_rawDescGZIP(), []int{14}
+}
+
+func (x *DeleteVolumeSnapshotRequest) GetVolumeId() string {
+	if x != nil {
+		return x.VolumeId
+	}
+	return ""
+}
+
+func (x *DeleteVolumeSnapshotRequest) GetSnapshotId() string {
+	if x != nil {
+		return x.SnapshotId
+	}
+	return ""
+}
+
+type RevertVolumeSnapshotRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Volume to revert; no running compute resource may use it.
+	VolumeId string `protobuf:"bytes,1,opt,name=volume_id,json=volumeId,proto3" json:"volume_id,omitempty"`
+	// Identifier of the snapshot to revert to.
+	SnapshotId    string `protobuf:"bytes,2,opt,name=snapshot_id,json=snapshotId,proto3" json:"snapshot_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *RevertVolumeSnapshotRequest) Reset() {
+	*x = RevertVolumeSnapshotRequest{}
+	mi := &file_kubenfv_kubevim_storage_v1_storage_proto_msgTypes[15]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *RevertVolumeSnapshotRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*RevertVolumeSnapshotRequest) ProtoMessage() {}
+
+func (x *RevertVolumeSnapshotRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_kubenfv_kubevim_storage_v1_storage_proto_msgTypes[15]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use RevertVolumeSnapshotRequest.ProtoReflect.Descriptor instead.
+func (*RevertVolumeSnapshotRequest) Descriptor() ([]byte, []int) {
+	return file_kubenfv_kubevim_storage_v1_storage_proto_rawDescGZIP(), []int{15}
+}
+
+func (x *RevertVolumeSnapshotRequest) GetVolumeId() string {
+	if x != nil {
+		return x.VolumeId
+	}
+	return ""
+}
+
+func (x *RevertVolumeSnapshotRequest) GetSnapshotId() string {
+	if x != nil {
+		return x.SnapshotId
+	}
+	return ""
 }
 
 var File_kubenfv_kubevim_storage_v1_storage_proto protoreflect.FileDescriptor
 
 const file_kubenfv_kubevim_storage_v1_storage_proto_rawDesc = "" +
 	"\n" +
-	"(kubenfv/kubevim/storage/v1/storage.proto\x12\x1akubenfv.kubevim.storage.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a(kubenfv/kubevim/common/v1/affinity.proto\x1a%kubenfv/kubevim/common/v1/rules.proto\x1a&kubenfv/kubevim/common/v1/volume.proto\x1a(kubenfv/kubevim/options/v1/options.proto\x1a.protoc-gen-openapiv3/options/annotations.proto\"\xf8\b\n" +
+	"(kubenfv/kubevim/storage/v1/storage.proto\x12\x1akubenfv.kubevim.storage.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a&kubenfv/kubevim/common/v1/common.proto\x1a%kubenfv/kubevim/common/v1/rules.proto\x1a&kubenfv/kubevim/common/v1/volume.proto\x1a(kubenfv/kubevim/options/v1/options.proto\x1a.protoc-gen-openapiv3/options/annotations.proto\"\xe8\x02\n" +
 	"\x13CreateVolumeRequest\x12\xa0\x02\n" +
 	"\x06volume\x18\x01 \x01(\v2!.kubenfv.kubevim.common.v1.VolumeB\xe4\x01\xe2A\x01\x02\xbaH\xa3\x01\xba\x01\x9c\x01\n" +
 	"\x11volume.standalone\x12Aa standalone volume must be TYPE_OF_STORAGE_VOLUME without isBoot\x1aDthis.storage_data.type_of_storage == 1 && !this.storage_data.is_boot\xc8\x01\x01\xfa\x8b\x195\n" +
 	"3IFA006 7.5.1.2.2 AllocateStorageRequest.storageDataR\x06volume\x12.\n" +
 	"\n" +
-	"request_id\x18\x02 \x01(\tB\x0f\xe2A\x01\x01\xbaH\b\xd8\x01\x01r\x03\xb0\x01\x01R\trequestId\x12\xa2\x01\n" +
-	"\x0ereservation_id\x18\x03 \x01(\tB{\xe2A\x01\x01\xfa\x8b\x19s\n" +
-	"5IFA006 7.5.1.2.2 AllocateStorageRequest.reservationId\x12:\b\x02\x1a6Kube-VIM has no reservations yet; a value is rejected.R\rreservationId\x12\xe2\x01\n" +
-	"%affinity_or_anti_affinity_constraints\x18\x04 \x03(\v2;.kubenfv.kubevim.common.v1.AffinityOrAntiAffinityConstraintBS\xe2A\x01\x01\xfa\x8b\x19K\n" +
-	"IIFA006 7.5.1.2.2 AllocateStorageRequest.affinityOrAntiAffinityConstraintsR!affinityOrAntiAffinityConstraints\x12\xc8\x01\n" +
-	"\x14location_constraints\x18\x05 \x01(\tB\x94\x01\xe2A\x01\x01\xfa\x8b\x19\x8b\x01\n" +
-	";IFA006 7.5.1.2.2 AllocateStorageRequest.locationConstraints\x12L\b\x02\x1aHKube-VIM exposes one VIM per edge instead of zones; a value is rejected.R\x13locationConstraints\x12\xb8\x01\n" +
-	"\x11resource_group_id\x18\x06 \x01(\tB\x8b\x01\xe2A\x01\x01\xfa\x8b\x19\x82\x01\n" +
-	"7IFA006 7.5.1.2.2 AllocateStorageRequest.resourceGroupId\x12G\b\x02\x1aCNo resource groups until Kube-VIM has tenancy; a value is rejected.R\x0fresourceGroupId\"?\n" +
-	"\x10GetVolumeRequest\x12+\n" +
-	"\n" +
-	"storage_id\x18\x01 \x01(\tB\f\xe2A\x01\x02\xbaH\x05r\x03\xb0\x01\x01R\tstorageId\"\xad\x01\n" +
+	"request_id\x18\x02 \x01(\tB\x0f\xe2A\x01\x01\xbaH\b\xd8\x01\x01r\x03\xb0\x01\x01R\trequestId\"=\n" +
+	"\x10GetVolumeRequest\x12)\n" +
+	"\tvolume_id\x18\x01 \x01(\tB\f\xe2A\x01\x02\xbaH\x05r\x03\xb0\x01\x01R\bvolumeId\"\xad\x01\n" +
 	"\x12ListVolumesRequest\x12Y\n" +
 	"\x06filter\x18\x01 \x01(\tBA\xe2A\x01\x01\xfa\x8b\x199\n" +
 	"7IFA006 7.5.1.3.2 QueryStorageRequest.storageQueryFilterR\x06filter\x12<\n" +
@@ -750,123 +950,130 @@ const file_kubenfv_kubevim_storage_v1_storage_proto_rawDesc = "" +
 	"\x13ListVolumesResponse\x12t\n" +
 	"\avolumes\x18\x01 \x03(\v2!.kubenfv.kubevim.common.v1.VolumeB7\xfa\x8b\x193\n" +
 	"1IFA006 7.5.1.3.3 QueryStorageResponse.queryResultR\avolumes\x126\n" +
-	"\x16nextpage_opaque_marker\x18\x02 \x01(\tR\x16nextpage_opaque_marker\"\xc5\x01\n" +
-	"\x13UpdateVolumeRequest\x12`\n" +
-	"\n" +
-	"storage_id\x18\x01 \x01(\tBA\xe2A\x01\x02\xbaH\x05r\x03\xb0\x01\x01\xfa\x8b\x191\n" +
-	"/IFA006 7.5.1.4.2 UpdateStorageRequest.storageIdR\tstorageId\x12L\n" +
+	"\x16nextpage_opaque_marker\x18\x02 \x01(\tR\x16nextpage_opaque_marker\"\x89\x02\n" +
+	"\x13UpdateVolumeRequest\x12\xa3\x01\n" +
+	"\tvolume_id\x18\x01 \x01(\tB\x85\x01\xe2A\x01\x02\xbaH\x05r\x03\xb0\x01\x01\xfa\x8b\x19u\n" +
+	"/IFA006 7.5.1.4.2 UpdateStorageRequest.storageId\x12B\b\x03\x10\x01\x1a<Renamed to the resource name; identifiers are <resource>_id.R\bvolumeId\x12L\n" +
 	"\x06update\x18\x02 \x01(\v2(.kubenfv.kubevim.storage.v1.VolumeUpdateB\n" +
-	"\xe2A\x01\x02\xbaH\x03\xc8\x01\x01R\x06update\"\xbf\x04\n" +
-	"\fVolumeUpdate\x12h\n" +
-	"\fstorage_name\x18\x01 \x01(\tB@\xe2A\x01\x01\xbaH\x04r\x02\x10\x01\xfa\x8b\x191\x12/\b\x01\x10\x01\x1a)Renames a volume; IFA has no name update.H\x00R\vstorageName\x88\x01\x01\x12\x8c\x01\n" +
-	"\bmetadata\x18\x02 \x03(\v26.kubenfv.kubevim.storage.v1.VolumeUpdate.MetadataEntryB8\xe2A\x01\x01\xfa\x8b\x190\n" +
-	".IFA006 7.5.1.4.2 UpdateStorageRequest.metaDataR\bmetadata\x12;\n" +
-	"\x17metadata_keys_to_remove\x18\x03 \x03(\tB\x04\xe2A\x01\x01R\x14metadataKeysToRemove\x1a;\n" +
+	"\xe2A\x01\x02\xbaH\x03\xc8\x01\x01R\x06update\"\xc2\x03\n" +
+	"\fVolumeUpdate\x121\n" +
+	"\vvolume_name\x18\x01 \x01(\tB\v\xe2A\x01\x01\xbaH\x04r\x02\x10\x01H\x00R\n" +
+	"volumeName\x88\x01\x01\x12\x96\x01\n" +
+	"\bmetadata\x18\x02 \x03(\v26.kubenfv.kubevim.storage.v1.VolumeUpdate.MetadataEntryBB\xe2A\x01\x01\xbaH\a\x9a\x01\x04\xf8\x8b\x19\x01\xfa\x8b\x190\n" +
+	".IFA006 7.5.1.4.2 UpdateStorageRequest.metaDataR\bmetadata\x1a;\n" +
 	"\rMetadataEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01:\xaa\x01\xfa\x8b\x19\xa5\x01\n" +
-	"%IFA006 7.5.1.4.2 UpdateStorageRequest\x12|\b\x03\x10\x01\x1avName and metadata only; IFA's updateStorageData size change maps to ScaleVolume, and a type change needs a new volume.B\x0f\n" +
-	"\r_storage_name\"z\n" +
-	"\x13DeleteVolumeRequest\x12c\n" +
-	"\n" +
-	"storage_id\x18\x01 \x01(\tBD\xe2A\x01\x02\xbaH\x05r\x03\xb0\x01\x01\xfa\x8b\x194\n" +
-	"2IFA006 7.5.1.5.2 TerminateStorageRequest.storageIdR\tstorageId\"\x86\x05\n" +
-	"\x14OperateVolumeRequest\x12a\n" +
-	"\n" +
-	"storage_id\x18\x01 \x01(\tBB\xe2A\x01\x02\xbaH\x05r\x03\xb0\x01\x01\xfa\x8b\x192\n" +
-	"0IFA006 7.5.1.6.2 OperateStorageRequest.storageIdR\tstorageId\x12\xdd\x01\n" +
-	"\x11storage_operation\x18\x02 \x01(\x0e2,.kubenfv.kubevim.storage.v1.StorageOperationB\x81\x01\xe2A\x01\x02\xbaH\a\x82\x01\x04\x10\x01 \x00\xfa\x8b\x19o\n" +
-	"7IFA006 7.5.1.6.2 OperateStorageRequest.storageOperation\x124\b\x03\x10\x01\x1a.A closed enumeration instead of a free string.R\x10storageOperation\x12\xdc\x01\n" +
-	"\x1cstorage_operation_input_data\x18\x03 \x03(\v2O.kubenfv.kubevim.storage.v1.OperateVolumeRequest.StorageOperationInputDataEntryBJ\xe2A\x01\x01\xfa\x8b\x19B\n" +
-	"@IFA006 7.5.1.6.2 OperateStorageRequest.storageOperationInputDataR\x19storageOperationInputData\x1aL\n" +
-	"\x1eStorageOperationInputDataEntry\x12\x10\n" +
-	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\xc8\x03\n" +
-	"\x15OperateVolumeResponse\x12\x7f\n" +
-	"\fstorage_data\x18\x01 \x01(\v2!.kubenfv.kubevim.common.v1.VolumeB9\xfa\x8b\x195\n" +
-	"3IFA006 7.5.1.6.3 OperateStorageResponse.storageDataR\vstorageData\x12\xde\x01\n" +
-	"\x1dstorage_operation_output_data\x18\x02 \x03(\v2Q.kubenfv.kubevim.storage.v1.OperateVolumeResponse.StorageOperationOutputDataEntryBH\xfa\x8b\x19D\n" +
-	"BIFA006 7.5.1.6.3 OperateStorageResponse.storageOperationOutputDataR\x1astorageOperationOutputData\x1aM\n" +
-	"\x1fStorageOperationOutputDataEntry\x12\x10\n" +
-	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\xcb\x02\n" +
-	"\x12ScaleVolumeRequest\x12_\n" +
-	"\n" +
-	"storage_id\x18\x01 \x01(\tB@\xe2A\x01\x02\xbaH\x05r\x03\xb0\x01\x01\xfa\x8b\x190\n" +
-	".IFA006 7.5.1.7.2 ScaleStorageRequest.storageIdR\tstorageId\x12\xd3\x01\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01:\x98\x01\xfa\x8b\x19\x93\x01\n" +
+	"%IFA006 7.5.1.4.2 UpdateStorageRequest\x12j\b\x03\x10\x01\x1adName and metadata only; IFA's size change maps to ScaleVolume, and a type change needs a new volume.B\x0e\n" +
+	"\f_volume_name\"\xbe\x01\n" +
+	"\x13DeleteVolumeRequest\x12\xa6\x01\n" +
+	"\tvolume_id\x18\x01 \x01(\tB\x88\x01\xe2A\x01\x02\xbaH\x05r\x03\xb0\x01\x01\xfa\x8b\x19x\n" +
+	"2IFA006 7.5.1.5.2 TerminateStorageRequest.storageId\x12B\b\x03\x10\x01\x1a<Renamed to the resource name; identifiers are <resource>_id.R\bvolumeId\"\x8f\x03\n" +
+	"\x12ScaleVolumeRequest\x12\xa2\x01\n" +
+	"\tvolume_id\x18\x01 \x01(\tB\x84\x01\xe2A\x01\x02\xbaH\x05r\x03\xb0\x01\x01\xfa\x8b\x19t\n" +
+	".IFA006 7.5.1.7.2 ScaleStorageRequest.storageId\x12B\b\x03\x10\x01\x1a<Renamed to the resource name; identifiers are <resource>_id.R\bvolumeId\x12\xd3\x01\n" +
 	"\bnew_size\x18\x02 \x01(\tB\xb7\x01\xe2A\x01\x02\xbaH\x06r\x04\xf8\x8b\x19\x01\xfa\x8b\x19\xa5\x01\n" +
-	",IFA006 7.5.1.7.2 ScaleStorageRequest.newSize\x12u\b\x03\x10\x01\x1aoKubernetes quantity string instead of a number; shrinking is rejected because Kubernetes cannot shrink volumes.R\anewSize\"\xdd\x03\n" +
-	"\x14MigrateVolumeRequest\x12a\n" +
+	",IFA006 7.5.1.7.2 ScaleStorageRequest.newSize\x12u\b\x03\x10\x01\x1aoKubernetes quantity string instead of a number; shrinking is rejected because Kubernetes cannot shrink volumes.R\anewSize\"\x91\x03\n" +
+	"\x14MigrateVolumeRequest\x12\xa4\x01\n" +
+	"\tvolume_id\x18\x01 \x01(\tB\x86\x01\xe2A\x01\x02\xbaH\x05r\x03\xb0\x01\x01\xfa\x8b\x19v\n" +
+	"0IFA006 7.5.1.8.2 MigrateStorageRequest.storageId\x12B\b\x03\x10\x01\x1a<Renamed to the resource name; identifiers are <resource>_id.R\bvolumeId\x12\xd1\x01\n" +
+	"\rstorage_class\x18\x02 \x01(\tB\xab\x01\xe2A\x01\x02\xbaH)r'\x10\x01\x18\xfd\x012 ^[a-z0-9]([-a-z0-9.]*[a-z0-9])?$\xfa\x8b\x19w\n" +
+	":IFA006 7.5.1.8.2 MigrateStorageRequest.migrationConstraint\x129\b\x03\x10\x01\x1a3The migration constraint is a target storage class.R\fstorageClass\"\x99\x04\n" +
+	"\x0eVolumeSnapshot\x12%\n" +
+	"\vsnapshot_id\x18\x01 \x01(\tB\x04\xe2A\x01\x03R\n" +
+	"snapshotId\x12)\n" +
+	"\rsnapshot_name\x18\x02 \x01(\tB\x04\xe2A\x01\x01R\fsnapshotName\x12!\n" +
+	"\tvolume_id\x18\x03 \x01(\tB\x04\xe2A\x01\x03R\bvolumeId\x12?\n" +
 	"\n" +
-	"storage_id\x18\x01 \x01(\tBB\xe2A\x01\x02\xbaH\x05r\x03\xb0\x01\x01\xfa\x8b\x192\n" +
-	"0IFA006 7.5.1.8.2 MigrateStorageRequest.storageIdR\tstorageId\x12~\n" +
-	"\x14migration_constraint\x18\x02 \x01(\tBK\xe2A\x01\x02\xbaH\x04r\x02\x10\x01\xfa\x8b\x19<\n" +
-	":IFA006 7.5.1.8.2 MigrateStorageRequest.migrationConstraintR\x13migrationConstraint\x12\xe1\x01\n" +
-	"%affinity_or_anti_affinity_constraints\x18\x03 \x03(\v2;.kubenfv.kubevim.common.v1.AffinityOrAntiAffinityConstraintBR\xe2A\x01\x01\xfa\x8b\x19J\n" +
-	"HIFA006 7.5.1.8.2 MigrateStorageRequest.affinityOrAntiAffinityConstraintsR!affinityOrAntiAffinityConstraints*\xad\x01\n" +
-	"\x10StorageOperation\x12!\n" +
-	"\x1dSTORAGE_OPERATION_UNSPECIFIED\x10\x00\x12%\n" +
-	"!STORAGE_OPERATION_CREATE_SNAPSHOT\x10\x01\x12(\n" +
-	"$STORAGE_OPERATION_REVERT_TO_SNAPSHOT\x10\x02\x12%\n" +
-	"!STORAGE_OPERATION_DELETE_SNAPSHOT\x10\x032\xe8\x19\n" +
+	"created_at\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampB\x04\xe2A\x01\x03R\tcreatedAt\x12G\n" +
+	"\x06status\x18\x05 \x01(\x0e2).kubenfv.kubevim.common.v1.SnapshotStatusB\x04\xe2A\x01\x03R\x06status\x12d\n" +
+	"\bmetadata\x18\x06 \x03(\v28.kubenfv.kubevim.storage.v1.VolumeSnapshot.MetadataEntryB\x0e\xe2A\x01\x01\xbaH\a\x9a\x01\x04\xf8\x8b\x19\x01R\bmetadata\x1a;\n" +
+	"\rMetadataEntry\x12\x10\n" +
+	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01:e\xfa\x8b\x19a\x12_\b\x03\x10\x01\x1aYIFA handles snapshots through Operate with a snapshotId in the data maps (decision 0007).\"\xc6\x01\n" +
+	"\x1bCreateVolumeSnapshotRequest\x12)\n" +
+	"\tvolume_id\x18\x01 \x01(\tB\f\xe2A\x01\x02\xbaH\x05r\x03\xb0\x01\x01R\bvolumeId\x12L\n" +
+	"\bsnapshot\x18\x02 \x01(\v2*.kubenfv.kubevim.storage.v1.VolumeSnapshotB\x04\xe2A\x01\x01R\bsnapshot\x12.\n" +
+	"\n" +
+	"request_id\x18\x03 \x01(\tB\x0f\xe2A\x01\x01\xbaH\b\xd8\x01\x01r\x03\xb0\x01\x01R\trequestId\"t\n" +
+	"\x18GetVolumeSnapshotRequest\x12)\n" +
+	"\tvolume_id\x18\x01 \x01(\tB\f\xe2A\x01\x02\xbaH\x05r\x03\xb0\x01\x01R\bvolumeId\x12-\n" +
+	"\vsnapshot_id\x18\x02 \x01(\tB\f\xe2A\x01\x02\xbaH\x05r\x03\xb0\x01\x01R\n" +
+	"snapshotId\"\xa3\x01\n" +
+	"\x1aListVolumeSnapshotsRequest\x12)\n" +
+	"\tvolume_id\x18\x01 \x01(\tB\f\xe2A\x01\x02\xbaH\x05r\x03\xb0\x01\x01R\bvolumeId\x12\x1c\n" +
+	"\x06filter\x18\x02 \x01(\tB\x04\xe2A\x01\x01R\x06filter\x12<\n" +
+	"\x16nextpage_opaque_marker\x18\x03 \x01(\tB\x04\xe2A\x01\x01R\x16nextpage_opaque_marker\"\x9f\x01\n" +
+	"\x1bListVolumeSnapshotsResponse\x12H\n" +
+	"\tsnapshots\x18\x01 \x03(\v2*.kubenfv.kubevim.storage.v1.VolumeSnapshotR\tsnapshots\x126\n" +
+	"\x16nextpage_opaque_marker\x18\x02 \x01(\tR\x16nextpage_opaque_marker\"w\n" +
+	"\x1bDeleteVolumeSnapshotRequest\x12)\n" +
+	"\tvolume_id\x18\x01 \x01(\tB\f\xe2A\x01\x02\xbaH\x05r\x03\xb0\x01\x01R\bvolumeId\x12-\n" +
+	"\vsnapshot_id\x18\x02 \x01(\tB\f\xe2A\x01\x02\xbaH\x05r\x03\xb0\x01\x01R\n" +
+	"snapshotId\"w\n" +
+	"\x1bRevertVolumeSnapshotRequest\x12)\n" +
+	"\tvolume_id\x18\x01 \x01(\tB\f\xe2A\x01\x02\xbaH\x05r\x03\xb0\x01\x01R\bvolumeId\x12-\n" +
+	"\vsnapshot_id\x18\x02 \x01(\tB\f\xe2A\x01\x02\xbaH\x05r\x03\xb0\x01\x01R\n" +
+	"snapshotId2\x97\x1d\n" +
 	"\x0eStorageService\x12\xe2\x01\n" +
 	"\fCreateVolume\x12/.kubenfv.kubevim.storage.v1.CreateVolumeRequest\x1a!.kubenfv.kubevim.common.v1.Volume\"~\xfaP#J!\n" +
 	"\x1f\n" +
 	"\x06oauth2\x12\x15\n" +
 	"\x13storage:v1:allocate\xfa\x8b\x196\n" +
-	"4IFA006 7.5.1.2 Allocate Virtualised Storage Resource\x82\xd3\xe4\x93\x02\x18:\x01*\"\x13/storage/v1/volumes\x12\x9e\x02\n" +
-	"\tGetVolume\x12,.kubenfv.kubevim.storage.v1.GetVolumeRequest\x1a!.kubenfv.kubevim.common.v1.Volume\"\xbf\x01\xfaP J\x1e\n" +
+	"4IFA006 7.5.1.2 Allocate Virtualised Storage Resource\x82\xd3\xe4\x93\x02\x18:\x01*\"\x13/storage/v1/volumes\x12\x9d\x02\n" +
+	"\tGetVolume\x12,.kubenfv.kubevim.storage.v1.GetVolumeRequest\x1a!.kubenfv.kubevim.common.v1.Volume\"\xbe\x01\xfaP J\x1e\n" +
 	"\x1c\n" +
 	"\x06oauth2\x12\x12\n" +
 	"\x10storage:v1:query\xfa\x8b\x19p\n" +
-	"1IFA006 7.5.1.3 Query Virtualised Storage Resource\x12;\b\x03\x10\x01\x1a5Query filtered by storageId, as a read by identifier.\x82\xd3\xe4\x93\x02\"\x12 /storage/v1/volumes/{storage_id}\x12\xe5\x01\n" +
+	"1IFA006 7.5.1.3 Query Virtualised Storage Resource\x12;\b\x03\x10\x01\x1a5Query filtered by storageId, as a read by identifier.\x82\xd3\xe4\x93\x02!\x12\x1f/storage/v1/volumes/{volume_id}\x12\xe5\x01\n" +
 	"\vListVolumes\x12..kubenfv.kubevim.storage.v1.ListVolumesRequest\x1a/.kubenfv.kubevim.storage.v1.ListVolumesResponse\"u\xfaP J\x1e\n" +
 	"\x1c\n" +
 	"\x06oauth2\x12\x12\n" +
 	"\x10storage:v1:query\xfa\x8b\x193\n" +
-	"1IFA006 7.5.1.3 Query Virtualised Storage Resource\x82\xd3\xe4\x93\x02\x15\x12\x13/storage/v1/volumes\x12\xca\x02\n" +
-	"\fUpdateVolume\x12/.kubenfv.kubevim.storage.v1.UpdateVolumeRequest\x1a!.kubenfv.kubevim.common.v1.Volume\"\xe5\x01\xfaP!J\x1f\n" +
+	"1IFA006 7.5.1.3 Query Virtualised Storage Resource\x82\xd3\xe4\x93\x02\x15\x12\x13/storage/v1/volumes\x12\xbe\x02\n" +
+	"\fUpdateVolume\x12/.kubenfv.kubevim.storage.v1.UpdateVolumeRequest\x1a!.kubenfv.kubevim.common.v1.Volume\"\xd9\x01\xfaP!J\x1f\n" +
 	"\x1d\n" +
 	"\x06oauth2\x12\x13\n" +
-	"\x11storage:v1:update\xfa\x8b\x19\x8c\x01\n" +
-	"2IFA006 7.5.1.4 Update Virtualised Storage Resource\x12V\b\x03\x10\x01\x1aPOnly the changes set in VolumeUpdate apply; size changes go through ScaleVolume.\x82\xd3\xe4\x93\x02*:\x06update2 /storage/v1/volumes/{storage_id}\x12\xc0\x02\n" +
-	"\fDeleteVolume\x12/.kubenfv.kubevim.storage.v1.DeleteVolumeRequest\x1a\x16.google.protobuf.Empty\"\xe6\x01\xfaP$J\"\n" +
+	"\x11storage:v1:update\xfa\x8b\x19\x81\x01\n" +
+	"2IFA006 7.5.1.4 Update Virtualised Storage Resource\x12K\b\x03\x10\x01\x1aEChanges the name and metadata only; IFA's size change is ScaleVolume.\x82\xd3\xe4\x93\x02):\x06update2\x1f/storage/v1/volumes/{volume_id}\x12\xd6\x02\n" +
+	"\fDeleteVolume\x12/.kubenfv.kubevim.storage.v1.DeleteVolumeRequest\x1a\x16.google.protobuf.Empty\"\xfc\x01\xfaP$J\"\n" +
 	" \n" +
 	"\x06oauth2\x12\x16\n" +
-	"\x14storage:v1:terminate\xfa\x8b\x19\x92\x01\n" +
-	"5IFA006 7.5.1.5 Terminate Virtualised Storage Resource\x12Y\b\x03\x10\x01\x1aSOne resource per request (the path identifies it) instead of a list of identifiers.\x82\xd3\xe4\x93\x02\"* /storage/v1/volumes/{storage_id}\x12\x88\x02\n" +
-	"\rOperateVolume\x120.kubenfv.kubevim.storage.v1.OperateVolumeRequest\x1a1.kubenfv.kubevim.storage.v1.OperateVolumeResponse\"\x91\x01\xfaP\"J \n" +
-	"\x1e\n" +
-	"\x06oauth2\x12\x14\n" +
-	"\x12storage:v1:operate\xfa\x8b\x195\n" +
-	"3IFA006 7.5.1.6 Operate Virtualised Storage Resource\x82\xd3\xe4\x93\x02-:\x01*\"(/storage/v1/volumes/{storage_id}/operate\x12\xee\x01\n" +
-	"\vScaleVolume\x12..kubenfv.kubevim.storage.v1.ScaleVolumeRequest\x1a!.kubenfv.kubevim.common.v1.Volume\"\x8b\x01\xfaP J\x1e\n" +
+	"\x14storage:v1:terminate\xfa\x8b\x19\xa9\x01\n" +
+	"5IFA006 7.5.1.5 Terminate Virtualised Storage Resource\x12p\b\x03\x10\x01\x1ajOne resource per request (the path identifies it) instead of a list of identifiers; returns no body (204).\x82\xd3\xe4\x93\x02!*\x1f/storage/v1/volumes/{volume_id}\x12\xed\x01\n" +
+	"\vScaleVolume\x12..kubenfv.kubevim.storage.v1.ScaleVolumeRequest\x1a!.kubenfv.kubevim.common.v1.Volume\"\x8a\x01\xfaP J\x1e\n" +
 	"\x1c\n" +
 	"\x06oauth2\x12\x12\n" +
 	"\x10storage:v1:scale\xfa\x8b\x193\n" +
-	"1IFA006 7.5.1.7 Scale Virtualised Storage Resource\x82\xd3\xe4\x93\x02+:\x01*\"&/storage/v1/volumes/{storage_id}/scale\x12\xf8\x01\n" +
-	"\rMigrateVolume\x120.kubenfv.kubevim.storage.v1.MigrateVolumeRequest\x1a!.kubenfv.kubevim.common.v1.Volume\"\x91\x01\xfaP\"J \n" +
+	"1IFA006 7.5.1.7 Scale Virtualised Storage Resource\x82\xd3\xe4\x93\x02*:\x01*\"%/storage/v1/volumes/{volume_id}/scale\x12\xb2\x02\n" +
+	"\rMigrateVolume\x120.kubenfv.kubevim.storage.v1.MigrateVolumeRequest\x1a!.kubenfv.kubevim.common.v1.Volume\"\xcb\x01\xfaP\"J \n" +
 	"\x1e\n" +
 	"\x06oauth2\x12\x14\n" +
-	"\x12storage:v1:migrate\xfa\x8b\x195\n" +
-	"3IFA006 7.5.1.8 Migrate Virtualised Storage Resource\x82\xd3\xe4\x93\x02-:\x01*\"(/storage/v1/volumes/{storage_id}/migrate\x12\xa7\x02\n" +
-	"\x13CreateAffinityGroup\x125.kubenfv.kubevim.common.v1.CreateAffinityGroupRequest\x1a(.kubenfv.kubevim.common.v1.AffinityGroup\"\xae\x01\xfaP#J!\n" +
-	"\x1f\n" +
-	"\x06oauth2\x12\x15\n" +
-	"\x13storage:v1:allocate\xfa\x8b\x19_\n" +
-	"]IFA006 7.5.1.9 Create Virtualised Storage Resource Affinity Or AntiAffinity Constraints Group\x82\xd3\xe4\x93\x02\x1f:\x01*\"\x1a/storage/v1/affinityGroups\x12\xfc\x01\n" +
-	"\x10GetAffinityGroup\x122.kubenfv.kubevim.common.v1.GetAffinityGroupRequest\x1a(.kubenfv.kubevim.common.v1.AffinityGroup\"\x89\x01\xfaP J\x1e\n" +
+	"\x12storage:v1:migrate\xfa\x8b\x19p\n" +
+	"3IFA006 7.5.1.8 Migrate Virtualised Storage Resource\x129\b\x03\x10\x01\x1a3The migration constraint is a target storage class.\x82\xd3\xe4\x93\x02,:\x01*\"'/storage/v1/volumes/{volume_id}/migrate\x12\xfb\x02\n" +
+	"\x14CreateVolumeSnapshot\x127.kubenfv.kubevim.storage.v1.CreateVolumeSnapshotRequest\x1a*.kubenfv.kubevim.storage.v1.VolumeSnapshot\"\xfd\x01\xfaP\"J \n" +
+	"\x1e\n" +
+	"\x06oauth2\x12\x14\n" +
+	"\x12storage:v1:operate\xfa\x8b\x19\x9f\x01\n" +
+	"fIFA006 7.5.1.6 Operate Virtualised Storage Resource (createSnapshot, revertToSnapshot, deleteSnapshot)\x125\b\x03\x10\x01\x1a/Operate with createSnapshot, as a sub-resource.\x82\xd3\xe4\x93\x02.:\x01*\")/storage/v1/volumes/{volume_id}/snapshots\x12\x85\x02\n" +
+	"\x11GetVolumeSnapshot\x124.kubenfv.kubevim.storage.v1.GetVolumeSnapshotRequest\x1a*.kubenfv.kubevim.storage.v1.VolumeSnapshot\"\x8d\x01\xfaP J\x1e\n" +
 	"\x1c\n" +
 	"\x06oauth2\x12\x12\n" +
-	"\x10storage:v1:query\xfa\x8b\x195\x123\b\x01\x10\x01\x1a-IFA can create groups but not read them back.\x82\xd3\xe4\x93\x02'\x12%/storage/v1/affinityGroups/{group_id}\x12\xfc\x01\n" +
-	"\x12ListAffinityGroups\x124.kubenfv.kubevim.common.v1.ListAffinityGroupsRequest\x1a5.kubenfv.kubevim.common.v1.ListAffinityGroupsResponse\"y\xfaP J\x1e\n" +
+	"\x10storage:v1:query\xfa\x8b\x19'\x12%\b\x01\x10\x01\x1a\x1fIFA cannot read snapshots back.\x82\xd3\xe4\x93\x029\x127/storage/v1/volumes/{volume_id}/snapshots/{snapshot_id}\x12\x82\x02\n" +
+	"\x13ListVolumeSnapshots\x126.kubenfv.kubevim.storage.v1.ListVolumeSnapshotsRequest\x1a7.kubenfv.kubevim.storage.v1.ListVolumeSnapshotsResponse\"z\xfaP J\x1e\n" +
 	"\x1c\n" +
 	"\x06oauth2\x12\x12\n" +
-	"\x10storage:v1:query\xfa\x8b\x190\x12.\b\x01\x10\x01\x1a(IFA can create groups but not list them.\x82\xd3\xe4\x93\x02\x1c\x12\x1a/storage/v1/affinityGroups\x12\xf1\x01\n" +
-	"\x13DeleteAffinityGroup\x125.kubenfv.kubevim.common.v1.DeleteAffinityGroupRequest\x1a\x16.google.protobuf.Empty\"\x8a\x01\xfaP$J\"\n" +
-	" \n" +
-	"\x06oauth2\x12\x16\n" +
-	"\x14storage:v1:terminate\xfa\x8b\x192\x120\b\x01\x10\x01\x1a*IFA can create groups but not delete them.\x82\xd3\xe4\x93\x02'*%/storage/v1/affinityGroups/{group_id}\x1aE\xfa\x8b\x19A\n" +
+	"\x10storage:v1:query\xfa\x8b\x19\"\x12 \b\x01\x10\x01\x1a\x1aIFA cannot list snapshots.\x82\xd3\xe4\x93\x02+\x12)/storage/v1/volumes/{volume_id}/snapshots\x12\xf2\x02\n" +
+	"\x14DeleteVolumeSnapshot\x127.kubenfv.kubevim.storage.v1.DeleteVolumeSnapshotRequest\x1a\x16.google.protobuf.Empty\"\x88\x02\xfaP\"J \n" +
+	"\x1e\n" +
+	"\x06oauth2\x12\x14\n" +
+	"\x12storage:v1:operate\xfa\x8b\x19\x9f\x01\n" +
+	"fIFA006 7.5.1.6 Operate Virtualised Storage Resource (createSnapshot, revertToSnapshot, deleteSnapshot)\x125\b\x03\x10\x01\x1a/Operate with deleteSnapshot, as a sub-resource.\x82\xd3\xe4\x93\x029*7/storage/v1/volumes/{volume_id}/snapshots/{snapshot_id}\x12\x91\x03\n" +
+	"\x14RevertVolumeSnapshot\x127.kubenfv.kubevim.storage.v1.RevertVolumeSnapshotRequest\x1a!.kubenfv.kubevim.common.v1.Volume\"\x9c\x02\xfaP\"J \n" +
+	"\x1e\n" +
+	"\x06oauth2\x12\x14\n" +
+	"\x12storage:v1:operate\xfa\x8b\x19\xa9\x01\n" +
+	"fIFA006 7.5.1.6 Operate Virtualised Storage Resource (createSnapshot, revertToSnapshot, deleteSnapshot)\x12?\b\x03\x10\x01\x1a9Operate with revertToSnapshot, as a task on the snapshot.\x82\xd3\xe4\x93\x02C:\x01*\">/storage/v1/volumes/{volume_id}/snapshots/{snapshot_id}/revert\x1aE\xfa\x8b\x19A\n" +
 	"?IFA006 7.5.1 Virtualised Storage Resources Management InterfaceB\xdd\x05\xfaP\xcc\x03\n" +
 	")\n" +
 	" Kube-VIM virtualised storage API:\x051.0.02\x9e\x03\n" +
@@ -894,74 +1101,70 @@ func file_kubenfv_kubevim_storage_v1_storage_proto_rawDescGZIP() []byte {
 	return file_kubenfv_kubevim_storage_v1_storage_proto_rawDescData
 }
 
-var file_kubenfv_kubevim_storage_v1_storage_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_kubenfv_kubevim_storage_v1_storage_proto_msgTypes = make([]protoimpl.MessageInfo, 14)
+var file_kubenfv_kubevim_storage_v1_storage_proto_msgTypes = make([]protoimpl.MessageInfo, 18)
 var file_kubenfv_kubevim_storage_v1_storage_proto_goTypes = []any{
-	(StorageOperation)(0),         // 0: kubenfv.kubevim.storage.v1.StorageOperation
-	(*CreateVolumeRequest)(nil),   // 1: kubenfv.kubevim.storage.v1.CreateVolumeRequest
-	(*GetVolumeRequest)(nil),      // 2: kubenfv.kubevim.storage.v1.GetVolumeRequest
-	(*ListVolumesRequest)(nil),    // 3: kubenfv.kubevim.storage.v1.ListVolumesRequest
-	(*ListVolumesResponse)(nil),   // 4: kubenfv.kubevim.storage.v1.ListVolumesResponse
-	(*UpdateVolumeRequest)(nil),   // 5: kubenfv.kubevim.storage.v1.UpdateVolumeRequest
-	(*VolumeUpdate)(nil),          // 6: kubenfv.kubevim.storage.v1.VolumeUpdate
-	(*DeleteVolumeRequest)(nil),   // 7: kubenfv.kubevim.storage.v1.DeleteVolumeRequest
-	(*OperateVolumeRequest)(nil),  // 8: kubenfv.kubevim.storage.v1.OperateVolumeRequest
-	(*OperateVolumeResponse)(nil), // 9: kubenfv.kubevim.storage.v1.OperateVolumeResponse
-	(*ScaleVolumeRequest)(nil),    // 10: kubenfv.kubevim.storage.v1.ScaleVolumeRequest
-	(*MigrateVolumeRequest)(nil),  // 11: kubenfv.kubevim.storage.v1.MigrateVolumeRequest
-	nil,                           // 12: kubenfv.kubevim.storage.v1.VolumeUpdate.MetadataEntry
-	nil,                           // 13: kubenfv.kubevim.storage.v1.OperateVolumeRequest.StorageOperationInputDataEntry
-	nil,                           // 14: kubenfv.kubevim.storage.v1.OperateVolumeResponse.StorageOperationOutputDataEntry
-	(*v1.Volume)(nil),             // 15: kubenfv.kubevim.common.v1.Volume
-	(*v1.AffinityOrAntiAffinityConstraint)(nil), // 16: kubenfv.kubevim.common.v1.AffinityOrAntiAffinityConstraint
-	(*v1.CreateAffinityGroupRequest)(nil),       // 17: kubenfv.kubevim.common.v1.CreateAffinityGroupRequest
-	(*v1.GetAffinityGroupRequest)(nil),          // 18: kubenfv.kubevim.common.v1.GetAffinityGroupRequest
-	(*v1.ListAffinityGroupsRequest)(nil),        // 19: kubenfv.kubevim.common.v1.ListAffinityGroupsRequest
-	(*v1.DeleteAffinityGroupRequest)(nil),       // 20: kubenfv.kubevim.common.v1.DeleteAffinityGroupRequest
-	(*emptypb.Empty)(nil),                       // 21: google.protobuf.Empty
-	(*v1.AffinityGroup)(nil),                    // 22: kubenfv.kubevim.common.v1.AffinityGroup
-	(*v1.ListAffinityGroupsResponse)(nil),       // 23: kubenfv.kubevim.common.v1.ListAffinityGroupsResponse
+	(*CreateVolumeRequest)(nil),         // 0: kubenfv.kubevim.storage.v1.CreateVolumeRequest
+	(*GetVolumeRequest)(nil),            // 1: kubenfv.kubevim.storage.v1.GetVolumeRequest
+	(*ListVolumesRequest)(nil),          // 2: kubenfv.kubevim.storage.v1.ListVolumesRequest
+	(*ListVolumesResponse)(nil),         // 3: kubenfv.kubevim.storage.v1.ListVolumesResponse
+	(*UpdateVolumeRequest)(nil),         // 4: kubenfv.kubevim.storage.v1.UpdateVolumeRequest
+	(*VolumeUpdate)(nil),                // 5: kubenfv.kubevim.storage.v1.VolumeUpdate
+	(*DeleteVolumeRequest)(nil),         // 6: kubenfv.kubevim.storage.v1.DeleteVolumeRequest
+	(*ScaleVolumeRequest)(nil),          // 7: kubenfv.kubevim.storage.v1.ScaleVolumeRequest
+	(*MigrateVolumeRequest)(nil),        // 8: kubenfv.kubevim.storage.v1.MigrateVolumeRequest
+	(*VolumeSnapshot)(nil),              // 9: kubenfv.kubevim.storage.v1.VolumeSnapshot
+	(*CreateVolumeSnapshotRequest)(nil), // 10: kubenfv.kubevim.storage.v1.CreateVolumeSnapshotRequest
+	(*GetVolumeSnapshotRequest)(nil),    // 11: kubenfv.kubevim.storage.v1.GetVolumeSnapshotRequest
+	(*ListVolumeSnapshotsRequest)(nil),  // 12: kubenfv.kubevim.storage.v1.ListVolumeSnapshotsRequest
+	(*ListVolumeSnapshotsResponse)(nil), // 13: kubenfv.kubevim.storage.v1.ListVolumeSnapshotsResponse
+	(*DeleteVolumeSnapshotRequest)(nil), // 14: kubenfv.kubevim.storage.v1.DeleteVolumeSnapshotRequest
+	(*RevertVolumeSnapshotRequest)(nil), // 15: kubenfv.kubevim.storage.v1.RevertVolumeSnapshotRequest
+	nil,                                 // 16: kubenfv.kubevim.storage.v1.VolumeUpdate.MetadataEntry
+	nil,                                 // 17: kubenfv.kubevim.storage.v1.VolumeSnapshot.MetadataEntry
+	(*v1.Volume)(nil),                   // 18: kubenfv.kubevim.common.v1.Volume
+	(*timestamppb.Timestamp)(nil),       // 19: google.protobuf.Timestamp
+	(v1.SnapshotStatus)(0),              // 20: kubenfv.kubevim.common.v1.SnapshotStatus
+	(*emptypb.Empty)(nil),               // 21: google.protobuf.Empty
 }
 var file_kubenfv_kubevim_storage_v1_storage_proto_depIdxs = []int32{
-	15, // 0: kubenfv.kubevim.storage.v1.CreateVolumeRequest.volume:type_name -> kubenfv.kubevim.common.v1.Volume
-	16, // 1: kubenfv.kubevim.storage.v1.CreateVolumeRequest.affinity_or_anti_affinity_constraints:type_name -> kubenfv.kubevim.common.v1.AffinityOrAntiAffinityConstraint
-	15, // 2: kubenfv.kubevim.storage.v1.ListVolumesResponse.volumes:type_name -> kubenfv.kubevim.common.v1.Volume
-	6,  // 3: kubenfv.kubevim.storage.v1.UpdateVolumeRequest.update:type_name -> kubenfv.kubevim.storage.v1.VolumeUpdate
-	12, // 4: kubenfv.kubevim.storage.v1.VolumeUpdate.metadata:type_name -> kubenfv.kubevim.storage.v1.VolumeUpdate.MetadataEntry
-	0,  // 5: kubenfv.kubevim.storage.v1.OperateVolumeRequest.storage_operation:type_name -> kubenfv.kubevim.storage.v1.StorageOperation
-	13, // 6: kubenfv.kubevim.storage.v1.OperateVolumeRequest.storage_operation_input_data:type_name -> kubenfv.kubevim.storage.v1.OperateVolumeRequest.StorageOperationInputDataEntry
-	15, // 7: kubenfv.kubevim.storage.v1.OperateVolumeResponse.storage_data:type_name -> kubenfv.kubevim.common.v1.Volume
-	14, // 8: kubenfv.kubevim.storage.v1.OperateVolumeResponse.storage_operation_output_data:type_name -> kubenfv.kubevim.storage.v1.OperateVolumeResponse.StorageOperationOutputDataEntry
-	16, // 9: kubenfv.kubevim.storage.v1.MigrateVolumeRequest.affinity_or_anti_affinity_constraints:type_name -> kubenfv.kubevim.common.v1.AffinityOrAntiAffinityConstraint
-	1,  // 10: kubenfv.kubevim.storage.v1.StorageService.CreateVolume:input_type -> kubenfv.kubevim.storage.v1.CreateVolumeRequest
-	2,  // 11: kubenfv.kubevim.storage.v1.StorageService.GetVolume:input_type -> kubenfv.kubevim.storage.v1.GetVolumeRequest
-	3,  // 12: kubenfv.kubevim.storage.v1.StorageService.ListVolumes:input_type -> kubenfv.kubevim.storage.v1.ListVolumesRequest
-	5,  // 13: kubenfv.kubevim.storage.v1.StorageService.UpdateVolume:input_type -> kubenfv.kubevim.storage.v1.UpdateVolumeRequest
-	7,  // 14: kubenfv.kubevim.storage.v1.StorageService.DeleteVolume:input_type -> kubenfv.kubevim.storage.v1.DeleteVolumeRequest
-	8,  // 15: kubenfv.kubevim.storage.v1.StorageService.OperateVolume:input_type -> kubenfv.kubevim.storage.v1.OperateVolumeRequest
-	10, // 16: kubenfv.kubevim.storage.v1.StorageService.ScaleVolume:input_type -> kubenfv.kubevim.storage.v1.ScaleVolumeRequest
-	11, // 17: kubenfv.kubevim.storage.v1.StorageService.MigrateVolume:input_type -> kubenfv.kubevim.storage.v1.MigrateVolumeRequest
-	17, // 18: kubenfv.kubevim.storage.v1.StorageService.CreateAffinityGroup:input_type -> kubenfv.kubevim.common.v1.CreateAffinityGroupRequest
-	18, // 19: kubenfv.kubevim.storage.v1.StorageService.GetAffinityGroup:input_type -> kubenfv.kubevim.common.v1.GetAffinityGroupRequest
-	19, // 20: kubenfv.kubevim.storage.v1.StorageService.ListAffinityGroups:input_type -> kubenfv.kubevim.common.v1.ListAffinityGroupsRequest
-	20, // 21: kubenfv.kubevim.storage.v1.StorageService.DeleteAffinityGroup:input_type -> kubenfv.kubevim.common.v1.DeleteAffinityGroupRequest
-	15, // 22: kubenfv.kubevim.storage.v1.StorageService.CreateVolume:output_type -> kubenfv.kubevim.common.v1.Volume
-	15, // 23: kubenfv.kubevim.storage.v1.StorageService.GetVolume:output_type -> kubenfv.kubevim.common.v1.Volume
-	4,  // 24: kubenfv.kubevim.storage.v1.StorageService.ListVolumes:output_type -> kubenfv.kubevim.storage.v1.ListVolumesResponse
-	15, // 25: kubenfv.kubevim.storage.v1.StorageService.UpdateVolume:output_type -> kubenfv.kubevim.common.v1.Volume
-	21, // 26: kubenfv.kubevim.storage.v1.StorageService.DeleteVolume:output_type -> google.protobuf.Empty
-	9,  // 27: kubenfv.kubevim.storage.v1.StorageService.OperateVolume:output_type -> kubenfv.kubevim.storage.v1.OperateVolumeResponse
-	15, // 28: kubenfv.kubevim.storage.v1.StorageService.ScaleVolume:output_type -> kubenfv.kubevim.common.v1.Volume
-	15, // 29: kubenfv.kubevim.storage.v1.StorageService.MigrateVolume:output_type -> kubenfv.kubevim.common.v1.Volume
-	22, // 30: kubenfv.kubevim.storage.v1.StorageService.CreateAffinityGroup:output_type -> kubenfv.kubevim.common.v1.AffinityGroup
-	22, // 31: kubenfv.kubevim.storage.v1.StorageService.GetAffinityGroup:output_type -> kubenfv.kubevim.common.v1.AffinityGroup
-	23, // 32: kubenfv.kubevim.storage.v1.StorageService.ListAffinityGroups:output_type -> kubenfv.kubevim.common.v1.ListAffinityGroupsResponse
-	21, // 33: kubenfv.kubevim.storage.v1.StorageService.DeleteAffinityGroup:output_type -> google.protobuf.Empty
-	22, // [22:34] is the sub-list for method output_type
-	10, // [10:22] is the sub-list for method input_type
-	10, // [10:10] is the sub-list for extension type_name
-	10, // [10:10] is the sub-list for extension extendee
-	0,  // [0:10] is the sub-list for field type_name
+	18, // 0: kubenfv.kubevim.storage.v1.CreateVolumeRequest.volume:type_name -> kubenfv.kubevim.common.v1.Volume
+	18, // 1: kubenfv.kubevim.storage.v1.ListVolumesResponse.volumes:type_name -> kubenfv.kubevim.common.v1.Volume
+	5,  // 2: kubenfv.kubevim.storage.v1.UpdateVolumeRequest.update:type_name -> kubenfv.kubevim.storage.v1.VolumeUpdate
+	16, // 3: kubenfv.kubevim.storage.v1.VolumeUpdate.metadata:type_name -> kubenfv.kubevim.storage.v1.VolumeUpdate.MetadataEntry
+	19, // 4: kubenfv.kubevim.storage.v1.VolumeSnapshot.created_at:type_name -> google.protobuf.Timestamp
+	20, // 5: kubenfv.kubevim.storage.v1.VolumeSnapshot.status:type_name -> kubenfv.kubevim.common.v1.SnapshotStatus
+	17, // 6: kubenfv.kubevim.storage.v1.VolumeSnapshot.metadata:type_name -> kubenfv.kubevim.storage.v1.VolumeSnapshot.MetadataEntry
+	9,  // 7: kubenfv.kubevim.storage.v1.CreateVolumeSnapshotRequest.snapshot:type_name -> kubenfv.kubevim.storage.v1.VolumeSnapshot
+	9,  // 8: kubenfv.kubevim.storage.v1.ListVolumeSnapshotsResponse.snapshots:type_name -> kubenfv.kubevim.storage.v1.VolumeSnapshot
+	0,  // 9: kubenfv.kubevim.storage.v1.StorageService.CreateVolume:input_type -> kubenfv.kubevim.storage.v1.CreateVolumeRequest
+	1,  // 10: kubenfv.kubevim.storage.v1.StorageService.GetVolume:input_type -> kubenfv.kubevim.storage.v1.GetVolumeRequest
+	2,  // 11: kubenfv.kubevim.storage.v1.StorageService.ListVolumes:input_type -> kubenfv.kubevim.storage.v1.ListVolumesRequest
+	4,  // 12: kubenfv.kubevim.storage.v1.StorageService.UpdateVolume:input_type -> kubenfv.kubevim.storage.v1.UpdateVolumeRequest
+	6,  // 13: kubenfv.kubevim.storage.v1.StorageService.DeleteVolume:input_type -> kubenfv.kubevim.storage.v1.DeleteVolumeRequest
+	7,  // 14: kubenfv.kubevim.storage.v1.StorageService.ScaleVolume:input_type -> kubenfv.kubevim.storage.v1.ScaleVolumeRequest
+	8,  // 15: kubenfv.kubevim.storage.v1.StorageService.MigrateVolume:input_type -> kubenfv.kubevim.storage.v1.MigrateVolumeRequest
+	10, // 16: kubenfv.kubevim.storage.v1.StorageService.CreateVolumeSnapshot:input_type -> kubenfv.kubevim.storage.v1.CreateVolumeSnapshotRequest
+	11, // 17: kubenfv.kubevim.storage.v1.StorageService.GetVolumeSnapshot:input_type -> kubenfv.kubevim.storage.v1.GetVolumeSnapshotRequest
+	12, // 18: kubenfv.kubevim.storage.v1.StorageService.ListVolumeSnapshots:input_type -> kubenfv.kubevim.storage.v1.ListVolumeSnapshotsRequest
+	14, // 19: kubenfv.kubevim.storage.v1.StorageService.DeleteVolumeSnapshot:input_type -> kubenfv.kubevim.storage.v1.DeleteVolumeSnapshotRequest
+	15, // 20: kubenfv.kubevim.storage.v1.StorageService.RevertVolumeSnapshot:input_type -> kubenfv.kubevim.storage.v1.RevertVolumeSnapshotRequest
+	18, // 21: kubenfv.kubevim.storage.v1.StorageService.CreateVolume:output_type -> kubenfv.kubevim.common.v1.Volume
+	18, // 22: kubenfv.kubevim.storage.v1.StorageService.GetVolume:output_type -> kubenfv.kubevim.common.v1.Volume
+	3,  // 23: kubenfv.kubevim.storage.v1.StorageService.ListVolumes:output_type -> kubenfv.kubevim.storage.v1.ListVolumesResponse
+	18, // 24: kubenfv.kubevim.storage.v1.StorageService.UpdateVolume:output_type -> kubenfv.kubevim.common.v1.Volume
+	21, // 25: kubenfv.kubevim.storage.v1.StorageService.DeleteVolume:output_type -> google.protobuf.Empty
+	18, // 26: kubenfv.kubevim.storage.v1.StorageService.ScaleVolume:output_type -> kubenfv.kubevim.common.v1.Volume
+	18, // 27: kubenfv.kubevim.storage.v1.StorageService.MigrateVolume:output_type -> kubenfv.kubevim.common.v1.Volume
+	9,  // 28: kubenfv.kubevim.storage.v1.StorageService.CreateVolumeSnapshot:output_type -> kubenfv.kubevim.storage.v1.VolumeSnapshot
+	9,  // 29: kubenfv.kubevim.storage.v1.StorageService.GetVolumeSnapshot:output_type -> kubenfv.kubevim.storage.v1.VolumeSnapshot
+	13, // 30: kubenfv.kubevim.storage.v1.StorageService.ListVolumeSnapshots:output_type -> kubenfv.kubevim.storage.v1.ListVolumeSnapshotsResponse
+	21, // 31: kubenfv.kubevim.storage.v1.StorageService.DeleteVolumeSnapshot:output_type -> google.protobuf.Empty
+	18, // 32: kubenfv.kubevim.storage.v1.StorageService.RevertVolumeSnapshot:output_type -> kubenfv.kubevim.common.v1.Volume
+	21, // [21:33] is the sub-list for method output_type
+	9,  // [9:21] is the sub-list for method input_type
+	9,  // [9:9] is the sub-list for extension type_name
+	9,  // [9:9] is the sub-list for extension extendee
+	0,  // [0:9] is the sub-list for field type_name
 }
 
 func init() { file_kubenfv_kubevim_storage_v1_storage_proto_init() }
@@ -975,14 +1178,13 @@ func file_kubenfv_kubevim_storage_v1_storage_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_kubenfv_kubevim_storage_v1_storage_proto_rawDesc), len(file_kubenfv_kubevim_storage_v1_storage_proto_rawDesc)),
-			NumEnums:      1,
-			NumMessages:   14,
+			NumEnums:      0,
+			NumMessages:   18,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
 		GoTypes:           file_kubenfv_kubevim_storage_v1_storage_proto_goTypes,
 		DependencyIndexes: file_kubenfv_kubevim_storage_v1_storage_proto_depIdxs,
-		EnumInfos:         file_kubenfv_kubevim_storage_v1_storage_proto_enumTypes,
 		MessageInfos:      file_kubenfv_kubevim_storage_v1_storage_proto_msgTypes,
 	}.Build()
 	File_kubenfv_kubevim_storage_v1_storage_proto = out.File

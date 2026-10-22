@@ -12,7 +12,7 @@ func TestComputeGoldenJSON(t *testing.T) {
 		"create_compute_request.json":  &computev1.CreateComputeRequest{},
 		"operate_compute_request.json": &computev1.OperateComputeRequest{},
 		"update_compute_request.json":  &computev1.UpdateComputeRequest{},
-		"snapshot.json":                &computev1.Snapshot{},
+		"compute_snapshot.json":        &computev1.ComputeSnapshot{},
 		"placement_group.json":         &computev1.PlacementGroup{},
 	} {
 		t.Run(file, func(t *testing.T) { checkGolden(t, "testdata/compute/"+file, msg) })
@@ -100,11 +100,11 @@ func TestComputeValidation(t *testing.T) {
 		},
 		"create snapshot": {
 			json:  `{` + compute + `,"snapshot":{"snapshotName":"before-upgrade"}}`,
-			msg:   &computev1.CreateSnapshotRequest{},
+			msg:   &computev1.CreateComputeSnapshotRequest{},
 			valid: true,
 		},
 		"revert snapshot id not a uuid": {
-			json: `{` + compute + `,"snapshotId":"snap-1"}`, msg: &computev1.RevertSnapshotRequest{},
+			json: `{` + compute + `,"snapshotId":"snap-1"}`, msg: &computev1.RevertComputeSnapshotRequest{},
 		},
 		"placement group": {
 			json:  `{"placementGroup":{"type":"PLACEMENT_TYPE_ANTI_AFFINITY","enforcement":"PLACEMENT_ENFORCEMENT_PREFERRED"}}`,

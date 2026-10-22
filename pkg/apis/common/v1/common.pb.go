@@ -121,6 +121,60 @@ func (IpVersion) EnumDescriptor() ([]byte, []int) {
 	return file_kubenfv_kubevim_common_v1_common_proto_rawDescGZIP(), []int{1}
 }
 
+// Status of a snapshot.
+// Values may be added as snapshot support grows; clients should accept unknown values.
+type SnapshotStatus int32
+
+const (
+	SnapshotStatus_SNAPSHOT_STATUS_UNSPECIFIED SnapshotStatus = 0
+	SnapshotStatus_SNAPSHOT_STATUS_CREATING    SnapshotStatus = 1
+	SnapshotStatus_SNAPSHOT_STATUS_READY       SnapshotStatus = 2
+	SnapshotStatus_SNAPSHOT_STATUS_FAILED      SnapshotStatus = 3
+)
+
+// Enum value maps for SnapshotStatus.
+var (
+	SnapshotStatus_name = map[int32]string{
+		0: "SNAPSHOT_STATUS_UNSPECIFIED",
+		1: "SNAPSHOT_STATUS_CREATING",
+		2: "SNAPSHOT_STATUS_READY",
+		3: "SNAPSHOT_STATUS_FAILED",
+	}
+	SnapshotStatus_value = map[string]int32{
+		"SNAPSHOT_STATUS_UNSPECIFIED": 0,
+		"SNAPSHOT_STATUS_CREATING":    1,
+		"SNAPSHOT_STATUS_READY":       2,
+		"SNAPSHOT_STATUS_FAILED":      3,
+	}
+)
+
+func (x SnapshotStatus) Enum() *SnapshotStatus {
+	p := new(SnapshotStatus)
+	*p = x
+	return p
+}
+
+func (x SnapshotStatus) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (SnapshotStatus) Descriptor() protoreflect.EnumDescriptor {
+	return file_kubenfv_kubevim_common_v1_common_proto_enumTypes[2].Descriptor()
+}
+
+func (SnapshotStatus) Type() protoreflect.EnumType {
+	return &file_kubenfv_kubevim_common_v1_common_proto_enumTypes[2]
+}
+
+func (x SnapshotStatus) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use SnapshotStatus.Descriptor instead.
+func (SnapshotStatus) EnumDescriptor() ([]byte, []int) {
+	return file_kubenfv_kubevim_common_v1_common_proto_rawDescGZIP(), []int{2}
+}
+
 var File_kubenfv_kubevim_common_v1_common_proto protoreflect.FileDescriptor
 
 const file_kubenfv_kubevim_common_v1_common_proto_rawDesc = "" +
@@ -133,7 +187,12 @@ const file_kubenfv_kubevim_common_v1_common_proto_rawDesc = "" +
 	"\tIpVersion\x12\x1a\n" +
 	"\x16IP_VERSION_UNSPECIFIED\x10\x00\x12\x13\n" +
 	"\x0fIP_VERSION_IPV4\x10\x01\x12\x13\n" +
-	"\x0fIP_VERSION_IPV6\x10\x02B\xf1\x01\n" +
+	"\x0fIP_VERSION_IPV6\x10\x02*\x86\x01\n" +
+	"\x0eSnapshotStatus\x12\x1f\n" +
+	"\x1bSNAPSHOT_STATUS_UNSPECIFIED\x10\x00\x12\x1c\n" +
+	"\x18SNAPSHOT_STATUS_CREATING\x10\x01\x12\x19\n" +
+	"\x15SNAPSHOT_STATUS_READY\x10\x02\x12\x1a\n" +
+	"\x16SNAPSHOT_STATUS_FAILED\x10\x03B\xf1\x01\n" +
 	"\x1dcom.kubenfv.kubevim.common.v1B\vCommonProtoP\x01Z<github.com/kube-nfv/kube-vim-api/pkg/apis/common/v1;commonv1\xa2\x02\x03KKC\xaa\x02\x19Kubenfv.Kubevim.Common.V1\xca\x02\x19Kubenfv\\Kubevim\\Common\\V1\xe2\x02%Kubenfv\\Kubevim\\Common\\V1\\GPBMetadata\xea\x02\x1cKubenfv::Kubevim::Common::V1b\x06proto3"
 
 var (
@@ -148,10 +207,11 @@ func file_kubenfv_kubevim_common_v1_common_proto_rawDescGZIP() []byte {
 	return file_kubenfv_kubevim_common_v1_common_proto_rawDescData
 }
 
-var file_kubenfv_kubevim_common_v1_common_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
+var file_kubenfv_kubevim_common_v1_common_proto_enumTypes = make([]protoimpl.EnumInfo, 3)
 var file_kubenfv_kubevim_common_v1_common_proto_goTypes = []any{
 	(OperationalState)(0), // 0: kubenfv.kubevim.common.v1.OperationalState
 	(IpVersion)(0),        // 1: kubenfv.kubevim.common.v1.IpVersion
+	(SnapshotStatus)(0),   // 2: kubenfv.kubevim.common.v1.SnapshotStatus
 }
 var file_kubenfv_kubevim_common_v1_common_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for method output_type
@@ -171,7 +231,7 @@ func file_kubenfv_kubevim_common_v1_common_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_kubenfv_kubevim_common_v1_common_proto_rawDesc), len(file_kubenfv_kubevim_common_v1_common_proto_rawDesc)),
-			NumEnums:      2,
+			NumEnums:      3,
 			NumMessages:   0,
 			NumExtensions: 0,
 			NumServices:   0,

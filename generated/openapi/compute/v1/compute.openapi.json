@@ -58,6 +58,16 @@
         ],
         "type": "string"
       },
+      "kubenfv.kubevim.common.v1.SnapshotStatus": {
+        "description": "Status of a snapshot.\nValues may be added as snapshot support grows; clients should accept unknown values.",
+        "enum": [
+          "SNAPSHOT_STATUS_UNSPECIFIED",
+          "SNAPSHOT_STATUS_CREATING",
+          "SNAPSHOT_STATUS_READY",
+          "SNAPSHOT_STATUS_FAILED"
+        ],
+        "type": "string"
+      },
       "kubenfv.kubevim.common.v1.TypeOfStorage": {
         "description": "Type of a virtualised storage resource.\nValues may be added as Kubernetes storage support grows; clients should accept unknown values.",
         "enum": [
@@ -84,6 +94,10 @@
           },
           "sizeOfStorage": {
             "description": "Size of the storage resource, in Kubernetes quantity format (e.g. \"20Gi\").",
+            "type": "string"
+          },
+          "storageClass": {
+            "description": "Kubernetes storage class of the storage, one labelled kubevim.kubenfv.io/storage=true; the VIM default when unset.",
             "type": "string"
           },
           "typeOfStorage": {
@@ -293,6 +307,48 @@
         ],
         "type": "string"
       },
+      "kubenfv.kubevim.compute.v1.ComputeSnapshot": {
+        "description": "A snapshot of a compute resource (KubeVirt VirtualMachineSnapshot).",
+        "properties": {
+          "computeId": {
+            "description": "Compute resource the snapshot was taken of.",
+            "readOnly": true,
+            "type": "string"
+          },
+          "createdAt": {
+            "description": "Time the snapshot was taken.",
+            "format": "date-time",
+            "readOnly": true,
+            "type": "string"
+          },
+          "metadata": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Metadata set by the consumer and by the VIM; for keys under \"kubevim.kubenfv.io/\" that the VIM maintains, its value wins.",
+            "type": "object"
+          },
+          "snapshotId": {
+            "description": "Identifier of the snapshot: a UUID assigned by the VIM.",
+            "readOnly": true,
+            "type": "string"
+          },
+          "snapshotName": {
+            "description": "Name of the snapshot, given by the consumer; not unique.",
+            "type": "string"
+          },
+          "status": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/kubenfv.kubevim.common.v1.SnapshotStatus"
+              }
+            ],
+            "description": "Status of the snapshot.",
+            "readOnly": true
+          }
+        },
+        "type": "object"
+      },
       "kubenfv.kubevim.compute.v1.ComputeUpdate": {
         "description": "Changes to a compute resource: a patch. The name is replaced when set, metadata entries are\nmerged, and interfaces are added (hotplug) or removed by name.",
         "properties": {
@@ -333,6 +389,22 @@
         ],
         "type": "string"
       },
+      "kubenfv.kubevim.compute.v1.ListComputeSnapshotsResponse": {
+        "properties": {
+          "nextpage_opaque_marker": {
+            "description": "Marker of the next page; empty on the last page (SOL 013 5.4).",
+            "type": "string"
+          },
+          "snapshots": {
+            "description": "Snapshots matching the filter.",
+            "items": {
+              "$ref": "#/components/schemas/kubenfv.kubevim.compute.v1.ComputeSnapshot"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
       "kubenfv.kubevim.compute.v1.ListComputesResponse": {
         "properties": {
           "computes": {
@@ -359,22 +431,6 @@
             "description": "Groups matching the filter.",
             "items": {
               "$ref": "#/components/schemas/kubenfv.kubevim.compute.v1.PlacementGroup"
-            },
-            "type": "array"
-          }
-        },
-        "type": "object"
-      },
-      "kubenfv.kubevim.compute.v1.ListSnapshotsResponse": {
-        "properties": {
-          "nextpage_opaque_marker": {
-            "description": "Marker of the next page; empty on the last page (SOL 013 5.4).",
-            "type": "string"
-          },
-          "snapshots": {
-            "description": "Snapshots matching the filter.",
-            "items": {
-              "$ref": "#/components/schemas/kubenfv.kubevim.compute.v1.Snapshot"
             },
             "type": "array"
           }
@@ -505,58 +561,6 @@
           "PLACEMENT_TYPE_UNSPECIFIED",
           "PLACEMENT_TYPE_AFFINITY",
           "PLACEMENT_TYPE_ANTI_AFFINITY"
-        ],
-        "type": "string"
-      },
-      "kubenfv.kubevim.compute.v1.Snapshot": {
-        "description": "A snapshot of a compute resource (KubeVirt VirtualMachineSnapshot).",
-        "properties": {
-          "computeId": {
-            "description": "Compute resource the snapshot was taken of.",
-            "readOnly": true,
-            "type": "string"
-          },
-          "createdAt": {
-            "description": "Time the snapshot was taken.",
-            "format": "date-time",
-            "readOnly": true,
-            "type": "string"
-          },
-          "metadata": {
-            "additionalProperties": {
-              "type": "string"
-            },
-            "description": "Metadata set by the consumer and by the VIM; for keys under \"kubevim.kubenfv.io/\" that the VIM maintains, its value wins.",
-            "type": "object"
-          },
-          "snapshotId": {
-            "description": "Identifier of the snapshot: a UUID assigned by the VIM.",
-            "readOnly": true,
-            "type": "string"
-          },
-          "snapshotName": {
-            "description": "Name of the snapshot, given by the consumer; not unique.",
-            "type": "string"
-          },
-          "status": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/kubenfv.kubevim.compute.v1.SnapshotStatus"
-              }
-            ],
-            "description": "Status of the snapshot.",
-            "readOnly": true
-          }
-        },
-        "type": "object"
-      },
-      "kubenfv.kubevim.compute.v1.SnapshotStatus": {
-        "description": "Status of a snapshot.\nValues may be added as KubeVirt support grows; clients should accept unknown values.",
-        "enum": [
-          "SNAPSHOT_STATUS_UNSPECIFIED",
-          "SNAPSHOT_STATUS_CREATING",
-          "SNAPSHOT_STATUS_READY",
-          "SNAPSHOT_STATUS_FAILED"
         ],
         "type": "string"
       },
@@ -1540,7 +1544,7 @@
     },
     "/compute/v1/computes/{compute_id}/snapshots": {
       "get": {
-        "operationId": "ComputeService_ListSnapshots",
+        "operationId": "ComputeService_ListComputeSnapshots",
         "parameters": [
           {
             "description": "Compute resource the snapshots belong to.",
@@ -1576,7 +1580,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/kubenfv.kubevim.compute.v1.ListSnapshotsResponse"
+                  "$ref": "#/components/schemas/kubenfv.kubevim.compute.v1.ListComputeSnapshotsResponse"
                 }
               }
             },
@@ -1622,7 +1626,7 @@
         ]
       },
       "post": {
-        "operationId": "ComputeService_CreateSnapshot",
+        "operationId": "ComputeService_CreateComputeSnapshot",
         "parameters": [
           {
             "description": "Compute resource to take the snapshot of.",
@@ -1647,7 +1651,7 @@
                     "type": "string"
                   },
                   "snapshot": {
-                    "$ref": "#/components/schemas/kubenfv.kubevim.compute.v1.Snapshot",
+                    "$ref": "#/components/schemas/kubenfv.kubevim.compute.v1.ComputeSnapshot",
                     "description": "Snapshot to create: name and metadata."
                   }
                 },
@@ -1662,7 +1666,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/kubenfv.kubevim.compute.v1.Snapshot"
+                  "$ref": "#/components/schemas/kubenfv.kubevim.compute.v1.ComputeSnapshot"
                 }
               }
             },
@@ -1717,7 +1721,7 @@
     },
     "/compute/v1/computes/{compute_id}/snapshots/{snapshot_id}": {
       "delete": {
-        "operationId": "ComputeService_DeleteSnapshot",
+        "operationId": "ComputeService_DeleteComputeSnapshot",
         "parameters": [
           {
             "description": "Compute resource the snapshot belongs to.",
@@ -1785,7 +1789,7 @@
         ]
       },
       "get": {
-        "operationId": "ComputeService_GetSnapshot",
+        "operationId": "ComputeService_GetComputeSnapshot",
         "parameters": [
           {
             "description": "Compute resource the snapshot belongs to.",
@@ -1814,7 +1818,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/kubenfv.kubevim.compute.v1.Snapshot"
+                  "$ref": "#/components/schemas/kubenfv.kubevim.compute.v1.ComputeSnapshot"
                 }
               }
             },
@@ -1862,7 +1866,7 @@
     },
     "/compute/v1/computes/{compute_id}/snapshots/{snapshot_id}/revert": {
       "post": {
-        "operationId": "ComputeService_RevertSnapshot",
+        "operationId": "ComputeService_RevertComputeSnapshot",
         "parameters": [
           {
             "description": "Compute resource to revert; it must be stopped.",

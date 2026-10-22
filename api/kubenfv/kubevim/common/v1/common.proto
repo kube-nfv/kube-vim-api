@@ -15,3 +15,12 @@ enum IpVersion {
   IP_VERSION_IPV4 = 1;
   IP_VERSION_IPV6 = 2;
 }
+
+// Status of a snapshot.
+// Values may be added as snapshot support grows; clients should accept unknown values.
+enum SnapshotStatus {
+  SNAPSHOT_STATUS_UNSPECIFIED = 0;
+  SNAPSHOT_STATUS_CREATING = 1;
+  SNAPSHOT_STATUS_READY = 2;
+  SNAPSHOT_STATUS_FAILED = 3;
+}

@@ -77,6 +77,10 @@
             "description": "Size of the storage resource, in Kubernetes quantity format (e.g. \"20Gi\").",
             "type": "string"
           },
+          "storageClass": {
+            "description": "Kubernetes storage class of the storage, one labelled kubevim.kubenfv.io/storage=true; the VIM default when unset.",
+            "type": "string"
+          },
           "typeOfStorage": {
             "$ref": "#/components/schemas/kubenfv.kubevim.common.v1.TypeOfStorage",
             "description": "Type of the storage resource."

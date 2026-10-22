@@ -85,7 +85,9 @@ type VirtualStorageData struct {
 	// Size of the storage resource, in Kubernetes quantity format (e.g. "20Gi").
 	SizeOfStorage string `protobuf:"bytes,2,opt,name=size_of_storage,json=sizeOfStorage,proto3" json:"size_of_storage,omitempty"`
 	// The software image is copied to this storage and the compute resource boots from it.
-	IsBoot        bool `protobuf:"varint,3,opt,name=is_boot,json=isBoot,proto3" json:"is_boot,omitempty"`
+	IsBoot bool `protobuf:"varint,3,opt,name=is_boot,json=isBoot,proto3" json:"is_boot,omitempty"`
+	// Kubernetes storage class of the storage, one labelled kubevim.kubenfv.io/storage=true; the VIM default when unset.
+	StorageClass  string `protobuf:"bytes,4,opt,name=storage_class,json=storageClass,proto3" json:"storage_class,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -141,17 +143,25 @@ func (x *VirtualStorageData) GetIsBoot() bool {
 	return false
 }
 
+func (x *VirtualStorageData) GetStorageClass() string {
+	if x != nil {
+		return x.StorageClass
+	}
+	return ""
+}
+
 var File_kubenfv_kubevim_common_v1_storage_proto protoreflect.FileDescriptor
 
 const file_kubenfv_kubevim_common_v1_storage_proto_rawDesc = "" +
 	"\n" +
-	"'kubenfv/kubevim/common/v1/storage.proto\x12\x19kubenfv.kubevim.common.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a%kubenfv/kubevim/common/v1/rules.proto\x1a(kubenfv/kubevim/options/v1/options.proto\"\xad\x04\n" +
+	"'kubenfv/kubevim/common/v1/storage.proto\x12\x19kubenfv.kubevim.common.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a%kubenfv/kubevim/common/v1/rules.proto\x1a(kubenfv/kubevim/options/v1/options.proto\"\x81\x06\n" +
 	"\x12VirtualStorageData\x12\xcb\x01\n" +
 	"\x0ftype_of_storage\x18\x01 \x01(\x0e2(.kubenfv.kubevim.common.v1.TypeOfStorageBy\xe2A\x01\x02\xbaH\a\x82\x01\x04\x10\x01 \x00\xfa\x8b\x19g\n" +
 	"/IFA006 8.4.6.3 VirtualStorageData.typeOfStorage\x124\b\x03\x10\x01\x1a.A closed enumeration instead of a free string.R\rtypeOfStorage\x12\xa7\x01\n" +
 	"\x0fsize_of_storage\x18\x02 \x01(\tB\x7f\xe2A\x01\x02\xbaH\x06r\x04\xf8\x8b\x19\x01\xfa\x8b\x19n\n" +
 	"/IFA006 8.4.6.3 VirtualStorageData.sizeOfStorage\x12;\b\x03\x10\x01\x1a5Kubernetes quantity string instead of a number in GB.R\rsizeOfStorage\x12v\n" +
-	"\ais_boot\x18\x03 \x01(\bB]\xe2A\x01\x01\xfa\x8b\x19U\x12S\b\x01\x10\x01\x1aMMarks which storage receives the software image; IFA has no boot disk marker.R\x06isBoot:'\xfa\x8b\x19#\n" +
+	"\ais_boot\x18\x03 \x01(\bB]\xe2A\x01\x01\xfa\x8b\x19U\x12S\b\x01\x10\x01\x1aMMarks which storage receives the software image; IFA has no boot disk marker.R\x06isBoot\x12\xd1\x01\n" +
+	"\rstorage_class\x18\x04 \x01(\tB\xab\x01\xe2A\x01\x01\xbaH*\xd8\x01\x01r%\x18\xfd\x012 ^[a-z0-9]([-a-z0-9.]*[a-z0-9])?$\xfa\x8b\x19v\x12t\b\x01\x10\x01\x1anNodes and zones offer different storage; consumers choose it by storage class instead of IFA storage affinity.R\fstorageClass:'\xfa\x8b\x19#\n" +
 	"!IFA006 8.4.6.3 VirtualStorageData*k\n" +
 	"\rTypeOfStorage\x12\x1f\n" +
 	"\x1bTYPE_OF_STORAGE_UNSPECIFIED\x10\x00\x12\x1a\n" +

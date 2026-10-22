@@ -39,117 +39,22 @@
         ],
         "type": "object"
       },
-      "kubenfv.kubevim.common.v1.AffinityGroup": {
-        "description": "Producer-managed group of resources placed with affinity or anti-affinity.",
-        "properties": {
-          "groupId": {
-            "description": "Identifier of the group: a UUID, the Kubernetes UID of the object behind it.",
-            "readOnly": true,
-            "type": "string"
-          },
-          "groupName": {
-            "description": "Name of the group, given by the consumer.",
-            "type": "string"
-          },
-          "scope": {
-            "$ref": "#/components/schemas/kubenfv.kubevim.common.v1.AffinityScope",
-            "description": "Scope of the group; NFVI node when unset."
-          },
-          "type": {
-            "$ref": "#/components/schemas/kubenfv.kubevim.common.v1.AffinityType",
-            "description": "Affinity or anti-affinity."
-          }
-        },
-        "required": [
-          "groupName",
-          "type"
-        ],
-        "type": "object"
-      },
-      "kubenfv.kubevim.common.v1.AffinityOrAntiAffinityConstraint": {
-        "description": "Affinity or anti-affinity of a resource being allocated with other resources. Only one of affinityOrAntiAffinityResourceList, affinityOrAntiAffinityResourceGroupId may be set.",
-        "properties": {
-          "affinityOrAntiAffinityResourceGroupId": {
-            "description": "Identifier of an affinity group created with CreateAffinityGroup.",
-            "type": "string"
-          },
-          "affinityOrAntiAffinityResourceList": {
-            "$ref": "#/components/schemas/kubenfv.kubevim.common.v1.AffinityOrAntiAffinityResourceList",
-            "description": "Consumer-managed list of resource identifiers."
-          },
-          "scope": {
-            "$ref": "#/components/schemas/kubenfv.kubevim.common.v1.AffinityScope",
-            "description": "Scope of the constraint; NFVI node when unset."
-          },
-          "type": {
-            "$ref": "#/components/schemas/kubenfv.kubevim.common.v1.AffinityType",
-            "description": "Affinity or anti-affinity."
-          }
-        },
-        "required": [
-          "type"
-        ],
-        "type": "object"
-      },
-      "kubenfv.kubevim.common.v1.AffinityOrAntiAffinityResourceList": {
-        "description": "Consumer-managed list of resources (IFA006 8.4.8.3).",
-        "properties": {
-          "resourceId": {
-            "description": "Identifiers of virtualised resources.",
-            "items": {
-              "type": "string"
-            },
-            "type": "array"
-          }
-        },
-        "required": [
-          "resourceId"
-        ],
-        "type": "object"
-      },
-      "kubenfv.kubevim.common.v1.AffinityScope": {
-        "description": "Scope of an affinity or anti-affinity constraint (IFA006 8.4.8.2). Which\nvalues apply depends on the resource: compute uses NFVI_POP and NFVI_NODE;\nports add VIRTUAL_SWITCH_OR_ROUTER, PHYSICAL_NIC and PHYSICAL_NETWORK;\nnetworks use PHYSICAL_NIC, PHYSICAL_NETWORK and NFVI_NODE.",
-        "enum": [
-          "AFFINITY_SCOPE_UNSPECIFIED",
-          "AFFINITY_SCOPE_NFVI_POP",
-          "AFFINITY_SCOPE_NFVI_NODE",
-          "AFFINITY_SCOPE_VIRTUAL_SWITCH_OR_ROUTER",
-          "AFFINITY_SCOPE_PHYSICAL_NIC",
-          "AFFINITY_SCOPE_PHYSICAL_NETWORK"
-        ],
-        "type": "string"
-      },
-      "kubenfv.kubevim.common.v1.AffinityType": {
-        "description": "Affinity or anti-affinity.",
-        "enum": [
-          "AFFINITY_TYPE_UNSPECIFIED",
-          "AFFINITY_TYPE_AFFINITY",
-          "AFFINITY_TYPE_ANTI_AFFINITY"
-        ],
-        "type": "string"
-      },
-      "kubenfv.kubevim.common.v1.ListAffinityGroupsResponse": {
-        "properties": {
-          "affinityGroups": {
-            "description": "Groups matching the filter.",
-            "items": {
-              "$ref": "#/components/schemas/kubenfv.kubevim.common.v1.AffinityGroup"
-            },
-            "type": "array"
-          },
-          "nextpage_opaque_marker": {
-            "description": "Marker of the next page; empty on the last page (SOL 013 5.4).",
-            "type": "string"
-          }
-        },
-        "type": "object"
-      },
       "kubenfv.kubevim.common.v1.OperationalState": {
         "description": "Operational state of a virtualised resource (IFA006).",
         "enum": [
           "OPERATIONAL_STATE_UNSPECIFIED",
           "OPERATIONAL_STATE_ENABLED",
           "OPERATIONAL_STATE_DISABLED"
+        ],
+        "type": "string"
+      },
+      "kubenfv.kubevim.common.v1.SnapshotStatus": {
+        "description": "Status of a snapshot.\nValues may be added as snapshot support grows; clients should accept unknown values.",
+        "enum": [
+          "SNAPSHOT_STATUS_UNSPECIFIED",
+          "SNAPSHOT_STATUS_CREATING",
+          "SNAPSHOT_STATUS_READY",
+          "SNAPSHOT_STATUS_FAILED"
         ],
         "type": "string"
       },
@@ -171,6 +76,10 @@
           },
           "sizeOfStorage": {
             "description": "Size of the storage resource, in Kubernetes quantity format (e.g. \"20Gi\").",
+            "type": "string"
+          },
+          "storageClass": {
+            "description": "Kubernetes storage class of the storage, one labelled kubevim.kubenfv.io/storage=true; the VIM default when unset.",
             "type": "string"
           },
           "typeOfStorage": {
@@ -237,6 +146,22 @@
         ],
         "type": "object"
       },
+      "kubenfv.kubevim.storage.v1.ListVolumeSnapshotsResponse": {
+        "properties": {
+          "nextpage_opaque_marker": {
+            "description": "Marker of the next page; empty on the last page (SOL 013 5.4).",
+            "type": "string"
+          },
+          "snapshots": {
+            "description": "Snapshots matching the filter.",
+            "items": {
+              "$ref": "#/components/schemas/kubenfv.kubevim.storage.v1.VolumeSnapshot"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
       "kubenfv.kubevim.storage.v1.ListVolumesResponse": {
         "properties": {
           "nextpage_opaque_marker": {
@@ -253,50 +178,59 @@
         },
         "type": "object"
       },
-      "kubenfv.kubevim.storage.v1.OperateVolumeResponse": {
+      "kubenfv.kubevim.storage.v1.VolumeSnapshot": {
+        "description": "A snapshot of a volume (Kubernetes VolumeSnapshot).",
         "properties": {
-          "storageData": {
-            "$ref": "#/components/schemas/kubenfv.kubevim.common.v1.Volume",
-            "description": "Volume after the operation."
+          "createdAt": {
+            "description": "Time the snapshot was taken.",
+            "format": "date-time",
+            "readOnly": true,
+            "type": "string"
           },
-          "storageOperationOutputData": {
+          "metadata": {
             "additionalProperties": {
               "type": "string"
             },
-            "description": "Operation results, e.g. \"snapshotId\" for CREATE_SNAPSHOT.",
+            "description": "Metadata set by the consumer and by the VIM; for keys under \"kubevim.kubenfv.io/\" that the VIM maintains, its value wins.",
             "type": "object"
+          },
+          "snapshotId": {
+            "description": "Identifier of the snapshot: a UUID assigned by the VIM.",
+            "readOnly": true,
+            "type": "string"
+          },
+          "snapshotName": {
+            "description": "Name of the snapshot, given by the consumer; not unique.",
+            "type": "string"
+          },
+          "status": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/kubenfv.kubevim.common.v1.SnapshotStatus"
+              }
+            ],
+            "description": "Status of the snapshot.",
+            "readOnly": true
+          },
+          "volumeId": {
+            "description": "Volume the snapshot was taken of.",
+            "readOnly": true,
+            "type": "string"
           }
         },
         "type": "object"
       },
-      "kubenfv.kubevim.storage.v1.StorageOperation": {
-        "description": "Operation on a volume (IFA006 7.5.1.6), realised with CSI volume snapshots.\nValues may be added as Kubernetes storage support grows; clients should accept unknown values.",
-        "enum": [
-          "STORAGE_OPERATION_UNSPECIFIED",
-          "STORAGE_OPERATION_CREATE_SNAPSHOT",
-          "STORAGE_OPERATION_REVERT_TO_SNAPSHOT",
-          "STORAGE_OPERATION_DELETE_SNAPSHOT"
-        ],
-        "type": "string"
-      },
       "kubenfv.kubevim.storage.v1.VolumeUpdate": {
-        "description": "Changes to a volume. Each field that is set replaces the current value.",
+        "description": "Changes to a volume: a patch. The name is replaced when set; metadata entries are merged.",
         "properties": {
           "metadata": {
             "additionalProperties": {
               "type": "string"
             },
-            "description": "Metadata entries to add or replace.",
+            "description": "Metadata entries to add, or to overwrite when the key exists; keys not given are kept, and none is removed.",
             "type": "object"
           },
-          "metadataKeysToRemove": {
-            "description": "Metadata keys to remove.",
-            "items": {
-              "type": "string"
-            },
-            "type": "array"
-          },
-          "storageName": {
+          "volumeName": {
             "type": "string"
           }
         },
@@ -330,295 +264,6 @@
   },
   "openapi": "3.1.0",
   "paths": {
-    "/storage/v1/affinityGroups": {
-      "get": {
-        "operationId": "StorageService_ListAffinityGroups",
-        "parameters": [
-          {
-            "description": "Attribute-based filter expression (SOL 013 5.2).",
-            "in": "query",
-            "name": "filter",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "Marker of the page to return, from a previous response (SOL 013 5.4).",
-            "in": "query",
-            "name": "nextpage_opaque_marker",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "$ref": "#/components/parameters/Version"
-          }
-        ],
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/kubenfv.kubevim.common.v1.ListAffinityGroupsResponse"
-                }
-              }
-            },
-            "description": "A successful response.",
-            "headers": {
-              "Version": {
-                "description": "API version used (SOL 013 9.4).",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "default": {
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              }
-            },
-            "description": "Error (SOL 013 6).",
-            "headers": {
-              "Version": {
-                "description": "API version used (SOL 013 9.4).",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "oauth2": [
-              "storage:v1:query"
-            ]
-          }
-        ],
-        "summary": "Returns the storage affinity groups.",
-        "tags": [
-          "StorageService"
-        ]
-      },
-      "post": {
-        "operationId": "StorageService_CreateAffinityGroup",
-        "parameters": [
-          {
-            "$ref": "#/components/parameters/Version"
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "properties": {
-                  "affinityGroup": {
-                    "$ref": "#/components/schemas/kubenfv.kubevim.common.v1.AffinityGroup",
-                    "description": "Group to create."
-                  },
-                  "requestId": {
-                    "description": "Client-chosen UUID that makes the request idempotent (AIP-155).",
-                    "type": "string"
-                  }
-                },
-                "required": [
-                  "affinityGroup"
-                ],
-                "type": "object"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "201": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/kubenfv.kubevim.common.v1.AffinityGroup"
-                }
-              }
-            },
-            "description": "Producer-managed group of resources placed with affinity or anti-affinity.",
-            "headers": {
-              "Location": {
-                "description": "URI of the created resource.",
-                "schema": {
-                  "format": "uri",
-                  "type": "string"
-                }
-              },
-              "Version": {
-                "description": "API version used (SOL 013 9.4).",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "default": {
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              }
-            },
-            "description": "Error (SOL 013 6).",
-            "headers": {
-              "Version": {
-                "description": "API version used (SOL 013 9.4).",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "oauth2": [
-              "storage:v1:allocate"
-            ]
-          }
-        ],
-        "summary": "Creates a storage affinity or anti-affinity group.",
-        "tags": [
-          "StorageService"
-        ]
-      }
-    },
-    "/storage/v1/affinityGroups/{group_id}": {
-      "delete": {
-        "operationId": "StorageService_DeleteAffinityGroup",
-        "parameters": [
-          {
-            "description": "Identifier of the group.",
-            "in": "path",
-            "name": "group_id",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "$ref": "#/components/parameters/Version"
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "No Content",
-            "headers": {
-              "Version": {
-                "description": "API version used (SOL 013 9.4).",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "default": {
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              }
-            },
-            "description": "Error (SOL 013 6).",
-            "headers": {
-              "Version": {
-                "description": "API version used (SOL 013 9.4).",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "oauth2": [
-              "storage:v1:terminate"
-            ]
-          }
-        ],
-        "summary": "Deletes a storage affinity group.",
-        "tags": [
-          "StorageService"
-        ]
-      },
-      "get": {
-        "operationId": "StorageService_GetAffinityGroup",
-        "parameters": [
-          {
-            "description": "Identifier of the group.",
-            "in": "path",
-            "name": "group_id",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "$ref": "#/components/parameters/Version"
-          }
-        ],
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/kubenfv.kubevim.common.v1.AffinityGroup"
-                }
-              }
-            },
-            "description": "Producer-managed group of resources placed with affinity or anti-affinity.",
-            "headers": {
-              "Version": {
-                "description": "API version used (SOL 013 9.4).",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "default": {
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              }
-            },
-            "description": "Error (SOL 013 6).",
-            "headers": {
-              "Version": {
-                "description": "API version used (SOL 013 9.4).",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "oauth2": [
-              "storage:v1:query"
-            ]
-          }
-        ],
-        "summary": "Returns one storage affinity group.",
-        "tags": [
-          "StorageService"
-        ]
-      }
-    },
     "/storage/v1/volumes": {
       "get": {
         "operationId": "StorageService_ListVolumes",
@@ -705,32 +350,13 @@
             "application/json": {
               "schema": {
                 "properties": {
-                  "affinityOrAntiAffinityConstraints": {
-                    "description": "Affinity or anti-affinity with other resources; all must be met.",
-                    "items": {
-                      "$ref": "#/components/schemas/kubenfv.kubevim.common.v1.AffinityOrAntiAffinityConstraint"
-                    },
-                    "type": "array"
-                  },
-                  "locationConstraints": {
-                    "description": "Location constraints, e.g. a resource zone.",
-                    "type": "string"
-                  },
                   "requestId": {
                     "description": "Client-chosen UUID that makes the request idempotent (AIP-155).",
                     "type": "string"
                   },
-                  "reservationId": {
-                    "description": "Resource reservation for this allocation.",
-                    "type": "string"
-                  },
-                  "resourceGroupId": {
-                    "description": "Infrastructure resource group of the volume.",
-                    "type": "string"
-                  },
                   "volume": {
                     "$ref": "#/components/schemas/kubenfv.kubevim.common.v1.Volume",
-                    "description": "Volume to create: name, size and type, metadata. Only TYPE_OF_STORAGE_VOLUME,\nwithout is_boot: ephemeral and boot disks belong to a compute resource."
+                    "description": "Volume to create: name, size, type, storage class and metadata. Only TYPE_OF_STORAGE_VOLUME,\nwithout is_boot: ephemeral and boot disks belong to a compute resource."
                   }
                 },
                 "required": [
@@ -800,14 +426,14 @@
         ]
       }
     },
-    "/storage/v1/volumes/{storage_id}": {
+    "/storage/v1/volumes/{volume_id}": {
       "delete": {
         "operationId": "StorageService_DeleteVolume",
         "parameters": [
           {
             "description": "Identifier of the volume.",
             "in": "path",
-            "name": "storage_id",
+            "name": "volume_id",
             "required": true,
             "schema": {
               "type": "string"
@@ -866,7 +492,7 @@
           {
             "description": "Identifier of the volume.",
             "in": "path",
-            "name": "storage_id",
+            "name": "volume_id",
             "required": true,
             "schema": {
               "type": "string"
@@ -932,7 +558,7 @@
           {
             "description": "Identifier of the volume.",
             "in": "path",
-            "name": "storage_id",
+            "name": "volume_id",
             "required": true,
             "schema": {
               "type": "string"
@@ -997,20 +623,20 @@
             ]
           }
         ],
-        "summary": "Updates a volume's name and metadata.",
+        "summary": "Updates the name and metadata of a volume.",
         "tags": [
           "StorageService"
         ]
       }
     },
-    "/storage/v1/volumes/{storage_id}/migrate": {
+    "/storage/v1/volumes/{volume_id}/migrate": {
       "post": {
         "operationId": "StorageService_MigrateVolume",
         "parameters": [
           {
             "description": "Identifier of the volume.",
             "in": "path",
-            "name": "storage_id",
+            "name": "volume_id",
             "required": true,
             "schema": {
               "type": "string"
@@ -1025,20 +651,13 @@
             "application/json": {
               "schema": {
                 "properties": {
-                  "affinityOrAntiAffinityConstraints": {
-                    "description": "Affinity or anti-affinity the new placement must meet.",
-                    "items": {
-                      "$ref": "#/components/schemas/kubenfv.kubevim.common.v1.AffinityOrAntiAffinityConstraint"
-                    },
-                    "type": "array"
-                  },
-                  "migrationConstraint": {
-                    "description": "Where to migrate to, e.g. a storage class or a host.",
+                  "storageClass": {
+                    "description": "Storage class to move the volume to, one labelled kubevim.kubenfv.io/storage=true.",
                     "type": "string"
                   }
                 },
                 "required": [
-                  "migrationConstraint"
+                  "storageClass"
                 ],
                 "type": "object"
               }
@@ -1091,114 +710,20 @@
             ]
           }
         ],
-        "summary": "Moves a volume to other storage or another host.",
+        "summary": "Moves a volume to another storage class.",
         "tags": [
           "StorageService"
         ]
       }
     },
-    "/storage/v1/volumes/{storage_id}/operate": {
-      "post": {
-        "operationId": "StorageService_OperateVolume",
-        "parameters": [
-          {
-            "description": "Identifier of the volume.",
-            "in": "path",
-            "name": "storage_id",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "$ref": "#/components/parameters/Version"
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "properties": {
-                  "storageOperation": {
-                    "$ref": "#/components/schemas/kubenfv.kubevim.storage.v1.StorageOperation",
-                    "description": "Operation to run."
-                  },
-                  "storageOperationInputData": {
-                    "additionalProperties": {
-                      "type": "string"
-                    },
-                    "description": "Operation parameters, e.g. \"snapshotId\" for REVERT_TO_SNAPSHOT and DELETE_SNAPSHOT.",
-                    "type": "object"
-                  }
-                },
-                "required": [
-                  "storageOperation"
-                ],
-                "type": "object"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/kubenfv.kubevim.storage.v1.OperateVolumeResponse"
-                }
-              }
-            },
-            "description": "A successful response.",
-            "headers": {
-              "Version": {
-                "description": "API version used (SOL 013 9.4).",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "default": {
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              }
-            },
-            "description": "Error (SOL 013 6).",
-            "headers": {
-              "Version": {
-                "description": "API version used (SOL 013 9.4).",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "oauth2": [
-              "storage:v1:operate"
-            ]
-          }
-        ],
-        "summary": "Runs a snapshot operation on a volume.",
-        "tags": [
-          "StorageService"
-        ]
-      }
-    },
-    "/storage/v1/volumes/{storage_id}/scale": {
+    "/storage/v1/volumes/{volume_id}/scale": {
       "post": {
         "operationId": "StorageService_ScaleVolume",
         "parameters": [
           {
             "description": "Identifier of the volume.",
             "in": "path",
-            "name": "storage_id",
+            "name": "volume_id",
             "required": true,
             "schema": {
               "type": "string"
@@ -1272,7 +797,416 @@
             ]
           }
         ],
-        "summary": "Resizes a volume.",
+        "summary": "Grows a volume.",
+        "tags": [
+          "StorageService"
+        ]
+      }
+    },
+    "/storage/v1/volumes/{volume_id}/snapshots": {
+      "get": {
+        "operationId": "StorageService_ListVolumeSnapshots",
+        "parameters": [
+          {
+            "description": "Volume the snapshots belong to.",
+            "in": "path",
+            "name": "volume_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Attribute-based filter expression (SOL 013 5.2).",
+            "in": "query",
+            "name": "filter",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Marker of the page to return, from a previous response (SOL 013 5.4).",
+            "in": "query",
+            "name": "nextpage_opaque_marker",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/Version"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/kubenfv.kubevim.storage.v1.ListVolumeSnapshotsResponse"
+                }
+              }
+            },
+            "description": "A successful response.",
+            "headers": {
+              "Version": {
+                "description": "API version used (SOL 013 9.4).",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Error (SOL 013 6).",
+            "headers": {
+              "Version": {
+                "description": "API version used (SOL 013 9.4).",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "storage:v1:query"
+            ]
+          }
+        ],
+        "summary": "Returns the snapshots of a volume.",
+        "tags": [
+          "StorageService"
+        ]
+      },
+      "post": {
+        "operationId": "StorageService_CreateVolumeSnapshot",
+        "parameters": [
+          {
+            "description": "Volume to take the snapshot of.",
+            "in": "path",
+            "name": "volume_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/Version"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "requestId": {
+                    "description": "Client-chosen UUID that makes the request idempotent (AIP-155).",
+                    "type": "string"
+                  },
+                  "snapshot": {
+                    "$ref": "#/components/schemas/kubenfv.kubevim.storage.v1.VolumeSnapshot",
+                    "description": "Snapshot to create: name and metadata."
+                  }
+                },
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/kubenfv.kubevim.storage.v1.VolumeSnapshot"
+                }
+              }
+            },
+            "description": "A snapshot of a volume (Kubernetes VolumeSnapshot).",
+            "headers": {
+              "Location": {
+                "description": "URI of the created resource.",
+                "schema": {
+                  "format": "uri",
+                  "type": "string"
+                }
+              },
+              "Version": {
+                "description": "API version used (SOL 013 9.4).",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Error (SOL 013 6).",
+            "headers": {
+              "Version": {
+                "description": "API version used (SOL 013 9.4).",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "storage:v1:operate"
+            ]
+          }
+        ],
+        "summary": "Creates a snapshot of a volume.",
+        "tags": [
+          "StorageService"
+        ]
+      }
+    },
+    "/storage/v1/volumes/{volume_id}/snapshots/{snapshot_id}": {
+      "delete": {
+        "operationId": "StorageService_DeleteVolumeSnapshot",
+        "parameters": [
+          {
+            "description": "Volume the snapshot belongs to.",
+            "in": "path",
+            "name": "volume_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Identifier of the snapshot.",
+            "in": "path",
+            "name": "snapshot_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/Version"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content",
+            "headers": {
+              "Version": {
+                "description": "API version used (SOL 013 9.4).",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Error (SOL 013 6).",
+            "headers": {
+              "Version": {
+                "description": "API version used (SOL 013 9.4).",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "storage:v1:operate"
+            ]
+          }
+        ],
+        "summary": "Deletes a snapshot of a volume.",
+        "tags": [
+          "StorageService"
+        ]
+      },
+      "get": {
+        "operationId": "StorageService_GetVolumeSnapshot",
+        "parameters": [
+          {
+            "description": "Volume the snapshot belongs to.",
+            "in": "path",
+            "name": "volume_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Identifier of the snapshot.",
+            "in": "path",
+            "name": "snapshot_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/Version"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/kubenfv.kubevim.storage.v1.VolumeSnapshot"
+                }
+              }
+            },
+            "description": "A snapshot of a volume (Kubernetes VolumeSnapshot).",
+            "headers": {
+              "Version": {
+                "description": "API version used (SOL 013 9.4).",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Error (SOL 013 6).",
+            "headers": {
+              "Version": {
+                "description": "API version used (SOL 013 9.4).",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "storage:v1:query"
+            ]
+          }
+        ],
+        "summary": "Returns one snapshot of a volume.",
+        "tags": [
+          "StorageService"
+        ]
+      }
+    },
+    "/storage/v1/volumes/{volume_id}/snapshots/{snapshot_id}/revert": {
+      "post": {
+        "operationId": "StorageService_RevertVolumeSnapshot",
+        "parameters": [
+          {
+            "description": "Volume to revert; no running compute resource may use it.",
+            "in": "path",
+            "name": "volume_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Identifier of the snapshot to revert to.",
+            "in": "path",
+            "name": "snapshot_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/Version"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/kubenfv.kubevim.common.v1.Volume"
+                }
+              }
+            },
+            "description": "A virtualised storage resource, e.g. a disk of a compute resource.",
+            "headers": {
+              "Version": {
+                "description": "API version used (SOL 013 9.4).",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Error (SOL 013 6).",
+            "headers": {
+              "Version": {
+                "description": "API version used (SOL 013 9.4).",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "storage:v1:operate"
+            ]
+          }
+        ],
+        "summary": "Reverts a volume that no running compute resource uses to a snapshot.",
         "tags": [
           "StorageService"
         ]

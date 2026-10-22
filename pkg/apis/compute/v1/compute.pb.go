@@ -404,60 +404,6 @@ func (ComputeOperation) EnumDescriptor() ([]byte, []int) {
 	return file_kubenfv_kubevim_compute_v1_compute_proto_rawDescGZIP(), []int{5}
 }
 
-// Status of a snapshot.
-// Values may be added as KubeVirt support grows; clients should accept unknown values.
-type SnapshotStatus int32
-
-const (
-	SnapshotStatus_SNAPSHOT_STATUS_UNSPECIFIED SnapshotStatus = 0
-	SnapshotStatus_SNAPSHOT_STATUS_CREATING    SnapshotStatus = 1
-	SnapshotStatus_SNAPSHOT_STATUS_READY       SnapshotStatus = 2
-	SnapshotStatus_SNAPSHOT_STATUS_FAILED      SnapshotStatus = 3
-)
-
-// Enum value maps for SnapshotStatus.
-var (
-	SnapshotStatus_name = map[int32]string{
-		0: "SNAPSHOT_STATUS_UNSPECIFIED",
-		1: "SNAPSHOT_STATUS_CREATING",
-		2: "SNAPSHOT_STATUS_READY",
-		3: "SNAPSHOT_STATUS_FAILED",
-	}
-	SnapshotStatus_value = map[string]int32{
-		"SNAPSHOT_STATUS_UNSPECIFIED": 0,
-		"SNAPSHOT_STATUS_CREATING":    1,
-		"SNAPSHOT_STATUS_READY":       2,
-		"SNAPSHOT_STATUS_FAILED":      3,
-	}
-)
-
-func (x SnapshotStatus) Enum() *SnapshotStatus {
-	p := new(SnapshotStatus)
-	*p = x
-	return p
-}
-
-func (x SnapshotStatus) String() string {
-	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
-}
-
-func (SnapshotStatus) Descriptor() protoreflect.EnumDescriptor {
-	return file_kubenfv_kubevim_compute_v1_compute_proto_enumTypes[6].Descriptor()
-}
-
-func (SnapshotStatus) Type() protoreflect.EnumType {
-	return &file_kubenfv_kubevim_compute_v1_compute_proto_enumTypes[6]
-}
-
-func (x SnapshotStatus) Number() protoreflect.EnumNumber {
-	return protoreflect.EnumNumber(x)
-}
-
-// Deprecated: Use SnapshotStatus.Descriptor instead.
-func (SnapshotStatus) EnumDescriptor() ([]byte, []int) {
-	return file_kubenfv_kubevim_compute_v1_compute_proto_rawDescGZIP(), []int{6}
-}
-
 // Whether members of a placement group are placed together or apart.
 type PlacementType int32
 
@@ -494,11 +440,11 @@ func (x PlacementType) String() string {
 }
 
 func (PlacementType) Descriptor() protoreflect.EnumDescriptor {
-	return file_kubenfv_kubevim_compute_v1_compute_proto_enumTypes[7].Descriptor()
+	return file_kubenfv_kubevim_compute_v1_compute_proto_enumTypes[6].Descriptor()
 }
 
 func (PlacementType) Type() protoreflect.EnumType {
-	return &file_kubenfv_kubevim_compute_v1_compute_proto_enumTypes[7]
+	return &file_kubenfv_kubevim_compute_v1_compute_proto_enumTypes[6]
 }
 
 func (x PlacementType) Number() protoreflect.EnumNumber {
@@ -507,7 +453,7 @@ func (x PlacementType) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use PlacementType.Descriptor instead.
 func (PlacementType) EnumDescriptor() ([]byte, []int) {
-	return file_kubenfv_kubevim_compute_v1_compute_proto_rawDescGZIP(), []int{7}
+	return file_kubenfv_kubevim_compute_v1_compute_proto_rawDescGZIP(), []int{6}
 }
 
 // Topology domain a placement policy applies to.
@@ -547,11 +493,11 @@ func (x PlacementScope) String() string {
 }
 
 func (PlacementScope) Descriptor() protoreflect.EnumDescriptor {
-	return file_kubenfv_kubevim_compute_v1_compute_proto_enumTypes[8].Descriptor()
+	return file_kubenfv_kubevim_compute_v1_compute_proto_enumTypes[7].Descriptor()
 }
 
 func (PlacementScope) Type() protoreflect.EnumType {
-	return &file_kubenfv_kubevim_compute_v1_compute_proto_enumTypes[8]
+	return &file_kubenfv_kubevim_compute_v1_compute_proto_enumTypes[7]
 }
 
 func (x PlacementScope) Number() protoreflect.EnumNumber {
@@ -560,7 +506,7 @@ func (x PlacementScope) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use PlacementScope.Descriptor instead.
 func (PlacementScope) EnumDescriptor() ([]byte, []int) {
-	return file_kubenfv_kubevim_compute_v1_compute_proto_rawDescGZIP(), []int{8}
+	return file_kubenfv_kubevim_compute_v1_compute_proto_rawDescGZIP(), []int{7}
 }
 
 // Whether a placement policy must hold.
@@ -599,11 +545,11 @@ func (x PlacementEnforcement) String() string {
 }
 
 func (PlacementEnforcement) Descriptor() protoreflect.EnumDescriptor {
-	return file_kubenfv_kubevim_compute_v1_compute_proto_enumTypes[9].Descriptor()
+	return file_kubenfv_kubevim_compute_v1_compute_proto_enumTypes[8].Descriptor()
 }
 
 func (PlacementEnforcement) Type() protoreflect.EnumType {
-	return &file_kubenfv_kubevim_compute_v1_compute_proto_enumTypes[9]
+	return &file_kubenfv_kubevim_compute_v1_compute_proto_enumTypes[8]
 }
 
 func (x PlacementEnforcement) Number() protoreflect.EnumNumber {
@@ -612,7 +558,7 @@ func (x PlacementEnforcement) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use PlacementEnforcement.Descriptor instead.
 func (PlacementEnforcement) EnumDescriptor() ([]byte, []int) {
-	return file_kubenfv_kubevim_compute_v1_compute_proto_rawDescGZIP(), []int{9}
+	return file_kubenfv_kubevim_compute_v1_compute_proto_rawDescGZIP(), []int{8}
 }
 
 // A virtualised compute resource: a virtual machine.
@@ -1949,7 +1895,7 @@ func (x *DetachVolumeRequest) GetVolumeId() string {
 }
 
 // A snapshot of a compute resource (KubeVirt VirtualMachineSnapshot).
-type Snapshot struct {
+type ComputeSnapshot struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Identifier of the snapshot: a UUID assigned by the VIM.
 	SnapshotId string `protobuf:"bytes,1,opt,name=snapshot_id,json=snapshotId,proto3" json:"snapshot_id,omitempty"`
@@ -1960,27 +1906,27 @@ type Snapshot struct {
 	// Time the snapshot was taken.
 	CreatedAt *timestamppb.Timestamp `protobuf:"bytes,4,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
 	// Status of the snapshot.
-	Status SnapshotStatus `protobuf:"varint,5,opt,name=status,proto3,enum=kubenfv.kubevim.compute.v1.SnapshotStatus" json:"status,omitempty"`
+	Status v1.SnapshotStatus `protobuf:"varint,5,opt,name=status,proto3,enum=kubenfv.kubevim.common.v1.SnapshotStatus" json:"status,omitempty"`
 	// Metadata set by the consumer and by the VIM; for keys under "kubevim.kubenfv.io/" that the VIM maintains, its value wins.
 	Metadata      map[string]string `protobuf:"bytes,6,rep,name=metadata,proto3" json:"metadata,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *Snapshot) Reset() {
-	*x = Snapshot{}
+func (x *ComputeSnapshot) Reset() {
+	*x = ComputeSnapshot{}
 	mi := &file_kubenfv_kubevim_compute_v1_compute_proto_msgTypes[19]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *Snapshot) String() string {
+func (x *ComputeSnapshot) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*Snapshot) ProtoMessage() {}
+func (*ComputeSnapshot) ProtoMessage() {}
 
-func (x *Snapshot) ProtoReflect() protoreflect.Message {
+func (x *ComputeSnapshot) ProtoReflect() protoreflect.Message {
 	mi := &file_kubenfv_kubevim_compute_v1_compute_proto_msgTypes[19]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -1992,79 +1938,79 @@ func (x *Snapshot) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use Snapshot.ProtoReflect.Descriptor instead.
-func (*Snapshot) Descriptor() ([]byte, []int) {
+// Deprecated: Use ComputeSnapshot.ProtoReflect.Descriptor instead.
+func (*ComputeSnapshot) Descriptor() ([]byte, []int) {
 	return file_kubenfv_kubevim_compute_v1_compute_proto_rawDescGZIP(), []int{19}
 }
 
-func (x *Snapshot) GetSnapshotId() string {
+func (x *ComputeSnapshot) GetSnapshotId() string {
 	if x != nil {
 		return x.SnapshotId
 	}
 	return ""
 }
 
-func (x *Snapshot) GetSnapshotName() string {
+func (x *ComputeSnapshot) GetSnapshotName() string {
 	if x != nil {
 		return x.SnapshotName
 	}
 	return ""
 }
 
-func (x *Snapshot) GetComputeId() string {
+func (x *ComputeSnapshot) GetComputeId() string {
 	if x != nil {
 		return x.ComputeId
 	}
 	return ""
 }
 
-func (x *Snapshot) GetCreatedAt() *timestamppb.Timestamp {
+func (x *ComputeSnapshot) GetCreatedAt() *timestamppb.Timestamp {
 	if x != nil {
 		return x.CreatedAt
 	}
 	return nil
 }
 
-func (x *Snapshot) GetStatus() SnapshotStatus {
+func (x *ComputeSnapshot) GetStatus() v1.SnapshotStatus {
 	if x != nil {
 		return x.Status
 	}
-	return SnapshotStatus_SNAPSHOT_STATUS_UNSPECIFIED
+	return v1.SnapshotStatus(0)
 }
 
-func (x *Snapshot) GetMetadata() map[string]string {
+func (x *ComputeSnapshot) GetMetadata() map[string]string {
 	if x != nil {
 		return x.Metadata
 	}
 	return nil
 }
 
-type CreateSnapshotRequest struct {
+type CreateComputeSnapshotRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Compute resource to take the snapshot of.
 	ComputeId string `protobuf:"bytes,1,opt,name=compute_id,json=computeId,proto3" json:"compute_id,omitempty"`
 	// Snapshot to create: name and metadata.
-	Snapshot *Snapshot `protobuf:"bytes,2,opt,name=snapshot,proto3" json:"snapshot,omitempty"`
+	Snapshot *ComputeSnapshot `protobuf:"bytes,2,opt,name=snapshot,proto3" json:"snapshot,omitempty"`
 	// Client-chosen UUID that makes the request idempotent (AIP-155).
 	RequestId     string `protobuf:"bytes,3,opt,name=request_id,json=requestId,proto3" json:"request_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *CreateSnapshotRequest) Reset() {
-	*x = CreateSnapshotRequest{}
+func (x *CreateComputeSnapshotRequest) Reset() {
+	*x = CreateComputeSnapshotRequest{}
 	mi := &file_kubenfv_kubevim_compute_v1_compute_proto_msgTypes[20]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *CreateSnapshotRequest) String() string {
+func (x *CreateComputeSnapshotRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*CreateSnapshotRequest) ProtoMessage() {}
+func (*CreateComputeSnapshotRequest) ProtoMessage() {}
 
-func (x *CreateSnapshotRequest) ProtoReflect() protoreflect.Message {
+func (x *CreateComputeSnapshotRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_kubenfv_kubevim_compute_v1_compute_proto_msgTypes[20]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -2076,33 +2022,33 @@ func (x *CreateSnapshotRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use CreateSnapshotRequest.ProtoReflect.Descriptor instead.
-func (*CreateSnapshotRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use CreateComputeSnapshotRequest.ProtoReflect.Descriptor instead.
+func (*CreateComputeSnapshotRequest) Descriptor() ([]byte, []int) {
 	return file_kubenfv_kubevim_compute_v1_compute_proto_rawDescGZIP(), []int{20}
 }
 
-func (x *CreateSnapshotRequest) GetComputeId() string {
+func (x *CreateComputeSnapshotRequest) GetComputeId() string {
 	if x != nil {
 		return x.ComputeId
 	}
 	return ""
 }
 
-func (x *CreateSnapshotRequest) GetSnapshot() *Snapshot {
+func (x *CreateComputeSnapshotRequest) GetSnapshot() *ComputeSnapshot {
 	if x != nil {
 		return x.Snapshot
 	}
 	return nil
 }
 
-func (x *CreateSnapshotRequest) GetRequestId() string {
+func (x *CreateComputeSnapshotRequest) GetRequestId() string {
 	if x != nil {
 		return x.RequestId
 	}
 	return ""
 }
 
-type GetSnapshotRequest struct {
+type GetComputeSnapshotRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Compute resource the snapshot belongs to.
 	ComputeId string `protobuf:"bytes,1,opt,name=compute_id,json=computeId,proto3" json:"compute_id,omitempty"`
@@ -2112,20 +2058,20 @@ type GetSnapshotRequest struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *GetSnapshotRequest) Reset() {
-	*x = GetSnapshotRequest{}
+func (x *GetComputeSnapshotRequest) Reset() {
+	*x = GetComputeSnapshotRequest{}
 	mi := &file_kubenfv_kubevim_compute_v1_compute_proto_msgTypes[21]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *GetSnapshotRequest) String() string {
+func (x *GetComputeSnapshotRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*GetSnapshotRequest) ProtoMessage() {}
+func (*GetComputeSnapshotRequest) ProtoMessage() {}
 
-func (x *GetSnapshotRequest) ProtoReflect() protoreflect.Message {
+func (x *GetComputeSnapshotRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_kubenfv_kubevim_compute_v1_compute_proto_msgTypes[21]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -2137,26 +2083,26 @@ func (x *GetSnapshotRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use GetSnapshotRequest.ProtoReflect.Descriptor instead.
-func (*GetSnapshotRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use GetComputeSnapshotRequest.ProtoReflect.Descriptor instead.
+func (*GetComputeSnapshotRequest) Descriptor() ([]byte, []int) {
 	return file_kubenfv_kubevim_compute_v1_compute_proto_rawDescGZIP(), []int{21}
 }
 
-func (x *GetSnapshotRequest) GetComputeId() string {
+func (x *GetComputeSnapshotRequest) GetComputeId() string {
 	if x != nil {
 		return x.ComputeId
 	}
 	return ""
 }
 
-func (x *GetSnapshotRequest) GetSnapshotId() string {
+func (x *GetComputeSnapshotRequest) GetSnapshotId() string {
 	if x != nil {
 		return x.SnapshotId
 	}
 	return ""
 }
 
-type ListSnapshotsRequest struct {
+type ListComputeSnapshotsRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Compute resource the snapshots belong to.
 	ComputeId string `protobuf:"bytes,1,opt,name=compute_id,json=computeId,proto3" json:"compute_id,omitempty"`
@@ -2168,20 +2114,20 @@ type ListSnapshotsRequest struct {
 	sizeCache            protoimpl.SizeCache
 }
 
-func (x *ListSnapshotsRequest) Reset() {
-	*x = ListSnapshotsRequest{}
+func (x *ListComputeSnapshotsRequest) Reset() {
+	*x = ListComputeSnapshotsRequest{}
 	mi := &file_kubenfv_kubevim_compute_v1_compute_proto_msgTypes[22]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *ListSnapshotsRequest) String() string {
+func (x *ListComputeSnapshotsRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ListSnapshotsRequest) ProtoMessage() {}
+func (*ListComputeSnapshotsRequest) ProtoMessage() {}
 
-func (x *ListSnapshotsRequest) ProtoReflect() protoreflect.Message {
+func (x *ListComputeSnapshotsRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_kubenfv_kubevim_compute_v1_compute_proto_msgTypes[22]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -2193,56 +2139,56 @@ func (x *ListSnapshotsRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use ListSnapshotsRequest.ProtoReflect.Descriptor instead.
-func (*ListSnapshotsRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use ListComputeSnapshotsRequest.ProtoReflect.Descriptor instead.
+func (*ListComputeSnapshotsRequest) Descriptor() ([]byte, []int) {
 	return file_kubenfv_kubevim_compute_v1_compute_proto_rawDescGZIP(), []int{22}
 }
 
-func (x *ListSnapshotsRequest) GetComputeId() string {
+func (x *ListComputeSnapshotsRequest) GetComputeId() string {
 	if x != nil {
 		return x.ComputeId
 	}
 	return ""
 }
 
-func (x *ListSnapshotsRequest) GetFilter() string {
+func (x *ListComputeSnapshotsRequest) GetFilter() string {
 	if x != nil {
 		return x.Filter
 	}
 	return ""
 }
 
-func (x *ListSnapshotsRequest) GetNextpageOpaqueMarker() string {
+func (x *ListComputeSnapshotsRequest) GetNextpageOpaqueMarker() string {
 	if x != nil {
 		return x.NextpageOpaqueMarker
 	}
 	return ""
 }
 
-type ListSnapshotsResponse struct {
+type ListComputeSnapshotsResponse struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Snapshots matching the filter.
-	Snapshots []*Snapshot `protobuf:"bytes,1,rep,name=snapshots,proto3" json:"snapshots,omitempty"`
+	Snapshots []*ComputeSnapshot `protobuf:"bytes,1,rep,name=snapshots,proto3" json:"snapshots,omitempty"`
 	// Marker of the next page; empty on the last page (SOL 013 5.4).
 	NextpageOpaqueMarker string `protobuf:"bytes,2,opt,name=nextpage_opaque_marker,proto3" json:"nextpage_opaque_marker,omitempty"`
 	unknownFields        protoimpl.UnknownFields
 	sizeCache            protoimpl.SizeCache
 }
 
-func (x *ListSnapshotsResponse) Reset() {
-	*x = ListSnapshotsResponse{}
+func (x *ListComputeSnapshotsResponse) Reset() {
+	*x = ListComputeSnapshotsResponse{}
 	mi := &file_kubenfv_kubevim_compute_v1_compute_proto_msgTypes[23]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *ListSnapshotsResponse) String() string {
+func (x *ListComputeSnapshotsResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ListSnapshotsResponse) ProtoMessage() {}
+func (*ListComputeSnapshotsResponse) ProtoMessage() {}
 
-func (x *ListSnapshotsResponse) ProtoReflect() protoreflect.Message {
+func (x *ListComputeSnapshotsResponse) ProtoReflect() protoreflect.Message {
 	mi := &file_kubenfv_kubevim_compute_v1_compute_proto_msgTypes[23]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -2254,26 +2200,26 @@ func (x *ListSnapshotsResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use ListSnapshotsResponse.ProtoReflect.Descriptor instead.
-func (*ListSnapshotsResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use ListComputeSnapshotsResponse.ProtoReflect.Descriptor instead.
+func (*ListComputeSnapshotsResponse) Descriptor() ([]byte, []int) {
 	return file_kubenfv_kubevim_compute_v1_compute_proto_rawDescGZIP(), []int{23}
 }
 
-func (x *ListSnapshotsResponse) GetSnapshots() []*Snapshot {
+func (x *ListComputeSnapshotsResponse) GetSnapshots() []*ComputeSnapshot {
 	if x != nil {
 		return x.Snapshots
 	}
 	return nil
 }
 
-func (x *ListSnapshotsResponse) GetNextpageOpaqueMarker() string {
+func (x *ListComputeSnapshotsResponse) GetNextpageOpaqueMarker() string {
 	if x != nil {
 		return x.NextpageOpaqueMarker
 	}
 	return ""
 }
 
-type DeleteSnapshotRequest struct {
+type DeleteComputeSnapshotRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Compute resource the snapshot belongs to.
 	ComputeId string `protobuf:"bytes,1,opt,name=compute_id,json=computeId,proto3" json:"compute_id,omitempty"`
@@ -2283,20 +2229,20 @@ type DeleteSnapshotRequest struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *DeleteSnapshotRequest) Reset() {
-	*x = DeleteSnapshotRequest{}
+func (x *DeleteComputeSnapshotRequest) Reset() {
+	*x = DeleteComputeSnapshotRequest{}
 	mi := &file_kubenfv_kubevim_compute_v1_compute_proto_msgTypes[24]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *DeleteSnapshotRequest) String() string {
+func (x *DeleteComputeSnapshotRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*DeleteSnapshotRequest) ProtoMessage() {}
+func (*DeleteComputeSnapshotRequest) ProtoMessage() {}
 
-func (x *DeleteSnapshotRequest) ProtoReflect() protoreflect.Message {
+func (x *DeleteComputeSnapshotRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_kubenfv_kubevim_compute_v1_compute_proto_msgTypes[24]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -2308,26 +2254,26 @@ func (x *DeleteSnapshotRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use DeleteSnapshotRequest.ProtoReflect.Descriptor instead.
-func (*DeleteSnapshotRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use DeleteComputeSnapshotRequest.ProtoReflect.Descriptor instead.
+func (*DeleteComputeSnapshotRequest) Descriptor() ([]byte, []int) {
 	return file_kubenfv_kubevim_compute_v1_compute_proto_rawDescGZIP(), []int{24}
 }
 
-func (x *DeleteSnapshotRequest) GetComputeId() string {
+func (x *DeleteComputeSnapshotRequest) GetComputeId() string {
 	if x != nil {
 		return x.ComputeId
 	}
 	return ""
 }
 
-func (x *DeleteSnapshotRequest) GetSnapshotId() string {
+func (x *DeleteComputeSnapshotRequest) GetSnapshotId() string {
 	if x != nil {
 		return x.SnapshotId
 	}
 	return ""
 }
 
-type RevertSnapshotRequest struct {
+type RevertComputeSnapshotRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Compute resource to revert; it must be stopped.
 	ComputeId string `protobuf:"bytes,1,opt,name=compute_id,json=computeId,proto3" json:"compute_id,omitempty"`
@@ -2337,20 +2283,20 @@ type RevertSnapshotRequest struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *RevertSnapshotRequest) Reset() {
-	*x = RevertSnapshotRequest{}
+func (x *RevertComputeSnapshotRequest) Reset() {
+	*x = RevertComputeSnapshotRequest{}
 	mi := &file_kubenfv_kubevim_compute_v1_compute_proto_msgTypes[25]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *RevertSnapshotRequest) String() string {
+func (x *RevertComputeSnapshotRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*RevertSnapshotRequest) ProtoMessage() {}
+func (*RevertComputeSnapshotRequest) ProtoMessage() {}
 
-func (x *RevertSnapshotRequest) ProtoReflect() protoreflect.Message {
+func (x *RevertComputeSnapshotRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_kubenfv_kubevim_compute_v1_compute_proto_msgTypes[25]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -2362,19 +2308,19 @@ func (x *RevertSnapshotRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use RevertSnapshotRequest.ProtoReflect.Descriptor instead.
-func (*RevertSnapshotRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use RevertComputeSnapshotRequest.ProtoReflect.Descriptor instead.
+func (*RevertComputeSnapshotRequest) Descriptor() ([]byte, []int) {
 	return file_kubenfv_kubevim_compute_v1_compute_proto_rawDescGZIP(), []int{25}
 }
 
-func (x *RevertSnapshotRequest) GetComputeId() string {
+func (x *RevertComputeSnapshotRequest) GetComputeId() string {
 	if x != nil {
 		return x.ComputeId
 	}
 	return ""
 }
 
-func (x *RevertSnapshotRequest) GetSnapshotId() string {
+func (x *RevertComputeSnapshotRequest) GetSnapshotId() string {
 	if x != nil {
 		return x.SnapshotId
 	}
@@ -2926,45 +2872,45 @@ const file_kubenfv_kubevim_compute_v1_compute_proto_rawDesc = "" +
 	"compute_id\x18\x01 \x01(\tBU\xe2A\x01\x02\xbaH\x05r\x03\xb0\x01\x01\xfa\x8b\x19E\n" +
 	"CIFA006 7.3.1.11.2 DetachVirtualisedStorageResourceRequest.computeIdR\tcomputeId\x12\xab\x01\n" +
 	"\tvolume_id\x18\x02 \x01(\tB\x8d\x01\xe2A\x01\x02\xbaH\x05r\x03\xb0\x01\x01\xfa\x8b\x19}\n" +
-	"CIFA006 7.3.1.11.2 DetachVirtualisedStorageResourceRequest.storageId\x126\b\x03\x10\x01\x1a0Renamed to the referenced resource's identifier.R\bvolumeId\"\x90\x04\n" +
-	"\bSnapshot\x12%\n" +
+	"CIFA006 7.3.1.11.2 DetachVirtualisedStorageResourceRequest.storageId\x126\b\x03\x10\x01\x1a0Renamed to the referenced resource's identifier.R\bvolumeId\"\x9d\x04\n" +
+	"\x0fComputeSnapshot\x12%\n" +
 	"\vsnapshot_id\x18\x01 \x01(\tB\x04\xe2A\x01\x03R\n" +
 	"snapshotId\x12)\n" +
 	"\rsnapshot_name\x18\x02 \x01(\tB\x04\xe2A\x01\x01R\fsnapshotName\x12#\n" +
 	"\n" +
 	"compute_id\x18\x03 \x01(\tB\x04\xe2A\x01\x03R\tcomputeId\x12?\n" +
 	"\n" +
-	"created_at\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampB\x04\xe2A\x01\x03R\tcreatedAt\x12H\n" +
-	"\x06status\x18\x05 \x01(\x0e2*.kubenfv.kubevim.compute.v1.SnapshotStatusB\x04\xe2A\x01\x03R\x06status\x12^\n" +
-	"\bmetadata\x18\x06 \x03(\v22.kubenfv.kubevim.compute.v1.Snapshot.MetadataEntryB\x0e\xe2A\x01\x01\xbaH\a\x9a\x01\x04\xf8\x8b\x19\x01R\bmetadata\x1a;\n" +
+	"created_at\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampB\x04\xe2A\x01\x03R\tcreatedAt\x12G\n" +
+	"\x06status\x18\x05 \x01(\x0e2).kubenfv.kubevim.common.v1.SnapshotStatusB\x04\xe2A\x01\x03R\x06status\x12e\n" +
+	"\bmetadata\x18\x06 \x03(\v29.kubenfv.kubevim.compute.v1.ComputeSnapshot.MetadataEntryB\x0e\xe2A\x01\x01\xbaH\a\x9a\x01\x04\xf8\x8b\x19\x01R\bmetadata\x1a;\n" +
 	"\rMetadataEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01:e\xfa\x8b\x19a\x12_\b\x03\x10\x01\x1aYIFA handles snapshots through Operate with a snapshotId in the data maps (decision 0007).\"\xbc\x01\n" +
-	"\x15CreateSnapshotRequest\x12+\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01:e\xfa\x8b\x19a\x12_\b\x03\x10\x01\x1aYIFA handles snapshots through Operate with a snapshotId in the data maps (decision 0007).\"\xca\x01\n" +
+	"\x1cCreateComputeSnapshotRequest\x12+\n" +
 	"\n" +
-	"compute_id\x18\x01 \x01(\tB\f\xe2A\x01\x02\xbaH\x05r\x03\xb0\x01\x01R\tcomputeId\x12F\n" +
-	"\bsnapshot\x18\x02 \x01(\v2$.kubenfv.kubevim.compute.v1.SnapshotB\x04\xe2A\x01\x01R\bsnapshot\x12.\n" +
+	"compute_id\x18\x01 \x01(\tB\f\xe2A\x01\x02\xbaH\x05r\x03\xb0\x01\x01R\tcomputeId\x12M\n" +
+	"\bsnapshot\x18\x02 \x01(\v2+.kubenfv.kubevim.compute.v1.ComputeSnapshotB\x04\xe2A\x01\x01R\bsnapshot\x12.\n" +
 	"\n" +
-	"request_id\x18\x03 \x01(\tB\x0f\xe2A\x01\x01\xbaH\b\xd8\x01\x01r\x03\xb0\x01\x01R\trequestId\"p\n" +
-	"\x12GetSnapshotRequest\x12+\n" +
+	"request_id\x18\x03 \x01(\tB\x0f\xe2A\x01\x01\xbaH\b\xd8\x01\x01r\x03\xb0\x01\x01R\trequestId\"w\n" +
+	"\x19GetComputeSnapshotRequest\x12+\n" +
 	"\n" +
 	"compute_id\x18\x01 \x01(\tB\f\xe2A\x01\x02\xbaH\x05r\x03\xb0\x01\x01R\tcomputeId\x12-\n" +
 	"\vsnapshot_id\x18\x02 \x01(\tB\f\xe2A\x01\x02\xbaH\x05r\x03\xb0\x01\x01R\n" +
-	"snapshotId\"\x9f\x01\n" +
-	"\x14ListSnapshotsRequest\x12+\n" +
+	"snapshotId\"\xa6\x01\n" +
+	"\x1bListComputeSnapshotsRequest\x12+\n" +
 	"\n" +
 	"compute_id\x18\x01 \x01(\tB\f\xe2A\x01\x02\xbaH\x05r\x03\xb0\x01\x01R\tcomputeId\x12\x1c\n" +
 	"\x06filter\x18\x02 \x01(\tB\x04\xe2A\x01\x01R\x06filter\x12<\n" +
-	"\x16nextpage_opaque_marker\x18\x03 \x01(\tB\x04\xe2A\x01\x01R\x16nextpage_opaque_marker\"\x93\x01\n" +
-	"\x15ListSnapshotsResponse\x12B\n" +
-	"\tsnapshots\x18\x01 \x03(\v2$.kubenfv.kubevim.compute.v1.SnapshotR\tsnapshots\x126\n" +
-	"\x16nextpage_opaque_marker\x18\x02 \x01(\tR\x16nextpage_opaque_marker\"s\n" +
-	"\x15DeleteSnapshotRequest\x12+\n" +
+	"\x16nextpage_opaque_marker\x18\x03 \x01(\tB\x04\xe2A\x01\x01R\x16nextpage_opaque_marker\"\xa1\x01\n" +
+	"\x1cListComputeSnapshotsResponse\x12I\n" +
+	"\tsnapshots\x18\x01 \x03(\v2+.kubenfv.kubevim.compute.v1.ComputeSnapshotR\tsnapshots\x126\n" +
+	"\x16nextpage_opaque_marker\x18\x02 \x01(\tR\x16nextpage_opaque_marker\"z\n" +
+	"\x1cDeleteComputeSnapshotRequest\x12+\n" +
 	"\n" +
 	"compute_id\x18\x01 \x01(\tB\f\xe2A\x01\x02\xbaH\x05r\x03\xb0\x01\x01R\tcomputeId\x12-\n" +
 	"\vsnapshot_id\x18\x02 \x01(\tB\f\xe2A\x01\x02\xbaH\x05r\x03\xb0\x01\x01R\n" +
-	"snapshotId\"s\n" +
-	"\x15RevertSnapshotRequest\x12+\n" +
+	"snapshotId\"z\n" +
+	"\x1cRevertComputeSnapshotRequest\x12+\n" +
 	"\n" +
 	"compute_id\x18\x01 \x01(\tB\f\xe2A\x01\x02\xbaH\x05r\x03\xb0\x01\x01R\tcomputeId\x12-\n" +
 	"\vsnapshot_id\x18\x02 \x01(\tB\f\xe2A\x01\x02\xbaH\x05r\x03\xb0\x01\x01R\n" +
@@ -3040,12 +2986,7 @@ const file_kubenfv_kubevim_compute_v1_compute_proto_rawDesc = "" +
 	"\x18COMPUTE_OPERATION_RESUME\x10\x04\x12\x1c\n" +
 	"\x18COMPUTE_OPERATION_REBOOT\x10\x05\x12\x1d\n" +
 	"\x19COMPUTE_OPERATION_QUIESCE\x10\x06\x12\x1f\n" +
-	"\x1bCOMPUTE_OPERATION_UNQUIESCE\x10\a*\x86\x01\n" +
-	"\x0eSnapshotStatus\x12\x1f\n" +
-	"\x1bSNAPSHOT_STATUS_UNSPECIFIED\x10\x00\x12\x1c\n" +
-	"\x18SNAPSHOT_STATUS_CREATING\x10\x01\x12\x19\n" +
-	"\x15SNAPSHOT_STATUS_READY\x10\x02\x12\x1a\n" +
-	"\x16SNAPSHOT_STATUS_FAILED\x10\x03*n\n" +
+	"\x1bCOMPUTE_OPERATION_UNQUIESCE\x10\a*n\n" +
 	"\rPlacementType\x12\x1e\n" +
 	"\x1aPLACEMENT_TYPE_UNSPECIFIED\x10\x00\x12\x1b\n" +
 	"\x17PLACEMENT_TYPE_AFFINITY\x10\x01\x12 \n" +
@@ -3057,7 +2998,7 @@ const file_kubenfv_kubevim_compute_v1_compute_proto_rawDesc = "" +
 	"\x14PlacementEnforcement\x12%\n" +
 	"!PLACEMENT_ENFORCEMENT_UNSPECIFIED\x10\x00\x12\"\n" +
 	"\x1ePLACEMENT_ENFORCEMENT_REQUIRED\x10\x01\x12#\n" +
-	"\x1fPLACEMENT_ENFORCEMENT_PREFERRED\x10\x022\x9a-\n" +
+	"\x1fPLACEMENT_ENFORCEMENT_PREFERRED\x10\x022\xf5-\n" +
 	"\x0eComputeService\x12\xe7\x01\n" +
 	"\rCreateCompute\x120.kubenfv.kubevim.compute.v1.CreateComputeRequest\x1a#.kubenfv.kubevim.compute.v1.Compute\"\x7f\xfaP#J!\n" +
 	"\x1f\n" +
@@ -3109,26 +3050,26 @@ const file_kubenfv_kubevim_compute_v1_compute_proto_rawDesc = "" +
 	"\x1d\n" +
 	"\x06oauth2\x12\x13\n" +
 	"\x11compute:v1:update\xfa\x8b\x19w\n" +
-	"3IFA006 7.3.1.11 Detach Virtualised Storage Resource\x12@\b\x03\x10\x01\x1a:Returns the updated compute resource; IFA returns nothing.\x82\xd3\xe4\x93\x023:\x01*\"./compute/v1/computes/{compute_id}/detachVolume\x12\xeb\x02\n" +
-	"\x0eCreateSnapshot\x121.kubenfv.kubevim.compute.v1.CreateSnapshotRequest\x1a$.kubenfv.kubevim.compute.v1.Snapshot\"\xff\x01\xfaP\"J \n" +
+	"3IFA006 7.3.1.11 Detach Virtualised Storage Resource\x12@\b\x03\x10\x01\x1a:Returns the updated compute resource; IFA returns nothing.\x82\xd3\xe4\x93\x023:\x01*\"./compute/v1/computes/{compute_id}/detachVolume\x12\x80\x03\n" +
+	"\x15CreateComputeSnapshot\x128.kubenfv.kubevim.compute.v1.CreateComputeSnapshotRequest\x1a+.kubenfv.kubevim.compute.v1.ComputeSnapshot\"\xff\x01\xfaP\"J \n" +
 	"\x1e\n" +
 	"\x06oauth2\x12\x14\n" +
 	"\x12compute:v1:operate\xfa\x8b\x19\x9f\x01\n" +
-	"fIFA006 7.3.1.6 Operate Virtualised Compute Resource (createSnapshot, revertToSnapshot, deleteSnapshot)\x125\b\x03\x10\x01\x1a/Operate with createSnapshot, as a sub-resource.\x82\xd3\xe4\x93\x020:\x01*\"+/compute/v1/computes/{compute_id}/snapshots\x12\xf5\x01\n" +
-	"\vGetSnapshot\x12..kubenfv.kubevim.compute.v1.GetSnapshotRequest\x1a$.kubenfv.kubevim.compute.v1.Snapshot\"\x8f\x01\xfaP J\x1e\n" +
+	"fIFA006 7.3.1.6 Operate Virtualised Compute Resource (createSnapshot, revertToSnapshot, deleteSnapshot)\x125\b\x03\x10\x01\x1a/Operate with createSnapshot, as a sub-resource.\x82\xd3\xe4\x93\x020:\x01*\"+/compute/v1/computes/{compute_id}/snapshots\x12\x8a\x02\n" +
+	"\x12GetComputeSnapshot\x125.kubenfv.kubevim.compute.v1.GetComputeSnapshotRequest\x1a+.kubenfv.kubevim.compute.v1.ComputeSnapshot\"\x8f\x01\xfaP J\x1e\n" +
 	"\x1c\n" +
 	"\x06oauth2\x12\x12\n" +
-	"\x10compute:v1:query\xfa\x8b\x19'\x12%\b\x01\x10\x01\x1a\x1fIFA cannot read snapshots back.\x82\xd3\xe4\x93\x02;\x129/compute/v1/computes/{compute_id}/snapshots/{snapshot_id}\x12\xf2\x01\n" +
-	"\rListSnapshots\x120.kubenfv.kubevim.compute.v1.ListSnapshotsRequest\x1a1.kubenfv.kubevim.compute.v1.ListSnapshotsResponse\"|\xfaP J\x1e\n" +
+	"\x10compute:v1:query\xfa\x8b\x19'\x12%\b\x01\x10\x01\x1a\x1fIFA cannot read snapshots back.\x82\xd3\xe4\x93\x02;\x129/compute/v1/computes/{compute_id}/snapshots/{snapshot_id}\x12\x87\x02\n" +
+	"\x14ListComputeSnapshots\x127.kubenfv.kubevim.compute.v1.ListComputeSnapshotsRequest\x1a8.kubenfv.kubevim.compute.v1.ListComputeSnapshotsResponse\"|\xfaP J\x1e\n" +
 	"\x1c\n" +
 	"\x06oauth2\x12\x12\n" +
-	"\x10compute:v1:query\xfa\x8b\x19\"\x12 \b\x01\x10\x01\x1a\x1aIFA cannot list snapshots.\x82\xd3\xe4\x93\x02-\x12+/compute/v1/computes/{compute_id}/snapshots\x12\xe8\x02\n" +
-	"\x0eDeleteSnapshot\x121.kubenfv.kubevim.compute.v1.DeleteSnapshotRequest\x1a\x16.google.protobuf.Empty\"\x8a\x02\xfaP\"J \n" +
+	"\x10compute:v1:query\xfa\x8b\x19\"\x12 \b\x01\x10\x01\x1a\x1aIFA cannot list snapshots.\x82\xd3\xe4\x93\x02-\x12+/compute/v1/computes/{compute_id}/snapshots\x12\xf6\x02\n" +
+	"\x15DeleteComputeSnapshot\x128.kubenfv.kubevim.compute.v1.DeleteComputeSnapshotRequest\x1a\x16.google.protobuf.Empty\"\x8a\x02\xfaP\"J \n" +
 	"\x1e\n" +
 	"\x06oauth2\x12\x14\n" +
 	"\x12compute:v1:operate\xfa\x8b\x19\x9f\x01\n" +
-	"fIFA006 7.3.1.6 Operate Virtualised Compute Resource (createSnapshot, revertToSnapshot, deleteSnapshot)\x125\b\x03\x10\x01\x1a/Operate with deleteSnapshot, as a sub-resource.\x82\xd3\xe4\x93\x02;*9/compute/v1/computes/{compute_id}/snapshots/{snapshot_id}\x12\x89\x03\n" +
-	"\x0eRevertSnapshot\x121.kubenfv.kubevim.compute.v1.RevertSnapshotRequest\x1a#.kubenfv.kubevim.compute.v1.Compute\"\x9e\x02\xfaP\"J \n" +
+	"fIFA006 7.3.1.6 Operate Virtualised Compute Resource (createSnapshot, revertToSnapshot, deleteSnapshot)\x125\b\x03\x10\x01\x1a/Operate with deleteSnapshot, as a sub-resource.\x82\xd3\xe4\x93\x02;*9/compute/v1/computes/{compute_id}/snapshots/{snapshot_id}\x12\x97\x03\n" +
+	"\x15RevertComputeSnapshot\x128.kubenfv.kubevim.compute.v1.RevertComputeSnapshotRequest\x1a#.kubenfv.kubevim.compute.v1.Compute\"\x9e\x02\xfaP\"J \n" +
 	"\x1e\n" +
 	"\x06oauth2\x12\x14\n" +
 	"\x12compute:v1:operate\xfa\x8b\x19\xa9\x01\n" +
@@ -3177,138 +3118,138 @@ func file_kubenfv_kubevim_compute_v1_compute_proto_rawDescGZIP() []byte {
 	return file_kubenfv_kubevim_compute_v1_compute_proto_rawDescData
 }
 
-var file_kubenfv_kubevim_compute_v1_compute_proto_enumTypes = make([]protoimpl.EnumInfo, 10)
+var file_kubenfv_kubevim_compute_v1_compute_proto_enumTypes = make([]protoimpl.EnumInfo, 9)
 var file_kubenfv_kubevim_compute_v1_compute_proto_msgTypes = make([]protoimpl.MessageInfo, 37)
 var file_kubenfv_kubevim_compute_v1_compute_proto_goTypes = []any{
-	(ComputeRunningState)(0),            // 0: kubenfv.kubevim.compute.v1.ComputeRunningState
-	(TypeVirtualNic)(0),                 // 1: kubenfv.kubevim.compute.v1.TypeVirtualNic
-	(NicModel)(0),                       // 2: kubenfv.kubevim.compute.v1.NicModel
-	(IpAssignment)(0),                   // 3: kubenfv.kubevim.compute.v1.IpAssignment
-	(UserDataTransportationMethod)(0),   // 4: kubenfv.kubevim.compute.v1.UserDataTransportationMethod
-	(ComputeOperation)(0),               // 5: kubenfv.kubevim.compute.v1.ComputeOperation
-	(SnapshotStatus)(0),                 // 6: kubenfv.kubevim.compute.v1.SnapshotStatus
-	(PlacementType)(0),                  // 7: kubenfv.kubevim.compute.v1.PlacementType
-	(PlacementScope)(0),                 // 8: kubenfv.kubevim.compute.v1.PlacementScope
-	(PlacementEnforcement)(0),           // 9: kubenfv.kubevim.compute.v1.PlacementEnforcement
-	(*Compute)(nil),                     // 10: kubenfv.kubevim.compute.v1.Compute
-	(*VirtualCpu)(nil),                  // 11: kubenfv.kubevim.compute.v1.VirtualCpu
-	(*VirtualCpuPinning)(nil),           // 12: kubenfv.kubevim.compute.v1.VirtualCpuPinning
-	(*VirtualMemory)(nil),               // 13: kubenfv.kubevim.compute.v1.VirtualMemory
-	(*VirtualNetworkInterface)(nil),     // 14: kubenfv.kubevim.compute.v1.VirtualNetworkInterface
-	(*NetworkInterfaceData)(nil),        // 15: kubenfv.kubevim.compute.v1.NetworkInterfaceData
-	(*UserData)(nil),                    // 16: kubenfv.kubevim.compute.v1.UserData
-	(*CreateComputeRequest)(nil),        // 17: kubenfv.kubevim.compute.v1.CreateComputeRequest
-	(*GetComputeRequest)(nil),           // 18: kubenfv.kubevim.compute.v1.GetComputeRequest
-	(*ListComputesRequest)(nil),         // 19: kubenfv.kubevim.compute.v1.ListComputesRequest
-	(*ListComputesResponse)(nil),        // 20: kubenfv.kubevim.compute.v1.ListComputesResponse
-	(*UpdateComputeRequest)(nil),        // 21: kubenfv.kubevim.compute.v1.UpdateComputeRequest
-	(*ComputeUpdate)(nil),               // 22: kubenfv.kubevim.compute.v1.ComputeUpdate
-	(*DeleteComputeRequest)(nil),        // 23: kubenfv.kubevim.compute.v1.DeleteComputeRequest
-	(*OperateComputeRequest)(nil),       // 24: kubenfv.kubevim.compute.v1.OperateComputeRequest
-	(*ScaleComputeRequest)(nil),         // 25: kubenfv.kubevim.compute.v1.ScaleComputeRequest
-	(*MigrateComputeRequest)(nil),       // 26: kubenfv.kubevim.compute.v1.MigrateComputeRequest
-	(*AttachVolumeRequest)(nil),         // 27: kubenfv.kubevim.compute.v1.AttachVolumeRequest
-	(*DetachVolumeRequest)(nil),         // 28: kubenfv.kubevim.compute.v1.DetachVolumeRequest
-	(*Snapshot)(nil),                    // 29: kubenfv.kubevim.compute.v1.Snapshot
-	(*CreateSnapshotRequest)(nil),       // 30: kubenfv.kubevim.compute.v1.CreateSnapshotRequest
-	(*GetSnapshotRequest)(nil),          // 31: kubenfv.kubevim.compute.v1.GetSnapshotRequest
-	(*ListSnapshotsRequest)(nil),        // 32: kubenfv.kubevim.compute.v1.ListSnapshotsRequest
-	(*ListSnapshotsResponse)(nil),       // 33: kubenfv.kubevim.compute.v1.ListSnapshotsResponse
-	(*DeleteSnapshotRequest)(nil),       // 34: kubenfv.kubevim.compute.v1.DeleteSnapshotRequest
-	(*RevertSnapshotRequest)(nil),       // 35: kubenfv.kubevim.compute.v1.RevertSnapshotRequest
-	(*PlacementGroup)(nil),              // 36: kubenfv.kubevim.compute.v1.PlacementGroup
-	(*CreatePlacementGroupRequest)(nil), // 37: kubenfv.kubevim.compute.v1.CreatePlacementGroupRequest
-	(*GetPlacementGroupRequest)(nil),    // 38: kubenfv.kubevim.compute.v1.GetPlacementGroupRequest
-	(*ListPlacementGroupsRequest)(nil),  // 39: kubenfv.kubevim.compute.v1.ListPlacementGroupsRequest
-	(*ListPlacementGroupsResponse)(nil), // 40: kubenfv.kubevim.compute.v1.ListPlacementGroupsResponse
-	(*DeletePlacementGroupRequest)(nil), // 41: kubenfv.kubevim.compute.v1.DeletePlacementGroupRequest
-	nil,                                 // 42: kubenfv.kubevim.compute.v1.Compute.MetadataEntry
-	nil,                                 // 43: kubenfv.kubevim.compute.v1.VirtualCpuPinning.CpuMapEntry
-	nil,                                 // 44: kubenfv.kubevim.compute.v1.ComputeUpdate.MetadataEntry
-	nil,                                 // 45: kubenfv.kubevim.compute.v1.Snapshot.MetadataEntry
-	nil,                                 // 46: kubenfv.kubevim.compute.v1.PlacementGroup.MetadataEntry
-	(*v1.Volume)(nil),                   // 47: kubenfv.kubevim.common.v1.Volume
-	(v1.OperationalState)(0),            // 48: kubenfv.kubevim.common.v1.OperationalState
-	(v1.CpuArchitecture)(0),             // 49: kubenfv.kubevim.common.v1.CpuArchitecture
-	(v1.VirtualCpuPinningPolicy)(0),     // 50: kubenfv.kubevim.common.v1.VirtualCpuPinningPolicy
-	(*timestamppb.Timestamp)(nil),       // 51: google.protobuf.Timestamp
-	(*emptypb.Empty)(nil),               // 52: google.protobuf.Empty
+	(ComputeRunningState)(0),             // 0: kubenfv.kubevim.compute.v1.ComputeRunningState
+	(TypeVirtualNic)(0),                  // 1: kubenfv.kubevim.compute.v1.TypeVirtualNic
+	(NicModel)(0),                        // 2: kubenfv.kubevim.compute.v1.NicModel
+	(IpAssignment)(0),                    // 3: kubenfv.kubevim.compute.v1.IpAssignment
+	(UserDataTransportationMethod)(0),    // 4: kubenfv.kubevim.compute.v1.UserDataTransportationMethod
+	(ComputeOperation)(0),                // 5: kubenfv.kubevim.compute.v1.ComputeOperation
+	(PlacementType)(0),                   // 6: kubenfv.kubevim.compute.v1.PlacementType
+	(PlacementScope)(0),                  // 7: kubenfv.kubevim.compute.v1.PlacementScope
+	(PlacementEnforcement)(0),            // 8: kubenfv.kubevim.compute.v1.PlacementEnforcement
+	(*Compute)(nil),                      // 9: kubenfv.kubevim.compute.v1.Compute
+	(*VirtualCpu)(nil),                   // 10: kubenfv.kubevim.compute.v1.VirtualCpu
+	(*VirtualCpuPinning)(nil),            // 11: kubenfv.kubevim.compute.v1.VirtualCpuPinning
+	(*VirtualMemory)(nil),                // 12: kubenfv.kubevim.compute.v1.VirtualMemory
+	(*VirtualNetworkInterface)(nil),      // 13: kubenfv.kubevim.compute.v1.VirtualNetworkInterface
+	(*NetworkInterfaceData)(nil),         // 14: kubenfv.kubevim.compute.v1.NetworkInterfaceData
+	(*UserData)(nil),                     // 15: kubenfv.kubevim.compute.v1.UserData
+	(*CreateComputeRequest)(nil),         // 16: kubenfv.kubevim.compute.v1.CreateComputeRequest
+	(*GetComputeRequest)(nil),            // 17: kubenfv.kubevim.compute.v1.GetComputeRequest
+	(*ListComputesRequest)(nil),          // 18: kubenfv.kubevim.compute.v1.ListComputesRequest
+	(*ListComputesResponse)(nil),         // 19: kubenfv.kubevim.compute.v1.ListComputesResponse
+	(*UpdateComputeRequest)(nil),         // 20: kubenfv.kubevim.compute.v1.UpdateComputeRequest
+	(*ComputeUpdate)(nil),                // 21: kubenfv.kubevim.compute.v1.ComputeUpdate
+	(*DeleteComputeRequest)(nil),         // 22: kubenfv.kubevim.compute.v1.DeleteComputeRequest
+	(*OperateComputeRequest)(nil),        // 23: kubenfv.kubevim.compute.v1.OperateComputeRequest
+	(*ScaleComputeRequest)(nil),          // 24: kubenfv.kubevim.compute.v1.ScaleComputeRequest
+	(*MigrateComputeRequest)(nil),        // 25: kubenfv.kubevim.compute.v1.MigrateComputeRequest
+	(*AttachVolumeRequest)(nil),          // 26: kubenfv.kubevim.compute.v1.AttachVolumeRequest
+	(*DetachVolumeRequest)(nil),          // 27: kubenfv.kubevim.compute.v1.DetachVolumeRequest
+	(*ComputeSnapshot)(nil),              // 28: kubenfv.kubevim.compute.v1.ComputeSnapshot
+	(*CreateComputeSnapshotRequest)(nil), // 29: kubenfv.kubevim.compute.v1.CreateComputeSnapshotRequest
+	(*GetComputeSnapshotRequest)(nil),    // 30: kubenfv.kubevim.compute.v1.GetComputeSnapshotRequest
+	(*ListComputeSnapshotsRequest)(nil),  // 31: kubenfv.kubevim.compute.v1.ListComputeSnapshotsRequest
+	(*ListComputeSnapshotsResponse)(nil), // 32: kubenfv.kubevim.compute.v1.ListComputeSnapshotsResponse
+	(*DeleteComputeSnapshotRequest)(nil), // 33: kubenfv.kubevim.compute.v1.DeleteComputeSnapshotRequest
+	(*RevertComputeSnapshotRequest)(nil), // 34: kubenfv.kubevim.compute.v1.RevertComputeSnapshotRequest
+	(*PlacementGroup)(nil),               // 35: kubenfv.kubevim.compute.v1.PlacementGroup
+	(*CreatePlacementGroupRequest)(nil),  // 36: kubenfv.kubevim.compute.v1.CreatePlacementGroupRequest
+	(*GetPlacementGroupRequest)(nil),     // 37: kubenfv.kubevim.compute.v1.GetPlacementGroupRequest
+	(*ListPlacementGroupsRequest)(nil),   // 38: kubenfv.kubevim.compute.v1.ListPlacementGroupsRequest
+	(*ListPlacementGroupsResponse)(nil),  // 39: kubenfv.kubevim.compute.v1.ListPlacementGroupsResponse
+	(*DeletePlacementGroupRequest)(nil),  // 40: kubenfv.kubevim.compute.v1.DeletePlacementGroupRequest
+	nil,                                  // 41: kubenfv.kubevim.compute.v1.Compute.MetadataEntry
+	nil,                                  // 42: kubenfv.kubevim.compute.v1.VirtualCpuPinning.CpuMapEntry
+	nil,                                  // 43: kubenfv.kubevim.compute.v1.ComputeUpdate.MetadataEntry
+	nil,                                  // 44: kubenfv.kubevim.compute.v1.ComputeSnapshot.MetadataEntry
+	nil,                                  // 45: kubenfv.kubevim.compute.v1.PlacementGroup.MetadataEntry
+	(*v1.Volume)(nil),                    // 46: kubenfv.kubevim.common.v1.Volume
+	(v1.OperationalState)(0),             // 47: kubenfv.kubevim.common.v1.OperationalState
+	(v1.CpuArchitecture)(0),              // 48: kubenfv.kubevim.common.v1.CpuArchitecture
+	(v1.VirtualCpuPinningPolicy)(0),      // 49: kubenfv.kubevim.common.v1.VirtualCpuPinningPolicy
+	(*timestamppb.Timestamp)(nil),        // 50: google.protobuf.Timestamp
+	(v1.SnapshotStatus)(0),               // 51: kubenfv.kubevim.common.v1.SnapshotStatus
+	(*emptypb.Empty)(nil),                // 52: google.protobuf.Empty
 }
 var file_kubenfv_kubevim_compute_v1_compute_proto_depIdxs = []int32{
-	11, // 0: kubenfv.kubevim.compute.v1.Compute.virtual_cpu:type_name -> kubenfv.kubevim.compute.v1.VirtualCpu
-	13, // 1: kubenfv.kubevim.compute.v1.Compute.virtual_memory:type_name -> kubenfv.kubevim.compute.v1.VirtualMemory
-	14, // 2: kubenfv.kubevim.compute.v1.Compute.network_interfaces:type_name -> kubenfv.kubevim.compute.v1.VirtualNetworkInterface
-	47, // 3: kubenfv.kubevim.compute.v1.Compute.disks:type_name -> kubenfv.kubevim.common.v1.Volume
-	48, // 4: kubenfv.kubevim.compute.v1.Compute.operational_state:type_name -> kubenfv.kubevim.common.v1.OperationalState
+	10, // 0: kubenfv.kubevim.compute.v1.Compute.virtual_cpu:type_name -> kubenfv.kubevim.compute.v1.VirtualCpu
+	12, // 1: kubenfv.kubevim.compute.v1.Compute.virtual_memory:type_name -> kubenfv.kubevim.compute.v1.VirtualMemory
+	13, // 2: kubenfv.kubevim.compute.v1.Compute.network_interfaces:type_name -> kubenfv.kubevim.compute.v1.VirtualNetworkInterface
+	46, // 3: kubenfv.kubevim.compute.v1.Compute.disks:type_name -> kubenfv.kubevim.common.v1.Volume
+	47, // 4: kubenfv.kubevim.compute.v1.Compute.operational_state:type_name -> kubenfv.kubevim.common.v1.OperationalState
 	0,  // 5: kubenfv.kubevim.compute.v1.Compute.running_state:type_name -> kubenfv.kubevim.compute.v1.ComputeRunningState
-	42, // 6: kubenfv.kubevim.compute.v1.Compute.metadata:type_name -> kubenfv.kubevim.compute.v1.Compute.MetadataEntry
-	49, // 7: kubenfv.kubevim.compute.v1.VirtualCpu.cpu_architecture:type_name -> kubenfv.kubevim.common.v1.CpuArchitecture
-	12, // 8: kubenfv.kubevim.compute.v1.VirtualCpu.virtual_cpu_pinning:type_name -> kubenfv.kubevim.compute.v1.VirtualCpuPinning
-	50, // 9: kubenfv.kubevim.compute.v1.VirtualCpuPinning.cpu_pinning_policy:type_name -> kubenfv.kubevim.common.v1.VirtualCpuPinningPolicy
-	43, // 10: kubenfv.kubevim.compute.v1.VirtualCpuPinning.cpu_map:type_name -> kubenfv.kubevim.compute.v1.VirtualCpuPinning.CpuMapEntry
+	41, // 6: kubenfv.kubevim.compute.v1.Compute.metadata:type_name -> kubenfv.kubevim.compute.v1.Compute.MetadataEntry
+	48, // 7: kubenfv.kubevim.compute.v1.VirtualCpu.cpu_architecture:type_name -> kubenfv.kubevim.common.v1.CpuArchitecture
+	11, // 8: kubenfv.kubevim.compute.v1.VirtualCpu.virtual_cpu_pinning:type_name -> kubenfv.kubevim.compute.v1.VirtualCpuPinning
+	49, // 9: kubenfv.kubevim.compute.v1.VirtualCpuPinning.cpu_pinning_policy:type_name -> kubenfv.kubevim.common.v1.VirtualCpuPinningPolicy
+	42, // 10: kubenfv.kubevim.compute.v1.VirtualCpuPinning.cpu_map:type_name -> kubenfv.kubevim.compute.v1.VirtualCpuPinning.CpuMapEntry
 	1,  // 11: kubenfv.kubevim.compute.v1.VirtualNetworkInterface.type_virtual_nic:type_name -> kubenfv.kubevim.compute.v1.TypeVirtualNic
 	2,  // 12: kubenfv.kubevim.compute.v1.VirtualNetworkInterface.model:type_name -> kubenfv.kubevim.compute.v1.NicModel
-	48, // 13: kubenfv.kubevim.compute.v1.VirtualNetworkInterface.operational_state:type_name -> kubenfv.kubevim.common.v1.OperationalState
+	47, // 13: kubenfv.kubevim.compute.v1.VirtualNetworkInterface.operational_state:type_name -> kubenfv.kubevim.common.v1.OperationalState
 	1,  // 14: kubenfv.kubevim.compute.v1.NetworkInterfaceData.type_virtual_nic:type_name -> kubenfv.kubevim.compute.v1.TypeVirtualNic
 	2,  // 15: kubenfv.kubevim.compute.v1.NetworkInterfaceData.model:type_name -> kubenfv.kubevim.compute.v1.NicModel
 	3,  // 16: kubenfv.kubevim.compute.v1.NetworkInterfaceData.ip_assignment:type_name -> kubenfv.kubevim.compute.v1.IpAssignment
 	4,  // 17: kubenfv.kubevim.compute.v1.UserData.method:type_name -> kubenfv.kubevim.compute.v1.UserDataTransportationMethod
-	10, // 18: kubenfv.kubevim.compute.v1.CreateComputeRequest.compute:type_name -> kubenfv.kubevim.compute.v1.Compute
-	15, // 19: kubenfv.kubevim.compute.v1.CreateComputeRequest.network_interfaces:type_name -> kubenfv.kubevim.compute.v1.NetworkInterfaceData
-	16, // 20: kubenfv.kubevim.compute.v1.CreateComputeRequest.user_data:type_name -> kubenfv.kubevim.compute.v1.UserData
-	10, // 21: kubenfv.kubevim.compute.v1.ListComputesResponse.computes:type_name -> kubenfv.kubevim.compute.v1.Compute
-	22, // 22: kubenfv.kubevim.compute.v1.UpdateComputeRequest.update:type_name -> kubenfv.kubevim.compute.v1.ComputeUpdate
-	44, // 23: kubenfv.kubevim.compute.v1.ComputeUpdate.metadata:type_name -> kubenfv.kubevim.compute.v1.ComputeUpdate.MetadataEntry
-	15, // 24: kubenfv.kubevim.compute.v1.ComputeUpdate.network_interfaces_to_add:type_name -> kubenfv.kubevim.compute.v1.NetworkInterfaceData
+	9,  // 18: kubenfv.kubevim.compute.v1.CreateComputeRequest.compute:type_name -> kubenfv.kubevim.compute.v1.Compute
+	14, // 19: kubenfv.kubevim.compute.v1.CreateComputeRequest.network_interfaces:type_name -> kubenfv.kubevim.compute.v1.NetworkInterfaceData
+	15, // 20: kubenfv.kubevim.compute.v1.CreateComputeRequest.user_data:type_name -> kubenfv.kubevim.compute.v1.UserData
+	9,  // 21: kubenfv.kubevim.compute.v1.ListComputesResponse.computes:type_name -> kubenfv.kubevim.compute.v1.Compute
+	21, // 22: kubenfv.kubevim.compute.v1.UpdateComputeRequest.update:type_name -> kubenfv.kubevim.compute.v1.ComputeUpdate
+	43, // 23: kubenfv.kubevim.compute.v1.ComputeUpdate.metadata:type_name -> kubenfv.kubevim.compute.v1.ComputeUpdate.MetadataEntry
+	14, // 24: kubenfv.kubevim.compute.v1.ComputeUpdate.network_interfaces_to_add:type_name -> kubenfv.kubevim.compute.v1.NetworkInterfaceData
 	5,  // 25: kubenfv.kubevim.compute.v1.OperateComputeRequest.compute_operation:type_name -> kubenfv.kubevim.compute.v1.ComputeOperation
-	51, // 26: kubenfv.kubevim.compute.v1.Snapshot.created_at:type_name -> google.protobuf.Timestamp
-	6,  // 27: kubenfv.kubevim.compute.v1.Snapshot.status:type_name -> kubenfv.kubevim.compute.v1.SnapshotStatus
-	45, // 28: kubenfv.kubevim.compute.v1.Snapshot.metadata:type_name -> kubenfv.kubevim.compute.v1.Snapshot.MetadataEntry
-	29, // 29: kubenfv.kubevim.compute.v1.CreateSnapshotRequest.snapshot:type_name -> kubenfv.kubevim.compute.v1.Snapshot
-	29, // 30: kubenfv.kubevim.compute.v1.ListSnapshotsResponse.snapshots:type_name -> kubenfv.kubevim.compute.v1.Snapshot
-	7,  // 31: kubenfv.kubevim.compute.v1.PlacementGroup.type:type_name -> kubenfv.kubevim.compute.v1.PlacementType
-	8,  // 32: kubenfv.kubevim.compute.v1.PlacementGroup.scope:type_name -> kubenfv.kubevim.compute.v1.PlacementScope
-	9,  // 33: kubenfv.kubevim.compute.v1.PlacementGroup.enforcement:type_name -> kubenfv.kubevim.compute.v1.PlacementEnforcement
-	46, // 34: kubenfv.kubevim.compute.v1.PlacementGroup.metadata:type_name -> kubenfv.kubevim.compute.v1.PlacementGroup.MetadataEntry
-	36, // 35: kubenfv.kubevim.compute.v1.CreatePlacementGroupRequest.placement_group:type_name -> kubenfv.kubevim.compute.v1.PlacementGroup
-	36, // 36: kubenfv.kubevim.compute.v1.ListPlacementGroupsResponse.placement_groups:type_name -> kubenfv.kubevim.compute.v1.PlacementGroup
-	17, // 37: kubenfv.kubevim.compute.v1.ComputeService.CreateCompute:input_type -> kubenfv.kubevim.compute.v1.CreateComputeRequest
-	18, // 38: kubenfv.kubevim.compute.v1.ComputeService.GetCompute:input_type -> kubenfv.kubevim.compute.v1.GetComputeRequest
-	19, // 39: kubenfv.kubevim.compute.v1.ComputeService.ListComputes:input_type -> kubenfv.kubevim.compute.v1.ListComputesRequest
-	21, // 40: kubenfv.kubevim.compute.v1.ComputeService.UpdateCompute:input_type -> kubenfv.kubevim.compute.v1.UpdateComputeRequest
-	23, // 41: kubenfv.kubevim.compute.v1.ComputeService.DeleteCompute:input_type -> kubenfv.kubevim.compute.v1.DeleteComputeRequest
-	24, // 42: kubenfv.kubevim.compute.v1.ComputeService.OperateCompute:input_type -> kubenfv.kubevim.compute.v1.OperateComputeRequest
-	25, // 43: kubenfv.kubevim.compute.v1.ComputeService.ScaleCompute:input_type -> kubenfv.kubevim.compute.v1.ScaleComputeRequest
-	26, // 44: kubenfv.kubevim.compute.v1.ComputeService.MigrateCompute:input_type -> kubenfv.kubevim.compute.v1.MigrateComputeRequest
-	27, // 45: kubenfv.kubevim.compute.v1.ComputeService.AttachVolume:input_type -> kubenfv.kubevim.compute.v1.AttachVolumeRequest
-	28, // 46: kubenfv.kubevim.compute.v1.ComputeService.DetachVolume:input_type -> kubenfv.kubevim.compute.v1.DetachVolumeRequest
-	30, // 47: kubenfv.kubevim.compute.v1.ComputeService.CreateSnapshot:input_type -> kubenfv.kubevim.compute.v1.CreateSnapshotRequest
-	31, // 48: kubenfv.kubevim.compute.v1.ComputeService.GetSnapshot:input_type -> kubenfv.kubevim.compute.v1.GetSnapshotRequest
-	32, // 49: kubenfv.kubevim.compute.v1.ComputeService.ListSnapshots:input_type -> kubenfv.kubevim.compute.v1.ListSnapshotsRequest
-	34, // 50: kubenfv.kubevim.compute.v1.ComputeService.DeleteSnapshot:input_type -> kubenfv.kubevim.compute.v1.DeleteSnapshotRequest
-	35, // 51: kubenfv.kubevim.compute.v1.ComputeService.RevertSnapshot:input_type -> kubenfv.kubevim.compute.v1.RevertSnapshotRequest
-	37, // 52: kubenfv.kubevim.compute.v1.ComputeService.CreatePlacementGroup:input_type -> kubenfv.kubevim.compute.v1.CreatePlacementGroupRequest
-	38, // 53: kubenfv.kubevim.compute.v1.ComputeService.GetPlacementGroup:input_type -> kubenfv.kubevim.compute.v1.GetPlacementGroupRequest
-	39, // 54: kubenfv.kubevim.compute.v1.ComputeService.ListPlacementGroups:input_type -> kubenfv.kubevim.compute.v1.ListPlacementGroupsRequest
-	41, // 55: kubenfv.kubevim.compute.v1.ComputeService.DeletePlacementGroup:input_type -> kubenfv.kubevim.compute.v1.DeletePlacementGroupRequest
-	10, // 56: kubenfv.kubevim.compute.v1.ComputeService.CreateCompute:output_type -> kubenfv.kubevim.compute.v1.Compute
-	10, // 57: kubenfv.kubevim.compute.v1.ComputeService.GetCompute:output_type -> kubenfv.kubevim.compute.v1.Compute
-	20, // 58: kubenfv.kubevim.compute.v1.ComputeService.ListComputes:output_type -> kubenfv.kubevim.compute.v1.ListComputesResponse
-	10, // 59: kubenfv.kubevim.compute.v1.ComputeService.UpdateCompute:output_type -> kubenfv.kubevim.compute.v1.Compute
+	50, // 26: kubenfv.kubevim.compute.v1.ComputeSnapshot.created_at:type_name -> google.protobuf.Timestamp
+	51, // 27: kubenfv.kubevim.compute.v1.ComputeSnapshot.status:type_name -> kubenfv.kubevim.common.v1.SnapshotStatus
+	44, // 28: kubenfv.kubevim.compute.v1.ComputeSnapshot.metadata:type_name -> kubenfv.kubevim.compute.v1.ComputeSnapshot.MetadataEntry
+	28, // 29: kubenfv.kubevim.compute.v1.CreateComputeSnapshotRequest.snapshot:type_name -> kubenfv.kubevim.compute.v1.ComputeSnapshot
+	28, // 30: kubenfv.kubevim.compute.v1.ListComputeSnapshotsResponse.snapshots:type_name -> kubenfv.kubevim.compute.v1.ComputeSnapshot
+	6,  // 31: kubenfv.kubevim.compute.v1.PlacementGroup.type:type_name -> kubenfv.kubevim.compute.v1.PlacementType
+	7,  // 32: kubenfv.kubevim.compute.v1.PlacementGroup.scope:type_name -> kubenfv.kubevim.compute.v1.PlacementScope
+	8,  // 33: kubenfv.kubevim.compute.v1.PlacementGroup.enforcement:type_name -> kubenfv.kubevim.compute.v1.PlacementEnforcement
+	45, // 34: kubenfv.kubevim.compute.v1.PlacementGroup.metadata:type_name -> kubenfv.kubevim.compute.v1.PlacementGroup.MetadataEntry
+	35, // 35: kubenfv.kubevim.compute.v1.CreatePlacementGroupRequest.placement_group:type_name -> kubenfv.kubevim.compute.v1.PlacementGroup
+	35, // 36: kubenfv.kubevim.compute.v1.ListPlacementGroupsResponse.placement_groups:type_name -> kubenfv.kubevim.compute.v1.PlacementGroup
+	16, // 37: kubenfv.kubevim.compute.v1.ComputeService.CreateCompute:input_type -> kubenfv.kubevim.compute.v1.CreateComputeRequest
+	17, // 38: kubenfv.kubevim.compute.v1.ComputeService.GetCompute:input_type -> kubenfv.kubevim.compute.v1.GetComputeRequest
+	18, // 39: kubenfv.kubevim.compute.v1.ComputeService.ListComputes:input_type -> kubenfv.kubevim.compute.v1.ListComputesRequest
+	20, // 40: kubenfv.kubevim.compute.v1.ComputeService.UpdateCompute:input_type -> kubenfv.kubevim.compute.v1.UpdateComputeRequest
+	22, // 41: kubenfv.kubevim.compute.v1.ComputeService.DeleteCompute:input_type -> kubenfv.kubevim.compute.v1.DeleteComputeRequest
+	23, // 42: kubenfv.kubevim.compute.v1.ComputeService.OperateCompute:input_type -> kubenfv.kubevim.compute.v1.OperateComputeRequest
+	24, // 43: kubenfv.kubevim.compute.v1.ComputeService.ScaleCompute:input_type -> kubenfv.kubevim.compute.v1.ScaleComputeRequest
+	25, // 44: kubenfv.kubevim.compute.v1.ComputeService.MigrateCompute:input_type -> kubenfv.kubevim.compute.v1.MigrateComputeRequest
+	26, // 45: kubenfv.kubevim.compute.v1.ComputeService.AttachVolume:input_type -> kubenfv.kubevim.compute.v1.AttachVolumeRequest
+	27, // 46: kubenfv.kubevim.compute.v1.ComputeService.DetachVolume:input_type -> kubenfv.kubevim.compute.v1.DetachVolumeRequest
+	29, // 47: kubenfv.kubevim.compute.v1.ComputeService.CreateComputeSnapshot:input_type -> kubenfv.kubevim.compute.v1.CreateComputeSnapshotRequest
+	30, // 48: kubenfv.kubevim.compute.v1.ComputeService.GetComputeSnapshot:input_type -> kubenfv.kubevim.compute.v1.GetComputeSnapshotRequest
+	31, // 49: kubenfv.kubevim.compute.v1.ComputeService.ListComputeSnapshots:input_type -> kubenfv.kubevim.compute.v1.ListComputeSnapshotsRequest
+	33, // 50: kubenfv.kubevim.compute.v1.ComputeService.DeleteComputeSnapshot:input_type -> kubenfv.kubevim.compute.v1.DeleteComputeSnapshotRequest
+	34, // 51: kubenfv.kubevim.compute.v1.ComputeService.RevertComputeSnapshot:input_type -> kubenfv.kubevim.compute.v1.RevertComputeSnapshotRequest
+	36, // 52: kubenfv.kubevim.compute.v1.ComputeService.CreatePlacementGroup:input_type -> kubenfv.kubevim.compute.v1.CreatePlacementGroupRequest
+	37, // 53: kubenfv.kubevim.compute.v1.ComputeService.GetPlacementGroup:input_type -> kubenfv.kubevim.compute.v1.GetPlacementGroupRequest
+	38, // 54: kubenfv.kubevim.compute.v1.ComputeService.ListPlacementGroups:input_type -> kubenfv.kubevim.compute.v1.ListPlacementGroupsRequest
+	40, // 55: kubenfv.kubevim.compute.v1.ComputeService.DeletePlacementGroup:input_type -> kubenfv.kubevim.compute.v1.DeletePlacementGroupRequest
+	9,  // 56: kubenfv.kubevim.compute.v1.ComputeService.CreateCompute:output_type -> kubenfv.kubevim.compute.v1.Compute
+	9,  // 57: kubenfv.kubevim.compute.v1.ComputeService.GetCompute:output_type -> kubenfv.kubevim.compute.v1.Compute
+	19, // 58: kubenfv.kubevim.compute.v1.ComputeService.ListComputes:output_type -> kubenfv.kubevim.compute.v1.ListComputesResponse
+	9,  // 59: kubenfv.kubevim.compute.v1.ComputeService.UpdateCompute:output_type -> kubenfv.kubevim.compute.v1.Compute
 	52, // 60: kubenfv.kubevim.compute.v1.ComputeService.DeleteCompute:output_type -> google.protobuf.Empty
-	10, // 61: kubenfv.kubevim.compute.v1.ComputeService.OperateCompute:output_type -> kubenfv.kubevim.compute.v1.Compute
-	10, // 62: kubenfv.kubevim.compute.v1.ComputeService.ScaleCompute:output_type -> kubenfv.kubevim.compute.v1.Compute
-	10, // 63: kubenfv.kubevim.compute.v1.ComputeService.MigrateCompute:output_type -> kubenfv.kubevim.compute.v1.Compute
-	10, // 64: kubenfv.kubevim.compute.v1.ComputeService.AttachVolume:output_type -> kubenfv.kubevim.compute.v1.Compute
-	10, // 65: kubenfv.kubevim.compute.v1.ComputeService.DetachVolume:output_type -> kubenfv.kubevim.compute.v1.Compute
-	29, // 66: kubenfv.kubevim.compute.v1.ComputeService.CreateSnapshot:output_type -> kubenfv.kubevim.compute.v1.Snapshot
-	29, // 67: kubenfv.kubevim.compute.v1.ComputeService.GetSnapshot:output_type -> kubenfv.kubevim.compute.v1.Snapshot
-	33, // 68: kubenfv.kubevim.compute.v1.ComputeService.ListSnapshots:output_type -> kubenfv.kubevim.compute.v1.ListSnapshotsResponse
-	52, // 69: kubenfv.kubevim.compute.v1.ComputeService.DeleteSnapshot:output_type -> google.protobuf.Empty
-	10, // 70: kubenfv.kubevim.compute.v1.ComputeService.RevertSnapshot:output_type -> kubenfv.kubevim.compute.v1.Compute
-	36, // 71: kubenfv.kubevim.compute.v1.ComputeService.CreatePlacementGroup:output_type -> kubenfv.kubevim.compute.v1.PlacementGroup
-	36, // 72: kubenfv.kubevim.compute.v1.ComputeService.GetPlacementGroup:output_type -> kubenfv.kubevim.compute.v1.PlacementGroup
-	40, // 73: kubenfv.kubevim.compute.v1.ComputeService.ListPlacementGroups:output_type -> kubenfv.kubevim.compute.v1.ListPlacementGroupsResponse
+	9,  // 61: kubenfv.kubevim.compute.v1.ComputeService.OperateCompute:output_type -> kubenfv.kubevim.compute.v1.Compute
+	9,  // 62: kubenfv.kubevim.compute.v1.ComputeService.ScaleCompute:output_type -> kubenfv.kubevim.compute.v1.Compute
+	9,  // 63: kubenfv.kubevim.compute.v1.ComputeService.MigrateCompute:output_type -> kubenfv.kubevim.compute.v1.Compute
+	9,  // 64: kubenfv.kubevim.compute.v1.ComputeService.AttachVolume:output_type -> kubenfv.kubevim.compute.v1.Compute
+	9,  // 65: kubenfv.kubevim.compute.v1.ComputeService.DetachVolume:output_type -> kubenfv.kubevim.compute.v1.Compute
+	28, // 66: kubenfv.kubevim.compute.v1.ComputeService.CreateComputeSnapshot:output_type -> kubenfv.kubevim.compute.v1.ComputeSnapshot
+	28, // 67: kubenfv.kubevim.compute.v1.ComputeService.GetComputeSnapshot:output_type -> kubenfv.kubevim.compute.v1.ComputeSnapshot
+	32, // 68: kubenfv.kubevim.compute.v1.ComputeService.ListComputeSnapshots:output_type -> kubenfv.kubevim.compute.v1.ListComputeSnapshotsResponse
+	52, // 69: kubenfv.kubevim.compute.v1.ComputeService.DeleteComputeSnapshot:output_type -> google.protobuf.Empty
+	9,  // 70: kubenfv.kubevim.compute.v1.ComputeService.RevertComputeSnapshot:output_type -> kubenfv.kubevim.compute.v1.Compute
+	35, // 71: kubenfv.kubevim.compute.v1.ComputeService.CreatePlacementGroup:output_type -> kubenfv.kubevim.compute.v1.PlacementGroup
+	35, // 72: kubenfv.kubevim.compute.v1.ComputeService.GetPlacementGroup:output_type -> kubenfv.kubevim.compute.v1.PlacementGroup
+	39, // 73: kubenfv.kubevim.compute.v1.ComputeService.ListPlacementGroups:output_type -> kubenfv.kubevim.compute.v1.ListPlacementGroupsResponse
 	52, // 74: kubenfv.kubevim.compute.v1.ComputeService.DeletePlacementGroup:output_type -> google.protobuf.Empty
 	56, // [56:75] is the sub-list for method output_type
 	37, // [37:56] is the sub-list for method input_type
@@ -3329,7 +3270,7 @@ func file_kubenfv_kubevim_compute_v1_compute_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_kubenfv_kubevim_compute_v1_compute_proto_rawDesc), len(file_kubenfv_kubevim_compute_v1_compute_proto_rawDesc)),
-			NumEnums:      10,
+			NumEnums:      9,
 			NumMessages:   37,
 			NumExtensions: 0,
 			NumServices:   1,

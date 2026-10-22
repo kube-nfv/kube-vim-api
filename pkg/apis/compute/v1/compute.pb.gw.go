@@ -445,9 +445,9 @@ func local_request_ComputeService_DetachVolume_0(ctx context.Context, marshaler 
 	return msg, metadata, err
 }
 
-func request_ComputeService_CreateSnapshot_0(ctx context.Context, marshaler runtime.Marshaler, client ComputeServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_ComputeService_CreateComputeSnapshot_0(ctx context.Context, marshaler runtime.Marshaler, client ComputeServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var (
-		protoReq CreateSnapshotRequest
+		protoReq CreateComputeSnapshotRequest
 		metadata runtime.ServerMetadata
 		err      error
 	)
@@ -465,13 +465,13 @@ func request_ComputeService_CreateSnapshot_0(ctx context.Context, marshaler runt
 	if req.Body != nil {
 		_, _ = io.Copy(io.Discard, req.Body)
 	}
-	msg, err := client.CreateSnapshot(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	msg, err := client.CreateComputeSnapshot(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
 }
 
-func local_request_ComputeService_CreateSnapshot_0(ctx context.Context, marshaler runtime.Marshaler, server ComputeServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func local_request_ComputeService_CreateComputeSnapshot_0(ctx context.Context, marshaler runtime.Marshaler, server ComputeServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var (
-		protoReq CreateSnapshotRequest
+		protoReq CreateComputeSnapshotRequest
 		metadata runtime.ServerMetadata
 		err      error
 	)
@@ -486,13 +486,13 @@ func local_request_ComputeService_CreateSnapshot_0(ctx context.Context, marshale
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "compute_id", err)
 	}
-	msg, err := server.CreateSnapshot(ctx, &protoReq)
+	msg, err := server.CreateComputeSnapshot(ctx, &protoReq)
 	return msg, metadata, err
 }
 
-func request_ComputeService_GetSnapshot_0(ctx context.Context, marshaler runtime.Marshaler, client ComputeServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_ComputeService_GetComputeSnapshot_0(ctx context.Context, marshaler runtime.Marshaler, client ComputeServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var (
-		protoReq GetSnapshotRequest
+		protoReq GetComputeSnapshotRequest
 		metadata runtime.ServerMetadata
 		err      error
 	)
@@ -515,13 +515,13 @@ func request_ComputeService_GetSnapshot_0(ctx context.Context, marshaler runtime
 	if req.Body != nil {
 		_, _ = io.Copy(io.Discard, req.Body)
 	}
-	msg, err := client.GetSnapshot(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	msg, err := client.GetComputeSnapshot(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
 }
 
-func local_request_ComputeService_GetSnapshot_0(ctx context.Context, marshaler runtime.Marshaler, server ComputeServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func local_request_ComputeService_GetComputeSnapshot_0(ctx context.Context, marshaler runtime.Marshaler, server ComputeServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var (
-		protoReq GetSnapshotRequest
+		protoReq GetComputeSnapshotRequest
 		metadata runtime.ServerMetadata
 		err      error
 	)
@@ -541,15 +541,15 @@ func local_request_ComputeService_GetSnapshot_0(ctx context.Context, marshaler r
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "snapshot_id", err)
 	}
-	msg, err := server.GetSnapshot(ctx, &protoReq)
+	msg, err := server.GetComputeSnapshot(ctx, &protoReq)
 	return msg, metadata, err
 }
 
-var filter_ComputeService_ListSnapshots_0 = &utilities.DoubleArray{Encoding: map[string]int{"compute_id": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
+var filter_ComputeService_ListComputeSnapshots_0 = &utilities.DoubleArray{Encoding: map[string]int{"compute_id": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
 
-func request_ComputeService_ListSnapshots_0(ctx context.Context, marshaler runtime.Marshaler, client ComputeServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_ComputeService_ListComputeSnapshots_0(ctx context.Context, marshaler runtime.Marshaler, client ComputeServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var (
-		protoReq ListSnapshotsRequest
+		protoReq ListComputeSnapshotsRequest
 		metadata runtime.ServerMetadata
 		err      error
 	)
@@ -564,19 +564,19 @@ func request_ComputeService_ListSnapshots_0(ctx context.Context, marshaler runti
 	if err := req.ParseForm(); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_ComputeService_ListSnapshots_0); err != nil {
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_ComputeService_ListComputeSnapshots_0); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 	if req.Body != nil {
 		_, _ = io.Copy(io.Discard, req.Body)
 	}
-	msg, err := client.ListSnapshots(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	msg, err := client.ListComputeSnapshots(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
 }
 
-func local_request_ComputeService_ListSnapshots_0(ctx context.Context, marshaler runtime.Marshaler, server ComputeServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func local_request_ComputeService_ListComputeSnapshots_0(ctx context.Context, marshaler runtime.Marshaler, server ComputeServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var (
-		protoReq ListSnapshotsRequest
+		protoReq ListComputeSnapshotsRequest
 		metadata runtime.ServerMetadata
 		err      error
 	)
@@ -591,16 +591,16 @@ func local_request_ComputeService_ListSnapshots_0(ctx context.Context, marshaler
 	if err := req.ParseForm(); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_ComputeService_ListSnapshots_0); err != nil {
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_ComputeService_ListComputeSnapshots_0); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-	msg, err := server.ListSnapshots(ctx, &protoReq)
+	msg, err := server.ListComputeSnapshots(ctx, &protoReq)
 	return msg, metadata, err
 }
 
-func request_ComputeService_DeleteSnapshot_0(ctx context.Context, marshaler runtime.Marshaler, client ComputeServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_ComputeService_DeleteComputeSnapshot_0(ctx context.Context, marshaler runtime.Marshaler, client ComputeServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var (
-		protoReq DeleteSnapshotRequest
+		protoReq DeleteComputeSnapshotRequest
 		metadata runtime.ServerMetadata
 		err      error
 	)
@@ -623,13 +623,13 @@ func request_ComputeService_DeleteSnapshot_0(ctx context.Context, marshaler runt
 	if req.Body != nil {
 		_, _ = io.Copy(io.Discard, req.Body)
 	}
-	msg, err := client.DeleteSnapshot(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	msg, err := client.DeleteComputeSnapshot(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
 }
 
-func local_request_ComputeService_DeleteSnapshot_0(ctx context.Context, marshaler runtime.Marshaler, server ComputeServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func local_request_ComputeService_DeleteComputeSnapshot_0(ctx context.Context, marshaler runtime.Marshaler, server ComputeServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var (
-		protoReq DeleteSnapshotRequest
+		protoReq DeleteComputeSnapshotRequest
 		metadata runtime.ServerMetadata
 		err      error
 	)
@@ -649,13 +649,13 @@ func local_request_ComputeService_DeleteSnapshot_0(ctx context.Context, marshale
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "snapshot_id", err)
 	}
-	msg, err := server.DeleteSnapshot(ctx, &protoReq)
+	msg, err := server.DeleteComputeSnapshot(ctx, &protoReq)
 	return msg, metadata, err
 }
 
-func request_ComputeService_RevertSnapshot_0(ctx context.Context, marshaler runtime.Marshaler, client ComputeServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_ComputeService_RevertComputeSnapshot_0(ctx context.Context, marshaler runtime.Marshaler, client ComputeServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var (
-		protoReq RevertSnapshotRequest
+		protoReq RevertComputeSnapshotRequest
 		metadata runtime.ServerMetadata
 		err      error
 	)
@@ -681,13 +681,13 @@ func request_ComputeService_RevertSnapshot_0(ctx context.Context, marshaler runt
 	if req.Body != nil {
 		_, _ = io.Copy(io.Discard, req.Body)
 	}
-	msg, err := client.RevertSnapshot(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	msg, err := client.RevertComputeSnapshot(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
 }
 
-func local_request_ComputeService_RevertSnapshot_0(ctx context.Context, marshaler runtime.Marshaler, server ComputeServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func local_request_ComputeService_RevertComputeSnapshot_0(ctx context.Context, marshaler runtime.Marshaler, server ComputeServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var (
-		protoReq RevertSnapshotRequest
+		protoReq RevertComputeSnapshotRequest
 		metadata runtime.ServerMetadata
 		err      error
 	)
@@ -710,7 +710,7 @@ func local_request_ComputeService_RevertSnapshot_0(ctx context.Context, marshale
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "snapshot_id", err)
 	}
-	msg, err := server.RevertSnapshot(ctx, &protoReq)
+	msg, err := server.RevertComputeSnapshot(ctx, &protoReq)
 	return msg, metadata, err
 }
 
@@ -1060,105 +1060,105 @@ func RegisterComputeServiceHandlerServer(ctx context.Context, mux *runtime.Serve
 		}
 		forward_ComputeService_DetachVolume_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
-	mux.Handle(http.MethodPost, pattern_ComputeService_CreateSnapshot_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_ComputeService_CreateComputeSnapshot_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/kubenfv.kubevim.compute.v1.ComputeService/CreateSnapshot", runtime.WithHTTPPathPattern("/compute/v1/computes/{compute_id}/snapshots"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/kubenfv.kubevim.compute.v1.ComputeService/CreateComputeSnapshot", runtime.WithHTTPPathPattern("/compute/v1/computes/{compute_id}/snapshots"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_ComputeService_CreateSnapshot_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_ComputeService_CreateComputeSnapshot_0(annotatedContext, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		forward_ComputeService_CreateSnapshot_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_ComputeService_CreateComputeSnapshot_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
-	mux.Handle(http.MethodGet, pattern_ComputeService_GetSnapshot_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodGet, pattern_ComputeService_GetComputeSnapshot_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/kubenfv.kubevim.compute.v1.ComputeService/GetSnapshot", runtime.WithHTTPPathPattern("/compute/v1/computes/{compute_id}/snapshots/{snapshot_id}"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/kubenfv.kubevim.compute.v1.ComputeService/GetComputeSnapshot", runtime.WithHTTPPathPattern("/compute/v1/computes/{compute_id}/snapshots/{snapshot_id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_ComputeService_GetSnapshot_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_ComputeService_GetComputeSnapshot_0(annotatedContext, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		forward_ComputeService_GetSnapshot_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_ComputeService_GetComputeSnapshot_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
-	mux.Handle(http.MethodGet, pattern_ComputeService_ListSnapshots_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodGet, pattern_ComputeService_ListComputeSnapshots_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/kubenfv.kubevim.compute.v1.ComputeService/ListSnapshots", runtime.WithHTTPPathPattern("/compute/v1/computes/{compute_id}/snapshots"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/kubenfv.kubevim.compute.v1.ComputeService/ListComputeSnapshots", runtime.WithHTTPPathPattern("/compute/v1/computes/{compute_id}/snapshots"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_ComputeService_ListSnapshots_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_ComputeService_ListComputeSnapshots_0(annotatedContext, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		forward_ComputeService_ListSnapshots_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_ComputeService_ListComputeSnapshots_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
-	mux.Handle(http.MethodDelete, pattern_ComputeService_DeleteSnapshot_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodDelete, pattern_ComputeService_DeleteComputeSnapshot_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/kubenfv.kubevim.compute.v1.ComputeService/DeleteSnapshot", runtime.WithHTTPPathPattern("/compute/v1/computes/{compute_id}/snapshots/{snapshot_id}"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/kubenfv.kubevim.compute.v1.ComputeService/DeleteComputeSnapshot", runtime.WithHTTPPathPattern("/compute/v1/computes/{compute_id}/snapshots/{snapshot_id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_ComputeService_DeleteSnapshot_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_ComputeService_DeleteComputeSnapshot_0(annotatedContext, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		forward_ComputeService_DeleteSnapshot_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_ComputeService_DeleteComputeSnapshot_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
-	mux.Handle(http.MethodPost, pattern_ComputeService_RevertSnapshot_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_ComputeService_RevertComputeSnapshot_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/kubenfv.kubevim.compute.v1.ComputeService/RevertSnapshot", runtime.WithHTTPPathPattern("/compute/v1/computes/{compute_id}/snapshots/{snapshot_id}/revert"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/kubenfv.kubevim.compute.v1.ComputeService/RevertComputeSnapshot", runtime.WithHTTPPathPattern("/compute/v1/computes/{compute_id}/snapshots/{snapshot_id}/revert"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_ComputeService_RevertSnapshot_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_ComputeService_RevertComputeSnapshot_0(annotatedContext, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		forward_ComputeService_RevertSnapshot_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_ComputeService_RevertComputeSnapshot_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
 	mux.Handle(http.MethodPost, pattern_ComputeService_CreatePlacementGroup_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
@@ -1450,90 +1450,90 @@ func RegisterComputeServiceHandlerClient(ctx context.Context, mux *runtime.Serve
 		}
 		forward_ComputeService_DetachVolume_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
-	mux.Handle(http.MethodPost, pattern_ComputeService_CreateSnapshot_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_ComputeService_CreateComputeSnapshot_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/kubenfv.kubevim.compute.v1.ComputeService/CreateSnapshot", runtime.WithHTTPPathPattern("/compute/v1/computes/{compute_id}/snapshots"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/kubenfv.kubevim.compute.v1.ComputeService/CreateComputeSnapshot", runtime.WithHTTPPathPattern("/compute/v1/computes/{compute_id}/snapshots"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_ComputeService_CreateSnapshot_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_ComputeService_CreateComputeSnapshot_0(annotatedContext, inboundMarshaler, client, req, pathParams)
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		forward_ComputeService_CreateSnapshot_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_ComputeService_CreateComputeSnapshot_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
-	mux.Handle(http.MethodGet, pattern_ComputeService_GetSnapshot_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodGet, pattern_ComputeService_GetComputeSnapshot_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/kubenfv.kubevim.compute.v1.ComputeService/GetSnapshot", runtime.WithHTTPPathPattern("/compute/v1/computes/{compute_id}/snapshots/{snapshot_id}"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/kubenfv.kubevim.compute.v1.ComputeService/GetComputeSnapshot", runtime.WithHTTPPathPattern("/compute/v1/computes/{compute_id}/snapshots/{snapshot_id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_ComputeService_GetSnapshot_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_ComputeService_GetComputeSnapshot_0(annotatedContext, inboundMarshaler, client, req, pathParams)
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		forward_ComputeService_GetSnapshot_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_ComputeService_GetComputeSnapshot_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
-	mux.Handle(http.MethodGet, pattern_ComputeService_ListSnapshots_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodGet, pattern_ComputeService_ListComputeSnapshots_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/kubenfv.kubevim.compute.v1.ComputeService/ListSnapshots", runtime.WithHTTPPathPattern("/compute/v1/computes/{compute_id}/snapshots"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/kubenfv.kubevim.compute.v1.ComputeService/ListComputeSnapshots", runtime.WithHTTPPathPattern("/compute/v1/computes/{compute_id}/snapshots"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_ComputeService_ListSnapshots_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_ComputeService_ListComputeSnapshots_0(annotatedContext, inboundMarshaler, client, req, pathParams)
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		forward_ComputeService_ListSnapshots_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_ComputeService_ListComputeSnapshots_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
-	mux.Handle(http.MethodDelete, pattern_ComputeService_DeleteSnapshot_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodDelete, pattern_ComputeService_DeleteComputeSnapshot_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/kubenfv.kubevim.compute.v1.ComputeService/DeleteSnapshot", runtime.WithHTTPPathPattern("/compute/v1/computes/{compute_id}/snapshots/{snapshot_id}"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/kubenfv.kubevim.compute.v1.ComputeService/DeleteComputeSnapshot", runtime.WithHTTPPathPattern("/compute/v1/computes/{compute_id}/snapshots/{snapshot_id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_ComputeService_DeleteSnapshot_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_ComputeService_DeleteComputeSnapshot_0(annotatedContext, inboundMarshaler, client, req, pathParams)
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		forward_ComputeService_DeleteSnapshot_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_ComputeService_DeleteComputeSnapshot_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
-	mux.Handle(http.MethodPost, pattern_ComputeService_RevertSnapshot_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_ComputeService_RevertComputeSnapshot_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/kubenfv.kubevim.compute.v1.ComputeService/RevertSnapshot", runtime.WithHTTPPathPattern("/compute/v1/computes/{compute_id}/snapshots/{snapshot_id}/revert"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/kubenfv.kubevim.compute.v1.ComputeService/RevertComputeSnapshot", runtime.WithHTTPPathPattern("/compute/v1/computes/{compute_id}/snapshots/{snapshot_id}/revert"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_ComputeService_RevertSnapshot_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_ComputeService_RevertComputeSnapshot_0(annotatedContext, inboundMarshaler, client, req, pathParams)
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		forward_ComputeService_RevertSnapshot_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_ComputeService_RevertComputeSnapshot_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
 	mux.Handle(http.MethodPost, pattern_ComputeService_CreatePlacementGroup_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
@@ -1607,45 +1607,45 @@ func RegisterComputeServiceHandlerClient(ctx context.Context, mux *runtime.Serve
 }
 
 var (
-	pattern_ComputeService_CreateCompute_0        = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"compute", "v1", "computes"}, ""))
-	pattern_ComputeService_GetCompute_0           = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"compute", "v1", "computes", "compute_id"}, ""))
-	pattern_ComputeService_ListComputes_0         = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"compute", "v1", "computes"}, ""))
-	pattern_ComputeService_UpdateCompute_0        = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"compute", "v1", "computes", "compute_id"}, ""))
-	pattern_ComputeService_DeleteCompute_0        = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"compute", "v1", "computes", "compute_id"}, ""))
-	pattern_ComputeService_OperateCompute_0       = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"compute", "v1", "computes", "compute_id", "operate"}, ""))
-	pattern_ComputeService_ScaleCompute_0         = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"compute", "v1", "computes", "compute_id", "scale"}, ""))
-	pattern_ComputeService_MigrateCompute_0       = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"compute", "v1", "computes", "compute_id", "migrate"}, ""))
-	pattern_ComputeService_AttachVolume_0         = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"compute", "v1", "computes", "compute_id", "attachVolume"}, ""))
-	pattern_ComputeService_DetachVolume_0         = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"compute", "v1", "computes", "compute_id", "detachVolume"}, ""))
-	pattern_ComputeService_CreateSnapshot_0       = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"compute", "v1", "computes", "compute_id", "snapshots"}, ""))
-	pattern_ComputeService_GetSnapshot_0          = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4, 1, 0, 4, 1, 5, 5}, []string{"compute", "v1", "computes", "compute_id", "snapshots", "snapshot_id"}, ""))
-	pattern_ComputeService_ListSnapshots_0        = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"compute", "v1", "computes", "compute_id", "snapshots"}, ""))
-	pattern_ComputeService_DeleteSnapshot_0       = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4, 1, 0, 4, 1, 5, 5}, []string{"compute", "v1", "computes", "compute_id", "snapshots", "snapshot_id"}, ""))
-	pattern_ComputeService_RevertSnapshot_0       = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4, 1, 0, 4, 1, 5, 5, 2, 6}, []string{"compute", "v1", "computes", "compute_id", "snapshots", "snapshot_id", "revert"}, ""))
-	pattern_ComputeService_CreatePlacementGroup_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"compute", "v1", "placementGroups"}, ""))
-	pattern_ComputeService_GetPlacementGroup_0    = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"compute", "v1", "placementGroups", "placement_group_id"}, ""))
-	pattern_ComputeService_ListPlacementGroups_0  = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"compute", "v1", "placementGroups"}, ""))
-	pattern_ComputeService_DeletePlacementGroup_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"compute", "v1", "placementGroups", "placement_group_id"}, ""))
+	pattern_ComputeService_CreateCompute_0         = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"compute", "v1", "computes"}, ""))
+	pattern_ComputeService_GetCompute_0            = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"compute", "v1", "computes", "compute_id"}, ""))
+	pattern_ComputeService_ListComputes_0          = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"compute", "v1", "computes"}, ""))
+	pattern_ComputeService_UpdateCompute_0         = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"compute", "v1", "computes", "compute_id"}, ""))
+	pattern_ComputeService_DeleteCompute_0         = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"compute", "v1", "computes", "compute_id"}, ""))
+	pattern_ComputeService_OperateCompute_0        = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"compute", "v1", "computes", "compute_id", "operate"}, ""))
+	pattern_ComputeService_ScaleCompute_0          = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"compute", "v1", "computes", "compute_id", "scale"}, ""))
+	pattern_ComputeService_MigrateCompute_0        = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"compute", "v1", "computes", "compute_id", "migrate"}, ""))
+	pattern_ComputeService_AttachVolume_0          = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"compute", "v1", "computes", "compute_id", "attachVolume"}, ""))
+	pattern_ComputeService_DetachVolume_0          = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"compute", "v1", "computes", "compute_id", "detachVolume"}, ""))
+	pattern_ComputeService_CreateComputeSnapshot_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"compute", "v1", "computes", "compute_id", "snapshots"}, ""))
+	pattern_ComputeService_GetComputeSnapshot_0    = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4, 1, 0, 4, 1, 5, 5}, []string{"compute", "v1", "computes", "compute_id", "snapshots", "snapshot_id"}, ""))
+	pattern_ComputeService_ListComputeSnapshots_0  = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"compute", "v1", "computes", "compute_id", "snapshots"}, ""))
+	pattern_ComputeService_DeleteComputeSnapshot_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4, 1, 0, 4, 1, 5, 5}, []string{"compute", "v1", "computes", "compute_id", "snapshots", "snapshot_id"}, ""))
+	pattern_ComputeService_RevertComputeSnapshot_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4, 1, 0, 4, 1, 5, 5, 2, 6}, []string{"compute", "v1", "computes", "compute_id", "snapshots", "snapshot_id", "revert"}, ""))
+	pattern_ComputeService_CreatePlacementGroup_0  = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"compute", "v1", "placementGroups"}, ""))
+	pattern_ComputeService_GetPlacementGroup_0     = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"compute", "v1", "placementGroups", "placement_group_id"}, ""))
+	pattern_ComputeService_ListPlacementGroups_0   = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"compute", "v1", "placementGroups"}, ""))
+	pattern_ComputeService_DeletePlacementGroup_0  = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"compute", "v1", "placementGroups", "placement_group_id"}, ""))
 )
 
 var (
-	forward_ComputeService_CreateCompute_0        = runtime.ForwardResponseMessage
-	forward_ComputeService_GetCompute_0           = runtime.ForwardResponseMessage
-	forward_ComputeService_ListComputes_0         = runtime.ForwardResponseMessage
-	forward_ComputeService_UpdateCompute_0        = runtime.ForwardResponseMessage
-	forward_ComputeService_DeleteCompute_0        = runtime.ForwardResponseMessage
-	forward_ComputeService_OperateCompute_0       = runtime.ForwardResponseMessage
-	forward_ComputeService_ScaleCompute_0         = runtime.ForwardResponseMessage
-	forward_ComputeService_MigrateCompute_0       = runtime.ForwardResponseMessage
-	forward_ComputeService_AttachVolume_0         = runtime.ForwardResponseMessage
-	forward_ComputeService_DetachVolume_0         = runtime.ForwardResponseMessage
-	forward_ComputeService_CreateSnapshot_0       = runtime.ForwardResponseMessage
-	forward_ComputeService_GetSnapshot_0          = runtime.ForwardResponseMessage
-	forward_ComputeService_ListSnapshots_0        = runtime.ForwardResponseMessage
-	forward_ComputeService_DeleteSnapshot_0       = runtime.ForwardResponseMessage
-	forward_ComputeService_RevertSnapshot_0       = runtime.ForwardResponseMessage
-	forward_ComputeService_CreatePlacementGroup_0 = runtime.ForwardResponseMessage
-	forward_ComputeService_GetPlacementGroup_0    = runtime.ForwardResponseMessage
-	forward_ComputeService_ListPlacementGroups_0  = runtime.ForwardResponseMessage
-	forward_ComputeService_DeletePlacementGroup_0 = runtime.ForwardResponseMessage
+	forward_ComputeService_CreateCompute_0         = runtime.ForwardResponseMessage
+	forward_ComputeService_GetCompute_0            = runtime.ForwardResponseMessage
+	forward_ComputeService_ListComputes_0          = runtime.ForwardResponseMessage
+	forward_ComputeService_UpdateCompute_0         = runtime.ForwardResponseMessage
+	forward_ComputeService_DeleteCompute_0         = runtime.ForwardResponseMessage
+	forward_ComputeService_OperateCompute_0        = runtime.ForwardResponseMessage
+	forward_ComputeService_ScaleCompute_0          = runtime.ForwardResponseMessage
+	forward_ComputeService_MigrateCompute_0        = runtime.ForwardResponseMessage
+	forward_ComputeService_AttachVolume_0          = runtime.ForwardResponseMessage
+	forward_ComputeService_DetachVolume_0          = runtime.ForwardResponseMessage
+	forward_ComputeService_CreateComputeSnapshot_0 = runtime.ForwardResponseMessage
+	forward_ComputeService_GetComputeSnapshot_0    = runtime.ForwardResponseMessage
+	forward_ComputeService_ListComputeSnapshots_0  = runtime.ForwardResponseMessage
+	forward_ComputeService_DeleteComputeSnapshot_0 = runtime.ForwardResponseMessage
+	forward_ComputeService_RevertComputeSnapshot_0 = runtime.ForwardResponseMessage
+	forward_ComputeService_CreatePlacementGroup_0  = runtime.ForwardResponseMessage
+	forward_ComputeService_GetPlacementGroup_0     = runtime.ForwardResponseMessage
+	forward_ComputeService_ListPlacementGroups_0   = runtime.ForwardResponseMessage
+	forward_ComputeService_DeletePlacementGroup_0  = runtime.ForwardResponseMessage
 )
