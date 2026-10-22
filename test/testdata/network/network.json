@@ -1,19 +1,18 @@
 {
-  "networkResourceId": "3e2d1c0b-9a8f-4e7d-8c6b-5a4f3e2d1c0b",
-  "networkResourceName": "data-100",
-  "subnetId": [
-    "4f3e2d1c-0b9a-4f8e-9d7c-6b5a4f3e2d1c"
-  ],
-  "networkPortId": [
-    "6b5a4f3e-2d1c-4b0a-9f8e-7d6c5b4a3f2e"
+  "networkId": "3e2d1c0b-9a8f-4e7d-8c6b-5a4f3e2d1c0b",
+  "networkName": "data-100",
+  "subnetIds": [
+    "4f3e2d1c-0b9a-4f8e-9d7c-6b5a4f3e2d1c",
+    "5a4f3e2d-1c0b-4a9f-8e7d-6c5b4a3f2e1d"
   ],
   "networkType": "NETWORK_TYPE_VLAN",
-  "providerNetwork": "sriov-ens1f0",
+  "providerNetwork": "physnet1",
   "segmentationId": 100,
-  "isShared": true,
+  "mtu": 9000,
   "zoneId": "edge-1",
   "operationalState": "OPERATIONAL_STATE_ENABLED",
   "metadata": {
-    "osm.etsi.org/vld": "data"
+    "osm.etsi.org/vld": "data",
+    "kubevim.kubenfv.io/vlan": "data-100"
   }
 }

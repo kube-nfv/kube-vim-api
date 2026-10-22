@@ -39,95 +39,6 @@
         ],
         "type": "object"
       },
-      "kubenfv.kubevim.common.v1.AffinityGroup": {
-        "description": "Producer-managed group of resources placed with affinity or anti-affinity.",
-        "properties": {
-          "groupId": {
-            "description": "Identifier of the group: a UUID, the Kubernetes UID of the object behind it.",
-            "readOnly": true,
-            "type": "string"
-          },
-          "groupName": {
-            "description": "Name of the group, given by the consumer.",
-            "type": "string"
-          },
-          "scope": {
-            "$ref": "#/components/schemas/kubenfv.kubevim.common.v1.AffinityScope",
-            "description": "Scope of the group; NFVI node when unset."
-          },
-          "type": {
-            "$ref": "#/components/schemas/kubenfv.kubevim.common.v1.AffinityType",
-            "description": "Affinity or anti-affinity."
-          }
-        },
-        "required": [
-          "groupName",
-          "type"
-        ],
-        "type": "object"
-      },
-      "kubenfv.kubevim.common.v1.AffinityOrAntiAffinityConstraint": {
-        "description": "Affinity or anti-affinity of a resource being allocated with other resources. Only one of affinityOrAntiAffinityResourceList, affinityOrAntiAffinityResourceGroupId may be set.",
-        "properties": {
-          "affinityOrAntiAffinityResourceGroupId": {
-            "description": "Identifier of an affinity group created with CreateAffinityGroup.",
-            "type": "string"
-          },
-          "affinityOrAntiAffinityResourceList": {
-            "$ref": "#/components/schemas/kubenfv.kubevim.common.v1.AffinityOrAntiAffinityResourceList",
-            "description": "Consumer-managed list of resource identifiers."
-          },
-          "scope": {
-            "$ref": "#/components/schemas/kubenfv.kubevim.common.v1.AffinityScope",
-            "description": "Scope of the constraint; NFVI node when unset."
-          },
-          "type": {
-            "$ref": "#/components/schemas/kubenfv.kubevim.common.v1.AffinityType",
-            "description": "Affinity or anti-affinity."
-          }
-        },
-        "required": [
-          "type"
-        ],
-        "type": "object"
-      },
-      "kubenfv.kubevim.common.v1.AffinityOrAntiAffinityResourceList": {
-        "description": "Consumer-managed list of resources (IFA006 8.4.8.3).",
-        "properties": {
-          "resourceId": {
-            "description": "Identifiers of virtualised resources.",
-            "items": {
-              "type": "string"
-            },
-            "type": "array"
-          }
-        },
-        "required": [
-          "resourceId"
-        ],
-        "type": "object"
-      },
-      "kubenfv.kubevim.common.v1.AffinityScope": {
-        "description": "Scope of an affinity or anti-affinity constraint (IFA006 8.4.8.2). Which\nvalues apply depends on the resource: compute uses NFVI_POP and NFVI_NODE;\nports add VIRTUAL_SWITCH_OR_ROUTER, PHYSICAL_NIC and PHYSICAL_NETWORK;\nnetworks use PHYSICAL_NIC, PHYSICAL_NETWORK and NFVI_NODE.",
-        "enum": [
-          "AFFINITY_SCOPE_UNSPECIFIED",
-          "AFFINITY_SCOPE_NFVI_POP",
-          "AFFINITY_SCOPE_NFVI_NODE",
-          "AFFINITY_SCOPE_VIRTUAL_SWITCH_OR_ROUTER",
-          "AFFINITY_SCOPE_PHYSICAL_NIC",
-          "AFFINITY_SCOPE_PHYSICAL_NETWORK"
-        ],
-        "type": "string"
-      },
-      "kubenfv.kubevim.common.v1.AffinityType": {
-        "description": "Affinity or anti-affinity.",
-        "enum": [
-          "AFFINITY_TYPE_UNSPECIFIED",
-          "AFFINITY_TYPE_AFFINITY",
-          "AFFINITY_TYPE_ANTI_AFFINITY"
-        ],
-        "type": "string"
-      },
       "kubenfv.kubevim.common.v1.IpVersion": {
         "description": "IP version of a network or subnet (IFA006 8.4.4.4).",
         "enum": [
@@ -136,22 +47,6 @@
           "IP_VERSION_IPV6"
         ],
         "type": "string"
-      },
-      "kubenfv.kubevim.common.v1.ListAffinityGroupsResponse": {
-        "properties": {
-          "affinityGroups": {
-            "description": "Groups matching the filter.",
-            "items": {
-              "$ref": "#/components/schemas/kubenfv.kubevim.common.v1.AffinityGroup"
-            },
-            "type": "array"
-          },
-          "nextpage_opaque_marker": {
-            "description": "Marker of the next page; empty on the last page (SOL 013 5.4).",
-            "type": "string"
-          }
-        },
-        "type": "object"
       },
       "kubenfv.kubevim.common.v1.OperationalState": {
         "description": "Operational state of a virtualised resource (IFA006).",
@@ -196,22 +91,6 @@
         },
         "type": "object"
       },
-      "kubenfv.kubevim.network.v1.ListPortsResponse": {
-        "properties": {
-          "nextpage_opaque_marker": {
-            "description": "Marker of the next page; empty on the last page (SOL 013 5.4).",
-            "type": "string"
-          },
-          "ports": {
-            "description": "Ports matching the filter.",
-            "items": {
-              "$ref": "#/components/schemas/kubenfv.kubevim.network.v1.Port"
-            },
-            "type": "array"
-          }
-        },
-        "type": "object"
-      },
       "kubenfv.kubevim.network.v1.ListSubnetsResponse": {
         "properties": {
           "nextpage_opaque_marker": {
@@ -228,43 +107,11 @@
         },
         "type": "object"
       },
-      "kubenfv.kubevim.network.v1.ListTrunksResponse": {
-        "properties": {
-          "nextpage_opaque_marker": {
-            "description": "Marker of the next page; empty on the last page (SOL 013 5.4).",
-            "type": "string"
-          },
-          "trunks": {
-            "description": "Trunks matching the filter.",
-            "items": {
-              "$ref": "#/components/schemas/kubenfv.kubevim.network.v1.Trunk"
-            },
-            "type": "array"
-          }
-        },
-        "type": "object"
-      },
       "kubenfv.kubevim.network.v1.Network": {
-        "description": "A virtualised network: a layer 2 broadcast domain.",
+        "description": "A virtualised network: one layer 2 segment, with at most one IPv4 and one IPv6 subnet.",
         "properties": {
-          "bandwidth": {
-            "description": "Minimum bandwidth in Mbps; 0 means no guarantee.",
-            "format": "int64",
-            "type": "integer"
-          },
-          "connectedNetworks": {
-            "description": "Networks this network is explicitly interconnected with.",
-            "items": {
-              "type": "string"
-            },
-            "type": "array"
-          },
-          "isShared": {
-            "description": "The network is shared among consumers; unset means true.",
-            "type": "boolean"
-          },
           "layer3Attributes": {
-            "description": "Subnets created with the network.",
+            "description": "Subnets created with the network, in one call that rolls back as a whole: at most one per\nIP version. A Kube-OVN network needs at least one; GENEVE networks always use Kube-OVN.",
             "items": {
               "$ref": "#/components/schemas/kubenfv.kubevim.network.v1.SubnetData"
             },
@@ -275,31 +122,21 @@
             "additionalProperties": {
               "type": "string"
             },
-            "description": "Metadata owned by the consumer and never interpreted by the VIM.",
+            "description": "Metadata set by the consumer and by the VIM; for keys under \"kubevim.kubenfv.io/\" that the VIM maintains, its value wins.",
             "type": "object"
           },
-          "networkPortId": {
-            "description": "Ports of the network.",
-            "items": {
-              "type": "string"
-            },
-            "readOnly": true,
-            "type": "array"
+          "mtu": {
+            "description": "MTU of the network in bytes; the VIM default when unset.",
+            "format": "int64",
+            "type": "integer"
           },
-          "networkQoS": {
-            "description": "Quality of service the network supports.",
-            "items": {
-              "$ref": "#/components/schemas/kubenfv.kubevim.network.v1.NetworkQoS"
-            },
-            "type": "array"
-          },
-          "networkResourceId": {
-            "description": "Identifier of the network: a UUID, the Kubernetes UID of the object behind it.",
+          "networkId": {
+            "description": "Identifier of the network: a UUID assigned by the VIM.",
             "readOnly": true,
             "type": "string"
           },
-          "networkResourceName": {
-            "description": "Name of the network, given by the consumer.",
+          "networkName": {
+            "description": "Name of the network, given by the consumer; not unique.",
             "type": "string"
           },
           "networkType": {
@@ -316,20 +153,16 @@
             "readOnly": true
           },
           "providerNetwork": {
-            "description": "Provider network configured in the VIM (a Kube-OVN provider network or an\nSR-IOV device pool); required for VLAN and FLAT networks.",
+            "description": "Name of a provider network declared in the VIM configuration, which also sets its backend\n(Kube-OVN or SR-IOV); required for VLAN and FLAT networks, absent for GENEVE.",
             "type": "string"
           },
           "segmentationId": {
-            "description": "VLAN ID for VLAN networks; assigned by the VIM for GENEVE networks.",
+            "description": "VLAN ID of a VLAN network; absent for GENEVE and FLAT networks.",
             "format": "int64",
             "type": "integer"
           },
-          "sharingCriteria": {
-            "description": "Criteria for sharing the network, e.g. authorised consumers.",
-            "type": "string"
-          },
-          "subnetId": {
-            "description": "Subnets of the network.",
+          "subnetIds": {
+            "description": "Subnets of the network: at most one per IP version.",
             "items": {
               "type": "string"
             },
@@ -347,26 +180,8 @@
         ],
         "type": "object"
       },
-      "kubenfv.kubevim.network.v1.NetworkQoS": {
-        "description": "Quality of service parameter (IFA006 8.4.4.3).",
-        "properties": {
-          "qosName": {
-            "description": "Name of the parameter, e.g. \"latency\".",
-            "type": "string"
-          },
-          "qosValue": {
-            "description": "Value of the parameter.",
-            "type": "string"
-          }
-        },
-        "required": [
-          "qosName",
-          "qosValue"
-        ],
-        "type": "object"
-      },
       "kubenfv.kubevim.network.v1.NetworkType": {
-        "description": "How traffic of a network is separated.\nValues may be added as Kube-OVN and SR-IOV support grows; clients should accept unknown values.",
+        "description": "How traffic of a network is separated.\nValues may be added as backends grow; clients should accept unknown values.",
         "enum": [
           "NETWORK_TYPE_UNSPECIFIED",
           "NETWORK_TYPE_GENEVE",
@@ -376,155 +191,46 @@
         "type": "string"
       },
       "kubenfv.kubevim.network.v1.NetworkUpdate": {
-        "description": "Changes to a network. Each field that is set replaces the current value.",
+        "description": "Changes to a network: a patch. The name is replaced when set; metadata entries are merged.",
         "properties": {
-          "bandwidth": {
-            "format": "int64",
-            "type": "integer"
-          },
-          "isShared": {
-            "type": "boolean"
-          },
           "metadata": {
             "additionalProperties": {
               "type": "string"
             },
-            "description": "Metadata entries to add or replace.",
+            "description": "Metadata entries to add, or to overwrite when the key exists; keys not given are kept, and none is removed.",
             "type": "object"
           },
-          "metadataKeysToRemove": {
-            "description": "Metadata keys to remove.",
-            "items": {
-              "type": "string"
-            },
-            "type": "array"
-          },
-          "networkResourceName": {
+          "networkName": {
             "type": "string"
           }
         },
         "type": "object"
-      },
-      "kubenfv.kubevim.network.v1.Port": {
-        "description": "A virtualised network port.",
-        "properties": {
-          "attachedResourceId": {
-            "description": "Resource attached to the port, e.g. a virtual network interface.",
-            "readOnly": true,
-            "type": "string"
-          },
-          "bandwidth": {
-            "description": "Bandwidth in Mbps; 0 means no guarantee.",
-            "format": "int64",
-            "type": "integer"
-          },
-          "metadata": {
-            "additionalProperties": {
-              "type": "string"
-            },
-            "description": "Metadata owned by the consumer and never interpreted by the VIM.",
-            "type": "object"
-          },
-          "networkId": {
-            "description": "Network the port belongs to.",
-            "type": "string"
-          },
-          "operationalState": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/kubenfv.kubevim.common.v1.OperationalState"
-              }
-            ],
-            "description": "Operational state of the port.",
-            "readOnly": true
-          },
-          "portQoS": {
-            "description": "Quality of service of the port.",
-            "items": {
-              "$ref": "#/components/schemas/kubenfv.kubevim.network.v1.NetworkQoS"
-            },
-            "type": "array"
-          },
-          "portType": {
-            "$ref": "#/components/schemas/kubenfv.kubevim.network.v1.PortType",
-            "description": "Type of the port; a normal port when unset."
-          },
-          "resourceId": {
-            "description": "Identifier of the port: a UUID, the Kubernetes UID of the object behind it.",
-            "readOnly": true,
-            "type": "string"
-          },
-          "timeSync": {
-            "description": "Time synchronisation configuration of the port.",
-            "items": {
-              "type": "string"
-            },
-            "type": "array"
-          }
-        },
-        "required": [
-          "networkId"
-        ],
-        "type": "object"
-      },
-      "kubenfv.kubevim.network.v1.PortType": {
-        "description": "Type of a network port.\nValues may be added; clients should accept unknown values.",
-        "enum": [
-          "PORT_TYPE_UNSPECIFIED",
-          "PORT_TYPE_NORMAL",
-          "PORT_TYPE_TRUNK"
-        ],
-        "type": "string"
-      },
-      "kubenfv.kubevim.network.v1.PortUpdate": {
-        "description": "Changes to a port. Each field that is set replaces the current value.",
-        "properties": {
-          "bandwidth": {
-            "format": "int64",
-            "type": "integer"
-          },
-          "metadata": {
-            "additionalProperties": {
-              "type": "string"
-            },
-            "description": "Metadata entries to add or replace.",
-            "type": "object"
-          },
-          "metadataKeysToRemove": {
-            "description": "Metadata keys to remove.",
-            "items": {
-              "type": "string"
-            },
-            "type": "array"
-          }
-        },
-        "type": "object"
-      },
-      "kubenfv.kubevim.network.v1.SegmentationType": {
-        "description": "Encapsulation of trunk subport traffic (IFA006 8.4.4.7).",
-        "enum": [
-          "SEGMENTATION_TYPE_UNSPECIFIED",
-          "SEGMENTATION_TYPE_VLAN",
-          "SEGMENTATION_TYPE_VXLAN",
-          "SEGMENTATION_TYPE_NVGRE",
-          "SEGMENTATION_TYPE_INHERIT"
-        ],
-        "type": "string"
       },
       "kubenfv.kubevim.network.v1.Subnet": {
-        "description": "A virtualised subnet: layer 3 attributes of a network.",
+        "description": "A virtualised subnet: one IP version of a network.",
         "properties": {
           "data": {
             "$ref": "#/components/schemas/kubenfv.kubevim.network.v1.SubnetData",
             "description": "Layer 3 attributes."
           },
+          "metadata": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Metadata set by the consumer and by the VIM; for keys under \"kubevim.kubenfv.io/\" that the VIM maintains, its value wins.",
+            "type": "object"
+          },
           "networkId": {
             "description": "Network the subnet belongs to.",
             "type": "string"
           },
-          "resourceId": {
-            "description": "Identifier of the subnet: a UUID, the Kubernetes UID of the object behind it.",
+          "subnetId": {
+            "description": "Identifier of the subnet: a UUID assigned by the VIM.",
             "readOnly": true,
+            "type": "string"
+          },
+          "subnetName": {
+            "description": "Name of the subnet, given by the consumer; not unique.",
             "type": "string"
           }
         },
@@ -535,9 +241,9 @@
         "type": "object"
       },
       "kubenfv.kubevim.network.v1.SubnetData": {
-        "description": "Layer 3 attributes of a subnet created together with its network.",
+        "description": "Layer 3 attributes of a subnet: one IP version of its network.",
         "properties": {
-          "addressPool": {
+          "addressPools": {
             "description": "Address pools the VIM allocates from; the whole CIDR except the gateway when empty.",
             "items": {
               "$ref": "#/components/schemas/kubenfv.kubevim.network.v1.IpAddressPool"
@@ -547,6 +253,13 @@
           "cidr": {
             "description": "Network address and prefix length, e.g. \"10.0.0.0/24\".",
             "type": "string"
+          },
+          "dnsServers": {
+            "description": "DNS servers handed out by DHCP.",
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
           },
           "gatewayIp": {
             "description": "Gateway address; the VIM picks one when unset.",
@@ -559,13 +272,6 @@
           "isDhcpEnabled": {
             "description": "DHCP is enabled; unset means true.",
             "type": "boolean"
-          },
-          "metadata": {
-            "additionalProperties": {
-              "type": "string"
-            },
-            "description": "Metadata owned by the consumer and never interpreted by the VIM.",
-            "type": "object"
           }
         },
         "required": [
@@ -575,115 +281,17 @@
         "type": "object"
       },
       "kubenfv.kubevim.network.v1.SubnetUpdate": {
-        "description": "Changes to a subnet. Each field that is set replaces the current value.",
+        "description": "Changes to a subnet: a patch. The name is replaced when set; metadata entries are merged.",
         "properties": {
-          "addressPool": {
-            "description": "Address pools that replace the current ones when non-empty.",
-            "items": {
-              "$ref": "#/components/schemas/kubenfv.kubevim.network.v1.IpAddressPool"
-            },
-            "type": "array"
-          },
-          "gatewayIp": {
-            "type": "string"
-          },
-          "isDhcpEnabled": {
-            "type": "boolean"
-          },
           "metadata": {
             "additionalProperties": {
               "type": "string"
             },
-            "description": "Metadata entries to add or replace.",
+            "description": "Metadata entries to add, or to overwrite when the key exists; keys not given are kept, and none is removed.",
             "type": "object"
           },
-          "metadataKeysToRemove": {
-            "description": "Metadata keys to remove.",
-            "items": {
-              "type": "string"
-            },
-            "type": "array"
-          }
-        },
-        "type": "object"
-      },
-      "kubenfv.kubevim.network.v1.Trunk": {
-        "description": "A virtualised trunk: one parent port carrying several networks through subports.",
-        "properties": {
-          "operationalState": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/kubenfv.kubevim.common.v1.OperationalState"
-              }
-            ],
-            "description": "Operational state of the trunk.",
-            "readOnly": true
-          },
-          "parentPortId": {
-            "description": "Parent port of the trunk.",
+          "subnetName": {
             "type": "string"
-          },
-          "subportList": {
-            "description": "Subports of the trunk.",
-            "items": {
-              "$ref": "#/components/schemas/kubenfv.kubevim.network.v1.TrunkSubport"
-            },
-            "type": "array"
-          },
-          "trunkResourceId": {
-            "description": "Identifier of the trunk: a UUID, the Kubernetes UID of the object behind it.",
-            "readOnly": true,
-            "type": "string"
-          }
-        },
-        "required": [
-          "parentPortId"
-        ],
-        "type": "object"
-      },
-      "kubenfv.kubevim.network.v1.TrunkSubport": {
-        "description": "Subport of a trunk (IFA006 8.4.4.7).",
-        "properties": {
-          "isAutomaticDiscovery": {
-            "description": "Additional parameters are exchanged through a routing protocol.",
-            "type": "boolean"
-          },
-          "segmentationId": {
-            "description": "Segmentation identifier of the subport, e.g. the VLAN ID.",
-            "format": "int64",
-            "type": "integer"
-          },
-          "segmentationType": {
-            "$ref": "#/components/schemas/kubenfv.kubevim.network.v1.SegmentationType",
-            "description": "Encapsulation of the subport traffic; VLAN when unset."
-          },
-          "subportId": {
-            "description": "Port used as the subport.",
-            "type": "string"
-          }
-        },
-        "required": [
-          "subportId",
-          "segmentationId"
-        ],
-        "type": "object"
-      },
-      "kubenfv.kubevim.network.v1.TrunkUpdate": {
-        "description": "Changes to a trunk: subports to add and to remove.",
-        "properties": {
-          "subportIdsToRemove": {
-            "description": "Ports to remove as subports.",
-            "items": {
-              "type": "string"
-            },
-            "type": "array"
-          },
-          "subportsToAdd": {
-            "description": "Subports to add.",
-            "items": {
-              "$ref": "#/components/schemas/kubenfv.kubevim.network.v1.TrunkSubport"
-            },
-            "type": "array"
           }
         },
         "type": "object"
@@ -713,295 +321,6 @@
   },
   "openapi": "3.1.0",
   "paths": {
-    "/network/v1/affinityGroups": {
-      "get": {
-        "operationId": "NetworkService_ListAffinityGroups",
-        "parameters": [
-          {
-            "description": "Attribute-based filter expression (SOL 013 5.2).",
-            "in": "query",
-            "name": "filter",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "Marker of the page to return, from a previous response (SOL 013 5.4).",
-            "in": "query",
-            "name": "nextpage_opaque_marker",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "$ref": "#/components/parameters/Version"
-          }
-        ],
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/kubenfv.kubevim.common.v1.ListAffinityGroupsResponse"
-                }
-              }
-            },
-            "description": "A successful response.",
-            "headers": {
-              "Version": {
-                "description": "API version used (SOL 013 9.4).",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "default": {
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              }
-            },
-            "description": "Error (SOL 013 6).",
-            "headers": {
-              "Version": {
-                "description": "API version used (SOL 013 9.4).",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "oauth2": [
-              "network:v1:query"
-            ]
-          }
-        ],
-        "summary": "Returns the network affinity groups.",
-        "tags": [
-          "NetworkService"
-        ]
-      },
-      "post": {
-        "operationId": "NetworkService_CreateAffinityGroup",
-        "parameters": [
-          {
-            "$ref": "#/components/parameters/Version"
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "properties": {
-                  "affinityGroup": {
-                    "$ref": "#/components/schemas/kubenfv.kubevim.common.v1.AffinityGroup",
-                    "description": "Group to create."
-                  },
-                  "requestId": {
-                    "description": "Client-chosen UUID that makes the request idempotent (AIP-155).",
-                    "type": "string"
-                  }
-                },
-                "required": [
-                  "affinityGroup"
-                ],
-                "type": "object"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "201": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/kubenfv.kubevim.common.v1.AffinityGroup"
-                }
-              }
-            },
-            "description": "Producer-managed group of resources placed with affinity or anti-affinity.",
-            "headers": {
-              "Location": {
-                "description": "URI of the created resource.",
-                "schema": {
-                  "format": "uri",
-                  "type": "string"
-                }
-              },
-              "Version": {
-                "description": "API version used (SOL 013 9.4).",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "default": {
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              }
-            },
-            "description": "Error (SOL 013 6).",
-            "headers": {
-              "Version": {
-                "description": "API version used (SOL 013 9.4).",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "oauth2": [
-              "network:v1:allocate"
-            ]
-          }
-        ],
-        "summary": "Creates a network affinity or anti-affinity group.",
-        "tags": [
-          "NetworkService"
-        ]
-      }
-    },
-    "/network/v1/affinityGroups/{group_id}": {
-      "delete": {
-        "operationId": "NetworkService_DeleteAffinityGroup",
-        "parameters": [
-          {
-            "description": "Identifier of the group.",
-            "in": "path",
-            "name": "group_id",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "$ref": "#/components/parameters/Version"
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "No Content",
-            "headers": {
-              "Version": {
-                "description": "API version used (SOL 013 9.4).",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "default": {
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              }
-            },
-            "description": "Error (SOL 013 6).",
-            "headers": {
-              "Version": {
-                "description": "API version used (SOL 013 9.4).",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "oauth2": [
-              "network:v1:terminate"
-            ]
-          }
-        ],
-        "summary": "Deletes a network affinity group.",
-        "tags": [
-          "NetworkService"
-        ]
-      },
-      "get": {
-        "operationId": "NetworkService_GetAffinityGroup",
-        "parameters": [
-          {
-            "description": "Identifier of the group.",
-            "in": "path",
-            "name": "group_id",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "$ref": "#/components/parameters/Version"
-          }
-        ],
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/kubenfv.kubevim.common.v1.AffinityGroup"
-                }
-              }
-            },
-            "description": "Producer-managed group of resources placed with affinity or anti-affinity.",
-            "headers": {
-              "Version": {
-                "description": "API version used (SOL 013 9.4).",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "default": {
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              }
-            },
-            "description": "Error (SOL 013 6).",
-            "headers": {
-              "Version": {
-                "description": "API version used (SOL 013 9.4).",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "oauth2": [
-              "network:v1:query"
-            ]
-          }
-        ],
-        "summary": "Returns one network affinity group.",
-        "tags": [
-          "NetworkService"
-        ]
-      }
-    },
     "/network/v1/networks": {
       "get": {
         "operationId": "NetworkService_ListNetworks",
@@ -1088,31 +407,12 @@
             "application/json": {
               "schema": {
                 "properties": {
-                  "affinityOrAntiAffinityConstraints": {
-                    "description": "Affinity or anti-affinity with other resources; all must be met.",
-                    "items": {
-                      "$ref": "#/components/schemas/kubenfv.kubevim.common.v1.AffinityOrAntiAffinityConstraint"
-                    },
-                    "type": "array"
-                  },
-                  "locationConstraints": {
-                    "description": "Location constraints, e.g. a resource zone.",
-                    "type": "string"
-                  },
                   "network": {
                     "$ref": "#/components/schemas/kubenfv.kubevim.network.v1.Network",
                     "description": "Network to create."
                   },
                   "requestId": {
                     "description": "Client-chosen UUID that makes the request idempotent (AIP-155).",
-                    "type": "string"
-                  },
-                  "reservationId": {
-                    "description": "Resource reservation for this allocation.",
-                    "type": "string"
-                  },
-                  "resourceGroupId": {
-                    "description": "Infrastructure resource group of the resource.",
                     "type": "string"
                   }
                 },
@@ -1134,7 +434,7 @@
                 }
               }
             },
-            "description": "A virtualised network: a layer 2 broadcast domain.",
+            "description": "A virtualised network: one layer 2 segment, with at most one IPv4 and one IPv6 subnet.",
             "headers": {
               "Location": {
                 "description": "URI of the created resource.",
@@ -1183,14 +483,14 @@
         ]
       }
     },
-    "/network/v1/networks/{network_resource_id}": {
+    "/network/v1/networks/{network_id}": {
       "delete": {
         "operationId": "NetworkService_DeleteNetwork",
         "parameters": [
           {
             "description": "Identifier of the network.",
             "in": "path",
-            "name": "network_resource_id",
+            "name": "network_id",
             "required": true,
             "schema": {
               "type": "string"
@@ -1249,7 +549,7 @@
           {
             "description": "Identifier of the network.",
             "in": "path",
-            "name": "network_resource_id",
+            "name": "network_id",
             "required": true,
             "schema": {
               "type": "string"
@@ -1268,7 +568,7 @@
                 }
               }
             },
-            "description": "A virtualised network: a layer 2 broadcast domain.",
+            "description": "A virtualised network: one layer 2 segment, with at most one IPv4 and one IPv6 subnet.",
             "headers": {
               "Version": {
                 "description": "API version used (SOL 013 9.4).",
@@ -1315,7 +615,7 @@
           {
             "description": "Identifier of the network.",
             "in": "path",
-            "name": "network_resource_id",
+            "name": "network_id",
             "required": true,
             "schema": {
               "type": "string"
@@ -1344,7 +644,7 @@
                 }
               }
             },
-            "description": "A virtualised network: a layer 2 broadcast domain.",
+            "description": "A virtualised network: one layer 2 segment, with at most one IPv4 and one IPv6 subnet.",
             "headers": {
               "Version": {
                 "description": "API version used (SOL 013 9.4).",
@@ -1380,391 +680,7 @@
             ]
           }
         ],
-        "summary": "Updates a network.",
-        "tags": [
-          "NetworkService"
-        ]
-      }
-    },
-    "/network/v1/ports": {
-      "get": {
-        "operationId": "NetworkService_ListPorts",
-        "parameters": [
-          {
-            "description": "Attribute-based filter expression (SOL 013 5.2).",
-            "in": "query",
-            "name": "filter",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "Marker of the page to return, from a previous response (SOL 013 5.4).",
-            "in": "query",
-            "name": "nextpage_opaque_marker",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "$ref": "#/components/parameters/Version"
-          }
-        ],
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/kubenfv.kubevim.network.v1.ListPortsResponse"
-                }
-              }
-            },
-            "description": "A successful response.",
-            "headers": {
-              "Version": {
-                "description": "API version used (SOL 013 9.4).",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "default": {
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              }
-            },
-            "description": "Error (SOL 013 6).",
-            "headers": {
-              "Version": {
-                "description": "API version used (SOL 013 9.4).",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "oauth2": [
-              "network:v1:query"
-            ]
-          }
-        ],
-        "summary": "Returns the ports matching a filter.",
-        "tags": [
-          "NetworkService"
-        ]
-      },
-      "post": {
-        "operationId": "NetworkService_CreatePort",
-        "parameters": [
-          {
-            "$ref": "#/components/parameters/Version"
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "properties": {
-                  "affinityOrAntiAffinityConstraints": {
-                    "description": "Affinity or anti-affinity with other resources; all must be met.",
-                    "items": {
-                      "$ref": "#/components/schemas/kubenfv.kubevim.common.v1.AffinityOrAntiAffinityConstraint"
-                    },
-                    "type": "array"
-                  },
-                  "locationConstraints": {
-                    "description": "Location constraints, e.g. a resource zone.",
-                    "type": "string"
-                  },
-                  "port": {
-                    "$ref": "#/components/schemas/kubenfv.kubevim.network.v1.Port",
-                    "description": "Port to create."
-                  },
-                  "requestId": {
-                    "description": "Client-chosen UUID that makes the request idempotent (AIP-155).",
-                    "type": "string"
-                  },
-                  "reservationId": {
-                    "description": "Resource reservation for this allocation.",
-                    "type": "string"
-                  },
-                  "resourceGroupId": {
-                    "description": "Infrastructure resource group of the resource.",
-                    "type": "string"
-                  }
-                },
-                "required": [
-                  "port"
-                ],
-                "type": "object"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "201": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/kubenfv.kubevim.network.v1.Port"
-                }
-              }
-            },
-            "description": "A virtualised network port.",
-            "headers": {
-              "Location": {
-                "description": "URI of the created resource.",
-                "schema": {
-                  "format": "uri",
-                  "type": "string"
-                }
-              },
-              "Version": {
-                "description": "API version used (SOL 013 9.4).",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "default": {
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              }
-            },
-            "description": "Error (SOL 013 6).",
-            "headers": {
-              "Version": {
-                "description": "API version used (SOL 013 9.4).",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "oauth2": [
-              "network:v1:allocate"
-            ]
-          }
-        ],
-        "summary": "Creates a port.",
-        "tags": [
-          "NetworkService"
-        ]
-      }
-    },
-    "/network/v1/ports/{port_id}": {
-      "delete": {
-        "operationId": "NetworkService_DeletePort",
-        "parameters": [
-          {
-            "description": "Identifier of the port.",
-            "in": "path",
-            "name": "port_id",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "$ref": "#/components/parameters/Version"
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "No Content",
-            "headers": {
-              "Version": {
-                "description": "API version used (SOL 013 9.4).",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "default": {
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              }
-            },
-            "description": "Error (SOL 013 6).",
-            "headers": {
-              "Version": {
-                "description": "API version used (SOL 013 9.4).",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "oauth2": [
-              "network:v1:terminate"
-            ]
-          }
-        ],
-        "summary": "Deletes a port.",
-        "tags": [
-          "NetworkService"
-        ]
-      },
-      "get": {
-        "operationId": "NetworkService_GetPort",
-        "parameters": [
-          {
-            "description": "Identifier of the port.",
-            "in": "path",
-            "name": "port_id",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "$ref": "#/components/parameters/Version"
-          }
-        ],
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/kubenfv.kubevim.network.v1.Port"
-                }
-              }
-            },
-            "description": "A virtualised network port.",
-            "headers": {
-              "Version": {
-                "description": "API version used (SOL 013 9.4).",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "default": {
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              }
-            },
-            "description": "Error (SOL 013 6).",
-            "headers": {
-              "Version": {
-                "description": "API version used (SOL 013 9.4).",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "oauth2": [
-              "network:v1:query"
-            ]
-          }
-        ],
-        "summary": "Returns one port.",
-        "tags": [
-          "NetworkService"
-        ]
-      },
-      "patch": {
-        "operationId": "NetworkService_UpdatePort",
-        "parameters": [
-          {
-            "description": "Identifier of the port.",
-            "in": "path",
-            "name": "port_id",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "$ref": "#/components/parameters/Version"
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/kubenfv.kubevim.network.v1.PortUpdate"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/kubenfv.kubevim.network.v1.Port"
-                }
-              }
-            },
-            "description": "A virtualised network port.",
-            "headers": {
-              "Version": {
-                "description": "API version used (SOL 013 9.4).",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "default": {
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              }
-            },
-            "description": "Error (SOL 013 6).",
-            "headers": {
-              "Version": {
-                "description": "API version used (SOL 013 9.4).",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "oauth2": [
-              "network:v1:update"
-            ]
-          }
-        ],
-        "summary": "Updates a port.",
+        "summary": "Updates the name and metadata of a network.",
         "tags": [
           "NetworkService"
         ]
@@ -1856,32 +772,13 @@
             "application/json": {
               "schema": {
                 "properties": {
-                  "affinityOrAntiAffinityConstraints": {
-                    "description": "Affinity or anti-affinity with other resources; all must be met.",
-                    "items": {
-                      "$ref": "#/components/schemas/kubenfv.kubevim.common.v1.AffinityOrAntiAffinityConstraint"
-                    },
-                    "type": "array"
-                  },
-                  "locationConstraints": {
-                    "description": "Location constraints, e.g. a resource zone.",
-                    "type": "string"
-                  },
                   "requestId": {
                     "description": "Client-chosen UUID that makes the request idempotent (AIP-155).",
                     "type": "string"
                   },
-                  "reservationId": {
-                    "description": "Resource reservation for this allocation.",
-                    "type": "string"
-                  },
-                  "resourceGroupId": {
-                    "description": "Infrastructure resource group of the resource.",
-                    "type": "string"
-                  },
                   "subnet": {
                     "$ref": "#/components/schemas/kubenfv.kubevim.network.v1.Subnet",
-                    "description": "Subnet to create."
+                    "description": "Subnet to create; adds an IP version to a network that no interface uses yet."
                   }
                 },
                 "required": [
@@ -1902,7 +799,7 @@
                 }
               }
             },
-            "description": "A virtualised subnet: layer 3 attributes of a network.",
+            "description": "A virtualised subnet: one IP version of a network.",
             "headers": {
               "Location": {
                 "description": "URI of the created resource.",
@@ -2036,7 +933,7 @@
                 }
               }
             },
-            "description": "A virtualised subnet: layer 3 attributes of a network.",
+            "description": "A virtualised subnet: one IP version of a network.",
             "headers": {
               "Version": {
                 "description": "API version used (SOL 013 9.4).",
@@ -2112,7 +1009,7 @@
                 }
               }
             },
-            "description": "A virtualised subnet: layer 3 attributes of a network.",
+            "description": "A virtualised subnet: one IP version of a network.",
             "headers": {
               "Version": {
                 "description": "API version used (SOL 013 9.4).",
@@ -2148,391 +1045,7 @@
             ]
           }
         ],
-        "summary": "Updates a subnet.",
-        "tags": [
-          "NetworkService"
-        ]
-      }
-    },
-    "/network/v1/trunks": {
-      "get": {
-        "operationId": "NetworkService_ListTrunks",
-        "parameters": [
-          {
-            "description": "Attribute-based filter expression (SOL 013 5.2).",
-            "in": "query",
-            "name": "filter",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "Marker of the page to return, from a previous response (SOL 013 5.4).",
-            "in": "query",
-            "name": "nextpage_opaque_marker",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "$ref": "#/components/parameters/Version"
-          }
-        ],
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/kubenfv.kubevim.network.v1.ListTrunksResponse"
-                }
-              }
-            },
-            "description": "A successful response.",
-            "headers": {
-              "Version": {
-                "description": "API version used (SOL 013 9.4).",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "default": {
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              }
-            },
-            "description": "Error (SOL 013 6).",
-            "headers": {
-              "Version": {
-                "description": "API version used (SOL 013 9.4).",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "oauth2": [
-              "network:v1:query"
-            ]
-          }
-        ],
-        "summary": "Returns the trunks matching a filter.",
-        "tags": [
-          "NetworkService"
-        ]
-      },
-      "post": {
-        "operationId": "NetworkService_CreateTrunk",
-        "parameters": [
-          {
-            "$ref": "#/components/parameters/Version"
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "properties": {
-                  "affinityOrAntiAffinityConstraints": {
-                    "description": "Affinity or anti-affinity with other resources; all must be met.",
-                    "items": {
-                      "$ref": "#/components/schemas/kubenfv.kubevim.common.v1.AffinityOrAntiAffinityConstraint"
-                    },
-                    "type": "array"
-                  },
-                  "locationConstraints": {
-                    "description": "Location constraints, e.g. a resource zone.",
-                    "type": "string"
-                  },
-                  "requestId": {
-                    "description": "Client-chosen UUID that makes the request idempotent (AIP-155).",
-                    "type": "string"
-                  },
-                  "reservationId": {
-                    "description": "Resource reservation for this allocation.",
-                    "type": "string"
-                  },
-                  "resourceGroupId": {
-                    "description": "Infrastructure resource group of the resource.",
-                    "type": "string"
-                  },
-                  "trunk": {
-                    "$ref": "#/components/schemas/kubenfv.kubevim.network.v1.Trunk",
-                    "description": "Trunk to create."
-                  }
-                },
-                "required": [
-                  "trunk"
-                ],
-                "type": "object"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "201": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/kubenfv.kubevim.network.v1.Trunk"
-                }
-              }
-            },
-            "description": "A virtualised trunk: one parent port carrying several networks through subports.",
-            "headers": {
-              "Location": {
-                "description": "URI of the created resource.",
-                "schema": {
-                  "format": "uri",
-                  "type": "string"
-                }
-              },
-              "Version": {
-                "description": "API version used (SOL 013 9.4).",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "default": {
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              }
-            },
-            "description": "Error (SOL 013 6).",
-            "headers": {
-              "Version": {
-                "description": "API version used (SOL 013 9.4).",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "oauth2": [
-              "network:v1:allocate"
-            ]
-          }
-        ],
-        "summary": "Creates a trunk.",
-        "tags": [
-          "NetworkService"
-        ]
-      }
-    },
-    "/network/v1/trunks/{trunk_id}": {
-      "delete": {
-        "operationId": "NetworkService_DeleteTrunk",
-        "parameters": [
-          {
-            "description": "Identifier of the trunk.",
-            "in": "path",
-            "name": "trunk_id",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "$ref": "#/components/parameters/Version"
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "No Content",
-            "headers": {
-              "Version": {
-                "description": "API version used (SOL 013 9.4).",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "default": {
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              }
-            },
-            "description": "Error (SOL 013 6).",
-            "headers": {
-              "Version": {
-                "description": "API version used (SOL 013 9.4).",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "oauth2": [
-              "network:v1:terminate"
-            ]
-          }
-        ],
-        "summary": "Deletes a trunk.",
-        "tags": [
-          "NetworkService"
-        ]
-      },
-      "get": {
-        "operationId": "NetworkService_GetTrunk",
-        "parameters": [
-          {
-            "description": "Identifier of the trunk.",
-            "in": "path",
-            "name": "trunk_id",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "$ref": "#/components/parameters/Version"
-          }
-        ],
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/kubenfv.kubevim.network.v1.Trunk"
-                }
-              }
-            },
-            "description": "A virtualised trunk: one parent port carrying several networks through subports.",
-            "headers": {
-              "Version": {
-                "description": "API version used (SOL 013 9.4).",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "default": {
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              }
-            },
-            "description": "Error (SOL 013 6).",
-            "headers": {
-              "Version": {
-                "description": "API version used (SOL 013 9.4).",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "oauth2": [
-              "network:v1:query"
-            ]
-          }
-        ],
-        "summary": "Returns one trunk.",
-        "tags": [
-          "NetworkService"
-        ]
-      },
-      "patch": {
-        "operationId": "NetworkService_UpdateTrunk",
-        "parameters": [
-          {
-            "description": "Identifier of the trunk.",
-            "in": "path",
-            "name": "trunk_id",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "$ref": "#/components/parameters/Version"
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/kubenfv.kubevim.network.v1.TrunkUpdate"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/kubenfv.kubevim.network.v1.Trunk"
-                }
-              }
-            },
-            "description": "A virtualised trunk: one parent port carrying several networks through subports.",
-            "headers": {
-              "Version": {
-                "description": "API version used (SOL 013 9.4).",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "default": {
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              }
-            },
-            "description": "Error (SOL 013 6).",
-            "headers": {
-              "Version": {
-                "description": "API version used (SOL 013 9.4).",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "oauth2": [
-              "network:v1:update"
-            ]
-          }
-        ],
-        "summary": "Updates a trunk.",
+        "summary": "Updates the name and metadata of a subnet.",
         "tags": [
           "NetworkService"
         ]
@@ -2541,7 +1054,7 @@
   },
   "tags": [
     {
-      "description": "Virtualised network resources management: networks, subnets, ports and trunks.",
+      "description": "Virtualised network resources management: networks and their subnets.",
       "name": "NetworkService"
     }
   ]

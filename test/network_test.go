@@ -3,7 +3,6 @@ package test
 import (
 	"testing"
 
-	commonv1 "github.com/kube-nfv/kube-vim-api/pkg/apis/common/v1"
 	networkv1 "github.com/kube-nfv/kube-vim-api/pkg/apis/network/v1"
 )
 
@@ -12,9 +11,7 @@ func TestNetworkGoldenJSON(t *testing.T) {
 		"network.json":                &networkv1.Network{},
 		"create_network_request.json": &networkv1.CreateNetworkRequest{},
 		"subnet.json":                 &networkv1.Subnet{},
-		"trunk.json":                  &networkv1.Trunk{},
-		"update_trunk_request.json":   &networkv1.UpdateTrunkRequest{},
-		"affinity_group.json":         &commonv1.AffinityGroup{},
+		"update_network_request.json": &networkv1.UpdateNetworkRequest{},
 	} {
 		t.Run(file, func(t *testing.T) { checkGolden(t, "testdata/network/"+file, msg) })
 	}
@@ -22,7 +19,11 @@ func TestNetworkGoldenJSON(t *testing.T) {
 
 func TestNetworkValidation(t *testing.T) {
 	network := func(n string) string { return `{"network":` + n + `}` }
-	subnet := func(data string) string { return `{"subnet":{"networkId":"e5f6a7b8-c9d0-4e1f-8a2b-3c4d5e6f7a8b","data":` + data + `}}` }
+	subnet := func(data string) string {
+		return `{"subnet":{"networkId":"e5f6a7b8-c9d0-4e1f-8a2b-3c4d5e6f7a8b","data":` + data + `}}`
+	}
+	const v4 = `{"ipVersion":"IP_VERSION_IPV4","cidr":"10.0.0.0/24"}`
+	const v6 = `{"ipVersion":"IP_VERSION_IPV6","cidr":"fd00::/64"}`
 	for name, tc := range map[string]struct {
 		json  string
 		msg   golden
@@ -42,7 +43,7 @@ func TestNetworkValidation(t *testing.T) {
 			valid: true,
 		},
 		"no network type": {
-			json: network(`{"networkResourceName":"x"}`), msg: &networkv1.CreateNetworkRequest{},
+			json: network(`{"networkName":"x"}`), msg: &networkv1.CreateNetworkRequest{},
 		},
 		"vlan without provider network": {
 			json: network(`{"networkType":"NETWORK_TYPE_VLAN","segmentationId":100}`), msg: &networkv1.CreateNetworkRequest{},
@@ -51,13 +52,30 @@ func TestNetworkValidation(t *testing.T) {
 			json: network(`{"networkType":"NETWORK_TYPE_VLAN","providerNetwork":"physnet1","segmentationId":4095}`), msg: &networkv1.CreateNetworkRequest{},
 		},
 		"geneve with provider network": {
-			json: network(`{"networkType":"NETWORK_TYPE_GENEVE","providerNetwork":"physnet1"}`), msg: &networkv1.CreateNetworkRequest{},
+			json: network(`{"networkType":"NETWORK_TYPE_GENEVE","providerNetwork":"physnet1","layer3Attributes":[` + v4 + `]}`), msg: &networkv1.CreateNetworkRequest{},
 		},
 		"geneve with segmentation id": {
-			json: network(`{"networkType":"NETWORK_TYPE_GENEVE","segmentationId":5000}`), msg: &networkv1.CreateNetworkRequest{},
+			json: network(`{"networkType":"NETWORK_TYPE_GENEVE","segmentationId":5000,"layer3Attributes":[` + v4 + `]}`), msg: &networkv1.CreateNetworkRequest{},
+		},
+		"geneve without subnet": {
+			json: network(`{"networkType":"NETWORK_TYPE_GENEVE"}`), msg: &networkv1.CreateNetworkRequest{},
 		},
 		"flat with segmentation id": {
 			json: network(`{"networkType":"NETWORK_TYPE_FLAT","providerNetwork":"physnet1","segmentationId":10}`), msg: &networkv1.CreateNetworkRequest{},
+		},
+		"dual stack": {
+			json:  network(`{"networkType":"NETWORK_TYPE_GENEVE","layer3Attributes":[` + v4 + `,` + v6 + `]}`),
+			msg:   &networkv1.CreateNetworkRequest{},
+			valid: true,
+		},
+		"two subnets of one version": {
+			json: network(`{"networkType":"NETWORK_TYPE_GENEVE","layer3Attributes":[` + v4 + `,{"ipVersion":"IP_VERSION_IPV4","cidr":"10.1.0.0/24"}]}`), msg: &networkv1.CreateNetworkRequest{},
+		},
+		"three subnets": {
+			json: network(`{"networkType":"NETWORK_TYPE_GENEVE","layer3Attributes":[` + v4 + `,` + v6 + `,` + v4 + `]}`), msg: &networkv1.CreateNetworkRequest{},
+		},
+		"mtu too small": {
+			json: network(`{"networkType":"NETWORK_TYPE_GENEVE","mtu":60,"layer3Attributes":[` + v4 + `]}`), msg: &networkv1.CreateNetworkRequest{},
 		},
 		"subnet ipv6": {
 			json:  subnet(`{"ipVersion":"IP_VERSION_IPV6","cidr":"2001:db8::/64","gatewayIp":"2001:db8::1"}`),
@@ -73,30 +91,20 @@ func TestNetworkValidation(t *testing.T) {
 		"subnet gateway does not match version": {
 			json: subnet(`{"ipVersion":"IP_VERSION_IPV4","cidr":"10.0.0.0/24","gatewayIp":"2001:db8::1"}`), msg: &networkv1.CreateSubnetRequest{},
 		},
-		"subnet network id not a uuid": {
-			json: `{"subnet":{"networkId":"net-1","data":{"ipVersion":"IP_VERSION_IPV4","cidr":"10.0.0.0/24"}}}`, msg: &networkv1.CreateSubnetRequest{},
+		"subnet dns server not an ip": {
+			json: subnet(`{"ipVersion":"IP_VERSION_IPV4","cidr":"10.0.0.0/24","dnsServers":["dns.example.com"]}`), msg: &networkv1.CreateSubnetRequest{},
 		},
-		"affinity resource id not a uuid": {
-			json: `{"port":{"networkId":"e5f6a7b8-c9d0-4e1f-8a2b-3c4d5e6f7a8b"},"affinityOrAntiAffinityConstraints":[{"type":"AFFINITY_TYPE_AFFINITY","affinityOrAntiAffinityResourceList":{"resourceId":["vm-1"]}}]}`,
-			msg:  &networkv1.CreatePortRequest{},
+		"subnet network id not a uuid": {
+			json: `{"subnet":{"networkId":"net-1","data":` + v4 + `}}`, msg: &networkv1.CreateSubnetRequest{},
 		},
 		"subnet without network": {
-			json: `{"subnet":{"data":{"ipVersion":"IP_VERSION_IPV4","cidr":"10.0.0.0/24"}}}`, msg: &networkv1.CreateSubnetRequest{},
+			json: `{"subnet":{"data":` + v4 + `}}`, msg: &networkv1.CreateSubnetRequest{},
 		},
-		"affinity constraint without resources": {
-			json: `{"port":{"networkId":"e5f6a7b8-c9d0-4e1f-8a2b-3c4d5e6f7a8b"},"affinityOrAntiAffinityConstraints":[{"type":"AFFINITY_TYPE_AFFINITY"}]}`,
-			msg:  &networkv1.CreatePortRequest{},
+		"update golden": {
+			json: readFile(t, "testdata/network/update_network_request.json"), msg: &networkv1.UpdateNetworkRequest{}, valid: true,
 		},
-		"affinity constraint with group": {
-			json:  `{"port":{"networkId":"e5f6a7b8-c9d0-4e1f-8a2b-3c4d5e6f7a8b"},"affinityOrAntiAffinityConstraints":[{"type":"AFFINITY_TYPE_AFFINITY","affinityOrAntiAffinityResourceGroupId":"d4e5f6a7-b8c9-4d0e-9f1a-2b3c4d5e6f7a"}]}`,
-			msg:   &networkv1.CreatePortRequest{},
-			valid: true,
-		},
-		"trunk update golden": {
-			json: readFile(t, "testdata/network/update_trunk_request.json"), msg: &networkv1.UpdateTrunkRequest{}, valid: true,
-		},
-		"affinity group without type": {
-			json: `{"affinityGroup":{"groupName":"g"}}`, msg: &commonv1.CreateAffinityGroupRequest{},
+		"update empty name": {
+			json: `{"networkId":"3e2d1c0b-9a8f-4e7d-8c6b-5a4f3e2d1c0b","update":{"networkName":""}}`, msg: &networkv1.UpdateNetworkRequest{},
 		},
 	} {
 		t.Run(name, func(t *testing.T) { checkValidation(t, tc.json, tc.msg, tc.valid) })

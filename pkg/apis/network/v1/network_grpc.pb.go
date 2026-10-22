@@ -8,7 +8,6 @@ package networkv1
 
 import (
 	context "context"
-	v1 "github.com/kube-nfv/kube-vim-api/pkg/apis/common/v1"
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
@@ -21,37 +20,23 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	NetworkService_CreateNetwork_FullMethodName       = "/kubenfv.kubevim.network.v1.NetworkService/CreateNetwork"
-	NetworkService_GetNetwork_FullMethodName          = "/kubenfv.kubevim.network.v1.NetworkService/GetNetwork"
-	NetworkService_ListNetworks_FullMethodName        = "/kubenfv.kubevim.network.v1.NetworkService/ListNetworks"
-	NetworkService_UpdateNetwork_FullMethodName       = "/kubenfv.kubevim.network.v1.NetworkService/UpdateNetwork"
-	NetworkService_DeleteNetwork_FullMethodName       = "/kubenfv.kubevim.network.v1.NetworkService/DeleteNetwork"
-	NetworkService_CreateSubnet_FullMethodName        = "/kubenfv.kubevim.network.v1.NetworkService/CreateSubnet"
-	NetworkService_GetSubnet_FullMethodName           = "/kubenfv.kubevim.network.v1.NetworkService/GetSubnet"
-	NetworkService_ListSubnets_FullMethodName         = "/kubenfv.kubevim.network.v1.NetworkService/ListSubnets"
-	NetworkService_UpdateSubnet_FullMethodName        = "/kubenfv.kubevim.network.v1.NetworkService/UpdateSubnet"
-	NetworkService_DeleteSubnet_FullMethodName        = "/kubenfv.kubevim.network.v1.NetworkService/DeleteSubnet"
-	NetworkService_CreatePort_FullMethodName          = "/kubenfv.kubevim.network.v1.NetworkService/CreatePort"
-	NetworkService_GetPort_FullMethodName             = "/kubenfv.kubevim.network.v1.NetworkService/GetPort"
-	NetworkService_ListPorts_FullMethodName           = "/kubenfv.kubevim.network.v1.NetworkService/ListPorts"
-	NetworkService_UpdatePort_FullMethodName          = "/kubenfv.kubevim.network.v1.NetworkService/UpdatePort"
-	NetworkService_DeletePort_FullMethodName          = "/kubenfv.kubevim.network.v1.NetworkService/DeletePort"
-	NetworkService_CreateTrunk_FullMethodName         = "/kubenfv.kubevim.network.v1.NetworkService/CreateTrunk"
-	NetworkService_GetTrunk_FullMethodName            = "/kubenfv.kubevim.network.v1.NetworkService/GetTrunk"
-	NetworkService_ListTrunks_FullMethodName          = "/kubenfv.kubevim.network.v1.NetworkService/ListTrunks"
-	NetworkService_UpdateTrunk_FullMethodName         = "/kubenfv.kubevim.network.v1.NetworkService/UpdateTrunk"
-	NetworkService_DeleteTrunk_FullMethodName         = "/kubenfv.kubevim.network.v1.NetworkService/DeleteTrunk"
-	NetworkService_CreateAffinityGroup_FullMethodName = "/kubenfv.kubevim.network.v1.NetworkService/CreateAffinityGroup"
-	NetworkService_GetAffinityGroup_FullMethodName    = "/kubenfv.kubevim.network.v1.NetworkService/GetAffinityGroup"
-	NetworkService_ListAffinityGroups_FullMethodName  = "/kubenfv.kubevim.network.v1.NetworkService/ListAffinityGroups"
-	NetworkService_DeleteAffinityGroup_FullMethodName = "/kubenfv.kubevim.network.v1.NetworkService/DeleteAffinityGroup"
+	NetworkService_CreateNetwork_FullMethodName = "/kubenfv.kubevim.network.v1.NetworkService/CreateNetwork"
+	NetworkService_GetNetwork_FullMethodName    = "/kubenfv.kubevim.network.v1.NetworkService/GetNetwork"
+	NetworkService_ListNetworks_FullMethodName  = "/kubenfv.kubevim.network.v1.NetworkService/ListNetworks"
+	NetworkService_UpdateNetwork_FullMethodName = "/kubenfv.kubevim.network.v1.NetworkService/UpdateNetwork"
+	NetworkService_DeleteNetwork_FullMethodName = "/kubenfv.kubevim.network.v1.NetworkService/DeleteNetwork"
+	NetworkService_CreateSubnet_FullMethodName  = "/kubenfv.kubevim.network.v1.NetworkService/CreateSubnet"
+	NetworkService_GetSubnet_FullMethodName     = "/kubenfv.kubevim.network.v1.NetworkService/GetSubnet"
+	NetworkService_ListSubnets_FullMethodName   = "/kubenfv.kubevim.network.v1.NetworkService/ListSubnets"
+	NetworkService_UpdateSubnet_FullMethodName  = "/kubenfv.kubevim.network.v1.NetworkService/UpdateSubnet"
+	NetworkService_DeleteSubnet_FullMethodName  = "/kubenfv.kubevim.network.v1.NetworkService/DeleteSubnet"
 )
 
 // NetworkServiceClient is the client API for NetworkService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 //
-// Virtualised network resources management: networks, subnets, ports and trunks.
+// Virtualised network resources management: networks and their subnets.
 type NetworkServiceClient interface {
 	// Creates a network.
 	CreateNetwork(ctx context.Context, in *CreateNetworkRequest, opts ...grpc.CallOption) (*Network, error)
@@ -59,7 +44,7 @@ type NetworkServiceClient interface {
 	GetNetwork(ctx context.Context, in *GetNetworkRequest, opts ...grpc.CallOption) (*Network, error)
 	// Returns the networks matching a filter.
 	ListNetworks(ctx context.Context, in *ListNetworksRequest, opts ...grpc.CallOption) (*ListNetworksResponse, error)
-	// Updates a network.
+	// Updates the name and metadata of a network.
 	UpdateNetwork(ctx context.Context, in *UpdateNetworkRequest, opts ...grpc.CallOption) (*Network, error)
 	// Deletes a network.
 	DeleteNetwork(ctx context.Context, in *DeleteNetworkRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
@@ -69,38 +54,10 @@ type NetworkServiceClient interface {
 	GetSubnet(ctx context.Context, in *GetSubnetRequest, opts ...grpc.CallOption) (*Subnet, error)
 	// Returns the subnets matching a filter.
 	ListSubnets(ctx context.Context, in *ListSubnetsRequest, opts ...grpc.CallOption) (*ListSubnetsResponse, error)
-	// Updates a subnet.
+	// Updates the name and metadata of a subnet.
 	UpdateSubnet(ctx context.Context, in *UpdateSubnetRequest, opts ...grpc.CallOption) (*Subnet, error)
 	// Deletes a subnet.
 	DeleteSubnet(ctx context.Context, in *DeleteSubnetRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
-	// Creates a port.
-	CreatePort(ctx context.Context, in *CreatePortRequest, opts ...grpc.CallOption) (*Port, error)
-	// Returns one port.
-	GetPort(ctx context.Context, in *GetPortRequest, opts ...grpc.CallOption) (*Port, error)
-	// Returns the ports matching a filter.
-	ListPorts(ctx context.Context, in *ListPortsRequest, opts ...grpc.CallOption) (*ListPortsResponse, error)
-	// Updates a port.
-	UpdatePort(ctx context.Context, in *UpdatePortRequest, opts ...grpc.CallOption) (*Port, error)
-	// Deletes a port.
-	DeletePort(ctx context.Context, in *DeletePortRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
-	// Creates a trunk.
-	CreateTrunk(ctx context.Context, in *CreateTrunkRequest, opts ...grpc.CallOption) (*Trunk, error)
-	// Returns one trunk.
-	GetTrunk(ctx context.Context, in *GetTrunkRequest, opts ...grpc.CallOption) (*Trunk, error)
-	// Returns the trunks matching a filter.
-	ListTrunks(ctx context.Context, in *ListTrunksRequest, opts ...grpc.CallOption) (*ListTrunksResponse, error)
-	// Updates a trunk.
-	UpdateTrunk(ctx context.Context, in *UpdateTrunkRequest, opts ...grpc.CallOption) (*Trunk, error)
-	// Deletes a trunk.
-	DeleteTrunk(ctx context.Context, in *DeleteTrunkRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
-	// Creates a network affinity or anti-affinity group.
-	CreateAffinityGroup(ctx context.Context, in *v1.CreateAffinityGroupRequest, opts ...grpc.CallOption) (*v1.AffinityGroup, error)
-	// Returns one network affinity group.
-	GetAffinityGroup(ctx context.Context, in *v1.GetAffinityGroupRequest, opts ...grpc.CallOption) (*v1.AffinityGroup, error)
-	// Returns the network affinity groups.
-	ListAffinityGroups(ctx context.Context, in *v1.ListAffinityGroupsRequest, opts ...grpc.CallOption) (*v1.ListAffinityGroupsResponse, error)
-	// Deletes a network affinity group.
-	DeleteAffinityGroup(ctx context.Context, in *v1.DeleteAffinityGroupRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 }
 
 type networkServiceClient struct {
@@ -211,151 +168,11 @@ func (c *networkServiceClient) DeleteSubnet(ctx context.Context, in *DeleteSubne
 	return out, nil
 }
 
-func (c *networkServiceClient) CreatePort(ctx context.Context, in *CreatePortRequest, opts ...grpc.CallOption) (*Port, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(Port)
-	err := c.cc.Invoke(ctx, NetworkService_CreatePort_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *networkServiceClient) GetPort(ctx context.Context, in *GetPortRequest, opts ...grpc.CallOption) (*Port, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(Port)
-	err := c.cc.Invoke(ctx, NetworkService_GetPort_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *networkServiceClient) ListPorts(ctx context.Context, in *ListPortsRequest, opts ...grpc.CallOption) (*ListPortsResponse, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(ListPortsResponse)
-	err := c.cc.Invoke(ctx, NetworkService_ListPorts_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *networkServiceClient) UpdatePort(ctx context.Context, in *UpdatePortRequest, opts ...grpc.CallOption) (*Port, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(Port)
-	err := c.cc.Invoke(ctx, NetworkService_UpdatePort_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *networkServiceClient) DeletePort(ctx context.Context, in *DeletePortRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(emptypb.Empty)
-	err := c.cc.Invoke(ctx, NetworkService_DeletePort_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *networkServiceClient) CreateTrunk(ctx context.Context, in *CreateTrunkRequest, opts ...grpc.CallOption) (*Trunk, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(Trunk)
-	err := c.cc.Invoke(ctx, NetworkService_CreateTrunk_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *networkServiceClient) GetTrunk(ctx context.Context, in *GetTrunkRequest, opts ...grpc.CallOption) (*Trunk, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(Trunk)
-	err := c.cc.Invoke(ctx, NetworkService_GetTrunk_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *networkServiceClient) ListTrunks(ctx context.Context, in *ListTrunksRequest, opts ...grpc.CallOption) (*ListTrunksResponse, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(ListTrunksResponse)
-	err := c.cc.Invoke(ctx, NetworkService_ListTrunks_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *networkServiceClient) UpdateTrunk(ctx context.Context, in *UpdateTrunkRequest, opts ...grpc.CallOption) (*Trunk, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(Trunk)
-	err := c.cc.Invoke(ctx, NetworkService_UpdateTrunk_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *networkServiceClient) DeleteTrunk(ctx context.Context, in *DeleteTrunkRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(emptypb.Empty)
-	err := c.cc.Invoke(ctx, NetworkService_DeleteTrunk_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *networkServiceClient) CreateAffinityGroup(ctx context.Context, in *v1.CreateAffinityGroupRequest, opts ...grpc.CallOption) (*v1.AffinityGroup, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(v1.AffinityGroup)
-	err := c.cc.Invoke(ctx, NetworkService_CreateAffinityGroup_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *networkServiceClient) GetAffinityGroup(ctx context.Context, in *v1.GetAffinityGroupRequest, opts ...grpc.CallOption) (*v1.AffinityGroup, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(v1.AffinityGroup)
-	err := c.cc.Invoke(ctx, NetworkService_GetAffinityGroup_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *networkServiceClient) ListAffinityGroups(ctx context.Context, in *v1.ListAffinityGroupsRequest, opts ...grpc.CallOption) (*v1.ListAffinityGroupsResponse, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(v1.ListAffinityGroupsResponse)
-	err := c.cc.Invoke(ctx, NetworkService_ListAffinityGroups_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *networkServiceClient) DeleteAffinityGroup(ctx context.Context, in *v1.DeleteAffinityGroupRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(emptypb.Empty)
-	err := c.cc.Invoke(ctx, NetworkService_DeleteAffinityGroup_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 // NetworkServiceServer is the server API for NetworkService service.
 // All implementations must embed UnimplementedNetworkServiceServer
 // for forward compatibility.
 //
-// Virtualised network resources management: networks, subnets, ports and trunks.
+// Virtualised network resources management: networks and their subnets.
 type NetworkServiceServer interface {
 	// Creates a network.
 	CreateNetwork(context.Context, *CreateNetworkRequest) (*Network, error)
@@ -363,7 +180,7 @@ type NetworkServiceServer interface {
 	GetNetwork(context.Context, *GetNetworkRequest) (*Network, error)
 	// Returns the networks matching a filter.
 	ListNetworks(context.Context, *ListNetworksRequest) (*ListNetworksResponse, error)
-	// Updates a network.
+	// Updates the name and metadata of a network.
 	UpdateNetwork(context.Context, *UpdateNetworkRequest) (*Network, error)
 	// Deletes a network.
 	DeleteNetwork(context.Context, *DeleteNetworkRequest) (*emptypb.Empty, error)
@@ -373,38 +190,10 @@ type NetworkServiceServer interface {
 	GetSubnet(context.Context, *GetSubnetRequest) (*Subnet, error)
 	// Returns the subnets matching a filter.
 	ListSubnets(context.Context, *ListSubnetsRequest) (*ListSubnetsResponse, error)
-	// Updates a subnet.
+	// Updates the name and metadata of a subnet.
 	UpdateSubnet(context.Context, *UpdateSubnetRequest) (*Subnet, error)
 	// Deletes a subnet.
 	DeleteSubnet(context.Context, *DeleteSubnetRequest) (*emptypb.Empty, error)
-	// Creates a port.
-	CreatePort(context.Context, *CreatePortRequest) (*Port, error)
-	// Returns one port.
-	GetPort(context.Context, *GetPortRequest) (*Port, error)
-	// Returns the ports matching a filter.
-	ListPorts(context.Context, *ListPortsRequest) (*ListPortsResponse, error)
-	// Updates a port.
-	UpdatePort(context.Context, *UpdatePortRequest) (*Port, error)
-	// Deletes a port.
-	DeletePort(context.Context, *DeletePortRequest) (*emptypb.Empty, error)
-	// Creates a trunk.
-	CreateTrunk(context.Context, *CreateTrunkRequest) (*Trunk, error)
-	// Returns one trunk.
-	GetTrunk(context.Context, *GetTrunkRequest) (*Trunk, error)
-	// Returns the trunks matching a filter.
-	ListTrunks(context.Context, *ListTrunksRequest) (*ListTrunksResponse, error)
-	// Updates a trunk.
-	UpdateTrunk(context.Context, *UpdateTrunkRequest) (*Trunk, error)
-	// Deletes a trunk.
-	DeleteTrunk(context.Context, *DeleteTrunkRequest) (*emptypb.Empty, error)
-	// Creates a network affinity or anti-affinity group.
-	CreateAffinityGroup(context.Context, *v1.CreateAffinityGroupRequest) (*v1.AffinityGroup, error)
-	// Returns one network affinity group.
-	GetAffinityGroup(context.Context, *v1.GetAffinityGroupRequest) (*v1.AffinityGroup, error)
-	// Returns the network affinity groups.
-	ListAffinityGroups(context.Context, *v1.ListAffinityGroupsRequest) (*v1.ListAffinityGroupsResponse, error)
-	// Deletes a network affinity group.
-	DeleteAffinityGroup(context.Context, *v1.DeleteAffinityGroupRequest) (*emptypb.Empty, error)
 	mustEmbedUnimplementedNetworkServiceServer()
 }
 
@@ -444,48 +233,6 @@ func (UnimplementedNetworkServiceServer) UpdateSubnet(context.Context, *UpdateSu
 }
 func (UnimplementedNetworkServiceServer) DeleteSubnet(context.Context, *DeleteSubnetRequest) (*emptypb.Empty, error) {
 	return nil, status.Error(codes.Unimplemented, "method DeleteSubnet not implemented")
-}
-func (UnimplementedNetworkServiceServer) CreatePort(context.Context, *CreatePortRequest) (*Port, error) {
-	return nil, status.Error(codes.Unimplemented, "method CreatePort not implemented")
-}
-func (UnimplementedNetworkServiceServer) GetPort(context.Context, *GetPortRequest) (*Port, error) {
-	return nil, status.Error(codes.Unimplemented, "method GetPort not implemented")
-}
-func (UnimplementedNetworkServiceServer) ListPorts(context.Context, *ListPortsRequest) (*ListPortsResponse, error) {
-	return nil, status.Error(codes.Unimplemented, "method ListPorts not implemented")
-}
-func (UnimplementedNetworkServiceServer) UpdatePort(context.Context, *UpdatePortRequest) (*Port, error) {
-	return nil, status.Error(codes.Unimplemented, "method UpdatePort not implemented")
-}
-func (UnimplementedNetworkServiceServer) DeletePort(context.Context, *DeletePortRequest) (*emptypb.Empty, error) {
-	return nil, status.Error(codes.Unimplemented, "method DeletePort not implemented")
-}
-func (UnimplementedNetworkServiceServer) CreateTrunk(context.Context, *CreateTrunkRequest) (*Trunk, error) {
-	return nil, status.Error(codes.Unimplemented, "method CreateTrunk not implemented")
-}
-func (UnimplementedNetworkServiceServer) GetTrunk(context.Context, *GetTrunkRequest) (*Trunk, error) {
-	return nil, status.Error(codes.Unimplemented, "method GetTrunk not implemented")
-}
-func (UnimplementedNetworkServiceServer) ListTrunks(context.Context, *ListTrunksRequest) (*ListTrunksResponse, error) {
-	return nil, status.Error(codes.Unimplemented, "method ListTrunks not implemented")
-}
-func (UnimplementedNetworkServiceServer) UpdateTrunk(context.Context, *UpdateTrunkRequest) (*Trunk, error) {
-	return nil, status.Error(codes.Unimplemented, "method UpdateTrunk not implemented")
-}
-func (UnimplementedNetworkServiceServer) DeleteTrunk(context.Context, *DeleteTrunkRequest) (*emptypb.Empty, error) {
-	return nil, status.Error(codes.Unimplemented, "method DeleteTrunk not implemented")
-}
-func (UnimplementedNetworkServiceServer) CreateAffinityGroup(context.Context, *v1.CreateAffinityGroupRequest) (*v1.AffinityGroup, error) {
-	return nil, status.Error(codes.Unimplemented, "method CreateAffinityGroup not implemented")
-}
-func (UnimplementedNetworkServiceServer) GetAffinityGroup(context.Context, *v1.GetAffinityGroupRequest) (*v1.AffinityGroup, error) {
-	return nil, status.Error(codes.Unimplemented, "method GetAffinityGroup not implemented")
-}
-func (UnimplementedNetworkServiceServer) ListAffinityGroups(context.Context, *v1.ListAffinityGroupsRequest) (*v1.ListAffinityGroupsResponse, error) {
-	return nil, status.Error(codes.Unimplemented, "method ListAffinityGroups not implemented")
-}
-func (UnimplementedNetworkServiceServer) DeleteAffinityGroup(context.Context, *v1.DeleteAffinityGroupRequest) (*emptypb.Empty, error) {
-	return nil, status.Error(codes.Unimplemented, "method DeleteAffinityGroup not implemented")
 }
 func (UnimplementedNetworkServiceServer) mustEmbedUnimplementedNetworkServiceServer() {}
 func (UnimplementedNetworkServiceServer) testEmbeddedByValue()                        {}
@@ -688,258 +435,6 @@ func _NetworkService_DeleteSubnet_Handler(srv interface{}, ctx context.Context, 
 	return interceptor(ctx, in, info, handler)
 }
 
-func _NetworkService_CreatePort_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(CreatePortRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(NetworkServiceServer).CreatePort(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: NetworkService_CreatePort_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(NetworkServiceServer).CreatePort(ctx, req.(*CreatePortRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _NetworkService_GetPort_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetPortRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(NetworkServiceServer).GetPort(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: NetworkService_GetPort_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(NetworkServiceServer).GetPort(ctx, req.(*GetPortRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _NetworkService_ListPorts_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ListPortsRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(NetworkServiceServer).ListPorts(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: NetworkService_ListPorts_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(NetworkServiceServer).ListPorts(ctx, req.(*ListPortsRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _NetworkService_UpdatePort_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UpdatePortRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(NetworkServiceServer).UpdatePort(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: NetworkService_UpdatePort_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(NetworkServiceServer).UpdatePort(ctx, req.(*UpdatePortRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _NetworkService_DeletePort_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(DeletePortRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(NetworkServiceServer).DeletePort(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: NetworkService_DeletePort_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(NetworkServiceServer).DeletePort(ctx, req.(*DeletePortRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _NetworkService_CreateTrunk_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(CreateTrunkRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(NetworkServiceServer).CreateTrunk(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: NetworkService_CreateTrunk_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(NetworkServiceServer).CreateTrunk(ctx, req.(*CreateTrunkRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _NetworkService_GetTrunk_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetTrunkRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(NetworkServiceServer).GetTrunk(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: NetworkService_GetTrunk_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(NetworkServiceServer).GetTrunk(ctx, req.(*GetTrunkRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _NetworkService_ListTrunks_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ListTrunksRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(NetworkServiceServer).ListTrunks(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: NetworkService_ListTrunks_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(NetworkServiceServer).ListTrunks(ctx, req.(*ListTrunksRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _NetworkService_UpdateTrunk_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UpdateTrunkRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(NetworkServiceServer).UpdateTrunk(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: NetworkService_UpdateTrunk_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(NetworkServiceServer).UpdateTrunk(ctx, req.(*UpdateTrunkRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _NetworkService_DeleteTrunk_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(DeleteTrunkRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(NetworkServiceServer).DeleteTrunk(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: NetworkService_DeleteTrunk_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(NetworkServiceServer).DeleteTrunk(ctx, req.(*DeleteTrunkRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _NetworkService_CreateAffinityGroup_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(v1.CreateAffinityGroupRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(NetworkServiceServer).CreateAffinityGroup(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: NetworkService_CreateAffinityGroup_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(NetworkServiceServer).CreateAffinityGroup(ctx, req.(*v1.CreateAffinityGroupRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _NetworkService_GetAffinityGroup_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(v1.GetAffinityGroupRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(NetworkServiceServer).GetAffinityGroup(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: NetworkService_GetAffinityGroup_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(NetworkServiceServer).GetAffinityGroup(ctx, req.(*v1.GetAffinityGroupRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _NetworkService_ListAffinityGroups_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(v1.ListAffinityGroupsRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(NetworkServiceServer).ListAffinityGroups(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: NetworkService_ListAffinityGroups_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(NetworkServiceServer).ListAffinityGroups(ctx, req.(*v1.ListAffinityGroupsRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _NetworkService_DeleteAffinityGroup_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(v1.DeleteAffinityGroupRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(NetworkServiceServer).DeleteAffinityGroup(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: NetworkService_DeleteAffinityGroup_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(NetworkServiceServer).DeleteAffinityGroup(ctx, req.(*v1.DeleteAffinityGroupRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 // NetworkService_ServiceDesc is the grpc.ServiceDesc for NetworkService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -986,62 +481,6 @@ var NetworkService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "DeleteSubnet",
 			Handler:    _NetworkService_DeleteSubnet_Handler,
-		},
-		{
-			MethodName: "CreatePort",
-			Handler:    _NetworkService_CreatePort_Handler,
-		},
-		{
-			MethodName: "GetPort",
-			Handler:    _NetworkService_GetPort_Handler,
-		},
-		{
-			MethodName: "ListPorts",
-			Handler:    _NetworkService_ListPorts_Handler,
-		},
-		{
-			MethodName: "UpdatePort",
-			Handler:    _NetworkService_UpdatePort_Handler,
-		},
-		{
-			MethodName: "DeletePort",
-			Handler:    _NetworkService_DeletePort_Handler,
-		},
-		{
-			MethodName: "CreateTrunk",
-			Handler:    _NetworkService_CreateTrunk_Handler,
-		},
-		{
-			MethodName: "GetTrunk",
-			Handler:    _NetworkService_GetTrunk_Handler,
-		},
-		{
-			MethodName: "ListTrunks",
-			Handler:    _NetworkService_ListTrunks_Handler,
-		},
-		{
-			MethodName: "UpdateTrunk",
-			Handler:    _NetworkService_UpdateTrunk_Handler,
-		},
-		{
-			MethodName: "DeleteTrunk",
-			Handler:    _NetworkService_DeleteTrunk_Handler,
-		},
-		{
-			MethodName: "CreateAffinityGroup",
-			Handler:    _NetworkService_CreateAffinityGroup_Handler,
-		},
-		{
-			MethodName: "GetAffinityGroup",
-			Handler:    _NetworkService_GetAffinityGroup_Handler,
-		},
-		{
-			MethodName: "ListAffinityGroups",
-			Handler:    _NetworkService_ListAffinityGroups_Handler,
-		},
-		{
-			MethodName: "DeleteAffinityGroup",
-			Handler:    _NetworkService_DeleteAffinityGroup_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
