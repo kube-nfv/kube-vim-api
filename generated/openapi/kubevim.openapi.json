@@ -112,7 +112,7 @@
                 "$ref": "#/components/schemas/OperationalState"
               }
             ],
-            "description": "Administrative state of the compute resource.",
+            "description": "Operational state of the compute resource.",
             "readOnly": true
           },
           "placementGroupIds": {

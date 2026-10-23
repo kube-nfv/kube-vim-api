@@ -118,6 +118,10 @@ func TestComputeValidation(t *testing.T) {
 		"get snapshot of all computes": {
 			json: `{"computeId":"-","snapshotId":"5a6b7c8d-9e0f-4a1b-8c2d-3e4f5a6b7c8d"}`, msg: &computev1.GetComputeSnapshotRequest{},
 		},
+		"update adds interfaces with the same name": {
+			json: `{` + compute + `,"update":{"networkInterfacesToAdd":[{"name":"data","networkId":"3e2d1c0b-9a8f-4e7d-8c6b-5a4f3e2d1c0b"},{"name":"data","networkId":"3e2d1c0b-9a8f-4e7d-8c6b-5a4f3e2d1c0b"}]}}`,
+			msg:  &computev1.UpdateComputeRequest{},
+		},
 		"delete with volumes": {
 			json: `{` + compute + `,"deleteVolumes":true}`, msg: &computev1.DeleteComputeRequest{}, valid: true,
 		},

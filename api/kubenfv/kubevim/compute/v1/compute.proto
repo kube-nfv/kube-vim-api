@@ -552,7 +552,7 @@ message Compute {
     (google.api.field_behavior) = OUTPUT_ONLY,
     (kubenfv.kubevim.options.v1.ifa_field) = {ref: "IFA006 8.4.3.2 VirtualCompute.hostId"}
   ];
-  // Administrative state of the compute resource.
+  // Operational state of the compute resource.
   kubenfv.kubevim.common.v1.OperationalState operational_state = 11 [
     (google.api.field_behavior) = OUTPUT_ONLY,
     (kubenfv.kubevim.options.v1.ifa_field) = {ref: "IFA006 8.4.3.2 VirtualCompute.operationalState"}
@@ -1096,6 +1096,11 @@ message ComputeUpdate {
   // Network interfaces to add.
   repeated NetworkInterfaceData network_interfaces_to_add = 3 [
     (google.api.field_behavior) = OPTIONAL,
+    (buf.validate.field).cel = {
+      id: "compute.unique_interface_names"
+      message: "interface names must be unique"
+      expression: "this.filter(i, i.name != '').map(i, i.name).unique()"
+    },
     (kubenfv.kubevim.options.v1.ifa_field) = {ref: "IFA006 7.3.1.4.2 UpdateComputeRequest.networkInterfaceNew"}
   ];
   // Names of network interfaces to remove.

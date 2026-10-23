@@ -686,7 +686,10 @@ message GetSubnetRequest {
 
 message ListSubnetsRequest {
   // Attribute-based filter expression (SOL 013 5.2).
-  string filter = 1 [(google.api.field_behavior) = OPTIONAL];
+  string filter = 1 [
+    (google.api.field_behavior) = OPTIONAL,
+    (kubenfv.kubevim.options.v1.ifa_field) = {ref: "IFA006 7.4.1.3.2 QueryNetworkRequest.queryNetworkFilter"}
+  ];
   // Marker of the page to return, from a previous response (SOL 013 5.4).
   string nextpage_opaque_marker = 2 [
     json_name = "nextpage_opaque_marker",

@@ -587,7 +587,7 @@ type Compute struct {
 	ZoneId string `protobuf:"bytes,9,opt,name=zone_id,json=zoneId,proto3" json:"zone_id,omitempty"`
 	// Host the compute resource runs on (the Kubernetes node).
 	HostId string `protobuf:"bytes,10,opt,name=host_id,json=hostId,proto3" json:"host_id,omitempty"`
-	// Administrative state of the compute resource.
+	// Operational state of the compute resource.
 	OperationalState v1.OperationalState `protobuf:"varint,11,opt,name=operational_state,json=operationalState,proto3,enum=kubenfv.kubevim.common.v1.OperationalState" json:"operational_state,omitempty"`
 	// Running state of the compute resource.
 	RunningState ComputeRunningState `protobuf:"varint,12,opt,name=running_state,json=runningState,proto3,enum=kubenfv.kubevim.compute.v1.ComputeRunningState" json:"running_state,omitempty"`
@@ -2860,12 +2860,13 @@ const file_kubenfv_kubevim_compute_v1_compute_proto_rawDesc = "" +
 	"\n" +
 	"compute_id\x18\x01 \x01(\tB\f\xe2A\x01\x02\xbaH\x05r\x03\xb0\x01\x01R\tcomputeId\x12M\n" +
 	"\x06update\x18\x02 \x01(\v2).kubenfv.kubevim.compute.v1.ComputeUpdateB\n" +
-	"\xe2A\x01\x02\xbaH\x03\xc8\x01\x01R\x06update\"\x99\x06\n" +
+	"\xe2A\x01\x02\xbaH\x03\xc8\x01\x01R\x06update\"\x96\a\n" +
 	"\rComputeUpdate\x123\n" +
 	"\fcompute_name\x18\x01 \x01(\tB\v\xe2A\x01\x01\xbaH\x04r\x02\x10\x01H\x00R\vcomputeName\x88\x01\x01\x12\x97\x01\n" +
 	"\bmetadata\x18\x02 \x03(\v27.kubenfv.kubevim.compute.v1.ComputeUpdate.MetadataEntryBB\xe2A\x01\x01\xbaH\a\x9a\x01\x04\xf8\x8b\x19\x01\xfa\x8b\x190\n" +
-	".IFA006 7.3.1.4.2 UpdateComputeRequest.metaDataR\bmetadata\x12\xb0\x01\n" +
-	"\x19network_interfaces_to_add\x18\x03 \x03(\v20.kubenfv.kubevim.compute.v1.NetworkInterfaceDataBC\xe2A\x01\x01\xfa\x8b\x19;\n" +
+	".IFA006 7.3.1.4.2 UpdateComputeRequest.metaDataR\bmetadata\x12\xad\x02\n" +
+	"\x19network_interfaces_to_add\x18\x03 \x03(\v20.kubenfv.kubevim.compute.v1.NetworkInterfaceDataB\xbf\x01\xe2A\x01\x01\xbaHy\xba\x01v\n" +
+	"\x1ecompute.unique_interface_names\x12\x1einterface names must be unique\x1a4this.filter(i, i.name != '').map(i, i.name).unique()\xfa\x8b\x19;\n" +
 	"9IFA006 7.3.1.4.2 UpdateComputeRequest.networkInterfaceNewR\x16networkInterfacesToAdd\x12\x99\x01\n" +
 	"!network_interface_names_to_remove\x18\x04 \x03(\tBO\xe2A\x01\x01\xbaH\t\x92\x01\x06\"\x04r\x02\x10\x01\xfa\x8b\x19;\x129\b\x01\x10\x01\x1a3Removes interfaces; IFA only updates them in place.R\x1dnetworkInterfaceNamesToRemove\x1a;\n" +
 	"\rMetadataEntry\x12\x10\n" +

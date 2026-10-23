@@ -218,7 +218,7 @@
                 "$ref": "#/components/schemas/kubenfv.kubevim.common.v1.OperationalState"
               }
             ],
-            "description": "Administrative state of the compute resource.",
+            "description": "Operational state of the compute resource.",
             "readOnly": true
           },
           "placementGroupIds": {

@@ -1286,9 +1286,10 @@ const file_kubenfv_kubevim_network_v1_network_proto_rawDesc = "" +
 	"\n" +
 	"network_id\x18\x01 \x01(\tB\f\xe2A\x01\x02\xbaH\x05r\x03\xb0\x01\x01R\tnetworkId\"=\n" +
 	"\x10GetSubnetRequest\x12)\n" +
-	"\tsubnet_id\x18\x01 \x01(\tB\f\xe2A\x01\x02\xbaH\x05r\x03\xb0\x01\x01R\bsubnetId\"p\n" +
-	"\x12ListSubnetsRequest\x12\x1c\n" +
-	"\x06filter\x18\x01 \x01(\tB\x04\xe2A\x01\x01R\x06filter\x12<\n" +
+	"\tsubnet_id\x18\x01 \x01(\tB\f\xe2A\x01\x02\xbaH\x05r\x03\xb0\x01\x01R\bsubnetId\"\xad\x01\n" +
+	"\x12ListSubnetsRequest\x12Y\n" +
+	"\x06filter\x18\x01 \x01(\tBA\xe2A\x01\x01\xfa\x8b\x199\n" +
+	"7IFA006 7.4.1.3.2 QueryNetworkRequest.queryNetworkFilterR\x06filter\x12<\n" +
 	"\x16nextpage_opaque_marker\x18\x02 \x01(\tB\x04\xe2A\x01\x01R\x16nextpage_opaque_marker\"\xc4\x01\n" +
 	"\x13ListSubnetsResponse\x12u\n" +
 	"\asubnets\x18\x01 \x03(\v2\".kubenfv.kubevim.network.v1.SubnetB7\xfa\x8b\x193\n" +
