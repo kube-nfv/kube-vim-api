@@ -1,312 +1,142 @@
-# KubeVim API
+# Kube-VIM API
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
 [![Go Reference](https://pkg.go.dev/badge/github.com/kube-nfv/kube-vim-api.svg)](https://pkg.go.dev/github.com/kube-nfv/kube-vim-api)
 
-Protocol Buffer definitions and generated clients for KubeVim ETSI MANO (Management and Orchestration) interfaces.
+The API of [Kube-VIM](https://github.com/kube-nfv/kube-vim), a Kubernetes-native Virtualized Infrastructure Manager (VIM) for Network Function Virtualization (NFV).
 
-## Overview
+The API is built on the ETSI NFV-MANO specifications and aligned with them: resources, attributes and operations come from the ETSI GS NFV-IFA 005 and IFA 006 information model (the Or-Vi and Vi-Vnfm reference points), and the REST interface follows the ETSI GS NFV-SOL 013 conventions. Kube-VIM extends it where cloud-native Kubernetes infrastructure needs more (placement groups, storage classes, provider networks, image import) and where it makes the API easier to use and maintain. [Kube-VIM API and ETSI NFV](docs/etsi-alignment.md) lists the extensions and what is left out.
 
-This repository contains Protocol Buffer definitions of the **VI-VNFM** and **OR-VI** ETSI MANO reference points described in ETSI GS NFV-IFA 005 (OR-VI) [^fn1] and ETSI GS NFV-IFA 006 (VI-VNFM) [^fn2]. Some model definitions are also used from ETSI GS NFV-SOL 014.
+The API is defined in Protocol Buffers and served over gRPC and, through a gateway, as a REST API with an OpenAPI 3.1 schema. This repository publishes the protos, the generated Go code, the OpenAPI schemas and a Python client.
 
-The RESTful reverse proxy is generated using grpc-gateway and conforms to ETSI GS NFV-SOL 013 [^fn3] specifications.
+> **Status:** v1 is in alpha (`v1.0.0-alpha.N` tags). It may still change in breaking ways until `v1.0.0`. The v0 API and its `kubevim-vivnfm-client` package are superseded.
 
-### ETSI Standards Compliance
+## APIs
 
-This implementation provides:
-- **VI-VNFM Interface**: Standardized interface between Virtualized Infrastructure Manager (VIM) and VNF Manager (VNFM)
-- **OR-VI Interface**: Orchestrator to VIM interface for resource management
-- **RESTful API Binding**: HTTP/REST mapping following ETSI SOL 013 guidelines
-- **NFV MANO Compliance**: Full compliance with ETSI NFV Management and Orchestration standards
+One API per ETSI management interface:
 
-## Repository Structure
+| API | REST prefix | gRPC service | Manages | ETSI interface |
+| --- | --- | --- | --- | --- |
+| Software image | `/image/v1` | `kubenfv.kubevim.image.v1.ImageService` | Images and their import | IFA 005 Software Image Management |
+| Compute flavour | `/flavour/v1` | `kubenfv.kubevim.flavour.v1.FlavourService` | Flavours: CPU, memory, disks | IFA 006 Compute Flavour Management |
+| Network | `/network/v1` | `kubenfv.kubevim.network.v1.NetworkService` | Networks and subnets | IFA 006 Network Resources Management |
+| Compute | `/compute/v1` | `kubenfv.kubevim.compute.v1.ComputeService` | Virtual machines, their snapshots, placement groups | IFA 006 Compute Resources Management |
+| Storage | `/storage/v1` | `kubenfv.kubevim.storage.v1.StorageService` | Volumes and their snapshots | IFA 006 Storage Resources Management |
 
-```
-kube-vim-api/
-├── api/                          # Protocol Buffer definitions
-│   ├── common/                   # Shared basic types
-│   │   └── common.proto          # Basic types (Identifier, Filter, etc.)
-│   ├── vivnfm/                   # ETSI VI-VNFM interface (IFA-006)
-│   │   ├── types.proto           # ETSI NFV types (SoftwareImageInformation, etc.)
-│   │   └── vi-vnfm.proto         # Complete VI-VNFM API definition
-│   └── admin/                    # KubeVim administrative extensions
-│       ├── types.proto           # Admin-specific types (ImageSource, etc.)
-│       └── kubevim-admin.proto   # Admin API operations
-├── pkg/apis/                     # Generated Go code
-│   ├── common.pb.go              # Generated common types
-│   ├── vivnfm/                   # VI-VNFM Go client
-│   │   ├── types.pb.go           # Generated ETSI types
-│   │   ├── vi-vnfm.pb.go         # Protocol Buffer types
-│   │   ├── vi-vnfm_grpc.pb.go    # gRPC client/server
-│   │   └── vi-vnfm.pb.gw.go      # gRPC-Gateway reverse proxy
-│   └── admin/                    # Admin API Go client
-│       ├── types.pb.go           # Generated admin types
-│       ├── kubevim-admin.pb.go
-│       ├── kubevim-admin_grpc.pb.go
-│       └── kubevim-admin.pb.gw.go
-├── generated/                    # Generated clients (non-Go)
-│   ├── openapi/                  # OpenAPI/Swagger specifications
-│   │   ├── vivnfm/
-│   │   │   └── vi-vnfm.swagger.json
-│   │   └── admin/
-│   │       └── kubevim-admin.swagger.json
-│   └── python/                   # Python client library
-│       ├── kubevim_vivnfm_client/
-│       ├── docs/                 # API documentation
-│       └── setup.py              # Python package setup
-└── kube-ovn-api/                # Kube-OVN integration types
-    └── pkg/apis/kubeovn/         # Golang types for kube-ovn networking
-```
+Or-Vi (NFVO) and Vi-Vnfm (VNFM) clients use the same APIs; they differ only in the OAuth 2.0 scopes they are granted.
 
-## Quick Start
+## How the API works
 
-### Prerequisites
-- Go 1.23+
-- Docker
-- Make
-- Python 3.8+ (for Python client)
+- **Methods.** Each resource has Create, Get, List, Update and Delete (IFA's Allocate, Query, Update and Terminate). Actions are task endpoints, e.g. `POST /compute/v1/computes/{compute_id}/operate` to start, stop or reboot. Each RPC names the IFA operation it implements.
+- **Identifiers** are UUIDs assigned by Kube-VIM, stable for the life of the resource.
+- **Create** returns `201 Created` with a `Location` header and the resource. **Delete** returns `204 No Content`.
+- **Update** is a partial update (`PATCH`): fields left out keep their value. Every resource with an Update can change its name and `metadata`.
+- **Metadata.** Every resource has one `metadata` map. Updates merge keys into it; keys under `kubevim.kubenfv.io/` are written by Kube-VIM.
+- **Asynchronous work** (image import, VM start) is reported in the resource's state; poll Get until it is done.
+- **List** returns a JSON array and accepts a SOL 013 `filter`, e.g. `filter=(eq,computeName,router-1)`. When results are paged, the `Link` header carries the URL of the next page.
+- **Errors** are `application/problem+json` ProblemDetails (RFC 9457). The `type` names the reason, e.g. `https://kubevim.kubenfv.io/problems/resource-in-use`; the reasons are listed in [errors.proto](api/kubenfv/kubevim/common/v1/errors.proto). Over gRPC the same reason is in a `google.rpc.ErrorInfo` detail.
+- **Authentication** is an OAuth 2.0 bearer token. Each operation needs one scope, named `<api>:v1:<permission>`, e.g. `compute:v1:allocate` or `image:v1:query`. An NFVO is typically granted every scope; a VNFM every scope except adding, updating and deleting images.
+- **Validation.** Requests are validated against the rules in the protos ([protovalidate](https://protovalidate.com/)). A request field that Kube-VIM does not support yet is rejected, never ignored.
 
-### Build All Clients
-```bash
-# Generate all code (Go, OpenAPI specs, Python client)
-make all
-```
+## Clients
 
-### Generate Specific Clients
-```bash
-make proto-compile    # Go code and OpenAPI specs
-make python-gen       # Python client only
-make proto-clean      # Clean all generated code
-```
+| Client | Install | Source |
+| --- | --- | --- |
+| Go (gRPC and types) | `go get github.com/kube-nfv/kube-vim-api` | [pkg/apis](pkg/apis) |
+| Python (REST) | `pip install kubevim-client` | [generated/python](generated/python) |
+| OpenAPI 3.1 schemas | GitHub release assets | [generated/openapi](generated/openapi): one per API, plus `kubevim.openapi.json` with all five |
 
-## Usage Examples
+### Python
 
-### Go Client (VI-VNFM Interface)
-```go
-package main
-
-import (
-    "context"
-    "log"
-
-    "github.com/kube-nfv/kube-vim-api/pkg/apis"
-    "github.com/kube-nfv/kube-vim-api/pkg/apis/vivnfm"
-    "google.golang.org/grpc"
-)
-
-func main() {
-    // Connect to KubeVim gRPC server
-    conn, err := grpc.Dial("localhost:9090", grpc.WithInsecure())
-    if err != nil {
-        log.Fatal(err)
-    }
-    defer conn.Close()
-
-    // Create VI-VNFM client
-    client := vivnfm.NewViVnfmClient(conn)
-
-    // Query available software images
-    req := &vivnfm.QueryImagesRequest{
-        ImageQueryFilter: &apis.Filter{Value: "ubuntu"},
-    }
-
-    resp, err := client.QueryImages(context.Background(), req)
-    if err != nil {
-        log.Fatal(err)
-    }
-
-    for _, image := range resp.SoftwareImagesInformation {
-        log.Printf("Image: %s, Provider: %s", image.Name, image.Provider)
-    }
-}
-```
-
-### Python Client
 ```python
-import kubevim_vivnfm_client
-from kubevim_vivnfm_client.api import vi_vnfm_api
-from kubevim_vivnfm_client.model.pb_query_images_request import PbQueryImagesRequest
+import kubevim_client
+from kubevim_client import ComputeServiceApi, CreateComputeRequest, CreateImageRequest, ImageServiceApi
 
-# Configure client
-configuration = kubevim_vivnfm_client.Configuration(
-    host="http://localhost:8080"  # KubeVim REST API endpoint
+config = kubevim_client.Configuration(host="https://kubevim.example.com", access_token=token)
+with kubevim_client.ApiClient(config) as client:
+    image = ImageServiceApi(client).create_image(CreateImageRequest.from_dict({
+        "image": {
+            "name": "ubuntu-24.04",
+            "source": {"http": {"url": "https://cloud-images.ubuntu.com/noble/current/noble-server-cloudimg-amd64.img"}},
+        },
+    }))
+
+    compute = ComputeServiceApi(client).create_compute(CreateComputeRequest.from_dict({
+        "compute": {"computeName": "router-1", "flavourId": flavour_id, "imageId": image.image_id},
+        "networkInterfaces": [{"name": "data0", "networkId": network_id}],
+    }))
+    print(compute.compute_id, compute.running_state)
+```
+
+Errors raise `kubevim_client.exceptions.ApiException`; its `status` is the HTTP status and its `body` the ProblemDetails. Enum values added by a newer server read as `UNKNOWN_DEFAULT_OPEN_API` instead of failing.
+
+### Go
+
+```go
+import (
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials"
+	"google.golang.org/grpc/metadata"
+
+	computev1 "github.com/kube-nfv/kube-vim-api/pkg/apis/compute/v1"
 )
 
-# Create API instance
-with kubevim_vivnfm_client.ApiClient(configuration) as api_client:
-    api_instance = vi_vnfm_api.ViVnfmApi(api_client)
-
-    try:
-        # Query software images
-        response = api_instance.query_images()
-
-        for image in response.software_images_information:
-            print(f"Image: {image.name}, Provider: {image.provider}")
-
-    except kubevim_vivnfm_client.ApiException as e:
-        print(f"Exception when calling ViVnfmApi->query_images: {e}")
-```
-
-### Admin API Operations
-
-#### Download Image
-**Endpoint**: `POST /admin/v1/images`
-
-Download images from various sources including HTTP/HTTPS, container registries, PVC volumes, and S3-compatible storage.
-
-**Example**: Download from HTTP source
-```json
-{
-  "metadata": {
-    "name": "ubuntu-20.04-server",
-    "description": "Ubuntu 20.04 LTS Server Image",
-    "provider": "Canonical",
-    "version": "20.04.6",
-    "tags": ["ubuntu", "lts", "server"]
-  },
-  "source": {
-    "type": "HTTP",
-    "http": {
-      "url": "https://example.com/ubuntu-20.04-server.img",
-      "verifyTls": true,
-      "checksum": {
-        "algorithm": "sha256",
-        "value": "abc123..."
-      }
-    }
-  },
-  "options": {
-    "lazyDownload": false,
-    "validateChecksum": true,
-    "timeout": "30m"
-  }
+conn, err := grpc.NewClient("kubevim.example.com:443", grpc.WithTransportCredentials(credentials.NewTLS(nil)))
+if err != nil {
+	return err
 }
+defer conn.Close()
+
+ctx = metadata.AppendToOutgoingContext(ctx, "authorization", "Bearer "+token)
+resp, err := computev1.NewComputeServiceClient(conn).ListComputes(ctx, &computev1.ListComputesRequest{
+	Filter: "(eq,computeName,router-1)",
+})
 ```
 
-**Example**: Download from container registry
-```json
-{
-  "metadata": {
-    "name": "nginx-alpine",
-    "description": "Nginx Alpine Linux Image"
-  },
-  "source": {
-    "type": "REGISTRY",
-    "registry": {
-      "image": "nginx:alpine",
-      "pullPolicy": "ALWAYS"
-    }
-  }
-}
+### REST
+
+```bash
+curl -H "Authorization: Bearer $TOKEN" \
+  "https://kubevim.example.com/compute/v1/computes?filter=(eq,computeName,router-1)"
 ```
 
-#### Get Download Status
-**Endpoint**: `GET /admin/v1/images/{imageId}/status`
+## Repository layout
 
-Monitor download progress and status for asynchronous operations.
+```
+api/kubenfv/kubevim/<api>/v1/   protos, one package per API
+api/kubenfv/kubevim/common/v1/  shared types and the error reasons
+api/kubenfv/kubevim/options/v1/ options that map each element to IFA
+pkg/apis/                       generated Go
+generated/openapi/              OpenAPI 3.1 schemas
+generated/python/               Python client
+hack/                           OpenAPI post-processor and Python generator inputs
+test/                           wire format, validation and Python client tests
+kube-ovn-api/                   separate Go module with Kube-OVN types and clients
+```
 
-## API Documentation
-
-### Available APIs
-
-| API | Description | Standard | Package |
-|-----|-------------|----------|---------|
-| **VI-VNFM** | VIM-VNFM interface for resource management | ETSI IFA-006 | `pkg/apis/vivnfm` |
-| **Admin** | KubeVim administrative extensions for image management | Custom | `pkg/apis/admin` |
-| **Common** | Shared basic types and utilities | ETSI IFA-005/006 | `pkg/apis` |
-
-### Key Operations (VI-VNFM)
-
-#### Software Image Management
-- `QueryImages` - Query available software images
-- `QueryImage` - Get specific software image details
-
-#### Virtualized Compute Resources
-- `AllocateVirtualisedComputeResource` - Request compute allocation
-- `QueryVirtualisedComputeResource` - Query compute resources
-- `TerminateVirtualisedComputeResource` - Terminate compute resources
-- `OperateVirtualisedComputeResource` - Perform operations on compute
-
-#### Compute Flavour Management
-- `CreateComputeFlavour` - Create compute flavours
-- `QueryComputeFlavour` - Query available flavours
-- `DeleteComputeFlavour` - Remove compute flavours
-
-#### Virtualized Network Resources
-- `AllocateVirtualisedNetworkResource` - Allocate network resources
-- `QueryVirtualisedNetworkResource` - Query network resources
-- `TerminateVirtualisedNetworkResource` - Terminate network resources
-
-### Key Operations (Admin)
-
-#### Image Download Management
-- `DownloadImage` - Download images from various sources (HTTP, registry, PVC, S3)
-- `GetImageDownloadStatus` - Monitor download progress and status
-
-#### Supported Image Sources
-- **HTTP/HTTPS**: Direct download from web servers with checksum validation
-- **Container Registry**: Pull from Docker-compatible registries with authentication
-- **PVC/Volume**: Clone from existing Kubernetes persistent volumes
-- **S3 Compatible**: Download from S3-compatible object storage
-
-#### Download Features
-- **Backend Agnostic**: Works with any backend implementation (KubeVirt CDI, etc.)
-- **Lazy Download**: Optional deferred download until first use
-- **Progress Monitoring**: Real-time download progress and statistics
-- **Checksum Validation**: Automatic integrity verification
-- **Retry Logic**: Configurable retry attempts for failed downloads
-
-For complete API reference, see the [OpenAPI documentation](generated/openapi/).
+Generated code is committed; CI fails when it is out of date.
 
 ## Development
 
-### Adding New APIs
-1. Create `.proto` files in appropriate `api/` subdirectory
-2. Update imports in existing protos if needed
-3. Run `make proto-compile` to generate code
-4. Update documentation and examples
-
-### Testing
 ```bash
-# Run Go tests
-go test ./pkg/apis/...
-
-# Test Python client (if generated)
-cd generated/python
-python -m pytest test/
+make generate       # Go, OpenAPI and Python client from the protos (needs Go and Docker)
+make lint           # buf lint and format check
+make test           # Go tests
+make test-python    # Python client against a stub server (needs Python 3.10+)
 ```
 
-### Code Generation
-The build system uses:
-- **protoc** with grpc-gateway for Go code generation
-- **OpenAPI Generator** for Python client generation
-- **Docker** for reproducible builds across platforms
+Tools are installed into `bin/` at pinned versions. The module needs Go 1.26.
 
-## Installation
+## Releases
 
-### Go Module
-```bash
-go get github.com/kube-nfv/kube-vim-api
-```
-
-### Python Package
-```bash
-# Install from generated code
-pip install ./generated/python
-
-# Or install in development mode
-cd generated/python && pip install -e .
-```
-
-## Integration
-
-### Kube-OVN Support
-The `/kube-ovn-api` directory contains Golang types to work with [kube-ovn](https://www.kube-ovn.io) networking, including code autogeneration logic for Golang ClientSet and helpers.
+The repository tag versions everything: the Go module, the `kubevim-client` package and the schemas' `info.version`. The major version is also in every REST path and proto package (`v1`). Tags are `vX.Y.Z[-alpha|beta|rc.N]`; from the first release candidate on, CI rejects breaking changes. The `kube-ovn-api` module is tagged separately as `kube-ovn-api/vX.Y.Z`.
 
 ## References
 
-[^fn1]: [ETSI GS NFV-IFA 005 Release v5.2.1 (2024-11)](https://www.etsi.org/deliver/etsi_gs/nfv-ifa/001_099/005/05.02.01_60/gs_nfv-ifa005v050201p.pdf) - Network Functions Virtualisation (NFV) Release 4; Management and Orchestration; Or-Vi reference point - Interface and Information Model Specification
+- [ETSI GS NFV-IFA 005](https://www.etsi.org/deliver/etsi_gs/nfv-ifa/001_099/005/05.04.01_60/gs_nfv-ifa005v050401p.pdf) v5.4.1: Or-Vi reference point, interface and information model
+- [ETSI GS NFV-IFA 006](https://www.etsi.org/deliver/etsi_gs/nfv-ifa/001_099/006/05.04.01_60/gs_nfv-ifa006v050401p.pdf) v5.4.1: Vi-Vnfm reference point, interface and information model
+- [ETSI GS NFV-SOL 013](https://www.etsi.org/deliver/etsi_gs/NFV-SOL/001_099/013/05.04.01_60/gs_NFV-SOL013v050401p.pdf) v5.4.1: common aspects of RESTful NFV-MANO APIs
 
-[^fn2]: [ETSI GS NFV-IFA 006 Release v5.2.1 (2024-12)](https://www.etsi.org/deliver/etsi_gs/nfv-ifa/001_099/006/05.02.01_60/gs_nfv-ifa006v050201p.pdf) - Network Functions Virtualisation (NFV) Release 4; Management and Orchestration; Vi-Vnfm reference point - Interface and Information Model Specification
+## License
 
-[^fn3]: [ETSI GS NFV-SOL 013 Release v5.2.1 (2024-12)](https://www.etsi.org/deliver/etsi_gs/NFV-SOL/001_099/013/05.02.01_60/gs_nfv-sol013v050201p.pdf) - Network Functions Virtualisation (NFV) Release 4; Protocols and Data Models; RESTful protocols specification for the Or-Vi reference point
+[Apache License 2.0](LICENSE)
