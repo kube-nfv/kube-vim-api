@@ -127,7 +127,7 @@
             "description": "Size, type and capabilities of the volume."
           },
           "volumeId": {
-            "description": "Identifier of the volume: a UUID assigned by the VIM. Ephemeral disks of a compute\nresource are not resources of their own and use their disk name instead.",
+            "description": "Identifier of the volume: a UUID assigned by the VIM for volumes created with the storage API.\nThe own disks of a compute resource (its boot disk and the disks from its flavour) are not\nresources of their own and use their disk name instead.",
             "readOnly": true,
             "type": "string"
           },
@@ -333,7 +333,7 @@
             ]
           }
         ],
-        "summary": "Returns the volumes matching a filter.",
+        "summary": "Returns the volumes matching a filter; the own disks of compute resources are not volumes (see Compute.disks).",
         "tags": [
           "StorageService"
         ]

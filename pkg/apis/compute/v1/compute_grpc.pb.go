@@ -61,6 +61,8 @@ type ComputeServiceClient interface {
 	// Changes the running state of a compute resource, e.g. start, stop or reboot.
 	OperateCompute(ctx context.Context, in *OperateComputeRequest, opts ...grpc.CallOption) (*Compute, error)
 	// Changes the flavour of a compute resource; live where KubeVirt can hotplug, otherwise restart_required is set.
+	// Disks that are larger in the new flavour are grown; shrinking a disk or changing the number, type,
+	// boot flag or storage class of the disks is rejected.
 	ScaleCompute(ctx context.Context, in *ScaleComputeRequest, opts ...grpc.CallOption) (*Compute, error)
 	// Moves a running compute resource to another host (live migration).
 	MigrateCompute(ctx context.Context, in *MigrateComputeRequest, opts ...grpc.CallOption) (*Compute, error)
@@ -306,6 +308,8 @@ type ComputeServiceServer interface {
 	// Changes the running state of a compute resource, e.g. start, stop or reboot.
 	OperateCompute(context.Context, *OperateComputeRequest) (*Compute, error)
 	// Changes the flavour of a compute resource; live where KubeVirt can hotplug, otherwise restart_required is set.
+	// Disks that are larger in the new flavour are grown; shrinking a disk or changing the number, type,
+	// boot flag or storage class of the disks is rejected.
 	ScaleCompute(context.Context, *ScaleComputeRequest) (*Compute, error)
 	// Moves a running compute resource to another host (live migration).
 	MigrateCompute(context.Context, *MigrateComputeRequest) (*Compute, error)

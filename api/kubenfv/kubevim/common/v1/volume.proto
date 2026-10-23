@@ -13,8 +13,9 @@ import "kubenfv/kubevim/options/v1/options.proto";
 message Volume {
   option (kubenfv.kubevim.options.v1.ifa_message) = {ref: "IFA006 8.4.7.2 VirtualStorage"};
 
-  // Identifier of the volume: a UUID assigned by the VIM. Ephemeral disks of a compute
-  // resource are not resources of their own and use their disk name instead.
+  // Identifier of the volume: a UUID assigned by the VIM for volumes created with the storage API.
+  // The own disks of a compute resource (its boot disk and the disks from its flavour) are not
+  // resources of their own and use their disk name instead.
   string volume_id = 1 [
     (google.api.field_behavior) = OUTPUT_ONLY,
     (kubenfv.kubevim.options.v1.ifa_field) = {

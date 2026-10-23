@@ -45,7 +45,7 @@ type StorageServiceClient interface {
 	CreateVolume(ctx context.Context, in *CreateVolumeRequest, opts ...grpc.CallOption) (*v1.Volume, error)
 	// Returns one volume.
 	GetVolume(ctx context.Context, in *GetVolumeRequest, opts ...grpc.CallOption) (*v1.Volume, error)
-	// Returns the volumes matching a filter.
+	// Returns the volumes matching a filter; the own disks of compute resources are not volumes (see Compute.disks).
 	ListVolumes(ctx context.Context, in *ListVolumesRequest, opts ...grpc.CallOption) (*ListVolumesResponse, error)
 	// Updates the name and metadata of a volume.
 	UpdateVolume(ctx context.Context, in *UpdateVolumeRequest, opts ...grpc.CallOption) (*v1.Volume, error)
@@ -205,7 +205,7 @@ type StorageServiceServer interface {
 	CreateVolume(context.Context, *CreateVolumeRequest) (*v1.Volume, error)
 	// Returns one volume.
 	GetVolume(context.Context, *GetVolumeRequest) (*v1.Volume, error)
-	// Returns the volumes matching a filter.
+	// Returns the volumes matching a filter; the own disks of compute resources are not volumes (see Compute.disks).
 	ListVolumes(context.Context, *ListVolumesRequest) (*ListVolumesResponse, error)
 	// Updates the name and metadata of a volume.
 	UpdateVolume(context.Context, *UpdateVolumeRequest) (*v1.Volume, error)

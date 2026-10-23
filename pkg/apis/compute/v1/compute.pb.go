@@ -578,7 +578,9 @@ type Compute struct {
 	VirtualMemory *VirtualMemory `protobuf:"bytes,6,opt,name=virtual_memory,json=virtualMemory,proto3" json:"virtual_memory,omitempty"`
 	// Network interfaces, the management interface first; no other order is guaranteed.
 	NetworkInterfaces []*VirtualNetworkInterface `protobuf:"bytes,7,rep,name=network_interfaces,json=networkInterfaces,proto3" json:"network_interfaces,omitempty"`
-	// Disks of the compute resource: the boot disk, disks from the flavour and attached volumes.
+	// Disks of the compute resource: its own disks (the boot disk and the disks from the flavour,
+	// identified by disk name, deleted with the compute resource and not in the storage API) and
+	// attached volumes (identified by their volume_id).
 	Disks []*v1.Volume `protobuf:"bytes,8,rep,name=disks,proto3" json:"disks,omitempty"`
 	// Resource zone of the compute resource.
 	ZoneId string `protobuf:"bytes,9,opt,name=zone_id,json=zoneId,proto3" json:"zone_id,omitempty"`

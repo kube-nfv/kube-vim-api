@@ -27,8 +27,9 @@ const (
 // A virtualised storage resource, e.g. a disk of a compute resource.
 type Volume struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// Identifier of the volume: a UUID assigned by the VIM. Ephemeral disks of a compute
-	// resource are not resources of their own and use their disk name instead.
+	// Identifier of the volume: a UUID assigned by the VIM for volumes created with the storage API.
+	// The own disks of a compute resource (its boot disk and the disks from its flavour) are not
+	// resources of their own and use their disk name instead.
 	VolumeId string `protobuf:"bytes,1,opt,name=volume_id,json=volumeId,proto3" json:"volume_id,omitempty"`
 	// Name of the volume, given by the consumer; not unique.
 	VolumeName string `protobuf:"bytes,2,opt,name=volume_name,json=volumeName,proto3" json:"volume_name,omitempty"`

@@ -71,7 +71,7 @@
             "type": "string"
           },
           "disks": {
-            "description": "Disks of the compute resource: the boot disk, disks from the flavour and attached volumes.",
+            "description": "Disks of the compute resource: its own disks (the boot disk and the disks from the flavour,\nidentified by disk name, deleted with the compute resource and not in the storage API) and\nattached volumes (identified by their volume_id).",
             "items": {
               "$ref": "#/components/schemas/Volume"
             },
@@ -1697,7 +1697,7 @@
             "description": "Size, type and capabilities of the volume."
           },
           "volumeId": {
-            "description": "Identifier of the volume: a UUID assigned by the VIM. Ephemeral disks of a compute\nresource are not resources of their own and use their disk name instead.",
+            "description": "Identifier of the volume: a UUID assigned by the VIM for volumes created with the storage API.\nThe own disks of a compute resource (its boot disk and the disks from its flavour) are not\nresources of their own and use their disk name instead.",
             "readOnly": true,
             "type": "string"
           },
@@ -2628,7 +2628,7 @@
             ]
           }
         ],
-        "summary": "Changes the flavour of a compute resource; live where KubeVirt can hotplug, otherwise restart_required is set.",
+        "summary": "Changes the flavour of a compute resource; live where KubeVirt can hotplug, otherwise restart_required is set.\nDisks that are larger in the new flavour are grown; shrinking a disk or changing the number, type,\nboot flag or storage class of the disks is rejected.",
         "tags": [
           "ComputeService"
         ]
@@ -4844,7 +4844,7 @@
             ]
           }
         ],
-        "summary": "Returns the volumes matching a filter.",
+        "summary": "Returns the volumes matching a filter; the own disks of compute resources are not volumes (see Compute.disks).",
         "tags": [
           "StorageService"
         ]

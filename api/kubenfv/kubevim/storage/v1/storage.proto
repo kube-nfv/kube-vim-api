@@ -108,7 +108,7 @@ service StorageService {
     };
   }
 
-  // Returns the volumes matching a filter.
+  // Returns the volumes matching a filter; the own disks of compute resources are not volumes (see Compute.disks).
   rpc ListVolumes(ListVolumesRequest) returns (ListVolumesResponse) {
     option (google.api.http) = {get: "/storage/v1/volumes"};
     option (grpc.gateway.protoc_gen_openapiv3.options.openapiv3_operation) = {
