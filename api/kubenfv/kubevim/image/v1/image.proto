@@ -513,15 +513,18 @@ message HttpSource {
   ];
   // Credentials for the server, inline or by reference; at most one.
   oneof credentials {
-    // Inline username and password.
-    BasicAuth basic_auth = 2;
+    // Inline username and password; never returned.
+    BasicAuth basic_auth = 2 [(google.api.field_behavior) = INPUT_ONLY];
     // Name of a credential set the VIM loads from its own environment or files; the request carries no secret.
     string credentials_ref = 3 [(buf.validate.field).string.min_len = 1];
   }
   // PEM CA bundle to verify the server certificate.
   string ca_bundle = 4 [(google.api.field_behavior) = OPTIONAL];
-  // Extra request headers, as "Name: value".
-  repeated string extra_headers = 5 [(google.api.field_behavior) = OPTIONAL];
+  // Extra request headers, as "Name: value"; never returned, since they may carry secrets.
+  repeated string extra_headers = 5 [
+    (google.api.field_behavior) = OPTIONAL,
+    (google.api.field_behavior) = INPUT_ONLY
+  ];
 }
 
 // S3-compatible object store download.
@@ -533,8 +536,8 @@ message S3Source {
   ];
   // Credentials for the object store, inline or by reference; at most one.
   oneof credentials {
-    // Inline access key.
-    S3AccessKey access_key = 2;
+    // Inline access key; never returned.
+    S3AccessKey access_key = 2 [(google.api.field_behavior) = INPUT_ONLY];
     // Name of a credential set the VIM loads from its own environment or files; the request carries no secret.
     string credentials_ref = 3 [(buf.validate.field).string.min_len = 1];
   }
@@ -574,8 +577,8 @@ message RegistrySource {
   ];
   // Credentials for the registry, inline or by reference; at most one.
   oneof credentials {
-    // Inline username and password.
-    BasicAuth basic_auth = 3;
+    // Inline username and password; never returned.
+    BasicAuth basic_auth = 3 [(google.api.field_behavior) = INPUT_ONLY];
     // Name of a credential set the VIM loads from its own environment or files; the request carries no secret.
     string credentials_ref = 4 [(buf.validate.field).string.min_len = 1];
   }

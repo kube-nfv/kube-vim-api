@@ -404,8 +404,13 @@
         "description": "HTTP or HTTPS download. Only one of basicAuth, credentialsRef may be set.",
         "properties": {
           "basicAuth": {
-            "$ref": "#/components/schemas/BasicAuth",
-            "description": "Inline username and password."
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BasicAuth"
+              }
+            ],
+            "description": "Inline username and password; never returned.",
+            "writeOnly": true
           },
           "caBundle": {
             "description": "PEM CA bundle to verify the server certificate.",
@@ -416,11 +421,12 @@
             "type": "string"
           },
           "extraHeaders": {
-            "description": "Extra request headers, as \"Name: value\".",
+            "description": "Extra request headers, as \"Name: value\"; never returned, since they may carry secrets.",
             "items": {
               "type": "string"
             },
-            "type": "array"
+            "type": "array",
+            "writeOnly": true
           },
           "url": {
             "description": "URL of the image file.",
@@ -1194,8 +1200,13 @@
         "description": "Container registry pull. Only one of basicAuth, credentialsRef may be set.",
         "properties": {
           "basicAuth": {
-            "$ref": "#/components/schemas/BasicAuth",
-            "description": "Inline username and password."
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BasicAuth"
+              }
+            ],
+            "description": "Inline username and password; never returned.",
+            "writeOnly": true
           },
           "caBundle": {
             "description": "PEM CA bundle to verify the registry certificate.",
@@ -1253,8 +1264,13 @@
         "description": "S3-compatible object store download. Only one of accessKey, credentialsRef may be set.",
         "properties": {
           "accessKey": {
-            "$ref": "#/components/schemas/S3AccessKey",
-            "description": "Inline access key."
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/S3AccessKey"
+              }
+            ],
+            "description": "Inline access key; never returned.",
+            "writeOnly": true
           },
           "caBundle": {
             "description": "PEM CA bundle to verify the endpoint certificate.",

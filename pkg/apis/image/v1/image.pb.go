@@ -991,7 +991,7 @@ type HttpSource struct {
 	Credentials isHttpSource_Credentials `protobuf_oneof:"credentials"`
 	// PEM CA bundle to verify the server certificate.
 	CaBundle string `protobuf:"bytes,4,opt,name=ca_bundle,json=caBundle,proto3" json:"ca_bundle,omitempty"`
-	// Extra request headers, as "Name: value".
+	// Extra request headers, as "Name: value"; never returned, since they may carry secrets.
 	ExtraHeaders  []string `protobuf:"bytes,5,rep,name=extra_headers,json=extraHeaders,proto3" json:"extra_headers,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -1078,7 +1078,7 @@ type isHttpSource_Credentials interface {
 }
 
 type HttpSource_BasicAuth struct {
-	// Inline username and password.
+	// Inline username and password; never returned.
 	BasicAuth *BasicAuth `protobuf:"bytes,2,opt,name=basic_auth,json=basicAuth,proto3,oneof"`
 }
 
@@ -1183,7 +1183,7 @@ type isS3Source_Credentials interface {
 }
 
 type S3Source_AccessKey struct {
-	// Inline access key.
+	// Inline access key; never returned.
 	AccessKey *S3AccessKey `protobuf:"bytes,2,opt,name=access_key,json=accessKey,proto3,oneof"`
 }
 
@@ -1359,7 +1359,7 @@ type isRegistrySource_Credentials interface {
 }
 
 type RegistrySource_BasicAuth struct {
-	// Inline username and password.
+	// Inline username and password; never returned.
 	BasicAuth *BasicAuth `protobuf:"bytes,3,opt,name=basic_auth,json=basicAuth,proto3,oneof"`
 }
 
@@ -2079,32 +2079,32 @@ const file_kubenfv_kubevim_image_v1_image_proto_rawDesc = "" +
 	"\x06source\x12\x05\xbaH\x02\b\x01\"P\n" +
 	"\tBasicAuth\x12 \n" +
 	"\busername\x18\x01 \x01(\tB\x04\xe2A\x01\x02R\busername\x12!\n" +
-	"\bpassword\x18\x02 \x01(\tB\x05\xe2A\x02\x02\x04R\bpassword\"\x83\x02\n" +
+	"\bpassword\x18\x02 \x01(\tB\x05\xe2A\x02\x02\x04R\bpassword\"\x8a\x02\n" +
 	"\n" +
 	"HttpSource\x12\x1e\n" +
-	"\x03url\x18\x01 \x01(\tB\f\xe2A\x01\x02\xbaH\x05r\x03\x88\x01\x01R\x03url\x12D\n" +
+	"\x03url\x18\x01 \x01(\tB\f\xe2A\x01\x02\xbaH\x05r\x03\x88\x01\x01R\x03url\x12J\n" +
 	"\n" +
-	"basic_auth\x18\x02 \x01(\v2#.kubenfv.kubevim.image.v1.BasicAuthH\x00R\tbasicAuth\x122\n" +
+	"basic_auth\x18\x02 \x01(\v2#.kubenfv.kubevim.image.v1.BasicAuthB\x04\xe2A\x01\x04H\x00R\tbasicAuth\x122\n" +
 	"\x0fcredentials_ref\x18\x03 \x01(\tB\a\xbaH\x04r\x02\x10\x01H\x00R\x0ecredentialsRef\x12!\n" +
-	"\tca_bundle\x18\x04 \x01(\tB\x04\xe2A\x01\x01R\bcaBundle\x12)\n" +
-	"\rextra_headers\x18\x05 \x03(\tB\x04\xe2A\x01\x01R\fextraHeadersB\r\n" +
-	"\vcredentials\"\xd8\x01\n" +
+	"\tca_bundle\x18\x04 \x01(\tB\x04\xe2A\x01\x01R\bcaBundle\x12*\n" +
+	"\rextra_headers\x18\x05 \x03(\tB\x05\xe2A\x02\x01\x04R\fextraHeadersB\r\n" +
+	"\vcredentials\"\xde\x01\n" +
 	"\bS3Source\x12\x1e\n" +
-	"\x03url\x18\x01 \x01(\tB\f\xe2A\x01\x02\xbaH\x05r\x03\x88\x01\x01R\x03url\x12F\n" +
+	"\x03url\x18\x01 \x01(\tB\f\xe2A\x01\x02\xbaH\x05r\x03\x88\x01\x01R\x03url\x12L\n" +
 	"\n" +
-	"access_key\x18\x02 \x01(\v2%.kubenfv.kubevim.image.v1.S3AccessKeyH\x00R\taccessKey\x122\n" +
+	"access_key\x18\x02 \x01(\v2%.kubenfv.kubevim.image.v1.S3AccessKeyB\x04\xe2A\x01\x04H\x00R\taccessKey\x122\n" +
 	"\x0fcredentials_ref\x18\x03 \x01(\tB\a\xbaH\x04r\x02\x10\x01H\x00R\x0ecredentialsRef\x12!\n" +
 	"\tca_bundle\x18\x04 \x01(\tB\x04\xe2A\x01\x01R\bcaBundleB\r\n" +
 	"\vcredentials\"j\n" +
 	"\vS3AccessKey\x12(\n" +
 	"\raccess_key_id\x18\x01 \x01(\tB\x04\xe2A\x01\x02R\vaccessKeyId\x121\n" +
-	"\x11secret_access_key\x18\x02 \x01(\tB\x05\xe2A\x02\x02\x04R\x0fsecretAccessKey\"\xb7\x03\n" +
+	"\x11secret_access_key\x18\x02 \x01(\tB\x05\xe2A\x02\x02\x04R\x0fsecretAccessKey\"\xbd\x03\n" +
 	"\x0eRegistrySource\x12\x1d\n" +
 	"\x03url\x18\x01 \x01(\tB\v\xe2A\x01\x02\xbaH\x04r\x02\x10\x01R\x03url\x12b\n" +
 	"\vpull_method\x18\x02 \x01(\x0e23.kubenfv.kubevim.image.v1.RegistrySource.PullMethodB\f\xe2A\x01\x01\xbaH\x05\x82\x01\x02\x10\x01R\n" +
-	"pullMethod\x12D\n" +
+	"pullMethod\x12J\n" +
 	"\n" +
-	"basic_auth\x18\x03 \x01(\v2#.kubenfv.kubevim.image.v1.BasicAuthH\x00R\tbasicAuth\x122\n" +
+	"basic_auth\x18\x03 \x01(\v2#.kubenfv.kubevim.image.v1.BasicAuthB\x04\xe2A\x01\x04H\x00R\tbasicAuth\x122\n" +
 	"\x0fcredentials_ref\x18\x04 \x01(\tB\a\xbaH\x04r\x02\x10\x01H\x00R\x0ecredentialsRef\x12!\n" +
 	"\tca_bundle\x18\x05 \x01(\tB\x04\xe2A\x01\x01R\bcaBundle\x12 \n" +
 	"\bplatform\x18\x06 \x01(\tB\x04\xe2A\x01\x01R\bplatform\"T\n" +
