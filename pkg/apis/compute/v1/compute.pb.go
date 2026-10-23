@@ -228,7 +228,7 @@ const (
 	IpAssignment_IP_ASSIGNMENT_UNSPECIFIED IpAssignment = 0
 	// The VIM allocates one address from each subnet of the network; the default.
 	IpAssignment_IP_ASSIGNMENT_AUTOMATIC IpAssignment = 1
-	// The addresses in ip_addresses are used.
+	// The addresses in ip_addresses are used; subnets of the network with no address given are allocated automatically.
 	IpAssignment_IP_ASSIGNMENT_STATIC IpAssignment = 2
 	// No addresses: a layer 2 interface, or the guest configures its own. Not available on Kube-OVN networks yet.
 	IpAssignment_IP_ASSIGNMENT_NONE IpAssignment = 3
@@ -1099,7 +1099,7 @@ type NetworkInterfaceData struct {
 	Bandwidth uint32 `protobuf:"varint,5,opt,name=bandwidth,proto3" json:"bandwidth,omitempty"`
 	// How the interface gets its addresses; automatic when unset.
 	IpAssignment IpAssignment `protobuf:"varint,6,opt,name=ip_assignment,json=ipAssignment,proto3,enum=kubenfv.kubevim.compute.v1.IpAssignment" json:"ip_assignment,omitempty"`
-	// Addresses for the static assignment: at most one per IP version.
+	// Addresses for the static assignment: at most one per IP version; a family left out is allocated automatically.
 	IpAddresses []string `protobuf:"bytes,7,rep,name=ip_addresses,json=ipAddresses,proto3" json:"ip_addresses,omitempty"`
 	// MAC address; the VIM assigns one when unset.
 	MacAddress    string `protobuf:"bytes,8,opt,name=mac_address,json=macAddress,proto3" json:"mac_address,omitempty"`

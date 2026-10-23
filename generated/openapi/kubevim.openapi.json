@@ -1016,7 +1016,7 @@
             "type": "integer"
           },
           "ipAddresses": {
-            "description": "Addresses for the static assignment: at most one per IP version.",
+            "description": "Addresses for the static assignment: at most one per IP version; a family left out is allocated automatically.",
             "items": {
               "type": "string"
             },

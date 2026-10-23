@@ -903,7 +903,7 @@ message NetworkInterfaceData {
       }
     }
   ];
-  // Addresses for the static assignment: at most one per IP version.
+  // Addresses for the static assignment: at most one per IP version; a family left out is allocated automatically.
   repeated string ip_addresses = 7 [
     (google.api.field_behavior) = OPTIONAL,
     (buf.validate.field).repeated = {
@@ -946,7 +946,7 @@ enum IpAssignment {
   IP_ASSIGNMENT_UNSPECIFIED = 0;
   // The VIM allocates one address from each subnet of the network; the default.
   IP_ASSIGNMENT_AUTOMATIC = 1;
-  // The addresses in ip_addresses are used.
+  // The addresses in ip_addresses are used; subnets of the network with no address given are allocated automatically.
   IP_ASSIGNMENT_STATIC = 2;
   // No addresses: a layer 2 interface, or the guest configures its own. Not available on Kube-OVN networks yet.
   IP_ASSIGNMENT_NONE = 3;
