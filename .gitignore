@@ -2,3 +2,5 @@
 *.DS_Store
 **/.venv/
 bin/
+__pycache__/
+.pytest_cache/

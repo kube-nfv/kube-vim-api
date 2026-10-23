@@ -1,53 +1,6 @@
 {
   "components": {
-    "parameters": {
-      "Version": {
-        "description": "API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted.",
-        "in": "header",
-        "name": "Version",
-        "required": true,
-        "schema": {
-          "type": "string"
-        }
-      }
-    },
     "schemas": {
-      "ApiVersionInformation": {
-        "description": "API versions served under a URI prefix (SOL 013 9.3.3).",
-        "properties": {
-          "apiVersions": {
-            "items": {
-              "properties": {
-                "isDeprecated": {
-                  "type": "boolean"
-                },
-                "retirementDate": {
-                  "format": "date-time",
-                  "type": "string"
-                },
-                "version": {
-                  "description": "Version served, with the implementation suffix, e.g. 1.0.0-impl:kubenfv.io:kube-vim:0.4.0.",
-                  "type": "string"
-                }
-              },
-              "required": [
-                "version"
-              ],
-              "type": "object"
-            },
-            "type": "array"
-          },
-          "uriPrefix": {
-            "description": "URI prefix of the API, e.g. /compute/v1.",
-            "type": "string"
-          }
-        },
-        "required": [
-          "uriPrefix",
-          "apiVersions"
-        ],
-        "type": "object"
-      },
       "ProblemDetails": {
         "description": "Error details (SOL 013 6.3, RFC 9457).",
         "properties": {
@@ -653,90 +606,13 @@
   },
   "info": {
     "title": "Kube-VIM software image API",
-    "version": "1.0.0"
+    "version": "0.0.0-dev"
   },
   "openapi": "3.1.0",
   "paths": {
-    "/image/api_versions": {
-      "get": {
-        "operationId": "ImageService_GetApiVersions",
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ApiVersionInformation"
-                }
-              }
-            },
-            "description": "OK"
-          },
-          "default": {
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              }
-            },
-            "description": "Error (SOL 013 6)."
-          }
-        },
-        "security": [
-          {
-            "oauth2": []
-          }
-        ],
-        "summary": "API versions this VIM serves (SOL 013 9.3).",
-        "tags": [
-          "ImageService"
-        ]
-      }
-    },
-    "/image/v1/api_versions": {
-      "get": {
-        "operationId": "ImageService_GetApiMajorVersions",
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ApiVersionInformation"
-                }
-              }
-            },
-            "description": "OK"
-          },
-          "default": {
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              }
-            },
-            "description": "Error (SOL 013 6)."
-          }
-        },
-        "security": [
-          {
-            "oauth2": []
-          }
-        ],
-        "summary": "API versions this VIM serves (SOL 013 9.3).",
-        "tags": [
-          "ImageService"
-        ]
-      }
-    },
     "/image/v1/imageSources": {
       "get": {
         "operationId": "ImageService_ListImageSources",
-        "parameters": [
-          {
-            "$ref": "#/components/parameters/Version"
-          }
-        ],
         "responses": {
           "200": {
             "content": {
@@ -749,15 +625,7 @@
                 }
               }
             },
-            "description": "A successful response.",
-            "headers": {
-              "Version": {
-                "description": "API version served, with the implementation suffix, e.g. 1.0.0-impl:kubenfv.io:kube-vim:0.4.0 (SOL 013 9.1.2, 9.4).",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
+            "description": "A successful response."
           },
           "default": {
             "content": {
@@ -767,15 +635,7 @@
                 }
               }
             },
-            "description": "Error (SOL 013 6).",
-            "headers": {
-              "Version": {
-                "description": "API version served, with the implementation suffix, e.g. 1.0.0-impl:kubenfv.io:kube-vim:0.4.0 (SOL 013 9.1.2, 9.4).",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
+            "description": "Error (SOL 013 6)."
           }
         },
         "security": [
@@ -810,9 +670,6 @@
             "schema": {
               "type": "string"
             }
-          },
-          {
-            "$ref": "#/components/parameters/Version"
           }
         ],
         "responses": {
@@ -834,12 +691,6 @@
                 "schema": {
                   "type": "string"
                 }
-              },
-              "Version": {
-                "description": "API version served, with the implementation suffix, e.g. 1.0.0-impl:kubenfv.io:kube-vim:0.4.0 (SOL 013 9.1.2, 9.4).",
-                "schema": {
-                  "type": "string"
-                }
               }
             }
           },
@@ -851,15 +702,7 @@
                 }
               }
             },
-            "description": "Error (SOL 013 6).",
-            "headers": {
-              "Version": {
-                "description": "API version served, with the implementation suffix, e.g. 1.0.0-impl:kubenfv.io:kube-vim:0.4.0 (SOL 013 9.1.2, 9.4).",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
+            "description": "Error (SOL 013 6)."
           }
         },
         "security": [
@@ -876,11 +719,6 @@
       },
       "post": {
         "operationId": "ImageService_CreateImage",
-        "parameters": [
-          {
-            "$ref": "#/components/parameters/Version"
-          }
-        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -921,12 +759,6 @@
                   "format": "uri",
                   "type": "string"
                 }
-              },
-              "Version": {
-                "description": "API version served, with the implementation suffix, e.g. 1.0.0-impl:kubenfv.io:kube-vim:0.4.0 (SOL 013 9.1.2, 9.4).",
-                "schema": {
-                  "type": "string"
-                }
               }
             }
           },
@@ -938,15 +770,7 @@
                 }
               }
             },
-            "description": "Error (SOL 013 6).",
-            "headers": {
-              "Version": {
-                "description": "API version served, with the implementation suffix, e.g. 1.0.0-impl:kubenfv.io:kube-vim:0.4.0 (SOL 013 9.1.2, 9.4).",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
+            "description": "Error (SOL 013 6)."
           }
         },
         "security": [
@@ -974,22 +798,11 @@
             "schema": {
               "type": "string"
             }
-          },
-          {
-            "$ref": "#/components/parameters/Version"
           }
         ],
         "responses": {
           "204": {
-            "description": "No Content",
-            "headers": {
-              "Version": {
-                "description": "API version served, with the implementation suffix, e.g. 1.0.0-impl:kubenfv.io:kube-vim:0.4.0 (SOL 013 9.1.2, 9.4).",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
+            "description": "No Content"
           },
           "default": {
             "content": {
@@ -999,15 +812,7 @@
                 }
               }
             },
-            "description": "Error (SOL 013 6).",
-            "headers": {
-              "Version": {
-                "description": "API version served, with the implementation suffix, e.g. 1.0.0-impl:kubenfv.io:kube-vim:0.4.0 (SOL 013 9.1.2, 9.4).",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
+            "description": "Error (SOL 013 6)."
           }
         },
         "security": [
@@ -1033,9 +838,6 @@
             "schema": {
               "type": "string"
             }
-          },
-          {
-            "$ref": "#/components/parameters/Version"
           }
         ],
         "responses": {
@@ -1047,15 +849,7 @@
                 }
               }
             },
-            "description": "A software image in the image repository managed by the VIM.",
-            "headers": {
-              "Version": {
-                "description": "API version served, with the implementation suffix, e.g. 1.0.0-impl:kubenfv.io:kube-vim:0.4.0 (SOL 013 9.1.2, 9.4).",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
+            "description": "A software image in the image repository managed by the VIM."
           },
           "default": {
             "content": {
@@ -1065,15 +859,7 @@
                 }
               }
             },
-            "description": "Error (SOL 013 6).",
-            "headers": {
-              "Version": {
-                "description": "API version served, with the implementation suffix, e.g. 1.0.0-impl:kubenfv.io:kube-vim:0.4.0 (SOL 013 9.1.2, 9.4).",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
+            "description": "Error (SOL 013 6)."
           }
         },
         "security": [
@@ -1099,9 +885,6 @@
             "schema": {
               "type": "string"
             }
-          },
-          {
-            "$ref": "#/components/parameters/Version"
           }
         ],
         "requestBody": {
@@ -1123,15 +906,7 @@
                 }
               }
             },
-            "description": "A software image in the image repository managed by the VIM.",
-            "headers": {
-              "Version": {
-                "description": "API version served, with the implementation suffix, e.g. 1.0.0-impl:kubenfv.io:kube-vim:0.4.0 (SOL 013 9.1.2, 9.4).",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
+            "description": "A software image in the image repository managed by the VIM."
           },
           "default": {
             "content": {
@@ -1141,15 +916,7 @@
                 }
               }
             },
-            "description": "Error (SOL 013 6).",
-            "headers": {
-              "Version": {
-                "description": "API version served, with the implementation suffix, e.g. 1.0.0-impl:kubenfv.io:kube-vim:0.4.0 (SOL 013 9.1.2, 9.4).",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
+            "description": "Error (SOL 013 6)."
           }
         },
         "security": [

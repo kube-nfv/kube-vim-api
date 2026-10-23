@@ -13,8 +13,6 @@
 """  # noqa: E501
 
 # import models into model package
-from kubevim_client.models.api_version_information import ApiVersionInformation
-from kubevim_client.models.api_version_information_api_versions_inner import ApiVersionInformationApiVersionsInner
 from kubevim_client.models.attach_volume_request import AttachVolumeRequest
 from kubevim_client.models.basic_auth import BasicAuth
 from kubevim_client.models.blank_source import BlankSource

@@ -53,11 +53,6 @@ func bundle(docs []map[string]any, version string) (map[string]any, error) {
 	if err := shortenOperationIDs(ops); err != nil {
 		return nil, err
 	}
-	// Clients set the Version header once, not per call; the server still requires it.
-	if v, ok := child(comps, "parameters")["Version"].(map[string]any); ok {
-		v["required"] = false
-		v["description"] = v["description"].(string) + " Required by the server; set it once on the client, e.g. as a default header."
-	}
 	return map[string]any{
 		"openapi":    docs[0]["openapi"],
 		"info":       map[string]any{"title": "Kube-VIM API", "version": version},

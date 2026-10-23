@@ -1,7 +1,5 @@
 .gitignore
 README.md
-docs/ApiVersionInformation.md
-docs/ApiVersionInformationApiVersionsInner.md
 docs/AttachVolumeRequest.md
 docs/BasicAuth.md
 docs/BlankSource.md
@@ -104,8 +102,6 @@ kubevim_client/api_response.py
 kubevim_client/configuration.py
 kubevim_client/exceptions.py
 kubevim_client/models/__init__.py
-kubevim_client/models/api_version_information.py
-kubevim_client/models/api_version_information_api_versions_inner.py
 kubevim_client/models/attach_volume_request.py
 kubevim_client/models/basic_auth.py
 kubevim_client/models/blank_source.py

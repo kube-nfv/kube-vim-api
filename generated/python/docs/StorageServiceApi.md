@@ -15,13 +15,11 @@ Method | HTTP request | Description
 [**migrate_volume**](StorageServiceApi.md#migrate_volume) | **POST** /storage/v1/volumes/{volume_id}/migrate | Moves a volume to another storage class.
 [**revert_volume_snapshot**](StorageServiceApi.md#revert_volume_snapshot) | **POST** /storage/v1/volumes/{volume_id}/snapshots/{snapshot_id}/revert | Reverts a volume that no running compute resource uses to a snapshot; not possible once the volume is deleted.
 [**scale_volume**](StorageServiceApi.md#scale_volume) | **POST** /storage/v1/volumes/{volume_id}/scale | Grows a volume.
-[**storage_get_api_major_versions**](StorageServiceApi.md#storage_get_api_major_versions) | **GET** /storage/v1/api_versions | API versions this VIM serves (SOL 013 9.3).
-[**storage_get_api_versions**](StorageServiceApi.md#storage_get_api_versions) | **GET** /storage/api_versions | API versions this VIM serves (SOL 013 9.3).
 [**update_volume**](StorageServiceApi.md#update_volume) | **PATCH** /storage/v1/volumes/{volume_id} | Updates the name and metadata of a volume.
 
 
 # **create_volume**
-> Volume create_volume(create_volume_request, version=version)
+> Volume create_volume(create_volume_request)
 
 Creates a volume.
 
@@ -54,11 +52,10 @@ with kubevim_client.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = kubevim_client.StorageServiceApi(api_client)
     create_volume_request = kubevim_client.CreateVolumeRequest() # CreateVolumeRequest | 
-    version = 'version_example' # str | API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header. (optional)
 
     try:
         # Creates a volume.
-        api_response = api_instance.create_volume(create_volume_request, version=version)
+        api_response = api_instance.create_volume(create_volume_request)
         print("The response of StorageServiceApi->create_volume:\n")
         pprint(api_response)
     except Exception as e:
@@ -73,7 +70,6 @@ with kubevim_client.ApiClient(configuration) as api_client:
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **create_volume_request** | [**CreateVolumeRequest**](CreateVolumeRequest.md)|  | 
- **version** | **str**| API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header. | [optional] 
 
 ### Return type
 
@@ -92,13 +88,13 @@ Name | Type | Description  | Notes
 
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-**201** | A virtualised storage resource, e.g. a disk of a compute resource. |  * Location - URI of the created resource. <br>  * Version - API version served, with the implementation suffix, e.g. 1.0.0-impl:kubenfv.io:kube-vim:0.4.0 (SOL 013 9.1.2, 9.4). <br>  |
-**0** | Error (SOL 013 6). |  * Version - API version served, with the implementation suffix, e.g. 1.0.0-impl:kubenfv.io:kube-vim:0.4.0 (SOL 013 9.1.2, 9.4). <br>  |
+**201** | A virtualised storage resource, e.g. a disk of a compute resource. |  * Location - URI of the created resource. <br>  |
+**0** | Error (SOL 013 6). |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **create_volume_snapshot**
-> VolumeSnapshot create_volume_snapshot(volume_id, create_volume_snapshot_request, version=version)
+> VolumeSnapshot create_volume_snapshot(volume_id, create_volume_snapshot_request)
 
 Creates a snapshot of a volume.
 
@@ -132,11 +128,10 @@ with kubevim_client.ApiClient(configuration) as api_client:
     api_instance = kubevim_client.StorageServiceApi(api_client)
     volume_id = 'volume_id_example' # str | Volume to take the snapshot of.
     create_volume_snapshot_request = kubevim_client.CreateVolumeSnapshotRequest() # CreateVolumeSnapshotRequest | 
-    version = 'version_example' # str | API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header. (optional)
 
     try:
         # Creates a snapshot of a volume.
-        api_response = api_instance.create_volume_snapshot(volume_id, create_volume_snapshot_request, version=version)
+        api_response = api_instance.create_volume_snapshot(volume_id, create_volume_snapshot_request)
         print("The response of StorageServiceApi->create_volume_snapshot:\n")
         pprint(api_response)
     except Exception as e:
@@ -152,7 +147,6 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **volume_id** | **str**| Volume to take the snapshot of. | 
  **create_volume_snapshot_request** | [**CreateVolumeSnapshotRequest**](CreateVolumeSnapshotRequest.md)|  | 
- **version** | **str**| API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header. | [optional] 
 
 ### Return type
 
@@ -171,13 +165,13 @@ Name | Type | Description  | Notes
 
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-**201** | A snapshot of a volume (Kubernetes VolumeSnapshot). |  * Location - URI of the created resource. <br>  * Version - API version served, with the implementation suffix, e.g. 1.0.0-impl:kubenfv.io:kube-vim:0.4.0 (SOL 013 9.1.2, 9.4). <br>  |
-**0** | Error (SOL 013 6). |  * Version - API version served, with the implementation suffix, e.g. 1.0.0-impl:kubenfv.io:kube-vim:0.4.0 (SOL 013 9.1.2, 9.4). <br>  |
+**201** | A snapshot of a volume (Kubernetes VolumeSnapshot). |  * Location - URI of the created resource. <br>  |
+**0** | Error (SOL 013 6). |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **delete_volume**
-> delete_volume(volume_id, version=version)
+> delete_volume(volume_id)
 
 Deletes a volume; may fail with RESOURCE_IN_USE while the volume is attached. Snapshots are kept.
 
@@ -208,11 +202,10 @@ with kubevim_client.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = kubevim_client.StorageServiceApi(api_client)
     volume_id = 'volume_id_example' # str | Identifier of the volume.
-    version = 'version_example' # str | API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header. (optional)
 
     try:
         # Deletes a volume; may fail with RESOURCE_IN_USE while the volume is attached. Snapshots are kept.
-        api_instance.delete_volume(volume_id, version=version)
+        api_instance.delete_volume(volume_id)
     except Exception as e:
         print("Exception when calling StorageServiceApi->delete_volume: %s\n" % e)
 ```
@@ -225,7 +218,6 @@ with kubevim_client.ApiClient(configuration) as api_client:
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **volume_id** | **str**| Identifier of the volume. | 
- **version** | **str**| API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header. | [optional] 
 
 ### Return type
 
@@ -244,13 +236,13 @@ void (empty response body)
 
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-**204** | No Content |  * Version - API version served, with the implementation suffix, e.g. 1.0.0-impl:kubenfv.io:kube-vim:0.4.0 (SOL 013 9.1.2, 9.4). <br>  |
-**0** | Error (SOL 013 6). |  * Version - API version served, with the implementation suffix, e.g. 1.0.0-impl:kubenfv.io:kube-vim:0.4.0 (SOL 013 9.1.2, 9.4). <br>  |
+**204** | No Content |  -  |
+**0** | Error (SOL 013 6). |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **delete_volume_snapshot**
-> delete_volume_snapshot(volume_id, snapshot_id, version=version)
+> delete_volume_snapshot(volume_id, snapshot_id)
 
 Deletes a snapshot of a volume.
 
@@ -282,11 +274,10 @@ with kubevim_client.ApiClient(configuration) as api_client:
     api_instance = kubevim_client.StorageServiceApi(api_client)
     volume_id = 'volume_id_example' # str | Volume the snapshot belongs to.
     snapshot_id = 'snapshot_id_example' # str | Identifier of the snapshot.
-    version = 'version_example' # str | API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header. (optional)
 
     try:
         # Deletes a snapshot of a volume.
-        api_instance.delete_volume_snapshot(volume_id, snapshot_id, version=version)
+        api_instance.delete_volume_snapshot(volume_id, snapshot_id)
     except Exception as e:
         print("Exception when calling StorageServiceApi->delete_volume_snapshot: %s\n" % e)
 ```
@@ -300,7 +291,6 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **volume_id** | **str**| Volume the snapshot belongs to. | 
  **snapshot_id** | **str**| Identifier of the snapshot. | 
- **version** | **str**| API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header. | [optional] 
 
 ### Return type
 
@@ -319,13 +309,13 @@ void (empty response body)
 
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-**204** | No Content |  * Version - API version served, with the implementation suffix, e.g. 1.0.0-impl:kubenfv.io:kube-vim:0.4.0 (SOL 013 9.1.2, 9.4). <br>  |
-**0** | Error (SOL 013 6). |  * Version - API version served, with the implementation suffix, e.g. 1.0.0-impl:kubenfv.io:kube-vim:0.4.0 (SOL 013 9.1.2, 9.4). <br>  |
+**204** | No Content |  -  |
+**0** | Error (SOL 013 6). |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **get_volume**
-> Volume get_volume(volume_id, version=version)
+> Volume get_volume(volume_id)
 
 Returns one volume.
 
@@ -357,11 +347,10 @@ with kubevim_client.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = kubevim_client.StorageServiceApi(api_client)
     volume_id = 'volume_id_example' # str | Identifier of the volume.
-    version = 'version_example' # str | API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header. (optional)
 
     try:
         # Returns one volume.
-        api_response = api_instance.get_volume(volume_id, version=version)
+        api_response = api_instance.get_volume(volume_id)
         print("The response of StorageServiceApi->get_volume:\n")
         pprint(api_response)
     except Exception as e:
@@ -376,7 +365,6 @@ with kubevim_client.ApiClient(configuration) as api_client:
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **volume_id** | **str**| Identifier of the volume. | 
- **version** | **str**| API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header. | [optional] 
 
 ### Return type
 
@@ -395,13 +383,13 @@ Name | Type | Description  | Notes
 
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-**200** | A virtualised storage resource, e.g. a disk of a compute resource. |  * Version - API version served, with the implementation suffix, e.g. 1.0.0-impl:kubenfv.io:kube-vim:0.4.0 (SOL 013 9.1.2, 9.4). <br>  |
-**0** | Error (SOL 013 6). |  * Version - API version served, with the implementation suffix, e.g. 1.0.0-impl:kubenfv.io:kube-vim:0.4.0 (SOL 013 9.1.2, 9.4). <br>  |
+**200** | A virtualised storage resource, e.g. a disk of a compute resource. |  -  |
+**0** | Error (SOL 013 6). |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **get_volume_snapshot**
-> VolumeSnapshot get_volume_snapshot(volume_id, snapshot_id, version=version)
+> VolumeSnapshot get_volume_snapshot(volume_id, snapshot_id)
 
 Returns one snapshot of a volume, also after the volume is deleted.
 
@@ -434,11 +422,10 @@ with kubevim_client.ApiClient(configuration) as api_client:
     api_instance = kubevim_client.StorageServiceApi(api_client)
     volume_id = 'volume_id_example' # str | Volume the snapshot belongs to.
     snapshot_id = 'snapshot_id_example' # str | Identifier of the snapshot.
-    version = 'version_example' # str | API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header. (optional)
 
     try:
         # Returns one snapshot of a volume, also after the volume is deleted.
-        api_response = api_instance.get_volume_snapshot(volume_id, snapshot_id, version=version)
+        api_response = api_instance.get_volume_snapshot(volume_id, snapshot_id)
         print("The response of StorageServiceApi->get_volume_snapshot:\n")
         pprint(api_response)
     except Exception as e:
@@ -454,7 +441,6 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **volume_id** | **str**| Volume the snapshot belongs to. | 
  **snapshot_id** | **str**| Identifier of the snapshot. | 
- **version** | **str**| API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header. | [optional] 
 
 ### Return type
 
@@ -473,13 +459,13 @@ Name | Type | Description  | Notes
 
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-**200** | A snapshot of a volume (Kubernetes VolumeSnapshot). |  * Version - API version served, with the implementation suffix, e.g. 1.0.0-impl:kubenfv.io:kube-vim:0.4.0 (SOL 013 9.1.2, 9.4). <br>  |
-**0** | Error (SOL 013 6). |  * Version - API version served, with the implementation suffix, e.g. 1.0.0-impl:kubenfv.io:kube-vim:0.4.0 (SOL 013 9.1.2, 9.4). <br>  |
+**200** | A snapshot of a volume (Kubernetes VolumeSnapshot). |  -  |
+**0** | Error (SOL 013 6). |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **list_volume_snapshots**
-> List[VolumeSnapshot] list_volume_snapshots(volume_id, filter=filter, nextpage_opaque_marker=nextpage_opaque_marker, version=version)
+> List[VolumeSnapshot] list_volume_snapshots(volume_id, filter=filter, nextpage_opaque_marker=nextpage_opaque_marker)
 
 Returns the snapshots of a volume, or of all volumes with volume_id \"-\".
 
@@ -513,11 +499,10 @@ with kubevim_client.ApiClient(configuration) as api_client:
     volume_id = 'volume_id_example' # str | Volume the snapshots belong to, or \"-\" for all volumes (AIP-159).
     filter = 'filter_example' # str | Attribute-based filter expression (SOL 013 5.2). (optional)
     nextpage_opaque_marker = 'nextpage_opaque_marker_example' # str | Marker of the page to return, from a previous response (SOL 013 5.4). (optional)
-    version = 'version_example' # str | API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header. (optional)
 
     try:
         # Returns the snapshots of a volume, or of all volumes with volume_id \"-\".
-        api_response = api_instance.list_volume_snapshots(volume_id, filter=filter, nextpage_opaque_marker=nextpage_opaque_marker, version=version)
+        api_response = api_instance.list_volume_snapshots(volume_id, filter=filter, nextpage_opaque_marker=nextpage_opaque_marker)
         print("The response of StorageServiceApi->list_volume_snapshots:\n")
         pprint(api_response)
     except Exception as e:
@@ -534,7 +519,6 @@ Name | Type | Description  | Notes
  **volume_id** | **str**| Volume the snapshots belong to, or \&quot;-\&quot; for all volumes (AIP-159). | 
  **filter** | **str**| Attribute-based filter expression (SOL 013 5.2). | [optional] 
  **nextpage_opaque_marker** | **str**| Marker of the page to return, from a previous response (SOL 013 5.4). | [optional] 
- **version** | **str**| API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header. | [optional] 
 
 ### Return type
 
@@ -553,13 +537,13 @@ Name | Type | Description  | Notes
 
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-**200** | A successful response. |  * Link - URI of the next page, rel&#x3D;\&quot;next\&quot;, carrying nextpage_opaque_marker; absent on the last page (SOL 013 5.4.2). <br>  * Version - API version served, with the implementation suffix, e.g. 1.0.0-impl:kubenfv.io:kube-vim:0.4.0 (SOL 013 9.1.2, 9.4). <br>  |
-**0** | Error (SOL 013 6). |  * Version - API version served, with the implementation suffix, e.g. 1.0.0-impl:kubenfv.io:kube-vim:0.4.0 (SOL 013 9.1.2, 9.4). <br>  |
+**200** | A successful response. |  * Link - URI of the next page, rel&#x3D;\&quot;next\&quot;, carrying nextpage_opaque_marker; absent on the last page (SOL 013 5.4.2). <br>  |
+**0** | Error (SOL 013 6). |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **list_volumes**
-> List[Volume] list_volumes(filter=filter, nextpage_opaque_marker=nextpage_opaque_marker, version=version)
+> List[Volume] list_volumes(filter=filter, nextpage_opaque_marker=nextpage_opaque_marker)
 
 Returns the volumes matching a filter; the own disks of compute resources are not volumes (see Compute.disks).
 
@@ -592,11 +576,10 @@ with kubevim_client.ApiClient(configuration) as api_client:
     api_instance = kubevim_client.StorageServiceApi(api_client)
     filter = 'filter_example' # str | Attribute-based filter expression (SOL 013 5.2). (optional)
     nextpage_opaque_marker = 'nextpage_opaque_marker_example' # str | Marker of the page to return, from a previous response (SOL 013 5.4). (optional)
-    version = 'version_example' # str | API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header. (optional)
 
     try:
         # Returns the volumes matching a filter; the own disks of compute resources are not volumes (see Compute.disks).
-        api_response = api_instance.list_volumes(filter=filter, nextpage_opaque_marker=nextpage_opaque_marker, version=version)
+        api_response = api_instance.list_volumes(filter=filter, nextpage_opaque_marker=nextpage_opaque_marker)
         print("The response of StorageServiceApi->list_volumes:\n")
         pprint(api_response)
     except Exception as e:
@@ -612,7 +595,6 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **filter** | **str**| Attribute-based filter expression (SOL 013 5.2). | [optional] 
  **nextpage_opaque_marker** | **str**| Marker of the page to return, from a previous response (SOL 013 5.4). | [optional] 
- **version** | **str**| API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header. | [optional] 
 
 ### Return type
 
@@ -631,13 +613,13 @@ Name | Type | Description  | Notes
 
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-**200** | A successful response. |  * Link - URI of the next page, rel&#x3D;\&quot;next\&quot;, carrying nextpage_opaque_marker; absent on the last page (SOL 013 5.4.2). <br>  * Version - API version served, with the implementation suffix, e.g. 1.0.0-impl:kubenfv.io:kube-vim:0.4.0 (SOL 013 9.1.2, 9.4). <br>  |
-**0** | Error (SOL 013 6). |  * Version - API version served, with the implementation suffix, e.g. 1.0.0-impl:kubenfv.io:kube-vim:0.4.0 (SOL 013 9.1.2, 9.4). <br>  |
+**200** | A successful response. |  * Link - URI of the next page, rel&#x3D;\&quot;next\&quot;, carrying nextpage_opaque_marker; absent on the last page (SOL 013 5.4.2). <br>  |
+**0** | Error (SOL 013 6). |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **migrate_volume**
-> Volume migrate_volume(volume_id, migrate_volume_request, version=version)
+> Volume migrate_volume(volume_id, migrate_volume_request)
 
 Moves a volume to another storage class.
 
@@ -671,11 +653,10 @@ with kubevim_client.ApiClient(configuration) as api_client:
     api_instance = kubevim_client.StorageServiceApi(api_client)
     volume_id = 'volume_id_example' # str | Identifier of the volume.
     migrate_volume_request = kubevim_client.MigrateVolumeRequest() # MigrateVolumeRequest | 
-    version = 'version_example' # str | API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header. (optional)
 
     try:
         # Moves a volume to another storage class.
-        api_response = api_instance.migrate_volume(volume_id, migrate_volume_request, version=version)
+        api_response = api_instance.migrate_volume(volume_id, migrate_volume_request)
         print("The response of StorageServiceApi->migrate_volume:\n")
         pprint(api_response)
     except Exception as e:
@@ -691,7 +672,6 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **volume_id** | **str**| Identifier of the volume. | 
  **migrate_volume_request** | [**MigrateVolumeRequest**](MigrateVolumeRequest.md)|  | 
- **version** | **str**| API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header. | [optional] 
 
 ### Return type
 
@@ -710,13 +690,13 @@ Name | Type | Description  | Notes
 
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-**200** | A virtualised storage resource, e.g. a disk of a compute resource. |  * Version - API version served, with the implementation suffix, e.g. 1.0.0-impl:kubenfv.io:kube-vim:0.4.0 (SOL 013 9.1.2, 9.4). <br>  |
-**0** | Error (SOL 013 6). |  * Version - API version served, with the implementation suffix, e.g. 1.0.0-impl:kubenfv.io:kube-vim:0.4.0 (SOL 013 9.1.2, 9.4). <br>  |
+**200** | A virtualised storage resource, e.g. a disk of a compute resource. |  -  |
+**0** | Error (SOL 013 6). |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **revert_volume_snapshot**
-> Volume revert_volume_snapshot(volume_id, snapshot_id, body, version=version)
+> Volume revert_volume_snapshot(volume_id, snapshot_id, body)
 
 Reverts a volume that no running compute resource uses to a snapshot; not possible once the volume is deleted.
 
@@ -750,11 +730,10 @@ with kubevim_client.ApiClient(configuration) as api_client:
     volume_id = 'volume_id_example' # str | Volume to revert; no running compute resource may use it.
     snapshot_id = 'snapshot_id_example' # str | Identifier of the snapshot to revert to.
     body = None # object | 
-    version = 'version_example' # str | API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header. (optional)
 
     try:
         # Reverts a volume that no running compute resource uses to a snapshot; not possible once the volume is deleted.
-        api_response = api_instance.revert_volume_snapshot(volume_id, snapshot_id, body, version=version)
+        api_response = api_instance.revert_volume_snapshot(volume_id, snapshot_id, body)
         print("The response of StorageServiceApi->revert_volume_snapshot:\n")
         pprint(api_response)
     except Exception as e:
@@ -771,7 +750,6 @@ Name | Type | Description  | Notes
  **volume_id** | **str**| Volume to revert; no running compute resource may use it. | 
  **snapshot_id** | **str**| Identifier of the snapshot to revert to. | 
  **body** | **object**|  | 
- **version** | **str**| API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header. | [optional] 
 
 ### Return type
 
@@ -790,13 +768,13 @@ Name | Type | Description  | Notes
 
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-**200** | A virtualised storage resource, e.g. a disk of a compute resource. |  * Version - API version served, with the implementation suffix, e.g. 1.0.0-impl:kubenfv.io:kube-vim:0.4.0 (SOL 013 9.1.2, 9.4). <br>  |
-**0** | Error (SOL 013 6). |  * Version - API version served, with the implementation suffix, e.g. 1.0.0-impl:kubenfv.io:kube-vim:0.4.0 (SOL 013 9.1.2, 9.4). <br>  |
+**200** | A virtualised storage resource, e.g. a disk of a compute resource. |  -  |
+**0** | Error (SOL 013 6). |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **scale_volume**
-> Volume scale_volume(volume_id, scale_volume_request, version=version)
+> Volume scale_volume(volume_id, scale_volume_request)
 
 Grows a volume.
 
@@ -830,11 +808,10 @@ with kubevim_client.ApiClient(configuration) as api_client:
     api_instance = kubevim_client.StorageServiceApi(api_client)
     volume_id = 'volume_id_example' # str | Identifier of the volume.
     scale_volume_request = kubevim_client.ScaleVolumeRequest() # ScaleVolumeRequest | 
-    version = 'version_example' # str | API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header. (optional)
 
     try:
         # Grows a volume.
-        api_response = api_instance.scale_volume(volume_id, scale_volume_request, version=version)
+        api_response = api_instance.scale_volume(volume_id, scale_volume_request)
         print("The response of StorageServiceApi->scale_volume:\n")
         pprint(api_response)
     except Exception as e:
@@ -850,7 +827,6 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **volume_id** | **str**| Identifier of the volume. | 
  **scale_volume_request** | [**ScaleVolumeRequest**](ScaleVolumeRequest.md)|  | 
- **version** | **str**| API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header. | [optional] 
 
 ### Return type
 
@@ -869,153 +845,13 @@ Name | Type | Description  | Notes
 
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-**200** | A virtualised storage resource, e.g. a disk of a compute resource. |  * Version - API version served, with the implementation suffix, e.g. 1.0.0-impl:kubenfv.io:kube-vim:0.4.0 (SOL 013 9.1.2, 9.4). <br>  |
-**0** | Error (SOL 013 6). |  * Version - API version served, with the implementation suffix, e.g. 1.0.0-impl:kubenfv.io:kube-vim:0.4.0 (SOL 013 9.1.2, 9.4). <br>  |
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
-
-# **storage_get_api_major_versions**
-> ApiVersionInformation storage_get_api_major_versions()
-
-API versions this VIM serves (SOL 013 9.3).
-
-### Example
-
-* OAuth Authentication (oauth2):
-
-```python
-import kubevim_client
-from kubevim_client.models.api_version_information import ApiVersionInformation
-from kubevim_client.rest import ApiException
-from pprint import pprint
-
-# Defining the host is optional and defaults to http://localhost
-# See configuration.py for a list of all supported configuration parameters.
-configuration = kubevim_client.Configuration(
-    host = "http://localhost"
-)
-
-# The client must configure the authentication and authorization parameters
-# in accordance with the API server security policy.
-# Examples for each auth method are provided below, use the example that
-# satisfies your auth use case.
-
-configuration.access_token = os.environ["ACCESS_TOKEN"]
-
-# Enter a context with an instance of the API client
-with kubevim_client.ApiClient(configuration) as api_client:
-    # Create an instance of the API class
-    api_instance = kubevim_client.StorageServiceApi(api_client)
-
-    try:
-        # API versions this VIM serves (SOL 013 9.3).
-        api_response = api_instance.storage_get_api_major_versions()
-        print("The response of StorageServiceApi->storage_get_api_major_versions:\n")
-        pprint(api_response)
-    except Exception as e:
-        print("Exception when calling StorageServiceApi->storage_get_api_major_versions: %s\n" % e)
-```
-
-
-
-### Parameters
-
-This endpoint does not need any parameter.
-
-### Return type
-
-[**ApiVersionInformation**](ApiVersionInformation.md)
-
-### Authorization
-
-[oauth2](../README.md#oauth2)
-
-### HTTP request headers
-
- - **Content-Type**: Not defined
- - **Accept**: application/json, application/problem+json
-
-### HTTP response details
-
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-**200** | OK |  -  |
-**0** | Error (SOL 013 6). |  -  |
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
-
-# **storage_get_api_versions**
-> ApiVersionInformation storage_get_api_versions()
-
-API versions this VIM serves (SOL 013 9.3).
-
-### Example
-
-* OAuth Authentication (oauth2):
-
-```python
-import kubevim_client
-from kubevim_client.models.api_version_information import ApiVersionInformation
-from kubevim_client.rest import ApiException
-from pprint import pprint
-
-# Defining the host is optional and defaults to http://localhost
-# See configuration.py for a list of all supported configuration parameters.
-configuration = kubevim_client.Configuration(
-    host = "http://localhost"
-)
-
-# The client must configure the authentication and authorization parameters
-# in accordance with the API server security policy.
-# Examples for each auth method are provided below, use the example that
-# satisfies your auth use case.
-
-configuration.access_token = os.environ["ACCESS_TOKEN"]
-
-# Enter a context with an instance of the API client
-with kubevim_client.ApiClient(configuration) as api_client:
-    # Create an instance of the API class
-    api_instance = kubevim_client.StorageServiceApi(api_client)
-
-    try:
-        # API versions this VIM serves (SOL 013 9.3).
-        api_response = api_instance.storage_get_api_versions()
-        print("The response of StorageServiceApi->storage_get_api_versions:\n")
-        pprint(api_response)
-    except Exception as e:
-        print("Exception when calling StorageServiceApi->storage_get_api_versions: %s\n" % e)
-```
-
-
-
-### Parameters
-
-This endpoint does not need any parameter.
-
-### Return type
-
-[**ApiVersionInformation**](ApiVersionInformation.md)
-
-### Authorization
-
-[oauth2](../README.md#oauth2)
-
-### HTTP request headers
-
- - **Content-Type**: Not defined
- - **Accept**: application/json, application/problem+json
-
-### HTTP response details
-
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-**200** | OK |  -  |
+**200** | A virtualised storage resource, e.g. a disk of a compute resource. |  -  |
 **0** | Error (SOL 013 6). |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **update_volume**
-> Volume update_volume(volume_id, volume_update, version=version)
+> Volume update_volume(volume_id, volume_update)
 
 Updates the name and metadata of a volume.
 
@@ -1049,11 +885,10 @@ with kubevim_client.ApiClient(configuration) as api_client:
     api_instance = kubevim_client.StorageServiceApi(api_client)
     volume_id = 'volume_id_example' # str | Identifier of the volume.
     volume_update = kubevim_client.VolumeUpdate() # VolumeUpdate | 
-    version = 'version_example' # str | API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header. (optional)
 
     try:
         # Updates the name and metadata of a volume.
-        api_response = api_instance.update_volume(volume_id, volume_update, version=version)
+        api_response = api_instance.update_volume(volume_id, volume_update)
         print("The response of StorageServiceApi->update_volume:\n")
         pprint(api_response)
     except Exception as e:
@@ -1069,7 +904,6 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **volume_id** | **str**| Identifier of the volume. | 
  **volume_update** | [**VolumeUpdate**](VolumeUpdate.md)|  | 
- **version** | **str**| API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header. | [optional] 
 
 ### Return type
 
@@ -1088,8 +922,8 @@ Name | Type | Description  | Notes
 
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-**200** | A virtualised storage resource, e.g. a disk of a compute resource. |  * Version - API version served, with the implementation suffix, e.g. 1.0.0-impl:kubenfv.io:kube-vim:0.4.0 (SOL 013 9.1.2, 9.4). <br>  |
-**0** | Error (SOL 013 6). |  * Version - API version served, with the implementation suffix, e.g. 1.0.0-impl:kubenfv.io:kube-vim:0.4.0 (SOL 013 9.1.2, 9.4). <br>  |
+**200** | A virtualised storage resource, e.g. a disk of a compute resource. |  -  |
+**0** | Error (SOL 013 6). |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 

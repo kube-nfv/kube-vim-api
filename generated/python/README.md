@@ -80,11 +80,10 @@ with kubevim_client.ApiClient(configuration) as api_client:
     api_instance = kubevim_client.ComputeServiceApi(api_client)
     compute_id = 'compute_id_example' # str | Identifier of the compute resource.
     attach_volume_request = kubevim_client.AttachVolumeRequest() # AttachVolumeRequest | 
-    version = 'version_example' # str | API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header. (optional)
 
     try:
         # Attaches a volume to a compute resource.
-        api_response = api_instance.attach_volume(compute_id, attach_volume_request, version=version)
+        api_response = api_instance.attach_volume(compute_id, attach_volume_request)
         print("The response of ComputeServiceApi->attach_volume:\n")
         pprint(api_response)
     except ApiException as e:
@@ -99,8 +98,6 @@ All URIs are relative to *http://localhost*
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
 *ComputeServiceApi* | [**attach_volume**](docs/ComputeServiceApi.md#attach_volume) | **POST** /compute/v1/computes/{compute_id}/attachVolume | Attaches a volume to a compute resource.
-*ComputeServiceApi* | [**compute_get_api_major_versions**](docs/ComputeServiceApi.md#compute_get_api_major_versions) | **GET** /compute/v1/api_versions | API versions this VIM serves (SOL 013 9.3).
-*ComputeServiceApi* | [**compute_get_api_versions**](docs/ComputeServiceApi.md#compute_get_api_versions) | **GET** /compute/api_versions | API versions this VIM serves (SOL 013 9.3).
 *ComputeServiceApi* | [**create_compute**](docs/ComputeServiceApi.md#create_compute) | **POST** /compute/v1/computes | Creates a compute resource.
 *ComputeServiceApi* | [**create_compute_snapshot**](docs/ComputeServiceApi.md#create_compute_snapshot) | **POST** /compute/v1/computes/{compute_id}/snapshots | Creates a snapshot of a compute resource.
 *ComputeServiceApi* | [**create_placement_group**](docs/ComputeServiceApi.md#create_placement_group) | **POST** /compute/v1/placementGroups | Creates a placement group.
@@ -121,15 +118,11 @@ Class | Method | HTTP request | Description
 *ComputeServiceApi* | [**update_compute**](docs/ComputeServiceApi.md#update_compute) | **PATCH** /compute/v1/computes/{compute_id} | Updates a compute resource: its name and metadata, and adds or removes network interfaces.
 *FlavourServiceApi* | [**create_flavour**](docs/FlavourServiceApi.md#create_flavour) | **POST** /flavour/v1/flavours | Creates a compute flavour.
 *FlavourServiceApi* | [**delete_flavour**](docs/FlavourServiceApi.md#delete_flavour) | **DELETE** /flavour/v1/flavours/{flavour_id} | Deletes a compute flavour. Compute resources already created from it are not affected.
-*FlavourServiceApi* | [**flavour_get_api_major_versions**](docs/FlavourServiceApi.md#flavour_get_api_major_versions) | **GET** /flavour/v1/api_versions | API versions this VIM serves (SOL 013 9.3).
-*FlavourServiceApi* | [**flavour_get_api_versions**](docs/FlavourServiceApi.md#flavour_get_api_versions) | **GET** /flavour/api_versions | API versions this VIM serves (SOL 013 9.3).
 *FlavourServiceApi* | [**get_flavour**](docs/FlavourServiceApi.md#get_flavour) | **GET** /flavour/v1/flavours/{flavour_id} | Returns one compute flavour.
 *FlavourServiceApi* | [**list_flavours**](docs/FlavourServiceApi.md#list_flavours) | **GET** /flavour/v1/flavours | Returns the compute flavours matching a filter.
 *ImageServiceApi* | [**create_image**](docs/ImageServiceApi.md#create_image) | **POST** /image/v1/images | Adds a software image to the image repository managed by the VIM.
 *ImageServiceApi* | [**delete_image**](docs/ImageServiceApi.md#delete_image) | **DELETE** /image/v1/images/{image_id} | Deletes a software image and its imported copies; compute resources created from it keep their disks.
 *ImageServiceApi* | [**get_image**](docs/ImageServiceApi.md#get_image) | **GET** /image/v1/images/{image_id} | Returns one software image.
-*ImageServiceApi* | [**image_get_api_major_versions**](docs/ImageServiceApi.md#image_get_api_major_versions) | **GET** /image/v1/api_versions | API versions this VIM serves (SOL 013 9.3).
-*ImageServiceApi* | [**image_get_api_versions**](docs/ImageServiceApi.md#image_get_api_versions) | **GET** /image/api_versions | API versions this VIM serves (SOL 013 9.3).
 *ImageServiceApi* | [**list_image_sources**](docs/ImageServiceApi.md#list_image_sources) | **GET** /image/v1/imageSources | Returns the image source types this VIM accepts.
 *ImageServiceApi* | [**list_images**](docs/ImageServiceApi.md#list_images) | **GET** /image/v1/images | Returns the software images matching a filter, including images of catalog backends.
 *ImageServiceApi* | [**update_image**](docs/ImageServiceApi.md#update_image) | **PATCH** /image/v1/images/{image_id} | Updates the name and metadata of a software image.
@@ -141,8 +134,6 @@ Class | Method | HTTP request | Description
 *NetworkServiceApi* | [**get_subnet**](docs/NetworkServiceApi.md#get_subnet) | **GET** /network/v1/subnets/{subnet_id} | Returns one subnet.
 *NetworkServiceApi* | [**list_networks**](docs/NetworkServiceApi.md#list_networks) | **GET** /network/v1/networks | Returns the networks matching a filter.
 *NetworkServiceApi* | [**list_subnets**](docs/NetworkServiceApi.md#list_subnets) | **GET** /network/v1/subnets | Returns the subnets matching a filter.
-*NetworkServiceApi* | [**network_get_api_major_versions**](docs/NetworkServiceApi.md#network_get_api_major_versions) | **GET** /network/v1/api_versions | API versions this VIM serves (SOL 013 9.3).
-*NetworkServiceApi* | [**network_get_api_versions**](docs/NetworkServiceApi.md#network_get_api_versions) | **GET** /network/api_versions | API versions this VIM serves (SOL 013 9.3).
 *NetworkServiceApi* | [**update_network**](docs/NetworkServiceApi.md#update_network) | **PATCH** /network/v1/networks/{network_id} | Updates the name and metadata of a network.
 *NetworkServiceApi* | [**update_subnet**](docs/NetworkServiceApi.md#update_subnet) | **PATCH** /network/v1/subnets/{subnet_id} | Updates the name and metadata of a subnet.
 *StorageServiceApi* | [**create_volume**](docs/StorageServiceApi.md#create_volume) | **POST** /storage/v1/volumes | Creates a volume.
@@ -156,15 +147,11 @@ Class | Method | HTTP request | Description
 *StorageServiceApi* | [**migrate_volume**](docs/StorageServiceApi.md#migrate_volume) | **POST** /storage/v1/volumes/{volume_id}/migrate | Moves a volume to another storage class.
 *StorageServiceApi* | [**revert_volume_snapshot**](docs/StorageServiceApi.md#revert_volume_snapshot) | **POST** /storage/v1/volumes/{volume_id}/snapshots/{snapshot_id}/revert | Reverts a volume that no running compute resource uses to a snapshot; not possible once the volume is deleted.
 *StorageServiceApi* | [**scale_volume**](docs/StorageServiceApi.md#scale_volume) | **POST** /storage/v1/volumes/{volume_id}/scale | Grows a volume.
-*StorageServiceApi* | [**storage_get_api_major_versions**](docs/StorageServiceApi.md#storage_get_api_major_versions) | **GET** /storage/v1/api_versions | API versions this VIM serves (SOL 013 9.3).
-*StorageServiceApi* | [**storage_get_api_versions**](docs/StorageServiceApi.md#storage_get_api_versions) | **GET** /storage/api_versions | API versions this VIM serves (SOL 013 9.3).
 *StorageServiceApi* | [**update_volume**](docs/StorageServiceApi.md#update_volume) | **PATCH** /storage/v1/volumes/{volume_id} | Updates the name and metadata of a volume.
 
 
 ## Documentation For Models
 
- - [ApiVersionInformation](docs/ApiVersionInformation.md)
- - [ApiVersionInformationApiVersionsInner](docs/ApiVersionInformationApiVersionsInner.md)
  - [AttachVolumeRequest](docs/AttachVolumeRequest.md)
  - [BasicAuth](docs/BasicAuth.md)
  - [BlankSource](docs/BlankSource.md)

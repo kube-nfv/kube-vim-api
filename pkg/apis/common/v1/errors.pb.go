@@ -36,24 +36,20 @@ const (
 	ErrorReason_ERROR_REASON_UNSUPPORTED_FIELD ErrorReason = 2
 	// The filter expression is invalid (SOL 013 5.2). INVALID_ARGUMENT, 400.
 	ErrorReason_ERROR_REASON_INVALID_FILTER ErrorReason = 3
-	// The Version header is missing (SOL 013 9.4). INVALID_ARGUMENT, 400.
-	ErrorReason_ERROR_REASON_VERSION_MISSING ErrorReason = 4
-	// The requested API version is not supported (SOL 013 9.4). FAILED_PRECONDITION, 406.
-	ErrorReason_ERROR_REASON_VERSION_NOT_SUPPORTED ErrorReason = 5
 	// The resource in the path, or a resource the request refers to, does not exist. NOT_FOUND, 404.
-	ErrorReason_ERROR_REASON_NOT_FOUND ErrorReason = 6
+	ErrorReason_ERROR_REASON_NOT_FOUND ErrorReason = 4
 	// The resource cannot be deleted while other resources use it. FAILED_PRECONDITION, 409.
-	ErrorReason_ERROR_REASON_RESOURCE_IN_USE ErrorReason = 7
+	ErrorReason_ERROR_REASON_RESOURCE_IN_USE ErrorReason = 5
 	// The resource is not in a state that allows the operation. FAILED_PRECONDITION, 409.
-	ErrorReason_ERROR_REASON_INVALID_STATE ErrorReason = 8
+	ErrorReason_ERROR_REASON_INVALID_STATE ErrorReason = 6
 	// The request_id was used before with a different request (AIP-155). ALREADY_EXISTS, 409.
-	ErrorReason_ERROR_REASON_REQUEST_ID_REUSED ErrorReason = 9
+	ErrorReason_ERROR_REASON_REQUEST_ID_REUSED ErrorReason = 7
 	// The operation is declared but not implemented by this VIM. UNIMPLEMENTED, 501.
-	ErrorReason_ERROR_REASON_NOT_IMPLEMENTED ErrorReason = 10
+	ErrorReason_ERROR_REASON_NOT_IMPLEMENTED ErrorReason = 8
 	// Kubernetes or a backend the VIM depends on cannot be reached. UNAVAILABLE, 503.
-	ErrorReason_ERROR_REASON_BACKEND_UNAVAILABLE ErrorReason = 11
+	ErrorReason_ERROR_REASON_BACKEND_UNAVAILABLE ErrorReason = 9
 	// Any other error. INTERNAL, 500.
-	ErrorReason_ERROR_REASON_INTERNAL ErrorReason = 12
+	ErrorReason_ERROR_REASON_INTERNAL ErrorReason = 10
 )
 
 // Enum value maps for ErrorReason.
@@ -63,30 +59,26 @@ var (
 		1:  "ERROR_REASON_VALIDATION_FAILED",
 		2:  "ERROR_REASON_UNSUPPORTED_FIELD",
 		3:  "ERROR_REASON_INVALID_FILTER",
-		4:  "ERROR_REASON_VERSION_MISSING",
-		5:  "ERROR_REASON_VERSION_NOT_SUPPORTED",
-		6:  "ERROR_REASON_NOT_FOUND",
-		7:  "ERROR_REASON_RESOURCE_IN_USE",
-		8:  "ERROR_REASON_INVALID_STATE",
-		9:  "ERROR_REASON_REQUEST_ID_REUSED",
-		10: "ERROR_REASON_NOT_IMPLEMENTED",
-		11: "ERROR_REASON_BACKEND_UNAVAILABLE",
-		12: "ERROR_REASON_INTERNAL",
+		4:  "ERROR_REASON_NOT_FOUND",
+		5:  "ERROR_REASON_RESOURCE_IN_USE",
+		6:  "ERROR_REASON_INVALID_STATE",
+		7:  "ERROR_REASON_REQUEST_ID_REUSED",
+		8:  "ERROR_REASON_NOT_IMPLEMENTED",
+		9:  "ERROR_REASON_BACKEND_UNAVAILABLE",
+		10: "ERROR_REASON_INTERNAL",
 	}
 	ErrorReason_value = map[string]int32{
-		"ERROR_REASON_UNSPECIFIED":           0,
-		"ERROR_REASON_VALIDATION_FAILED":     1,
-		"ERROR_REASON_UNSUPPORTED_FIELD":     2,
-		"ERROR_REASON_INVALID_FILTER":        3,
-		"ERROR_REASON_VERSION_MISSING":       4,
-		"ERROR_REASON_VERSION_NOT_SUPPORTED": 5,
-		"ERROR_REASON_NOT_FOUND":             6,
-		"ERROR_REASON_RESOURCE_IN_USE":       7,
-		"ERROR_REASON_INVALID_STATE":         8,
-		"ERROR_REASON_REQUEST_ID_REUSED":     9,
-		"ERROR_REASON_NOT_IMPLEMENTED":       10,
-		"ERROR_REASON_BACKEND_UNAVAILABLE":   11,
-		"ERROR_REASON_INTERNAL":              12,
+		"ERROR_REASON_UNSPECIFIED":         0,
+		"ERROR_REASON_VALIDATION_FAILED":   1,
+		"ERROR_REASON_UNSUPPORTED_FIELD":   2,
+		"ERROR_REASON_INVALID_FILTER":      3,
+		"ERROR_REASON_NOT_FOUND":           4,
+		"ERROR_REASON_RESOURCE_IN_USE":     5,
+		"ERROR_REASON_INVALID_STATE":       6,
+		"ERROR_REASON_REQUEST_ID_REUSED":   7,
+		"ERROR_REASON_NOT_IMPLEMENTED":     8,
+		"ERROR_REASON_BACKEND_UNAVAILABLE": 9,
+		"ERROR_REASON_INTERNAL":            10,
 	}
 )
 
@@ -121,22 +113,20 @@ var File_kubenfv_kubevim_common_v1_errors_proto protoreflect.FileDescriptor
 
 const file_kubenfv_kubevim_common_v1_errors_proto_rawDesc = "" +
 	"\n" +
-	"&kubenfv/kubevim/common/v1/errors.proto\x12\x19kubenfv.kubevim.common.v1*\xc3\x03\n" +
+	"&kubenfv/kubevim/common/v1/errors.proto\x12\x19kubenfv.kubevim.common.v1*\xf9\x02\n" +
 	"\vErrorReason\x12\x1c\n" +
 	"\x18ERROR_REASON_UNSPECIFIED\x10\x00\x12\"\n" +
 	"\x1eERROR_REASON_VALIDATION_FAILED\x10\x01\x12\"\n" +
 	"\x1eERROR_REASON_UNSUPPORTED_FIELD\x10\x02\x12\x1f\n" +
-	"\x1bERROR_REASON_INVALID_FILTER\x10\x03\x12 \n" +
-	"\x1cERROR_REASON_VERSION_MISSING\x10\x04\x12&\n" +
-	"\"ERROR_REASON_VERSION_NOT_SUPPORTED\x10\x05\x12\x1a\n" +
-	"\x16ERROR_REASON_NOT_FOUND\x10\x06\x12 \n" +
-	"\x1cERROR_REASON_RESOURCE_IN_USE\x10\a\x12\x1e\n" +
-	"\x1aERROR_REASON_INVALID_STATE\x10\b\x12\"\n" +
-	"\x1eERROR_REASON_REQUEST_ID_REUSED\x10\t\x12 \n" +
-	"\x1cERROR_REASON_NOT_IMPLEMENTED\x10\n" +
-	"\x12$\n" +
-	" ERROR_REASON_BACKEND_UNAVAILABLE\x10\v\x12\x19\n" +
-	"\x15ERROR_REASON_INTERNAL\x10\fB\xf1\x01\n" +
+	"\x1bERROR_REASON_INVALID_FILTER\x10\x03\x12\x1a\n" +
+	"\x16ERROR_REASON_NOT_FOUND\x10\x04\x12 \n" +
+	"\x1cERROR_REASON_RESOURCE_IN_USE\x10\x05\x12\x1e\n" +
+	"\x1aERROR_REASON_INVALID_STATE\x10\x06\x12\"\n" +
+	"\x1eERROR_REASON_REQUEST_ID_REUSED\x10\a\x12 \n" +
+	"\x1cERROR_REASON_NOT_IMPLEMENTED\x10\b\x12$\n" +
+	" ERROR_REASON_BACKEND_UNAVAILABLE\x10\t\x12\x19\n" +
+	"\x15ERROR_REASON_INTERNAL\x10\n" +
+	"B\xf1\x01\n" +
 	"\x1dcom.kubenfv.kubevim.common.v1B\vErrorsProtoP\x01Z<github.com/kube-nfv/kube-vim-api/pkg/apis/common/v1;commonv1\xa2\x02\x03KKC\xaa\x02\x19Kubenfv.Kubevim.Common.V1\xca\x02\x19Kubenfv\\Kubevim\\Common\\V1\xe2\x02%Kubenfv\\Kubevim\\Common\\V1\\GPBMetadata\xea\x02\x1cKubenfv::Kubevim::Common::V1b\x06proto3"
 
 var (

@@ -63,11 +63,9 @@ func TestConventions(t *testing.T) {
 		}
 		op := get(t, doc, "paths", tc.path, tc.method).(map[string]any)
 		get(t, op, "responses", "default", "content", "application/problem+json")
-		get(t, op, "responses", "default", "headers", "Version")
-		params := op["parameters"].([]any)
-		if ref := params[len(params)-1].(map[string]any)["$ref"]; ref != "#/components/parameters/Version" {
-			t.Errorf("%s %s: last parameter is %v, want the Version header", tc.method, tc.path, ref)
-		}
+	}
+	if got := get(t, doc, "info", "version"); got != "1.0.0" {
+		t.Errorf("per-API info.version = %v, want the release version", got)
 	}
 	get(t, doc, "paths", "/compute/v1/computes", "post", "responses", "201", "headers", "Location")
 	if _, ok := get(t, doc, "paths", "/compute/v1/computes/{compute_id}", "delete", "responses", "204").(map[string]any)["content"]; ok {
@@ -116,47 +114,9 @@ func TestOneofAmongFields(t *testing.T) {
 func TestLinkHeader(t *testing.T) {
 	doc := load(t, filepath.Join(process(t), "compute/v1/compute_service.openapi.json"))
 	get(t, doc, "paths", "/compute/v1/computes", "get", "responses", "200", "headers", "Link")
-	if _, ok := get(t, doc, "paths", "/compute/v1/computes/{compute_id}", "get", "responses", "200", "headers").(map[string]any)["Link"]; ok {
+	headers, _ := get(t, doc, "paths", "/compute/v1/computes/{compute_id}", "get", "responses", "200").(map[string]any)["headers"].(map[string]any)
+	if _, ok := headers["Link"]; ok {
 		t.Error("Get has a Link header; only paged Lists should")
-	}
-}
-
-func TestApiVersions(t *testing.T) {
-	out := process(t)
-	doc := load(t, filepath.Join(out, "compute/v1/compute_service.openapi.json"))
-	for path, id := range map[string]string{
-		"/compute/api_versions":    "ComputeService_GetApiVersions",
-		"/compute/v1/api_versions": "ComputeService_GetApiMajorVersions",
-	} {
-		op := get(t, doc, "paths", path, "get").(map[string]any)
-		if op["operationId"] != id {
-			t.Errorf("%s: operationId = %v, want %s", path, op["operationId"], id)
-		}
-		if op["parameters"] != nil {
-			t.Errorf("%s: parameters = %v, want none (no Version header)", path, op["parameters"])
-		}
-		if ref := get(t, op, "responses", "200", "content", "application/json", "schema", "$ref"); ref != "#/components/schemas/ApiVersionInformation" {
-			t.Errorf("%s: response schema = %v", path, ref)
-		}
-	}
-	get(t, doc, "components", "schemas", "ApiVersionInformation", "properties", "apiVersions")
-	bundled := load(t, filepath.Join(out, bundleFile))
-	if id := get(t, bundled, "paths", "/image/api_versions", "get", "operationId"); id != "Image_GetApiVersions" {
-		t.Errorf("bundled operationId = %v, want Image_GetApiVersions", id)
-	}
-	tags := get(t, bundled, "paths", "/image/api_versions", "get", "tags").([]any)
-	if len(tags) != 1 || tags[0] != "ImageService" {
-		t.Errorf("api_versions tags = %v, want [ImageService]", tags)
-	}
-}
-
-func TestBundleVersionOptional(t *testing.T) {
-	out := process(t)
-	if get(t, load(t, filepath.Join(out, "compute/v1/compute_service.openapi.json")), "components", "parameters", "Version", "required") != true {
-		t.Error("per-API schema: Version must stay required")
-	}
-	if get(t, load(t, filepath.Join(out, bundleFile)), "components", "parameters", "Version", "required") != false {
-		t.Error("bundle: Version must be optional, set once by the client")
 	}
 }
 

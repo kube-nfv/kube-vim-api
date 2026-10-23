@@ -1,6 +1,6 @@
 """The generated Python client against the REST conventions of hack/openapi:
 status codes, List arrays and paging, ProblemDetails, oneof variants, open enums
-and the headers every request carries."""
+and the token every request carries."""
 
 import json
 
@@ -120,13 +120,11 @@ def test_oneof_takes_exactly_one_member():
         kubevim_client.ImageSource.from_dict({})
 
 
-def test_every_request_carries_version_and_token(stub, client):
+def test_every_request_carries_the_token(stub, client):
     stub.route("DELETE", f"/image/v1/images/{IMAGE_ID}", 204)
-    stub.route("GET", "/image/api_versions", 200, {"uriPrefix": "/image/v1", "apiVersions": [{"version": "1.0.0-impl:kubenfv.io:kube-vim:0.4.0"}]})
+    stub.route("GET", "/image/v1/imageSources", 200, ["IMAGE_SOURCE_TYPE_HTTP"])
     api = ImageServiceApi(client)
     api.delete_image(IMAGE_ID)
-    versions = api.image_get_api_versions()
-    assert versions.api_versions[0].version.startswith("1.0.0")
+    assert api.list_image_sources() == [kubevim_client.ImageSourceType.IMAGE_SOURCE_TYPE_HTTP]
     for req in stub.requests:
-        assert req["headers"]["Version"] == "1.0.0"
         assert req["headers"]["Authorization"] == "Bearer token"

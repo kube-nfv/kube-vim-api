@@ -3127,9 +3127,9 @@ const file_kubenfv_kubevim_compute_v1_compute_proto_rawDesc = "" +
 	" \n" +
 	"\x06oauth2\x12\x16\n" +
 	"\x14compute:v1:terminate\xfa\x8b\x192\x120\b\x01\x10\x01\x1a*IFA can create groups but not delete them.\x82\xd3\xe4\x93\x022*0/compute/v1/placementGroups/{placement_group_id}\x1aE\xfa\x8b\x19A\n" +
-	"?IFA006 7.3.1 Virtualised Compute Resources Management InterfaceB\xbe\x06\xfaP\xad\x04\n" +
-	")\n" +
-	" Kube-VIM virtualised compute API:\x051.0.02\xff\x03\n" +
+	"?IFA006 7.3.1 Virtualised Compute Resources Management InterfaceB\xb0\x06\xfaP\xa6\x04\n" +
+	"\"\n" +
+	" Kube-VIM virtualised compute API2\xff\x03\n" +
 	"\xfc\x03\n" +
 	"\x06oauth2\x12\xf1\x03\b\x04\x12QOAuth 2.0 client credentials (SOL 013 8.3). The token URL is deployment specific.:\x99\x03\x1a\x96\x03\x12$https://idp.example.com/oauth2/token\"1\n" +
 	"\x13compute:v1:allocate\x12\x1aAllocate compute resources\"/\n" +
@@ -3138,8 +3138,8 @@ const file_kubenfv_kubevim_compute_v1_compute_proto_rawDesc = "" +
 	"\x10compute:v1:query\x12\x17Query compute resources\"+\n" +
 	"\x10compute:v1:scale\x12\x17Scale compute resources\"3\n" +
 	"\x14compute:v1:terminate\x12\x1bTerminate compute resources\"J\n" +
-	"\x11compute:v1:update\x125Update compute resources and attach or detach volumes\xfa\x8b\x19\x10\n" +
-	"\acompute\x12\x051.0.0\n" +
+	"\x11compute:v1:update\x125Update compute resources and attach or detach volumes\xfa\x8b\x19\t\n" +
+	"\acompute\n" +
 	"\x1ecom.kubenfv.kubevim.compute.v1B\fComputeProtoP\x01Z>github.com/kube-nfv/kube-vim-api/pkg/apis/compute/v1;computev1\xa2\x02\x03KKC\xaa\x02\x1aKubenfv.Kubevim.Compute.V1\xca\x02\x1aKubenfv\\Kubevim\\Compute\\V1\xe2\x02&Kubenfv\\Kubevim\\Compute\\V1\\GPBMetadata\xea\x02\x1dKubenfv::Kubevim::Compute::V1b\x06proto3"
 
 var (

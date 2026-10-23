@@ -25,7 +25,7 @@ const bundleFile = "kubevim.openapi.json"
 func main() {
 	in := flag.String("in", "", "directory with protoc-gen-openapiv3 output")
 	out := flag.String("out", "", "directory for the processed documents")
-	version := flag.String("version", "0.0.0-dev", "version stamped into the bundle")
+	version := flag.String("version", "0.0.0-dev", "release version stamped into info.version")
 	flag.Parse()
 	if *in == "" || *out == "" {
 		flag.Usage()
@@ -47,9 +47,7 @@ func run(in, out, version string) error {
 		if err != nil {
 			return err
 		}
-		if err := applyConventions(doc); err != nil {
-			return fmt.Errorf("%s: %w", rel, err)
-		}
+		applyConventions(doc, version)
 		if err := rewriteOneofs(doc); err != nil {
 			return fmt.Errorf("%s: %w", rel, err)
 		}

@@ -1076,9 +1076,9 @@ const file_kubenfv_kubevim_storage_v1_storage_proto_rawDesc = "" +
 	"\x06oauth2\x12\x14\n" +
 	"\x12storage:v1:operate\xfa\x8b\x19\xa9\x01\n" +
 	"fIFA006 7.5.1.6 Operate Virtualised Storage Resource (createSnapshot, revertToSnapshot, deleteSnapshot)\x12?\b\x03\x10\x01\x1a9Operate with revertToSnapshot, as a task on the snapshot.\x82\xd3\xe4\x93\x02C:\x01*\">/storage/v1/volumes/{volume_id}/snapshots/{snapshot_id}/revert\x1aE\xfa\x8b\x19A\n" +
-	"?IFA006 7.5.1 Virtualised Storage Resources Management InterfaceB\xdd\x05\xfaP\xcc\x03\n" +
-	")\n" +
-	" Kube-VIM virtualised storage API:\x051.0.02\x9e\x03\n" +
+	"?IFA006 7.5.1 Virtualised Storage Resources Management InterfaceB\xcf\x05\xfaP\xc5\x03\n" +
+	"\"\n" +
+	" Kube-VIM virtualised storage API2\x9e\x03\n" +
 	"\x9b\x03\n" +
 	"\x06oauth2\x12\x90\x03\b\x04\x12QOAuth 2.0 client credentials (SOL 013 8.3). The token URL is deployment specific.:\xb8\x02\x1a\xb5\x02\x12$https://idp.example.com/oauth2/token\"'\n" +
 	"\x13storage:v1:allocate\x12\x10Allocate volumes\"%\n" +
@@ -1087,8 +1087,8 @@ const file_kubenfv_kubevim_storage_v1_storage_proto_rawDesc = "" +
 	"\x10storage:v1:query\x12\rQuery volumes\"\"\n" +
 	"\x10storage:v1:scale\x12\x0eResize volumes\")\n" +
 	"\x14storage:v1:terminate\x12\x11Terminate volumes\"#\n" +
-	"\x11storage:v1:update\x12\x0eUpdate volumes\xfa\x8b\x19\x10\n" +
-	"\astorage\x12\x051.0.0\n" +
+	"\x11storage:v1:update\x12\x0eUpdate volumes\xfa\x8b\x19\t\n" +
+	"\astorage\n" +
 	"\x1ecom.kubenfv.kubevim.storage.v1B\fStorageProtoP\x01Z>github.com/kube-nfv/kube-vim-api/pkg/apis/storage/v1;storagev1\xa2\x02\x03KKS\xaa\x02\x1aKubenfv.Kubevim.Storage.V1\xca\x02\x1aKubenfv\\Kubevim\\Storage\\V1\xe2\x02&Kubenfv\\Kubevim\\Storage\\V1\\GPBMetadata\xea\x02\x1dKubenfv::Kubevim::Storage::V1b\x06proto3"
 
 var (

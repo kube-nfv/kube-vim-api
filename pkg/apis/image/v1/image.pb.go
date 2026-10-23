@@ -2229,16 +2229,16 @@ const file_kubenfv_kubevim_image_v1_image_proto_rawDesc = "" +
 	"\x1a\n" +
 	"\x06oauth2\x12\x10\n" +
 	"\x0eimage:v1:query\xfa\x8b\x19P\x12N\b\x01\x10\x01\x1aHImage sources are separate features; clients discover which are enabled.\x82\xd3\xe4\x93\x02!b\asources\x12\x16/image/v1/imageSources\x1a4\xfa\x8b\x190\n" +
-	".IFA005 7.2 Software Image Management interfaceB\xdb\x04\xfaP\xdc\x02\n" +
-	"$\n" +
-	"\x1bKube-VIM software image API:\x051.0.02\xb3\x02\n" +
+	".IFA005 7.2 Software Image Management interfaceB\xcd\x04\xfaP\xd5\x02\n" +
+	"\x1d\n" +
+	"\x1bKube-VIM software image API2\xb3\x02\n" +
 	"\xb0\x02\n" +
 	"\x06oauth2\x12\xa5\x02\b\x04\x12QOAuth 2.0 client credentials (SOL 013 8.3). The token URL is deployment specific.:\xcd\x01\x1a\xca\x01\x12$https://idp.example.com/oauth2/token\"#\n" +
 	"\fimage:v1:add\x12\x13Add software images\")\n" +
 	"\x0fimage:v1:delete\x12\x16Delete software images\"'\n" +
 	"\x0eimage:v1:query\x12\x15Query software images\")\n" +
-	"\x0fimage:v1:update\x12\x16Update software images\xfa\x8b\x19\x0e\n" +
-	"\x05image\x12\x051.0.0\n" +
+	"\x0fimage:v1:update\x12\x16Update software images\xfa\x8b\x19\a\n" +
+	"\x05image\n" +
 	"\x1ccom.kubenfv.kubevim.image.v1B\n" +
 	"ImageProtoP\x01Z:github.com/kube-nfv/kube-vim-api/pkg/apis/image/v1;imagev1\xa2\x02\x03KKI\xaa\x02\x18Kubenfv.Kubevim.Image.V1\xca\x02\x18Kubenfv\\Kubevim\\Image\\V1\xe2\x02$Kubenfv\\Kubevim\\Image\\V1\\GPBMetadata\xea\x02\x1bKubenfv::Kubevim::Image::V1b\x06proto3"
 

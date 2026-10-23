@@ -46,8 +46,6 @@ extend google.protobuf.EnumValueOptions {
 message Api {
   // apiName in the URI prefix (SOL 013 4.1), e.g. "compute".
   string name = 1;
-  // Semantic version of the API (SOL 013 9.1.1), e.g. "1.0.0".
-  string version = 2;
 }
 
 // Mapping of an API element to ETSI GS NFV-IFA 005/006.

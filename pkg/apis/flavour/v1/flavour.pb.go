@@ -721,15 +721,15 @@ const file_kubenfv_kubevim_flavour_v1_flavour_proto_rawDesc = "" +
 	"\x06oauth2\x12\x13\n" +
 	"\x11flavour:v1:delete\xfa\x8b\x19'\n" +
 	"%IFA006 7.3.4.4 Delete Compute Flavour\x82\xd3\xe4\x93\x02#*!/flavour/v1/flavours/{flavour_id}\x1aC\xfa\x8b\x19?\n" +
-	"=IFA006 7.3.4 Virtualised Compute Flavour Management InterfaceB\xd2\x04\xfaP\xc1\x02\n" +
-	"%\n" +
-	"\x1cKube-VIM compute flavour API:\x051.0.02\x97\x02\n" +
+	"=IFA006 7.3.4 Virtualised Compute Flavour Management InterfaceB\xc4\x04\xfaP\xba\x02\n" +
+	"\x1e\n" +
+	"\x1cKube-VIM compute flavour API2\x97\x02\n" +
 	"\x94\x02\n" +
 	"\x06oauth2\x12\x89\x02\b\x04\x12QOAuth 2.0 client credentials (SOL 013 8.3). The token URL is deployment specific.:\xb1\x01\x1a\xae\x01\x12$https://idp.example.com/oauth2/token\",\n" +
 	"\x11flavour:v1:create\x12\x17Create compute flavours\",\n" +
 	"\x11flavour:v1:delete\x12\x17Delete compute flavours\"*\n" +
-	"\x10flavour:v1:query\x12\x16Query compute flavours\xfa\x8b\x19\x10\n" +
-	"\aflavour\x12\x051.0.0\n" +
+	"\x10flavour:v1:query\x12\x16Query compute flavours\xfa\x8b\x19\t\n" +
+	"\aflavour\n" +
 	"\x1ecom.kubenfv.kubevim.flavour.v1B\fFlavourProtoP\x01Z>github.com/kube-nfv/kube-vim-api/pkg/apis/flavour/v1;flavourv1\xa2\x02\x03KKF\xaa\x02\x1aKubenfv.Kubevim.Flavour.V1\xca\x02\x1aKubenfv\\Kubevim\\Flavour\\V1\xe2\x02&Kubenfv\\Kubevim\\Flavour\\V1\\GPBMetadata\xea\x02\x1dKubenfv::Kubevim::Flavour::V1b\x06proto3"
 
 var (

@@ -18,7 +18,6 @@ from typing_extensions import Annotated
 from pydantic import Field, StrictBool, StrictStr
 from typing import Any, Dict, List, Optional
 from typing_extensions import Annotated
-from kubevim_client.models.api_version_information import ApiVersionInformation
 from kubevim_client.models.attach_volume_request import AttachVolumeRequest
 from kubevim_client.models.compute import Compute
 from kubevim_client.models.compute_snapshot import ComputeSnapshot
@@ -54,7 +53,6 @@ class ComputeServiceApi:
         self,
         compute_id: Annotated[StrictStr, Field(description="Identifier of the compute resource.")],
         attach_volume_request: AttachVolumeRequest,
-        version: Annotated[Optional[StrictStr], Field(description="API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -75,8 +73,6 @@ class ComputeServiceApi:
         :type compute_id: str
         :param attach_volume_request: (required)
         :type attach_volume_request: AttachVolumeRequest
-        :param version: API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.
-        :type version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -102,7 +98,6 @@ class ComputeServiceApi:
         _param = self._attach_volume_serialize(
             compute_id=compute_id,
             attach_volume_request=attach_volume_request,
-            version=version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -129,7 +124,6 @@ class ComputeServiceApi:
         self,
         compute_id: Annotated[StrictStr, Field(description="Identifier of the compute resource.")],
         attach_volume_request: AttachVolumeRequest,
-        version: Annotated[Optional[StrictStr], Field(description="API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -150,8 +144,6 @@ class ComputeServiceApi:
         :type compute_id: str
         :param attach_volume_request: (required)
         :type attach_volume_request: AttachVolumeRequest
-        :param version: API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.
-        :type version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -177,7 +169,6 @@ class ComputeServiceApi:
         _param = self._attach_volume_serialize(
             compute_id=compute_id,
             attach_volume_request=attach_volume_request,
-            version=version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -204,7 +195,6 @@ class ComputeServiceApi:
         self,
         compute_id: Annotated[StrictStr, Field(description="Identifier of the compute resource.")],
         attach_volume_request: AttachVolumeRequest,
-        version: Annotated[Optional[StrictStr], Field(description="API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -225,8 +215,6 @@ class ComputeServiceApi:
         :type compute_id: str
         :param attach_volume_request: (required)
         :type attach_volume_request: AttachVolumeRequest
-        :param version: API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.
-        :type version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -252,7 +240,6 @@ class ComputeServiceApi:
         _param = self._attach_volume_serialize(
             compute_id=compute_id,
             attach_volume_request=attach_volume_request,
-            version=version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -274,7 +261,6 @@ class ComputeServiceApi:
         self,
         compute_id,
         attach_volume_request,
-        version,
         _request_auth,
         _content_type,
         _headers,
@@ -300,8 +286,6 @@ class ComputeServiceApi:
             _path_params['compute_id'] = compute_id
         # process the query parameters
         # process the header parameters
-        if version is not None:
-            _header_params['Version'] = version
         # process the form parameters
         # process the body parameter
         if attach_volume_request is not None:
@@ -355,504 +339,9 @@ class ComputeServiceApi:
 
 
     @validate_call
-    def compute_get_api_major_versions(
-        self,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiVersionInformation:
-        """API versions this VIM serves (SOL 013 9.3).
-
-
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
-        :return: Returns the result object.
-        """ # noqa: E501
-
-        _param = self._compute_get_api_major_versions_serialize(
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index
-        )
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "ApiVersionInformation",
-            'default': "ProblemDetails",
-        }
-        response_data = self.api_client.call_api(
-            *_param,
-            _request_timeout=_request_timeout
-        )
-        response_data.read()
-        return self.api_client.response_deserialize(
-            response_data=response_data,
-            response_types_map=_response_types_map,
-        ).data
-
-
-    @validate_call
-    def compute_get_api_major_versions_with_http_info(
-        self,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[ApiVersionInformation]:
-        """API versions this VIM serves (SOL 013 9.3).
-
-
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
-        :return: Returns the result object.
-        """ # noqa: E501
-
-        _param = self._compute_get_api_major_versions_serialize(
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index
-        )
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "ApiVersionInformation",
-            'default': "ProblemDetails",
-        }
-        response_data = self.api_client.call_api(
-            *_param,
-            _request_timeout=_request_timeout
-        )
-        response_data.read()
-        return self.api_client.response_deserialize(
-            response_data=response_data,
-            response_types_map=_response_types_map,
-        )
-
-
-    @validate_call
-    def compute_get_api_major_versions_without_preload_content(
-        self,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> RESTResponseType:
-        """API versions this VIM serves (SOL 013 9.3).
-
-
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
-        :return: Returns the result object.
-        """ # noqa: E501
-
-        _param = self._compute_get_api_major_versions_serialize(
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index
-        )
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "ApiVersionInformation",
-            'default': "ProblemDetails",
-        }
-        response_data = self.api_client.call_api(
-            *_param,
-            _request_timeout=_request_timeout
-        )
-        return response_data.response
-
-
-    def _compute_get_api_major_versions_serialize(
-        self,
-        _request_auth,
-        _content_type,
-        _headers,
-        _host_index,
-    ) -> RequestSerialized:
-
-        _host = None
-
-        _collection_formats: Dict[str, str] = {
-        }
-
-        _path_params: Dict[str, str] = {}
-        _query_params: List[Tuple[str, str]] = []
-        _header_params: Dict[str, Optional[str]] = _headers or {}
-        _form_params: List[Tuple[str, str]] = []
-        _files: Dict[
-            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
-        ] = {}
-        _body_params: Optional[bytes] = None
-
-        # process the path parameters
-        # process the query parameters
-        # process the header parameters
-        # process the form parameters
-        # process the body parameter
-
-
-        # set the HTTP header `Accept`
-        if 'Accept' not in _header_params:
-            _header_params['Accept'] = self.api_client.select_header_accept(
-                [
-                    'application/json', 
-                    'application/problem+json'
-                ]
-            )
-
-
-        # authentication setting
-        _auth_settings: List[str] = [
-            'oauth2'
-        ]
-
-        return self.api_client.param_serialize(
-            method='GET',
-            resource_path='/compute/v1/api_versions',
-            path_params=_path_params,
-            query_params=_query_params,
-            header_params=_header_params,
-            body=_body_params,
-            post_params=_form_params,
-            files=_files,
-            auth_settings=_auth_settings,
-            collection_formats=_collection_formats,
-            _host=_host,
-            _request_auth=_request_auth
-        )
-
-
-
-
-    @validate_call
-    def compute_get_api_versions(
-        self,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiVersionInformation:
-        """API versions this VIM serves (SOL 013 9.3).
-
-
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
-        :return: Returns the result object.
-        """ # noqa: E501
-
-        _param = self._compute_get_api_versions_serialize(
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index
-        )
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "ApiVersionInformation",
-            'default': "ProblemDetails",
-        }
-        response_data = self.api_client.call_api(
-            *_param,
-            _request_timeout=_request_timeout
-        )
-        response_data.read()
-        return self.api_client.response_deserialize(
-            response_data=response_data,
-            response_types_map=_response_types_map,
-        ).data
-
-
-    @validate_call
-    def compute_get_api_versions_with_http_info(
-        self,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[ApiVersionInformation]:
-        """API versions this VIM serves (SOL 013 9.3).
-
-
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
-        :return: Returns the result object.
-        """ # noqa: E501
-
-        _param = self._compute_get_api_versions_serialize(
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index
-        )
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "ApiVersionInformation",
-            'default': "ProblemDetails",
-        }
-        response_data = self.api_client.call_api(
-            *_param,
-            _request_timeout=_request_timeout
-        )
-        response_data.read()
-        return self.api_client.response_deserialize(
-            response_data=response_data,
-            response_types_map=_response_types_map,
-        )
-
-
-    @validate_call
-    def compute_get_api_versions_without_preload_content(
-        self,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> RESTResponseType:
-        """API versions this VIM serves (SOL 013 9.3).
-
-
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
-        :return: Returns the result object.
-        """ # noqa: E501
-
-        _param = self._compute_get_api_versions_serialize(
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index
-        )
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "ApiVersionInformation",
-            'default': "ProblemDetails",
-        }
-        response_data = self.api_client.call_api(
-            *_param,
-            _request_timeout=_request_timeout
-        )
-        return response_data.response
-
-
-    def _compute_get_api_versions_serialize(
-        self,
-        _request_auth,
-        _content_type,
-        _headers,
-        _host_index,
-    ) -> RequestSerialized:
-
-        _host = None
-
-        _collection_formats: Dict[str, str] = {
-        }
-
-        _path_params: Dict[str, str] = {}
-        _query_params: List[Tuple[str, str]] = []
-        _header_params: Dict[str, Optional[str]] = _headers or {}
-        _form_params: List[Tuple[str, str]] = []
-        _files: Dict[
-            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
-        ] = {}
-        _body_params: Optional[bytes] = None
-
-        # process the path parameters
-        # process the query parameters
-        # process the header parameters
-        # process the form parameters
-        # process the body parameter
-
-
-        # set the HTTP header `Accept`
-        if 'Accept' not in _header_params:
-            _header_params['Accept'] = self.api_client.select_header_accept(
-                [
-                    'application/json', 
-                    'application/problem+json'
-                ]
-            )
-
-
-        # authentication setting
-        _auth_settings: List[str] = [
-            'oauth2'
-        ]
-
-        return self.api_client.param_serialize(
-            method='GET',
-            resource_path='/compute/api_versions',
-            path_params=_path_params,
-            query_params=_query_params,
-            header_params=_header_params,
-            body=_body_params,
-            post_params=_form_params,
-            files=_files,
-            auth_settings=_auth_settings,
-            collection_formats=_collection_formats,
-            _host=_host,
-            _request_auth=_request_auth
-        )
-
-
-
-
-    @validate_call
     def create_compute(
         self,
         create_compute_request: CreateComputeRequest,
-        version: Annotated[Optional[StrictStr], Field(description="API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -871,8 +360,6 @@ class ComputeServiceApi:
 
         :param create_compute_request: (required)
         :type create_compute_request: CreateComputeRequest
-        :param version: API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.
-        :type version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -897,7 +384,6 @@ class ComputeServiceApi:
 
         _param = self._create_compute_serialize(
             create_compute_request=create_compute_request,
-            version=version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -923,7 +409,6 @@ class ComputeServiceApi:
     def create_compute_with_http_info(
         self,
         create_compute_request: CreateComputeRequest,
-        version: Annotated[Optional[StrictStr], Field(description="API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -942,8 +427,6 @@ class ComputeServiceApi:
 
         :param create_compute_request: (required)
         :type create_compute_request: CreateComputeRequest
-        :param version: API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.
-        :type version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -968,7 +451,6 @@ class ComputeServiceApi:
 
         _param = self._create_compute_serialize(
             create_compute_request=create_compute_request,
-            version=version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -994,7 +476,6 @@ class ComputeServiceApi:
     def create_compute_without_preload_content(
         self,
         create_compute_request: CreateComputeRequest,
-        version: Annotated[Optional[StrictStr], Field(description="API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1013,8 +494,6 @@ class ComputeServiceApi:
 
         :param create_compute_request: (required)
         :type create_compute_request: CreateComputeRequest
-        :param version: API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.
-        :type version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1039,7 +518,6 @@ class ComputeServiceApi:
 
         _param = self._create_compute_serialize(
             create_compute_request=create_compute_request,
-            version=version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1060,7 +538,6 @@ class ComputeServiceApi:
     def _create_compute_serialize(
         self,
         create_compute_request,
-        version,
         _request_auth,
         _content_type,
         _headers,
@@ -1084,8 +561,6 @@ class ComputeServiceApi:
         # process the path parameters
         # process the query parameters
         # process the header parameters
-        if version is not None:
-            _header_params['Version'] = version
         # process the form parameters
         # process the body parameter
         if create_compute_request is not None:
@@ -1143,7 +618,6 @@ class ComputeServiceApi:
         self,
         compute_id: Annotated[StrictStr, Field(description="Compute resource to take the snapshot of.")],
         create_compute_snapshot_request: CreateComputeSnapshotRequest,
-        version: Annotated[Optional[StrictStr], Field(description="API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1164,8 +638,6 @@ class ComputeServiceApi:
         :type compute_id: str
         :param create_compute_snapshot_request: (required)
         :type create_compute_snapshot_request: CreateComputeSnapshotRequest
-        :param version: API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.
-        :type version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1191,7 +663,6 @@ class ComputeServiceApi:
         _param = self._create_compute_snapshot_serialize(
             compute_id=compute_id,
             create_compute_snapshot_request=create_compute_snapshot_request,
-            version=version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1218,7 +689,6 @@ class ComputeServiceApi:
         self,
         compute_id: Annotated[StrictStr, Field(description="Compute resource to take the snapshot of.")],
         create_compute_snapshot_request: CreateComputeSnapshotRequest,
-        version: Annotated[Optional[StrictStr], Field(description="API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1239,8 +709,6 @@ class ComputeServiceApi:
         :type compute_id: str
         :param create_compute_snapshot_request: (required)
         :type create_compute_snapshot_request: CreateComputeSnapshotRequest
-        :param version: API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.
-        :type version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1266,7 +734,6 @@ class ComputeServiceApi:
         _param = self._create_compute_snapshot_serialize(
             compute_id=compute_id,
             create_compute_snapshot_request=create_compute_snapshot_request,
-            version=version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1293,7 +760,6 @@ class ComputeServiceApi:
         self,
         compute_id: Annotated[StrictStr, Field(description="Compute resource to take the snapshot of.")],
         create_compute_snapshot_request: CreateComputeSnapshotRequest,
-        version: Annotated[Optional[StrictStr], Field(description="API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1314,8 +780,6 @@ class ComputeServiceApi:
         :type compute_id: str
         :param create_compute_snapshot_request: (required)
         :type create_compute_snapshot_request: CreateComputeSnapshotRequest
-        :param version: API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.
-        :type version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1341,7 +805,6 @@ class ComputeServiceApi:
         _param = self._create_compute_snapshot_serialize(
             compute_id=compute_id,
             create_compute_snapshot_request=create_compute_snapshot_request,
-            version=version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1363,7 +826,6 @@ class ComputeServiceApi:
         self,
         compute_id,
         create_compute_snapshot_request,
-        version,
         _request_auth,
         _content_type,
         _headers,
@@ -1389,8 +851,6 @@ class ComputeServiceApi:
             _path_params['compute_id'] = compute_id
         # process the query parameters
         # process the header parameters
-        if version is not None:
-            _header_params['Version'] = version
         # process the form parameters
         # process the body parameter
         if create_compute_snapshot_request is not None:
@@ -1447,7 +907,6 @@ class ComputeServiceApi:
     def create_placement_group(
         self,
         create_placement_group_request: CreatePlacementGroupRequest,
-        version: Annotated[Optional[StrictStr], Field(description="API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1466,8 +925,6 @@ class ComputeServiceApi:
 
         :param create_placement_group_request: (required)
         :type create_placement_group_request: CreatePlacementGroupRequest
-        :param version: API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.
-        :type version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1492,7 +949,6 @@ class ComputeServiceApi:
 
         _param = self._create_placement_group_serialize(
             create_placement_group_request=create_placement_group_request,
-            version=version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1518,7 +974,6 @@ class ComputeServiceApi:
     def create_placement_group_with_http_info(
         self,
         create_placement_group_request: CreatePlacementGroupRequest,
-        version: Annotated[Optional[StrictStr], Field(description="API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1537,8 +992,6 @@ class ComputeServiceApi:
 
         :param create_placement_group_request: (required)
         :type create_placement_group_request: CreatePlacementGroupRequest
-        :param version: API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.
-        :type version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1563,7 +1016,6 @@ class ComputeServiceApi:
 
         _param = self._create_placement_group_serialize(
             create_placement_group_request=create_placement_group_request,
-            version=version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1589,7 +1041,6 @@ class ComputeServiceApi:
     def create_placement_group_without_preload_content(
         self,
         create_placement_group_request: CreatePlacementGroupRequest,
-        version: Annotated[Optional[StrictStr], Field(description="API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1608,8 +1059,6 @@ class ComputeServiceApi:
 
         :param create_placement_group_request: (required)
         :type create_placement_group_request: CreatePlacementGroupRequest
-        :param version: API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.
-        :type version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1634,7 +1083,6 @@ class ComputeServiceApi:
 
         _param = self._create_placement_group_serialize(
             create_placement_group_request=create_placement_group_request,
-            version=version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1655,7 +1103,6 @@ class ComputeServiceApi:
     def _create_placement_group_serialize(
         self,
         create_placement_group_request,
-        version,
         _request_auth,
         _content_type,
         _headers,
@@ -1679,8 +1126,6 @@ class ComputeServiceApi:
         # process the path parameters
         # process the query parameters
         # process the header parameters
-        if version is not None:
-            _header_params['Version'] = version
         # process the form parameters
         # process the body parameter
         if create_placement_group_request is not None:
@@ -1738,7 +1183,6 @@ class ComputeServiceApi:
         self,
         compute_id: Annotated[StrictStr, Field(description="Identifier of the compute resource.")],
         delete_volumes: Annotated[Optional[StrictBool], Field(description="Also delete the attached volumes created with the storage API; they are detached and kept when unset.")] = None,
-        version: Annotated[Optional[StrictStr], Field(description="API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1759,8 +1203,6 @@ class ComputeServiceApi:
         :type compute_id: str
         :param delete_volumes: Also delete the attached volumes created with the storage API; they are detached and kept when unset.
         :type delete_volumes: bool
-        :param version: API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.
-        :type version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1786,7 +1228,6 @@ class ComputeServiceApi:
         _param = self._delete_compute_serialize(
             compute_id=compute_id,
             delete_volumes=delete_volumes,
-            version=version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1813,7 +1254,6 @@ class ComputeServiceApi:
         self,
         compute_id: Annotated[StrictStr, Field(description="Identifier of the compute resource.")],
         delete_volumes: Annotated[Optional[StrictBool], Field(description="Also delete the attached volumes created with the storage API; they are detached and kept when unset.")] = None,
-        version: Annotated[Optional[StrictStr], Field(description="API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1834,8 +1274,6 @@ class ComputeServiceApi:
         :type compute_id: str
         :param delete_volumes: Also delete the attached volumes created with the storage API; they are detached and kept when unset.
         :type delete_volumes: bool
-        :param version: API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.
-        :type version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1861,7 +1299,6 @@ class ComputeServiceApi:
         _param = self._delete_compute_serialize(
             compute_id=compute_id,
             delete_volumes=delete_volumes,
-            version=version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1888,7 +1325,6 @@ class ComputeServiceApi:
         self,
         compute_id: Annotated[StrictStr, Field(description="Identifier of the compute resource.")],
         delete_volumes: Annotated[Optional[StrictBool], Field(description="Also delete the attached volumes created with the storage API; they are detached and kept when unset.")] = None,
-        version: Annotated[Optional[StrictStr], Field(description="API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1909,8 +1345,6 @@ class ComputeServiceApi:
         :type compute_id: str
         :param delete_volumes: Also delete the attached volumes created with the storage API; they are detached and kept when unset.
         :type delete_volumes: bool
-        :param version: API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.
-        :type version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1936,7 +1370,6 @@ class ComputeServiceApi:
         _param = self._delete_compute_serialize(
             compute_id=compute_id,
             delete_volumes=delete_volumes,
-            version=version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1958,7 +1391,6 @@ class ComputeServiceApi:
         self,
         compute_id,
         delete_volumes,
-        version,
         _request_auth,
         _content_type,
         _headers,
@@ -1988,8 +1420,6 @@ class ComputeServiceApi:
             _query_params.append(('deleteVolumes', delete_volumes))
             
         # process the header parameters
-        if version is not None:
-            _header_params['Version'] = version
         # process the form parameters
         # process the body parameter
 
@@ -2031,7 +1461,6 @@ class ComputeServiceApi:
         self,
         compute_id: Annotated[StrictStr, Field(description="Compute resource the snapshot belongs to.")],
         snapshot_id: Annotated[StrictStr, Field(description="Identifier of the snapshot.")],
-        version: Annotated[Optional[StrictStr], Field(description="API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2052,8 +1481,6 @@ class ComputeServiceApi:
         :type compute_id: str
         :param snapshot_id: Identifier of the snapshot. (required)
         :type snapshot_id: str
-        :param version: API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.
-        :type version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -2079,7 +1506,6 @@ class ComputeServiceApi:
         _param = self._delete_compute_snapshot_serialize(
             compute_id=compute_id,
             snapshot_id=snapshot_id,
-            version=version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -2106,7 +1532,6 @@ class ComputeServiceApi:
         self,
         compute_id: Annotated[StrictStr, Field(description="Compute resource the snapshot belongs to.")],
         snapshot_id: Annotated[StrictStr, Field(description="Identifier of the snapshot.")],
-        version: Annotated[Optional[StrictStr], Field(description="API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2127,8 +1552,6 @@ class ComputeServiceApi:
         :type compute_id: str
         :param snapshot_id: Identifier of the snapshot. (required)
         :type snapshot_id: str
-        :param version: API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.
-        :type version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -2154,7 +1577,6 @@ class ComputeServiceApi:
         _param = self._delete_compute_snapshot_serialize(
             compute_id=compute_id,
             snapshot_id=snapshot_id,
-            version=version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -2181,7 +1603,6 @@ class ComputeServiceApi:
         self,
         compute_id: Annotated[StrictStr, Field(description="Compute resource the snapshot belongs to.")],
         snapshot_id: Annotated[StrictStr, Field(description="Identifier of the snapshot.")],
-        version: Annotated[Optional[StrictStr], Field(description="API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2202,8 +1623,6 @@ class ComputeServiceApi:
         :type compute_id: str
         :param snapshot_id: Identifier of the snapshot. (required)
         :type snapshot_id: str
-        :param version: API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.
-        :type version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -2229,7 +1648,6 @@ class ComputeServiceApi:
         _param = self._delete_compute_snapshot_serialize(
             compute_id=compute_id,
             snapshot_id=snapshot_id,
-            version=version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -2251,7 +1669,6 @@ class ComputeServiceApi:
         self,
         compute_id,
         snapshot_id,
-        version,
         _request_auth,
         _content_type,
         _headers,
@@ -2279,8 +1696,6 @@ class ComputeServiceApi:
             _path_params['snapshot_id'] = snapshot_id
         # process the query parameters
         # process the header parameters
-        if version is not None:
-            _header_params['Version'] = version
         # process the form parameters
         # process the body parameter
 
@@ -2321,7 +1736,6 @@ class ComputeServiceApi:
     def delete_placement_group(
         self,
         placement_group_id: Annotated[StrictStr, Field(description="Identifier of the group.")],
-        version: Annotated[Optional[StrictStr], Field(description="API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2340,8 +1754,6 @@ class ComputeServiceApi:
 
         :param placement_group_id: Identifier of the group. (required)
         :type placement_group_id: str
-        :param version: API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.
-        :type version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -2366,7 +1778,6 @@ class ComputeServiceApi:
 
         _param = self._delete_placement_group_serialize(
             placement_group_id=placement_group_id,
-            version=version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -2392,7 +1803,6 @@ class ComputeServiceApi:
     def delete_placement_group_with_http_info(
         self,
         placement_group_id: Annotated[StrictStr, Field(description="Identifier of the group.")],
-        version: Annotated[Optional[StrictStr], Field(description="API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2411,8 +1821,6 @@ class ComputeServiceApi:
 
         :param placement_group_id: Identifier of the group. (required)
         :type placement_group_id: str
-        :param version: API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.
-        :type version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -2437,7 +1845,6 @@ class ComputeServiceApi:
 
         _param = self._delete_placement_group_serialize(
             placement_group_id=placement_group_id,
-            version=version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -2463,7 +1870,6 @@ class ComputeServiceApi:
     def delete_placement_group_without_preload_content(
         self,
         placement_group_id: Annotated[StrictStr, Field(description="Identifier of the group.")],
-        version: Annotated[Optional[StrictStr], Field(description="API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2482,8 +1888,6 @@ class ComputeServiceApi:
 
         :param placement_group_id: Identifier of the group. (required)
         :type placement_group_id: str
-        :param version: API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.
-        :type version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -2508,7 +1912,6 @@ class ComputeServiceApi:
 
         _param = self._delete_placement_group_serialize(
             placement_group_id=placement_group_id,
-            version=version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -2529,7 +1932,6 @@ class ComputeServiceApi:
     def _delete_placement_group_serialize(
         self,
         placement_group_id,
-        version,
         _request_auth,
         _content_type,
         _headers,
@@ -2555,8 +1957,6 @@ class ComputeServiceApi:
             _path_params['placement_group_id'] = placement_group_id
         # process the query parameters
         # process the header parameters
-        if version is not None:
-            _header_params['Version'] = version
         # process the form parameters
         # process the body parameter
 
@@ -2598,7 +1998,6 @@ class ComputeServiceApi:
         self,
         compute_id: Annotated[StrictStr, Field(description="Identifier of the compute resource.")],
         detach_volume_request: DetachVolumeRequest,
-        version: Annotated[Optional[StrictStr], Field(description="API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2619,8 +2018,6 @@ class ComputeServiceApi:
         :type compute_id: str
         :param detach_volume_request: (required)
         :type detach_volume_request: DetachVolumeRequest
-        :param version: API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.
-        :type version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -2646,7 +2043,6 @@ class ComputeServiceApi:
         _param = self._detach_volume_serialize(
             compute_id=compute_id,
             detach_volume_request=detach_volume_request,
-            version=version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -2673,7 +2069,6 @@ class ComputeServiceApi:
         self,
         compute_id: Annotated[StrictStr, Field(description="Identifier of the compute resource.")],
         detach_volume_request: DetachVolumeRequest,
-        version: Annotated[Optional[StrictStr], Field(description="API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2694,8 +2089,6 @@ class ComputeServiceApi:
         :type compute_id: str
         :param detach_volume_request: (required)
         :type detach_volume_request: DetachVolumeRequest
-        :param version: API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.
-        :type version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -2721,7 +2114,6 @@ class ComputeServiceApi:
         _param = self._detach_volume_serialize(
             compute_id=compute_id,
             detach_volume_request=detach_volume_request,
-            version=version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -2748,7 +2140,6 @@ class ComputeServiceApi:
         self,
         compute_id: Annotated[StrictStr, Field(description="Identifier of the compute resource.")],
         detach_volume_request: DetachVolumeRequest,
-        version: Annotated[Optional[StrictStr], Field(description="API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2769,8 +2160,6 @@ class ComputeServiceApi:
         :type compute_id: str
         :param detach_volume_request: (required)
         :type detach_volume_request: DetachVolumeRequest
-        :param version: API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.
-        :type version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -2796,7 +2185,6 @@ class ComputeServiceApi:
         _param = self._detach_volume_serialize(
             compute_id=compute_id,
             detach_volume_request=detach_volume_request,
-            version=version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -2818,7 +2206,6 @@ class ComputeServiceApi:
         self,
         compute_id,
         detach_volume_request,
-        version,
         _request_auth,
         _content_type,
         _headers,
@@ -2844,8 +2231,6 @@ class ComputeServiceApi:
             _path_params['compute_id'] = compute_id
         # process the query parameters
         # process the header parameters
-        if version is not None:
-            _header_params['Version'] = version
         # process the form parameters
         # process the body parameter
         if detach_volume_request is not None:
@@ -2902,7 +2287,6 @@ class ComputeServiceApi:
     def get_compute(
         self,
         compute_id: Annotated[StrictStr, Field(description="Identifier of the compute resource.")],
-        version: Annotated[Optional[StrictStr], Field(description="API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2921,8 +2305,6 @@ class ComputeServiceApi:
 
         :param compute_id: Identifier of the compute resource. (required)
         :type compute_id: str
-        :param version: API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.
-        :type version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -2947,7 +2329,6 @@ class ComputeServiceApi:
 
         _param = self._get_compute_serialize(
             compute_id=compute_id,
-            version=version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -2973,7 +2354,6 @@ class ComputeServiceApi:
     def get_compute_with_http_info(
         self,
         compute_id: Annotated[StrictStr, Field(description="Identifier of the compute resource.")],
-        version: Annotated[Optional[StrictStr], Field(description="API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2992,8 +2372,6 @@ class ComputeServiceApi:
 
         :param compute_id: Identifier of the compute resource. (required)
         :type compute_id: str
-        :param version: API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.
-        :type version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -3018,7 +2396,6 @@ class ComputeServiceApi:
 
         _param = self._get_compute_serialize(
             compute_id=compute_id,
-            version=version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -3044,7 +2421,6 @@ class ComputeServiceApi:
     def get_compute_without_preload_content(
         self,
         compute_id: Annotated[StrictStr, Field(description="Identifier of the compute resource.")],
-        version: Annotated[Optional[StrictStr], Field(description="API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -3063,8 +2439,6 @@ class ComputeServiceApi:
 
         :param compute_id: Identifier of the compute resource. (required)
         :type compute_id: str
-        :param version: API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.
-        :type version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -3089,7 +2463,6 @@ class ComputeServiceApi:
 
         _param = self._get_compute_serialize(
             compute_id=compute_id,
-            version=version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -3110,7 +2483,6 @@ class ComputeServiceApi:
     def _get_compute_serialize(
         self,
         compute_id,
-        version,
         _request_auth,
         _content_type,
         _headers,
@@ -3136,8 +2508,6 @@ class ComputeServiceApi:
             _path_params['compute_id'] = compute_id
         # process the query parameters
         # process the header parameters
-        if version is not None:
-            _header_params['Version'] = version
         # process the form parameters
         # process the body parameter
 
@@ -3180,7 +2550,6 @@ class ComputeServiceApi:
         self,
         compute_id: Annotated[StrictStr, Field(description="Compute resource the snapshot belongs to.")],
         snapshot_id: Annotated[StrictStr, Field(description="Identifier of the snapshot.")],
-        version: Annotated[Optional[StrictStr], Field(description="API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -3201,8 +2570,6 @@ class ComputeServiceApi:
         :type compute_id: str
         :param snapshot_id: Identifier of the snapshot. (required)
         :type snapshot_id: str
-        :param version: API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.
-        :type version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -3228,7 +2595,6 @@ class ComputeServiceApi:
         _param = self._get_compute_snapshot_serialize(
             compute_id=compute_id,
             snapshot_id=snapshot_id,
-            version=version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -3255,7 +2621,6 @@ class ComputeServiceApi:
         self,
         compute_id: Annotated[StrictStr, Field(description="Compute resource the snapshot belongs to.")],
         snapshot_id: Annotated[StrictStr, Field(description="Identifier of the snapshot.")],
-        version: Annotated[Optional[StrictStr], Field(description="API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -3276,8 +2641,6 @@ class ComputeServiceApi:
         :type compute_id: str
         :param snapshot_id: Identifier of the snapshot. (required)
         :type snapshot_id: str
-        :param version: API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.
-        :type version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -3303,7 +2666,6 @@ class ComputeServiceApi:
         _param = self._get_compute_snapshot_serialize(
             compute_id=compute_id,
             snapshot_id=snapshot_id,
-            version=version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -3330,7 +2692,6 @@ class ComputeServiceApi:
         self,
         compute_id: Annotated[StrictStr, Field(description="Compute resource the snapshot belongs to.")],
         snapshot_id: Annotated[StrictStr, Field(description="Identifier of the snapshot.")],
-        version: Annotated[Optional[StrictStr], Field(description="API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -3351,8 +2712,6 @@ class ComputeServiceApi:
         :type compute_id: str
         :param snapshot_id: Identifier of the snapshot. (required)
         :type snapshot_id: str
-        :param version: API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.
-        :type version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -3378,7 +2737,6 @@ class ComputeServiceApi:
         _param = self._get_compute_snapshot_serialize(
             compute_id=compute_id,
             snapshot_id=snapshot_id,
-            version=version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -3400,7 +2758,6 @@ class ComputeServiceApi:
         self,
         compute_id,
         snapshot_id,
-        version,
         _request_auth,
         _content_type,
         _headers,
@@ -3428,8 +2785,6 @@ class ComputeServiceApi:
             _path_params['snapshot_id'] = snapshot_id
         # process the query parameters
         # process the header parameters
-        if version is not None:
-            _header_params['Version'] = version
         # process the form parameters
         # process the body parameter
 
@@ -3471,7 +2826,6 @@ class ComputeServiceApi:
     def get_placement_group(
         self,
         placement_group_id: Annotated[StrictStr, Field(description="Identifier of the group.")],
-        version: Annotated[Optional[StrictStr], Field(description="API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -3490,8 +2844,6 @@ class ComputeServiceApi:
 
         :param placement_group_id: Identifier of the group. (required)
         :type placement_group_id: str
-        :param version: API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.
-        :type version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -3516,7 +2868,6 @@ class ComputeServiceApi:
 
         _param = self._get_placement_group_serialize(
             placement_group_id=placement_group_id,
-            version=version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -3542,7 +2893,6 @@ class ComputeServiceApi:
     def get_placement_group_with_http_info(
         self,
         placement_group_id: Annotated[StrictStr, Field(description="Identifier of the group.")],
-        version: Annotated[Optional[StrictStr], Field(description="API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -3561,8 +2911,6 @@ class ComputeServiceApi:
 
         :param placement_group_id: Identifier of the group. (required)
         :type placement_group_id: str
-        :param version: API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.
-        :type version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -3587,7 +2935,6 @@ class ComputeServiceApi:
 
         _param = self._get_placement_group_serialize(
             placement_group_id=placement_group_id,
-            version=version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -3613,7 +2960,6 @@ class ComputeServiceApi:
     def get_placement_group_without_preload_content(
         self,
         placement_group_id: Annotated[StrictStr, Field(description="Identifier of the group.")],
-        version: Annotated[Optional[StrictStr], Field(description="API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -3632,8 +2978,6 @@ class ComputeServiceApi:
 
         :param placement_group_id: Identifier of the group. (required)
         :type placement_group_id: str
-        :param version: API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.
-        :type version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -3658,7 +3002,6 @@ class ComputeServiceApi:
 
         _param = self._get_placement_group_serialize(
             placement_group_id=placement_group_id,
-            version=version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -3679,7 +3022,6 @@ class ComputeServiceApi:
     def _get_placement_group_serialize(
         self,
         placement_group_id,
-        version,
         _request_auth,
         _content_type,
         _headers,
@@ -3705,8 +3047,6 @@ class ComputeServiceApi:
             _path_params['placement_group_id'] = placement_group_id
         # process the query parameters
         # process the header parameters
-        if version is not None:
-            _header_params['Version'] = version
         # process the form parameters
         # process the body parameter
 
@@ -3750,7 +3090,6 @@ class ComputeServiceApi:
         compute_id: Annotated[StrictStr, Field(description="Compute resource the snapshots belong to, or \"-\" for all compute resources (AIP-159).")],
         filter: Annotated[Optional[StrictStr], Field(description="Attribute-based filter expression (SOL 013 5.2).")] = None,
         nextpage_opaque_marker: Annotated[Optional[StrictStr], Field(description="Marker of the page to return, from a previous response (SOL 013 5.4).")] = None,
-        version: Annotated[Optional[StrictStr], Field(description="API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -3773,8 +3112,6 @@ class ComputeServiceApi:
         :type filter: str
         :param nextpage_opaque_marker: Marker of the page to return, from a previous response (SOL 013 5.4).
         :type nextpage_opaque_marker: str
-        :param version: API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.
-        :type version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -3801,7 +3138,6 @@ class ComputeServiceApi:
             compute_id=compute_id,
             filter=filter,
             nextpage_opaque_marker=nextpage_opaque_marker,
-            version=version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -3829,7 +3165,6 @@ class ComputeServiceApi:
         compute_id: Annotated[StrictStr, Field(description="Compute resource the snapshots belong to, or \"-\" for all compute resources (AIP-159).")],
         filter: Annotated[Optional[StrictStr], Field(description="Attribute-based filter expression (SOL 013 5.2).")] = None,
         nextpage_opaque_marker: Annotated[Optional[StrictStr], Field(description="Marker of the page to return, from a previous response (SOL 013 5.4).")] = None,
-        version: Annotated[Optional[StrictStr], Field(description="API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -3852,8 +3187,6 @@ class ComputeServiceApi:
         :type filter: str
         :param nextpage_opaque_marker: Marker of the page to return, from a previous response (SOL 013 5.4).
         :type nextpage_opaque_marker: str
-        :param version: API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.
-        :type version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -3880,7 +3213,6 @@ class ComputeServiceApi:
             compute_id=compute_id,
             filter=filter,
             nextpage_opaque_marker=nextpage_opaque_marker,
-            version=version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -3908,7 +3240,6 @@ class ComputeServiceApi:
         compute_id: Annotated[StrictStr, Field(description="Compute resource the snapshots belong to, or \"-\" for all compute resources (AIP-159).")],
         filter: Annotated[Optional[StrictStr], Field(description="Attribute-based filter expression (SOL 013 5.2).")] = None,
         nextpage_opaque_marker: Annotated[Optional[StrictStr], Field(description="Marker of the page to return, from a previous response (SOL 013 5.4).")] = None,
-        version: Annotated[Optional[StrictStr], Field(description="API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -3931,8 +3262,6 @@ class ComputeServiceApi:
         :type filter: str
         :param nextpage_opaque_marker: Marker of the page to return, from a previous response (SOL 013 5.4).
         :type nextpage_opaque_marker: str
-        :param version: API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.
-        :type version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -3959,7 +3288,6 @@ class ComputeServiceApi:
             compute_id=compute_id,
             filter=filter,
             nextpage_opaque_marker=nextpage_opaque_marker,
-            version=version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -3982,7 +3310,6 @@ class ComputeServiceApi:
         compute_id,
         filter,
         nextpage_opaque_marker,
-        version,
         _request_auth,
         _content_type,
         _headers,
@@ -4016,8 +3343,6 @@ class ComputeServiceApi:
             _query_params.append(('nextpage_opaque_marker', nextpage_opaque_marker))
             
         # process the header parameters
-        if version is not None:
-            _header_params['Version'] = version
         # process the form parameters
         # process the body parameter
 
@@ -4060,7 +3385,6 @@ class ComputeServiceApi:
         self,
         filter: Annotated[Optional[StrictStr], Field(description="Attribute-based filter expression (SOL 013 5.2).")] = None,
         nextpage_opaque_marker: Annotated[Optional[StrictStr], Field(description="Marker of the page to return, from a previous response (SOL 013 5.4).")] = None,
-        version: Annotated[Optional[StrictStr], Field(description="API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -4081,8 +3405,6 @@ class ComputeServiceApi:
         :type filter: str
         :param nextpage_opaque_marker: Marker of the page to return, from a previous response (SOL 013 5.4).
         :type nextpage_opaque_marker: str
-        :param version: API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.
-        :type version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -4108,7 +3430,6 @@ class ComputeServiceApi:
         _param = self._list_computes_serialize(
             filter=filter,
             nextpage_opaque_marker=nextpage_opaque_marker,
-            version=version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -4135,7 +3456,6 @@ class ComputeServiceApi:
         self,
         filter: Annotated[Optional[StrictStr], Field(description="Attribute-based filter expression (SOL 013 5.2).")] = None,
         nextpage_opaque_marker: Annotated[Optional[StrictStr], Field(description="Marker of the page to return, from a previous response (SOL 013 5.4).")] = None,
-        version: Annotated[Optional[StrictStr], Field(description="API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -4156,8 +3476,6 @@ class ComputeServiceApi:
         :type filter: str
         :param nextpage_opaque_marker: Marker of the page to return, from a previous response (SOL 013 5.4).
         :type nextpage_opaque_marker: str
-        :param version: API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.
-        :type version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -4183,7 +3501,6 @@ class ComputeServiceApi:
         _param = self._list_computes_serialize(
             filter=filter,
             nextpage_opaque_marker=nextpage_opaque_marker,
-            version=version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -4210,7 +3527,6 @@ class ComputeServiceApi:
         self,
         filter: Annotated[Optional[StrictStr], Field(description="Attribute-based filter expression (SOL 013 5.2).")] = None,
         nextpage_opaque_marker: Annotated[Optional[StrictStr], Field(description="Marker of the page to return, from a previous response (SOL 013 5.4).")] = None,
-        version: Annotated[Optional[StrictStr], Field(description="API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -4231,8 +3547,6 @@ class ComputeServiceApi:
         :type filter: str
         :param nextpage_opaque_marker: Marker of the page to return, from a previous response (SOL 013 5.4).
         :type nextpage_opaque_marker: str
-        :param version: API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.
-        :type version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -4258,7 +3572,6 @@ class ComputeServiceApi:
         _param = self._list_computes_serialize(
             filter=filter,
             nextpage_opaque_marker=nextpage_opaque_marker,
-            version=version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -4280,7 +3593,6 @@ class ComputeServiceApi:
         self,
         filter,
         nextpage_opaque_marker,
-        version,
         _request_auth,
         _content_type,
         _headers,
@@ -4312,8 +3624,6 @@ class ComputeServiceApi:
             _query_params.append(('nextpage_opaque_marker', nextpage_opaque_marker))
             
         # process the header parameters
-        if version is not None:
-            _header_params['Version'] = version
         # process the form parameters
         # process the body parameter
 
@@ -4356,7 +3666,6 @@ class ComputeServiceApi:
         self,
         filter: Annotated[Optional[StrictStr], Field(description="Attribute-based filter expression (SOL 013 5.2).")] = None,
         nextpage_opaque_marker: Annotated[Optional[StrictStr], Field(description="Marker of the page to return, from a previous response (SOL 013 5.4).")] = None,
-        version: Annotated[Optional[StrictStr], Field(description="API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -4377,8 +3686,6 @@ class ComputeServiceApi:
         :type filter: str
         :param nextpage_opaque_marker: Marker of the page to return, from a previous response (SOL 013 5.4).
         :type nextpage_opaque_marker: str
-        :param version: API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.
-        :type version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -4404,7 +3711,6 @@ class ComputeServiceApi:
         _param = self._list_placement_groups_serialize(
             filter=filter,
             nextpage_opaque_marker=nextpage_opaque_marker,
-            version=version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -4431,7 +3737,6 @@ class ComputeServiceApi:
         self,
         filter: Annotated[Optional[StrictStr], Field(description="Attribute-based filter expression (SOL 013 5.2).")] = None,
         nextpage_opaque_marker: Annotated[Optional[StrictStr], Field(description="Marker of the page to return, from a previous response (SOL 013 5.4).")] = None,
-        version: Annotated[Optional[StrictStr], Field(description="API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -4452,8 +3757,6 @@ class ComputeServiceApi:
         :type filter: str
         :param nextpage_opaque_marker: Marker of the page to return, from a previous response (SOL 013 5.4).
         :type nextpage_opaque_marker: str
-        :param version: API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.
-        :type version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -4479,7 +3782,6 @@ class ComputeServiceApi:
         _param = self._list_placement_groups_serialize(
             filter=filter,
             nextpage_opaque_marker=nextpage_opaque_marker,
-            version=version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -4506,7 +3808,6 @@ class ComputeServiceApi:
         self,
         filter: Annotated[Optional[StrictStr], Field(description="Attribute-based filter expression (SOL 013 5.2).")] = None,
         nextpage_opaque_marker: Annotated[Optional[StrictStr], Field(description="Marker of the page to return, from a previous response (SOL 013 5.4).")] = None,
-        version: Annotated[Optional[StrictStr], Field(description="API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -4527,8 +3828,6 @@ class ComputeServiceApi:
         :type filter: str
         :param nextpage_opaque_marker: Marker of the page to return, from a previous response (SOL 013 5.4).
         :type nextpage_opaque_marker: str
-        :param version: API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.
-        :type version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -4554,7 +3853,6 @@ class ComputeServiceApi:
         _param = self._list_placement_groups_serialize(
             filter=filter,
             nextpage_opaque_marker=nextpage_opaque_marker,
-            version=version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -4576,7 +3874,6 @@ class ComputeServiceApi:
         self,
         filter,
         nextpage_opaque_marker,
-        version,
         _request_auth,
         _content_type,
         _headers,
@@ -4608,8 +3905,6 @@ class ComputeServiceApi:
             _query_params.append(('nextpage_opaque_marker', nextpage_opaque_marker))
             
         # process the header parameters
-        if version is not None:
-            _header_params['Version'] = version
         # process the form parameters
         # process the body parameter
 
@@ -4652,7 +3947,6 @@ class ComputeServiceApi:
         self,
         compute_id: Annotated[StrictStr, Field(description="Identifier of the compute resource.")],
         body: Dict[str, Any],
-        version: Annotated[Optional[StrictStr], Field(description="API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -4673,8 +3967,6 @@ class ComputeServiceApi:
         :type compute_id: str
         :param body: (required)
         :type body: object
-        :param version: API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.
-        :type version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -4700,7 +3992,6 @@ class ComputeServiceApi:
         _param = self._migrate_compute_serialize(
             compute_id=compute_id,
             body=body,
-            version=version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -4727,7 +4018,6 @@ class ComputeServiceApi:
         self,
         compute_id: Annotated[StrictStr, Field(description="Identifier of the compute resource.")],
         body: Dict[str, Any],
-        version: Annotated[Optional[StrictStr], Field(description="API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -4748,8 +4038,6 @@ class ComputeServiceApi:
         :type compute_id: str
         :param body: (required)
         :type body: object
-        :param version: API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.
-        :type version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -4775,7 +4063,6 @@ class ComputeServiceApi:
         _param = self._migrate_compute_serialize(
             compute_id=compute_id,
             body=body,
-            version=version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -4802,7 +4089,6 @@ class ComputeServiceApi:
         self,
         compute_id: Annotated[StrictStr, Field(description="Identifier of the compute resource.")],
         body: Dict[str, Any],
-        version: Annotated[Optional[StrictStr], Field(description="API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -4823,8 +4109,6 @@ class ComputeServiceApi:
         :type compute_id: str
         :param body: (required)
         :type body: object
-        :param version: API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.
-        :type version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -4850,7 +4134,6 @@ class ComputeServiceApi:
         _param = self._migrate_compute_serialize(
             compute_id=compute_id,
             body=body,
-            version=version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -4872,7 +4155,6 @@ class ComputeServiceApi:
         self,
         compute_id,
         body,
-        version,
         _request_auth,
         _content_type,
         _headers,
@@ -4898,8 +4180,6 @@ class ComputeServiceApi:
             _path_params['compute_id'] = compute_id
         # process the query parameters
         # process the header parameters
-        if version is not None:
-            _header_params['Version'] = version
         # process the form parameters
         # process the body parameter
         if body is not None:
@@ -4957,7 +4237,6 @@ class ComputeServiceApi:
         self,
         compute_id: Annotated[StrictStr, Field(description="Identifier of the compute resource.")],
         operate_compute_request: OperateComputeRequest,
-        version: Annotated[Optional[StrictStr], Field(description="API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -4978,8 +4257,6 @@ class ComputeServiceApi:
         :type compute_id: str
         :param operate_compute_request: (required)
         :type operate_compute_request: OperateComputeRequest
-        :param version: API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.
-        :type version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -5005,7 +4282,6 @@ class ComputeServiceApi:
         _param = self._operate_compute_serialize(
             compute_id=compute_id,
             operate_compute_request=operate_compute_request,
-            version=version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -5032,7 +4308,6 @@ class ComputeServiceApi:
         self,
         compute_id: Annotated[StrictStr, Field(description="Identifier of the compute resource.")],
         operate_compute_request: OperateComputeRequest,
-        version: Annotated[Optional[StrictStr], Field(description="API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -5053,8 +4328,6 @@ class ComputeServiceApi:
         :type compute_id: str
         :param operate_compute_request: (required)
         :type operate_compute_request: OperateComputeRequest
-        :param version: API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.
-        :type version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -5080,7 +4353,6 @@ class ComputeServiceApi:
         _param = self._operate_compute_serialize(
             compute_id=compute_id,
             operate_compute_request=operate_compute_request,
-            version=version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -5107,7 +4379,6 @@ class ComputeServiceApi:
         self,
         compute_id: Annotated[StrictStr, Field(description="Identifier of the compute resource.")],
         operate_compute_request: OperateComputeRequest,
-        version: Annotated[Optional[StrictStr], Field(description="API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -5128,8 +4399,6 @@ class ComputeServiceApi:
         :type compute_id: str
         :param operate_compute_request: (required)
         :type operate_compute_request: OperateComputeRequest
-        :param version: API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.
-        :type version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -5155,7 +4424,6 @@ class ComputeServiceApi:
         _param = self._operate_compute_serialize(
             compute_id=compute_id,
             operate_compute_request=operate_compute_request,
-            version=version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -5177,7 +4445,6 @@ class ComputeServiceApi:
         self,
         compute_id,
         operate_compute_request,
-        version,
         _request_auth,
         _content_type,
         _headers,
@@ -5203,8 +4470,6 @@ class ComputeServiceApi:
             _path_params['compute_id'] = compute_id
         # process the query parameters
         # process the header parameters
-        if version is not None:
-            _header_params['Version'] = version
         # process the form parameters
         # process the body parameter
         if operate_compute_request is not None:
@@ -5263,7 +4528,6 @@ class ComputeServiceApi:
         compute_id: Annotated[StrictStr, Field(description="Compute resource to revert; it must be stopped.")],
         snapshot_id: Annotated[StrictStr, Field(description="Identifier of the snapshot to revert to.")],
         body: Dict[str, Any],
-        version: Annotated[Optional[StrictStr], Field(description="API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -5286,8 +4550,6 @@ class ComputeServiceApi:
         :type snapshot_id: str
         :param body: (required)
         :type body: object
-        :param version: API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.
-        :type version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -5314,7 +4576,6 @@ class ComputeServiceApi:
             compute_id=compute_id,
             snapshot_id=snapshot_id,
             body=body,
-            version=version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -5342,7 +4603,6 @@ class ComputeServiceApi:
         compute_id: Annotated[StrictStr, Field(description="Compute resource to revert; it must be stopped.")],
         snapshot_id: Annotated[StrictStr, Field(description="Identifier of the snapshot to revert to.")],
         body: Dict[str, Any],
-        version: Annotated[Optional[StrictStr], Field(description="API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -5365,8 +4625,6 @@ class ComputeServiceApi:
         :type snapshot_id: str
         :param body: (required)
         :type body: object
-        :param version: API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.
-        :type version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -5393,7 +4651,6 @@ class ComputeServiceApi:
             compute_id=compute_id,
             snapshot_id=snapshot_id,
             body=body,
-            version=version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -5421,7 +4678,6 @@ class ComputeServiceApi:
         compute_id: Annotated[StrictStr, Field(description="Compute resource to revert; it must be stopped.")],
         snapshot_id: Annotated[StrictStr, Field(description="Identifier of the snapshot to revert to.")],
         body: Dict[str, Any],
-        version: Annotated[Optional[StrictStr], Field(description="API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -5444,8 +4700,6 @@ class ComputeServiceApi:
         :type snapshot_id: str
         :param body: (required)
         :type body: object
-        :param version: API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.
-        :type version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -5472,7 +4726,6 @@ class ComputeServiceApi:
             compute_id=compute_id,
             snapshot_id=snapshot_id,
             body=body,
-            version=version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -5495,7 +4748,6 @@ class ComputeServiceApi:
         compute_id,
         snapshot_id,
         body,
-        version,
         _request_auth,
         _content_type,
         _headers,
@@ -5523,8 +4775,6 @@ class ComputeServiceApi:
             _path_params['snapshot_id'] = snapshot_id
         # process the query parameters
         # process the header parameters
-        if version is not None:
-            _header_params['Version'] = version
         # process the form parameters
         # process the body parameter
         if body is not None:
@@ -5582,7 +4832,6 @@ class ComputeServiceApi:
         self,
         compute_id: Annotated[StrictStr, Field(description="Identifier of the compute resource.")],
         scale_compute_request: ScaleComputeRequest,
-        version: Annotated[Optional[StrictStr], Field(description="API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -5603,8 +4852,6 @@ class ComputeServiceApi:
         :type compute_id: str
         :param scale_compute_request: (required)
         :type scale_compute_request: ScaleComputeRequest
-        :param version: API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.
-        :type version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -5630,7 +4877,6 @@ class ComputeServiceApi:
         _param = self._scale_compute_serialize(
             compute_id=compute_id,
             scale_compute_request=scale_compute_request,
-            version=version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -5657,7 +4903,6 @@ class ComputeServiceApi:
         self,
         compute_id: Annotated[StrictStr, Field(description="Identifier of the compute resource.")],
         scale_compute_request: ScaleComputeRequest,
-        version: Annotated[Optional[StrictStr], Field(description="API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -5678,8 +4923,6 @@ class ComputeServiceApi:
         :type compute_id: str
         :param scale_compute_request: (required)
         :type scale_compute_request: ScaleComputeRequest
-        :param version: API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.
-        :type version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -5705,7 +4948,6 @@ class ComputeServiceApi:
         _param = self._scale_compute_serialize(
             compute_id=compute_id,
             scale_compute_request=scale_compute_request,
-            version=version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -5732,7 +4974,6 @@ class ComputeServiceApi:
         self,
         compute_id: Annotated[StrictStr, Field(description="Identifier of the compute resource.")],
         scale_compute_request: ScaleComputeRequest,
-        version: Annotated[Optional[StrictStr], Field(description="API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -5753,8 +4994,6 @@ class ComputeServiceApi:
         :type compute_id: str
         :param scale_compute_request: (required)
         :type scale_compute_request: ScaleComputeRequest
-        :param version: API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.
-        :type version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -5780,7 +5019,6 @@ class ComputeServiceApi:
         _param = self._scale_compute_serialize(
             compute_id=compute_id,
             scale_compute_request=scale_compute_request,
-            version=version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -5802,7 +5040,6 @@ class ComputeServiceApi:
         self,
         compute_id,
         scale_compute_request,
-        version,
         _request_auth,
         _content_type,
         _headers,
@@ -5828,8 +5065,6 @@ class ComputeServiceApi:
             _path_params['compute_id'] = compute_id
         # process the query parameters
         # process the header parameters
-        if version is not None:
-            _header_params['Version'] = version
         # process the form parameters
         # process the body parameter
         if scale_compute_request is not None:
@@ -5887,7 +5122,6 @@ class ComputeServiceApi:
         self,
         compute_id: Annotated[StrictStr, Field(description="Identifier of the compute resource.")],
         compute_update: ComputeUpdate,
-        version: Annotated[Optional[StrictStr], Field(description="API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -5908,8 +5142,6 @@ class ComputeServiceApi:
         :type compute_id: str
         :param compute_update: (required)
         :type compute_update: ComputeUpdate
-        :param version: API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.
-        :type version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -5935,7 +5167,6 @@ class ComputeServiceApi:
         _param = self._update_compute_serialize(
             compute_id=compute_id,
             compute_update=compute_update,
-            version=version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -5962,7 +5193,6 @@ class ComputeServiceApi:
         self,
         compute_id: Annotated[StrictStr, Field(description="Identifier of the compute resource.")],
         compute_update: ComputeUpdate,
-        version: Annotated[Optional[StrictStr], Field(description="API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -5983,8 +5213,6 @@ class ComputeServiceApi:
         :type compute_id: str
         :param compute_update: (required)
         :type compute_update: ComputeUpdate
-        :param version: API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.
-        :type version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -6010,7 +5238,6 @@ class ComputeServiceApi:
         _param = self._update_compute_serialize(
             compute_id=compute_id,
             compute_update=compute_update,
-            version=version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -6037,7 +5264,6 @@ class ComputeServiceApi:
         self,
         compute_id: Annotated[StrictStr, Field(description="Identifier of the compute resource.")],
         compute_update: ComputeUpdate,
-        version: Annotated[Optional[StrictStr], Field(description="API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -6058,8 +5284,6 @@ class ComputeServiceApi:
         :type compute_id: str
         :param compute_update: (required)
         :type compute_update: ComputeUpdate
-        :param version: API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.
-        :type version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -6085,7 +5309,6 @@ class ComputeServiceApi:
         _param = self._update_compute_serialize(
             compute_id=compute_id,
             compute_update=compute_update,
-            version=version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -6107,7 +5330,6 @@ class ComputeServiceApi:
         self,
         compute_id,
         compute_update,
-        version,
         _request_auth,
         _content_type,
         _headers,
@@ -6133,8 +5355,6 @@ class ComputeServiceApi:
             _path_params['compute_id'] = compute_id
         # process the query parameters
         # process the header parameters
-        if version is not None:
-            _header_params['Version'] = version
         # process the form parameters
         # process the body parameter
         if compute_update is not None:

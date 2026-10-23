@@ -8,19 +8,12 @@ import (
 var httpMethods = []string{"get", "put", "post", "delete", "patch", "head", "options", "trace"}
 
 // applyConventions adds the ETSI GS NFV-SOL 013 behaviour protoc-gen-openapiv3
-// cannot express: 201 with Location on Create, 204 on Delete, problem+json
-// errors (clause 6), the Version header (clause 9.4) on every operation and the
-// api_versions resources (clause 9.3).
-func applyConventions(doc map[string]any) error {
-	comps := child(doc, "components")
-	child(comps, "schemas")["ProblemDetails"] = problemDetailsSchema()
-	child(comps, "parameters")["Version"] = map[string]any{
-		"name":        "Version",
-		"in":          "header",
-		"required":    true,
-		"description": "API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted.",
-		"schema":      map[string]any{"type": "string"},
-	}
+// cannot express: 201 with Location on Create, 204 on Delete, the Link header
+// on paged Lists and problem+json errors (clause 6). It stamps the release
+// version into info.version.
+func applyConventions(doc map[string]any, version string) {
+	child(doc, "info")["version"] = version
+	child(child(doc, "components"), "schemas")["ProblemDetails"] = problemDetailsSchema()
 	for _, path := range sortedKeys(child(doc, "paths")) {
 		item := child(doc, "paths")[path].(map[string]any)
 		for _, method := range httpMethods {
@@ -29,7 +22,6 @@ func applyConventions(doc map[string]any) error {
 			}
 		}
 	}
-	return addApiVersions(doc)
 }
 
 func applyOperation(op map[string]any) {
@@ -66,14 +58,6 @@ func applyOperation(op map[string]any) {
 			},
 		},
 	}
-	for _, code := range sortedKeys(responses) {
-		child(responses[code].(map[string]any), "headers")["Version"] = map[string]any{
-			"description": "API version served, with the implementation suffix, e.g. 1.0.0-impl:kubenfv.io:kube-vim:0.4.0 (SOL 013 9.1.2, 9.4).",
-			"schema":      map[string]any{"type": "string"},
-		}
-	}
-	params, _ := op["parameters"].([]any)
-	op["parameters"] = append(params, map[string]any{"$ref": "#/components/parameters/Version"})
 }
 
 // hasParameter reports whether op takes the named parameter.
@@ -85,93 +69,6 @@ func hasParameter(op map[string]any, name string) bool {
 		}
 	}
 	return false
-}
-
-// addApiVersions adds GET {apiName}/api_versions and {apiName}/{major}/api_versions
-// (SOL 013 9.3), taking the API name, major version and service from the
-// document's paths and operation ids. They need a token but no scope, and no
-// Version header, since clients call them to find the version to request.
-func addApiVersions(doc map[string]any) error {
-	paths := child(doc, "paths")
-	var apiName, major, service string
-	var tags any
-	for _, path := range sortedKeys(paths) {
-		segs := strings.Split(strings.TrimPrefix(path, "/"), "/")
-		if len(segs) < 2 {
-			return fmt.Errorf("path %s has no API name and major version", path)
-		}
-		if apiName == "" {
-			apiName, major = segs[0], segs[1]
-		}
-		if segs[0] != apiName || segs[1] != major {
-			return fmt.Errorf("path %s is not under /%s/%s", path, apiName, major)
-		}
-		for _, method := range httpMethods {
-			if op, ok := paths[path].(map[string]any)[method].(map[string]any); ok && service == "" {
-				id, _ := op["operationId"].(string)
-				service, _, _ = strings.Cut(id, "_")
-				tags = op["tags"]
-			}
-		}
-	}
-	if service == "" {
-		return nil
-	}
-	child(child(doc, "components"), "schemas")["ApiVersionInformation"] = apiVersionInformationSchema()
-	for path, method := range map[string]string{
-		"/" + apiName + "/api_versions":               "GetApiVersions",
-		"/" + apiName + "/" + major + "/api_versions": "GetApiMajorVersions",
-	} {
-		paths[path] = map[string]any{"get": map[string]any{
-			"operationId": service + "_" + method,
-			"tags":        tags,
-			"summary":     "API versions this VIM serves (SOL 013 9.3).",
-			"security":    []any{map[string]any{"oauth2": []any{}}},
-			"responses": map[string]any{
-				"200": map[string]any{
-					"description": "OK",
-					"content": map[string]any{
-						"application/json": map[string]any{
-							"schema": map[string]any{"$ref": "#/components/schemas/ApiVersionInformation"},
-						},
-					},
-				},
-				"default": map[string]any{
-					"description": "Error (SOL 013 6).",
-					"content": map[string]any{
-						"application/problem+json": map[string]any{
-							"schema": map[string]any{"$ref": "#/components/schemas/ProblemDetails"},
-						},
-					},
-				},
-			},
-		}}
-	}
-	return nil
-}
-
-// apiVersionInformationSchema is ApiVersionInformation (SOL 013 9.3.3).
-func apiVersionInformationSchema() map[string]any {
-	return map[string]any{
-		"type":        "object",
-		"description": "API versions served under a URI prefix (SOL 013 9.3.3).",
-		"required":    []any{"uriPrefix", "apiVersions"},
-		"properties": map[string]any{
-			"uriPrefix": map[string]any{"type": "string", "description": "URI prefix of the API, e.g. /compute/v1."},
-			"apiVersions": map[string]any{
-				"type": "array",
-				"items": map[string]any{
-					"type":     "object",
-					"required": []any{"version"},
-					"properties": map[string]any{
-						"version":        map[string]any{"type": "string", "description": "Version served, with the implementation suffix, e.g. 1.0.0-impl:kubenfv.io:kube-vim:0.4.0."},
-						"isDeprecated":   map[string]any{"type": "boolean"},
-						"retirementDate": map[string]any{"type": "string", "format": "date-time"},
-					},
-				},
-			},
-		},
-	}
 }
 
 // problemDetailsSchema is ProblemDetails as SOL 013 6.3 profiles RFC 9457.

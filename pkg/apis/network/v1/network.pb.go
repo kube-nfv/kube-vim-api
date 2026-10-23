@@ -1367,16 +1367,16 @@ const file_kubenfv_kubevim_network_v1_network_proto_rawDesc = "" +
 	"\x06oauth2\x12\x16\n" +
 	"\x14network:v1:terminate\xfa\x8b\x19\xa9\x01\n" +
 	"5IFA006 7.4.1.5 Terminate Virtualised Network Resource\x12p\b\x03\x10\x01\x1ajOne resource per request (the path identifies it) instead of a list of identifiers; returns no body (204).\x82\xd3\xe4\x93\x02!*\x1f/network/v1/subnets/{subnet_id}\x1aE\xfa\x8b\x19A\n" +
-	"?IFA006 7.4.1 Virtualised Network Resources Management InterfaceB\x92\x05\xfaP\x81\x03\n" +
-	")\n" +
-	" Kube-VIM virtualised network API:\x051.0.02\xd3\x02\n" +
+	"?IFA006 7.4.1 Virtualised Network Resources Management InterfaceB\x84\x05\xfaP\xfa\x02\n" +
+	"\"\n" +
+	" Kube-VIM virtualised network API2\xd3\x02\n" +
 	"\xd0\x02\n" +
 	"\x06oauth2\x12\xc5\x02\b\x04\x12QOAuth 2.0 client credentials (SOL 013 8.3). The token URL is deployment specific.:\xed\x01\x1a\xea\x01\x12$https://idp.example.com/oauth2/token\"1\n" +
 	"\x13network:v1:allocate\x12\x1aAllocate network resources\"+\n" +
 	"\x10network:v1:query\x12\x17Query network resources\"3\n" +
 	"\x14network:v1:terminate\x12\x1bTerminate network resources\"-\n" +
-	"\x11network:v1:update\x12\x18Update network resources\xfa\x8b\x19\x10\n" +
-	"\anetwork\x12\x051.0.0\n" +
+	"\x11network:v1:update\x12\x18Update network resources\xfa\x8b\x19\t\n" +
+	"\anetwork\n" +
 	"\x1ecom.kubenfv.kubevim.network.v1B\fNetworkProtoP\x01Z>github.com/kube-nfv/kube-vim-api/pkg/apis/network/v1;networkv1\xa2\x02\x03KKN\xaa\x02\x1aKubenfv.Kubevim.Network.V1\xca\x02\x1aKubenfv\\Kubevim\\Network\\V1\xe2\x02&Kubenfv\\Kubevim\\Network\\V1\\GPBMetadata\xea\x02\x1dKubenfv::Kubevim::Network::V1b\x06proto3"
 
 var (

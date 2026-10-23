@@ -32,8 +32,6 @@ __all__ = [
     "ApiKeyError",
     "ApiAttributeError",
     "ApiException",
-    "ApiVersionInformation",
-    "ApiVersionInformationApiVersionsInner",
     "AttachVolumeRequest",
     "BasicAuth",
     "BlankSource",
@@ -140,8 +138,6 @@ from kubevim_client.exceptions import ApiAttributeError as ApiAttributeError
 from kubevim_client.exceptions import ApiException as ApiException
 
 # import models into sdk package
-from kubevim_client.models.api_version_information import ApiVersionInformation as ApiVersionInformation
-from kubevim_client.models.api_version_information_api_versions_inner import ApiVersionInformationApiVersionsInner as ApiVersionInformationApiVersionsInner
 from kubevim_client.models.attach_volume_request import AttachVolumeRequest as AttachVolumeRequest
 from kubevim_client.models.basic_auth import BasicAuth as BasicAuth
 from kubevim_client.models.blank_source import BlankSource as BlankSource

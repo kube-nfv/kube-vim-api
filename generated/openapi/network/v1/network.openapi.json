@@ -1,53 +1,6 @@
 {
   "components": {
-    "parameters": {
-      "Version": {
-        "description": "API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted.",
-        "in": "header",
-        "name": "Version",
-        "required": true,
-        "schema": {
-          "type": "string"
-        }
-      }
-    },
     "schemas": {
-      "ApiVersionInformation": {
-        "description": "API versions served under a URI prefix (SOL 013 9.3.3).",
-        "properties": {
-          "apiVersions": {
-            "items": {
-              "properties": {
-                "isDeprecated": {
-                  "type": "boolean"
-                },
-                "retirementDate": {
-                  "format": "date-time",
-                  "type": "string"
-                },
-                "version": {
-                  "description": "Version served, with the implementation suffix, e.g. 1.0.0-impl:kubenfv.io:kube-vim:0.4.0.",
-                  "type": "string"
-                }
-              },
-              "required": [
-                "version"
-              ],
-              "type": "object"
-            },
-            "type": "array"
-          },
-          "uriPrefix": {
-            "description": "URI prefix of the API, e.g. /compute/v1.",
-            "type": "string"
-          }
-        },
-        "required": [
-          "uriPrefix",
-          "apiVersions"
-        ],
-        "type": "object"
-      },
       "ProblemDetails": {
         "description": "Error details (SOL 013 6.3, RFC 9457).",
         "properties": {
@@ -322,82 +275,10 @@
   },
   "info": {
     "title": "Kube-VIM virtualised network API",
-    "version": "1.0.0"
+    "version": "0.0.0-dev"
   },
   "openapi": "3.1.0",
   "paths": {
-    "/network/api_versions": {
-      "get": {
-        "operationId": "NetworkService_GetApiVersions",
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ApiVersionInformation"
-                }
-              }
-            },
-            "description": "OK"
-          },
-          "default": {
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              }
-            },
-            "description": "Error (SOL 013 6)."
-          }
-        },
-        "security": [
-          {
-            "oauth2": []
-          }
-        ],
-        "summary": "API versions this VIM serves (SOL 013 9.3).",
-        "tags": [
-          "NetworkService"
-        ]
-      }
-    },
-    "/network/v1/api_versions": {
-      "get": {
-        "operationId": "NetworkService_GetApiMajorVersions",
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ApiVersionInformation"
-                }
-              }
-            },
-            "description": "OK"
-          },
-          "default": {
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              }
-            },
-            "description": "Error (SOL 013 6)."
-          }
-        },
-        "security": [
-          {
-            "oauth2": []
-          }
-        ],
-        "summary": "API versions this VIM serves (SOL 013 9.3).",
-        "tags": [
-          "NetworkService"
-        ]
-      }
-    },
     "/network/v1/networks": {
       "get": {
         "operationId": "NetworkService_ListNetworks",
@@ -417,9 +298,6 @@
             "schema": {
               "type": "string"
             }
-          },
-          {
-            "$ref": "#/components/parameters/Version"
           }
         ],
         "responses": {
@@ -441,12 +319,6 @@
                 "schema": {
                   "type": "string"
                 }
-              },
-              "Version": {
-                "description": "API version served, with the implementation suffix, e.g. 1.0.0-impl:kubenfv.io:kube-vim:0.4.0 (SOL 013 9.1.2, 9.4).",
-                "schema": {
-                  "type": "string"
-                }
               }
             }
           },
@@ -458,15 +330,7 @@
                 }
               }
             },
-            "description": "Error (SOL 013 6).",
-            "headers": {
-              "Version": {
-                "description": "API version served, with the implementation suffix, e.g. 1.0.0-impl:kubenfv.io:kube-vim:0.4.0 (SOL 013 9.1.2, 9.4).",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
+            "description": "Error (SOL 013 6)."
           }
         },
         "security": [
@@ -483,11 +347,6 @@
       },
       "post": {
         "operationId": "NetworkService_CreateNetwork",
-        "parameters": [
-          {
-            "$ref": "#/components/parameters/Version"
-          }
-        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -528,12 +387,6 @@
                   "format": "uri",
                   "type": "string"
                 }
-              },
-              "Version": {
-                "description": "API version served, with the implementation suffix, e.g. 1.0.0-impl:kubenfv.io:kube-vim:0.4.0 (SOL 013 9.1.2, 9.4).",
-                "schema": {
-                  "type": "string"
-                }
               }
             }
           },
@@ -545,15 +398,7 @@
                 }
               }
             },
-            "description": "Error (SOL 013 6).",
-            "headers": {
-              "Version": {
-                "description": "API version served, with the implementation suffix, e.g. 1.0.0-impl:kubenfv.io:kube-vim:0.4.0 (SOL 013 9.1.2, 9.4).",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
+            "description": "Error (SOL 013 6)."
           }
         },
         "security": [
@@ -581,22 +426,11 @@
             "schema": {
               "type": "string"
             }
-          },
-          {
-            "$ref": "#/components/parameters/Version"
           }
         ],
         "responses": {
           "204": {
-            "description": "No Content",
-            "headers": {
-              "Version": {
-                "description": "API version served, with the implementation suffix, e.g. 1.0.0-impl:kubenfv.io:kube-vim:0.4.0 (SOL 013 9.1.2, 9.4).",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
+            "description": "No Content"
           },
           "default": {
             "content": {
@@ -606,15 +440,7 @@
                 }
               }
             },
-            "description": "Error (SOL 013 6).",
-            "headers": {
-              "Version": {
-                "description": "API version served, with the implementation suffix, e.g. 1.0.0-impl:kubenfv.io:kube-vim:0.4.0 (SOL 013 9.1.2, 9.4).",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
+            "description": "Error (SOL 013 6)."
           }
         },
         "security": [
@@ -640,9 +466,6 @@
             "schema": {
               "type": "string"
             }
-          },
-          {
-            "$ref": "#/components/parameters/Version"
           }
         ],
         "responses": {
@@ -654,15 +477,7 @@
                 }
               }
             },
-            "description": "A virtualised network: one layer 2 segment, with at most one IPv4 and one IPv6 subnet.",
-            "headers": {
-              "Version": {
-                "description": "API version served, with the implementation suffix, e.g. 1.0.0-impl:kubenfv.io:kube-vim:0.4.0 (SOL 013 9.1.2, 9.4).",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
+            "description": "A virtualised network: one layer 2 segment, with at most one IPv4 and one IPv6 subnet."
           },
           "default": {
             "content": {
@@ -672,15 +487,7 @@
                 }
               }
             },
-            "description": "Error (SOL 013 6).",
-            "headers": {
-              "Version": {
-                "description": "API version served, with the implementation suffix, e.g. 1.0.0-impl:kubenfv.io:kube-vim:0.4.0 (SOL 013 9.1.2, 9.4).",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
+            "description": "Error (SOL 013 6)."
           }
         },
         "security": [
@@ -706,9 +513,6 @@
             "schema": {
               "type": "string"
             }
-          },
-          {
-            "$ref": "#/components/parameters/Version"
           }
         ],
         "requestBody": {
@@ -730,15 +534,7 @@
                 }
               }
             },
-            "description": "A virtualised network: one layer 2 segment, with at most one IPv4 and one IPv6 subnet.",
-            "headers": {
-              "Version": {
-                "description": "API version served, with the implementation suffix, e.g. 1.0.0-impl:kubenfv.io:kube-vim:0.4.0 (SOL 013 9.1.2, 9.4).",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
+            "description": "A virtualised network: one layer 2 segment, with at most one IPv4 and one IPv6 subnet."
           },
           "default": {
             "content": {
@@ -748,15 +544,7 @@
                 }
               }
             },
-            "description": "Error (SOL 013 6).",
-            "headers": {
-              "Version": {
-                "description": "API version served, with the implementation suffix, e.g. 1.0.0-impl:kubenfv.io:kube-vim:0.4.0 (SOL 013 9.1.2, 9.4).",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
+            "description": "Error (SOL 013 6)."
           }
         },
         "security": [
@@ -791,9 +579,6 @@
             "schema": {
               "type": "string"
             }
-          },
-          {
-            "$ref": "#/components/parameters/Version"
           }
         ],
         "responses": {
@@ -815,12 +600,6 @@
                 "schema": {
                   "type": "string"
                 }
-              },
-              "Version": {
-                "description": "API version served, with the implementation suffix, e.g. 1.0.0-impl:kubenfv.io:kube-vim:0.4.0 (SOL 013 9.1.2, 9.4).",
-                "schema": {
-                  "type": "string"
-                }
               }
             }
           },
@@ -832,15 +611,7 @@
                 }
               }
             },
-            "description": "Error (SOL 013 6).",
-            "headers": {
-              "Version": {
-                "description": "API version served, with the implementation suffix, e.g. 1.0.0-impl:kubenfv.io:kube-vim:0.4.0 (SOL 013 9.1.2, 9.4).",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
+            "description": "Error (SOL 013 6)."
           }
         },
         "security": [
@@ -857,11 +628,6 @@
       },
       "post": {
         "operationId": "NetworkService_CreateSubnet",
-        "parameters": [
-          {
-            "$ref": "#/components/parameters/Version"
-          }
-        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -902,12 +668,6 @@
                   "format": "uri",
                   "type": "string"
                 }
-              },
-              "Version": {
-                "description": "API version served, with the implementation suffix, e.g. 1.0.0-impl:kubenfv.io:kube-vim:0.4.0 (SOL 013 9.1.2, 9.4).",
-                "schema": {
-                  "type": "string"
-                }
               }
             }
           },
@@ -919,15 +679,7 @@
                 }
               }
             },
-            "description": "Error (SOL 013 6).",
-            "headers": {
-              "Version": {
-                "description": "API version served, with the implementation suffix, e.g. 1.0.0-impl:kubenfv.io:kube-vim:0.4.0 (SOL 013 9.1.2, 9.4).",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
+            "description": "Error (SOL 013 6)."
           }
         },
         "security": [
@@ -955,22 +707,11 @@
             "schema": {
               "type": "string"
             }
-          },
-          {
-            "$ref": "#/components/parameters/Version"
           }
         ],
         "responses": {
           "204": {
-            "description": "No Content",
-            "headers": {
-              "Version": {
-                "description": "API version served, with the implementation suffix, e.g. 1.0.0-impl:kubenfv.io:kube-vim:0.4.0 (SOL 013 9.1.2, 9.4).",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
+            "description": "No Content"
           },
           "default": {
             "content": {
@@ -980,15 +721,7 @@
                 }
               }
             },
-            "description": "Error (SOL 013 6).",
-            "headers": {
-              "Version": {
-                "description": "API version served, with the implementation suffix, e.g. 1.0.0-impl:kubenfv.io:kube-vim:0.4.0 (SOL 013 9.1.2, 9.4).",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
+            "description": "Error (SOL 013 6)."
           }
         },
         "security": [
@@ -1014,9 +747,6 @@
             "schema": {
               "type": "string"
             }
-          },
-          {
-            "$ref": "#/components/parameters/Version"
           }
         ],
         "responses": {
@@ -1028,15 +758,7 @@
                 }
               }
             },
-            "description": "A virtualised subnet: one IP version of a network.",
-            "headers": {
-              "Version": {
-                "description": "API version served, with the implementation suffix, e.g. 1.0.0-impl:kubenfv.io:kube-vim:0.4.0 (SOL 013 9.1.2, 9.4).",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
+            "description": "A virtualised subnet: one IP version of a network."
           },
           "default": {
             "content": {
@@ -1046,15 +768,7 @@
                 }
               }
             },
-            "description": "Error (SOL 013 6).",
-            "headers": {
-              "Version": {
-                "description": "API version served, with the implementation suffix, e.g. 1.0.0-impl:kubenfv.io:kube-vim:0.4.0 (SOL 013 9.1.2, 9.4).",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
+            "description": "Error (SOL 013 6)."
           }
         },
         "security": [
@@ -1080,9 +794,6 @@
             "schema": {
               "type": "string"
             }
-          },
-          {
-            "$ref": "#/components/parameters/Version"
           }
         ],
         "requestBody": {
@@ -1104,15 +815,7 @@
                 }
               }
             },
-            "description": "A virtualised subnet: one IP version of a network.",
-            "headers": {
-              "Version": {
-                "description": "API version served, with the implementation suffix, e.g. 1.0.0-impl:kubenfv.io:kube-vim:0.4.0 (SOL 013 9.1.2, 9.4).",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
+            "description": "A virtualised subnet: one IP version of a network."
           },
           "default": {
             "content": {
@@ -1122,15 +825,7 @@
                 }
               }
             },
-            "description": "Error (SOL 013 6).",
-            "headers": {
-              "Version": {
-                "description": "API version served, with the implementation suffix, e.g. 1.0.0-impl:kubenfv.io:kube-vim:0.4.0 (SOL 013 9.1.2, 9.4).",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
+            "description": "Error (SOL 013 6)."
           }
         },
         "security": [

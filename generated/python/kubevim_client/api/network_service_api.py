@@ -18,7 +18,6 @@ from typing_extensions import Annotated
 from pydantic import Field, StrictStr
 from typing import List, Optional
 from typing_extensions import Annotated
-from kubevim_client.models.api_version_information import ApiVersionInformation
 from kubevim_client.models.create_network_request import CreateNetworkRequest
 from kubevim_client.models.create_subnet_request import CreateSubnetRequest
 from kubevim_client.models.network import Network
@@ -48,7 +47,6 @@ class NetworkServiceApi:
     def create_network(
         self,
         create_network_request: CreateNetworkRequest,
-        version: Annotated[Optional[StrictStr], Field(description="API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -67,8 +65,6 @@ class NetworkServiceApi:
 
         :param create_network_request: (required)
         :type create_network_request: CreateNetworkRequest
-        :param version: API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.
-        :type version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -93,7 +89,6 @@ class NetworkServiceApi:
 
         _param = self._create_network_serialize(
             create_network_request=create_network_request,
-            version=version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -119,7 +114,6 @@ class NetworkServiceApi:
     def create_network_with_http_info(
         self,
         create_network_request: CreateNetworkRequest,
-        version: Annotated[Optional[StrictStr], Field(description="API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -138,8 +132,6 @@ class NetworkServiceApi:
 
         :param create_network_request: (required)
         :type create_network_request: CreateNetworkRequest
-        :param version: API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.
-        :type version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -164,7 +156,6 @@ class NetworkServiceApi:
 
         _param = self._create_network_serialize(
             create_network_request=create_network_request,
-            version=version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -190,7 +181,6 @@ class NetworkServiceApi:
     def create_network_without_preload_content(
         self,
         create_network_request: CreateNetworkRequest,
-        version: Annotated[Optional[StrictStr], Field(description="API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -209,8 +199,6 @@ class NetworkServiceApi:
 
         :param create_network_request: (required)
         :type create_network_request: CreateNetworkRequest
-        :param version: API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.
-        :type version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -235,7 +223,6 @@ class NetworkServiceApi:
 
         _param = self._create_network_serialize(
             create_network_request=create_network_request,
-            version=version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -256,7 +243,6 @@ class NetworkServiceApi:
     def _create_network_serialize(
         self,
         create_network_request,
-        version,
         _request_auth,
         _content_type,
         _headers,
@@ -280,8 +266,6 @@ class NetworkServiceApi:
         # process the path parameters
         # process the query parameters
         # process the header parameters
-        if version is not None:
-            _header_params['Version'] = version
         # process the form parameters
         # process the body parameter
         if create_network_request is not None:
@@ -338,7 +322,6 @@ class NetworkServiceApi:
     def create_subnet(
         self,
         create_subnet_request: CreateSubnetRequest,
-        version: Annotated[Optional[StrictStr], Field(description="API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -357,8 +340,6 @@ class NetworkServiceApi:
 
         :param create_subnet_request: (required)
         :type create_subnet_request: CreateSubnetRequest
-        :param version: API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.
-        :type version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -383,7 +364,6 @@ class NetworkServiceApi:
 
         _param = self._create_subnet_serialize(
             create_subnet_request=create_subnet_request,
-            version=version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -409,7 +389,6 @@ class NetworkServiceApi:
     def create_subnet_with_http_info(
         self,
         create_subnet_request: CreateSubnetRequest,
-        version: Annotated[Optional[StrictStr], Field(description="API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -428,8 +407,6 @@ class NetworkServiceApi:
 
         :param create_subnet_request: (required)
         :type create_subnet_request: CreateSubnetRequest
-        :param version: API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.
-        :type version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -454,7 +431,6 @@ class NetworkServiceApi:
 
         _param = self._create_subnet_serialize(
             create_subnet_request=create_subnet_request,
-            version=version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -480,7 +456,6 @@ class NetworkServiceApi:
     def create_subnet_without_preload_content(
         self,
         create_subnet_request: CreateSubnetRequest,
-        version: Annotated[Optional[StrictStr], Field(description="API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -499,8 +474,6 @@ class NetworkServiceApi:
 
         :param create_subnet_request: (required)
         :type create_subnet_request: CreateSubnetRequest
-        :param version: API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.
-        :type version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -525,7 +498,6 @@ class NetworkServiceApi:
 
         _param = self._create_subnet_serialize(
             create_subnet_request=create_subnet_request,
-            version=version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -546,7 +518,6 @@ class NetworkServiceApi:
     def _create_subnet_serialize(
         self,
         create_subnet_request,
-        version,
         _request_auth,
         _content_type,
         _headers,
@@ -570,8 +541,6 @@ class NetworkServiceApi:
         # process the path parameters
         # process the query parameters
         # process the header parameters
-        if version is not None:
-            _header_params['Version'] = version
         # process the form parameters
         # process the body parameter
         if create_subnet_request is not None:
@@ -628,7 +597,6 @@ class NetworkServiceApi:
     def delete_network(
         self,
         network_id: Annotated[StrictStr, Field(description="Identifier of the network.")],
-        version: Annotated[Optional[StrictStr], Field(description="API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -647,8 +615,6 @@ class NetworkServiceApi:
 
         :param network_id: Identifier of the network. (required)
         :type network_id: str
-        :param version: API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.
-        :type version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -673,7 +639,6 @@ class NetworkServiceApi:
 
         _param = self._delete_network_serialize(
             network_id=network_id,
-            version=version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -699,7 +664,6 @@ class NetworkServiceApi:
     def delete_network_with_http_info(
         self,
         network_id: Annotated[StrictStr, Field(description="Identifier of the network.")],
-        version: Annotated[Optional[StrictStr], Field(description="API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -718,8 +682,6 @@ class NetworkServiceApi:
 
         :param network_id: Identifier of the network. (required)
         :type network_id: str
-        :param version: API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.
-        :type version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -744,7 +706,6 @@ class NetworkServiceApi:
 
         _param = self._delete_network_serialize(
             network_id=network_id,
-            version=version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -770,7 +731,6 @@ class NetworkServiceApi:
     def delete_network_without_preload_content(
         self,
         network_id: Annotated[StrictStr, Field(description="Identifier of the network.")],
-        version: Annotated[Optional[StrictStr], Field(description="API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -789,8 +749,6 @@ class NetworkServiceApi:
 
         :param network_id: Identifier of the network. (required)
         :type network_id: str
-        :param version: API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.
-        :type version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -815,7 +773,6 @@ class NetworkServiceApi:
 
         _param = self._delete_network_serialize(
             network_id=network_id,
-            version=version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -836,7 +793,6 @@ class NetworkServiceApi:
     def _delete_network_serialize(
         self,
         network_id,
-        version,
         _request_auth,
         _content_type,
         _headers,
@@ -862,8 +818,6 @@ class NetworkServiceApi:
             _path_params['network_id'] = network_id
         # process the query parameters
         # process the header parameters
-        if version is not None:
-            _header_params['Version'] = version
         # process the form parameters
         # process the body parameter
 
@@ -904,7 +858,6 @@ class NetworkServiceApi:
     def delete_subnet(
         self,
         subnet_id: Annotated[StrictStr, Field(description="Identifier of the subnet.")],
-        version: Annotated[Optional[StrictStr], Field(description="API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -923,8 +876,6 @@ class NetworkServiceApi:
 
         :param subnet_id: Identifier of the subnet. (required)
         :type subnet_id: str
-        :param version: API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.
-        :type version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -949,7 +900,6 @@ class NetworkServiceApi:
 
         _param = self._delete_subnet_serialize(
             subnet_id=subnet_id,
-            version=version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -975,7 +925,6 @@ class NetworkServiceApi:
     def delete_subnet_with_http_info(
         self,
         subnet_id: Annotated[StrictStr, Field(description="Identifier of the subnet.")],
-        version: Annotated[Optional[StrictStr], Field(description="API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -994,8 +943,6 @@ class NetworkServiceApi:
 
         :param subnet_id: Identifier of the subnet. (required)
         :type subnet_id: str
-        :param version: API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.
-        :type version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1020,7 +967,6 @@ class NetworkServiceApi:
 
         _param = self._delete_subnet_serialize(
             subnet_id=subnet_id,
-            version=version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1046,7 +992,6 @@ class NetworkServiceApi:
     def delete_subnet_without_preload_content(
         self,
         subnet_id: Annotated[StrictStr, Field(description="Identifier of the subnet.")],
-        version: Annotated[Optional[StrictStr], Field(description="API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1065,8 +1010,6 @@ class NetworkServiceApi:
 
         :param subnet_id: Identifier of the subnet. (required)
         :type subnet_id: str
-        :param version: API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.
-        :type version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1091,7 +1034,6 @@ class NetworkServiceApi:
 
         _param = self._delete_subnet_serialize(
             subnet_id=subnet_id,
-            version=version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1112,7 +1054,6 @@ class NetworkServiceApi:
     def _delete_subnet_serialize(
         self,
         subnet_id,
-        version,
         _request_auth,
         _content_type,
         _headers,
@@ -1138,8 +1079,6 @@ class NetworkServiceApi:
             _path_params['subnet_id'] = subnet_id
         # process the query parameters
         # process the header parameters
-        if version is not None:
-            _header_params['Version'] = version
         # process the form parameters
         # process the body parameter
 
@@ -1180,7 +1119,6 @@ class NetworkServiceApi:
     def get_network(
         self,
         network_id: Annotated[StrictStr, Field(description="Identifier of the network.")],
-        version: Annotated[Optional[StrictStr], Field(description="API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1199,8 +1137,6 @@ class NetworkServiceApi:
 
         :param network_id: Identifier of the network. (required)
         :type network_id: str
-        :param version: API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.
-        :type version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1225,7 +1161,6 @@ class NetworkServiceApi:
 
         _param = self._get_network_serialize(
             network_id=network_id,
-            version=version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1251,7 +1186,6 @@ class NetworkServiceApi:
     def get_network_with_http_info(
         self,
         network_id: Annotated[StrictStr, Field(description="Identifier of the network.")],
-        version: Annotated[Optional[StrictStr], Field(description="API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1270,8 +1204,6 @@ class NetworkServiceApi:
 
         :param network_id: Identifier of the network. (required)
         :type network_id: str
-        :param version: API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.
-        :type version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1296,7 +1228,6 @@ class NetworkServiceApi:
 
         _param = self._get_network_serialize(
             network_id=network_id,
-            version=version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1322,7 +1253,6 @@ class NetworkServiceApi:
     def get_network_without_preload_content(
         self,
         network_id: Annotated[StrictStr, Field(description="Identifier of the network.")],
-        version: Annotated[Optional[StrictStr], Field(description="API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1341,8 +1271,6 @@ class NetworkServiceApi:
 
         :param network_id: Identifier of the network. (required)
         :type network_id: str
-        :param version: API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.
-        :type version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1367,7 +1295,6 @@ class NetworkServiceApi:
 
         _param = self._get_network_serialize(
             network_id=network_id,
-            version=version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1388,7 +1315,6 @@ class NetworkServiceApi:
     def _get_network_serialize(
         self,
         network_id,
-        version,
         _request_auth,
         _content_type,
         _headers,
@@ -1414,8 +1340,6 @@ class NetworkServiceApi:
             _path_params['network_id'] = network_id
         # process the query parameters
         # process the header parameters
-        if version is not None:
-            _header_params['Version'] = version
         # process the form parameters
         # process the body parameter
 
@@ -1457,7 +1381,6 @@ class NetworkServiceApi:
     def get_subnet(
         self,
         subnet_id: Annotated[StrictStr, Field(description="Identifier of the subnet.")],
-        version: Annotated[Optional[StrictStr], Field(description="API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1476,8 +1399,6 @@ class NetworkServiceApi:
 
         :param subnet_id: Identifier of the subnet. (required)
         :type subnet_id: str
-        :param version: API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.
-        :type version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1502,7 +1423,6 @@ class NetworkServiceApi:
 
         _param = self._get_subnet_serialize(
             subnet_id=subnet_id,
-            version=version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1528,7 +1448,6 @@ class NetworkServiceApi:
     def get_subnet_with_http_info(
         self,
         subnet_id: Annotated[StrictStr, Field(description="Identifier of the subnet.")],
-        version: Annotated[Optional[StrictStr], Field(description="API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1547,8 +1466,6 @@ class NetworkServiceApi:
 
         :param subnet_id: Identifier of the subnet. (required)
         :type subnet_id: str
-        :param version: API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.
-        :type version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1573,7 +1490,6 @@ class NetworkServiceApi:
 
         _param = self._get_subnet_serialize(
             subnet_id=subnet_id,
-            version=version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1599,7 +1515,6 @@ class NetworkServiceApi:
     def get_subnet_without_preload_content(
         self,
         subnet_id: Annotated[StrictStr, Field(description="Identifier of the subnet.")],
-        version: Annotated[Optional[StrictStr], Field(description="API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1618,8 +1533,6 @@ class NetworkServiceApi:
 
         :param subnet_id: Identifier of the subnet. (required)
         :type subnet_id: str
-        :param version: API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.
-        :type version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1644,7 +1557,6 @@ class NetworkServiceApi:
 
         _param = self._get_subnet_serialize(
             subnet_id=subnet_id,
-            version=version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1665,7 +1577,6 @@ class NetworkServiceApi:
     def _get_subnet_serialize(
         self,
         subnet_id,
-        version,
         _request_auth,
         _content_type,
         _headers,
@@ -1691,8 +1602,6 @@ class NetworkServiceApi:
             _path_params['subnet_id'] = subnet_id
         # process the query parameters
         # process the header parameters
-        if version is not None:
-            _header_params['Version'] = version
         # process the form parameters
         # process the body parameter
 
@@ -1735,7 +1644,6 @@ class NetworkServiceApi:
         self,
         filter: Annotated[Optional[StrictStr], Field(description="Attribute-based filter expression (SOL 013 5.2).")] = None,
         nextpage_opaque_marker: Annotated[Optional[StrictStr], Field(description="Marker of the page to return, from a previous response (SOL 013 5.4).")] = None,
-        version: Annotated[Optional[StrictStr], Field(description="API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1756,8 +1664,6 @@ class NetworkServiceApi:
         :type filter: str
         :param nextpage_opaque_marker: Marker of the page to return, from a previous response (SOL 013 5.4).
         :type nextpage_opaque_marker: str
-        :param version: API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.
-        :type version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1783,7 +1689,6 @@ class NetworkServiceApi:
         _param = self._list_networks_serialize(
             filter=filter,
             nextpage_opaque_marker=nextpage_opaque_marker,
-            version=version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1810,7 +1715,6 @@ class NetworkServiceApi:
         self,
         filter: Annotated[Optional[StrictStr], Field(description="Attribute-based filter expression (SOL 013 5.2).")] = None,
         nextpage_opaque_marker: Annotated[Optional[StrictStr], Field(description="Marker of the page to return, from a previous response (SOL 013 5.4).")] = None,
-        version: Annotated[Optional[StrictStr], Field(description="API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1831,8 +1735,6 @@ class NetworkServiceApi:
         :type filter: str
         :param nextpage_opaque_marker: Marker of the page to return, from a previous response (SOL 013 5.4).
         :type nextpage_opaque_marker: str
-        :param version: API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.
-        :type version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1858,7 +1760,6 @@ class NetworkServiceApi:
         _param = self._list_networks_serialize(
             filter=filter,
             nextpage_opaque_marker=nextpage_opaque_marker,
-            version=version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1885,7 +1786,6 @@ class NetworkServiceApi:
         self,
         filter: Annotated[Optional[StrictStr], Field(description="Attribute-based filter expression (SOL 013 5.2).")] = None,
         nextpage_opaque_marker: Annotated[Optional[StrictStr], Field(description="Marker of the page to return, from a previous response (SOL 013 5.4).")] = None,
-        version: Annotated[Optional[StrictStr], Field(description="API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1906,8 +1806,6 @@ class NetworkServiceApi:
         :type filter: str
         :param nextpage_opaque_marker: Marker of the page to return, from a previous response (SOL 013 5.4).
         :type nextpage_opaque_marker: str
-        :param version: API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.
-        :type version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1933,7 +1831,6 @@ class NetworkServiceApi:
         _param = self._list_networks_serialize(
             filter=filter,
             nextpage_opaque_marker=nextpage_opaque_marker,
-            version=version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1955,7 +1852,6 @@ class NetworkServiceApi:
         self,
         filter,
         nextpage_opaque_marker,
-        version,
         _request_auth,
         _content_type,
         _headers,
@@ -1987,8 +1883,6 @@ class NetworkServiceApi:
             _query_params.append(('nextpage_opaque_marker', nextpage_opaque_marker))
             
         # process the header parameters
-        if version is not None:
-            _header_params['Version'] = version
         # process the form parameters
         # process the body parameter
 
@@ -2031,7 +1925,6 @@ class NetworkServiceApi:
         self,
         filter: Annotated[Optional[StrictStr], Field(description="Attribute-based filter expression (SOL 013 5.2).")] = None,
         nextpage_opaque_marker: Annotated[Optional[StrictStr], Field(description="Marker of the page to return, from a previous response (SOL 013 5.4).")] = None,
-        version: Annotated[Optional[StrictStr], Field(description="API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2052,8 +1945,6 @@ class NetworkServiceApi:
         :type filter: str
         :param nextpage_opaque_marker: Marker of the page to return, from a previous response (SOL 013 5.4).
         :type nextpage_opaque_marker: str
-        :param version: API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.
-        :type version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -2079,7 +1970,6 @@ class NetworkServiceApi:
         _param = self._list_subnets_serialize(
             filter=filter,
             nextpage_opaque_marker=nextpage_opaque_marker,
-            version=version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -2106,7 +1996,6 @@ class NetworkServiceApi:
         self,
         filter: Annotated[Optional[StrictStr], Field(description="Attribute-based filter expression (SOL 013 5.2).")] = None,
         nextpage_opaque_marker: Annotated[Optional[StrictStr], Field(description="Marker of the page to return, from a previous response (SOL 013 5.4).")] = None,
-        version: Annotated[Optional[StrictStr], Field(description="API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2127,8 +2016,6 @@ class NetworkServiceApi:
         :type filter: str
         :param nextpage_opaque_marker: Marker of the page to return, from a previous response (SOL 013 5.4).
         :type nextpage_opaque_marker: str
-        :param version: API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.
-        :type version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -2154,7 +2041,6 @@ class NetworkServiceApi:
         _param = self._list_subnets_serialize(
             filter=filter,
             nextpage_opaque_marker=nextpage_opaque_marker,
-            version=version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -2181,7 +2067,6 @@ class NetworkServiceApi:
         self,
         filter: Annotated[Optional[StrictStr], Field(description="Attribute-based filter expression (SOL 013 5.2).")] = None,
         nextpage_opaque_marker: Annotated[Optional[StrictStr], Field(description="Marker of the page to return, from a previous response (SOL 013 5.4).")] = None,
-        version: Annotated[Optional[StrictStr], Field(description="API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2202,8 +2087,6 @@ class NetworkServiceApi:
         :type filter: str
         :param nextpage_opaque_marker: Marker of the page to return, from a previous response (SOL 013 5.4).
         :type nextpage_opaque_marker: str
-        :param version: API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.
-        :type version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -2229,7 +2112,6 @@ class NetworkServiceApi:
         _param = self._list_subnets_serialize(
             filter=filter,
             nextpage_opaque_marker=nextpage_opaque_marker,
-            version=version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -2251,7 +2133,6 @@ class NetworkServiceApi:
         self,
         filter,
         nextpage_opaque_marker,
-        version,
         _request_auth,
         _content_type,
         _headers,
@@ -2283,8 +2164,6 @@ class NetworkServiceApi:
             _query_params.append(('nextpage_opaque_marker', nextpage_opaque_marker))
             
         # process the header parameters
-        if version is not None:
-            _header_params['Version'] = version
         # process the form parameters
         # process the body parameter
 
@@ -2323,505 +2202,10 @@ class NetworkServiceApi:
 
 
     @validate_call
-    def network_get_api_major_versions(
-        self,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiVersionInformation:
-        """API versions this VIM serves (SOL 013 9.3).
-
-
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
-        :return: Returns the result object.
-        """ # noqa: E501
-
-        _param = self._network_get_api_major_versions_serialize(
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index
-        )
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "ApiVersionInformation",
-            'default': "ProblemDetails",
-        }
-        response_data = self.api_client.call_api(
-            *_param,
-            _request_timeout=_request_timeout
-        )
-        response_data.read()
-        return self.api_client.response_deserialize(
-            response_data=response_data,
-            response_types_map=_response_types_map,
-        ).data
-
-
-    @validate_call
-    def network_get_api_major_versions_with_http_info(
-        self,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[ApiVersionInformation]:
-        """API versions this VIM serves (SOL 013 9.3).
-
-
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
-        :return: Returns the result object.
-        """ # noqa: E501
-
-        _param = self._network_get_api_major_versions_serialize(
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index
-        )
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "ApiVersionInformation",
-            'default': "ProblemDetails",
-        }
-        response_data = self.api_client.call_api(
-            *_param,
-            _request_timeout=_request_timeout
-        )
-        response_data.read()
-        return self.api_client.response_deserialize(
-            response_data=response_data,
-            response_types_map=_response_types_map,
-        )
-
-
-    @validate_call
-    def network_get_api_major_versions_without_preload_content(
-        self,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> RESTResponseType:
-        """API versions this VIM serves (SOL 013 9.3).
-
-
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
-        :return: Returns the result object.
-        """ # noqa: E501
-
-        _param = self._network_get_api_major_versions_serialize(
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index
-        )
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "ApiVersionInformation",
-            'default': "ProblemDetails",
-        }
-        response_data = self.api_client.call_api(
-            *_param,
-            _request_timeout=_request_timeout
-        )
-        return response_data.response
-
-
-    def _network_get_api_major_versions_serialize(
-        self,
-        _request_auth,
-        _content_type,
-        _headers,
-        _host_index,
-    ) -> RequestSerialized:
-
-        _host = None
-
-        _collection_formats: Dict[str, str] = {
-        }
-
-        _path_params: Dict[str, str] = {}
-        _query_params: List[Tuple[str, str]] = []
-        _header_params: Dict[str, Optional[str]] = _headers or {}
-        _form_params: List[Tuple[str, str]] = []
-        _files: Dict[
-            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
-        ] = {}
-        _body_params: Optional[bytes] = None
-
-        # process the path parameters
-        # process the query parameters
-        # process the header parameters
-        # process the form parameters
-        # process the body parameter
-
-
-        # set the HTTP header `Accept`
-        if 'Accept' not in _header_params:
-            _header_params['Accept'] = self.api_client.select_header_accept(
-                [
-                    'application/json', 
-                    'application/problem+json'
-                ]
-            )
-
-
-        # authentication setting
-        _auth_settings: List[str] = [
-            'oauth2'
-        ]
-
-        return self.api_client.param_serialize(
-            method='GET',
-            resource_path='/network/v1/api_versions',
-            path_params=_path_params,
-            query_params=_query_params,
-            header_params=_header_params,
-            body=_body_params,
-            post_params=_form_params,
-            files=_files,
-            auth_settings=_auth_settings,
-            collection_formats=_collection_formats,
-            _host=_host,
-            _request_auth=_request_auth
-        )
-
-
-
-
-    @validate_call
-    def network_get_api_versions(
-        self,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiVersionInformation:
-        """API versions this VIM serves (SOL 013 9.3).
-
-
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
-        :return: Returns the result object.
-        """ # noqa: E501
-
-        _param = self._network_get_api_versions_serialize(
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index
-        )
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "ApiVersionInformation",
-            'default': "ProblemDetails",
-        }
-        response_data = self.api_client.call_api(
-            *_param,
-            _request_timeout=_request_timeout
-        )
-        response_data.read()
-        return self.api_client.response_deserialize(
-            response_data=response_data,
-            response_types_map=_response_types_map,
-        ).data
-
-
-    @validate_call
-    def network_get_api_versions_with_http_info(
-        self,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[ApiVersionInformation]:
-        """API versions this VIM serves (SOL 013 9.3).
-
-
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
-        :return: Returns the result object.
-        """ # noqa: E501
-
-        _param = self._network_get_api_versions_serialize(
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index
-        )
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "ApiVersionInformation",
-            'default': "ProblemDetails",
-        }
-        response_data = self.api_client.call_api(
-            *_param,
-            _request_timeout=_request_timeout
-        )
-        response_data.read()
-        return self.api_client.response_deserialize(
-            response_data=response_data,
-            response_types_map=_response_types_map,
-        )
-
-
-    @validate_call
-    def network_get_api_versions_without_preload_content(
-        self,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> RESTResponseType:
-        """API versions this VIM serves (SOL 013 9.3).
-
-
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
-        :return: Returns the result object.
-        """ # noqa: E501
-
-        _param = self._network_get_api_versions_serialize(
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index
-        )
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "ApiVersionInformation",
-            'default': "ProblemDetails",
-        }
-        response_data = self.api_client.call_api(
-            *_param,
-            _request_timeout=_request_timeout
-        )
-        return response_data.response
-
-
-    def _network_get_api_versions_serialize(
-        self,
-        _request_auth,
-        _content_type,
-        _headers,
-        _host_index,
-    ) -> RequestSerialized:
-
-        _host = None
-
-        _collection_formats: Dict[str, str] = {
-        }
-
-        _path_params: Dict[str, str] = {}
-        _query_params: List[Tuple[str, str]] = []
-        _header_params: Dict[str, Optional[str]] = _headers or {}
-        _form_params: List[Tuple[str, str]] = []
-        _files: Dict[
-            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
-        ] = {}
-        _body_params: Optional[bytes] = None
-
-        # process the path parameters
-        # process the query parameters
-        # process the header parameters
-        # process the form parameters
-        # process the body parameter
-
-
-        # set the HTTP header `Accept`
-        if 'Accept' not in _header_params:
-            _header_params['Accept'] = self.api_client.select_header_accept(
-                [
-                    'application/json', 
-                    'application/problem+json'
-                ]
-            )
-
-
-        # authentication setting
-        _auth_settings: List[str] = [
-            'oauth2'
-        ]
-
-        return self.api_client.param_serialize(
-            method='GET',
-            resource_path='/network/api_versions',
-            path_params=_path_params,
-            query_params=_query_params,
-            header_params=_header_params,
-            body=_body_params,
-            post_params=_form_params,
-            files=_files,
-            auth_settings=_auth_settings,
-            collection_formats=_collection_formats,
-            _host=_host,
-            _request_auth=_request_auth
-        )
-
-
-
-
-    @validate_call
     def update_network(
         self,
         network_id: Annotated[StrictStr, Field(description="Identifier of the network.")],
         network_update: NetworkUpdate,
-        version: Annotated[Optional[StrictStr], Field(description="API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2842,8 +2226,6 @@ class NetworkServiceApi:
         :type network_id: str
         :param network_update: (required)
         :type network_update: NetworkUpdate
-        :param version: API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.
-        :type version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -2869,7 +2251,6 @@ class NetworkServiceApi:
         _param = self._update_network_serialize(
             network_id=network_id,
             network_update=network_update,
-            version=version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -2896,7 +2277,6 @@ class NetworkServiceApi:
         self,
         network_id: Annotated[StrictStr, Field(description="Identifier of the network.")],
         network_update: NetworkUpdate,
-        version: Annotated[Optional[StrictStr], Field(description="API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2917,8 +2297,6 @@ class NetworkServiceApi:
         :type network_id: str
         :param network_update: (required)
         :type network_update: NetworkUpdate
-        :param version: API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.
-        :type version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -2944,7 +2322,6 @@ class NetworkServiceApi:
         _param = self._update_network_serialize(
             network_id=network_id,
             network_update=network_update,
-            version=version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -2971,7 +2348,6 @@ class NetworkServiceApi:
         self,
         network_id: Annotated[StrictStr, Field(description="Identifier of the network.")],
         network_update: NetworkUpdate,
-        version: Annotated[Optional[StrictStr], Field(description="API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2992,8 +2368,6 @@ class NetworkServiceApi:
         :type network_id: str
         :param network_update: (required)
         :type network_update: NetworkUpdate
-        :param version: API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.
-        :type version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -3019,7 +2393,6 @@ class NetworkServiceApi:
         _param = self._update_network_serialize(
             network_id=network_id,
             network_update=network_update,
-            version=version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -3041,7 +2414,6 @@ class NetworkServiceApi:
         self,
         network_id,
         network_update,
-        version,
         _request_auth,
         _content_type,
         _headers,
@@ -3067,8 +2439,6 @@ class NetworkServiceApi:
             _path_params['network_id'] = network_id
         # process the query parameters
         # process the header parameters
-        if version is not None:
-            _header_params['Version'] = version
         # process the form parameters
         # process the body parameter
         if network_update is not None:
@@ -3126,7 +2496,6 @@ class NetworkServiceApi:
         self,
         subnet_id: Annotated[StrictStr, Field(description="Identifier of the subnet.")],
         subnet_update: SubnetUpdate,
-        version: Annotated[Optional[StrictStr], Field(description="API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -3147,8 +2516,6 @@ class NetworkServiceApi:
         :type subnet_id: str
         :param subnet_update: (required)
         :type subnet_update: SubnetUpdate
-        :param version: API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.
-        :type version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -3174,7 +2541,6 @@ class NetworkServiceApi:
         _param = self._update_subnet_serialize(
             subnet_id=subnet_id,
             subnet_update=subnet_update,
-            version=version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -3201,7 +2567,6 @@ class NetworkServiceApi:
         self,
         subnet_id: Annotated[StrictStr, Field(description="Identifier of the subnet.")],
         subnet_update: SubnetUpdate,
-        version: Annotated[Optional[StrictStr], Field(description="API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -3222,8 +2587,6 @@ class NetworkServiceApi:
         :type subnet_id: str
         :param subnet_update: (required)
         :type subnet_update: SubnetUpdate
-        :param version: API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.
-        :type version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -3249,7 +2612,6 @@ class NetworkServiceApi:
         _param = self._update_subnet_serialize(
             subnet_id=subnet_id,
             subnet_update=subnet_update,
-            version=version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -3276,7 +2638,6 @@ class NetworkServiceApi:
         self,
         subnet_id: Annotated[StrictStr, Field(description="Identifier of the subnet.")],
         subnet_update: SubnetUpdate,
-        version: Annotated[Optional[StrictStr], Field(description="API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -3297,8 +2658,6 @@ class NetworkServiceApi:
         :type subnet_id: str
         :param subnet_update: (required)
         :type subnet_update: SubnetUpdate
-        :param version: API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.
-        :type version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -3324,7 +2683,6 @@ class NetworkServiceApi:
         _param = self._update_subnet_serialize(
             subnet_id=subnet_id,
             subnet_update=subnet_update,
-            version=version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -3346,7 +2704,6 @@ class NetworkServiceApi:
         self,
         subnet_id,
         subnet_update,
-        version,
         _request_auth,
         _content_type,
         _headers,
@@ -3372,8 +2729,6 @@ class NetworkServiceApi:
             _path_params['subnet_id'] = subnet_id
         # process the query parameters
         # process the header parameters
-        if version is not None:
-            _header_params['Version'] = version
         # process the form parameters
         # process the body parameter
         if subnet_update is not None:

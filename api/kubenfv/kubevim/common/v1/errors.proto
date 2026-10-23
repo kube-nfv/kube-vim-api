@@ -15,22 +15,18 @@ enum ErrorReason {
   ERROR_REASON_UNSUPPORTED_FIELD = 2;
   // The filter expression is invalid (SOL 013 5.2). INVALID_ARGUMENT, 400.
   ERROR_REASON_INVALID_FILTER = 3;
-  // The Version header is missing (SOL 013 9.4). INVALID_ARGUMENT, 400.
-  ERROR_REASON_VERSION_MISSING = 4;
-  // The requested API version is not supported (SOL 013 9.4). FAILED_PRECONDITION, 406.
-  ERROR_REASON_VERSION_NOT_SUPPORTED = 5;
   // The resource in the path, or a resource the request refers to, does not exist. NOT_FOUND, 404.
-  ERROR_REASON_NOT_FOUND = 6;
+  ERROR_REASON_NOT_FOUND = 4;
   // The resource cannot be deleted while other resources use it. FAILED_PRECONDITION, 409.
-  ERROR_REASON_RESOURCE_IN_USE = 7;
+  ERROR_REASON_RESOURCE_IN_USE = 5;
   // The resource is not in a state that allows the operation. FAILED_PRECONDITION, 409.
-  ERROR_REASON_INVALID_STATE = 8;
+  ERROR_REASON_INVALID_STATE = 6;
   // The request_id was used before with a different request (AIP-155). ALREADY_EXISTS, 409.
-  ERROR_REASON_REQUEST_ID_REUSED = 9;
+  ERROR_REASON_REQUEST_ID_REUSED = 7;
   // The operation is declared but not implemented by this VIM. UNIMPLEMENTED, 501.
-  ERROR_REASON_NOT_IMPLEMENTED = 10;
+  ERROR_REASON_NOT_IMPLEMENTED = 8;
   // Kubernetes or a backend the VIM depends on cannot be reached. UNAVAILABLE, 503.
-  ERROR_REASON_BACKEND_UNAVAILABLE = 11;
+  ERROR_REASON_BACKEND_UNAVAILABLE = 9;
   // Any other error. INTERNAL, 500.
-  ERROR_REASON_INTERNAL = 12;
+  ERROR_REASON_INTERNAL = 10;
 }

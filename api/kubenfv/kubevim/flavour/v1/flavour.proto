@@ -13,10 +13,7 @@ import "kubenfv/kubevim/options/v1/options.proto";
 import "protoc-gen-openapiv3/options/annotations.proto";
 
 option (grpc.gateway.protoc_gen_openapiv3.options.openapiv3_document) = {
-  info: {
-    title: "Kube-VIM compute flavour API"
-    version: "1.0.0"
-  }
+  info: {title: "Kube-VIM compute flavour API"}
   components: {
     security_schemes: {
       key: "oauth2"
@@ -44,10 +41,7 @@ option (grpc.gateway.protoc_gen_openapiv3.options.openapiv3_document) = {
     }
   }
 };
-option (kubenfv.kubevim.options.v1.api) = {
-  name: "flavour"
-  version: "1.0.0"
-};
+option (kubenfv.kubevim.options.v1.api) = {name: "flavour"};
 
 // Compute flavour management.
 service FlavourService {

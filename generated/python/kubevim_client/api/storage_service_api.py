@@ -18,7 +18,6 @@ from typing_extensions import Annotated
 from pydantic import Field, StrictStr
 from typing import Any, Dict, List, Optional
 from typing_extensions import Annotated
-from kubevim_client.models.api_version_information import ApiVersionInformation
 from kubevim_client.models.create_volume_request import CreateVolumeRequest
 from kubevim_client.models.create_volume_snapshot_request import CreateVolumeSnapshotRequest
 from kubevim_client.models.migrate_volume_request import MigrateVolumeRequest
@@ -49,7 +48,6 @@ class StorageServiceApi:
     def create_volume(
         self,
         create_volume_request: CreateVolumeRequest,
-        version: Annotated[Optional[StrictStr], Field(description="API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -68,8 +66,6 @@ class StorageServiceApi:
 
         :param create_volume_request: (required)
         :type create_volume_request: CreateVolumeRequest
-        :param version: API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.
-        :type version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -94,7 +90,6 @@ class StorageServiceApi:
 
         _param = self._create_volume_serialize(
             create_volume_request=create_volume_request,
-            version=version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -120,7 +115,6 @@ class StorageServiceApi:
     def create_volume_with_http_info(
         self,
         create_volume_request: CreateVolumeRequest,
-        version: Annotated[Optional[StrictStr], Field(description="API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -139,8 +133,6 @@ class StorageServiceApi:
 
         :param create_volume_request: (required)
         :type create_volume_request: CreateVolumeRequest
-        :param version: API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.
-        :type version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -165,7 +157,6 @@ class StorageServiceApi:
 
         _param = self._create_volume_serialize(
             create_volume_request=create_volume_request,
-            version=version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -191,7 +182,6 @@ class StorageServiceApi:
     def create_volume_without_preload_content(
         self,
         create_volume_request: CreateVolumeRequest,
-        version: Annotated[Optional[StrictStr], Field(description="API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -210,8 +200,6 @@ class StorageServiceApi:
 
         :param create_volume_request: (required)
         :type create_volume_request: CreateVolumeRequest
-        :param version: API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.
-        :type version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -236,7 +224,6 @@ class StorageServiceApi:
 
         _param = self._create_volume_serialize(
             create_volume_request=create_volume_request,
-            version=version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -257,7 +244,6 @@ class StorageServiceApi:
     def _create_volume_serialize(
         self,
         create_volume_request,
-        version,
         _request_auth,
         _content_type,
         _headers,
@@ -281,8 +267,6 @@ class StorageServiceApi:
         # process the path parameters
         # process the query parameters
         # process the header parameters
-        if version is not None:
-            _header_params['Version'] = version
         # process the form parameters
         # process the body parameter
         if create_volume_request is not None:
@@ -340,7 +324,6 @@ class StorageServiceApi:
         self,
         volume_id: Annotated[StrictStr, Field(description="Volume to take the snapshot of.")],
         create_volume_snapshot_request: CreateVolumeSnapshotRequest,
-        version: Annotated[Optional[StrictStr], Field(description="API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -361,8 +344,6 @@ class StorageServiceApi:
         :type volume_id: str
         :param create_volume_snapshot_request: (required)
         :type create_volume_snapshot_request: CreateVolumeSnapshotRequest
-        :param version: API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.
-        :type version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -388,7 +369,6 @@ class StorageServiceApi:
         _param = self._create_volume_snapshot_serialize(
             volume_id=volume_id,
             create_volume_snapshot_request=create_volume_snapshot_request,
-            version=version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -415,7 +395,6 @@ class StorageServiceApi:
         self,
         volume_id: Annotated[StrictStr, Field(description="Volume to take the snapshot of.")],
         create_volume_snapshot_request: CreateVolumeSnapshotRequest,
-        version: Annotated[Optional[StrictStr], Field(description="API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -436,8 +415,6 @@ class StorageServiceApi:
         :type volume_id: str
         :param create_volume_snapshot_request: (required)
         :type create_volume_snapshot_request: CreateVolumeSnapshotRequest
-        :param version: API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.
-        :type version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -463,7 +440,6 @@ class StorageServiceApi:
         _param = self._create_volume_snapshot_serialize(
             volume_id=volume_id,
             create_volume_snapshot_request=create_volume_snapshot_request,
-            version=version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -490,7 +466,6 @@ class StorageServiceApi:
         self,
         volume_id: Annotated[StrictStr, Field(description="Volume to take the snapshot of.")],
         create_volume_snapshot_request: CreateVolumeSnapshotRequest,
-        version: Annotated[Optional[StrictStr], Field(description="API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -511,8 +486,6 @@ class StorageServiceApi:
         :type volume_id: str
         :param create_volume_snapshot_request: (required)
         :type create_volume_snapshot_request: CreateVolumeSnapshotRequest
-        :param version: API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.
-        :type version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -538,7 +511,6 @@ class StorageServiceApi:
         _param = self._create_volume_snapshot_serialize(
             volume_id=volume_id,
             create_volume_snapshot_request=create_volume_snapshot_request,
-            version=version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -560,7 +532,6 @@ class StorageServiceApi:
         self,
         volume_id,
         create_volume_snapshot_request,
-        version,
         _request_auth,
         _content_type,
         _headers,
@@ -586,8 +557,6 @@ class StorageServiceApi:
             _path_params['volume_id'] = volume_id
         # process the query parameters
         # process the header parameters
-        if version is not None:
-            _header_params['Version'] = version
         # process the form parameters
         # process the body parameter
         if create_volume_snapshot_request is not None:
@@ -644,7 +613,6 @@ class StorageServiceApi:
     def delete_volume(
         self,
         volume_id: Annotated[StrictStr, Field(description="Identifier of the volume.")],
-        version: Annotated[Optional[StrictStr], Field(description="API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -663,8 +631,6 @@ class StorageServiceApi:
 
         :param volume_id: Identifier of the volume. (required)
         :type volume_id: str
-        :param version: API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.
-        :type version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -689,7 +655,6 @@ class StorageServiceApi:
 
         _param = self._delete_volume_serialize(
             volume_id=volume_id,
-            version=version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -715,7 +680,6 @@ class StorageServiceApi:
     def delete_volume_with_http_info(
         self,
         volume_id: Annotated[StrictStr, Field(description="Identifier of the volume.")],
-        version: Annotated[Optional[StrictStr], Field(description="API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -734,8 +698,6 @@ class StorageServiceApi:
 
         :param volume_id: Identifier of the volume. (required)
         :type volume_id: str
-        :param version: API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.
-        :type version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -760,7 +722,6 @@ class StorageServiceApi:
 
         _param = self._delete_volume_serialize(
             volume_id=volume_id,
-            version=version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -786,7 +747,6 @@ class StorageServiceApi:
     def delete_volume_without_preload_content(
         self,
         volume_id: Annotated[StrictStr, Field(description="Identifier of the volume.")],
-        version: Annotated[Optional[StrictStr], Field(description="API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -805,8 +765,6 @@ class StorageServiceApi:
 
         :param volume_id: Identifier of the volume. (required)
         :type volume_id: str
-        :param version: API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.
-        :type version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -831,7 +789,6 @@ class StorageServiceApi:
 
         _param = self._delete_volume_serialize(
             volume_id=volume_id,
-            version=version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -852,7 +809,6 @@ class StorageServiceApi:
     def _delete_volume_serialize(
         self,
         volume_id,
-        version,
         _request_auth,
         _content_type,
         _headers,
@@ -878,8 +834,6 @@ class StorageServiceApi:
             _path_params['volume_id'] = volume_id
         # process the query parameters
         # process the header parameters
-        if version is not None:
-            _header_params['Version'] = version
         # process the form parameters
         # process the body parameter
 
@@ -921,7 +875,6 @@ class StorageServiceApi:
         self,
         volume_id: Annotated[StrictStr, Field(description="Volume the snapshot belongs to.")],
         snapshot_id: Annotated[StrictStr, Field(description="Identifier of the snapshot.")],
-        version: Annotated[Optional[StrictStr], Field(description="API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -942,8 +895,6 @@ class StorageServiceApi:
         :type volume_id: str
         :param snapshot_id: Identifier of the snapshot. (required)
         :type snapshot_id: str
-        :param version: API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.
-        :type version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -969,7 +920,6 @@ class StorageServiceApi:
         _param = self._delete_volume_snapshot_serialize(
             volume_id=volume_id,
             snapshot_id=snapshot_id,
-            version=version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -996,7 +946,6 @@ class StorageServiceApi:
         self,
         volume_id: Annotated[StrictStr, Field(description="Volume the snapshot belongs to.")],
         snapshot_id: Annotated[StrictStr, Field(description="Identifier of the snapshot.")],
-        version: Annotated[Optional[StrictStr], Field(description="API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1017,8 +966,6 @@ class StorageServiceApi:
         :type volume_id: str
         :param snapshot_id: Identifier of the snapshot. (required)
         :type snapshot_id: str
-        :param version: API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.
-        :type version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1044,7 +991,6 @@ class StorageServiceApi:
         _param = self._delete_volume_snapshot_serialize(
             volume_id=volume_id,
             snapshot_id=snapshot_id,
-            version=version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1071,7 +1017,6 @@ class StorageServiceApi:
         self,
         volume_id: Annotated[StrictStr, Field(description="Volume the snapshot belongs to.")],
         snapshot_id: Annotated[StrictStr, Field(description="Identifier of the snapshot.")],
-        version: Annotated[Optional[StrictStr], Field(description="API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1092,8 +1037,6 @@ class StorageServiceApi:
         :type volume_id: str
         :param snapshot_id: Identifier of the snapshot. (required)
         :type snapshot_id: str
-        :param version: API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.
-        :type version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1119,7 +1062,6 @@ class StorageServiceApi:
         _param = self._delete_volume_snapshot_serialize(
             volume_id=volume_id,
             snapshot_id=snapshot_id,
-            version=version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1141,7 +1083,6 @@ class StorageServiceApi:
         self,
         volume_id,
         snapshot_id,
-        version,
         _request_auth,
         _content_type,
         _headers,
@@ -1169,8 +1110,6 @@ class StorageServiceApi:
             _path_params['snapshot_id'] = snapshot_id
         # process the query parameters
         # process the header parameters
-        if version is not None:
-            _header_params['Version'] = version
         # process the form parameters
         # process the body parameter
 
@@ -1211,7 +1150,6 @@ class StorageServiceApi:
     def get_volume(
         self,
         volume_id: Annotated[StrictStr, Field(description="Identifier of the volume.")],
-        version: Annotated[Optional[StrictStr], Field(description="API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1230,8 +1168,6 @@ class StorageServiceApi:
 
         :param volume_id: Identifier of the volume. (required)
         :type volume_id: str
-        :param version: API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.
-        :type version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1256,7 +1192,6 @@ class StorageServiceApi:
 
         _param = self._get_volume_serialize(
             volume_id=volume_id,
-            version=version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1282,7 +1217,6 @@ class StorageServiceApi:
     def get_volume_with_http_info(
         self,
         volume_id: Annotated[StrictStr, Field(description="Identifier of the volume.")],
-        version: Annotated[Optional[StrictStr], Field(description="API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1301,8 +1235,6 @@ class StorageServiceApi:
 
         :param volume_id: Identifier of the volume. (required)
         :type volume_id: str
-        :param version: API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.
-        :type version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1327,7 +1259,6 @@ class StorageServiceApi:
 
         _param = self._get_volume_serialize(
             volume_id=volume_id,
-            version=version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1353,7 +1284,6 @@ class StorageServiceApi:
     def get_volume_without_preload_content(
         self,
         volume_id: Annotated[StrictStr, Field(description="Identifier of the volume.")],
-        version: Annotated[Optional[StrictStr], Field(description="API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1372,8 +1302,6 @@ class StorageServiceApi:
 
         :param volume_id: Identifier of the volume. (required)
         :type volume_id: str
-        :param version: API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.
-        :type version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1398,7 +1326,6 @@ class StorageServiceApi:
 
         _param = self._get_volume_serialize(
             volume_id=volume_id,
-            version=version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1419,7 +1346,6 @@ class StorageServiceApi:
     def _get_volume_serialize(
         self,
         volume_id,
-        version,
         _request_auth,
         _content_type,
         _headers,
@@ -1445,8 +1371,6 @@ class StorageServiceApi:
             _path_params['volume_id'] = volume_id
         # process the query parameters
         # process the header parameters
-        if version is not None:
-            _header_params['Version'] = version
         # process the form parameters
         # process the body parameter
 
@@ -1489,7 +1413,6 @@ class StorageServiceApi:
         self,
         volume_id: Annotated[StrictStr, Field(description="Volume the snapshot belongs to.")],
         snapshot_id: Annotated[StrictStr, Field(description="Identifier of the snapshot.")],
-        version: Annotated[Optional[StrictStr], Field(description="API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1510,8 +1433,6 @@ class StorageServiceApi:
         :type volume_id: str
         :param snapshot_id: Identifier of the snapshot. (required)
         :type snapshot_id: str
-        :param version: API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.
-        :type version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1537,7 +1458,6 @@ class StorageServiceApi:
         _param = self._get_volume_snapshot_serialize(
             volume_id=volume_id,
             snapshot_id=snapshot_id,
-            version=version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1564,7 +1484,6 @@ class StorageServiceApi:
         self,
         volume_id: Annotated[StrictStr, Field(description="Volume the snapshot belongs to.")],
         snapshot_id: Annotated[StrictStr, Field(description="Identifier of the snapshot.")],
-        version: Annotated[Optional[StrictStr], Field(description="API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1585,8 +1504,6 @@ class StorageServiceApi:
         :type volume_id: str
         :param snapshot_id: Identifier of the snapshot. (required)
         :type snapshot_id: str
-        :param version: API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.
-        :type version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1612,7 +1529,6 @@ class StorageServiceApi:
         _param = self._get_volume_snapshot_serialize(
             volume_id=volume_id,
             snapshot_id=snapshot_id,
-            version=version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1639,7 +1555,6 @@ class StorageServiceApi:
         self,
         volume_id: Annotated[StrictStr, Field(description="Volume the snapshot belongs to.")],
         snapshot_id: Annotated[StrictStr, Field(description="Identifier of the snapshot.")],
-        version: Annotated[Optional[StrictStr], Field(description="API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1660,8 +1575,6 @@ class StorageServiceApi:
         :type volume_id: str
         :param snapshot_id: Identifier of the snapshot. (required)
         :type snapshot_id: str
-        :param version: API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.
-        :type version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1687,7 +1600,6 @@ class StorageServiceApi:
         _param = self._get_volume_snapshot_serialize(
             volume_id=volume_id,
             snapshot_id=snapshot_id,
-            version=version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1709,7 +1621,6 @@ class StorageServiceApi:
         self,
         volume_id,
         snapshot_id,
-        version,
         _request_auth,
         _content_type,
         _headers,
@@ -1737,8 +1648,6 @@ class StorageServiceApi:
             _path_params['snapshot_id'] = snapshot_id
         # process the query parameters
         # process the header parameters
-        if version is not None:
-            _header_params['Version'] = version
         # process the form parameters
         # process the body parameter
 
@@ -1782,7 +1691,6 @@ class StorageServiceApi:
         volume_id: Annotated[StrictStr, Field(description="Volume the snapshots belong to, or \"-\" for all volumes (AIP-159).")],
         filter: Annotated[Optional[StrictStr], Field(description="Attribute-based filter expression (SOL 013 5.2).")] = None,
         nextpage_opaque_marker: Annotated[Optional[StrictStr], Field(description="Marker of the page to return, from a previous response (SOL 013 5.4).")] = None,
-        version: Annotated[Optional[StrictStr], Field(description="API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1805,8 +1713,6 @@ class StorageServiceApi:
         :type filter: str
         :param nextpage_opaque_marker: Marker of the page to return, from a previous response (SOL 013 5.4).
         :type nextpage_opaque_marker: str
-        :param version: API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.
-        :type version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1833,7 +1739,6 @@ class StorageServiceApi:
             volume_id=volume_id,
             filter=filter,
             nextpage_opaque_marker=nextpage_opaque_marker,
-            version=version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1861,7 +1766,6 @@ class StorageServiceApi:
         volume_id: Annotated[StrictStr, Field(description="Volume the snapshots belong to, or \"-\" for all volumes (AIP-159).")],
         filter: Annotated[Optional[StrictStr], Field(description="Attribute-based filter expression (SOL 013 5.2).")] = None,
         nextpage_opaque_marker: Annotated[Optional[StrictStr], Field(description="Marker of the page to return, from a previous response (SOL 013 5.4).")] = None,
-        version: Annotated[Optional[StrictStr], Field(description="API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1884,8 +1788,6 @@ class StorageServiceApi:
         :type filter: str
         :param nextpage_opaque_marker: Marker of the page to return, from a previous response (SOL 013 5.4).
         :type nextpage_opaque_marker: str
-        :param version: API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.
-        :type version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1912,7 +1814,6 @@ class StorageServiceApi:
             volume_id=volume_id,
             filter=filter,
             nextpage_opaque_marker=nextpage_opaque_marker,
-            version=version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1940,7 +1841,6 @@ class StorageServiceApi:
         volume_id: Annotated[StrictStr, Field(description="Volume the snapshots belong to, or \"-\" for all volumes (AIP-159).")],
         filter: Annotated[Optional[StrictStr], Field(description="Attribute-based filter expression (SOL 013 5.2).")] = None,
         nextpage_opaque_marker: Annotated[Optional[StrictStr], Field(description="Marker of the page to return, from a previous response (SOL 013 5.4).")] = None,
-        version: Annotated[Optional[StrictStr], Field(description="API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1963,8 +1863,6 @@ class StorageServiceApi:
         :type filter: str
         :param nextpage_opaque_marker: Marker of the page to return, from a previous response (SOL 013 5.4).
         :type nextpage_opaque_marker: str
-        :param version: API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.
-        :type version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1991,7 +1889,6 @@ class StorageServiceApi:
             volume_id=volume_id,
             filter=filter,
             nextpage_opaque_marker=nextpage_opaque_marker,
-            version=version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -2014,7 +1911,6 @@ class StorageServiceApi:
         volume_id,
         filter,
         nextpage_opaque_marker,
-        version,
         _request_auth,
         _content_type,
         _headers,
@@ -2048,8 +1944,6 @@ class StorageServiceApi:
             _query_params.append(('nextpage_opaque_marker', nextpage_opaque_marker))
             
         # process the header parameters
-        if version is not None:
-            _header_params['Version'] = version
         # process the form parameters
         # process the body parameter
 
@@ -2092,7 +1986,6 @@ class StorageServiceApi:
         self,
         filter: Annotated[Optional[StrictStr], Field(description="Attribute-based filter expression (SOL 013 5.2).")] = None,
         nextpage_opaque_marker: Annotated[Optional[StrictStr], Field(description="Marker of the page to return, from a previous response (SOL 013 5.4).")] = None,
-        version: Annotated[Optional[StrictStr], Field(description="API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2113,8 +2006,6 @@ class StorageServiceApi:
         :type filter: str
         :param nextpage_opaque_marker: Marker of the page to return, from a previous response (SOL 013 5.4).
         :type nextpage_opaque_marker: str
-        :param version: API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.
-        :type version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -2140,7 +2031,6 @@ class StorageServiceApi:
         _param = self._list_volumes_serialize(
             filter=filter,
             nextpage_opaque_marker=nextpage_opaque_marker,
-            version=version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -2167,7 +2057,6 @@ class StorageServiceApi:
         self,
         filter: Annotated[Optional[StrictStr], Field(description="Attribute-based filter expression (SOL 013 5.2).")] = None,
         nextpage_opaque_marker: Annotated[Optional[StrictStr], Field(description="Marker of the page to return, from a previous response (SOL 013 5.4).")] = None,
-        version: Annotated[Optional[StrictStr], Field(description="API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2188,8 +2077,6 @@ class StorageServiceApi:
         :type filter: str
         :param nextpage_opaque_marker: Marker of the page to return, from a previous response (SOL 013 5.4).
         :type nextpage_opaque_marker: str
-        :param version: API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.
-        :type version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -2215,7 +2102,6 @@ class StorageServiceApi:
         _param = self._list_volumes_serialize(
             filter=filter,
             nextpage_opaque_marker=nextpage_opaque_marker,
-            version=version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -2242,7 +2128,6 @@ class StorageServiceApi:
         self,
         filter: Annotated[Optional[StrictStr], Field(description="Attribute-based filter expression (SOL 013 5.2).")] = None,
         nextpage_opaque_marker: Annotated[Optional[StrictStr], Field(description="Marker of the page to return, from a previous response (SOL 013 5.4).")] = None,
-        version: Annotated[Optional[StrictStr], Field(description="API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2263,8 +2148,6 @@ class StorageServiceApi:
         :type filter: str
         :param nextpage_opaque_marker: Marker of the page to return, from a previous response (SOL 013 5.4).
         :type nextpage_opaque_marker: str
-        :param version: API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.
-        :type version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -2290,7 +2173,6 @@ class StorageServiceApi:
         _param = self._list_volumes_serialize(
             filter=filter,
             nextpage_opaque_marker=nextpage_opaque_marker,
-            version=version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -2312,7 +2194,6 @@ class StorageServiceApi:
         self,
         filter,
         nextpage_opaque_marker,
-        version,
         _request_auth,
         _content_type,
         _headers,
@@ -2344,8 +2225,6 @@ class StorageServiceApi:
             _query_params.append(('nextpage_opaque_marker', nextpage_opaque_marker))
             
         # process the header parameters
-        if version is not None:
-            _header_params['Version'] = version
         # process the form parameters
         # process the body parameter
 
@@ -2388,7 +2267,6 @@ class StorageServiceApi:
         self,
         volume_id: Annotated[StrictStr, Field(description="Identifier of the volume.")],
         migrate_volume_request: MigrateVolumeRequest,
-        version: Annotated[Optional[StrictStr], Field(description="API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2409,8 +2287,6 @@ class StorageServiceApi:
         :type volume_id: str
         :param migrate_volume_request: (required)
         :type migrate_volume_request: MigrateVolumeRequest
-        :param version: API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.
-        :type version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -2436,7 +2312,6 @@ class StorageServiceApi:
         _param = self._migrate_volume_serialize(
             volume_id=volume_id,
             migrate_volume_request=migrate_volume_request,
-            version=version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -2463,7 +2338,6 @@ class StorageServiceApi:
         self,
         volume_id: Annotated[StrictStr, Field(description="Identifier of the volume.")],
         migrate_volume_request: MigrateVolumeRequest,
-        version: Annotated[Optional[StrictStr], Field(description="API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2484,8 +2358,6 @@ class StorageServiceApi:
         :type volume_id: str
         :param migrate_volume_request: (required)
         :type migrate_volume_request: MigrateVolumeRequest
-        :param version: API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.
-        :type version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -2511,7 +2383,6 @@ class StorageServiceApi:
         _param = self._migrate_volume_serialize(
             volume_id=volume_id,
             migrate_volume_request=migrate_volume_request,
-            version=version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -2538,7 +2409,6 @@ class StorageServiceApi:
         self,
         volume_id: Annotated[StrictStr, Field(description="Identifier of the volume.")],
         migrate_volume_request: MigrateVolumeRequest,
-        version: Annotated[Optional[StrictStr], Field(description="API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2559,8 +2429,6 @@ class StorageServiceApi:
         :type volume_id: str
         :param migrate_volume_request: (required)
         :type migrate_volume_request: MigrateVolumeRequest
-        :param version: API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.
-        :type version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -2586,7 +2454,6 @@ class StorageServiceApi:
         _param = self._migrate_volume_serialize(
             volume_id=volume_id,
             migrate_volume_request=migrate_volume_request,
-            version=version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -2608,7 +2475,6 @@ class StorageServiceApi:
         self,
         volume_id,
         migrate_volume_request,
-        version,
         _request_auth,
         _content_type,
         _headers,
@@ -2634,8 +2500,6 @@ class StorageServiceApi:
             _path_params['volume_id'] = volume_id
         # process the query parameters
         # process the header parameters
-        if version is not None:
-            _header_params['Version'] = version
         # process the form parameters
         # process the body parameter
         if migrate_volume_request is not None:
@@ -2694,7 +2558,6 @@ class StorageServiceApi:
         volume_id: Annotated[StrictStr, Field(description="Volume to revert; no running compute resource may use it.")],
         snapshot_id: Annotated[StrictStr, Field(description="Identifier of the snapshot to revert to.")],
         body: Dict[str, Any],
-        version: Annotated[Optional[StrictStr], Field(description="API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2717,8 +2580,6 @@ class StorageServiceApi:
         :type snapshot_id: str
         :param body: (required)
         :type body: object
-        :param version: API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.
-        :type version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -2745,7 +2606,6 @@ class StorageServiceApi:
             volume_id=volume_id,
             snapshot_id=snapshot_id,
             body=body,
-            version=version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -2773,7 +2633,6 @@ class StorageServiceApi:
         volume_id: Annotated[StrictStr, Field(description="Volume to revert; no running compute resource may use it.")],
         snapshot_id: Annotated[StrictStr, Field(description="Identifier of the snapshot to revert to.")],
         body: Dict[str, Any],
-        version: Annotated[Optional[StrictStr], Field(description="API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2796,8 +2655,6 @@ class StorageServiceApi:
         :type snapshot_id: str
         :param body: (required)
         :type body: object
-        :param version: API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.
-        :type version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -2824,7 +2681,6 @@ class StorageServiceApi:
             volume_id=volume_id,
             snapshot_id=snapshot_id,
             body=body,
-            version=version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -2852,7 +2708,6 @@ class StorageServiceApi:
         volume_id: Annotated[StrictStr, Field(description="Volume to revert; no running compute resource may use it.")],
         snapshot_id: Annotated[StrictStr, Field(description="Identifier of the snapshot to revert to.")],
         body: Dict[str, Any],
-        version: Annotated[Optional[StrictStr], Field(description="API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2875,8 +2730,6 @@ class StorageServiceApi:
         :type snapshot_id: str
         :param body: (required)
         :type body: object
-        :param version: API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.
-        :type version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -2903,7 +2756,6 @@ class StorageServiceApi:
             volume_id=volume_id,
             snapshot_id=snapshot_id,
             body=body,
-            version=version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -2926,7 +2778,6 @@ class StorageServiceApi:
         volume_id,
         snapshot_id,
         body,
-        version,
         _request_auth,
         _content_type,
         _headers,
@@ -2954,8 +2805,6 @@ class StorageServiceApi:
             _path_params['snapshot_id'] = snapshot_id
         # process the query parameters
         # process the header parameters
-        if version is not None:
-            _header_params['Version'] = version
         # process the form parameters
         # process the body parameter
         if body is not None:
@@ -3013,7 +2862,6 @@ class StorageServiceApi:
         self,
         volume_id: Annotated[StrictStr, Field(description="Identifier of the volume.")],
         scale_volume_request: ScaleVolumeRequest,
-        version: Annotated[Optional[StrictStr], Field(description="API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -3034,8 +2882,6 @@ class StorageServiceApi:
         :type volume_id: str
         :param scale_volume_request: (required)
         :type scale_volume_request: ScaleVolumeRequest
-        :param version: API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.
-        :type version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -3061,7 +2907,6 @@ class StorageServiceApi:
         _param = self._scale_volume_serialize(
             volume_id=volume_id,
             scale_volume_request=scale_volume_request,
-            version=version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -3088,7 +2933,6 @@ class StorageServiceApi:
         self,
         volume_id: Annotated[StrictStr, Field(description="Identifier of the volume.")],
         scale_volume_request: ScaleVolumeRequest,
-        version: Annotated[Optional[StrictStr], Field(description="API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -3109,8 +2953,6 @@ class StorageServiceApi:
         :type volume_id: str
         :param scale_volume_request: (required)
         :type scale_volume_request: ScaleVolumeRequest
-        :param version: API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.
-        :type version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -3136,7 +2978,6 @@ class StorageServiceApi:
         _param = self._scale_volume_serialize(
             volume_id=volume_id,
             scale_volume_request=scale_volume_request,
-            version=version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -3163,7 +3004,6 @@ class StorageServiceApi:
         self,
         volume_id: Annotated[StrictStr, Field(description="Identifier of the volume.")],
         scale_volume_request: ScaleVolumeRequest,
-        version: Annotated[Optional[StrictStr], Field(description="API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -3184,8 +3024,6 @@ class StorageServiceApi:
         :type volume_id: str
         :param scale_volume_request: (required)
         :type scale_volume_request: ScaleVolumeRequest
-        :param version: API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.
-        :type version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -3211,7 +3049,6 @@ class StorageServiceApi:
         _param = self._scale_volume_serialize(
             volume_id=volume_id,
             scale_volume_request=scale_volume_request,
-            version=version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -3233,7 +3070,6 @@ class StorageServiceApi:
         self,
         volume_id,
         scale_volume_request,
-        version,
         _request_auth,
         _content_type,
         _headers,
@@ -3259,8 +3095,6 @@ class StorageServiceApi:
             _path_params['volume_id'] = volume_id
         # process the query parameters
         # process the header parameters
-        if version is not None:
-            _header_params['Version'] = version
         # process the form parameters
         # process the body parameter
         if scale_volume_request is not None:
@@ -3314,505 +3148,10 @@ class StorageServiceApi:
 
 
     @validate_call
-    def storage_get_api_major_versions(
-        self,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiVersionInformation:
-        """API versions this VIM serves (SOL 013 9.3).
-
-
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
-        :return: Returns the result object.
-        """ # noqa: E501
-
-        _param = self._storage_get_api_major_versions_serialize(
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index
-        )
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "ApiVersionInformation",
-            'default': "ProblemDetails",
-        }
-        response_data = self.api_client.call_api(
-            *_param,
-            _request_timeout=_request_timeout
-        )
-        response_data.read()
-        return self.api_client.response_deserialize(
-            response_data=response_data,
-            response_types_map=_response_types_map,
-        ).data
-
-
-    @validate_call
-    def storage_get_api_major_versions_with_http_info(
-        self,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[ApiVersionInformation]:
-        """API versions this VIM serves (SOL 013 9.3).
-
-
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
-        :return: Returns the result object.
-        """ # noqa: E501
-
-        _param = self._storage_get_api_major_versions_serialize(
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index
-        )
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "ApiVersionInformation",
-            'default': "ProblemDetails",
-        }
-        response_data = self.api_client.call_api(
-            *_param,
-            _request_timeout=_request_timeout
-        )
-        response_data.read()
-        return self.api_client.response_deserialize(
-            response_data=response_data,
-            response_types_map=_response_types_map,
-        )
-
-
-    @validate_call
-    def storage_get_api_major_versions_without_preload_content(
-        self,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> RESTResponseType:
-        """API versions this VIM serves (SOL 013 9.3).
-
-
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
-        :return: Returns the result object.
-        """ # noqa: E501
-
-        _param = self._storage_get_api_major_versions_serialize(
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index
-        )
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "ApiVersionInformation",
-            'default': "ProblemDetails",
-        }
-        response_data = self.api_client.call_api(
-            *_param,
-            _request_timeout=_request_timeout
-        )
-        return response_data.response
-
-
-    def _storage_get_api_major_versions_serialize(
-        self,
-        _request_auth,
-        _content_type,
-        _headers,
-        _host_index,
-    ) -> RequestSerialized:
-
-        _host = None
-
-        _collection_formats: Dict[str, str] = {
-        }
-
-        _path_params: Dict[str, str] = {}
-        _query_params: List[Tuple[str, str]] = []
-        _header_params: Dict[str, Optional[str]] = _headers or {}
-        _form_params: List[Tuple[str, str]] = []
-        _files: Dict[
-            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
-        ] = {}
-        _body_params: Optional[bytes] = None
-
-        # process the path parameters
-        # process the query parameters
-        # process the header parameters
-        # process the form parameters
-        # process the body parameter
-
-
-        # set the HTTP header `Accept`
-        if 'Accept' not in _header_params:
-            _header_params['Accept'] = self.api_client.select_header_accept(
-                [
-                    'application/json', 
-                    'application/problem+json'
-                ]
-            )
-
-
-        # authentication setting
-        _auth_settings: List[str] = [
-            'oauth2'
-        ]
-
-        return self.api_client.param_serialize(
-            method='GET',
-            resource_path='/storage/v1/api_versions',
-            path_params=_path_params,
-            query_params=_query_params,
-            header_params=_header_params,
-            body=_body_params,
-            post_params=_form_params,
-            files=_files,
-            auth_settings=_auth_settings,
-            collection_formats=_collection_formats,
-            _host=_host,
-            _request_auth=_request_auth
-        )
-
-
-
-
-    @validate_call
-    def storage_get_api_versions(
-        self,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiVersionInformation:
-        """API versions this VIM serves (SOL 013 9.3).
-
-
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
-        :return: Returns the result object.
-        """ # noqa: E501
-
-        _param = self._storage_get_api_versions_serialize(
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index
-        )
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "ApiVersionInformation",
-            'default': "ProblemDetails",
-        }
-        response_data = self.api_client.call_api(
-            *_param,
-            _request_timeout=_request_timeout
-        )
-        response_data.read()
-        return self.api_client.response_deserialize(
-            response_data=response_data,
-            response_types_map=_response_types_map,
-        ).data
-
-
-    @validate_call
-    def storage_get_api_versions_with_http_info(
-        self,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[ApiVersionInformation]:
-        """API versions this VIM serves (SOL 013 9.3).
-
-
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
-        :return: Returns the result object.
-        """ # noqa: E501
-
-        _param = self._storage_get_api_versions_serialize(
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index
-        )
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "ApiVersionInformation",
-            'default': "ProblemDetails",
-        }
-        response_data = self.api_client.call_api(
-            *_param,
-            _request_timeout=_request_timeout
-        )
-        response_data.read()
-        return self.api_client.response_deserialize(
-            response_data=response_data,
-            response_types_map=_response_types_map,
-        )
-
-
-    @validate_call
-    def storage_get_api_versions_without_preload_content(
-        self,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> RESTResponseType:
-        """API versions this VIM serves (SOL 013 9.3).
-
-
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
-        :return: Returns the result object.
-        """ # noqa: E501
-
-        _param = self._storage_get_api_versions_serialize(
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index
-        )
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "ApiVersionInformation",
-            'default': "ProblemDetails",
-        }
-        response_data = self.api_client.call_api(
-            *_param,
-            _request_timeout=_request_timeout
-        )
-        return response_data.response
-
-
-    def _storage_get_api_versions_serialize(
-        self,
-        _request_auth,
-        _content_type,
-        _headers,
-        _host_index,
-    ) -> RequestSerialized:
-
-        _host = None
-
-        _collection_formats: Dict[str, str] = {
-        }
-
-        _path_params: Dict[str, str] = {}
-        _query_params: List[Tuple[str, str]] = []
-        _header_params: Dict[str, Optional[str]] = _headers or {}
-        _form_params: List[Tuple[str, str]] = []
-        _files: Dict[
-            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
-        ] = {}
-        _body_params: Optional[bytes] = None
-
-        # process the path parameters
-        # process the query parameters
-        # process the header parameters
-        # process the form parameters
-        # process the body parameter
-
-
-        # set the HTTP header `Accept`
-        if 'Accept' not in _header_params:
-            _header_params['Accept'] = self.api_client.select_header_accept(
-                [
-                    'application/json', 
-                    'application/problem+json'
-                ]
-            )
-
-
-        # authentication setting
-        _auth_settings: List[str] = [
-            'oauth2'
-        ]
-
-        return self.api_client.param_serialize(
-            method='GET',
-            resource_path='/storage/api_versions',
-            path_params=_path_params,
-            query_params=_query_params,
-            header_params=_header_params,
-            body=_body_params,
-            post_params=_form_params,
-            files=_files,
-            auth_settings=_auth_settings,
-            collection_formats=_collection_formats,
-            _host=_host,
-            _request_auth=_request_auth
-        )
-
-
-
-
-    @validate_call
     def update_volume(
         self,
         volume_id: Annotated[StrictStr, Field(description="Identifier of the volume.")],
         volume_update: VolumeUpdate,
-        version: Annotated[Optional[StrictStr], Field(description="API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -3833,8 +3172,6 @@ class StorageServiceApi:
         :type volume_id: str
         :param volume_update: (required)
         :type volume_update: VolumeUpdate
-        :param version: API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.
-        :type version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -3860,7 +3197,6 @@ class StorageServiceApi:
         _param = self._update_volume_serialize(
             volume_id=volume_id,
             volume_update=volume_update,
-            version=version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -3887,7 +3223,6 @@ class StorageServiceApi:
         self,
         volume_id: Annotated[StrictStr, Field(description="Identifier of the volume.")],
         volume_update: VolumeUpdate,
-        version: Annotated[Optional[StrictStr], Field(description="API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -3908,8 +3243,6 @@ class StorageServiceApi:
         :type volume_id: str
         :param volume_update: (required)
         :type volume_update: VolumeUpdate
-        :param version: API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.
-        :type version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -3935,7 +3268,6 @@ class StorageServiceApi:
         _param = self._update_volume_serialize(
             volume_id=volume_id,
             volume_update=volume_update,
-            version=version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -3962,7 +3294,6 @@ class StorageServiceApi:
         self,
         volume_id: Annotated[StrictStr, Field(description="Identifier of the volume.")],
         volume_update: VolumeUpdate,
-        version: Annotated[Optional[StrictStr], Field(description="API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -3983,8 +3314,6 @@ class StorageServiceApi:
         :type volume_id: str
         :param volume_update: (required)
         :type volume_update: VolumeUpdate
-        :param version: API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.
-        :type version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -4010,7 +3339,6 @@ class StorageServiceApi:
         _param = self._update_volume_serialize(
             volume_id=volume_id,
             volume_update=volume_update,
-            version=version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -4032,7 +3360,6 @@ class StorageServiceApi:
         self,
         volume_id,
         volume_update,
-        version,
         _request_auth,
         _content_type,
         _headers,
@@ -4058,8 +3385,6 @@ class StorageServiceApi:
             _path_params['volume_id'] = volume_id
         # process the query parameters
         # process the header parameters
-        if version is not None:
-            _header_params['Version'] = version
         # process the form parameters
         # process the body parameter
         if volume_update is not None:

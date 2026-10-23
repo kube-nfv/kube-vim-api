@@ -64,6 +64,4 @@ def stub():
 @pytest.fixture
 def client(stub):
     config = kubevim_client.Configuration(host=stub.url, access_token="token")
-    api_client = kubevim_client.ApiClient(config)
-    api_client.set_default_header("Version", "1.0.0")
-    return api_client
+    return kubevim_client.ApiClient(config)

@@ -12,10 +12,7 @@ import "kubenfv/kubevim/options/v1/options.proto";
 import "protoc-gen-openapiv3/options/annotations.proto";
 
 option (grpc.gateway.protoc_gen_openapiv3.options.openapiv3_document) = {
-  info: {
-    title: "Kube-VIM virtualised network API"
-    version: "1.0.0"
-  }
+  info: {title: "Kube-VIM virtualised network API"}
   components: {
     security_schemes: {
       key: "oauth2"
@@ -47,10 +44,7 @@ option (grpc.gateway.protoc_gen_openapiv3.options.openapiv3_document) = {
     }
   }
 };
-option (kubenfv.kubevim.options.v1.api) = {
-  name: "network"
-  version: "1.0.0"
-};
+option (kubenfv.kubevim.options.v1.api) = {name: "network"};
 
 // Virtualised network resources management: networks and their subnets.
 service NetworkService {

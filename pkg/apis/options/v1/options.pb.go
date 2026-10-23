@@ -82,9 +82,7 @@ func (Departure_Kind) EnumDescriptor() ([]byte, []int) {
 type Api struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// apiName in the URI prefix (SOL 013 4.1), e.g. "compute".
-	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
-	// Semantic version of the API (SOL 013 9.1.1), e.g. "1.0.0".
-	Version       string `protobuf:"bytes,2,opt,name=version,proto3" json:"version,omitempty"`
+	Name          string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -122,13 +120,6 @@ func (*Api) Descriptor() ([]byte, []int) {
 func (x *Api) GetName() string {
 	if x != nil {
 		return x.Name
-	}
-	return ""
-}
-
-func (x *Api) GetVersion() string {
-	if x != nil {
-		return x.Version
 	}
 	return ""
 }
@@ -371,10 +362,9 @@ var File_kubenfv_kubevim_options_v1_options_proto protoreflect.FileDescriptor
 
 const file_kubenfv_kubevim_options_v1_options_proto_rawDesc = "" +
 	"\n" +
-	"(kubenfv/kubevim/options/v1/options.proto\x12\x1akubenfv.kubevim.options.v1\x1a google/protobuf/descriptor.proto\"3\n" +
+	"(kubenfv/kubevim/options/v1/options.proto\x12\x1akubenfv.kubevim.options.v1\x1a google/protobuf/descriptor.proto\"\x19\n" +
 	"\x03Api\x12\x12\n" +
-	"\x04name\x18\x01 \x01(\tR\x04name\x12\x18\n" +
-	"\aversion\x18\x02 \x01(\tR\aversion\"\\\n" +
+	"\x04name\x18\x01 \x01(\tR\x04name\"\\\n" +
 	"\x03Ifa\x12\x10\n" +
 	"\x03ref\x18\x01 \x01(\tR\x03ref\x12C\n" +
 	"\tdeparture\x18\x02 \x01(\v2%.kubenfv.kubevim.options.v1.DepartureR\tdeparture\"\xe5\x01\n" +
