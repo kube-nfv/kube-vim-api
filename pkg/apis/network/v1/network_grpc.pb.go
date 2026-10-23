@@ -46,7 +46,7 @@ type NetworkServiceClient interface {
 	ListNetworks(ctx context.Context, in *ListNetworksRequest, opts ...grpc.CallOption) (*ListNetworksResponse, error)
 	// Updates the name and metadata of a network.
 	UpdateNetwork(ctx context.Context, in *UpdateNetworkRequest, opts ...grpc.CallOption) (*Network, error)
-	// Deletes a network.
+	// Deletes a network and its subnets; may fail with RESOURCE_IN_USE while interfaces use the network.
 	DeleteNetwork(ctx context.Context, in *DeleteNetworkRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	// Creates a subnet.
 	CreateSubnet(ctx context.Context, in *CreateSubnetRequest, opts ...grpc.CallOption) (*Subnet, error)
@@ -56,7 +56,8 @@ type NetworkServiceClient interface {
 	ListSubnets(ctx context.Context, in *ListSubnetsRequest, opts ...grpc.CallOption) (*ListSubnetsResponse, error)
 	// Updates the name and metadata of a subnet.
 	UpdateSubnet(ctx context.Context, in *UpdateSubnetRequest, opts ...grpc.CallOption) (*Subnet, error)
-	// Deletes a subnet.
+	// Deletes a subnet: one IP version of a network. May fail with RESOURCE_IN_USE while interfaces
+	// use the network; the last subnet of a Kube-OVN network cannot be deleted (delete the network instead).
 	DeleteSubnet(ctx context.Context, in *DeleteSubnetRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 }
 
@@ -182,7 +183,7 @@ type NetworkServiceServer interface {
 	ListNetworks(context.Context, *ListNetworksRequest) (*ListNetworksResponse, error)
 	// Updates the name and metadata of a network.
 	UpdateNetwork(context.Context, *UpdateNetworkRequest) (*Network, error)
-	// Deletes a network.
+	// Deletes a network and its subnets; may fail with RESOURCE_IN_USE while interfaces use the network.
 	DeleteNetwork(context.Context, *DeleteNetworkRequest) (*emptypb.Empty, error)
 	// Creates a subnet.
 	CreateSubnet(context.Context, *CreateSubnetRequest) (*Subnet, error)
@@ -192,7 +193,8 @@ type NetworkServiceServer interface {
 	ListSubnets(context.Context, *ListSubnetsRequest) (*ListSubnetsResponse, error)
 	// Updates the name and metadata of a subnet.
 	UpdateSubnet(context.Context, *UpdateSubnetRequest) (*Subnet, error)
-	// Deletes a subnet.
+	// Deletes a subnet: one IP version of a network. May fail with RESOURCE_IN_USE while interfaces
+	// use the network; the last subnet of a Kube-OVN network cannot be deleted (delete the network instead).
 	DeleteSubnet(context.Context, *DeleteSubnetRequest) (*emptypb.Empty, error)
 	mustEmbedUnimplementedNetworkServiceServer()
 }

@@ -146,7 +146,7 @@ service StorageService {
     };
   }
 
-  // Deletes a volume.
+  // Deletes a volume; may fail with RESOURCE_IN_USE while the volume is attached. Snapshots are kept.
   rpc DeleteVolume(DeleteVolumeRequest) returns (google.protobuf.Empty) {
     option (google.api.http) = {delete: "/storage/v1/volumes/{volume_id}"};
     option (grpc.gateway.protoc_gen_openapiv3.options.openapiv3_operation) = {
@@ -232,7 +232,7 @@ service StorageService {
     };
   }
 
-  // Returns one snapshot of a volume.
+  // Returns one snapshot of a volume, also after the volume is deleted.
   rpc GetVolumeSnapshot(GetVolumeSnapshotRequest) returns (VolumeSnapshot) {
     option (google.api.http) = {get: "/storage/v1/volumes/{volume_id}/snapshots/{snapshot_id}"};
     option (grpc.gateway.protoc_gen_openapiv3.options.openapiv3_operation) = {
@@ -252,7 +252,7 @@ service StorageService {
     };
   }
 
-  // Returns the snapshots of a volume.
+  // Returns the snapshots of a volume, or of all volumes with volume_id "-".
   rpc ListVolumeSnapshots(ListVolumeSnapshotsRequest) returns (ListVolumeSnapshotsResponse) {
     option (google.api.http) = {get: "/storage/v1/volumes/{volume_id}/snapshots"};
     option (grpc.gateway.protoc_gen_openapiv3.options.openapiv3_operation) = {
@@ -293,7 +293,7 @@ service StorageService {
     };
   }
 
-  // Reverts a volume that no running compute resource uses to a snapshot.
+  // Reverts a volume that no running compute resource uses to a snapshot; not possible once the volume is deleted.
   rpc RevertVolumeSnapshot(RevertVolumeSnapshotRequest) returns (kubenfv.kubevim.common.v1.Volume) {
     option (google.api.http) = {
       post: "/storage/v1/volumes/{volume_id}/snapshots/{snapshot_id}/revert"
@@ -503,7 +503,8 @@ message VolumeSnapshot {
   string snapshot_id = 1 [(google.api.field_behavior) = OUTPUT_ONLY];
   // Name of the snapshot, given by the consumer; not unique.
   string snapshot_name = 2 [(google.api.field_behavior) = OPTIONAL];
-  // Volume the snapshot was taken of.
+  // Volume the snapshot was taken of. The snapshot is kept when the volume is deleted; the VIM
+  // then sets the metadata key "kubevim.kubenfv.io/source-deleted" to "true".
   string volume_id = 3 [(google.api.field_behavior) = OUTPUT_ONLY];
   // Time the snapshot was taken.
   google.protobuf.Timestamp created_at = 4 [(google.api.field_behavior) = OUTPUT_ONLY];
@@ -546,10 +547,14 @@ message GetVolumeSnapshotRequest {
 }
 
 message ListVolumeSnapshotsRequest {
-  // Volume the snapshots belong to.
+  // Volume the snapshots belong to, or "-" for all volumes (AIP-159).
   string volume_id = 1 [
     (google.api.field_behavior) = REQUIRED,
-    (buf.validate.field).string.uuid = true
+    (buf.validate.field).cel = {
+      id: "volume_id.uuid_or_wildcard"
+      message: "must be a UUID or \"-\""
+      expression: "this == '-' || this.matches('^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$')"
+    }
   ];
   // Attribute-based filter expression (SOL 013 5.2).
   string filter = 2 [(google.api.field_behavior) = OPTIONAL];

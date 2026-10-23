@@ -924,7 +924,7 @@
             ]
           }
         ],
-        "summary": "Deletes a software image and its imported copies.",
+        "summary": "Deletes a software image and its imported copies; compute resources created from it keep their disks.",
         "tags": [
           "ImageService"
         ]

@@ -1591,7 +1591,9 @@ func (x *ComputeUpdate) GetNetworkInterfaceNamesToRemove() []string {
 type DeleteComputeRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Identifier of the compute resource.
-	ComputeId     string `protobuf:"bytes,1,opt,name=compute_id,json=computeId,proto3" json:"compute_id,omitempty"`
+	ComputeId string `protobuf:"bytes,1,opt,name=compute_id,json=computeId,proto3" json:"compute_id,omitempty"`
+	// Also delete the attached volumes created with the storage API; they are detached and kept when unset.
+	DeleteVolumes bool `protobuf:"varint,2,opt,name=delete_volumes,json=deleteVolumes,proto3" json:"delete_volumes,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -1631,6 +1633,13 @@ func (x *DeleteComputeRequest) GetComputeId() string {
 		return x.ComputeId
 	}
 	return ""
+}
+
+func (x *DeleteComputeRequest) GetDeleteVolumes() bool {
+	if x != nil {
+		return x.DeleteVolumes
+	}
+	return false
 }
 
 type OperateComputeRequest struct {
@@ -1901,7 +1910,8 @@ type ComputeSnapshot struct {
 	SnapshotId string `protobuf:"bytes,1,opt,name=snapshot_id,json=snapshotId,proto3" json:"snapshot_id,omitempty"`
 	// Name of the snapshot, given by the consumer; not unique.
 	SnapshotName string `protobuf:"bytes,2,opt,name=snapshot_name,json=snapshotName,proto3" json:"snapshot_name,omitempty"`
-	// Compute resource the snapshot was taken of.
+	// Compute resource the snapshot was taken of. The snapshot is kept when the compute resource is
+	// deleted; the VIM then sets the metadata key "kubevim.kubenfv.io/source-deleted" to "true".
 	ComputeId string `protobuf:"bytes,3,opt,name=compute_id,json=computeId,proto3" json:"compute_id,omitempty"`
 	// Time the snapshot was taken.
 	CreatedAt *timestamppb.Timestamp `protobuf:"bytes,4,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
@@ -2104,7 +2114,7 @@ func (x *GetComputeSnapshotRequest) GetSnapshotId() string {
 
 type ListComputeSnapshotsRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// Compute resource the snapshots belong to.
+	// Compute resource the snapshots belong to, or "-" for all compute resources (AIP-159).
 	ComputeId string `protobuf:"bytes,1,opt,name=compute_id,json=computeId,proto3" json:"compute_id,omitempty"`
 	// Attribute-based filter expression (SOL 013 5.2).
 	Filter string `protobuf:"bytes,2,opt,name=filter,proto3" json:"filter,omitempty"`
@@ -2839,11 +2849,12 @@ const file_kubenfv_kubevim_compute_v1_compute_proto_rawDesc = "" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
 	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01:\x9b\x01\xfa\x8b\x19\x96\x01\n" +
 	"%IFA006 7.3.1.4.2 UpdateComputeRequest\x12m\b\x03\x10\x01\x1agInterfaces to add and to remove by name; IFA's in-place interface updates and power state are left out.B\x0f\n" +
-	"\r_compute_name\"{\n" +
+	"\r_compute_name\"\xaa\x02\n" +
 	"\x14DeleteComputeRequest\x12c\n" +
 	"\n" +
 	"compute_id\x18\x01 \x01(\tBD\xe2A\x01\x02\xbaH\x05r\x03\xb0\x01\x01\xfa\x8b\x194\n" +
-	"2IFA006 7.3.1.5.2 TerminateComputeRequest.computeIdR\tcomputeId\"\x9d\x03\n" +
+	"2IFA006 7.3.1.5.2 TerminateComputeRequest.computeIdR\tcomputeId\x12\xac\x01\n" +
+	"\x0edelete_volumes\x18\x02 \x01(\bB\x84\x01\xe2A\x01\x01\xfa\x8b\x19|\x12z\b\x01\x10\x01\x1atLets a consumer tear down a compute resource with its volumes in one call; IFA terminates only the compute resource.R\rdeleteVolumes\"\x9d\x03\n" +
 	"\x15OperateComputeRequest\x12a\n" +
 	"\n" +
 	"compute_id\x18\x01 \x01(\tBB\xe2A\x01\x02\xbaH\x05r\x03\xb0\x01\x01\xfa\x8b\x192\n" +
@@ -2896,10 +2907,11 @@ const file_kubenfv_kubevim_compute_v1_compute_proto_rawDesc = "" +
 	"\n" +
 	"compute_id\x18\x01 \x01(\tB\f\xe2A\x01\x02\xbaH\x05r\x03\xb0\x01\x01R\tcomputeId\x12-\n" +
 	"\vsnapshot_id\x18\x02 \x01(\tB\f\xe2A\x01\x02\xbaH\x05r\x03\xb0\x01\x01R\n" +
-	"snapshotId\"\xa6\x01\n" +
-	"\x1bListComputeSnapshotsRequest\x12+\n" +
+	"snapshotId\"\xca\x02\n" +
+	"\x1bListComputeSnapshotsRequest\x12\xce\x01\n" +
 	"\n" +
-	"compute_id\x18\x01 \x01(\tB\f\xe2A\x01\x02\xbaH\x05r\x03\xb0\x01\x01R\tcomputeId\x12\x1c\n" +
+	"compute_id\x18\x01 \x01(\tB\xae\x01\xe2A\x01\x02\xbaH\xa6\x01\xba\x01\xa2\x01\n" +
+	"\x1bcompute_id.uuid_or_wildcard\x12\x15must be a UUID or \"-\"\x1althis == '-' || this.matches('^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$')R\tcomputeId\x12\x1c\n" +
 	"\x06filter\x18\x02 \x01(\tB\x04\xe2A\x01\x01R\x06filter\x12<\n" +
 	"\x16nextpage_opaque_marker\x18\x03 \x01(\tB\x04\xe2A\x01\x01R\x16nextpage_opaque_marker\"\xa1\x01\n" +
 	"\x1cListComputeSnapshotsResponse\x12I\n" +

@@ -311,7 +311,7 @@
         "description": "A snapshot of a compute resource (KubeVirt VirtualMachineSnapshot).",
         "properties": {
           "computeId": {
-            "description": "Compute resource the snapshot was taken of.",
+            "description": "Compute resource the snapshot was taken of. The snapshot is kept when the compute resource is\ndeleted; the VIM then sets the metadata key \"kubevim.kubenfv.io/source-deleted\" to \"true\".",
             "readOnly": true,
             "type": "string"
           },
@@ -927,6 +927,14 @@
             }
           },
           {
+            "description": "Also delete the attached volumes created with the storage API; they are detached and kept when unset.",
+            "in": "query",
+            "name": "deleteVolumes",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
             "$ref": "#/components/parameters/Version"
           }
         ],
@@ -968,7 +976,7 @@
             ]
           }
         ],
-        "summary": "Deletes a compute resource.",
+        "summary": "Deletes a compute resource with its boot disk and the disks from its flavour. Attached volumes\nare detached and kept unless delete_volumes is set; snapshots are kept.",
         "tags": [
           "ComputeService"
         ]
@@ -1547,7 +1555,7 @@
         "operationId": "ComputeService_ListComputeSnapshots",
         "parameters": [
           {
-            "description": "Compute resource the snapshots belong to.",
+            "description": "Compute resource the snapshots belong to, or \"-\" for all compute resources (AIP-159).",
             "in": "path",
             "name": "compute_id",
             "required": true,
@@ -1620,7 +1628,7 @@
             ]
           }
         ],
-        "summary": "Returns the snapshots of a compute resource.",
+        "summary": "Returns the snapshots of a compute resource, or of all compute resources with compute_id \"-\".",
         "tags": [
           "ComputeService"
         ]
@@ -1858,7 +1866,7 @@
             ]
           }
         ],
-        "summary": "Returns one snapshot of a compute resource.",
+        "summary": "Returns one snapshot of a compute resource, also after the compute resource is deleted.",
         "tags": [
           "ComputeService"
         ]
@@ -1945,7 +1953,7 @@
             ]
           }
         ],
-        "summary": "Reverts a stopped compute resource to a snapshot.",
+        "summary": "Reverts a stopped compute resource to a snapshot; not possible once the compute resource is deleted.",
         "tags": [
           "ComputeService"
         ]

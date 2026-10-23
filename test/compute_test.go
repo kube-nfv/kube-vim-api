@@ -106,6 +106,21 @@ func TestComputeValidation(t *testing.T) {
 		"revert snapshot id not a uuid": {
 			json: `{` + compute + `,"snapshotId":"snap-1"}`, msg: &computev1.RevertComputeSnapshotRequest{},
 		},
+		"list snapshots of one compute": {
+			json: `{` + compute + `}`, msg: &computev1.ListComputeSnapshotsRequest{}, valid: true,
+		},
+		"list snapshots of all computes": {
+			json: `{"computeId":"-"}`, msg: &computev1.ListComputeSnapshotsRequest{}, valid: true,
+		},
+		"list snapshots compute id not a uuid": {
+			json: `{"computeId":"vm-1"}`, msg: &computev1.ListComputeSnapshotsRequest{},
+		},
+		"get snapshot of all computes": {
+			json: `{"computeId":"-","snapshotId":"5a6b7c8d-9e0f-4a1b-8c2d-3e4f5a6b7c8d"}`, msg: &computev1.GetComputeSnapshotRequest{},
+		},
+		"delete with volumes": {
+			json: `{` + compute + `,"deleteVolumes":true}`, msg: &computev1.DeleteComputeRequest{}, valid: true,
+		},
 		"placement group": {
 			json:  `{"placementGroup":{"type":"PLACEMENT_TYPE_ANTI_AFFINITY","enforcement":"PLACEMENT_ENFORCEMENT_PREFERRED"}}`,
 			msg:   &computev1.CreatePlacementGroupRequest{},

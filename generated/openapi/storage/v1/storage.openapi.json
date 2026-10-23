@@ -213,7 +213,7 @@
             "readOnly": true
           },
           "volumeId": {
-            "description": "Volume the snapshot was taken of.",
+            "description": "Volume the snapshot was taken of. The snapshot is kept when the volume is deleted; the VIM\nthen sets the metadata key \"kubevim.kubenfv.io/source-deleted\" to \"true\".",
             "readOnly": true,
             "type": "string"
           }
@@ -481,7 +481,7 @@
             ]
           }
         ],
-        "summary": "Deletes a volume.",
+        "summary": "Deletes a volume; may fail with RESOURCE_IN_USE while the volume is attached. Snapshots are kept.",
         "tags": [
           "StorageService"
         ]
@@ -808,7 +808,7 @@
         "operationId": "StorageService_ListVolumeSnapshots",
         "parameters": [
           {
-            "description": "Volume the snapshots belong to.",
+            "description": "Volume the snapshots belong to, or \"-\" for all volumes (AIP-159).",
             "in": "path",
             "name": "volume_id",
             "required": true,
@@ -881,7 +881,7 @@
             ]
           }
         ],
-        "summary": "Returns the snapshots of a volume.",
+        "summary": "Returns the snapshots of a volume, or of all volumes with volume_id \"-\".",
         "tags": [
           "StorageService"
         ]
@@ -1119,7 +1119,7 @@
             ]
           }
         ],
-        "summary": "Returns one snapshot of a volume.",
+        "summary": "Returns one snapshot of a volume, also after the volume is deleted.",
         "tags": [
           "StorageService"
         ]
@@ -1206,7 +1206,7 @@
             ]
           }
         ],
-        "summary": "Reverts a volume that no running compute resource uses to a snapshot.",
+        "summary": "Reverts a volume that no running compute resource uses to a snapshot; not possible once the volume is deleted.",
         "tags": [
           "StorageService"
         ]

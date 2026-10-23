@@ -147,7 +147,8 @@ service ComputeService {
     };
   }
 
-  // Deletes a compute resource.
+  // Deletes a compute resource with its boot disk and the disks from its flavour. Attached volumes
+  // are detached and kept unless delete_volumes is set; snapshots are kept.
   rpc DeleteCompute(DeleteComputeRequest) returns (google.protobuf.Empty) {
     option (google.api.http) = {delete: "/compute/v1/computes/{compute_id}"};
     option (grpc.gateway.protoc_gen_openapiv3.options.openapiv3_operation) = {
@@ -298,7 +299,7 @@ service ComputeService {
     };
   }
 
-  // Returns one snapshot of a compute resource.
+  // Returns one snapshot of a compute resource, also after the compute resource is deleted.
   rpc GetComputeSnapshot(GetComputeSnapshotRequest) returns (ComputeSnapshot) {
     option (google.api.http) = {get: "/compute/v1/computes/{compute_id}/snapshots/{snapshot_id}"};
     option (grpc.gateway.protoc_gen_openapiv3.options.openapiv3_operation) = {
@@ -318,7 +319,7 @@ service ComputeService {
     };
   }
 
-  // Returns the snapshots of a compute resource.
+  // Returns the snapshots of a compute resource, or of all compute resources with compute_id "-".
   rpc ListComputeSnapshots(ListComputeSnapshotsRequest) returns (ListComputeSnapshotsResponse) {
     option (google.api.http) = {get: "/compute/v1/computes/{compute_id}/snapshots"};
     option (grpc.gateway.protoc_gen_openapiv3.options.openapiv3_operation) = {
@@ -359,7 +360,7 @@ service ComputeService {
     };
   }
 
-  // Reverts a stopped compute resource to a snapshot.
+  // Reverts a stopped compute resource to a snapshot; not possible once the compute resource is deleted.
   rpc RevertComputeSnapshot(RevertComputeSnapshotRequest) returns (Compute) {
     option (google.api.http) = {
       post: "/compute/v1/computes/{compute_id}/snapshots/{snapshot_id}/revert"
@@ -1097,6 +1098,17 @@ message DeleteComputeRequest {
     (buf.validate.field).string.uuid = true,
     (kubenfv.kubevim.options.v1.ifa_field) = {ref: "IFA006 7.3.1.5.2 TerminateComputeRequest.computeId"}
   ];
+  // Also delete the attached volumes created with the storage API; they are detached and kept when unset.
+  bool delete_volumes = 2 [
+    (google.api.field_behavior) = OPTIONAL,
+    (kubenfv.kubevim.options.v1.ifa_field) = {
+      departure: {
+        kind: KIND_EXTENSION
+        translates: true
+        rationale: "Lets a consumer tear down a compute resource with its volumes in one call; IFA terminates only the compute resource."
+      }
+    }
+  ];
 }
 
 message OperateComputeRequest {
@@ -1230,7 +1242,8 @@ message ComputeSnapshot {
   string snapshot_id = 1 [(google.api.field_behavior) = OUTPUT_ONLY];
   // Name of the snapshot, given by the consumer; not unique.
   string snapshot_name = 2 [(google.api.field_behavior) = OPTIONAL];
-  // Compute resource the snapshot was taken of.
+  // Compute resource the snapshot was taken of. The snapshot is kept when the compute resource is
+  // deleted; the VIM then sets the metadata key "kubevim.kubenfv.io/source-deleted" to "true".
   string compute_id = 3 [(google.api.field_behavior) = OUTPUT_ONLY];
   // Time the snapshot was taken.
   google.protobuf.Timestamp created_at = 4 [(google.api.field_behavior) = OUTPUT_ONLY];
@@ -1273,10 +1286,14 @@ message GetComputeSnapshotRequest {
 }
 
 message ListComputeSnapshotsRequest {
-  // Compute resource the snapshots belong to.
+  // Compute resource the snapshots belong to, or "-" for all compute resources (AIP-159).
   string compute_id = 1 [
     (google.api.field_behavior) = REQUIRED,
-    (buf.validate.field).string.uuid = true
+    (buf.validate.field).cel = {
+      id: "compute_id.uuid_or_wildcard"
+      message: "must be a UUID or \"-\""
+      expression: "this == '-' || this.matches('^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$')"
+    }
   ];
   // Attribute-based filter expression (SOL 013 5.2).
   string filter = 2 [(google.api.field_behavior) = OPTIONAL];

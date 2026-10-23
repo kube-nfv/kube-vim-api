@@ -504,7 +504,8 @@ type VolumeSnapshot struct {
 	SnapshotId string `protobuf:"bytes,1,opt,name=snapshot_id,json=snapshotId,proto3" json:"snapshot_id,omitempty"`
 	// Name of the snapshot, given by the consumer; not unique.
 	SnapshotName string `protobuf:"bytes,2,opt,name=snapshot_name,json=snapshotName,proto3" json:"snapshot_name,omitempty"`
-	// Volume the snapshot was taken of.
+	// Volume the snapshot was taken of. The snapshot is kept when the volume is deleted; the VIM
+	// then sets the metadata key "kubevim.kubenfv.io/source-deleted" to "true".
 	VolumeId string `protobuf:"bytes,3,opt,name=volume_id,json=volumeId,proto3" json:"volume_id,omitempty"`
 	// Time the snapshot was taken.
 	CreatedAt *timestamppb.Timestamp `protobuf:"bytes,4,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
@@ -707,7 +708,7 @@ func (x *GetVolumeSnapshotRequest) GetSnapshotId() string {
 
 type ListVolumeSnapshotsRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// Volume the snapshots belong to.
+	// Volume the snapshots belong to, or "-" for all volumes (AIP-159).
 	VolumeId string `protobuf:"bytes,1,opt,name=volume_id,json=volumeId,proto3" json:"volume_id,omitempty"`
 	// Attribute-based filter expression (SOL 013 5.2).
 	Filter string `protobuf:"bytes,2,opt,name=filter,proto3" json:"filter,omitempty"`
@@ -999,9 +1000,10 @@ const file_kubenfv_kubevim_storage_v1_storage_proto_rawDesc = "" +
 	"\x18GetVolumeSnapshotRequest\x12)\n" +
 	"\tvolume_id\x18\x01 \x01(\tB\f\xe2A\x01\x02\xbaH\x05r\x03\xb0\x01\x01R\bvolumeId\x12-\n" +
 	"\vsnapshot_id\x18\x02 \x01(\tB\f\xe2A\x01\x02\xbaH\x05r\x03\xb0\x01\x01R\n" +
-	"snapshotId\"\xa3\x01\n" +
-	"\x1aListVolumeSnapshotsRequest\x12)\n" +
-	"\tvolume_id\x18\x01 \x01(\tB\f\xe2A\x01\x02\xbaH\x05r\x03\xb0\x01\x01R\bvolumeId\x12\x1c\n" +
+	"snapshotId\"\xc6\x02\n" +
+	"\x1aListVolumeSnapshotsRequest\x12\xcb\x01\n" +
+	"\tvolume_id\x18\x01 \x01(\tB\xad\x01\xe2A\x01\x02\xbaH\xa5\x01\xba\x01\xa1\x01\n" +
+	"\x1avolume_id.uuid_or_wildcard\x12\x15must be a UUID or \"-\"\x1althis == '-' || this.matches('^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$')R\bvolumeId\x12\x1c\n" +
 	"\x06filter\x18\x02 \x01(\tB\x04\xe2A\x01\x01R\x06filter\x12<\n" +
 	"\x16nextpage_opaque_marker\x18\x03 \x01(\tB\x04\xe2A\x01\x01R\x16nextpage_opaque_marker\"\x9f\x01\n" +
 	"\x1bListVolumeSnapshotsResponse\x12H\n" +

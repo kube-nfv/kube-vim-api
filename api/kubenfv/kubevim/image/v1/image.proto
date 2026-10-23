@@ -125,7 +125,7 @@ service ImageService {
     };
   }
 
-  // Deletes a software image and its imported copies.
+  // Deletes a software image and its imported copies; compute resources created from it keep their disks.
   rpc DeleteImage(DeleteImageRequest) returns (google.protobuf.Empty) {
     option (google.api.http) = {delete: "/image/v1/images/{image_id}"};
     option (grpc.gateway.protoc_gen_openapiv3.options.openapiv3_operation) = {

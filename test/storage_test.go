@@ -68,6 +68,15 @@ func TestStorageValidation(t *testing.T) {
 		"revert snapshot id not a uuid": {
 			json: `{` + id + `,"snapshotId":"snap-1"}`, msg: &storagev1.RevertVolumeSnapshotRequest{},
 		},
+		"list snapshots of one volume": {
+			json: `{` + id + `}`, msg: &storagev1.ListVolumeSnapshotsRequest{}, valid: true,
+		},
+		"list snapshots of all volumes": {
+			json: `{"volumeId":"-"}`, msg: &storagev1.ListVolumeSnapshotsRequest{}, valid: true,
+		},
+		"list snapshots volume id not a uuid": {
+			json: `{"volumeId":"vol-1"}`, msg: &storagev1.ListVolumeSnapshotsRequest{},
+		},
 	} {
 		t.Run(name, func(t *testing.T) { checkValidation(t, tc.json, tc.msg, tc.valid) })
 	}

@@ -42,7 +42,7 @@ type ImageServiceClient interface {
 	ListImages(ctx context.Context, in *ListImagesRequest, opts ...grpc.CallOption) (*ListImagesResponse, error)
 	// Updates the name and metadata of a software image.
 	UpdateImage(ctx context.Context, in *UpdateImageRequest, opts ...grpc.CallOption) (*Image, error)
-	// Deletes a software image and its imported copies.
+	// Deletes a software image and its imported copies; compute resources created from it keep their disks.
 	DeleteImage(ctx context.Context, in *DeleteImageRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	// Returns the image source types this VIM accepts.
 	ListImageSources(ctx context.Context, in *ListImageSourcesRequest, opts ...grpc.CallOption) (*ListImageSourcesResponse, error)
@@ -130,7 +130,7 @@ type ImageServiceServer interface {
 	ListImages(context.Context, *ListImagesRequest) (*ListImagesResponse, error)
 	// Updates the name and metadata of a software image.
 	UpdateImage(context.Context, *UpdateImageRequest) (*Image, error)
-	// Deletes a software image and its imported copies.
+	// Deletes a software image and its imported copies; compute resources created from it keep their disks.
 	DeleteImage(context.Context, *DeleteImageRequest) (*emptypb.Empty, error)
 	// Returns the image source types this VIM accepts.
 	ListImageSources(context.Context, *ListImageSourcesRequest) (*ListImageSourcesResponse, error)

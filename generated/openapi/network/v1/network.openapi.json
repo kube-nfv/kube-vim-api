@@ -538,7 +538,7 @@
             ]
           }
         ],
-        "summary": "Deletes a network.",
+        "summary": "Deletes a network and its subnets; may fail with RESOURCE_IN_USE while interfaces use the network.",
         "tags": [
           "NetworkService"
         ]
@@ -903,7 +903,7 @@
             ]
           }
         ],
-        "summary": "Deletes a subnet.",
+        "summary": "Deletes a subnet: one IP version of a network. May fail with RESOURCE_IN_USE while interfaces\nuse the network; the last subnet of a Kube-OVN network cannot be deleted (delete the network instead).",
         "tags": [
           "NetworkService"
         ]

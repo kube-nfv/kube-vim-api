@@ -55,7 +55,8 @@ type ComputeServiceClient interface {
 	ListComputes(ctx context.Context, in *ListComputesRequest, opts ...grpc.CallOption) (*ListComputesResponse, error)
 	// Updates a compute resource: its name and metadata, and adds or removes network interfaces.
 	UpdateCompute(ctx context.Context, in *UpdateComputeRequest, opts ...grpc.CallOption) (*Compute, error)
-	// Deletes a compute resource.
+	// Deletes a compute resource with its boot disk and the disks from its flavour. Attached volumes
+	// are detached and kept unless delete_volumes is set; snapshots are kept.
 	DeleteCompute(ctx context.Context, in *DeleteComputeRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	// Changes the running state of a compute resource, e.g. start, stop or reboot.
 	OperateCompute(ctx context.Context, in *OperateComputeRequest, opts ...grpc.CallOption) (*Compute, error)
@@ -69,13 +70,13 @@ type ComputeServiceClient interface {
 	DetachVolume(ctx context.Context, in *DetachVolumeRequest, opts ...grpc.CallOption) (*Compute, error)
 	// Creates a snapshot of a compute resource.
 	CreateComputeSnapshot(ctx context.Context, in *CreateComputeSnapshotRequest, opts ...grpc.CallOption) (*ComputeSnapshot, error)
-	// Returns one snapshot of a compute resource.
+	// Returns one snapshot of a compute resource, also after the compute resource is deleted.
 	GetComputeSnapshot(ctx context.Context, in *GetComputeSnapshotRequest, opts ...grpc.CallOption) (*ComputeSnapshot, error)
-	// Returns the snapshots of a compute resource.
+	// Returns the snapshots of a compute resource, or of all compute resources with compute_id "-".
 	ListComputeSnapshots(ctx context.Context, in *ListComputeSnapshotsRequest, opts ...grpc.CallOption) (*ListComputeSnapshotsResponse, error)
 	// Deletes a snapshot of a compute resource.
 	DeleteComputeSnapshot(ctx context.Context, in *DeleteComputeSnapshotRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
-	// Reverts a stopped compute resource to a snapshot.
+	// Reverts a stopped compute resource to a snapshot; not possible once the compute resource is deleted.
 	RevertComputeSnapshot(ctx context.Context, in *RevertComputeSnapshotRequest, opts ...grpc.CallOption) (*Compute, error)
 	// Creates a placement group.
 	CreatePlacementGroup(ctx context.Context, in *CreatePlacementGroupRequest, opts ...grpc.CallOption) (*PlacementGroup, error)
@@ -299,7 +300,8 @@ type ComputeServiceServer interface {
 	ListComputes(context.Context, *ListComputesRequest) (*ListComputesResponse, error)
 	// Updates a compute resource: its name and metadata, and adds or removes network interfaces.
 	UpdateCompute(context.Context, *UpdateComputeRequest) (*Compute, error)
-	// Deletes a compute resource.
+	// Deletes a compute resource with its boot disk and the disks from its flavour. Attached volumes
+	// are detached and kept unless delete_volumes is set; snapshots are kept.
 	DeleteCompute(context.Context, *DeleteComputeRequest) (*emptypb.Empty, error)
 	// Changes the running state of a compute resource, e.g. start, stop or reboot.
 	OperateCompute(context.Context, *OperateComputeRequest) (*Compute, error)
@@ -313,13 +315,13 @@ type ComputeServiceServer interface {
 	DetachVolume(context.Context, *DetachVolumeRequest) (*Compute, error)
 	// Creates a snapshot of a compute resource.
 	CreateComputeSnapshot(context.Context, *CreateComputeSnapshotRequest) (*ComputeSnapshot, error)
-	// Returns one snapshot of a compute resource.
+	// Returns one snapshot of a compute resource, also after the compute resource is deleted.
 	GetComputeSnapshot(context.Context, *GetComputeSnapshotRequest) (*ComputeSnapshot, error)
-	// Returns the snapshots of a compute resource.
+	// Returns the snapshots of a compute resource, or of all compute resources with compute_id "-".
 	ListComputeSnapshots(context.Context, *ListComputeSnapshotsRequest) (*ListComputeSnapshotsResponse, error)
 	// Deletes a snapshot of a compute resource.
 	DeleteComputeSnapshot(context.Context, *DeleteComputeSnapshotRequest) (*emptypb.Empty, error)
-	// Reverts a stopped compute resource to a snapshot.
+	// Reverts a stopped compute resource to a snapshot; not possible once the compute resource is deleted.
 	RevertComputeSnapshot(context.Context, *RevertComputeSnapshotRequest) (*Compute, error)
 	// Creates a placement group.
 	CreatePlacementGroup(context.Context, *CreatePlacementGroupRequest) (*PlacementGroup, error)

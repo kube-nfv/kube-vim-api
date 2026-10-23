@@ -139,7 +139,7 @@ service NetworkService {
     };
   }
 
-  // Deletes a network.
+  // Deletes a network and its subnets; may fail with RESOURCE_IN_USE while interfaces use the network.
   rpc DeleteNetwork(DeleteNetworkRequest) returns (google.protobuf.Empty) {
     option (google.api.http) = {delete: "/network/v1/networks/{network_id}"};
     option (grpc.gateway.protoc_gen_openapiv3.options.openapiv3_operation) = {
@@ -250,7 +250,8 @@ service NetworkService {
     };
   }
 
-  // Deletes a subnet.
+  // Deletes a subnet: one IP version of a network. May fail with RESOURCE_IN_USE while interfaces
+  // use the network; the last subnet of a Kube-OVN network cannot be deleted (delete the network instead).
   rpc DeleteSubnet(DeleteSubnetRequest) returns (google.protobuf.Empty) {
     option (google.api.http) = {delete: "/network/v1/subnets/{subnet_id}"};
     option (grpc.gateway.protoc_gen_openapiv3.options.openapiv3_operation) = {

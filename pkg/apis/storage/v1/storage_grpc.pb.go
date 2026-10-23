@@ -49,7 +49,7 @@ type StorageServiceClient interface {
 	ListVolumes(ctx context.Context, in *ListVolumesRequest, opts ...grpc.CallOption) (*ListVolumesResponse, error)
 	// Updates the name and metadata of a volume.
 	UpdateVolume(ctx context.Context, in *UpdateVolumeRequest, opts ...grpc.CallOption) (*v1.Volume, error)
-	// Deletes a volume.
+	// Deletes a volume; may fail with RESOURCE_IN_USE while the volume is attached. Snapshots are kept.
 	DeleteVolume(ctx context.Context, in *DeleteVolumeRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	// Grows a volume.
 	ScaleVolume(ctx context.Context, in *ScaleVolumeRequest, opts ...grpc.CallOption) (*v1.Volume, error)
@@ -57,13 +57,13 @@ type StorageServiceClient interface {
 	MigrateVolume(ctx context.Context, in *MigrateVolumeRequest, opts ...grpc.CallOption) (*v1.Volume, error)
 	// Creates a snapshot of a volume.
 	CreateVolumeSnapshot(ctx context.Context, in *CreateVolumeSnapshotRequest, opts ...grpc.CallOption) (*VolumeSnapshot, error)
-	// Returns one snapshot of a volume.
+	// Returns one snapshot of a volume, also after the volume is deleted.
 	GetVolumeSnapshot(ctx context.Context, in *GetVolumeSnapshotRequest, opts ...grpc.CallOption) (*VolumeSnapshot, error)
-	// Returns the snapshots of a volume.
+	// Returns the snapshots of a volume, or of all volumes with volume_id "-".
 	ListVolumeSnapshots(ctx context.Context, in *ListVolumeSnapshotsRequest, opts ...grpc.CallOption) (*ListVolumeSnapshotsResponse, error)
 	// Deletes a snapshot of a volume.
 	DeleteVolumeSnapshot(ctx context.Context, in *DeleteVolumeSnapshotRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
-	// Reverts a volume that no running compute resource uses to a snapshot.
+	// Reverts a volume that no running compute resource uses to a snapshot; not possible once the volume is deleted.
 	RevertVolumeSnapshot(ctx context.Context, in *RevertVolumeSnapshotRequest, opts ...grpc.CallOption) (*v1.Volume, error)
 }
 
@@ -209,7 +209,7 @@ type StorageServiceServer interface {
 	ListVolumes(context.Context, *ListVolumesRequest) (*ListVolumesResponse, error)
 	// Updates the name and metadata of a volume.
 	UpdateVolume(context.Context, *UpdateVolumeRequest) (*v1.Volume, error)
-	// Deletes a volume.
+	// Deletes a volume; may fail with RESOURCE_IN_USE while the volume is attached. Snapshots are kept.
 	DeleteVolume(context.Context, *DeleteVolumeRequest) (*emptypb.Empty, error)
 	// Grows a volume.
 	ScaleVolume(context.Context, *ScaleVolumeRequest) (*v1.Volume, error)
@@ -217,13 +217,13 @@ type StorageServiceServer interface {
 	MigrateVolume(context.Context, *MigrateVolumeRequest) (*v1.Volume, error)
 	// Creates a snapshot of a volume.
 	CreateVolumeSnapshot(context.Context, *CreateVolumeSnapshotRequest) (*VolumeSnapshot, error)
-	// Returns one snapshot of a volume.
+	// Returns one snapshot of a volume, also after the volume is deleted.
 	GetVolumeSnapshot(context.Context, *GetVolumeSnapshotRequest) (*VolumeSnapshot, error)
-	// Returns the snapshots of a volume.
+	// Returns the snapshots of a volume, or of all volumes with volume_id "-".
 	ListVolumeSnapshots(context.Context, *ListVolumeSnapshotsRequest) (*ListVolumeSnapshotsResponse, error)
 	// Deletes a snapshot of a volume.
 	DeleteVolumeSnapshot(context.Context, *DeleteVolumeSnapshotRequest) (*emptypb.Empty, error)
-	// Reverts a volume that no running compute resource uses to a snapshot.
+	// Reverts a volume that no running compute resource uses to a snapshot; not possible once the volume is deleted.
 	RevertVolumeSnapshot(context.Context, *RevertVolumeSnapshotRequest) (*v1.Volume, error)
 	mustEmbedUnimplementedStorageServiceServer()
 }
