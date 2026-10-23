@@ -515,7 +515,8 @@ message Compute {
     (google.api.field_behavior) = OUTPUT_ONLY,
     (kubenfv.kubevim.options.v1.ifa_field) = {ref: "IFA006 8.4.3.2 VirtualCompute.virtualMemory"}
   ];
-  // Network interfaces, the management interface first; no other order is guaranteed.
+  // Network interfaces, the management interface first; no other order is guaranteed, in the response
+  // or in the guest. Match interfaces by name, MAC address or guest PCI address.
   repeated VirtualNetworkInterface network_interfaces = 7 [
     (google.api.field_behavior) = OUTPUT_ONLY,
     (kubenfv.kubevim.options.v1.ifa_field) = {
@@ -776,6 +777,22 @@ message VirtualNetworkInterface {
       kind: KIND_EXTENSION
       translates: true
       rationale: "Lets the consumer correlate an SR-IOV VF with the host NIC; replaces the v0 host-pci-address metadata key."
+    }
+  }];
+  // PCI address of the device in the guest; empty until known.
+  string guest_pci_address = 12 [(kubenfv.kubevim.options.v1.ifa_field) = {
+    departure: {
+      kind: KIND_EXTENSION
+      translates: true
+      rationale: "Lets the consumer find the interface in the guest; the guest device order is not guaranteed."
+    }
+  }];
+  // Interface name in the guest, e.g. "eth1"; empty when the guest agent does not report it.
+  string guest_interface_name = 13 [(kubenfv.kubevim.options.v1.ifa_field) = {
+    departure: {
+      kind: KIND_EXTENSION
+      translates: true
+      rationale: "Lets the consumer find the interface in the guest; the guest device order is not guaranteed."
     }
   }];
 }

@@ -99,7 +99,7 @@
             "type": "object"
           },
           "networkInterfaces": {
-            "description": "Network interfaces, the management interface first; no other order is guaranteed.",
+            "description": "Network interfaces, the management interface first; no other order is guaranteed, in the response\nor in the guest. Match interfaces by name, MAC address or guest PCI address.",
             "items": {
               "$ref": "#/components/schemas/VirtualNetworkInterface"
             },
@@ -1594,6 +1594,14 @@
           },
           "computeId": {
             "description": "Compute resource the interface belongs to.",
+            "type": "string"
+          },
+          "guestInterfaceName": {
+            "description": "Interface name in the guest, e.g. \"eth1\"; empty when the guest agent does not report it.",
+            "type": "string"
+          },
+          "guestPciAddress": {
+            "description": "PCI address of the device in the guest; empty until known.",
             "type": "string"
           },
           "hostPciAddress": {

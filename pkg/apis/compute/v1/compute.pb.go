@@ -576,7 +576,8 @@ type Compute struct {
 	VirtualCpu *VirtualCpu `protobuf:"bytes,5,opt,name=virtual_cpu,json=virtualCpu,proto3" json:"virtual_cpu,omitempty"`
 	// Virtual memory of the compute resource.
 	VirtualMemory *VirtualMemory `protobuf:"bytes,6,opt,name=virtual_memory,json=virtualMemory,proto3" json:"virtual_memory,omitempty"`
-	// Network interfaces, the management interface first; no other order is guaranteed.
+	// Network interfaces, the management interface first; no other order is guaranteed, in the response
+	// or in the guest. Match interfaces by name, MAC address or guest PCI address.
 	NetworkInterfaces []*VirtualNetworkInterface `protobuf:"bytes,7,rep,name=network_interfaces,json=networkInterfaces,proto3" json:"network_interfaces,omitempty"`
 	// Disks of the compute resource: its own disks (the boot disk and the disks from the flavour,
 	// identified by disk name, deleted with the compute resource and not in the storage API) and
@@ -954,8 +955,12 @@ type VirtualNetworkInterface struct {
 	IsManagement bool `protobuf:"varint,10,opt,name=is_management,json=isManagement,proto3" json:"is_management,omitempty"`
 	// PCI address of the device on the host, for SR-IOV interfaces.
 	HostPciAddress string `protobuf:"bytes,11,opt,name=host_pci_address,json=hostPciAddress,proto3" json:"host_pci_address,omitempty"`
-	unknownFields  protoimpl.UnknownFields
-	sizeCache      protoimpl.SizeCache
+	// PCI address of the device in the guest; empty until known.
+	GuestPciAddress string `protobuf:"bytes,12,opt,name=guest_pci_address,json=guestPciAddress,proto3" json:"guest_pci_address,omitempty"`
+	// Interface name in the guest, e.g. "eth1"; empty when the guest agent does not report it.
+	GuestInterfaceName string `protobuf:"bytes,13,opt,name=guest_interface_name,json=guestInterfaceName,proto3" json:"guest_interface_name,omitempty"`
+	unknownFields      protoimpl.UnknownFields
+	sizeCache          protoimpl.SizeCache
 }
 
 func (x *VirtualNetworkInterface) Reset() {
@@ -1061,6 +1066,20 @@ func (x *VirtualNetworkInterface) GetIsManagement() bool {
 func (x *VirtualNetworkInterface) GetHostPciAddress() string {
 	if x != nil {
 		return x.HostPciAddress
+	}
+	return ""
+}
+
+func (x *VirtualNetworkInterface) GetGuestPciAddress() string {
+	if x != nil {
+		return x.GuestPciAddress
+	}
+	return ""
+}
+
+func (x *VirtualNetworkInterface) GetGuestInterfaceName() string {
+	if x != nil {
+		return x.GuestInterfaceName
 	}
 	return ""
 }
@@ -2761,7 +2780,7 @@ const file_kubenfv_kubevim_compute_v1_compute_proto_rawDesc = "" +
 	"\fnuma_enabled\x18\x03 \x01(\bB.\xfa\x8b\x19*\n" +
 	"(IFA006 8.4.3.5 VirtualMemory.numaEnabledR\vnumaEnabled\x12`\n" +
 	"\rhugepage_size\x18\x04 \x01(\tB;\xfa\x8b\x197\x125\b\x01\x10\x01\x1a/Reports the hugepages requested by the flavour.R\fhugepageSize:\"\xfa\x8b\x19\x1e\n" +
-	"\x1cIFA006 8.4.3.5 VirtualMemory\"\xe8\f\n" +
+	"\x1cIFA006 8.4.3.5 VirtualMemory\"\x9c\x0f\n" +
 	"\x17VirtualNetworkInterface\x12\xb0\x01\n" +
 	"\x04name\x18\x01 \x01(\tB\x9b\x01\xfa\x8b\x19\x96\x01\n" +
 	"1IFA006 8.4.3.6 VirtualNetworkInterface.resourceId\x12a\b\x03\x10\x01\x1a[Interfaces are parts of the compute resource, identified by a name the consumer may choose.R\x04name\x12\x8b\x01\n" +
@@ -2785,7 +2804,9 @@ const file_kubenfv_kubevim_compute_v1_compute_proto_rawDesc = "" +
 	"7IFA006 8.4.3.6 VirtualNetworkInterface.operationalStateR\x10operationalState\x12\x90\x01\n" +
 	"\ris_management\x18\n" +
 	" \x01(\bBk\xfa\x8b\x19g\x12e\b\x01\x10\x01\x1a_Marks the management interface; replaces the v0 network.vm.kubevirt.io/management metadata key.R\fisManagement\x12\xa0\x01\n" +
-	"\x10host_pci_address\x18\v \x01(\tBv\xfa\x8b\x19r\x12p\b\x01\x10\x01\x1ajLets the consumer correlate an SR-IOV VF with the host NIC; replaces the v0 host-pci-address metadata key.R\x0ehostPciAddress:,\xfa\x8b\x19(\n" +
+	"\x10host_pci_address\x18\v \x01(\tBv\xfa\x8b\x19r\x12p\b\x01\x10\x01\x1ajLets the consumer correlate an SR-IOV VF with the host NIC; replaces the v0 host-pci-address metadata key.R\x0ehostPciAddress\x12\x94\x01\n" +
+	"\x11guest_pci_address\x18\f \x01(\tBh\xfa\x8b\x19d\x12b\b\x01\x10\x01\x1a\\Lets the consumer find the interface in the guest; the guest device order is not guaranteed.R\x0fguestPciAddress\x12\x9a\x01\n" +
+	"\x14guest_interface_name\x18\r \x01(\tBh\xfa\x8b\x19d\x12b\b\x01\x10\x01\x1a\\Lets the consumer find the interface in the guest; the guest device order is not guaranteed.R\x12guestInterfaceName:,\xfa\x8b\x19(\n" +
 	"&IFA006 8.4.3.6 VirtualNetworkInterface\"\x81\x0f\n" +
 	"\x14NetworkInterfaceData\x12\xa4\x01\n" +
 	"\x04name\x18\x01 \x01(\tB\x8f\x01\xe2A\x01\x01\xbaH(\xd8\x01\x01r#\x18?2\x1f^[a-z0-9]([-a-z0-9]*[a-z0-9])?$\xfa\x8b\x19\\\x12Z\b\x01\x10\x01\x1aTLets the consumer match interfaces in responses, e.g. two interfaces on one network.R\x04name\x12^\n" +

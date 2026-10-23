@@ -30,7 +30,9 @@
       "model": "NIC_MODEL_VIRTIO",
       "macAddress": "02:00:00:aa:bb:00",
       "operationalState": "OPERATIONAL_STATE_ENABLED",
-      "isManagement": true
+      "isManagement": true,
+      "guestPciAddress": "0000:01:00.0",
+      "guestInterfaceName": "eth0"
     },
     {
       "name": "data0",
@@ -45,12 +47,14 @@
       "macAddress": "02:00:00:aa:bb:01",
       "bandwidth": 1000,
       "operationalState": "OPERATIONAL_STATE_ENABLED",
-      "hostPciAddress": "0000:3b:02.1"
+      "hostPciAddress": "0000:3b:02.1",
+      "guestPciAddress": "0000:02:01.0",
+      "guestInterfaceName": "eth1"
     }
   ],
   "disks": [
     {
-      "volumeId": "5a6b7c8d-9e0f-4a1b-8c2d-3e4f5a6b7c8d",
+      "volumeId": "boot",
       "volumeName": "router-1-boot",
       "storageData": {
         "typeOfStorage": "TYPE_OF_STORAGE_VOLUME",
