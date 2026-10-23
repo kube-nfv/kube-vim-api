@@ -763,7 +763,10 @@
             "oauth2": []
           }
         ],
-        "summary": "API versions this VIM serves (SOL 013 9.3)."
+        "summary": "API versions this VIM serves (SOL 013 9.3).",
+        "tags": [
+          "ComputeService"
+        ]
       }
     },
     "/compute/v1/api_versions": {
@@ -796,7 +799,10 @@
             "oauth2": []
           }
         ],
-        "summary": "API versions this VIM serves (SOL 013 9.3)."
+        "summary": "API versions this VIM serves (SOL 013 9.3).",
+        "tags": [
+          "ComputeService"
+        ]
       }
     },
     "/compute/v1/computes": {

@@ -12,6 +12,7 @@ env:
 jobs:
   proto:
     name: Proto lint and generated code drift
+    # make generate runs the Python client generator in Docker, available on ubuntu-latest.
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -39,6 +40,43 @@ jobs:
             echo "Generated files are out of sync with the protos. Run 'make generate' and commit the result."
             exit 1
           fi
+
+  breaking:
+    name: Breaking changes against the last rc or stable tag
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+
+      # alpha and beta tags may break; rc and stable tags may not.
+      - name: Find baseline
+        id: base
+        run: echo "tag=$(git tag --list 'v1.*' --sort=-creatordate | grep -E '^v1\.[0-9]+\.[0-9]+(-rc\.[0-9]+)?$' | head -1)" >> "$GITHUB_OUTPUT"
+
+      - name: buf breaking
+        if: steps.base.outputs.tag != ''
+        run: make breaking BREAKING_AGAINST=".git#tag=${{ steps.base.outputs.tag }}"
+
+  python:
+    name: Python client (${{ matrix.python }})
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: ['3.10', '3.13']
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+
+      - name: Test
+        run: make test-python PYTHON=python
 
   go:
     name: Go build and test

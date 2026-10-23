@@ -1,0 +1,9 @@
+# Files of the generated Python client that kube-vim-api does not ship:
+# CI templates and test stubs; client tests live in test/python.
+.github/**
+.gitlab-ci.yml
+.travis.yml
+git_push.sh
+test/**
+test-requirements.txt
+tox.ini

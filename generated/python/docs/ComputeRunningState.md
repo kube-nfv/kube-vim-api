@@ -1,0 +1,31 @@
+# ComputeRunningState
+
+Running state of a compute resource. Values may be added as KubeVirt support grows; clients should accept unknown values.
+
+## Enum
+
+* `COMPUTE_RUNNING_STATE_UNSPECIFIED` (value: `'COMPUTE_RUNNING_STATE_UNSPECIFIED'`)
+
+* `COMPUTE_RUNNING_STATE_STARTING` (value: `'COMPUTE_RUNNING_STATE_STARTING'`)
+
+* `COMPUTE_RUNNING_STATE_STARTED` (value: `'COMPUTE_RUNNING_STATE_STARTED'`)
+
+* `COMPUTE_RUNNING_STATE_STOPPING` (value: `'COMPUTE_RUNNING_STATE_STOPPING'`)
+
+* `COMPUTE_RUNNING_STATE_STOPPED` (value: `'COMPUTE_RUNNING_STATE_STOPPED'`)
+
+* `COMPUTE_RUNNING_STATE_PAUSED` (value: `'COMPUTE_RUNNING_STATE_PAUSED'`)
+
+* `COMPUTE_RUNNING_STATE_REBOOTING` (value: `'COMPUTE_RUNNING_STATE_REBOOTING'`)
+
+* `COMPUTE_RUNNING_STATE_MIGRATING` (value: `'COMPUTE_RUNNING_STATE_MIGRATING'`)
+
+* `COMPUTE_RUNNING_STATE_FAILED` (value: `'COMPUTE_RUNNING_STATE_FAILED'`)
+
+* `COMPUTE_RUNNING_STATE_TERMINATING` (value: `'COMPUTE_RUNNING_STATE_TERMINATING'`)
+
+* `UNKNOWN_DEFAULT_OPEN_API` (value: `'unknown_default_open_api'`)
+
+[[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+

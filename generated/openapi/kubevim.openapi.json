@@ -2,10 +2,10 @@
   "components": {
     "parameters": {
       "Version": {
-        "description": "API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted.",
+        "description": "API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted. Required by the server; set it once on the client, e.g. as a default header.",
         "in": "header",
         "name": "Version",
-        "required": true,
+        "required": false,
         "schema": {
           "type": "string"
         }
@@ -1739,7 +1739,10 @@
             "oauth2": []
           }
         ],
-        "summary": "API versions this VIM serves (SOL 013 9.3)."
+        "summary": "API versions this VIM serves (SOL 013 9.3).",
+        "tags": [
+          "ComputeService"
+        ]
       }
     },
     "/compute/v1/api_versions": {
@@ -1772,7 +1775,10 @@
             "oauth2": []
           }
         ],
-        "summary": "API versions this VIM serves (SOL 013 9.3)."
+        "summary": "API versions this VIM serves (SOL 013 9.3).",
+        "tags": [
+          "ComputeService"
+        ]
       }
     },
     "/compute/v1/computes": {
@@ -3344,7 +3350,10 @@
             "oauth2": []
           }
         ],
-        "summary": "API versions this VIM serves (SOL 013 9.3)."
+        "summary": "API versions this VIM serves (SOL 013 9.3).",
+        "tags": [
+          "FlavourService"
+        ]
       }
     },
     "/flavour/v1/api_versions": {
@@ -3377,7 +3386,10 @@
             "oauth2": []
           }
         ],
-        "summary": "API versions this VIM serves (SOL 013 9.3)."
+        "summary": "API versions this VIM serves (SOL 013 9.3).",
+        "tags": [
+          "FlavourService"
+        ]
       }
     },
     "/flavour/v1/flavours": {
@@ -3708,7 +3720,10 @@
             "oauth2": []
           }
         ],
-        "summary": "API versions this VIM serves (SOL 013 9.3)."
+        "summary": "API versions this VIM serves (SOL 013 9.3).",
+        "tags": [
+          "ImageService"
+        ]
       }
     },
     "/image/v1/api_versions": {
@@ -3741,7 +3756,10 @@
             "oauth2": []
           }
         ],
-        "summary": "API versions this VIM serves (SOL 013 9.3)."
+        "summary": "API versions this VIM serves (SOL 013 9.3).",
+        "tags": [
+          "ImageService"
+        ]
       }
     },
     "/image/v1/imageSources": {
@@ -4210,7 +4228,10 @@
             "oauth2": []
           }
         ],
-        "summary": "API versions this VIM serves (SOL 013 9.3)."
+        "summary": "API versions this VIM serves (SOL 013 9.3).",
+        "tags": [
+          "NetworkService"
+        ]
       }
     },
     "/network/v1/api_versions": {
@@ -4243,7 +4264,10 @@
             "oauth2": []
           }
         ],
-        "summary": "API versions this VIM serves (SOL 013 9.3)."
+        "summary": "API versions this VIM serves (SOL 013 9.3).",
+        "tags": [
+          "NetworkService"
+        ]
       }
     },
     "/network/v1/networks": {
@@ -5024,7 +5048,10 @@
             "oauth2": []
           }
         ],
-        "summary": "API versions this VIM serves (SOL 013 9.3)."
+        "summary": "API versions this VIM serves (SOL 013 9.3).",
+        "tags": [
+          "StorageService"
+        ]
       }
     },
     "/storage/v1/api_versions": {
@@ -5057,7 +5084,10 @@
             "oauth2": []
           }
         ],
-        "summary": "API versions this VIM serves (SOL 013 9.3)."
+        "summary": "API versions this VIM serves (SOL 013 9.3).",
+        "tags": [
+          "StorageService"
+        ]
       }
     },
     "/storage/v1/volumes": {

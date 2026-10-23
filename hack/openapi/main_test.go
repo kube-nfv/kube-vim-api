@@ -144,6 +144,20 @@ func TestApiVersions(t *testing.T) {
 	if id := get(t, bundled, "paths", "/image/api_versions", "get", "operationId"); id != "Image_GetApiVersions" {
 		t.Errorf("bundled operationId = %v, want Image_GetApiVersions", id)
 	}
+	tags := get(t, bundled, "paths", "/image/api_versions", "get", "tags").([]any)
+	if len(tags) != 1 || tags[0] != "ImageService" {
+		t.Errorf("api_versions tags = %v, want [ImageService]", tags)
+	}
+}
+
+func TestBundleVersionOptional(t *testing.T) {
+	out := process(t)
+	if get(t, load(t, filepath.Join(out, "compute/v1/compute_service.openapi.json")), "components", "parameters", "Version", "required") != true {
+		t.Error("per-API schema: Version must stay required")
+	}
+	if get(t, load(t, filepath.Join(out, bundleFile)), "components", "parameters", "Version", "required") != false {
+		t.Error("bundle: Version must be optional, set once by the client")
+	}
 }
 
 func TestBundle(t *testing.T) {

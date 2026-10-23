@@ -94,6 +94,7 @@ func hasParameter(op map[string]any, name string) bool {
 func addApiVersions(doc map[string]any) error {
 	paths := child(doc, "paths")
 	var apiName, major, service string
+	var tags any
 	for _, path := range sortedKeys(paths) {
 		segs := strings.Split(strings.TrimPrefix(path, "/"), "/")
 		if len(segs) < 2 {
@@ -109,6 +110,7 @@ func addApiVersions(doc map[string]any) error {
 			if op, ok := paths[path].(map[string]any)[method].(map[string]any); ok && service == "" {
 				id, _ := op["operationId"].(string)
 				service, _, _ = strings.Cut(id, "_")
+				tags = op["tags"]
 			}
 		}
 	}
@@ -122,6 +124,7 @@ func addApiVersions(doc map[string]any) error {
 	} {
 		paths[path] = map[string]any{"get": map[string]any{
 			"operationId": service + "_" + method,
+			"tags":        tags,
 			"summary":     "API versions this VIM serves (SOL 013 9.3).",
 			"security":    []any{map[string]any{"oauth2": []any{}}},
 			"responses": map[string]any{

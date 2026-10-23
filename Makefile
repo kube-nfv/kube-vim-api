@@ -2,6 +2,14 @@ LOCALBIN ?= $(shell pwd)/bin
 
 OPENAPI_RAW_DIR ?= $(LOCALBIN)/openapi-raw
 OPENAPI_DIR ?= generated/openapi
+PYTHON_DIR ?= generated/python
+
+# Version stamped into the bundle and the Python client; release.yml sets it from the tag.
+VERSION ?= 0.0.0-dev
+PYTHON_PACKAGE_VERSION ?= 0.0.0.dev0
+OPENAPI_GENERATOR_IMAGE ?= openapitools/openapi-generator-cli:v7.26.0
+PYTHON ?= python3
+PYTHON_VENV ?= $(LOCALBIN)/python-venv
 
 BUF ?= $(LOCALBIN)/buf
 PROTOC_GEN_GO ?= $(LOCALBIN)/protoc-gen-go
@@ -22,19 +30,41 @@ help: ## Display available commands.
 	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_-]+:.*?## / {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
 
 .PHONY: generate
-generate: buf protoc-gen-go protoc-gen-go-grpc protoc-gen-grpc-gateway protoc-gen-openapiv3 ## Generate Go code and OpenAPI schemas from the protos.
+generate: buf protoc-gen-go protoc-gen-go-grpc protoc-gen-grpc-gateway protoc-gen-openapiv3 ## Generate Go code, OpenAPI schemas and the Python client from the protos.
 	PATH="$(LOCALBIN):$$PATH" $(BUF) generate
 	rm -rf $(OPENAPI_DIR)
-	GOWORK=off go run ./hack/openapi -in $(OPENAPI_RAW_DIR) -out $(OPENAPI_DIR)
+	GOWORK=off go run ./hack/openapi -in $(OPENAPI_RAW_DIR) -out $(OPENAPI_DIR) -version $(VERSION)
+	$(MAKE) generate-python
+
+.PHONY: generate-python
+generate-python: ## Generate the Python client from the bundled schema (needs Docker).
+	rm -rf $(PYTHON_DIR)
+	mkdir -p $(PYTHON_DIR)
+	cp hack/python/openapi-generator-ignore $(PYTHON_DIR)/.openapi-generator-ignore
+	docker run --rm -u $$(id -u):$$(id -g) -v $(CURDIR):/work -w /work $(OPENAPI_GENERATOR_IMAGE) generate \
+		-g python -i $(OPENAPI_DIR)/kubevim.openapi.json -o $(PYTHON_DIR) \
+		-t hack/python/templates \
+		--package-name kubevim_client \
+		--additional-properties=projectName=kubevim-client,packageVersion=$(PYTHON_PACKAGE_VERSION),enumUnknownDefaultCase=true
 
 .PHONY: lint
 lint: buf ## Lint and format-check the protos.
 	$(BUF) lint
 	$(BUF) format --diff --exit-code
 
+.PHONY: breaking
+breaking: buf ## Check for breaking changes against BREAKING_AGAINST, e.g. .git#tag=v1.0.0-rc.1.
+	$(BUF) breaking --against "$(BREAKING_AGAINST)"
+
 .PHONY: test
 test: ## Run Go tests.
 	GOWORK=off go test ./...
+
+.PHONY: test-python
+test-python: ## Test the generated Python client against a stub server.
+	$(PYTHON) -m venv $(PYTHON_VENV)
+	$(PYTHON_VENV)/bin/pip install -q ./$(PYTHON_DIR) pytest
+	$(PYTHON_VENV)/bin/pytest -q test/python
 
 .PHONY: clean
 clean: ## Remove generated code and local tools.
