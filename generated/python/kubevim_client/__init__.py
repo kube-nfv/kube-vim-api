@@ -34,8 +34,6 @@ __all__ = [
     "ApiException",
     "AttachVolumeRequest",
     "BasicAuth",
-    "BlankSource",
-    "Checksum",
     "Compute",
     "ComputeOperation",
     "ComputeRunningState",
@@ -62,7 +60,6 @@ __all__ = [
     "HttpSource",
     "Image",
     "ImageSource",
-    "ImageSourceBlank",
     "ImageSourceGlance",
     "ImageSourceHttp",
     "ImageSourceLocal",
@@ -140,8 +137,6 @@ from kubevim_client.exceptions import ApiException as ApiException
 # import models into sdk package
 from kubevim_client.models.attach_volume_request import AttachVolumeRequest as AttachVolumeRequest
 from kubevim_client.models.basic_auth import BasicAuth as BasicAuth
-from kubevim_client.models.blank_source import BlankSource as BlankSource
-from kubevim_client.models.checksum import Checksum as Checksum
 from kubevim_client.models.compute import Compute as Compute
 from kubevim_client.models.compute_operation import ComputeOperation as ComputeOperation
 from kubevim_client.models.compute_running_state import ComputeRunningState as ComputeRunningState
@@ -168,7 +163,6 @@ from kubevim_client.models.glance_source import GlanceSource as GlanceSource
 from kubevim_client.models.http_source import HttpSource as HttpSource
 from kubevim_client.models.image import Image as Image
 from kubevim_client.models.image_source import ImageSource as ImageSource
-from kubevim_client.models.image_source_blank import ImageSourceBlank as ImageSourceBlank
 from kubevim_client.models.image_source_glance import ImageSourceGlance as ImageSourceGlance
 from kubevim_client.models.image_source_http import ImageSourceHttp as ImageSourceHttp
 from kubevim_client.models.image_source_local import ImageSourceLocal as ImageSourceLocal

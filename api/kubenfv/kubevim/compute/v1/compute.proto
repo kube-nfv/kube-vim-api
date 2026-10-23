@@ -637,8 +637,7 @@ enum ComputeRunningState {
   COMPUTE_RUNNING_STATE_STOPPED = 4;
   // Paused, memory kept. IFA: PAUSED.
   COMPUTE_RUNNING_STATE_PAUSED = 5;
-  // Rebooting; not reported yet, since KubeVirt restarts by recreating the instance (reported as STARTING). IFA: REBOOTING.
-  COMPUTE_RUNNING_STATE_REBOOTING = 6;
+  reserved 6;
   // Moving to another host while running. IFA: STARTED.
   COMPUTE_RUNNING_STATE_MIGRATING = 7;
   // Failed to start or crashed; see status_detail. IFA: STOPPED.
@@ -668,15 +667,7 @@ message VirtualCpuPinning {
   option (kubenfv.kubevim.options.v1.ifa_message) = {ref: "IFA006 8.4.3.4 VirtualCpuPinning"};
 
   kubenfv.kubevim.common.v1.VirtualCpuPinningPolicy cpu_pinning_policy = 1 [(kubenfv.kubevim.options.v1.ifa_field) = {ref: "IFA006 8.4.3.4 VirtualCpuPinning.cpuPinningPolicy"}];
-  // Physical CPU each virtual CPU is pinned to; empty when the VIM cannot tell.
-  map<uint32, uint32> cpu_map = 2 [(kubenfv.kubevim.options.v1.ifa_field) = {
-    ref: "IFA006 8.4.3.4 VirtualCpuPinning.cpuMap"
-    departure: {
-      kind: KIND_DEVIATION
-      translates: true
-      rationale: "IFA leaves the content unspecified; a map from virtual to physical CPU number."
-    }
-  }];
+  reserved 2;
 }
 
 // Virtual memory of a compute resource.
@@ -808,7 +799,7 @@ enum TypeVirtualNic {
   TYPE_VIRTUAL_NIC_BRIDGE = 1;
   // SR-IOV virtual function.
   TYPE_VIRTUAL_NIC_SRIOV = 2;
-  // NAT to the pod network; reported for the management interface, rejected in requests.
+  // NAT to the pod network; the management interface.
   TYPE_VIRTUAL_NIC_MASQUERADE = 3;
 }
 
@@ -854,22 +845,7 @@ message NetworkInterfaceData {
     (buf.validate.field).string.uuid = true,
     (kubenfv.kubevim.options.v1.ifa_field) = {ref: "IFA006 8.4.3.7 VirtualInterfaceData.networkId"}
   ];
-  // How the interface is realised; the VIM chooses from the network when unset.
-  TypeVirtualNic type_virtual_nic = 3 [
-    (google.api.field_behavior) = OPTIONAL,
-    (buf.validate.field).enum = {
-      defined_only: true
-      not_in: [3]
-    },
-    (kubenfv.kubevim.options.v1.ifa_field) = {
-      ref: "IFA006 8.4.2.6 VirtualNetworkInterfaceData.typeVirtualNic"
-      departure: {
-        kind: KIND_DEVIATION
-        translates: true
-        rationale: "IFA leaves the type unspecified; a closed enumeration, optional because the network implies it."
-      }
-    }
-  ];
+  reserved 3;
   // NIC model the guest sees; virtio when unset.
   NicModel model = 4 [
     (google.api.field_behavior) = OPTIONAL,
@@ -991,12 +967,6 @@ message CreateComputeRequest {
   Compute compute = 1 [
     (google.api.field_behavior) = REQUIRED,
     (buf.validate.field).required = true
-  ];
-  // Client-chosen UUID that makes the request idempotent (AIP-155).
-  string request_id = 2 [
-    (google.api.field_behavior) = OPTIONAL,
-    (buf.validate.field).string.uuid = true,
-    (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE
   ];
   // Network interfaces in addition to the management interface.
   repeated NetworkInterfaceData network_interfaces = 3 [
@@ -1293,12 +1263,6 @@ message CreateComputeSnapshotRequest {
   ];
   // Snapshot to create: name and metadata.
   ComputeSnapshot snapshot = 2 [(google.api.field_behavior) = OPTIONAL];
-  // Client-chosen UUID that makes the request idempotent (AIP-155).
-  string request_id = 3 [
-    (google.api.field_behavior) = OPTIONAL,
-    (buf.validate.field).string.uuid = true,
-    (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE
-  ];
 }
 
 message GetComputeSnapshotRequest {
@@ -1480,12 +1444,6 @@ message CreatePlacementGroupRequest {
   PlacementGroup placement_group = 1 [
     (google.api.field_behavior) = REQUIRED,
     (buf.validate.field).required = true
-  ];
-  // Client-chosen UUID that makes the request idempotent (AIP-155).
-  string request_id = 2 [
-    (google.api.field_behavior) = OPTIONAL,
-    (buf.validate.field).string.uuid = true,
-    (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE
   ];
 }
 

@@ -42,8 +42,6 @@ const (
 	ErrorReason_ERROR_REASON_RESOURCE_IN_USE ErrorReason = 5
 	// The resource is not in a state that allows the operation. FAILED_PRECONDITION, 409.
 	ErrorReason_ERROR_REASON_INVALID_STATE ErrorReason = 6
-	// The request_id was used before with a different request (AIP-155). ALREADY_EXISTS, 409.
-	ErrorReason_ERROR_REASON_REQUEST_ID_REUSED ErrorReason = 7
 	// The operation is declared but not implemented by this VIM. UNIMPLEMENTED, 501.
 	ErrorReason_ERROR_REASON_NOT_IMPLEMENTED ErrorReason = 8
 	// Kubernetes or a backend the VIM depends on cannot be reached. UNAVAILABLE, 503.
@@ -62,7 +60,6 @@ var (
 		4:  "ERROR_REASON_NOT_FOUND",
 		5:  "ERROR_REASON_RESOURCE_IN_USE",
 		6:  "ERROR_REASON_INVALID_STATE",
-		7:  "ERROR_REASON_REQUEST_ID_REUSED",
 		8:  "ERROR_REASON_NOT_IMPLEMENTED",
 		9:  "ERROR_REASON_BACKEND_UNAVAILABLE",
 		10: "ERROR_REASON_INTERNAL",
@@ -75,7 +72,6 @@ var (
 		"ERROR_REASON_NOT_FOUND":           4,
 		"ERROR_REASON_RESOURCE_IN_USE":     5,
 		"ERROR_REASON_INVALID_STATE":       6,
-		"ERROR_REASON_REQUEST_ID_REUSED":   7,
 		"ERROR_REASON_NOT_IMPLEMENTED":     8,
 		"ERROR_REASON_BACKEND_UNAVAILABLE": 9,
 		"ERROR_REASON_INTERNAL":            10,
@@ -113,7 +109,7 @@ var File_kubenfv_kubevim_common_v1_errors_proto protoreflect.FileDescriptor
 
 const file_kubenfv_kubevim_common_v1_errors_proto_rawDesc = "" +
 	"\n" +
-	"&kubenfv/kubevim/common/v1/errors.proto\x12\x19kubenfv.kubevim.common.v1*\xf9\x02\n" +
+	"&kubenfv/kubevim/common/v1/errors.proto\x12\x19kubenfv.kubevim.common.v1*\xdb\x02\n" +
 	"\vErrorReason\x12\x1c\n" +
 	"\x18ERROR_REASON_UNSPECIFIED\x10\x00\x12\"\n" +
 	"\x1eERROR_REASON_VALIDATION_FAILED\x10\x01\x12\"\n" +
@@ -121,12 +117,11 @@ const file_kubenfv_kubevim_common_v1_errors_proto_rawDesc = "" +
 	"\x1bERROR_REASON_INVALID_FILTER\x10\x03\x12\x1a\n" +
 	"\x16ERROR_REASON_NOT_FOUND\x10\x04\x12 \n" +
 	"\x1cERROR_REASON_RESOURCE_IN_USE\x10\x05\x12\x1e\n" +
-	"\x1aERROR_REASON_INVALID_STATE\x10\x06\x12\"\n" +
-	"\x1eERROR_REASON_REQUEST_ID_REUSED\x10\a\x12 \n" +
+	"\x1aERROR_REASON_INVALID_STATE\x10\x06\x12 \n" +
 	"\x1cERROR_REASON_NOT_IMPLEMENTED\x10\b\x12$\n" +
 	" ERROR_REASON_BACKEND_UNAVAILABLE\x10\t\x12\x19\n" +
 	"\x15ERROR_REASON_INTERNAL\x10\n" +
-	"B\xf1\x01\n" +
+	"\"\x04\b\a\x10\aB\xf1\x01\n" +
 	"\x1dcom.kubenfv.kubevim.common.v1B\vErrorsProtoP\x01Z<github.com/kube-nfv/kube-vim-api/pkg/apis/common/v1;commonv1\xa2\x02\x03KKC\xaa\x02\x19Kubenfv.Kubevim.Common.V1\xca\x02\x19Kubenfv\\Kubevim\\Common\\V1\xe2\x02%Kubenfv\\Kubevim\\Common\\V1\\GPBMetadata\xea\x02\x1cKubenfv::Kubevim::Common::V1b\x06proto3"
 
 var (

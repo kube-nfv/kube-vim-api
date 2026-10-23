@@ -6,7 +6,6 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **placement_group** | [**PlacementGroup**](PlacementGroup.md) | Group to create. | 
-**request_id** | **str** | Client-chosen UUID that makes the request idempotent (AIP-155). | [optional] 
 
 ## Example
 

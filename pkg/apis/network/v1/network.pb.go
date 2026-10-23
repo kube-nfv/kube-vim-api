@@ -105,8 +105,6 @@ type Network struct {
 	// Subnets created with the network, in one call that rolls back as a whole: at most one per
 	// IP version. A Kube-OVN network needs at least one; GENEVE networks always use Kube-OVN.
 	Layer3Attributes []*SubnetData `protobuf:"bytes,8,rep,name=layer3_attributes,json=layer3Attributes,proto3" json:"layer3_attributes,omitempty"`
-	// Resource zone of the network.
-	ZoneId string `protobuf:"bytes,9,opt,name=zone_id,json=zoneId,proto3" json:"zone_id,omitempty"`
 	// Operational state of the network.
 	OperationalState v1.OperationalState `protobuf:"varint,10,opt,name=operational_state,json=operationalState,proto3,enum=kubenfv.kubevim.common.v1.OperationalState" json:"operational_state,omitempty"`
 	// Metadata set by the consumer and by the VIM; for keys under "kubevim.kubenfv.io/" that the VIM maintains, its value wins.
@@ -199,13 +197,6 @@ func (x *Network) GetLayer3Attributes() []*SubnetData {
 		return x.Layer3Attributes
 	}
 	return nil
-}
-
-func (x *Network) GetZoneId() string {
-	if x != nil {
-		return x.ZoneId
-	}
-	return ""
 }
 
 func (x *Network) GetOperationalState() v1.OperationalState {
@@ -453,9 +444,7 @@ func (x *IpAddressPool) GetEndIp() string {
 type CreateNetworkRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Network to create.
-	Network *Network `protobuf:"bytes,1,opt,name=network,proto3" json:"network,omitempty"`
-	// Client-chosen UUID that makes the request idempotent (AIP-155).
-	RequestId     string `protobuf:"bytes,2,opt,name=request_id,json=requestId,proto3" json:"request_id,omitempty"`
+	Network       *Network `protobuf:"bytes,1,opt,name=network,proto3" json:"network,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -497,19 +486,10 @@ func (x *CreateNetworkRequest) GetNetwork() *Network {
 	return nil
 }
 
-func (x *CreateNetworkRequest) GetRequestId() string {
-	if x != nil {
-		return x.RequestId
-	}
-	return ""
-}
-
 type CreateSubnetRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Subnet to create; adds an IP version to a network that no interface uses yet.
-	Subnet *Subnet `protobuf:"bytes,1,opt,name=subnet,proto3" json:"subnet,omitempty"`
-	// Client-chosen UUID that makes the request idempotent (AIP-155).
-	RequestId     string `protobuf:"bytes,2,opt,name=request_id,json=requestId,proto3" json:"request_id,omitempty"`
+	Subnet        *Subnet `protobuf:"bytes,1,opt,name=subnet,proto3" json:"subnet,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -549,13 +529,6 @@ func (x *CreateSubnetRequest) GetSubnet() *Subnet {
 		return x.Subnet
 	}
 	return nil
-}
-
-func (x *CreateSubnetRequest) GetRequestId() string {
-	if x != nil {
-		return x.RequestId
-	}
-	return ""
 }
 
 type GetNetworkRequest struct {
@@ -1174,7 +1147,7 @@ var File_kubenfv_kubevim_network_v1_network_proto protoreflect.FileDescriptor
 
 const file_kubenfv_kubevim_network_v1_network_proto_rawDesc = "" +
 	"\n" +
-	"(kubenfv/kubevim/network/v1/network.proto\x12\x1akubenfv.kubevim.network.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a&kubenfv/kubevim/common/v1/common.proto\x1a%kubenfv/kubevim/common/v1/rules.proto\x1a(kubenfv/kubevim/options/v1/options.proto\x1a.protoc-gen-openapiv3/options/annotations.proto\"\xbd\x11\n" +
+	"(kubenfv/kubevim/network/v1/network.proto\x12\x1akubenfv.kubevim.network.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a&kubenfv/kubevim/common/v1/common.proto\x1a%kubenfv/kubevim/common/v1/rules.proto\x1a(kubenfv/kubevim/options/v1/options.proto\x1a.protoc-gen-openapiv3/options/annotations.proto\"\xfa\x10\n" +
 	"\aNetwork\x12\x9c\x01\n" +
 	"\n" +
 	"network_id\x18\x01 \x01(\tB}\xe2A\x01\x03\xfa\x8b\x19u\n" +
@@ -1194,9 +1167,7 @@ const file_kubenfv_kubevim_network_v1_network_proto_rawDesc = "" +
 	"\xd8\x01\x01*\x05\x18\x80H(D\xfa\x8b\x19H\x12F\b\x01\x10\x01\x1a@Data-plane networks need jumbo frames; IFA has no MTU attribute.R\x03mtu\x12\xa2\x02\n" +
 	"\x11layer3_attributes\x18\b \x03(\v2&.kubenfv.kubevim.network.v1.SubnetDataB\xcc\x01\xe2A\x01\x04\xbaH\x8c\x01\xba\x01\x83\x01\n" +
 	"!network.one_subnet_per_ip_version\x12!at most one subnet per IP version\x1a;this.size() < 2 || this[0].ip_version != this[1].ip_version\x92\x01\x02\x10\x02\xfa\x8b\x194\n" +
-	"2IFA006 8.4.4.2 VirtualNetworkData.layer3AttributesR\x10layer3Attributes\x12G\n" +
-	"\azone_id\x18\t \x01(\tB.\xe2A\x01\x03\xfa\x8b\x19&\n" +
-	"$IFA006 8.4.5.2 VirtualNetwork.zoneIdR\x06zoneId\x12\x92\x01\n" +
+	"2IFA006 8.4.4.2 VirtualNetworkData.layer3AttributesR\x10layer3Attributes\x12\x92\x01\n" +
 	"\x11operational_state\x18\n" +
 	" \x01(\x0e2+.kubenfv.kubevim.common.v1.OperationalStateB8\xe2A\x01\x03\xfa\x8b\x190\n" +
 	".IFA006 8.4.5.2 VirtualNetwork.operationalStateR\x10operationalState\x12\xd3\x01\n" +
@@ -1207,7 +1178,8 @@ const file_kubenfv_kubevim_network_v1_network_proto_rawDesc = "" +
 	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01:\xdc\x03\xbaH\x99\x03\x1a\xb0\x01\n" +
 	"\x10network.provider\x12HVLAN and FLAT networks need a providerNetwork; GENEVE networks take none\x1aRthis.network_type == 1 ? this.provider_network == '' : this.provider_network != ''\x1a\xe3\x01\n" +
 	"\x14network.segmentation\x12VVLAN networks need a segmentationId from 1 to 4094; GENEVE and FLAT networks take none\x1asthis.network_type == 2 ? (this.segmentation_id >= 1u && this.segmentation_id <= 4094u) : this.segmentation_id == 0u\xfa\x8b\x19;\n" +
-	"9IFA006 8.4.5.2 VirtualNetwork, 8.4.4.2 VirtualNetworkData\"\xec\a\n" +
+	"9IFA006 8.4.5.2 VirtualNetwork, 8.4.4.2 VirtualNetworkDataJ\x04\b\t\x10\n" +
+	"\"\xec\a\n" +
 	"\n" +
 	"SubnetData\x12\x83\x01\n" +
 	"\n" +
@@ -1246,18 +1218,14 @@ const file_kubenfv_kubevim_network_v1_network_proto_rawDesc = "" +
 	"\rIpAddressPool\x12&\n" +
 	"\bstart_ip\x18\x01 \x01(\tB\v\xe2A\x01\x02\xbaH\x04r\x02p\x01R\astartIp\x12\"\n" +
 	"\x06end_ip\x18\x02 \x01(\tB\v\xe2A\x01\x02\xbaH\x04r\x02p\x01R\x05endIp:w\xfa\x8b\x19s\n" +
-	",IFA006 8.4.4.4 NetworkSubnetData.addressPool\x12C\b\x03\x10\x01\x1a=IFA leaves the content unspecified; a first and last address.\"\x9a\x03\n" +
+	",IFA006 8.4.4.4 NetworkSubnetData.addressPool\x12C\b\x03\x10\x01\x1a=IFA leaves the content unspecified; a first and last address.\"\xea\x02\n" +
 	"\x14CreateNetworkRequest\x12\x86\x01\n" +
 	"\anetwork\x18\x01 \x01(\v2#.kubenfv.kubevim.network.v1.NetworkBG\xe2A\x01\x02\xbaH\x03\xc8\x01\x01\xfa\x8b\x199\n" +
-	"7IFA006 7.4.1.2.2 AllocateNetworkRequest.typeNetworkDataR\anetwork\x12.\n" +
-	"\n" +
-	"request_id\x18\x02 \x01(\tB\x0f\xe2A\x01\x01\xbaH\b\xd8\x01\x01r\x03\xb0\x01\x01R\trequestId:\xc8\x01\xbaH\xc4\x01\x1a\xc1\x01\n" +
-	"\x1bnetwork.geneve_needs_subnet\x12>a GENEVE network needs at least one subnet in layer3Attributes\x1ab!has(this.network) || this.network.network_type != 1 || this.network.layer3_attributes.size() >= 1\"\xca\x01\n" +
+	"7IFA006 7.4.1.2.2 AllocateNetworkRequest.typeNetworkDataR\anetwork:\xc8\x01\xbaH\xc4\x01\x1a\xc1\x01\n" +
+	"\x1bnetwork.geneve_needs_subnet\x12>a GENEVE network needs at least one subnet in layer3Attributes\x1ab!has(this.network) || this.network.network_type != 1 || this.network.layer3_attributes.size() >= 1\"\x9a\x01\n" +
 	"\x13CreateSubnetRequest\x12\x82\x01\n" +
 	"\x06subnet\x18\x01 \x01(\v2\".kubenfv.kubevim.network.v1.SubnetBF\xe2A\x01\x02\xbaH\x03\xc8\x01\x01\xfa\x8b\x198\n" +
-	"6IFA006 7.4.1.2.2 AllocateNetworkRequest.typeSubnetDataR\x06subnet\x12.\n" +
-	"\n" +
-	"request_id\x18\x02 \x01(\tB\x0f\xe2A\x01\x01\xbaH\b\xd8\x01\x01r\x03\xb0\x01\x01R\trequestId\"@\n" +
+	"6IFA006 7.4.1.2.2 AllocateNetworkRequest.typeSubnetDataR\x06subnet\"@\n" +
 	"\x11GetNetworkRequest\x12+\n" +
 	"\n" +
 	"network_id\x18\x01 \x01(\tB\f\xe2A\x01\x02\xbaH\x05r\x03\xb0\x01\x01R\tnetworkId\"\xae\x01\n" +

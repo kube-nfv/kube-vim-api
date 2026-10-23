@@ -115,7 +115,7 @@ def test_unknown_enum_value_is_tolerated(stub, client):
 def test_oneof_takes_exactly_one_member():
     kubevim_client.ImageSource.from_dict({"http": {"url": "https://example.com/a.img"}})
     with pytest.raises((ValueError, pydantic.ValidationError)):
-        kubevim_client.ImageSource.from_dict({"http": {"url": "https://example.com/a.img"}, "blank": {"size": "1Gi"}})
+        kubevim_client.ImageSource.from_dict({"http": {"url": "https://example.com/a.img"}, "glance": {"glanceImageId": "5f0c9d2e-3a4b-4c1d-9e8f-0a1b2c3d4e5f"}})
     with pytest.raises((ValueError, pydantic.ValidationError)):
         kubevim_client.ImageSource.from_dict({})
 

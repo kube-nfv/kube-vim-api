@@ -2,8 +2,6 @@
 README.md
 docs/AttachVolumeRequest.md
 docs/BasicAuth.md
-docs/BlankSource.md
-docs/Checksum.md
 docs/Compute.md
 docs/ComputeOperation.md
 docs/ComputeRunningState.md
@@ -33,7 +31,6 @@ docs/HttpSource.md
 docs/Image.md
 docs/ImageServiceApi.md
 docs/ImageSource.md
-docs/ImageSourceBlank.md
 docs/ImageSourceGlance.md
 docs/ImageSourceHttp.md
 docs/ImageSourceLocal.md
@@ -104,8 +101,6 @@ kubevim_client/exceptions.py
 kubevim_client/models/__init__.py
 kubevim_client/models/attach_volume_request.py
 kubevim_client/models/basic_auth.py
-kubevim_client/models/blank_source.py
-kubevim_client/models/checksum.py
 kubevim_client/models/compute.py
 kubevim_client/models/compute_operation.py
 kubevim_client/models/compute_running_state.py
@@ -132,7 +127,6 @@ kubevim_client/models/glance_source.py
 kubevim_client/models/http_source.py
 kubevim_client/models/image.py
 kubevim_client/models/image_source.py
-kubevim_client/models/image_source_blank.py
 kubevim_client/models/image_source_glance.py
 kubevim_client/models/image_source_http.py
 kubevim_client/models/image_source_local.py

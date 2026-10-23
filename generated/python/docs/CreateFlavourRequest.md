@@ -6,7 +6,6 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **flavour** | [**Flavour**](Flavour.md) | Flavour to create. | 
-**request_id** | **str** | Client-chosen UUID that makes the request idempotent (AIP-155). | [optional] 
 
 ## Example
 

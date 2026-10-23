@@ -16,7 +16,6 @@ Name | Type | Description | Notes
 **provider_network** | **str** | Name of a provider network declared in the VIM configuration, which also sets its backend (Kube-OVN or SR-IOV); required for VLAN and FLAT networks, absent for GENEVE. | [optional] 
 **segmentation_id** | **int** | VLAN ID of a VLAN network; absent for GENEVE and FLAT networks. | [optional] 
 **subnet_ids** | **List[str]** | Subnets of the network: at most one per IP version. | [optional] [readonly] 
-**zone_id** | **str** | Resource zone of the network. | [optional] [readonly] 
 
 ## Example
 

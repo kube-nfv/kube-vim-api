@@ -7,7 +7,6 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **compute** | [**Compute**](Compute.md) | Compute resource to create: name, flavour, image, placement groups and metadata. | 
 **network_interfaces** | [**List[NetworkInterfaceData]**](NetworkInterfaceData.md) | Network interfaces in addition to the management interface. | [optional] 
-**request_id** | **str** | Client-chosen UUID that makes the request idempotent (AIP-155). | [optional] 
 **start** | **bool** | Start the compute resource once created; unset means true. | [optional] 
 **user_data** | [**UserData**](UserData.md) | User data passed at boot time. | [optional] 
 

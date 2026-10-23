@@ -372,11 +372,7 @@ message Network {
     },
     (kubenfv.kubevim.options.v1.ifa_field) = {ref: "IFA006 8.4.4.2 VirtualNetworkData.layer3Attributes"}
   ];
-  // Resource zone of the network.
-  string zone_id = 9 [
-    (google.api.field_behavior) = OUTPUT_ONLY,
-    (kubenfv.kubevim.options.v1.ifa_field) = {ref: "IFA006 8.4.5.2 VirtualNetwork.zoneId"}
-  ];
+  reserved 9;
   // Operational state of the network.
   kubenfv.kubevim.common.v1.OperationalState operational_state = 10 [
     (google.api.field_behavior) = OUTPUT_ONLY,
@@ -576,12 +572,6 @@ message CreateNetworkRequest {
     (buf.validate.field).required = true,
     (kubenfv.kubevim.options.v1.ifa_field) = {ref: "IFA006 7.4.1.2.2 AllocateNetworkRequest.typeNetworkData"}
   ];
-  // Client-chosen UUID that makes the request idempotent (AIP-155).
-  string request_id = 2 [
-    (google.api.field_behavior) = OPTIONAL,
-    (buf.validate.field).string.uuid = true,
-    (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE
-  ];
 
   option (buf.validate.message).cel = {
     id: "network.geneve_needs_subnet"
@@ -596,12 +586,6 @@ message CreateSubnetRequest {
     (google.api.field_behavior) = REQUIRED,
     (buf.validate.field).required = true,
     (kubenfv.kubevim.options.v1.ifa_field) = {ref: "IFA006 7.4.1.2.2 AllocateNetworkRequest.typeSubnetData"}
-  ];
-  // Client-chosen UUID that makes the request idempotent (AIP-155).
-  string request_id = 2 [
-    (google.api.field_behavior) = OPTIONAL,
-    (buf.validate.field).string.uuid = true,
-    (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE
   ];
 }
 

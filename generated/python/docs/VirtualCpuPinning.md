@@ -6,7 +6,6 @@ CPU pinning of a compute resource.
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**cpu_map** | **Dict[str, int]** | Physical CPU each virtual CPU is pinned to; empty when the VIM cannot tell. | [optional] 
 **cpu_pinning_policy** | [**VirtualCpuPinningPolicy**](VirtualCpuPinningPolicy.md) |  | [optional] 
 
 ## Example

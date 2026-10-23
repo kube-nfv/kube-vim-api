@@ -5,7 +5,6 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**request_id** | **str** | Client-chosen UUID that makes the request idempotent (AIP-155). | [optional] 
 **subnet** | [**Subnet**](Subnet.md) | Subnet to create; adds an IP version to a network that no interface uses yet. | 
 
 ## Example

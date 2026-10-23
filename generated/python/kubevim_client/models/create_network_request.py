@@ -17,8 +17,8 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictStr
-from typing import Any, ClassVar, Dict, List, Optional
+from pydantic import BaseModel, ConfigDict, Field
+from typing import Any, ClassVar, Dict, List
 from kubevim_client.models.network import Network
 from typing import Optional, Set
 from typing_extensions import Self
@@ -29,8 +29,7 @@ class CreateNetworkRequest(BaseModel):
     CreateNetworkRequest
     """ # noqa: E501
     network: Network = Field(description="Network to create.")
-    request_id: Optional[StrictStr] = Field(default=None, description="Client-chosen UUID that makes the request idempotent (AIP-155).", alias="requestId")
-    __properties: ClassVar[List[str]] = ["network", "requestId"]
+    __properties: ClassVar[List[str]] = ["network"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -86,8 +85,7 @@ class CreateNetworkRequest(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "network": Network.from_dict(obj["network"]) if obj.get("network") is not None else None,
-            "requestId": obj.get("requestId")
+            "network": Network.from_dict(obj["network"]) if obj.get("network") is not None else None
         })
         return _obj
 

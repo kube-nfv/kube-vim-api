@@ -17,7 +17,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictInt
+from pydantic import BaseModel, ConfigDict, Field
 from typing import Any, ClassVar, Dict, List, Optional
 from kubevim_client.models.virtual_cpu_pinning_policy import VirtualCpuPinningPolicy
 from typing import Optional, Set
@@ -28,9 +28,8 @@ class VirtualCpuPinning(BaseModel):
     """
     CPU pinning of a compute resource.
     """ # noqa: E501
-    cpu_map: Optional[Dict[str, StrictInt]] = Field(default=None, description="Physical CPU each virtual CPU is pinned to; empty when the VIM cannot tell.", alias="cpuMap")
     cpu_pinning_policy: Optional[VirtualCpuPinningPolicy] = Field(default=None, alias="cpuPinningPolicy")
-    __properties: ClassVar[List[str]] = ["cpuMap", "cpuPinningPolicy"]
+    __properties: ClassVar[List[str]] = ["cpuPinningPolicy"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -83,7 +82,6 @@ class VirtualCpuPinning(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "cpuMap": obj.get("cpuMap"),
             "cpuPinningPolicy": obj.get("cpuPinningPolicy")
         })
         return _obj

@@ -17,7 +17,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictStr
+from pydantic import BaseModel, ConfigDict, Field
 from typing import Any, ClassVar, Dict, List, Optional
 from kubevim_client.models.compute_snapshot import ComputeSnapshot
 from typing import Optional, Set
@@ -28,9 +28,8 @@ class CreateComputeSnapshotRequest(BaseModel):
     """
     CreateComputeSnapshotRequest
     """ # noqa: E501
-    request_id: Optional[StrictStr] = Field(default=None, description="Client-chosen UUID that makes the request idempotent (AIP-155).", alias="requestId")
     snapshot: Optional[ComputeSnapshot] = Field(default=None, description="Snapshot to create: name and metadata.")
-    __properties: ClassVar[List[str]] = ["requestId", "snapshot"]
+    __properties: ClassVar[List[str]] = ["snapshot"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -86,7 +85,6 @@ class CreateComputeSnapshotRequest(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "requestId": obj.get("requestId"),
             "snapshot": ComputeSnapshot.from_dict(obj["snapshot"]) if obj.get("snapshot") is not None else None
         })
         return _obj

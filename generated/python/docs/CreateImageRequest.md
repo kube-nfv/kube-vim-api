@@ -6,7 +6,6 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **image** | [**Image**](Image.md) | Software image to add. | 
-**request_id** | **str** | Client-chosen UUID that makes the request idempotent (AIP-155). | [optional] 
 
 ## Example
 

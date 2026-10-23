@@ -5,7 +5,6 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**request_id** | **str** | Client-chosen UUID that makes the request idempotent (AIP-155). | [optional] 
 **snapshot** | [**ComputeSnapshot**](ComputeSnapshot.md) | Snapshot to create: name and metadata. | [optional] 
 
 ## Example

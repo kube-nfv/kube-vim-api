@@ -10,7 +10,6 @@ Name | Type | Description | Notes
 **s3** | [**S3Source**](S3Source.md) | Download from an S3-compatible object store. | 
 **registry** | [**RegistrySource**](RegistrySource.md) | Pull from a container registry. | 
 **upload** | [**UploadSource**](UploadSource.md) | Upload by the client after creation. | 
-**blank** | [**BlankSource**](BlankSource.md) | Create an empty disk. | 
 **glance** | [**GlanceSource**](GlanceSource.md) | Import an image of the Glance catalog configured in the VIM. | 
 **local** | [**LocalSource**](LocalSource.md) | Import an image file of the local catalog configured in the VIM. | 
 

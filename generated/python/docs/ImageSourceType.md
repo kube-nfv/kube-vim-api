@@ -14,8 +14,6 @@ Image source type, as reported by ListImageSources. Values may be added as CDI s
 
 * `IMAGE_SOURCE_TYPE_UPLOAD` (value: `'IMAGE_SOURCE_TYPE_UPLOAD'`)
 
-* `IMAGE_SOURCE_TYPE_BLANK` (value: `'IMAGE_SOURCE_TYPE_BLANK'`)
-
 * `IMAGE_SOURCE_TYPE_GLANCE` (value: `'IMAGE_SOURCE_TYPE_GLANCE'`)
 
 * `IMAGE_SOURCE_TYPE_LOCAL` (value: `'IMAGE_SOURCE_TYPE_LOCAL'`)

@@ -20,7 +20,6 @@ import json
 from datetime import datetime
 from pydantic import BaseModel, ConfigDict, Field, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
-from kubevim_client.models.checksum import Checksum
 from kubevim_client.models.container_format import ContainerFormat
 from kubevim_client.models.disk_bus import DiskBus
 from kubevim_client.models.disk_format import DiskFormat
@@ -36,7 +35,6 @@ class Image(BaseModel):
     """
     A software image in the image repository managed by the VIM.
     """ # noqa: E501
-    checksum: Optional[Checksum] = Field(default=None, description="Checksum of the software image file; empty when the VIM cannot tell.")
     container_format: Optional[ContainerFormat] = Field(default=None, description="Container format of the software image file; unspecified when the VIM cannot tell.", alias="containerFormat")
     created_at: Optional[datetime] = Field(default=None, description="Time the software image was created.", alias="createdAt")
     disk_bus: Optional[DiskBus] = Field(default=None, description="Bus the boot disk is attached to; virtio when unset.", alias="diskBus")
@@ -45,8 +43,8 @@ class Image(BaseModel):
     image_id: Optional[StrictStr] = Field(default=None, description="Identifier of the software image: a UUID assigned by the VIM.", alias="imageId")
     import_policy: Optional[ImportPolicy] = Field(default=None, description="When the VIM imports the software image; IMPORT_POLICY_EAGER when unset on creation.", alias="importPolicy")
     metadata: Optional[Dict[str, StrictStr]] = Field(default=None, description="Metadata set by the consumer and by the VIM; for keys under \"kubevim.kubenfv.io/\" that the VIM maintains, its value wins.")
-    min_disk: Optional[StrictStr] = Field(default=None, description="Minimal disk size for the software image, in Kubernetes quantity format (e.g. \"10Gi\").", alias="minDisk")
-    min_ram: Optional[StrictStr] = Field(default=None, description="Minimal RAM size for the software image, in Kubernetes quantity format (e.g. \"2Gi\").", alias="minRam")
+    min_disk: Optional[StrictStr] = Field(default=None, description="Minimal disk size for the software image, in Kubernetes quantity format (e.g. \"10Gi\"); the VIM rejects a compute resource whose boot disk is smaller.", alias="minDisk")
+    min_ram: Optional[StrictStr] = Field(default=None, description="Minimal RAM size for the software image, in Kubernetes quantity format (e.g. \"2Gi\"); the VIM rejects a compute resource with less memory.", alias="minRam")
     name: StrictStr = Field(description="Name of the software image, given by the consumer; not unique.")
     progress: Optional[StrictInt] = Field(default=None, description="Import progress in percent while the status is IMAGE_STATUS_IMPORTING.")
     provider: Optional[StrictStr] = Field(default=None, description="Provider of the software image.")
@@ -56,7 +54,7 @@ class Image(BaseModel):
     status_detail: Optional[StrictStr] = Field(default=None, description="Human-readable reason when the status is IMAGE_STATUS_FAILED.", alias="statusDetail")
     updated_at: Optional[datetime] = Field(default=None, description="Time the software image was last updated.", alias="updatedAt")
     version: Optional[StrictStr] = Field(default=None, description="Version of the software image.")
-    __properties: ClassVar[List[str]] = ["checksum", "containerFormat", "createdAt", "diskBus", "diskFormat", "firmware", "imageId", "importPolicy", "metadata", "minDisk", "minRam", "name", "progress", "provider", "size", "source", "status", "statusDetail", "updatedAt", "version"]
+    __properties: ClassVar[List[str]] = ["containerFormat", "createdAt", "diskBus", "diskFormat", "firmware", "imageId", "importPolicy", "metadata", "minDisk", "minRam", "name", "progress", "provider", "size", "source", "status", "statusDetail", "updatedAt", "version"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -97,10 +95,8 @@ class Image(BaseModel):
         * OpenAPI `readOnly` fields are excluded.
         * OpenAPI `readOnly` fields are excluded.
         * OpenAPI `readOnly` fields are excluded.
-        * OpenAPI `readOnly` fields are excluded.
         """
         excluded_fields: Set[str] = set([
-            "checksum",
             "container_format",
             "created_at",
             "disk_format",
@@ -117,9 +113,6 @@ class Image(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # override the default output from pydantic by calling `to_dict()` of checksum
-        if self.checksum:
-            _dict['checksum'] = self.checksum.to_dict()
         # override the default output from pydantic by calling `to_dict()` of source
         if self.source:
             _dict['source'] = self.source.to_dict()
@@ -135,7 +128,6 @@ class Image(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "checksum": Checksum.from_dict(obj["checksum"]) if obj.get("checksum") is not None else None,
             "containerFormat": obj.get("containerFormat"),
             "createdAt": obj.get("createdAt"),
             "diskBus": obj.get("diskBus"),

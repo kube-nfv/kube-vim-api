@@ -17,8 +17,8 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictStr
-from typing import Any, ClassVar, Dict, List, Optional
+from pydantic import BaseModel, ConfigDict, Field
+from typing import Any, ClassVar, Dict, List
 from kubevim_client.models.volume import Volume
 from typing import Optional, Set
 from typing_extensions import Self
@@ -28,9 +28,8 @@ class CreateVolumeRequest(BaseModel):
     """
     CreateVolumeRequest
     """ # noqa: E501
-    request_id: Optional[StrictStr] = Field(default=None, description="Client-chosen UUID that makes the request idempotent (AIP-155).", alias="requestId")
     volume: Volume = Field(description="Volume to create: name, size, type, storage class and metadata. Only TYPE_OF_STORAGE_VOLUME, without is_boot: ephemeral and boot disks belong to a compute resource.")
-    __properties: ClassVar[List[str]] = ["requestId", "volume"]
+    __properties: ClassVar[List[str]] = ["volume"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -86,7 +85,6 @@ class CreateVolumeRequest(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "requestId": obj.get("requestId"),
             "volume": Volume.from_dict(obj["volume"]) if obj.get("volume") is not None else None
         })
         return _obj

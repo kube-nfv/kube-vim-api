@@ -171,6 +171,8 @@ service ImageService {
 message Image {
   option (kubenfv.kubevim.options.v1.ifa_message) = {ref: "IFA005 8.2.2 SoftwareImageInformation"};
 
+  reserved 5;
+
   // Identifier of the software image: a UUID assigned by the VIM.
   string image_id = 1 [
     (google.api.field_behavior) = OUTPUT_ONLY,
@@ -213,18 +215,6 @@ message Image {
       }
     }
   ];
-  // Checksum of the software image file; empty when the VIM cannot tell.
-  Checksum checksum = 5 [
-    (google.api.field_behavior) = OUTPUT_ONLY,
-    (kubenfv.kubevim.options.v1.ifa_field) = {
-      ref: "IFA005 8.2.2 SoftwareImageInformation.checksum"
-      departure: {
-        kind: KIND_DEVIATION
-        translates: true
-        rationale: "IFA leaves the type unspecified; uses the SOL 013 7.1.7 Checksum structure."
-      }
-    }
-  ];
   // Container format of the software image file; unspecified when the VIM cannot tell.
   ContainerFormat container_format = 6 [
     (google.api.field_behavior) = OUTPUT_ONLY,
@@ -259,7 +249,8 @@ message Image {
     (google.api.field_behavior) = OUTPUT_ONLY,
     (kubenfv.kubevim.options.v1.ifa_field) = {ref: "IFA005 8.2.2 SoftwareImageInformation.updatedAt"}
   ];
-  // Minimal disk size for the software image, in Kubernetes quantity format (e.g. "10Gi").
+  // Minimal disk size for the software image, in Kubernetes quantity format (e.g. "10Gi"); the VIM rejects a
+  // compute resource whose boot disk is smaller.
   string min_disk = 10 [
     (google.api.field_behavior) = OPTIONAL,
     (buf.validate.field).string.(kubenfv.kubevim.common.v1.quantity) = true,
@@ -273,7 +264,8 @@ message Image {
       }
     }
   ];
-  // Minimal RAM size for the software image, in Kubernetes quantity format (e.g. "2Gi").
+  // Minimal RAM size for the software image, in Kubernetes quantity format (e.g. "2Gi"); the VIM rejects a
+  // compute resource with less memory.
   string min_ram = 11 [
     (google.api.field_behavior) = OPTIONAL,
     (buf.validate.field).string.(kubenfv.kubevim.common.v1.quantity) = true,
@@ -401,14 +393,6 @@ message Image {
   ];
 }
 
-// Checksum of a file (SOL 013 7.1.7).
-message Checksum {
-  // Hash algorithm, e.g. "SHA-256".
-  string algorithm = 1 [(google.api.field_behavior) = OUTPUT_ONLY];
-  // Hexadecimal hash value.
-  string hash = 2 [(google.api.field_behavior) = OUTPUT_ONLY];
-}
-
 // Container format of a software image file.
 // Values may be added as CDI support grows; clients should accept unknown values.
 enum ContainerFormat {
@@ -475,6 +459,8 @@ enum DiskBus {
 
 // Source of a software image; exactly one member is set.
 message ImageSource {
+  reserved 5;
+
   oneof source {
     option (buf.validate.oneof).required = true;
 
@@ -486,8 +472,6 @@ message ImageSource {
     RegistrySource registry = 3;
     // Upload by the client after creation.
     UploadSource upload = 4;
-    // Create an empty disk.
-    BlankSource blank = 5;
     // Import an image of the Glance catalog configured in the VIM.
     GlanceSource glance = 6;
     // Import an image file of the local catalog configured in the VIM.
@@ -599,15 +583,6 @@ message UploadSource {
   google.protobuf.Timestamp upload_expire_time = 3 [(google.api.field_behavior) = OUTPUT_ONLY];
 }
 
-// Empty disk.
-message BlankSource {
-  // Disk size in Kubernetes quantity format, e.g. "20Gi".
-  string size = 1 [
-    (google.api.field_behavior) = REQUIRED,
-    (buf.validate.field).string.(kubenfv.kubevim.common.v1.quantity) = true
-  ];
-}
-
 // Image in the Glance catalog configured in the VIM; the VIM holds the Glance endpoint and credentials.
 message GlanceSource {
   // Identifier of the image in Glance.
@@ -642,7 +617,7 @@ enum ImageSourceType {
   IMAGE_SOURCE_TYPE_S3 = 2;
   IMAGE_SOURCE_TYPE_REGISTRY = 3;
   IMAGE_SOURCE_TYPE_UPLOAD = 4;
-  IMAGE_SOURCE_TYPE_BLANK = 5;
+  reserved 5;
   IMAGE_SOURCE_TYPE_GLANCE = 6;
   IMAGE_SOURCE_TYPE_LOCAL = 7;
 }
@@ -652,12 +627,6 @@ message CreateImageRequest {
   Image image = 1 [
     (google.api.field_behavior) = REQUIRED,
     (buf.validate.field).required = true
-  ];
-  // Client-chosen UUID that makes the request idempotent (AIP-155).
-  string request_id = 2 [
-    (google.api.field_behavior) = OPTIONAL,
-    (buf.validate.field).string.uuid = true,
-    (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE
   ];
 }
 

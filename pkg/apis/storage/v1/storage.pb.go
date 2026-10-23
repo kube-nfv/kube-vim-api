@@ -32,9 +32,7 @@ type CreateVolumeRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Volume to create: name, size, type, storage class and metadata. Only TYPE_OF_STORAGE_VOLUME,
 	// without is_boot: ephemeral and boot disks belong to a compute resource.
-	Volume *v1.Volume `protobuf:"bytes,1,opt,name=volume,proto3" json:"volume,omitempty"`
-	// Client-chosen UUID that makes the request idempotent (AIP-155).
-	RequestId     string `protobuf:"bytes,2,opt,name=request_id,json=requestId,proto3" json:"request_id,omitempty"`
+	Volume        *v1.Volume `protobuf:"bytes,1,opt,name=volume,proto3" json:"volume,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -74,13 +72,6 @@ func (x *CreateVolumeRequest) GetVolume() *v1.Volume {
 		return x.Volume
 	}
 	return nil
-}
-
-func (x *CreateVolumeRequest) GetRequestId() string {
-	if x != nil {
-		return x.RequestId
-	}
-	return ""
 }
 
 type GetVolumeRequest struct {
@@ -594,9 +585,7 @@ type CreateVolumeSnapshotRequest struct {
 	// Volume to take the snapshot of.
 	VolumeId string `protobuf:"bytes,1,opt,name=volume_id,json=volumeId,proto3" json:"volume_id,omitempty"`
 	// Snapshot to create: name and metadata.
-	Snapshot *VolumeSnapshot `protobuf:"bytes,2,opt,name=snapshot,proto3" json:"snapshot,omitempty"`
-	// Client-chosen UUID that makes the request idempotent (AIP-155).
-	RequestId     string `protobuf:"bytes,3,opt,name=request_id,json=requestId,proto3" json:"request_id,omitempty"`
+	Snapshot      *VolumeSnapshot `protobuf:"bytes,2,opt,name=snapshot,proto3" json:"snapshot,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -643,13 +632,6 @@ func (x *CreateVolumeSnapshotRequest) GetSnapshot() *VolumeSnapshot {
 		return x.Snapshot
 	}
 	return nil
-}
-
-func (x *CreateVolumeSnapshotRequest) GetRequestId() string {
-	if x != nil {
-		return x.RequestId
-	}
-	return ""
 }
 
 type GetVolumeSnapshotRequest struct {
@@ -935,13 +917,11 @@ var File_kubenfv_kubevim_storage_v1_storage_proto protoreflect.FileDescriptor
 
 const file_kubenfv_kubevim_storage_v1_storage_proto_rawDesc = "" +
 	"\n" +
-	"(kubenfv/kubevim/storage/v1/storage.proto\x12\x1akubenfv.kubevim.storage.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a&kubenfv/kubevim/common/v1/common.proto\x1a%kubenfv/kubevim/common/v1/rules.proto\x1a&kubenfv/kubevim/common/v1/volume.proto\x1a(kubenfv/kubevim/options/v1/options.proto\x1a.protoc-gen-openapiv3/options/annotations.proto\"\xe8\x02\n" +
+	"(kubenfv/kubevim/storage/v1/storage.proto\x12\x1akubenfv.kubevim.storage.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a&kubenfv/kubevim/common/v1/common.proto\x1a%kubenfv/kubevim/common/v1/rules.proto\x1a&kubenfv/kubevim/common/v1/volume.proto\x1a(kubenfv/kubevim/options/v1/options.proto\x1a.protoc-gen-openapiv3/options/annotations.proto\"\xb8\x02\n" +
 	"\x13CreateVolumeRequest\x12\xa0\x02\n" +
 	"\x06volume\x18\x01 \x01(\v2!.kubenfv.kubevim.common.v1.VolumeB\xe4\x01\xe2A\x01\x02\xbaH\xa3\x01\xba\x01\x9c\x01\n" +
 	"\x11volume.standalone\x12Aa standalone volume must be TYPE_OF_STORAGE_VOLUME without isBoot\x1aDthis.storage_data.type_of_storage == 1 && !this.storage_data.is_boot\xc8\x01\x01\xfa\x8b\x195\n" +
-	"3IFA006 7.5.1.2.2 AllocateStorageRequest.storageDataR\x06volume\x12.\n" +
-	"\n" +
-	"request_id\x18\x02 \x01(\tB\x0f\xe2A\x01\x01\xbaH\b\xd8\x01\x01r\x03\xb0\x01\x01R\trequestId\"=\n" +
+	"3IFA006 7.5.1.2.2 AllocateStorageRequest.storageDataR\x06volume\"=\n" +
 	"\x10GetVolumeRequest\x12)\n" +
 	"\tvolume_id\x18\x01 \x01(\tB\f\xe2A\x01\x02\xbaH\x05r\x03\xb0\x01\x01R\bvolumeId\"\xad\x01\n" +
 	"\x12ListVolumesRequest\x12Y\n" +
@@ -991,12 +971,10 @@ const file_kubenfv_kubevim_storage_v1_storage_proto_rawDesc = "" +
 	"\bmetadata\x18\x06 \x03(\v28.kubenfv.kubevim.storage.v1.VolumeSnapshot.MetadataEntryB\x0e\xe2A\x01\x01\xbaH\a\x9a\x01\x04\xf8\x8b\x19\x01R\bmetadata\x1a;\n" +
 	"\rMetadataEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01:e\xfa\x8b\x19a\x12_\b\x03\x10\x01\x1aYIFA handles snapshots through Operate with a snapshotId in the data maps (decision 0007).\"\xc6\x01\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01:e\xfa\x8b\x19a\x12_\b\x03\x10\x01\x1aYIFA handles snapshots through Operate with a snapshotId in the data maps (decision 0007).\"\x96\x01\n" +
 	"\x1bCreateVolumeSnapshotRequest\x12)\n" +
 	"\tvolume_id\x18\x01 \x01(\tB\f\xe2A\x01\x02\xbaH\x05r\x03\xb0\x01\x01R\bvolumeId\x12L\n" +
-	"\bsnapshot\x18\x02 \x01(\v2*.kubenfv.kubevim.storage.v1.VolumeSnapshotB\x04\xe2A\x01\x01R\bsnapshot\x12.\n" +
-	"\n" +
-	"request_id\x18\x03 \x01(\tB\x0f\xe2A\x01\x01\xbaH\b\xd8\x01\x01r\x03\xb0\x01\x01R\trequestId\"t\n" +
+	"\bsnapshot\x18\x02 \x01(\v2*.kubenfv.kubevim.storage.v1.VolumeSnapshotB\x04\xe2A\x01\x01R\bsnapshot\"t\n" +
 	"\x18GetVolumeSnapshotRequest\x12)\n" +
 	"\tvolume_id\x18\x01 \x01(\tB\f\xe2A\x01\x02\xbaH\x05r\x03\xb0\x01\x01R\bvolumeId\x12-\n" +
 	"\vsnapshot_id\x18\x02 \x01(\tB\f\xe2A\x01\x02\xbaH\x05r\x03\xb0\x01\x01R\n" +

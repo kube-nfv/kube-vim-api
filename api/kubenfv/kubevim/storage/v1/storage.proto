@@ -331,12 +331,6 @@ message CreateVolumeRequest {
     },
     (kubenfv.kubevim.options.v1.ifa_field) = {ref: "IFA006 7.5.1.2.2 AllocateStorageRequest.storageData"}
   ];
-  // Client-chosen UUID that makes the request idempotent (AIP-155).
-  string request_id = 2 [
-    (google.api.field_behavior) = OPTIONAL,
-    (buf.validate.field).string.uuid = true,
-    (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE
-  ];
 }
 
 message GetVolumeRequest {
@@ -525,12 +519,6 @@ message CreateVolumeSnapshotRequest {
   ];
   // Snapshot to create: name and metadata.
   VolumeSnapshot snapshot = 2 [(google.api.field_behavior) = OPTIONAL];
-  // Client-chosen UUID that makes the request idempotent (AIP-155).
-  string request_id = 3 [
-    (google.api.field_behavior) = OPTIONAL,
-    (buf.validate.field).string.uuid = true,
-    (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE
-  ];
 }
 
 message GetVolumeSnapshotRequest {

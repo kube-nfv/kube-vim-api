@@ -18,35 +18,6 @@
         ],
         "type": "object"
       },
-      "BlankSource": {
-        "description": "Empty disk.",
-        "properties": {
-          "size": {
-            "description": "Disk size in Kubernetes quantity format, e.g. \"20Gi\".",
-            "type": "string"
-          }
-        },
-        "required": [
-          "size"
-        ],
-        "type": "object"
-      },
-      "Checksum": {
-        "description": "Checksum of a file (SOL 013 7.1.7).",
-        "properties": {
-          "algorithm": {
-            "description": "Hash algorithm, e.g. \"SHA-256\".",
-            "readOnly": true,
-            "type": "string"
-          },
-          "hash": {
-            "description": "Hexadecimal hash value.",
-            "readOnly": true,
-            "type": "string"
-          }
-        },
-        "type": "object"
-      },
       "Compute": {
         "description": "A virtualised compute resource: a virtual machine.",
         "properties": {
@@ -183,7 +154,6 @@
           "COMPUTE_RUNNING_STATE_STOPPING",
           "COMPUTE_RUNNING_STATE_STOPPED",
           "COMPUTE_RUNNING_STATE_PAUSED",
-          "COMPUTE_RUNNING_STATE_REBOOTING",
           "COMPUTE_RUNNING_STATE_MIGRATING",
           "COMPUTE_RUNNING_STATE_FAILED",
           "COMPUTE_RUNNING_STATE_TERMINATING"
@@ -430,15 +400,6 @@
       "Image": {
         "description": "A software image in the image repository managed by the VIM.",
         "properties": {
-          "checksum": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/Checksum"
-              }
-            ],
-            "description": "Checksum of the software image file; empty when the VIM cannot tell.",
-            "readOnly": true
-          },
           "containerFormat": {
             "allOf": [
               {
@@ -488,11 +449,11 @@
             "type": "object"
           },
           "minDisk": {
-            "description": "Minimal disk size for the software image, in Kubernetes quantity format (e.g. \"10Gi\").",
+            "description": "Minimal disk size for the software image, in Kubernetes quantity format (e.g. \"10Gi\"); the VIM rejects a\ncompute resource whose boot disk is smaller.",
             "type": "string"
           },
           "minRam": {
-            "description": "Minimal RAM size for the software image, in Kubernetes quantity format (e.g. \"2Gi\").",
+            "description": "Minimal RAM size for the software image, in Kubernetes quantity format (e.g. \"2Gi\"); the VIM rejects a\ncompute resource with less memory.",
             "type": "string"
           },
           "name": {
@@ -565,28 +526,12 @@
             "$ref": "#/components/schemas/ImageSourceUpload"
           },
           {
-            "$ref": "#/components/schemas/ImageSourceBlank"
-          },
-          {
             "$ref": "#/components/schemas/ImageSourceGlance"
           },
           {
             "$ref": "#/components/schemas/ImageSourceLocal"
           }
         ]
-      },
-      "ImageSourceBlank": {
-        "additionalProperties": false,
-        "properties": {
-          "blank": {
-            "$ref": "#/components/schemas/BlankSource",
-            "description": "Create an empty disk."
-          }
-        },
-        "required": [
-          "blank"
-        ],
-        "type": "object"
       },
       "ImageSourceGlance": {
         "additionalProperties": false,
@@ -661,7 +606,6 @@
           "IMAGE_SOURCE_TYPE_S3",
           "IMAGE_SOURCE_TYPE_REGISTRY",
           "IMAGE_SOURCE_TYPE_UPLOAD",
-          "IMAGE_SOURCE_TYPE_BLANK",
           "IMAGE_SOURCE_TYPE_GLANCE",
           "IMAGE_SOURCE_TYPE_LOCAL"
         ],
@@ -828,11 +772,6 @@
             },
             "readOnly": true,
             "type": "array"
-          },
-          "zoneId": {
-            "description": "Resource zone of the network.",
-            "readOnly": true,
-            "type": "string"
           }
         },
         "required": [
@@ -874,10 +813,6 @@
           "networkId": {
             "description": "Network to attach to; the interface gets one address per subnet of the network.",
             "type": "string"
-          },
-          "typeVirtualNic": {
-            "$ref": "#/components/schemas/TypeVirtualNic",
-            "description": "How the interface is realised; the VIM chooses from the network when unset."
           }
         },
         "required": [
@@ -1338,14 +1273,6 @@
       "VirtualCpuPinning": {
         "description": "CPU pinning of a compute resource.",
         "properties": {
-          "cpuMap": {
-            "additionalProperties": {
-              "format": "int64",
-              "type": "integer"
-            },
-            "description": "Physical CPU each virtual CPU is pinned to; empty when the VIM cannot tell.",
-            "type": "object"
-          },
           "cpuPinningPolicy": {
             "$ref": "#/components/schemas/VirtualCpuPinningPolicy"
           }
@@ -1745,10 +1672,6 @@
                       "$ref": "#/components/schemas/NetworkInterfaceData"
                     },
                     "type": "array"
-                  },
-                  "requestId": {
-                    "description": "Client-chosen UUID that makes the request idempotent (AIP-155).",
-                    "type": "string"
                   },
                   "start": {
                     "description": "Start the compute resource once created; unset means true.",
@@ -2390,10 +2313,6 @@
             "application/json": {
               "schema": {
                 "properties": {
-                  "requestId": {
-                    "description": "Client-chosen UUID that makes the request idempotent (AIP-155).",
-                    "type": "string"
-                  },
                   "snapshot": {
                     "$ref": "#/components/schemas/ComputeSnapshot",
                     "description": "Snapshot to create: name and metadata."
@@ -2700,10 +2619,6 @@
                   "placementGroup": {
                     "$ref": "#/components/schemas/PlacementGroup",
                     "description": "Group to create."
-                  },
-                  "requestId": {
-                    "description": "Client-chosen UUID that makes the request idempotent (AIP-155).",
-                    "type": "string"
                   }
                 },
                 "required": [
@@ -2924,10 +2839,6 @@
                   "flavour": {
                     "$ref": "#/components/schemas/Flavour",
                     "description": "Flavour to create."
-                  },
-                  "requestId": {
-                    "description": "Client-chosen UUID that makes the request idempotent (AIP-155).",
-                    "type": "string"
                   }
                 },
                 "required": [
@@ -3189,10 +3100,6 @@
                   "image": {
                     "$ref": "#/components/schemas/Image",
                     "description": "Software image to add."
-                  },
-                  "requestId": {
-                    "description": "Client-chosen UUID that makes the request idempotent (AIP-155).",
-                    "type": "string"
                   }
                 },
                 "required": [
@@ -3470,10 +3377,6 @@
                   "network": {
                     "$ref": "#/components/schemas/Network",
                     "description": "Network to create."
-                  },
-                  "requestId": {
-                    "description": "Client-chosen UUID that makes the request idempotent (AIP-155).",
-                    "type": "string"
                   }
                 },
                 "required": [
@@ -3748,10 +3651,6 @@
             "application/json": {
               "schema": {
                 "properties": {
-                  "requestId": {
-                    "description": "Client-chosen UUID that makes the request idempotent (AIP-155).",
-                    "type": "string"
-                  },
                   "subnet": {
                     "$ref": "#/components/schemas/Subnet",
                     "description": "Subnet to create; adds an IP version to a network that no interface uses yet."
@@ -4029,10 +3928,6 @@
             "application/json": {
               "schema": {
                 "properties": {
-                  "requestId": {
-                    "description": "Client-chosen UUID that makes the request idempotent (AIP-155).",
-                    "type": "string"
-                  },
                   "volume": {
                     "$ref": "#/components/schemas/Volume",
                     "description": "Volume to create: name, size, type, storage class and metadata. Only TYPE_OF_STORAGE_VOLUME,\nwithout is_boot: ephemeral and boot disks belong to a compute resource."
@@ -4466,10 +4361,6 @@
             "application/json": {
               "schema": {
                 "properties": {
-                  "requestId": {
-                    "description": "Client-chosen UUID that makes the request idempotent (AIP-155).",
-                    "type": "string"
-                  },
                   "snapshot": {
                     "$ref": "#/components/schemas/VolumeSnapshot",
                     "description": "Snapshot to create: name and metadata."

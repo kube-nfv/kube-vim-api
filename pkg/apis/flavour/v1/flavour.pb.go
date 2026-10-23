@@ -376,9 +376,7 @@ func (x *VirtualMemoryData) GetHugepageSize() string {
 type CreateFlavourRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Flavour to create.
-	Flavour *Flavour `protobuf:"bytes,1,opt,name=flavour,proto3" json:"flavour,omitempty"`
-	// Client-chosen UUID that makes the request idempotent (AIP-155).
-	RequestId     string `protobuf:"bytes,2,opt,name=request_id,json=requestId,proto3" json:"request_id,omitempty"`
+	Flavour       *Flavour `protobuf:"bytes,1,opt,name=flavour,proto3" json:"flavour,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -418,13 +416,6 @@ func (x *CreateFlavourRequest) GetFlavour() *Flavour {
 		return x.Flavour
 	}
 	return nil
-}
-
-func (x *CreateFlavourRequest) GetRequestId() string {
-	if x != nil {
-		return x.RequestId
-	}
-	return ""
 }
 
 type GetFlavourRequest struct {
@@ -678,12 +669,10 @@ const file_kubenfv_kubevim_flavour_v1_flavour_proto_rawDesc = "" +
 	"\rhugepage_size\x18\x04 \x01(\tB^\xe2A\x01\x01\xbaH\x0f\xd8\x01\x01r\n" +
 	"R\x032MiR\x031Gi\xfa\x8b\x19D\x12B\b\x01\x10\x01\x1a<Data-plane VNFs need hugepages; IFA has no memory page size.R\fhugepageSize:&\xfa\x8b\x19\"\n" +
 	" IFA006 8.4.2.5 VirtualMemoryDataB\x0f\n" +
-	"\r_numa_enabled\"\xcc\x01\n" +
+	"\r_numa_enabled\"\x9c\x01\n" +
 	"\x14CreateFlavourRequest\x12\x83\x01\n" +
 	"\aflavour\x18\x01 \x01(\v2#.kubenfv.kubevim.flavour.v1.FlavourBD\xe2A\x01\x02\xbaH\x03\xc8\x01\x01\xfa\x8b\x196\n" +
-	"4IFA006 7.3.4.2.2 CreateComputeFlavourRequest.flavourR\aflavour\x12.\n" +
-	"\n" +
-	"request_id\x18\x02 \x01(\tB\x0f\xe2A\x01\x01\xbaH\b\xd8\x01\x01r\x03\xb0\x01\x01R\trequestId\"@\n" +
+	"4IFA006 7.3.4.2.2 CreateComputeFlavourRequest.flavourR\aflavour\"@\n" +
 	"\x11GetFlavourRequest\x12+\n" +
 	"\n" +
 	"flavour_id\x18\x01 \x01(\tB\f\xe2A\x01\x02\xbaH\x05r\x03\xb0\x01\x01R\tflavourId\"\xbc\x01\n" +

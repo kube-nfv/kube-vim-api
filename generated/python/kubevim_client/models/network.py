@@ -40,8 +40,7 @@ class Network(BaseModel):
     provider_network: Optional[StrictStr] = Field(default=None, description="Name of a provider network declared in the VIM configuration, which also sets its backend (Kube-OVN or SR-IOV); required for VLAN and FLAT networks, absent for GENEVE.", alias="providerNetwork")
     segmentation_id: Optional[StrictInt] = Field(default=None, description="VLAN ID of a VLAN network; absent for GENEVE and FLAT networks.", alias="segmentationId")
     subnet_ids: Optional[List[StrictStr]] = Field(default=None, description="Subnets of the network: at most one per IP version.", alias="subnetIds")
-    zone_id: Optional[StrictStr] = Field(default=None, description="Resource zone of the network.", alias="zoneId")
-    __properties: ClassVar[List[str]] = ["layer3Attributes", "metadata", "mtu", "networkId", "networkName", "networkType", "operationalState", "providerNetwork", "segmentationId", "subnetIds", "zoneId"]
+    __properties: ClassVar[List[str]] = ["layer3Attributes", "metadata", "mtu", "networkId", "networkName", "networkType", "operationalState", "providerNetwork", "segmentationId", "subnetIds"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -76,13 +75,11 @@ class Network(BaseModel):
         * OpenAPI `readOnly` fields are excluded.
         * OpenAPI `readOnly` fields are excluded.
         * OpenAPI `readOnly` fields are excluded.
-        * OpenAPI `readOnly` fields are excluded.
         """
         excluded_fields: Set[str] = set([
             "network_id",
             "operational_state",
             "subnet_ids",
-            "zone_id",
         ])
 
         _dict = self.model_dump(
@@ -117,8 +114,7 @@ class Network(BaseModel):
             "operationalState": obj.get("operationalState"),
             "providerNetwork": obj.get("providerNetwork"),
             "segmentationId": obj.get("segmentationId"),
-            "subnetIds": obj.get("subnetIds"),
-            "zoneId": obj.get("zoneId")
+            "subnetIds": obj.get("subnetIds")
         })
         return _obj
 

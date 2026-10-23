@@ -334,12 +334,6 @@ message CreateFlavourRequest {
     (buf.validate.field).required = true,
     (kubenfv.kubevim.options.v1.ifa_field) = {ref: "IFA006 7.3.4.2.2 CreateComputeFlavourRequest.flavour"}
   ];
-  // Client-chosen UUID that makes the request idempotent (AIP-155).
-  string request_id = 2 [
-    (google.api.field_behavior) = OPTIONAL,
-    (buf.validate.field).string.uuid = true,
-    (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE
-  ];
 }
 
 message GetFlavourRequest {

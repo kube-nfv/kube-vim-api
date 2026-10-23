@@ -49,9 +49,6 @@ func TestComputeValidation(t *testing.T) {
 		"interface without network": {
 			json: create(`,"networkInterfaces":[{"name":"data0"}]`), msg: &computev1.CreateComputeRequest{},
 		},
-		"masquerade requested": {
-			json: iface(`,"typeVirtualNic":"TYPE_VIRTUAL_NIC_MASQUERADE"`), msg: &computev1.CreateComputeRequest{},
-		},
 		"interface name not a label": {
 			json: iface(`,"name":"Data_0"`), msg: &computev1.CreateComputeRequest{},
 		},

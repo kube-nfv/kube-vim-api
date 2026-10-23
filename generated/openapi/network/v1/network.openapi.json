@@ -126,11 +126,6 @@
             },
             "readOnly": true,
             "type": "array"
-          },
-          "zoneId": {
-            "description": "Resource zone of the network.",
-            "readOnly": true,
-            "type": "string"
           }
         },
         "required": [
@@ -355,10 +350,6 @@
                   "network": {
                     "$ref": "#/components/schemas/kubenfv.kubevim.network.v1.Network",
                     "description": "Network to create."
-                  },
-                  "requestId": {
-                    "description": "Client-chosen UUID that makes the request idempotent (AIP-155).",
-                    "type": "string"
                   }
                 },
                 "required": [
@@ -633,10 +624,6 @@
             "application/json": {
               "schema": {
                 "properties": {
-                  "requestId": {
-                    "description": "Client-chosen UUID that makes the request idempotent (AIP-155).",
-                    "type": "string"
-                  },
                   "subnet": {
                     "$ref": "#/components/schemas/kubenfv.kubevim.network.v1.Subnet",
                     "description": "Subnet to create; adds an IP version to a network that no interface uses yet."

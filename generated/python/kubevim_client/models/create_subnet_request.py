@@ -17,8 +17,8 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictStr
-from typing import Any, ClassVar, Dict, List, Optional
+from pydantic import BaseModel, ConfigDict, Field
+from typing import Any, ClassVar, Dict, List
 from kubevim_client.models.subnet import Subnet
 from typing import Optional, Set
 from typing_extensions import Self
@@ -28,9 +28,8 @@ class CreateSubnetRequest(BaseModel):
     """
     CreateSubnetRequest
     """ # noqa: E501
-    request_id: Optional[StrictStr] = Field(default=None, description="Client-chosen UUID that makes the request idempotent (AIP-155).", alias="requestId")
     subnet: Subnet = Field(description="Subnet to create; adds an IP version to a network that no interface uses yet.")
-    __properties: ClassVar[List[str]] = ["requestId", "subnet"]
+    __properties: ClassVar[List[str]] = ["subnet"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -86,7 +85,6 @@ class CreateSubnetRequest(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "requestId": obj.get("requestId"),
             "subnet": Subnet.from_dict(obj["subnet"]) if obj.get("subnet") is not None else None
         })
         return _obj

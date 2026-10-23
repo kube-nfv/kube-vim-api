@@ -48,12 +48,6 @@ func TestImageValidation(t *testing.T) {
 		"min disk not a quantity": {
 			json: `{"image":{"name":"a","minDisk":"10GB","source":{"upload":{}}}}`, msg: &imagev1.CreateImageRequest{},
 		},
-		"blank size zero": {
-			json: `{"image":{"name":"a","source":{"blank":{"size":"0Gi"}}}}`, msg: &imagev1.CreateImageRequest{},
-		},
-		"request id not a uuid": {
-			json: `{"image":{"name":"a","source":{"upload":{}}},"requestId":"abc"}`, msg: &imagev1.CreateImageRequest{},
-		},
 		"http url not a uri": {
 			json: `{"image":{"name":"a","source":{"http":{"url":"not a url"}}}}`, msg: &imagev1.CreateImageRequest{},
 		},

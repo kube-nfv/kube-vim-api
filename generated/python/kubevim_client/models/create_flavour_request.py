@@ -17,8 +17,8 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictStr
-from typing import Any, ClassVar, Dict, List, Optional
+from pydantic import BaseModel, ConfigDict, Field
+from typing import Any, ClassVar, Dict, List
 from kubevim_client.models.flavour import Flavour
 from typing import Optional, Set
 from typing_extensions import Self
@@ -29,8 +29,7 @@ class CreateFlavourRequest(BaseModel):
     CreateFlavourRequest
     """ # noqa: E501
     flavour: Flavour = Field(description="Flavour to create.")
-    request_id: Optional[StrictStr] = Field(default=None, description="Client-chosen UUID that makes the request idempotent (AIP-155).", alias="requestId")
-    __properties: ClassVar[List[str]] = ["flavour", "requestId"]
+    __properties: ClassVar[List[str]] = ["flavour"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -86,8 +85,7 @@ class CreateFlavourRequest(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "flavour": Flavour.from_dict(obj["flavour"]) if obj.get("flavour") is not None else None,
-            "requestId": obj.get("requestId")
+            "flavour": Flavour.from_dict(obj["flavour"]) if obj.get("flavour") is not None else None
         })
         return _obj
 

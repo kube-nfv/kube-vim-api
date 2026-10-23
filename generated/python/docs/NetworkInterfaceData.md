@@ -13,7 +13,6 @@ Name | Type | Description | Notes
 **model** | [**NicModel**](NicModel.md) | NIC model the guest sees; virtio when unset. | [optional] 
 **name** | **str** | Name of the interface, unique within the compute resource; the VIM chooses one when unset. | [optional] 
 **network_id** | **str** | Network to attach to; the interface gets one address per subnet of the network. | 
-**type_virtual_nic** | [**TypeVirtualNic**](TypeVirtualNic.md) | How the interface is realised; the VIM chooses from the network when unset. | [optional] 
 
 ## Example
 

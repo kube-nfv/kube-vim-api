@@ -17,7 +17,6 @@ import json
 import pprint
 from pydantic import BaseModel, ConfigDict, Field, StrictStr, ValidationError, field_validator
 from typing import Any, List, Optional
-from kubevim_client.models.image_source_blank import ImageSourceBlank
 from kubevim_client.models.image_source_glance import ImageSourceGlance
 from kubevim_client.models.image_source_http import ImageSourceHttp
 from kubevim_client.models.image_source_local import ImageSourceLocal
@@ -28,7 +27,7 @@ from pydantic import StrictStr, Field
 from typing import Union, List, Set, Optional, Dict
 from typing_extensions import Literal, Self
 
-IMAGESOURCE_ONE_OF_SCHEMAS = ["ImageSourceBlank", "ImageSourceGlance", "ImageSourceHttp", "ImageSourceLocal", "ImageSourceRegistry", "ImageSourceS3", "ImageSourceUpload"]
+IMAGESOURCE_ONE_OF_SCHEMAS = ["ImageSourceGlance", "ImageSourceHttp", "ImageSourceLocal", "ImageSourceRegistry", "ImageSourceS3", "ImageSourceUpload"]
 
 class ImageSource(BaseModel):
     """
@@ -42,14 +41,12 @@ class ImageSource(BaseModel):
     oneof_schema_3_validator: Optional[ImageSourceRegistry] = None
     # data type: ImageSourceUpload
     oneof_schema_4_validator: Optional[ImageSourceUpload] = None
-    # data type: ImageSourceBlank
-    oneof_schema_5_validator: Optional[ImageSourceBlank] = None
     # data type: ImageSourceGlance
-    oneof_schema_6_validator: Optional[ImageSourceGlance] = None
+    oneof_schema_5_validator: Optional[ImageSourceGlance] = None
     # data type: ImageSourceLocal
-    oneof_schema_7_validator: Optional[ImageSourceLocal] = None
-    actual_instance: Optional[Union[ImageSourceBlank, ImageSourceGlance, ImageSourceHttp, ImageSourceLocal, ImageSourceRegistry, ImageSourceS3, ImageSourceUpload]] = None
-    one_of_schemas: Set[str] = { "ImageSourceBlank", "ImageSourceGlance", "ImageSourceHttp", "ImageSourceLocal", "ImageSourceRegistry", "ImageSourceS3", "ImageSourceUpload" }
+    oneof_schema_6_validator: Optional[ImageSourceLocal] = None
+    actual_instance: Optional[Union[ImageSourceGlance, ImageSourceHttp, ImageSourceLocal, ImageSourceRegistry, ImageSourceS3, ImageSourceUpload]] = None
+    one_of_schemas: Set[str] = { "ImageSourceGlance", "ImageSourceHttp", "ImageSourceLocal", "ImageSourceRegistry", "ImageSourceS3", "ImageSourceUpload" }
 
     model_config = ConfigDict(
         validate_assignment=True,
@@ -92,11 +89,6 @@ class ImageSource(BaseModel):
             error_messages.append(f"Error! Input type `{type(v)}` is not `ImageSourceUpload`")
         else:
             match += 1
-        # validate data type: ImageSourceBlank
-        if not isinstance(v, ImageSourceBlank):
-            error_messages.append(f"Error! Input type `{type(v)}` is not `ImageSourceBlank`")
-        else:
-            match += 1
         # validate data type: ImageSourceGlance
         if not isinstance(v, ImageSourceGlance):
             error_messages.append(f"Error! Input type `{type(v)}` is not `ImageSourceGlance`")
@@ -109,10 +101,10 @@ class ImageSource(BaseModel):
             match += 1
         if match > 1:
             # more than 1 match
-            raise ValueError("Multiple matches found when setting `actual_instance` in ImageSource with oneOf schemas: ImageSourceBlank, ImageSourceGlance, ImageSourceHttp, ImageSourceLocal, ImageSourceRegistry, ImageSourceS3, ImageSourceUpload. Details: " + ", ".join(error_messages))
+            raise ValueError("Multiple matches found when setting `actual_instance` in ImageSource with oneOf schemas: ImageSourceGlance, ImageSourceHttp, ImageSourceLocal, ImageSourceRegistry, ImageSourceS3, ImageSourceUpload. Details: " + ", ".join(error_messages))
         elif match == 0:
             # no match
-            raise ValueError("No match found when setting `actual_instance` in ImageSource with oneOf schemas: ImageSourceBlank, ImageSourceGlance, ImageSourceHttp, ImageSourceLocal, ImageSourceRegistry, ImageSourceS3, ImageSourceUpload. Details: " + ", ".join(error_messages))
+            raise ValueError("No match found when setting `actual_instance` in ImageSource with oneOf schemas: ImageSourceGlance, ImageSourceHttp, ImageSourceLocal, ImageSourceRegistry, ImageSourceS3, ImageSourceUpload. Details: " + ", ".join(error_messages))
         else:
             return v
 
@@ -151,12 +143,6 @@ class ImageSource(BaseModel):
             match += 1
         except (ValidationError, ValueError) as e:
             error_messages.append(str(e))
-        # deserialize data into ImageSourceBlank
-        try:
-            instance.actual_instance = ImageSourceBlank.from_json(json_str)
-            match += 1
-        except (ValidationError, ValueError) as e:
-            error_messages.append(str(e))
         # deserialize data into ImageSourceGlance
         try:
             instance.actual_instance = ImageSourceGlance.from_json(json_str)
@@ -172,10 +158,10 @@ class ImageSource(BaseModel):
 
         if match > 1:
             # more than 1 match
-            raise ValueError("Multiple matches found when deserializing the JSON string into ImageSource with oneOf schemas: ImageSourceBlank, ImageSourceGlance, ImageSourceHttp, ImageSourceLocal, ImageSourceRegistry, ImageSourceS3, ImageSourceUpload. Details: " + ", ".join(error_messages))
+            raise ValueError("Multiple matches found when deserializing the JSON string into ImageSource with oneOf schemas: ImageSourceGlance, ImageSourceHttp, ImageSourceLocal, ImageSourceRegistry, ImageSourceS3, ImageSourceUpload. Details: " + ", ".join(error_messages))
         elif match == 0:
             # no match
-            raise ValueError("No match found when deserializing the JSON string into ImageSource with oneOf schemas: ImageSourceBlank, ImageSourceGlance, ImageSourceHttp, ImageSourceLocal, ImageSourceRegistry, ImageSourceS3, ImageSourceUpload. Details: " + ", ".join(error_messages))
+            raise ValueError("No match found when deserializing the JSON string into ImageSource with oneOf schemas: ImageSourceGlance, ImageSourceHttp, ImageSourceLocal, ImageSourceRegistry, ImageSourceS3, ImageSourceUpload. Details: " + ", ".join(error_messages))
         else:
             return instance
 
@@ -189,7 +175,7 @@ class ImageSource(BaseModel):
         else:
             return json.dumps(self.actual_instance)
 
-    def to_dict(self) -> Optional[Union[Dict[str, Any], ImageSourceBlank, ImageSourceGlance, ImageSourceHttp, ImageSourceLocal, ImageSourceRegistry, ImageSourceS3, ImageSourceUpload]]:
+    def to_dict(self) -> Optional[Union[Dict[str, Any], ImageSourceGlance, ImageSourceHttp, ImageSourceLocal, ImageSourceRegistry, ImageSourceS3, ImageSourceUpload]]:
         """Returns the dict representation of the actual instance"""
         if self.actual_instance is None:
             return None

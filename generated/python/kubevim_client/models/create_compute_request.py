@@ -17,7 +17,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictBool
 from typing import Any, ClassVar, Dict, List, Optional
 from kubevim_client.models.compute import Compute
 from kubevim_client.models.network_interface_data import NetworkInterfaceData
@@ -32,10 +32,9 @@ class CreateComputeRequest(BaseModel):
     """ # noqa: E501
     compute: Compute = Field(description="Compute resource to create: name, flavour, image, placement groups and metadata.")
     network_interfaces: Optional[List[NetworkInterfaceData]] = Field(default=None, description="Network interfaces in addition to the management interface.", alias="networkInterfaces")
-    request_id: Optional[StrictStr] = Field(default=None, description="Client-chosen UUID that makes the request idempotent (AIP-155).", alias="requestId")
     start: Optional[StrictBool] = Field(default=None, description="Start the compute resource once created; unset means true.")
     user_data: Optional[UserData] = Field(default=None, description="User data passed at boot time.", alias="userData")
-    __properties: ClassVar[List[str]] = ["compute", "networkInterfaces", "requestId", "start", "userData"]
+    __properties: ClassVar[List[str]] = ["compute", "networkInterfaces", "start", "userData"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -102,7 +101,6 @@ class CreateComputeRequest(BaseModel):
         _obj = cls.model_validate({
             "compute": Compute.from_dict(obj["compute"]) if obj.get("compute") is not None else None,
             "networkInterfaces": [NetworkInterfaceData.from_dict(_item) for _item in obj["networkInterfaces"]] if obj.get("networkInterfaces") is not None else None,
-            "requestId": obj.get("requestId"),
             "start": obj.get("start"),
             "userData": UserData.from_dict(obj["userData"]) if obj.get("userData") is not None else None
         })

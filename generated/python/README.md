@@ -154,8 +154,6 @@ Class | Method | HTTP request | Description
 
  - [AttachVolumeRequest](docs/AttachVolumeRequest.md)
  - [BasicAuth](docs/BasicAuth.md)
- - [BlankSource](docs/BlankSource.md)
- - [Checksum](docs/Checksum.md)
  - [Compute](docs/Compute.md)
  - [ComputeOperation](docs/ComputeOperation.md)
  - [ComputeRunningState](docs/ComputeRunningState.md)
@@ -182,7 +180,6 @@ Class | Method | HTTP request | Description
  - [HttpSource](docs/HttpSource.md)
  - [Image](docs/Image.md)
  - [ImageSource](docs/ImageSource.md)
- - [ImageSourceBlank](docs/ImageSourceBlank.md)
  - [ImageSourceGlance](docs/ImageSourceGlance.md)
  - [ImageSourceHttp](docs/ImageSourceHttp.md)
  - [ImageSourceLocal](docs/ImageSourceLocal.md)

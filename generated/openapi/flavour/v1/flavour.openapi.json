@@ -310,10 +310,6 @@
                   "flavour": {
                     "$ref": "#/components/schemas/kubenfv.kubevim.flavour.v1.Flavour",
                     "description": "Flavour to create."
-                  },
-                  "requestId": {
-                    "description": "Client-chosen UUID that makes the request idempotent (AIP-155).",
-                    "type": "string"
                   }
                 },
                 "required": [

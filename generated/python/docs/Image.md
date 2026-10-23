@@ -6,7 +6,6 @@ A software image in the image repository managed by the VIM.
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**checksum** | [**Checksum**](Checksum.md) | Checksum of the software image file; empty when the VIM cannot tell. | [optional] [readonly] 
 **container_format** | [**ContainerFormat**](ContainerFormat.md) | Container format of the software image file; unspecified when the VIM cannot tell. | [optional] [readonly] 
 **created_at** | **datetime** | Time the software image was created. | [optional] [readonly] 
 **disk_bus** | [**DiskBus**](DiskBus.md) | Bus the boot disk is attached to; virtio when unset. | [optional] 
@@ -15,8 +14,8 @@ Name | Type | Description | Notes
 **image_id** | **str** | Identifier of the software image: a UUID assigned by the VIM. | [optional] [readonly] 
 **import_policy** | [**ImportPolicy**](ImportPolicy.md) | When the VIM imports the software image; IMPORT_POLICY_EAGER when unset on creation. | [optional] 
 **metadata** | **Dict[str, str]** | Metadata set by the consumer and by the VIM; for keys under \&quot;kubevim.kubenfv.io/\&quot; that the VIM maintains, its value wins. | [optional] 
-**min_disk** | **str** | Minimal disk size for the software image, in Kubernetes quantity format (e.g. \&quot;10Gi\&quot;). | [optional] 
-**min_ram** | **str** | Minimal RAM size for the software image, in Kubernetes quantity format (e.g. \&quot;2Gi\&quot;). | [optional] 
+**min_disk** | **str** | Minimal disk size for the software image, in Kubernetes quantity format (e.g. \&quot;10Gi\&quot;); the VIM rejects a compute resource whose boot disk is smaller. | [optional] 
+**min_ram** | **str** | Minimal RAM size for the software image, in Kubernetes quantity format (e.g. \&quot;2Gi\&quot;); the VIM rejects a compute resource with less memory. | [optional] 
 **name** | **str** | Name of the software image, given by the consumer; not unique. | 
 **progress** | **int** | Import progress in percent while the status is IMAGE_STATUS_IMPORTING. | [optional] [readonly] 
 **provider** | **str** | Provider of the software image. | [optional] 

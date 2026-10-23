@@ -290,7 +290,6 @@
           "COMPUTE_RUNNING_STATE_STOPPING",
           "COMPUTE_RUNNING_STATE_STOPPED",
           "COMPUTE_RUNNING_STATE_PAUSED",
-          "COMPUTE_RUNNING_STATE_REBOOTING",
           "COMPUTE_RUNNING_STATE_MIGRATING",
           "COMPUTE_RUNNING_STATE_FAILED",
           "COMPUTE_RUNNING_STATE_TERMINATING"
@@ -413,10 +412,6 @@
           "networkId": {
             "description": "Network to attach to; the interface gets one address per subnet of the network.",
             "type": "string"
-          },
-          "typeVirtualNic": {
-            "$ref": "#/components/schemas/kubenfv.kubevim.compute.v1.TypeVirtualNic",
-            "description": "How the interface is realised; the VIM chooses from the network when unset."
           }
         },
         "required": [
@@ -563,14 +558,6 @@
       "kubenfv.kubevim.compute.v1.VirtualCpuPinning": {
         "description": "CPU pinning of a compute resource.",
         "properties": {
-          "cpuMap": {
-            "additionalProperties": {
-              "format": "int64",
-              "type": "integer"
-            },
-            "description": "Physical CPU each virtual CPU is pinned to; empty when the VIM cannot tell.",
-            "type": "object"
-          },
           "cpuPinningPolicy": {
             "$ref": "#/components/schemas/kubenfv.kubevim.common.v1.VirtualCpuPinningPolicy"
           }
@@ -769,10 +756,6 @@
                       "$ref": "#/components/schemas/kubenfv.kubevim.compute.v1.NetworkInterfaceData"
                     },
                     "type": "array"
-                  },
-                  "requestId": {
-                    "description": "Client-chosen UUID that makes the request idempotent (AIP-155).",
-                    "type": "string"
                   },
                   "start": {
                     "description": "Start the compute resource once created; unset means true.",
@@ -1414,10 +1397,6 @@
             "application/json": {
               "schema": {
                 "properties": {
-                  "requestId": {
-                    "description": "Client-chosen UUID that makes the request idempotent (AIP-155).",
-                    "type": "string"
-                  },
                   "snapshot": {
                     "$ref": "#/components/schemas/kubenfv.kubevim.compute.v1.ComputeSnapshot",
                     "description": "Snapshot to create: name and metadata."
@@ -1724,10 +1703,6 @@
                   "placementGroup": {
                     "$ref": "#/components/schemas/kubenfv.kubevim.compute.v1.PlacementGroup",
                     "description": "Group to create."
-                  },
-                  "requestId": {
-                    "description": "Client-chosen UUID that makes the request idempotent (AIP-155).",
-                    "type": "string"
                   }
                 },
                 "required": [

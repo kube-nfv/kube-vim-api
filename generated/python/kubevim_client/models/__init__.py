@@ -15,8 +15,6 @@
 # import models into model package
 from kubevim_client.models.attach_volume_request import AttachVolumeRequest
 from kubevim_client.models.basic_auth import BasicAuth
-from kubevim_client.models.blank_source import BlankSource
-from kubevim_client.models.checksum import Checksum
 from kubevim_client.models.compute import Compute
 from kubevim_client.models.compute_operation import ComputeOperation
 from kubevim_client.models.compute_running_state import ComputeRunningState
@@ -43,7 +41,6 @@ from kubevim_client.models.glance_source import GlanceSource
 from kubevim_client.models.http_source import HttpSource
 from kubevim_client.models.image import Image
 from kubevim_client.models.image_source import ImageSource
-from kubevim_client.models.image_source_blank import ImageSourceBlank
 from kubevim_client.models.image_source_glance import ImageSourceGlance
 from kubevim_client.models.image_source_http import ImageSourceHttp
 from kubevim_client.models.image_source_local import ImageSourceLocal

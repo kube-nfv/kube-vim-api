@@ -21,8 +21,7 @@ enum ErrorReason {
   ERROR_REASON_RESOURCE_IN_USE = 5;
   // The resource is not in a state that allows the operation. FAILED_PRECONDITION, 409.
   ERROR_REASON_INVALID_STATE = 6;
-  // The request_id was used before with a different request (AIP-155). ALREADY_EXISTS, 409.
-  ERROR_REASON_REQUEST_ID_REUSED = 7;
+  reserved 7;
   // The operation is declared but not implemented by this VIM. UNIMPLEMENTED, 501.
   ERROR_REASON_NOT_IMPLEMENTED = 8;
   // Kubernetes or a backend the VIM depends on cannot be reached. UNAVAILABLE, 503.

@@ -5,7 +5,6 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**request_id** | **str** | Client-chosen UUID that makes the request idempotent (AIP-155). | [optional] 
 **volume** | [**Volume**](Volume.md) | Volume to create: name, size, type, storage class and metadata. Only TYPE_OF_STORAGE_VOLUME, without is_boot: ephemeral and boot disks belong to a compute resource. | 
 
 ## Example
