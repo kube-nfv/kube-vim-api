@@ -305,7 +305,7 @@ func RegisterImageServiceHandlerServer(ctx context.Context, mux *runtime.ServeMu
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		forward_ImageService_ListImages_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_ImageService_ListImages_0(annotatedContext, mux, outboundMarshaler, w, req, response_ImageService_ListImages_0{resp.(*ListImagesResponse)}, mux.GetForwardResponseOptions()...)
 	})
 	mux.Handle(http.MethodPatch, pattern_ImageService_UpdateImage_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
@@ -365,7 +365,7 @@ func RegisterImageServiceHandlerServer(ctx context.Context, mux *runtime.ServeMu
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		forward_ImageService_ListImageSources_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_ImageService_ListImageSources_0(annotatedContext, mux, outboundMarshaler, w, req, response_ImageService_ListImageSources_0{resp.(*ListImageSourcesResponse)}, mux.GetForwardResponseOptions()...)
 	})
 
 	return nil
@@ -456,7 +456,7 @@ func RegisterImageServiceHandlerClient(ctx context.Context, mux *runtime.ServeMu
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		forward_ImageService_ListImages_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_ImageService_ListImages_0(annotatedContext, mux, outboundMarshaler, w, req, response_ImageService_ListImages_0{resp.(*ListImagesResponse)}, mux.GetForwardResponseOptions()...)
 	})
 	mux.Handle(http.MethodPatch, pattern_ImageService_UpdateImage_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
@@ -507,9 +507,27 @@ func RegisterImageServiceHandlerClient(ctx context.Context, mux *runtime.ServeMu
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		forward_ImageService_ListImageSources_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_ImageService_ListImageSources_0(annotatedContext, mux, outboundMarshaler, w, req, response_ImageService_ListImageSources_0{resp.(*ListImageSourcesResponse)}, mux.GetForwardResponseOptions()...)
 	})
 	return nil
+}
+
+type response_ImageService_ListImages_0 struct {
+	*ListImagesResponse
+}
+
+func (m response_ImageService_ListImages_0) XXX_ResponseBody() interface{} {
+	response := m.ListImagesResponse
+	return response.Images
+}
+
+type response_ImageService_ListImageSources_0 struct {
+	*ListImageSourcesResponse
+}
+
+func (m response_ImageService_ListImageSources_0) XXX_ResponseBody() interface{} {
+	response := m.ListImageSourcesResponse
+	return response.Sources
 }
 
 var (

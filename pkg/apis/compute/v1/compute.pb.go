@@ -3034,7 +3034,7 @@ const file_kubenfv_kubevim_compute_v1_compute_proto_rawDesc = "" +
 	"\x14PlacementEnforcement\x12%\n" +
 	"!PLACEMENT_ENFORCEMENT_UNSPECIFIED\x10\x00\x12\"\n" +
 	"\x1ePLACEMENT_ENFORCEMENT_REQUIRED\x10\x01\x12#\n" +
-	"\x1fPLACEMENT_ENFORCEMENT_PREFERRED\x10\x022\xf5-\n" +
+	"\x1fPLACEMENT_ENFORCEMENT_PREFERRED\x10\x022\x9f.\n" +
 	"\x0eComputeService\x12\xe7\x01\n" +
 	"\rCreateCompute\x120.kubenfv.kubevim.compute.v1.CreateComputeRequest\x1a#.kubenfv.kubevim.compute.v1.Compute\"\x7f\xfaP#J!\n" +
 	"\x1f\n" +
@@ -3046,12 +3046,12 @@ const file_kubenfv_kubevim_compute_v1_compute_proto_rawDesc = "" +
 	"\x1c\n" +
 	"\x06oauth2\x12\x12\n" +
 	"\x10compute:v1:query\xfa\x8b\x19p\n" +
-	"1IFA006 7.3.1.3 Query Virtualised Compute Resource\x12;\b\x03\x10\x01\x1a5Query filtered by computeId, as a read by identifier.\x82\xd3\xe4\x93\x02#\x12!/compute/v1/computes/{compute_id}\x12\xe9\x01\n" +
-	"\fListComputes\x12/.kubenfv.kubevim.compute.v1.ListComputesRequest\x1a0.kubenfv.kubevim.compute.v1.ListComputesResponse\"v\xfaP J\x1e\n" +
+	"1IFA006 7.3.1.3 Query Virtualised Compute Resource\x12;\b\x03\x10\x01\x1a5Query filtered by computeId, as a read by identifier.\x82\xd3\xe4\x93\x02#\x12!/compute/v1/computes/{compute_id}\x12\xf4\x01\n" +
+	"\fListComputes\x12/.kubenfv.kubevim.compute.v1.ListComputesRequest\x1a0.kubenfv.kubevim.compute.v1.ListComputesResponse\"\x80\x01\xfaP J\x1e\n" +
 	"\x1c\n" +
 	"\x06oauth2\x12\x12\n" +
 	"\x10compute:v1:query\xfa\x8b\x193\n" +
-	"1IFA006 7.3.1.3 Query Virtualised Compute Resource\x82\xd3\xe4\x93\x02\x16\x12\x14/compute/v1/computes\x12\xaa\x02\n" +
+	"1IFA006 7.3.1.3 Query Virtualised Compute Resource\x82\xd3\xe4\x93\x02 b\bcomputes\x12\x14/compute/v1/computes\x12\xaa\x02\n" +
 	"\rUpdateCompute\x120.kubenfv.kubevim.compute.v1.UpdateComputeRequest\x1a#.kubenfv.kubevim.compute.v1.Compute\"\xc1\x01\xfaP!J\x1f\n" +
 	"\x1d\n" +
 	"\x06oauth2\x12\x13\n" +
@@ -3095,11 +3095,11 @@ const file_kubenfv_kubevim_compute_v1_compute_proto_rawDesc = "" +
 	"\x12GetComputeSnapshot\x125.kubenfv.kubevim.compute.v1.GetComputeSnapshotRequest\x1a+.kubenfv.kubevim.compute.v1.ComputeSnapshot\"\x8f\x01\xfaP J\x1e\n" +
 	"\x1c\n" +
 	"\x06oauth2\x12\x12\n" +
-	"\x10compute:v1:query\xfa\x8b\x19'\x12%\b\x01\x10\x01\x1a\x1fIFA cannot read snapshots back.\x82\xd3\xe4\x93\x02;\x129/compute/v1/computes/{compute_id}/snapshots/{snapshot_id}\x12\x87\x02\n" +
-	"\x14ListComputeSnapshots\x127.kubenfv.kubevim.compute.v1.ListComputeSnapshotsRequest\x1a8.kubenfv.kubevim.compute.v1.ListComputeSnapshotsResponse\"|\xfaP J\x1e\n" +
+	"\x10compute:v1:query\xfa\x8b\x19'\x12%\b\x01\x10\x01\x1a\x1fIFA cannot read snapshots back.\x82\xd3\xe4\x93\x02;\x129/compute/v1/computes/{compute_id}/snapshots/{snapshot_id}\x12\x93\x02\n" +
+	"\x14ListComputeSnapshots\x127.kubenfv.kubevim.compute.v1.ListComputeSnapshotsRequest\x1a8.kubenfv.kubevim.compute.v1.ListComputeSnapshotsResponse\"\x87\x01\xfaP J\x1e\n" +
 	"\x1c\n" +
 	"\x06oauth2\x12\x12\n" +
-	"\x10compute:v1:query\xfa\x8b\x19\"\x12 \b\x01\x10\x01\x1a\x1aIFA cannot list snapshots.\x82\xd3\xe4\x93\x02-\x12+/compute/v1/computes/{compute_id}/snapshots\x12\xf6\x02\n" +
+	"\x10compute:v1:query\xfa\x8b\x19\"\x12 \b\x01\x10\x01\x1a\x1aIFA cannot list snapshots.\x82\xd3\xe4\x93\x028b\tsnapshots\x12+/compute/v1/computes/{compute_id}/snapshots\x12\xf6\x02\n" +
 	"\x15DeleteComputeSnapshot\x128.kubenfv.kubevim.compute.v1.DeleteComputeSnapshotRequest\x1a\x16.google.protobuf.Empty\"\x8a\x02\xfaP\"J \n" +
 	"\x1e\n" +
 	"\x06oauth2\x12\x14\n" +
@@ -3118,11 +3118,11 @@ const file_kubenfv_kubevim_compute_v1_compute_proto_rawDesc = "" +
 	"\x11GetPlacementGroup\x124.kubenfv.kubevim.compute.v1.GetPlacementGroupRequest\x1a*.kubenfv.kubevim.compute.v1.PlacementGroup\"\x94\x01\xfaP J\x1e\n" +
 	"\x1c\n" +
 	"\x06oauth2\x12\x12\n" +
-	"\x10compute:v1:query\xfa\x8b\x195\x123\b\x01\x10\x01\x1a-IFA can create groups but not read them back.\x82\xd3\xe4\x93\x022\x120/compute/v1/placementGroups/{placement_group_id}\x12\x82\x02\n" +
-	"\x13ListPlacementGroups\x126.kubenfv.kubevim.compute.v1.ListPlacementGroupsRequest\x1a7.kubenfv.kubevim.compute.v1.ListPlacementGroupsResponse\"z\xfaP J\x1e\n" +
+	"\x10compute:v1:query\xfa\x8b\x195\x123\b\x01\x10\x01\x1a-IFA can create groups but not read them back.\x82\xd3\xe4\x93\x022\x120/compute/v1/placementGroups/{placement_group_id}\x12\x95\x02\n" +
+	"\x13ListPlacementGroups\x126.kubenfv.kubevim.compute.v1.ListPlacementGroupsRequest\x1a7.kubenfv.kubevim.compute.v1.ListPlacementGroupsResponse\"\x8c\x01\xfaP J\x1e\n" +
 	"\x1c\n" +
 	"\x06oauth2\x12\x12\n" +
-	"\x10compute:v1:query\xfa\x8b\x190\x12.\b\x01\x10\x01\x1a(IFA can create groups but not list them.\x82\xd3\xe4\x93\x02\x1d\x12\x1b/compute/v1/placementGroups\x12\xff\x01\n" +
+	"\x10compute:v1:query\xfa\x8b\x190\x12.\b\x01\x10\x01\x1a(IFA can create groups but not list them.\x82\xd3\xe4\x93\x02/b\x10placement_groups\x12\x1b/compute/v1/placementGroups\x12\xff\x01\n" +
 	"\x14DeletePlacementGroup\x127.kubenfv.kubevim.compute.v1.DeletePlacementGroupRequest\x1a\x16.google.protobuf.Empty\"\x95\x01\xfaP$J\"\n" +
 	" \n" +
 	"\x06oauth2\x12\x16\n" +

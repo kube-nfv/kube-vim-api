@@ -2197,7 +2197,7 @@ const file_kubenfv_kubevim_image_v1_image_proto_rawDesc = "" +
 	"\x18IMAGE_SOURCE_TYPE_UPLOAD\x10\x04\x12\x1b\n" +
 	"\x17IMAGE_SOURCE_TYPE_BLANK\x10\x05\x12\x1c\n" +
 	"\x18IMAGE_SOURCE_TYPE_GLANCE\x10\x06\x12\x1b\n" +
-	"\x17IMAGE_SOURCE_TYPE_LOCAL\x10\a2\x86\f\n" +
+	"\x17IMAGE_SOURCE_TYPE_LOCAL\x10\a2\x97\f\n" +
 	"\fImageService\x12\xb4\x01\n" +
 	"\vCreateImage\x12,.kubenfv.kubevim.image.v1.CreateImageRequest\x1a\x1f.kubenfv.kubevim.image.v1.Image\"V\xfaP\x1cJ\x1a\n" +
 	"\x18\n" +
@@ -2208,13 +2208,13 @@ const file_kubenfv_kubevim_image_v1_image_proto_rawDesc = "" +
 	"\x1a\n" +
 	"\x06oauth2\x12\x10\n" +
 	"\x0eimage:v1:query\xfa\x8b\x19\x1a\n" +
-	"\x18IFA005 7.2.4 Query Image\x82\xd3\xe4\x93\x02\x1d\x12\x1b/image/v1/images/{image_id}\x12\xc1\x01\n" +
+	"\x18IFA005 7.2.4 Query Image\x82\xd3\xe4\x93\x02\x1d\x12\x1b/image/v1/images/{image_id}\x12\xc9\x01\n" +
 	"\n" +
-	"ListImages\x12+.kubenfv.kubevim.image.v1.ListImagesRequest\x1a,.kubenfv.kubevim.image.v1.ListImagesResponse\"X\xfaP\x1eJ\x1c\n" +
+	"ListImages\x12+.kubenfv.kubevim.image.v1.ListImagesRequest\x1a,.kubenfv.kubevim.image.v1.ListImagesResponse\"`\xfaP\x1eJ\x1c\n" +
 	"\x1a\n" +
 	"\x06oauth2\x12\x10\n" +
 	"\x0eimage:v1:query\xfa\x8b\x19\x1b\n" +
-	"\x19IFA005 7.2.3 Query Images\x82\xd3\xe4\x93\x02\x12\x12\x10/image/v1/images\x12\xd2\x02\n" +
+	"\x19IFA005 7.2.3 Query Images\x82\xd3\xe4\x93\x02\x1ab\x06images\x12\x10/image/v1/images\x12\xd2\x02\n" +
 	"\vUpdateImage\x12,.kubenfv.kubevim.image.v1.UpdateImageRequest\x1a\x1f.kubenfv.kubevim.image.v1.Image\"\xf3\x01\xfaP\x1fJ\x1d\n" +
 	"\x1b\n" +
 	"\x06oauth2\x12\x11\n" +
@@ -2224,11 +2224,11 @@ const file_kubenfv_kubevim_image_v1_image_proto_rawDesc = "" +
 	"\x1b\n" +
 	"\x06oauth2\x12\x11\n" +
 	"\x0fimage:v1:delete\xfa\x8b\x19\x80\x01\n" +
-	"\x19IFA005 7.2.6 Delete Image\x12c\b\x03\x10\x01\x1a]Returns no body (204) instead of deletedId; the deleted identifier is the one in the request.\x82\xd3\xe4\x93\x02\x1d*\x1b/image/v1/images/{image_id}\x12\x8f\x02\n" +
-	"\x10ListImageSources\x121.kubenfv.kubevim.image.v1.ListImageSourcesRequest\x1a2.kubenfv.kubevim.image.v1.ListImageSourcesResponse\"\x93\x01\xfaP\x1eJ\x1c\n" +
+	"\x19IFA005 7.2.6 Delete Image\x12c\b\x03\x10\x01\x1a]Returns no body (204) instead of deletedId; the deleted identifier is the one in the request.\x82\xd3\xe4\x93\x02\x1d*\x1b/image/v1/images/{image_id}\x12\x98\x02\n" +
+	"\x10ListImageSources\x121.kubenfv.kubevim.image.v1.ListImageSourcesRequest\x1a2.kubenfv.kubevim.image.v1.ListImageSourcesResponse\"\x9c\x01\xfaP\x1eJ\x1c\n" +
 	"\x1a\n" +
 	"\x06oauth2\x12\x10\n" +
-	"\x0eimage:v1:query\xfa\x8b\x19P\x12N\b\x01\x10\x01\x1aHImage sources are separate features; clients discover which are enabled.\x82\xd3\xe4\x93\x02\x18\x12\x16/image/v1/imageSources\x1a4\xfa\x8b\x190\n" +
+	"\x0eimage:v1:query\xfa\x8b\x19P\x12N\b\x01\x10\x01\x1aHImage sources are separate features; clients discover which are enabled.\x82\xd3\xe4\x93\x02!b\asources\x12\x16/image/v1/imageSources\x1a4\xfa\x8b\x190\n" +
 	".IFA005 7.2 Software Image Management interfaceB\xdb\x04\xfaP\xdc\x02\n" +
 	"$\n" +
 	"\x1bKube-VIM software image API:\x051.0.02\xb3\x02\n" +

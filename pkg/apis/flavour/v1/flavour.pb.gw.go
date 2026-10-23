@@ -239,7 +239,7 @@ func RegisterFlavourServiceHandlerServer(ctx context.Context, mux *runtime.Serve
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		forward_FlavourService_ListFlavours_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_FlavourService_ListFlavours_0(annotatedContext, mux, outboundMarshaler, w, req, response_FlavourService_ListFlavours_0{resp.(*ListFlavoursResponse)}, mux.GetForwardResponseOptions()...)
 	})
 	mux.Handle(http.MethodDelete, pattern_FlavourService_DeleteFlavour_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
@@ -350,7 +350,7 @@ func RegisterFlavourServiceHandlerClient(ctx context.Context, mux *runtime.Serve
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		forward_FlavourService_ListFlavours_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_FlavourService_ListFlavours_0(annotatedContext, mux, outboundMarshaler, w, req, response_FlavourService_ListFlavours_0{resp.(*ListFlavoursResponse)}, mux.GetForwardResponseOptions()...)
 	})
 	mux.Handle(http.MethodDelete, pattern_FlavourService_DeleteFlavour_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
@@ -370,6 +370,15 @@ func RegisterFlavourServiceHandlerClient(ctx context.Context, mux *runtime.Serve
 		forward_FlavourService_DeleteFlavour_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
 	return nil
+}
+
+type response_FlavourService_ListFlavours_0 struct {
+	*ListFlavoursResponse
+}
+
+func (m response_FlavourService_ListFlavours_0) XXX_ResponseBody() interface{} {
+	response := m.ListFlavoursResponse
+	return response.Flavours
 }
 
 var (

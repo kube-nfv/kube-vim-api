@@ -111,7 +111,10 @@ service ComputeService {
 
   // Returns the compute resources matching a filter.
   rpc ListComputes(ListComputesRequest) returns (ListComputesResponse) {
-    option (google.api.http) = {get: "/compute/v1/computes"};
+    option (google.api.http) = {
+      get: "/compute/v1/computes"
+      response_body: "computes"
+    };
     option (grpc.gateway.protoc_gen_openapiv3.options.openapiv3_operation) = {
       security: {
         schemes: {
@@ -323,7 +326,10 @@ service ComputeService {
 
   // Returns the snapshots of a compute resource, or of all compute resources with compute_id "-".
   rpc ListComputeSnapshots(ListComputeSnapshotsRequest) returns (ListComputeSnapshotsResponse) {
-    option (google.api.http) = {get: "/compute/v1/computes/{compute_id}/snapshots"};
+    option (google.api.http) = {
+      get: "/compute/v1/computes/{compute_id}/snapshots"
+      response_body: "snapshots"
+    };
     option (grpc.gateway.protoc_gen_openapiv3.options.openapiv3_operation) = {
       security: {
         schemes: {
@@ -432,7 +438,10 @@ service ComputeService {
 
   // Returns the placement groups.
   rpc ListPlacementGroups(ListPlacementGroupsRequest) returns (ListPlacementGroupsResponse) {
-    option (google.api.http) = {get: "/compute/v1/placementGroups"};
+    option (google.api.http) = {
+      get: "/compute/v1/placementGroups"
+      response_body: "placement_groups"
+    };
     option (grpc.gateway.protoc_gen_openapiv3.options.openapiv3_operation) = {
       security: {
         schemes: {

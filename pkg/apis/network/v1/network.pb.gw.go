@@ -469,7 +469,7 @@ func RegisterNetworkServiceHandlerServer(ctx context.Context, mux *runtime.Serve
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		forward_NetworkService_ListNetworks_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_NetworkService_ListNetworks_0(annotatedContext, mux, outboundMarshaler, w, req, response_NetworkService_ListNetworks_0{resp.(*ListNetworksResponse)}, mux.GetForwardResponseOptions()...)
 	})
 	mux.Handle(http.MethodPatch, pattern_NetworkService_UpdateNetwork_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
@@ -569,7 +569,7 @@ func RegisterNetworkServiceHandlerServer(ctx context.Context, mux *runtime.Serve
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		forward_NetworkService_ListSubnets_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_NetworkService_ListSubnets_0(annotatedContext, mux, outboundMarshaler, w, req, response_NetworkService_ListSubnets_0{resp.(*ListSubnetsResponse)}, mux.GetForwardResponseOptions()...)
 	})
 	mux.Handle(http.MethodPatch, pattern_NetworkService_UpdateSubnet_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
@@ -700,7 +700,7 @@ func RegisterNetworkServiceHandlerClient(ctx context.Context, mux *runtime.Serve
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		forward_NetworkService_ListNetworks_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_NetworkService_ListNetworks_0(annotatedContext, mux, outboundMarshaler, w, req, response_NetworkService_ListNetworks_0{resp.(*ListNetworksResponse)}, mux.GetForwardResponseOptions()...)
 	})
 	mux.Handle(http.MethodPatch, pattern_NetworkService_UpdateNetwork_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
@@ -785,7 +785,7 @@ func RegisterNetworkServiceHandlerClient(ctx context.Context, mux *runtime.Serve
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		forward_NetworkService_ListSubnets_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_NetworkService_ListSubnets_0(annotatedContext, mux, outboundMarshaler, w, req, response_NetworkService_ListSubnets_0{resp.(*ListSubnetsResponse)}, mux.GetForwardResponseOptions()...)
 	})
 	mux.Handle(http.MethodPatch, pattern_NetworkService_UpdateSubnet_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
@@ -822,6 +822,24 @@ func RegisterNetworkServiceHandlerClient(ctx context.Context, mux *runtime.Serve
 		forward_NetworkService_DeleteSubnet_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
 	return nil
+}
+
+type response_NetworkService_ListNetworks_0 struct {
+	*ListNetworksResponse
+}
+
+func (m response_NetworkService_ListNetworks_0) XXX_ResponseBody() interface{} {
+	response := m.ListNetworksResponse
+	return response.Networks
+}
+
+type response_NetworkService_ListSubnets_0 struct {
+	*ListSubnetsResponse
+}
+
+func (m response_NetworkService_ListSubnets_0) XXX_ResponseBody() interface{} {
+	response := m.ListSubnetsResponse
+	return response.Subnets
 }
 
 var (

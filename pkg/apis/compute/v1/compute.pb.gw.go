@@ -932,7 +932,7 @@ func RegisterComputeServiceHandlerServer(ctx context.Context, mux *runtime.Serve
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		forward_ComputeService_ListComputes_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_ComputeService_ListComputes_0(annotatedContext, mux, outboundMarshaler, w, req, response_ComputeService_ListComputes_0{resp.(*ListComputesResponse)}, mux.GetForwardResponseOptions()...)
 	})
 	mux.Handle(http.MethodPatch, pattern_ComputeService_UpdateCompute_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
@@ -1132,7 +1132,7 @@ func RegisterComputeServiceHandlerServer(ctx context.Context, mux *runtime.Serve
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		forward_ComputeService_ListComputeSnapshots_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_ComputeService_ListComputeSnapshots_0(annotatedContext, mux, outboundMarshaler, w, req, response_ComputeService_ListComputeSnapshots_0{resp.(*ListComputeSnapshotsResponse)}, mux.GetForwardResponseOptions()...)
 	})
 	mux.Handle(http.MethodDelete, pattern_ComputeService_DeleteComputeSnapshot_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
@@ -1232,7 +1232,7 @@ func RegisterComputeServiceHandlerServer(ctx context.Context, mux *runtime.Serve
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		forward_ComputeService_ListPlacementGroups_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_ComputeService_ListPlacementGroups_0(annotatedContext, mux, outboundMarshaler, w, req, response_ComputeService_ListPlacementGroups_0{resp.(*ListPlacementGroupsResponse)}, mux.GetForwardResponseOptions()...)
 	})
 	mux.Handle(http.MethodDelete, pattern_ComputeService_DeletePlacementGroup_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
@@ -1343,7 +1343,7 @@ func RegisterComputeServiceHandlerClient(ctx context.Context, mux *runtime.Serve
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		forward_ComputeService_ListComputes_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_ComputeService_ListComputes_0(annotatedContext, mux, outboundMarshaler, w, req, response_ComputeService_ListComputes_0{resp.(*ListComputesResponse)}, mux.GetForwardResponseOptions()...)
 	})
 	mux.Handle(http.MethodPatch, pattern_ComputeService_UpdateCompute_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
@@ -1513,7 +1513,7 @@ func RegisterComputeServiceHandlerClient(ctx context.Context, mux *runtime.Serve
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		forward_ComputeService_ListComputeSnapshots_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_ComputeService_ListComputeSnapshots_0(annotatedContext, mux, outboundMarshaler, w, req, response_ComputeService_ListComputeSnapshots_0{resp.(*ListComputeSnapshotsResponse)}, mux.GetForwardResponseOptions()...)
 	})
 	mux.Handle(http.MethodDelete, pattern_ComputeService_DeleteComputeSnapshot_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
@@ -1598,7 +1598,7 @@ func RegisterComputeServiceHandlerClient(ctx context.Context, mux *runtime.Serve
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		forward_ComputeService_ListPlacementGroups_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_ComputeService_ListPlacementGroups_0(annotatedContext, mux, outboundMarshaler, w, req, response_ComputeService_ListPlacementGroups_0{resp.(*ListPlacementGroupsResponse)}, mux.GetForwardResponseOptions()...)
 	})
 	mux.Handle(http.MethodDelete, pattern_ComputeService_DeletePlacementGroup_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
@@ -1618,6 +1618,33 @@ func RegisterComputeServiceHandlerClient(ctx context.Context, mux *runtime.Serve
 		forward_ComputeService_DeletePlacementGroup_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
 	return nil
+}
+
+type response_ComputeService_ListComputes_0 struct {
+	*ListComputesResponse
+}
+
+func (m response_ComputeService_ListComputes_0) XXX_ResponseBody() interface{} {
+	response := m.ListComputesResponse
+	return response.Computes
+}
+
+type response_ComputeService_ListComputeSnapshots_0 struct {
+	*ListComputeSnapshotsResponse
+}
+
+func (m response_ComputeService_ListComputeSnapshots_0) XXX_ResponseBody() interface{} {
+	response := m.ListComputeSnapshotsResponse
+	return response.Snapshots
+}
+
+type response_ComputeService_ListPlacementGroups_0 struct {
+	*ListPlacementGroupsResponse
+}
+
+func (m response_ComputeService_ListPlacementGroups_0) XXX_ResponseBody() interface{} {
+	response := m.ListPlacementGroupsResponse
+	return response.PlacementGroups
 }
 
 var (

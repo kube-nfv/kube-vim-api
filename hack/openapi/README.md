@@ -11,7 +11,9 @@ go run ./hack/openapi -in bin/openapi-raw -out generated/openapi [-version 1.0.0
 1. **SOL 013 responses.** The generator has no annotation for responses, so the REST conventions of ETSI GS NFV-SOL 013 are added by method name:
    - `Create*` answers 201 with a `Location` header.
    - `Delete*` answers 204 with no body.
-   - Every operation gets a `default` error response of type `application/problem+json` (`ProblemDetails`, SOL 013 clause 6) and the `Version` request and response header (clause 9.4).
+   - An operation that takes `nextpage_opaque_marker` gets the `Link` response header (clause 5.4.2). Its body is a plain array, set by `response_body` in the protos.
+   - Every operation gets a `default` error response of type `application/problem+json` (`ProblemDetails`, SOL 013 clause 6, whose `type` names the `ErrorReason` from `common/v1/errors.proto`) and the `Version` request and response header (clause 9.4).
+   - Each API gets `GET /<api>/api_versions` and `GET /<api>/v1/api_versions` (clause 9.3) returning `ApiVersionInformation`, with no `Version` header and a token without a scope. The API name and major version come from the document's paths.
 2. **`oneof` without the guard.** The generator encodes a proto `oneof` with a "none set" guard that makes generated clients reject valid input.
    - A message that is only a `oneof` (`ImageSource`) becomes a `oneOf` of single-member variants (`ImageSourceHttp`, `ImageSourceRegistry`, ...) with `additionalProperties: false`, so clients accept exactly one member.
    - A `oneof` among other fields (`HttpSource` credentials next to `url`) stays as optional properties; the description says only one may be set, and the server enforces it.

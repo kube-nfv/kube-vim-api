@@ -93,7 +93,10 @@ service FlavourService {
 
   // Returns the compute flavours matching a filter.
   rpc ListFlavours(ListFlavoursRequest) returns (ListFlavoursResponse) {
-    option (google.api.http) = {get: "/flavour/v1/flavours"};
+    option (google.api.http) = {
+      get: "/flavour/v1/flavours"
+      response_body: "flavours"
+    };
     option (grpc.gateway.protoc_gen_openapiv3.options.openapiv3_operation) = {
       security: {
         schemes: {

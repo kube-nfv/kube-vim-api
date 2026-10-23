@@ -89,7 +89,10 @@ service ImageService {
 
   // Returns the software images matching a filter, including images of catalog backends.
   rpc ListImages(ListImagesRequest) returns (ListImagesResponse) {
-    option (google.api.http) = {get: "/image/v1/images"};
+    option (google.api.http) = {
+      get: "/image/v1/images"
+      response_body: "images"
+    };
     option (grpc.gateway.protoc_gen_openapiv3.options.openapiv3_operation) = {
       security: {
         schemes: {
@@ -148,7 +151,10 @@ service ImageService {
 
   // Returns the image source types this VIM accepts.
   rpc ListImageSources(ListImageSourcesRequest) returns (ListImageSourcesResponse) {
-    option (google.api.http) = {get: "/image/v1/imageSources"};
+    option (google.api.http) = {
+      get: "/image/v1/imageSources"
+      response_body: "sources"
+    };
     option (grpc.gateway.protoc_gen_openapiv3.options.openapiv3_operation) = {
       security: {
         schemes: {

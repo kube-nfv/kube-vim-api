@@ -1314,7 +1314,7 @@ const file_kubenfv_kubevim_network_v1_network_proto_rawDesc = "" +
 	"\x18NETWORK_TYPE_UNSPECIFIED\x10\x00\x12\x17\n" +
 	"\x13NETWORK_TYPE_GENEVE\x10\x01\x12\x15\n" +
 	"\x11NETWORK_TYPE_VLAN\x10\x02\x12\x15\n" +
-	"\x11NETWORK_TYPE_FLAT\x10\x032\xc5\x18\n" +
+	"\x11NETWORK_TYPE_FLAT\x10\x032\xd9\x18\n" +
 	"\x0eNetworkService\x12\xad\x02\n" +
 	"\rCreateNetwork\x120.kubenfv.kubevim.network.v1.CreateNetworkRequest\x1a#.kubenfv.kubevim.network.v1.Network\"\xc4\x01\xfaP#J!\n" +
 	"\x1f\n" +
@@ -1326,12 +1326,12 @@ const file_kubenfv_kubevim_network_v1_network_proto_rawDesc = "" +
 	"\x1c\n" +
 	"\x06oauth2\x12\x12\n" +
 	"\x10network:v1:query\xfa\x8b\x19q\n" +
-	"1IFA006 7.4.1.3 Query Virtualised Network Resource\x12<\b\x03\x10\x01\x1a6Query filtered by identifier, as a read by identifier.\x82\xd3\xe4\x93\x02#\x12!/network/v1/networks/{network_id}\x12\xe9\x01\n" +
-	"\fListNetworks\x12/.kubenfv.kubevim.network.v1.ListNetworksRequest\x1a0.kubenfv.kubevim.network.v1.ListNetworksResponse\"v\xfaP J\x1e\n" +
+	"1IFA006 7.4.1.3 Query Virtualised Network Resource\x12<\b\x03\x10\x01\x1a6Query filtered by identifier, as a read by identifier.\x82\xd3\xe4\x93\x02#\x12!/network/v1/networks/{network_id}\x12\xf4\x01\n" +
+	"\fListNetworks\x12/.kubenfv.kubevim.network.v1.ListNetworksRequest\x1a0.kubenfv.kubevim.network.v1.ListNetworksResponse\"\x80\x01\xfaP J\x1e\n" +
 	"\x1c\n" +
 	"\x06oauth2\x12\x12\n" +
 	"\x10network:v1:query\xfa\x8b\x193\n" +
-	"1IFA006 7.4.1.3 Query Virtualised Network Resource\x82\xd3\xe4\x93\x02\x16\x12\x14/network/v1/networks\x12\xb7\x02\n" +
+	"1IFA006 7.4.1.3 Query Virtualised Network Resource\x82\xd3\xe4\x93\x02 b\bnetworks\x12\x14/network/v1/networks\x12\xb7\x02\n" +
 	"\rUpdateNetwork\x120.kubenfv.kubevim.network.v1.UpdateNetworkRequest\x1a#.kubenfv.kubevim.network.v1.Network\"\xce\x01\xfaP!J\x1f\n" +
 	"\x1d\n" +
 	"\x06oauth2\x12\x13\n" +
@@ -1351,12 +1351,12 @@ const file_kubenfv_kubevim_network_v1_network_proto_rawDesc = "" +
 	"\x1c\n" +
 	"\x06oauth2\x12\x12\n" +
 	"\x10network:v1:query\xfa\x8b\x19q\n" +
-	"1IFA006 7.4.1.3 Query Virtualised Network Resource\x12<\b\x03\x10\x01\x1a6Query filtered by identifier, as a read by identifier.\x82\xd3\xe4\x93\x02!\x12\x1f/network/v1/subnets/{subnet_id}\x12\xb6\x02\n" +
-	"\vListSubnets\x12..kubenfv.kubevim.network.v1.ListSubnetsRequest\x1a/.kubenfv.kubevim.network.v1.ListSubnetsResponse\"\xc5\x01\xfaP J\x1e\n" +
+	"1IFA006 7.4.1.3 Query Virtualised Network Resource\x12<\b\x03\x10\x01\x1a6Query filtered by identifier, as a read by identifier.\x82\xd3\xe4\x93\x02!\x12\x1f/network/v1/subnets/{subnet_id}\x12\xbf\x02\n" +
+	"\vListSubnets\x12..kubenfv.kubevim.network.v1.ListSubnetsRequest\x1a/.kubenfv.kubevim.network.v1.ListSubnetsResponse\"\xce\x01\xfaP J\x1e\n" +
 	"\x1c\n" +
 	"\x06oauth2\x12\x12\n" +
 	"\x10network:v1:query\xfa\x8b\x19\x82\x01\n" +
-	"1IFA006 7.4.1.3 Query Virtualised Network Resource\x12M\b\x03\x10\x01\x1aGQuery per resource type; IFA returns all resource types from one query.\x82\xd3\xe4\x93\x02\x15\x12\x13/network/v1/subnets\x12\xb2\x02\n" +
+	"1IFA006 7.4.1.3 Query Virtualised Network Resource\x12M\b\x03\x10\x01\x1aGQuery per resource type; IFA returns all resource types from one query.\x82\xd3\xe4\x93\x02\x1eb\asubnets\x12\x13/network/v1/subnets\x12\xb2\x02\n" +
 	"\fUpdateSubnet\x12/.kubenfv.kubevim.network.v1.UpdateSubnetRequest\x1a\".kubenfv.kubevim.network.v1.Subnet\"\xcc\x01\xfaP!J\x1f\n" +
 	"\x1d\n" +
 	"\x06oauth2\x12\x13\n" +

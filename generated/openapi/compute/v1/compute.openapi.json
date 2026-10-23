@@ -2,7 +2,7 @@
   "components": {
     "parameters": {
       "Version": {
-        "description": "API version requested by the consumer (SOL 013 9.4).",
+        "description": "API version requested by the consumer, MAJOR.MINOR.PATCH (SOL 013 9.4); any version with the served major version is accepted.",
         "in": "header",
         "name": "Version",
         "required": true,
@@ -12,6 +12,42 @@
       }
     },
     "schemas": {
+      "ApiVersionInformation": {
+        "description": "API versions served under a URI prefix (SOL 013 9.3.3).",
+        "properties": {
+          "apiVersions": {
+            "items": {
+              "properties": {
+                "isDeprecated": {
+                  "type": "boolean"
+                },
+                "retirementDate": {
+                  "format": "date-time",
+                  "type": "string"
+                },
+                "version": {
+                  "description": "Version served, with the implementation suffix, e.g. 1.0.0-impl:kubenfv.io:kube-vim:0.4.0.",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "version"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          },
+          "uriPrefix": {
+            "description": "URI prefix of the API, e.g. /compute/v1.",
+            "type": "string"
+          }
+        },
+        "required": [
+          "uriPrefix",
+          "apiVersions"
+        ],
+        "type": "object"
+      },
       "ProblemDetails": {
         "description": "Error details (SOL 013 6.3, RFC 9457).",
         "properties": {
@@ -29,6 +65,7 @@
             "type": "string"
           },
           "type": {
+            "description": "https://kubevim.kubenfv.io/problems/<reason>, the error reason (ErrorReason in the protos) in kebab case, e.g. .../problems/resource-in-use; about:blank for authentication and authorisation errors. Clients should accept unknown types.",
             "format": "uri",
             "type": "string"
           }
@@ -389,54 +426,6 @@
         ],
         "type": "string"
       },
-      "kubenfv.kubevim.compute.v1.ListComputeSnapshotsResponse": {
-        "properties": {
-          "nextpage_opaque_marker": {
-            "description": "Marker of the next page; empty on the last page (SOL 013 5.4).",
-            "type": "string"
-          },
-          "snapshots": {
-            "description": "Snapshots matching the filter.",
-            "items": {
-              "$ref": "#/components/schemas/kubenfv.kubevim.compute.v1.ComputeSnapshot"
-            },
-            "type": "array"
-          }
-        },
-        "type": "object"
-      },
-      "kubenfv.kubevim.compute.v1.ListComputesResponse": {
-        "properties": {
-          "computes": {
-            "description": "Compute resources matching the filter.",
-            "items": {
-              "$ref": "#/components/schemas/kubenfv.kubevim.compute.v1.Compute"
-            },
-            "type": "array"
-          },
-          "nextpage_opaque_marker": {
-            "description": "Marker of the next page; empty on the last page (SOL 013 5.4).",
-            "type": "string"
-          }
-        },
-        "type": "object"
-      },
-      "kubenfv.kubevim.compute.v1.ListPlacementGroupsResponse": {
-        "properties": {
-          "nextpage_opaque_marker": {
-            "description": "Marker of the next page; empty on the last page (SOL 013 5.4).",
-            "type": "string"
-          },
-          "placementGroups": {
-            "description": "Groups matching the filter.",
-            "items": {
-              "$ref": "#/components/schemas/kubenfv.kubevim.compute.v1.PlacementGroup"
-            },
-            "type": "array"
-          }
-        },
-        "type": "object"
-      },
       "kubenfv.kubevim.compute.v1.NetworkInterfaceData": {
         "description": "A network interface requested for a compute resource.",
         "properties": {
@@ -744,6 +733,72 @@
   },
   "openapi": "3.1.0",
   "paths": {
+    "/compute/api_versions": {
+      "get": {
+        "operationId": "ComputeService_GetApiVersions",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiVersionInformation"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Error (SOL 013 6)."
+          }
+        },
+        "security": [
+          {
+            "oauth2": []
+          }
+        ],
+        "summary": "API versions this VIM serves (SOL 013 9.3)."
+      }
+    },
+    "/compute/v1/api_versions": {
+      "get": {
+        "operationId": "ComputeService_GetApiMajorVersions",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiVersionInformation"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Error (SOL 013 6)."
+          }
+        },
+        "security": [
+          {
+            "oauth2": []
+          }
+        ],
+        "summary": "API versions this VIM serves (SOL 013 9.3)."
+      }
+    },
     "/compute/v1/computes": {
       "get": {
         "operationId": "ComputeService_ListComputes",
@@ -773,14 +828,23 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/kubenfv.kubevim.compute.v1.ListComputesResponse"
+                  "items": {
+                    "$ref": "#/components/schemas/kubenfv.kubevim.compute.v1.Compute"
+                  },
+                  "type": "array"
                 }
               }
             },
             "description": "A successful response.",
             "headers": {
+              "Link": {
+                "description": "URI of the next page, rel=\"next\", carrying nextpage_opaque_marker; absent on the last page (SOL 013 5.4.2).",
+                "schema": {
+                  "type": "string"
+                }
+              },
               "Version": {
-                "description": "API version used (SOL 013 9.4).",
+                "description": "API version served, with the implementation suffix, e.g. 1.0.0-impl:kubenfv.io:kube-vim:0.4.0 (SOL 013 9.1.2, 9.4).",
                 "schema": {
                   "type": "string"
                 }
@@ -798,7 +862,7 @@
             "description": "Error (SOL 013 6).",
             "headers": {
               "Version": {
-                "description": "API version used (SOL 013 9.4).",
+                "description": "API version served, with the implementation suffix, e.g. 1.0.0-impl:kubenfv.io:kube-vim:0.4.0 (SOL 013 9.1.2, 9.4).",
                 "schema": {
                   "type": "string"
                 }
@@ -882,7 +946,7 @@
                 }
               },
               "Version": {
-                "description": "API version used (SOL 013 9.4).",
+                "description": "API version served, with the implementation suffix, e.g. 1.0.0-impl:kubenfv.io:kube-vim:0.4.0 (SOL 013 9.1.2, 9.4).",
                 "schema": {
                   "type": "string"
                 }
@@ -900,7 +964,7 @@
             "description": "Error (SOL 013 6).",
             "headers": {
               "Version": {
-                "description": "API version used (SOL 013 9.4).",
+                "description": "API version served, with the implementation suffix, e.g. 1.0.0-impl:kubenfv.io:kube-vim:0.4.0 (SOL 013 9.1.2, 9.4).",
                 "schema": {
                   "type": "string"
                 }
@@ -951,7 +1015,7 @@
             "description": "No Content",
             "headers": {
               "Version": {
-                "description": "API version used (SOL 013 9.4).",
+                "description": "API version served, with the implementation suffix, e.g. 1.0.0-impl:kubenfv.io:kube-vim:0.4.0 (SOL 013 9.1.2, 9.4).",
                 "schema": {
                   "type": "string"
                 }
@@ -969,7 +1033,7 @@
             "description": "Error (SOL 013 6).",
             "headers": {
               "Version": {
-                "description": "API version used (SOL 013 9.4).",
+                "description": "API version served, with the implementation suffix, e.g. 1.0.0-impl:kubenfv.io:kube-vim:0.4.0 (SOL 013 9.1.2, 9.4).",
                 "schema": {
                   "type": "string"
                 }
@@ -1017,7 +1081,7 @@
             "description": "A virtualised compute resource: a virtual machine.",
             "headers": {
               "Version": {
-                "description": "API version used (SOL 013 9.4).",
+                "description": "API version served, with the implementation suffix, e.g. 1.0.0-impl:kubenfv.io:kube-vim:0.4.0 (SOL 013 9.1.2, 9.4).",
                 "schema": {
                   "type": "string"
                 }
@@ -1035,7 +1099,7 @@
             "description": "Error (SOL 013 6).",
             "headers": {
               "Version": {
-                "description": "API version used (SOL 013 9.4).",
+                "description": "API version served, with the implementation suffix, e.g. 1.0.0-impl:kubenfv.io:kube-vim:0.4.0 (SOL 013 9.1.2, 9.4).",
                 "schema": {
                   "type": "string"
                 }
@@ -1093,7 +1157,7 @@
             "description": "A virtualised compute resource: a virtual machine.",
             "headers": {
               "Version": {
-                "description": "API version used (SOL 013 9.4).",
+                "description": "API version served, with the implementation suffix, e.g. 1.0.0-impl:kubenfv.io:kube-vim:0.4.0 (SOL 013 9.1.2, 9.4).",
                 "schema": {
                   "type": "string"
                 }
@@ -1111,7 +1175,7 @@
             "description": "Error (SOL 013 6).",
             "headers": {
               "Version": {
-                "description": "API version used (SOL 013 9.4).",
+                "description": "API version served, with the implementation suffix, e.g. 1.0.0-impl:kubenfv.io:kube-vim:0.4.0 (SOL 013 9.1.2, 9.4).",
                 "schema": {
                   "type": "string"
                 }
@@ -1180,7 +1244,7 @@
             "description": "A virtualised compute resource: a virtual machine.",
             "headers": {
               "Version": {
-                "description": "API version used (SOL 013 9.4).",
+                "description": "API version served, with the implementation suffix, e.g. 1.0.0-impl:kubenfv.io:kube-vim:0.4.0 (SOL 013 9.1.2, 9.4).",
                 "schema": {
                   "type": "string"
                 }
@@ -1198,7 +1262,7 @@
             "description": "Error (SOL 013 6).",
             "headers": {
               "Version": {
-                "description": "API version used (SOL 013 9.4).",
+                "description": "API version served, with the implementation suffix, e.g. 1.0.0-impl:kubenfv.io:kube-vim:0.4.0 (SOL 013 9.1.2, 9.4).",
                 "schema": {
                   "type": "string"
                 }
@@ -1267,7 +1331,7 @@
             "description": "A virtualised compute resource: a virtual machine.",
             "headers": {
               "Version": {
-                "description": "API version used (SOL 013 9.4).",
+                "description": "API version served, with the implementation suffix, e.g. 1.0.0-impl:kubenfv.io:kube-vim:0.4.0 (SOL 013 9.1.2, 9.4).",
                 "schema": {
                   "type": "string"
                 }
@@ -1285,7 +1349,7 @@
             "description": "Error (SOL 013 6).",
             "headers": {
               "Version": {
-                "description": "API version used (SOL 013 9.4).",
+                "description": "API version served, with the implementation suffix, e.g. 1.0.0-impl:kubenfv.io:kube-vim:0.4.0 (SOL 013 9.1.2, 9.4).",
                 "schema": {
                   "type": "string"
                 }
@@ -1345,7 +1409,7 @@
             "description": "A virtualised compute resource: a virtual machine.",
             "headers": {
               "Version": {
-                "description": "API version used (SOL 013 9.4).",
+                "description": "API version served, with the implementation suffix, e.g. 1.0.0-impl:kubenfv.io:kube-vim:0.4.0 (SOL 013 9.1.2, 9.4).",
                 "schema": {
                   "type": "string"
                 }
@@ -1363,7 +1427,7 @@
             "description": "Error (SOL 013 6).",
             "headers": {
               "Version": {
-                "description": "API version used (SOL 013 9.4).",
+                "description": "API version served, with the implementation suffix, e.g. 1.0.0-impl:kubenfv.io:kube-vim:0.4.0 (SOL 013 9.1.2, 9.4).",
                 "schema": {
                   "type": "string"
                 }
@@ -1432,7 +1496,7 @@
             "description": "A virtualised compute resource: a virtual machine.",
             "headers": {
               "Version": {
-                "description": "API version used (SOL 013 9.4).",
+                "description": "API version served, with the implementation suffix, e.g. 1.0.0-impl:kubenfv.io:kube-vim:0.4.0 (SOL 013 9.1.2, 9.4).",
                 "schema": {
                   "type": "string"
                 }
@@ -1450,7 +1514,7 @@
             "description": "Error (SOL 013 6).",
             "headers": {
               "Version": {
-                "description": "API version used (SOL 013 9.4).",
+                "description": "API version served, with the implementation suffix, e.g. 1.0.0-impl:kubenfv.io:kube-vim:0.4.0 (SOL 013 9.1.2, 9.4).",
                 "schema": {
                   "type": "string"
                 }
@@ -1519,7 +1583,7 @@
             "description": "A virtualised compute resource: a virtual machine.",
             "headers": {
               "Version": {
-                "description": "API version used (SOL 013 9.4).",
+                "description": "API version served, with the implementation suffix, e.g. 1.0.0-impl:kubenfv.io:kube-vim:0.4.0 (SOL 013 9.1.2, 9.4).",
                 "schema": {
                   "type": "string"
                 }
@@ -1537,7 +1601,7 @@
             "description": "Error (SOL 013 6).",
             "headers": {
               "Version": {
-                "description": "API version used (SOL 013 9.4).",
+                "description": "API version served, with the implementation suffix, e.g. 1.0.0-impl:kubenfv.io:kube-vim:0.4.0 (SOL 013 9.1.2, 9.4).",
                 "schema": {
                   "type": "string"
                 }
@@ -1596,14 +1660,23 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/kubenfv.kubevim.compute.v1.ListComputeSnapshotsResponse"
+                  "items": {
+                    "$ref": "#/components/schemas/kubenfv.kubevim.compute.v1.ComputeSnapshot"
+                  },
+                  "type": "array"
                 }
               }
             },
             "description": "A successful response.",
             "headers": {
+              "Link": {
+                "description": "URI of the next page, rel=\"next\", carrying nextpage_opaque_marker; absent on the last page (SOL 013 5.4.2).",
+                "schema": {
+                  "type": "string"
+                }
+              },
               "Version": {
-                "description": "API version used (SOL 013 9.4).",
+                "description": "API version served, with the implementation suffix, e.g. 1.0.0-impl:kubenfv.io:kube-vim:0.4.0 (SOL 013 9.1.2, 9.4).",
                 "schema": {
                   "type": "string"
                 }
@@ -1621,7 +1694,7 @@
             "description": "Error (SOL 013 6).",
             "headers": {
               "Version": {
-                "description": "API version used (SOL 013 9.4).",
+                "description": "API version served, with the implementation suffix, e.g. 1.0.0-impl:kubenfv.io:kube-vim:0.4.0 (SOL 013 9.1.2, 9.4).",
                 "schema": {
                   "type": "string"
                 }
@@ -1696,7 +1769,7 @@
                 }
               },
               "Version": {
-                "description": "API version used (SOL 013 9.4).",
+                "description": "API version served, with the implementation suffix, e.g. 1.0.0-impl:kubenfv.io:kube-vim:0.4.0 (SOL 013 9.1.2, 9.4).",
                 "schema": {
                   "type": "string"
                 }
@@ -1714,7 +1787,7 @@
             "description": "Error (SOL 013 6).",
             "headers": {
               "Version": {
-                "description": "API version used (SOL 013 9.4).",
+                "description": "API version served, with the implementation suffix, e.g. 1.0.0-impl:kubenfv.io:kube-vim:0.4.0 (SOL 013 9.1.2, 9.4).",
                 "schema": {
                   "type": "string"
                 }
@@ -1766,7 +1839,7 @@
             "description": "No Content",
             "headers": {
               "Version": {
-                "description": "API version used (SOL 013 9.4).",
+                "description": "API version served, with the implementation suffix, e.g. 1.0.0-impl:kubenfv.io:kube-vim:0.4.0 (SOL 013 9.1.2, 9.4).",
                 "schema": {
                   "type": "string"
                 }
@@ -1784,7 +1857,7 @@
             "description": "Error (SOL 013 6).",
             "headers": {
               "Version": {
-                "description": "API version used (SOL 013 9.4).",
+                "description": "API version served, with the implementation suffix, e.g. 1.0.0-impl:kubenfv.io:kube-vim:0.4.0 (SOL 013 9.1.2, 9.4).",
                 "schema": {
                   "type": "string"
                 }
@@ -1841,7 +1914,7 @@
             "description": "A snapshot of a compute resource (KubeVirt VirtualMachineSnapshot).",
             "headers": {
               "Version": {
-                "description": "API version used (SOL 013 9.4).",
+                "description": "API version served, with the implementation suffix, e.g. 1.0.0-impl:kubenfv.io:kube-vim:0.4.0 (SOL 013 9.1.2, 9.4).",
                 "schema": {
                   "type": "string"
                 }
@@ -1859,7 +1932,7 @@
             "description": "Error (SOL 013 6).",
             "headers": {
               "Version": {
-                "description": "API version used (SOL 013 9.4).",
+                "description": "API version served, with the implementation suffix, e.g. 1.0.0-impl:kubenfv.io:kube-vim:0.4.0 (SOL 013 9.1.2, 9.4).",
                 "schema": {
                   "type": "string"
                 }
@@ -1928,7 +2001,7 @@
             "description": "A virtualised compute resource: a virtual machine.",
             "headers": {
               "Version": {
-                "description": "API version used (SOL 013 9.4).",
+                "description": "API version served, with the implementation suffix, e.g. 1.0.0-impl:kubenfv.io:kube-vim:0.4.0 (SOL 013 9.1.2, 9.4).",
                 "schema": {
                   "type": "string"
                 }
@@ -1946,7 +2019,7 @@
             "description": "Error (SOL 013 6).",
             "headers": {
               "Version": {
-                "description": "API version used (SOL 013 9.4).",
+                "description": "API version served, with the implementation suffix, e.g. 1.0.0-impl:kubenfv.io:kube-vim:0.4.0 (SOL 013 9.1.2, 9.4).",
                 "schema": {
                   "type": "string"
                 }
@@ -1996,14 +2069,23 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/kubenfv.kubevim.compute.v1.ListPlacementGroupsResponse"
+                  "items": {
+                    "$ref": "#/components/schemas/kubenfv.kubevim.compute.v1.PlacementGroup"
+                  },
+                  "type": "array"
                 }
               }
             },
             "description": "A successful response.",
             "headers": {
+              "Link": {
+                "description": "URI of the next page, rel=\"next\", carrying nextpage_opaque_marker; absent on the last page (SOL 013 5.4.2).",
+                "schema": {
+                  "type": "string"
+                }
+              },
               "Version": {
-                "description": "API version used (SOL 013 9.4).",
+                "description": "API version served, with the implementation suffix, e.g. 1.0.0-impl:kubenfv.io:kube-vim:0.4.0 (SOL 013 9.1.2, 9.4).",
                 "schema": {
                   "type": "string"
                 }
@@ -2021,7 +2103,7 @@
             "description": "Error (SOL 013 6).",
             "headers": {
               "Version": {
-                "description": "API version used (SOL 013 9.4).",
+                "description": "API version served, with the implementation suffix, e.g. 1.0.0-impl:kubenfv.io:kube-vim:0.4.0 (SOL 013 9.1.2, 9.4).",
                 "schema": {
                   "type": "string"
                 }
@@ -2090,7 +2172,7 @@
                 }
               },
               "Version": {
-                "description": "API version used (SOL 013 9.4).",
+                "description": "API version served, with the implementation suffix, e.g. 1.0.0-impl:kubenfv.io:kube-vim:0.4.0 (SOL 013 9.1.2, 9.4).",
                 "schema": {
                   "type": "string"
                 }
@@ -2108,7 +2190,7 @@
             "description": "Error (SOL 013 6).",
             "headers": {
               "Version": {
-                "description": "API version used (SOL 013 9.4).",
+                "description": "API version served, with the implementation suffix, e.g. 1.0.0-impl:kubenfv.io:kube-vim:0.4.0 (SOL 013 9.1.2, 9.4).",
                 "schema": {
                   "type": "string"
                 }
@@ -2151,7 +2233,7 @@
             "description": "No Content",
             "headers": {
               "Version": {
-                "description": "API version used (SOL 013 9.4).",
+                "description": "API version served, with the implementation suffix, e.g. 1.0.0-impl:kubenfv.io:kube-vim:0.4.0 (SOL 013 9.1.2, 9.4).",
                 "schema": {
                   "type": "string"
                 }
@@ -2169,7 +2251,7 @@
             "description": "Error (SOL 013 6).",
             "headers": {
               "Version": {
-                "description": "API version used (SOL 013 9.4).",
+                "description": "API version served, with the implementation suffix, e.g. 1.0.0-impl:kubenfv.io:kube-vim:0.4.0 (SOL 013 9.1.2, 9.4).",
                 "schema": {
                   "type": "string"
                 }
@@ -2217,7 +2299,7 @@
             "description": "A group of compute resources placed together or apart (decision 0005).",
             "headers": {
               "Version": {
-                "description": "API version used (SOL 013 9.4).",
+                "description": "API version served, with the implementation suffix, e.g. 1.0.0-impl:kubenfv.io:kube-vim:0.4.0 (SOL 013 9.1.2, 9.4).",
                 "schema": {
                   "type": "string"
                 }
@@ -2235,7 +2317,7 @@
             "description": "Error (SOL 013 6).",
             "headers": {
               "Version": {
-                "description": "API version used (SOL 013 9.4).",
+                "description": "API version served, with the implementation suffix, e.g. 1.0.0-impl:kubenfv.io:kube-vim:0.4.0 (SOL 013 9.1.2, 9.4).",
                 "schema": {
                   "type": "string"
                 }

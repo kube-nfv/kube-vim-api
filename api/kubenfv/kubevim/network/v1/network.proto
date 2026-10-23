@@ -103,7 +103,10 @@ service NetworkService {
 
   // Returns the networks matching a filter.
   rpc ListNetworks(ListNetworksRequest) returns (ListNetworksResponse) {
-    option (google.api.http) = {get: "/network/v1/networks"};
+    option (google.api.http) = {
+      get: "/network/v1/networks"
+      response_body: "networks"
+    };
     option (grpc.gateway.protoc_gen_openapiv3.options.openapiv3_operation) = {
       security: {
         schemes: {
@@ -207,7 +210,10 @@ service NetworkService {
 
   // Returns the subnets matching a filter.
   rpc ListSubnets(ListSubnetsRequest) returns (ListSubnetsResponse) {
-    option (google.api.http) = {get: "/network/v1/subnets"};
+    option (google.api.http) = {
+      get: "/network/v1/subnets"
+      response_body: "subnets"
+    };
     option (grpc.gateway.protoc_gen_openapiv3.options.openapiv3_operation) = {
       security: {
         schemes: {

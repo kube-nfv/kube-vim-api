@@ -698,7 +698,7 @@ const file_kubenfv_kubevim_flavour_v1_flavour_proto_rawDesc = "" +
 	"\x14DeleteFlavourRequest\x12n\n" +
 	"\n" +
 	"flavour_id\x18\x01 \x01(\tBO\xe2A\x01\x02\xbaH\x05r\x03\xb0\x01\x01\xfa\x8b\x19?\n" +
-	"=IFA006 7.3.4.4.2 DeleteComputeFlavourRequest.computeFlavourIdR\tflavourId2\x8c\b\n" +
+	"=IFA006 7.3.4.4.2 DeleteComputeFlavourRequest.computeFlavourIdR\tflavourId2\x96\b\n" +
 	"\x0eFlavourService\x12\xd6\x01\n" +
 	"\rCreateFlavour\x120.kubenfv.kubevim.flavour.v1.CreateFlavourRequest\x1a#.kubenfv.kubevim.flavour.v1.Flavour\"n\xfaP!J\x1f\n" +
 	"\x1d\n" +
@@ -710,12 +710,12 @@ const file_kubenfv_kubevim_flavour_v1_flavour_proto_rawDesc = "" +
 	"\x1c\n" +
 	"\x06oauth2\x12\x12\n" +
 	"\x10flavour:v1:query\xfa\x8b\x19s\n" +
-	"$IFA006 7.3.4.3 Query Compute Flavour\x12K\b\x03\x10\x01\x1aEQuery Compute Flavour filtered by flavourId, as a read by identifier.\x82\xd3\xe4\x93\x02#\x12!/flavour/v1/flavours/{flavour_id}\x12\xdc\x01\n" +
-	"\fListFlavours\x12/.kubenfv.kubevim.flavour.v1.ListFlavoursRequest\x1a0.kubenfv.kubevim.flavour.v1.ListFlavoursResponse\"i\xfaP J\x1e\n" +
+	"$IFA006 7.3.4.3 Query Compute Flavour\x12K\b\x03\x10\x01\x1aEQuery Compute Flavour filtered by flavourId, as a read by identifier.\x82\xd3\xe4\x93\x02#\x12!/flavour/v1/flavours/{flavour_id}\x12\xe6\x01\n" +
+	"\fListFlavours\x12/.kubenfv.kubevim.flavour.v1.ListFlavoursRequest\x1a0.kubenfv.kubevim.flavour.v1.ListFlavoursResponse\"s\xfaP J\x1e\n" +
 	"\x1c\n" +
 	"\x06oauth2\x12\x12\n" +
 	"\x10flavour:v1:query\xfa\x8b\x19&\n" +
-	"$IFA006 7.3.4.3 Query Compute Flavour\x82\xd3\xe4\x93\x02\x16\x12\x14/flavour/v1/flavours\x12\xd3\x01\n" +
+	"$IFA006 7.3.4.3 Query Compute Flavour\x82\xd3\xe4\x93\x02 b\bflavours\x12\x14/flavour/v1/flavours\x12\xd3\x01\n" +
 	"\rDeleteFlavour\x120.kubenfv.kubevim.flavour.v1.DeleteFlavourRequest\x1a\x16.google.protobuf.Empty\"x\xfaP!J\x1f\n" +
 	"\x1d\n" +
 	"\x06oauth2\x12\x13\n" +

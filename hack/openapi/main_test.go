@@ -113,6 +113,39 @@ func TestOneofAmongFields(t *testing.T) {
 	}
 }
 
+func TestLinkHeader(t *testing.T) {
+	doc := load(t, filepath.Join(process(t), "compute/v1/compute_service.openapi.json"))
+	get(t, doc, "paths", "/compute/v1/computes", "get", "responses", "200", "headers", "Link")
+	if _, ok := get(t, doc, "paths", "/compute/v1/computes/{compute_id}", "get", "responses", "200", "headers").(map[string]any)["Link"]; ok {
+		t.Error("Get has a Link header; only paged Lists should")
+	}
+}
+
+func TestApiVersions(t *testing.T) {
+	out := process(t)
+	doc := load(t, filepath.Join(out, "compute/v1/compute_service.openapi.json"))
+	for path, id := range map[string]string{
+		"/compute/api_versions":    "ComputeService_GetApiVersions",
+		"/compute/v1/api_versions": "ComputeService_GetApiMajorVersions",
+	} {
+		op := get(t, doc, "paths", path, "get").(map[string]any)
+		if op["operationId"] != id {
+			t.Errorf("%s: operationId = %v, want %s", path, op["operationId"], id)
+		}
+		if op["parameters"] != nil {
+			t.Errorf("%s: parameters = %v, want none (no Version header)", path, op["parameters"])
+		}
+		if ref := get(t, op, "responses", "200", "content", "application/json", "schema", "$ref"); ref != "#/components/schemas/ApiVersionInformation" {
+			t.Errorf("%s: response schema = %v", path, ref)
+		}
+	}
+	get(t, doc, "components", "schemas", "ApiVersionInformation", "properties", "apiVersions")
+	bundled := load(t, filepath.Join(out, bundleFile))
+	if id := get(t, bundled, "paths", "/image/api_versions", "get", "operationId"); id != "Image_GetApiVersions" {
+		t.Errorf("bundled operationId = %v, want Image_GetApiVersions", id)
+	}
+}
+
 func TestBundle(t *testing.T) {
 	out := process(t)
 	doc := load(t, filepath.Join(out, bundleFile))

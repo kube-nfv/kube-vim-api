@@ -110,7 +110,10 @@ service StorageService {
 
   // Returns the volumes matching a filter; the own disks of compute resources are not volumes (see Compute.disks).
   rpc ListVolumes(ListVolumesRequest) returns (ListVolumesResponse) {
-    option (google.api.http) = {get: "/storage/v1/volumes"};
+    option (google.api.http) = {
+      get: "/storage/v1/volumes"
+      response_body: "volumes"
+    };
     option (grpc.gateway.protoc_gen_openapiv3.options.openapiv3_operation) = {
       security: {
         schemes: {
@@ -254,7 +257,10 @@ service StorageService {
 
   // Returns the snapshots of a volume, or of all volumes with volume_id "-".
   rpc ListVolumeSnapshots(ListVolumeSnapshotsRequest) returns (ListVolumeSnapshotsResponse) {
-    option (google.api.http) = {get: "/storage/v1/volumes/{volume_id}/snapshots"};
+    option (google.api.http) = {
+      get: "/storage/v1/volumes/{volume_id}/snapshots"
+      response_body: "snapshots"
+    };
     option (grpc.gateway.protoc_gen_openapiv3.options.openapiv3_operation) = {
       security: {
         schemes: {

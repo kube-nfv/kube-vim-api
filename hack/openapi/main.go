@@ -47,7 +47,9 @@ func run(in, out, version string) error {
 		if err != nil {
 			return err
 		}
-		applyConventions(doc)
+		if err := applyConventions(doc); err != nil {
+			return fmt.Errorf("%s: %w", rel, err)
+		}
 		if err := rewriteOneofs(doc); err != nil {
 			return fmt.Errorf("%s: %w", rel, err)
 		}

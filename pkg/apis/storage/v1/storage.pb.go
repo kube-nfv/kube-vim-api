@@ -1016,7 +1016,7 @@ const file_kubenfv_kubevim_storage_v1_storage_proto_rawDesc = "" +
 	"\x1bRevertVolumeSnapshotRequest\x12)\n" +
 	"\tvolume_id\x18\x01 \x01(\tB\f\xe2A\x01\x02\xbaH\x05r\x03\xb0\x01\x01R\bvolumeId\x12-\n" +
 	"\vsnapshot_id\x18\x02 \x01(\tB\f\xe2A\x01\x02\xbaH\x05r\x03\xb0\x01\x01R\n" +
-	"snapshotId2\x97\x1d\n" +
+	"snapshotId2\xac\x1d\n" +
 	"\x0eStorageService\x12\xe2\x01\n" +
 	"\fCreateVolume\x12/.kubenfv.kubevim.storage.v1.CreateVolumeRequest\x1a!.kubenfv.kubevim.common.v1.Volume\"~\xfaP#J!\n" +
 	"\x1f\n" +
@@ -1027,12 +1027,12 @@ const file_kubenfv_kubevim_storage_v1_storage_proto_rawDesc = "" +
 	"\x1c\n" +
 	"\x06oauth2\x12\x12\n" +
 	"\x10storage:v1:query\xfa\x8b\x19p\n" +
-	"1IFA006 7.5.1.3 Query Virtualised Storage Resource\x12;\b\x03\x10\x01\x1a5Query filtered by storageId, as a read by identifier.\x82\xd3\xe4\x93\x02!\x12\x1f/storage/v1/volumes/{volume_id}\x12\xe5\x01\n" +
-	"\vListVolumes\x12..kubenfv.kubevim.storage.v1.ListVolumesRequest\x1a/.kubenfv.kubevim.storage.v1.ListVolumesResponse\"u\xfaP J\x1e\n" +
+	"1IFA006 7.5.1.3 Query Virtualised Storage Resource\x12;\b\x03\x10\x01\x1a5Query filtered by storageId, as a read by identifier.\x82\xd3\xe4\x93\x02!\x12\x1f/storage/v1/volumes/{volume_id}\x12\xee\x01\n" +
+	"\vListVolumes\x12..kubenfv.kubevim.storage.v1.ListVolumesRequest\x1a/.kubenfv.kubevim.storage.v1.ListVolumesResponse\"~\xfaP J\x1e\n" +
 	"\x1c\n" +
 	"\x06oauth2\x12\x12\n" +
 	"\x10storage:v1:query\xfa\x8b\x193\n" +
-	"1IFA006 7.5.1.3 Query Virtualised Storage Resource\x82\xd3\xe4\x93\x02\x15\x12\x13/storage/v1/volumes\x12\xbe\x02\n" +
+	"1IFA006 7.5.1.3 Query Virtualised Storage Resource\x82\xd3\xe4\x93\x02\x1eb\avolumes\x12\x13/storage/v1/volumes\x12\xbe\x02\n" +
 	"\fUpdateVolume\x12/.kubenfv.kubevim.storage.v1.UpdateVolumeRequest\x1a!.kubenfv.kubevim.common.v1.Volume\"\xd9\x01\xfaP!J\x1f\n" +
 	"\x1d\n" +
 	"\x06oauth2\x12\x13\n" +
@@ -1061,11 +1061,11 @@ const file_kubenfv_kubevim_storage_v1_storage_proto_rawDesc = "" +
 	"\x11GetVolumeSnapshot\x124.kubenfv.kubevim.storage.v1.GetVolumeSnapshotRequest\x1a*.kubenfv.kubevim.storage.v1.VolumeSnapshot\"\x8d\x01\xfaP J\x1e\n" +
 	"\x1c\n" +
 	"\x06oauth2\x12\x12\n" +
-	"\x10storage:v1:query\xfa\x8b\x19'\x12%\b\x01\x10\x01\x1a\x1fIFA cannot read snapshots back.\x82\xd3\xe4\x93\x029\x127/storage/v1/volumes/{volume_id}/snapshots/{snapshot_id}\x12\x82\x02\n" +
-	"\x13ListVolumeSnapshots\x126.kubenfv.kubevim.storage.v1.ListVolumeSnapshotsRequest\x1a7.kubenfv.kubevim.storage.v1.ListVolumeSnapshotsResponse\"z\xfaP J\x1e\n" +
+	"\x10storage:v1:query\xfa\x8b\x19'\x12%\b\x01\x10\x01\x1a\x1fIFA cannot read snapshots back.\x82\xd3\xe4\x93\x029\x127/storage/v1/volumes/{volume_id}/snapshots/{snapshot_id}\x12\x8e\x02\n" +
+	"\x13ListVolumeSnapshots\x126.kubenfv.kubevim.storage.v1.ListVolumeSnapshotsRequest\x1a7.kubenfv.kubevim.storage.v1.ListVolumeSnapshotsResponse\"\x85\x01\xfaP J\x1e\n" +
 	"\x1c\n" +
 	"\x06oauth2\x12\x12\n" +
-	"\x10storage:v1:query\xfa\x8b\x19\"\x12 \b\x01\x10\x01\x1a\x1aIFA cannot list snapshots.\x82\xd3\xe4\x93\x02+\x12)/storage/v1/volumes/{volume_id}/snapshots\x12\xf2\x02\n" +
+	"\x10storage:v1:query\xfa\x8b\x19\"\x12 \b\x01\x10\x01\x1a\x1aIFA cannot list snapshots.\x82\xd3\xe4\x93\x026b\tsnapshots\x12)/storage/v1/volumes/{volume_id}/snapshots\x12\xf2\x02\n" +
 	"\x14DeleteVolumeSnapshot\x127.kubenfv.kubevim.storage.v1.DeleteVolumeSnapshotRequest\x1a\x16.google.protobuf.Empty\"\x88\x02\xfaP\"J \n" +
 	"\x1e\n" +
 	"\x06oauth2\x12\x14\n" +
