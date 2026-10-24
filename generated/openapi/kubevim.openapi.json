@@ -757,7 +757,7 @@
             "readOnly": true
           },
           "providerNetwork": {
-            "description": "Name of a provider network declared in the VIM configuration, which also sets its backend\n(Kube-OVN or SR-IOV); required for VLAN and FLAT networks, absent for GENEVE.",
+            "description": "Name of a provider network known to the VIM; required for VLAN and FLAT networks, absent for GENEVE.",
             "type": "string"
           },
           "segmentationId": {
@@ -875,7 +875,7 @@
         "type": "string"
       },
       "PlacementGroup": {
-        "description": "A group of compute resources placed together or apart (decision 0005).",
+        "description": "A group of compute resources placed together or apart.",
         "properties": {
           "computeIds": {
             "description": "Compute resources in the group.",
@@ -2639,7 +2639,7 @@
                 }
               }
             },
-            "description": "A group of compute resources placed together or apart (decision 0005).",
+            "description": "A group of compute resources placed together or apart.",
             "headers": {
               "Location": {
                 "description": "URI of the created resource.",
@@ -2737,7 +2737,7 @@
                 }
               }
             },
-            "description": "A group of compute resources placed together or apart (decision 0005)."
+            "description": "A group of compute resources placed together or apart."
           },
           "default": {
             "content": {

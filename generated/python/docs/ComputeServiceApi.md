@@ -324,7 +324,7 @@ Name | Type | Description  | Notes
 
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-**201** | A group of compute resources placed together or apart (decision 0005). |  * Location - URI of the created resource. <br>  |
+**201** | A group of compute resources placed together or apart. |  * Location - URI of the created resource. <br>  |
 **0** | Error (SOL 013 6). |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
@@ -842,7 +842,7 @@ Name | Type | Description  | Notes
 
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-**200** | A group of compute resources placed together or apart (decision 0005). |  -  |
+**200** | A group of compute resources placed together or apart. |  -  |
 **0** | Error (SOL 013 6). |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)

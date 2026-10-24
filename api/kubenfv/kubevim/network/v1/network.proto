@@ -330,8 +330,7 @@ message Network {
       }
     }
   ];
-  // Name of a provider network declared in the VIM configuration, which also sets its backend
-  // (Kube-OVN or SR-IOV); required for VLAN and FLAT networks, absent for GENEVE.
+  // Name of a provider network known to the VIM; required for VLAN and FLAT networks, absent for GENEVE.
   string provider_network = 5 [
     (google.api.field_behavior) = OPTIONAL,
     (google.api.field_behavior) = IMMUTABLE,

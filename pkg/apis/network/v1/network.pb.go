@@ -95,8 +95,7 @@ type Network struct {
 	SubnetIds []string `protobuf:"bytes,3,rep,name=subnet_ids,json=subnetIds,proto3" json:"subnet_ids,omitempty"`
 	// How traffic of the network is separated.
 	NetworkType NetworkType `protobuf:"varint,4,opt,name=network_type,json=networkType,proto3,enum=kubenfv.kubevim.network.v1.NetworkType" json:"network_type,omitempty"`
-	// Name of a provider network declared in the VIM configuration, which also sets its backend
-	// (Kube-OVN or SR-IOV); required for VLAN and FLAT networks, absent for GENEVE.
+	// Name of a provider network known to the VIM; required for VLAN and FLAT networks, absent for GENEVE.
 	ProviderNetwork string `protobuf:"bytes,5,opt,name=provider_network,json=providerNetwork,proto3" json:"provider_network,omitempty"`
 	// VLAN ID of a VLAN network; absent for GENEVE and FLAT networks.
 	SegmentationId uint32 `protobuf:"varint,6,opt,name=segmentation_id,json=segmentationId,proto3" json:"segmentation_id,omitempty"`

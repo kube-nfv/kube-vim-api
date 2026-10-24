@@ -489,7 +489,7 @@ message VolumeSnapshot {
     departure: {
       kind: KIND_DEVIATION
       translates: true
-      rationale: "IFA handles snapshots through Operate with a snapshotId in the data maps (decision 0007)."
+      rationale: "IFA handles snapshots through Operate with a snapshotId in the data maps."
     }
   };
 

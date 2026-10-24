@@ -28,7 +28,7 @@ from pydantic_core import to_jsonable_python
 
 class PlacementGroup(BaseModel):
     """
-    A group of compute resources placed together or apart (decision 0005).
+    A group of compute resources placed together or apart.
     """ # noqa: E501
     compute_ids: Optional[List[StrictStr]] = Field(default=None, description="Compute resources in the group.", alias="computeIds")
     enforcement: Optional[PlacementEnforcement] = Field(default=None, description="Whether the policy must hold or is applied when possible; PLACEMENT_ENFORCEMENT_REQUIRED when unset.")

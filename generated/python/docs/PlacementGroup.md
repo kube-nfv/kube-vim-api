@@ -1,6 +1,6 @@
 # PlacementGroup
 
-A group of compute resources placed together or apart (decision 0005).
+A group of compute resources placed together or apart.
 
 ## Properties
 

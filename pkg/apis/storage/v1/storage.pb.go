@@ -959,7 +959,7 @@ const file_kubenfv_kubevim_storage_v1_storage_proto_rawDesc = "" +
 	"\tvolume_id\x18\x01 \x01(\tB\x86\x01\xe2A\x01\x02\xbaH\x05r\x03\xb0\x01\x01\xfa\x8b\x19v\n" +
 	"0IFA006 7.5.1.8.2 MigrateStorageRequest.storageId\x12B\b\x03\x10\x01\x1a<Renamed to the resource name; identifiers are <resource>_id.R\bvolumeId\x12\xd1\x01\n" +
 	"\rstorage_class\x18\x02 \x01(\tB\xab\x01\xe2A\x01\x02\xbaH)r'\x10\x01\x18\xfd\x012 ^[a-z0-9]([-a-z0-9.]*[a-z0-9])?$\xfa\x8b\x19w\n" +
-	":IFA006 7.5.1.8.2 MigrateStorageRequest.migrationConstraint\x129\b\x03\x10\x01\x1a3The migration constraint is a target storage class.R\fstorageClass\"\x99\x04\n" +
+	":IFA006 7.5.1.8.2 MigrateStorageRequest.migrationConstraint\x129\b\x03\x10\x01\x1a3The migration constraint is a target storage class.R\fstorageClass\"\x89\x04\n" +
 	"\x0eVolumeSnapshot\x12%\n" +
 	"\vsnapshot_id\x18\x01 \x01(\tB\x04\xe2A\x01\x03R\n" +
 	"snapshotId\x12)\n" +
@@ -971,7 +971,7 @@ const file_kubenfv_kubevim_storage_v1_storage_proto_rawDesc = "" +
 	"\bmetadata\x18\x06 \x03(\v28.kubenfv.kubevim.storage.v1.VolumeSnapshot.MetadataEntryB\x0e\xe2A\x01\x01\xbaH\a\x9a\x01\x04\xf8\x8b\x19\x01R\bmetadata\x1a;\n" +
 	"\rMetadataEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01:e\xfa\x8b\x19a\x12_\b\x03\x10\x01\x1aYIFA handles snapshots through Operate with a snapshotId in the data maps (decision 0007).\"\x96\x01\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01:U\xfa\x8b\x19Q\x12O\b\x03\x10\x01\x1aIIFA handles snapshots through Operate with a snapshotId in the data maps.\"\x96\x01\n" +
 	"\x1bCreateVolumeSnapshotRequest\x12)\n" +
 	"\tvolume_id\x18\x01 \x01(\tB\f\xe2A\x01\x02\xbaH\x05r\x03\xb0\x01\x01R\bvolumeId\x12L\n" +
 	"\bsnapshot\x18\x02 \x01(\v2*.kubenfv.kubevim.storage.v1.VolumeSnapshotB\x04\xe2A\x01\x01R\bsnapshot\"t\n" +

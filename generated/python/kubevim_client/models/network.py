@@ -37,7 +37,7 @@ class Network(BaseModel):
     network_name: Optional[StrictStr] = Field(default=None, description="Name of the network, given by the consumer; not unique.", alias="networkName")
     network_type: NetworkType = Field(description="How traffic of the network is separated.", alias="networkType")
     operational_state: Optional[OperationalState] = Field(default=None, description="Operational state of the network.", alias="operationalState")
-    provider_network: Optional[StrictStr] = Field(default=None, description="Name of a provider network declared in the VIM configuration, which also sets its backend (Kube-OVN or SR-IOV); required for VLAN and FLAT networks, absent for GENEVE.", alias="providerNetwork")
+    provider_network: Optional[StrictStr] = Field(default=None, description="Name of a provider network known to the VIM; required for VLAN and FLAT networks, absent for GENEVE.", alias="providerNetwork")
     segmentation_id: Optional[StrictInt] = Field(default=None, description="VLAN ID of a VLAN network; absent for GENEVE and FLAT networks.", alias="segmentationId")
     subnet_ids: Optional[List[StrictStr]] = Field(default=None, description="Subnets of the network: at most one per IP version.", alias="subnetIds")
     __properties: ClassVar[List[str]] = ["layer3Attributes", "metadata", "mtu", "networkId", "networkName", "networkType", "operationalState", "providerNetwork", "segmentationId", "subnetIds"]

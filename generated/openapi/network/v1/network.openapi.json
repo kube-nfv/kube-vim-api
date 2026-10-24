@@ -111,7 +111,7 @@
             "readOnly": true
           },
           "providerNetwork": {
-            "description": "Name of a provider network declared in the VIM configuration, which also sets its backend\n(Kube-OVN or SR-IOV); required for VLAN and FLAT networks, absent for GENEVE.",
+            "description": "Name of a provider network known to the VIM; required for VLAN and FLAT networks, absent for GENEVE.",
             "type": "string"
           },
           "segmentationId": {

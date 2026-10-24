@@ -13,7 +13,7 @@ Name | Type | Description | Notes
 **network_name** | **str** | Name of the network, given by the consumer; not unique. | [optional] 
 **network_type** | [**NetworkType**](NetworkType.md) | How traffic of the network is separated. | 
 **operational_state** | [**OperationalState**](OperationalState.md) | Operational state of the network. | [optional] [readonly] 
-**provider_network** | **str** | Name of a provider network declared in the VIM configuration, which also sets its backend (Kube-OVN or SR-IOV); required for VLAN and FLAT networks, absent for GENEVE. | [optional] 
+**provider_network** | **str** | Name of a provider network known to the VIM; required for VLAN and FLAT networks, absent for GENEVE. | [optional] 
 **segmentation_id** | **int** | VLAN ID of a VLAN network; absent for GENEVE and FLAT networks. | [optional] 
 **subnet_ids** | **List[str]** | Subnets of the network: at most one per IP version. | [optional] [readonly] 
 

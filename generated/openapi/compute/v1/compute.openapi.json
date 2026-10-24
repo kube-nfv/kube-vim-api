@@ -439,7 +439,7 @@
         "type": "string"
       },
       "kubenfv.kubevim.compute.v1.PlacementGroup": {
-        "description": "A group of compute resources placed together or apart (decision 0005).",
+        "description": "A group of compute resources placed together or apart.",
         "properties": {
           "computeIds": {
             "description": "Compute resources in the group.",
@@ -1723,7 +1723,7 @@
                 }
               }
             },
-            "description": "A group of compute resources placed together or apart (decision 0005).",
+            "description": "A group of compute resources placed together or apart.",
             "headers": {
               "Location": {
                 "description": "URI of the created resource.",
@@ -1821,7 +1821,7 @@
                 }
               }
             },
-            "description": "A group of compute resources placed together or apart (decision 0005)."
+            "description": "A group of compute resources placed together or apart."
           },
           "default": {
             "content": {

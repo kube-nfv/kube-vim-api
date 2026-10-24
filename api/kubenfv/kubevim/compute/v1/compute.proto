@@ -405,7 +405,7 @@ service ComputeService {
       departure: {
         kind: KIND_DEVIATION
         translates: true
-        rationale: "A placement group with a policy instead of an IFA affinity group (decision 0005)."
+        rationale: "A placement group with a policy instead of an IFA affinity group."
       }
     };
   }
@@ -603,7 +603,7 @@ message Compute {
       departure: {
         kind: KIND_EXTENSION
         translates: true
-        rationale: "Placement groups replace IFA affinity constraints (decision 0005)."
+        rationale: "Placement groups replace IFA affinity constraints."
       }
     }
   ];
@@ -1233,7 +1233,7 @@ message ComputeSnapshot {
     departure: {
       kind: KIND_DEVIATION
       translates: true
-      rationale: "IFA handles snapshots through Operate with a snapshotId in the data maps (decision 0007)."
+      rationale: "IFA handles snapshots through Operate with a snapshotId in the data maps."
     }
   };
 
@@ -1330,7 +1330,7 @@ message RevertComputeSnapshotRequest {
   ];
 }
 
-// A group of compute resources placed together or apart (decision 0005).
+// A group of compute resources placed together or apart.
 message PlacementGroup {
   option (kubenfv.kubevim.options.v1.ifa_message) = {
     ref: "IFA006 7.3.1.9 Create Compute Resource Affinity Or AntiAffinity Constraints Group"

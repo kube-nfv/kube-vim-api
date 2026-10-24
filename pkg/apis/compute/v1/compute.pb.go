@@ -2318,7 +2318,7 @@ func (x *RevertComputeSnapshotRequest) GetSnapshotId() string {
 	return ""
 }
 
-// A group of compute resources placed together or apart (decision 0005).
+// A group of compute resources placed together or apart.
 type PlacementGroup struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Identifier of the group: a UUID assigned by the VIM.
@@ -2665,7 +2665,7 @@ var File_kubenfv_kubevim_compute_v1_compute_proto protoreflect.FileDescriptor
 
 const file_kubenfv_kubevim_compute_v1_compute_proto_rawDesc = "" +
 	"\n" +
-	"(kubenfv/kubevim/compute/v1/compute.proto\x12\x1akubenfv.kubevim.compute.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a&kubenfv/kubevim/common/v1/common.proto\x1a#kubenfv/kubevim/common/v1/cpu.proto\x1a%kubenfv/kubevim/common/v1/rules.proto\x1a&kubenfv/kubevim/common/v1/volume.proto\x1a(kubenfv/kubevim/options/v1/options.proto\x1a.protoc-gen-openapiv3/options/annotations.proto\"\xb8\x12\n" +
+	"(kubenfv/kubevim/compute/v1/compute.proto\x12\x1akubenfv.kubevim.compute.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a&kubenfv/kubevim/common/v1/common.proto\x1a#kubenfv/kubevim/common/v1/cpu.proto\x1a%kubenfv/kubevim/common/v1/rules.proto\x1a&kubenfv/kubevim/common/v1/volume.proto\x1a(kubenfv/kubevim/options/v1/options.proto\x1a.protoc-gen-openapiv3/options/annotations.proto\"\xa8\x12\n" +
 	"\aCompute\x12P\n" +
 	"\n" +
 	"compute_id\x18\x01 \x01(\tB1\xe2A\x01\x03\xfa\x8b\x19)\n" +
@@ -2696,9 +2696,9 @@ const file_kubenfv_kubevim_compute_v1_compute_proto_rawDesc = "" +
 	"\rrunning_state\x18\f \x01(\x0e2/.kubenfv.kubevim.compute.v1.ComputeRunningStateB\x85\x01\xe2A\x01\x03\xfa\x8b\x19}\n" +
 	"*IFA006 8.4.3.2 VirtualCompute.runningState\x12O\b\x03\x10\x01\x1aIAdds transitional and failure states; each maps to the nearest IFA state.R\frunningState\x12\x88\x01\n" +
 	"\rstatus_detail\x18\r \x01(\tBc\xe2A\x01\x03\xfa\x8b\x19[\x12Y\b\x01\x10\x01\x1aSReports why a compute resource failed; replaces the v0 failure-reason metadata key.R\fstatusDetail\x12\x81\x01\n" +
-	"\x10restart_required\x18\x0e \x01(\bBV\xe2A\x01\x03\xfa\x8b\x19N\x12L\b\x01\x10\x01\x1aFKubeVirt applies some changes only on restart; consumers need to know.R\x0frestartRequired\x12\x90\x01\n" +
-	"\x13placement_group_ids\x18\x0f \x03(\tB`\xe2A\x02\x01\x05\xbaH\n" +
-	"\x92\x01\a\"\x05r\x03\xb0\x01\x01\xfa\x8b\x19J\x12H\b\x01\x10\x01\x1aBPlacement groups replace IFA affinity constraints (decision 0005).R\x11placementGroupIds\x12\xd3\x01\n" +
+	"\x10restart_required\x18\x0e \x01(\bBV\xe2A\x01\x03\xfa\x8b\x19N\x12L\b\x01\x10\x01\x1aFKubeVirt applies some changes only on restart; consumers need to know.R\x0frestartRequired\x12\x80\x01\n" +
+	"\x13placement_group_ids\x18\x0f \x03(\tBP\xe2A\x02\x01\x05\xbaH\n" +
+	"\x92\x01\a\"\x05r\x03\xb0\x01\x01\xfa\x8b\x19:\x128\b\x01\x10\x01\x1a2Placement groups replace IFA affinity constraints.R\x11placementGroupIds\x12\xd3\x01\n" +
 	"\bmetadata\x18\x10 \x03(\v21.kubenfv.kubevim.compute.v1.Compute.MetadataEntryB\x83\x01\xe2A\x01\x01\xbaH\a\x9a\x01\x04\xf8\x8b\x19\x01\xfa\x8b\x19q\n" +
 	"&IFA006 8.4.3.2 VirtualCompute.metadata\x12G\b\x02\x10\x01\x1aAString values only, where IFA KeyValuePair allows any JSON value.R\bmetadata\x1a;\n" +
 	"\rMetadataEntry\x12\x10\n" +
@@ -2849,7 +2849,7 @@ const file_kubenfv_kubevim_compute_v1_compute_proto_rawDesc = "" +
 	"compute_id\x18\x01 \x01(\tBU\xe2A\x01\x02\xbaH\x05r\x03\xb0\x01\x01\xfa\x8b\x19E\n" +
 	"CIFA006 7.3.1.11.2 DetachVirtualisedStorageResourceRequest.computeIdR\tcomputeId\x12\xab\x01\n" +
 	"\tvolume_id\x18\x02 \x01(\tB\x8d\x01\xe2A\x01\x02\xbaH\x05r\x03\xb0\x01\x01\xfa\x8b\x19}\n" +
-	"CIFA006 7.3.1.11.2 DetachVirtualisedStorageResourceRequest.storageId\x126\b\x03\x10\x01\x1a0Renamed to the referenced resource's identifier.R\bvolumeId\"\x9d\x04\n" +
+	"CIFA006 7.3.1.11.2 DetachVirtualisedStorageResourceRequest.storageId\x126\b\x03\x10\x01\x1a0Renamed to the referenced resource's identifier.R\bvolumeId\"\x8d\x04\n" +
 	"\x0fComputeSnapshot\x12%\n" +
 	"\vsnapshot_id\x18\x01 \x01(\tB\x04\xe2A\x01\x03R\n" +
 	"snapshotId\x12)\n" +
@@ -2862,7 +2862,7 @@ const file_kubenfv_kubevim_compute_v1_compute_proto_rawDesc = "" +
 	"\bmetadata\x18\x06 \x03(\v29.kubenfv.kubevim.compute.v1.ComputeSnapshot.MetadataEntryB\x0e\xe2A\x01\x01\xbaH\a\x9a\x01\x04\xf8\x8b\x19\x01R\bmetadata\x1a;\n" +
 	"\rMetadataEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01:e\xfa\x8b\x19a\x12_\b\x03\x10\x01\x1aYIFA handles snapshots through Operate with a snapshotId in the data maps (decision 0007).\"\x9a\x01\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01:U\xfa\x8b\x19Q\x12O\b\x03\x10\x01\x1aIIFA handles snapshots through Operate with a snapshotId in the data maps.\"\x9a\x01\n" +
 	"\x1cCreateComputeSnapshotRequest\x12+\n" +
 	"\n" +
 	"compute_id\x18\x01 \x01(\tB\f\xe2A\x01\x02\xbaH\x05r\x03\xb0\x01\x01R\tcomputeId\x12M\n" +
@@ -2971,7 +2971,7 @@ const file_kubenfv_kubevim_compute_v1_compute_proto_rawDesc = "" +
 	"\x14PlacementEnforcement\x12%\n" +
 	"!PLACEMENT_ENFORCEMENT_UNSPECIFIED\x10\x00\x12\"\n" +
 	"\x1ePLACEMENT_ENFORCEMENT_REQUIRED\x10\x01\x12#\n" +
-	"\x1fPLACEMENT_ENFORCEMENT_PREFERRED\x10\x022\x9f.\n" +
+	"\x1fPLACEMENT_ENFORCEMENT_PREFERRED\x10\x022\x8f.\n" +
 	"\x0eComputeService\x12\xe7\x01\n" +
 	"\rCreateCompute\x120.kubenfv.kubevim.compute.v1.CreateComputeRequest\x1a#.kubenfv.kubevim.compute.v1.Compute\"\x7f\xfaP#J!\n" +
 	"\x1f\n" +
@@ -3046,12 +3046,12 @@ const file_kubenfv_kubevim_compute_v1_compute_proto_rawDesc = "" +
 	"\x1e\n" +
 	"\x06oauth2\x12\x14\n" +
 	"\x12compute:v1:operate\xfa\x8b\x19\xa9\x01\n" +
-	"fIFA006 7.3.1.6 Operate Virtualised Compute Resource (createSnapshot, revertToSnapshot, deleteSnapshot)\x12?\b\x03\x10\x01\x1a9Operate with revertToSnapshot, as a task on the snapshot.\x82\xd3\xe4\x93\x02E:\x01*\"@/compute/v1/computes/{compute_id}/snapshots/{snapshot_id}/revert\x12\x87\x03\n" +
-	"\x14CreatePlacementGroup\x127.kubenfv.kubevim.compute.v1.CreatePlacementGroupRequest\x1a*.kubenfv.kubevim.compute.v1.PlacementGroup\"\x89\x02\xfaP#J!\n" +
+	"fIFA006 7.3.1.6 Operate Virtualised Compute Resource (createSnapshot, revertToSnapshot, deleteSnapshot)\x12?\b\x03\x10\x01\x1a9Operate with revertToSnapshot, as a task on the snapshot.\x82\xd3\xe4\x93\x02E:\x01*\"@/compute/v1/computes/{compute_id}/snapshots/{snapshot_id}/revert\x12\xf7\x02\n" +
+	"\x14CreatePlacementGroup\x127.kubenfv.kubevim.compute.v1.CreatePlacementGroupRequest\x1a*.kubenfv.kubevim.compute.v1.PlacementGroup\"\xf9\x01\xfaP#J!\n" +
 	"\x1f\n" +
 	"\x06oauth2\x12\x15\n" +
-	"\x13compute:v1:allocate\xfa\x8b\x19\xb8\x01\n" +
-	"]IFA006 7.3.1.9 Create Virtualised Compute Resource Affinity Or AntiAffinity Constraints Group\x12W\b\x03\x10\x01\x1aQA placement group with a policy instead of an IFA affinity group (decision 0005).\x82\xd3\xe4\x93\x02 :\x01*\"\x1b/compute/v1/placementGroups\x12\x8c\x02\n" +
+	"\x13compute:v1:allocate\xfa\x8b\x19\xa8\x01\n" +
+	"]IFA006 7.3.1.9 Create Virtualised Compute Resource Affinity Or AntiAffinity Constraints Group\x12G\b\x03\x10\x01\x1aAA placement group with a policy instead of an IFA affinity group.\x82\xd3\xe4\x93\x02 :\x01*\"\x1b/compute/v1/placementGroups\x12\x8c\x02\n" +
 	"\x11GetPlacementGroup\x124.kubenfv.kubevim.compute.v1.GetPlacementGroupRequest\x1a*.kubenfv.kubevim.compute.v1.PlacementGroup\"\x94\x01\xfaP J\x1e\n" +
 	"\x1c\n" +
 	"\x06oauth2\x12\x12\n" +
