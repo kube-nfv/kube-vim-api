@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+package kubenfv.kubevim.common.v1;
+
+// Reason of an error (AIP-193). On gRPC it is the ErrorInfo reason, the value name without the
+// ERROR_REASON_ prefix (e.g. "RESOURCE_IN_USE"), with domain "kubevim.kubenfv.io". On REST it is
+// the ProblemDetails type https://kubevim.kubenfv.io/problems/<reason in kebab case>
+// (e.g. .../problems/resource-in-use). Each value names its gRPC code and HTTP status.
+// Values may be added; clients should accept unknown values.
+enum ErrorReason {
+  ERROR_REASON_UNSPECIFIED = 0;
+  // A request body breaks a validation rule. INVALID_ARGUMENT, 422.
+  ERROR_REASON_VALIDATION_FAILED = 1;
+  // A request field is set that the VIM does not support. INVALID_ARGUMENT, 422.
+  ERROR_REASON_UNSUPPORTED_FIELD = 2;
+  // The filter expression is invalid (SOL 013 5.2). INVALID_ARGUMENT, 400.
+  ERROR_REASON_INVALID_FILTER = 3;
+  // The resource in the path, or a resource the request refers to, does not exist. NOT_FOUND, 404.
+  ERROR_REASON_NOT_FOUND = 4;
+  // The resource cannot be deleted while other resources use it. FAILED_PRECONDITION, 409.
+  ERROR_REASON_RESOURCE_IN_USE = 5;
+  // The resource is not in a state that allows the operation. FAILED_PRECONDITION, 409.
+  ERROR_REASON_INVALID_STATE = 6;
+  reserved 7;
+  // The operation is declared but not implemented by this VIM. UNIMPLEMENTED, 501.
+  ERROR_REASON_NOT_IMPLEMENTED = 8;
+  // Kubernetes or a backend the VIM depends on cannot be reached. UNAVAILABLE, 503.
+  ERROR_REASON_BACKEND_UNAVAILABLE = 9;
+  // Any other error. INTERNAL, 500.
+  ERROR_REASON_INTERNAL = 10;
+}

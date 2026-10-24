@@ -1,20 +1,20 @@
 # VirtualStorageData
 
-This clause describes the attributes for the VirtualStorageData information element.
+Size, type and capabilities of a virtualised storage resource.
 
 ## Properties
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**type_of_storage** | **str** | Type of virtualised storage resource (e.g. volume, object). | 
-**size_of_storage** | [**ResourceQuantity**](ResourceQuantity.md) |  | 
-**rdma_enabled** | **bool** | Indicates if the storage supports RDMA. | [optional] 
-**is_boot** | **bool** |  | [optional] [default to False]
+**is_boot** | **bool** | The software image is copied to this storage and the compute resource boots from it. | [optional] 
+**size_of_storage** | **str** | Size of the storage resource, in Kubernetes quantity format (e.g. \&quot;20Gi\&quot;). | 
+**storage_class** | **str** | Kubernetes storage class of the storage, one labelled kubevim.kubenfv.io/storage&#x3D;true; the VIM default when unset. | [optional] 
+**type_of_storage** | [**TypeOfStorage**](TypeOfStorage.md) | Type of the storage resource. | 
 
 ## Example
 
 ```python
-from kubevim_vivnfm_client.models.virtual_storage_data import VirtualStorageData
+from kubevim_client.models.virtual_storage_data import VirtualStorageData
 
 # TODO update the JSON string below
 json = "{}"

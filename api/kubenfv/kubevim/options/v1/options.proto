@@ -1,0 +1,78 @@
+syntax = "proto3";
+
+package kubenfv.kubevim.options.v1;
+
+import "google/protobuf/descriptor.proto";
+
+// Extension number 51391 is from the private range (50000 to 99999) until the API
+// is stable; a number from the protobuf global extension registry replaces it then.
+
+extend google.protobuf.FileOptions {
+  // API identity of the services in this file.
+  Api api = 51391;
+}
+
+extend google.protobuf.ServiceOptions {
+  // IFA interface this service maps to.
+  Ifa ifa_service = 51391;
+}
+
+extend google.protobuf.MethodOptions {
+  // IFA operation this RPC maps to.
+  Ifa ifa_method = 51391;
+}
+
+extend google.protobuf.MessageOptions {
+  // IFA information element this message maps to.
+  Ifa ifa_message = 51391;
+}
+
+extend google.protobuf.FieldOptions {
+  // IFA attribute this field maps to.
+  Ifa ifa_field = 51391;
+}
+
+extend google.protobuf.EnumOptions {
+  // IFA enumeration this enum maps to.
+  Ifa ifa_enum = 51391;
+}
+
+extend google.protobuf.EnumValueOptions {
+  // IFA value this enum value maps to.
+  Ifa ifa_enum_value = 51391;
+}
+
+// API identity per ETSI GS NFV-SOL 013.
+message Api {
+  // apiName in the URI prefix (SOL 013 4.1), e.g. "compute".
+  string name = 1;
+}
+
+// Mapping of an API element to ETSI GS NFV-IFA 005/006.
+message Ifa {
+  // IFA clause and element, e.g. "IFA006 8.4.3.2 VirtualCompute.computeId".
+  // Empty only for extensions with no IFA counterpart.
+  string ref = 1;
+  // How the element departs from IFA; unset when it maps one to one.
+  Departure departure = 2;
+}
+
+// Difference between an API element and its IFA counterpart.
+message Departure {
+  // Kind of difference.
+  enum Kind {
+    KIND_UNSPECIFIED = 0;
+    // Added by Kube-VIM; IFA has no counterpart.
+    KIND_EXTENSION = 1;
+    // IFA element that Kube-VIM does not support or narrows.
+    KIND_RESTRICTION = 2;
+    // IFA element represented differently (name, type, cardinality, values).
+    KIND_DEVIATION = 3;
+  }
+
+  Kind kind = 1;
+  // A stateless proxy can map the element to and from IFA.
+  bool translates = 2;
+  // Why the API departs from IFA and how the element maps.
+  string rationale = 3;
+}

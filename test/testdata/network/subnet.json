@@ -1,0 +1,14 @@
+{
+  "subnetId": "4f3e2d1c-0b9a-4f8e-9d7c-6b5a4f3e2d1c",
+  "subnetName": "data-100-v4",
+  "networkId": "3e2d1c0b-9a8f-4e7d-8c6b-5a4f3e2d1c0b",
+  "data": {
+    "ipVersion": "IP_VERSION_IPV4",
+    "gatewayIp": "192.168.100.1",
+    "cidr": "192.168.100.0/24",
+    "isDhcpEnabled": false
+  },
+  "metadata": {
+    "osm.etsi.org/vld": "data"
+  }
+}

@@ -1,0 +1,45 @@
+version: v2
+clean: true
+managed:
+  enabled: true
+  disable:
+    - module: buf.build/bufbuild/protovalidate
+    - module: buf.build/googleapis/googleapis
+    - module: buf.build/grpc-ecosystem/grpc-gateway
+  override:
+    - file_option: go_package_prefix
+      value: github.com/kube-nfv/kube-vim-api/pkg/apis
+    - file_option: go_package
+      path: kubenfv/kubevim/options/v1
+      value: github.com/kube-nfv/kube-vim-api/pkg/apis/options/v1;optionsv1
+    - file_option: go_package
+      path: kubenfv/kubevim/image/v1
+      value: github.com/kube-nfv/kube-vim-api/pkg/apis/image/v1;imagev1
+    - file_option: go_package
+      path: kubenfv/kubevim/common/v1
+      value: github.com/kube-nfv/kube-vim-api/pkg/apis/common/v1;commonv1
+    - file_option: go_package
+      path: kubenfv/kubevim/flavour/v1
+      value: github.com/kube-nfv/kube-vim-api/pkg/apis/flavour/v1;flavourv1
+    - file_option: go_package
+      path: kubenfv/kubevim/network/v1
+      value: github.com/kube-nfv/kube-vim-api/pkg/apis/network/v1;networkv1
+    - file_option: go_package
+      path: kubenfv/kubevim/compute/v1
+      value: github.com/kube-nfv/kube-vim-api/pkg/apis/compute/v1;computev1
+    - file_option: go_package
+      path: kubenfv/kubevim/storage/v1
+      value: github.com/kube-nfv/kube-vim-api/pkg/apis/storage/v1;storagev1
+plugins:
+  - local: protoc-gen-go
+    out: pkg/apis
+    opt: module=github.com/kube-nfv/kube-vim-api/pkg/apis
+  - local: protoc-gen-go-grpc
+    out: pkg/apis
+    opt: module=github.com/kube-nfv/kube-vim-api/pkg/apis
+  - local: protoc-gen-grpc-gateway
+    out: pkg/apis
+    opt: module=github.com/kube-nfv/kube-vim-api/pkg/apis
+  - local: protoc-gen-openapiv3
+    out: bin/openapi-raw
+    opt: disable_default_errors=true

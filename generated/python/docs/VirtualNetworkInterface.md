@@ -1,29 +1,29 @@
 # VirtualNetworkInterface
 
-A virtual network interface resource is a communication endpoint under an instantiated compute resource.
+A network interface of a compute resource.
 
 ## Properties
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**resource_id** | [**Identifier**](Identifier.md) |  | 
-**owner_id** | [**Identifier**](Identifier.md) |  | 
-**network_id** | [**Identifier**](Identifier.md) |  | [optional] 
-**subnet_id** | [**Identifier**](Identifier.md) |  | [optional] 
-**network_port_id** | [**Identifier**](Identifier.md) |  | [optional] 
-**ip_address** | [**List[IPAddress]**](IPAddress.md) | The virtual network interface can be configured with specific IP address(es) associated to the network to be attached to. The cardinality can be 0 in the case that a network interface is created without being attached to any specific network, or when an IP address can be automatically configured, e.g. by DHCP. Note(dmalovan): In general IPaddresses should be passed even if them are allocated dynamically e.g. via DHCP. If DHCP client not yet aquired the address cardinality can be 0. | [optional] 
-**type_virtual_nic** | [**TypeVirtualNic**](TypeVirtualNic.md) |  | [default to TypeVirtualNic.TYPE_VIRTUAL_NIC_BRIDGE]
-**type_configuration** | **List[str]** | Extra configuration that the virtual network interface supports based on the type of virtual network interface. TODO: That interface might change. | [optional] 
-**mac_address** | [**MacAddress**](MacAddress.md) |  | 
-**bandwidth** | **float** | Bandwidth of the virtual network interface (in Mbps). | 
-**acceleration_capability** | **List[str]** | The cardinality can be 0, if no particular acceleration capability is requested. TODO: That interface might change. | [optional] 
-**operational_state** | [**OperationalState**](OperationalState.md) |  | [default to OperationalState.ENABLED]
-**metadata** | [**Metadata**](Metadata.md) |  | [optional] 
+**bandwidth** | **int** | Rate limit in Mbps; 0 when not limited. | [optional] 
+**compute_id** | **str** | Compute resource the interface belongs to. | [optional] 
+**guest_interface_name** | **str** | Interface name in the guest, e.g. \&quot;eth1\&quot;; empty when the guest agent does not report it. | [optional] 
+**guest_pci_address** | **str** | PCI address of the device in the guest; empty until known. | [optional] 
+**host_pci_address** | **str** | PCI address of the device on the host, for SR-IOV interfaces. | [optional] 
+**ip_addresses** | **List[str]** | Addresses of the interface, one per subnet of its network; may be empty until DHCP or the guest configures them. | [optional] 
+**is_management** | **bool** | The management interface every compute resource gets on the pod network. | [optional] 
+**mac_address** | **str** | MAC address; empty until known. | [optional] 
+**model** | [**NicModel**](NicModel.md) | NIC model the guest sees. | [optional] 
+**name** | **str** | Name of the interface, unique within the compute resource: the one given at creation, or one the VIM chose. | [optional] 
+**network_id** | **str** | Network the interface is attached to; empty for the management interface. | [optional] 
+**operational_state** | [**OperationalState**](OperationalState.md) | ENABLED once the interface is attached and ready. | [optional] 
+**type_virtual_nic** | [**TypeVirtualNic**](TypeVirtualNic.md) |  | [optional] 
 
 ## Example
 
 ```python
-from kubevim_vivnfm_client.models.virtual_network_interface import VirtualNetworkInterface
+from kubevim_client.models.virtual_network_interface import VirtualNetworkInterface
 
 # TODO update the JSON string below
 json = "{}"

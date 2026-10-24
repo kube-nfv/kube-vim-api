@@ -1,0 +1,464 @@
+{
+  "components": {
+    "schemas": {
+      "ProblemDetails": {
+        "description": "Error details (SOL 013 6.3, RFC 9457).",
+        "properties": {
+          "detail": {
+            "type": "string"
+          },
+          "instance": {
+            "format": "uri",
+            "type": "string"
+          },
+          "status": {
+            "type": "integer"
+          },
+          "title": {
+            "type": "string"
+          },
+          "type": {
+            "description": "https://kubevim.kubenfv.io/problems/<reason>, the error reason (ErrorReason in the protos) in kebab case, e.g. .../problems/resource-in-use; about:blank for authentication and authorisation errors. Clients should accept unknown types.",
+            "format": "uri",
+            "type": "string"
+          }
+        },
+        "required": [
+          "status",
+          "detail"
+        ],
+        "type": "object"
+      },
+      "kubenfv.kubevim.common.v1.CpuArchitecture": {
+        "description": "CPU architecture.\nValues may be added as KubeVirt support grows; clients should accept unknown values.",
+        "enum": [
+          "CPU_ARCHITECTURE_UNSPECIFIED",
+          "CPU_ARCHITECTURE_X86_64",
+          "CPU_ARCHITECTURE_AARCH64",
+          "CPU_ARCHITECTURE_S390X"
+        ],
+        "type": "string"
+      },
+      "kubenfv.kubevim.common.v1.TypeOfStorage": {
+        "description": "Type of a virtualised storage resource.\nValues may be added as Kubernetes storage support grows; clients should accept unknown values.",
+        "enum": [
+          "TYPE_OF_STORAGE_UNSPECIFIED",
+          "TYPE_OF_STORAGE_VOLUME",
+          "TYPE_OF_STORAGE_EPHEMERAL"
+        ],
+        "type": "string"
+      },
+      "kubenfv.kubevim.common.v1.VirtualCpuPinningPolicy": {
+        "description": "CPU pinning policy (IFA006 8.4.2.4). IFA's STATIC policy with explicit rules is left out:\nKubeVirt places dedicated CPUs itself.",
+        "enum": [
+          "VIRTUAL_CPU_PINNING_POLICY_UNSPECIFIED",
+          "VIRTUAL_CPU_PINNING_POLICY_DYNAMIC"
+        ],
+        "type": "string"
+      },
+      "kubenfv.kubevim.common.v1.VirtualStorageData": {
+        "description": "Size, type and capabilities of a virtualised storage resource.",
+        "properties": {
+          "isBoot": {
+            "description": "The software image is copied to this storage and the compute resource boots from it.",
+            "type": "boolean"
+          },
+          "sizeOfStorage": {
+            "description": "Size of the storage resource, in Kubernetes quantity format (e.g. \"20Gi\").",
+            "type": "string"
+          },
+          "storageClass": {
+            "description": "Kubernetes storage class of the storage, one labelled kubevim.kubenfv.io/storage=true; the VIM default when unset.",
+            "type": "string"
+          },
+          "typeOfStorage": {
+            "$ref": "#/components/schemas/kubenfv.kubevim.common.v1.TypeOfStorage",
+            "description": "Type of the storage resource."
+          }
+        },
+        "required": [
+          "typeOfStorage",
+          "sizeOfStorage"
+        ],
+        "type": "object"
+      },
+      "kubenfv.kubevim.flavour.v1.CpuTopology": {
+        "description": "Guest CPU topology.",
+        "properties": {
+          "cores": {
+            "format": "int64",
+            "type": "integer"
+          },
+          "sockets": {
+            "format": "int64",
+            "type": "integer"
+          },
+          "threads": {
+            "format": "int64",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "sockets",
+          "cores",
+          "threads"
+        ],
+        "type": "object"
+      },
+      "kubenfv.kubevim.flavour.v1.Flavour": {
+        "description": "Memory, CPU and storage of the compute resources created from it.",
+        "properties": {
+          "flavourId": {
+            "description": "Identifier of the flavour: a UUID assigned by the VIM.",
+            "readOnly": true,
+            "type": "string"
+          },
+          "flavourName": {
+            "description": "Name of the flavour, given by the consumer; not unique.",
+            "type": "string"
+          },
+          "metadata": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Metadata set by the consumer and by the VIM; for keys under \"kubevim.kubenfv.io/\" that the VIM maintains, its value wins.",
+            "type": "object"
+          },
+          "storageAttributes": {
+            "description": "Storage of the compute resource: the boot disk (is_boot) and further disks, created with\neach compute resource. A compute resource needs exactly one boot disk.",
+            "items": {
+              "$ref": "#/components/schemas/kubenfv.kubevim.common.v1.VirtualStorageData"
+            },
+            "type": "array"
+          },
+          "virtualCpu": {
+            "$ref": "#/components/schemas/kubenfv.kubevim.flavour.v1.VirtualCpuData",
+            "description": "Virtual CPUs."
+          },
+          "virtualMemory": {
+            "$ref": "#/components/schemas/kubenfv.kubevim.flavour.v1.VirtualMemoryData",
+            "description": "Virtual memory."
+          }
+        },
+        "required": [
+          "virtualMemory",
+          "virtualCpu"
+        ],
+        "type": "object"
+      },
+      "kubenfv.kubevim.flavour.v1.VirtualCpuData": {
+        "description": "Virtual CPUs of a flavour.",
+        "properties": {
+          "cpuArchitecture": {
+            "$ref": "#/components/schemas/kubenfv.kubevim.common.v1.CpuArchitecture",
+            "description": "CPU architecture; the VIM default when unset."
+          },
+          "numVirtualCpu": {
+            "description": "Number of virtual CPUs.",
+            "format": "int64",
+            "type": "integer"
+          },
+          "topology": {
+            "$ref": "#/components/schemas/kubenfv.kubevim.flavour.v1.CpuTopology",
+            "description": "Guest CPU topology; the product of its fields equals num_virtual_cpu. The VIM rejects a\ntopology its backend cannot express (KubeVirt takes the vCPU count and a preferred layout)."
+          },
+          "virtualCpuPinning": {
+            "$ref": "#/components/schemas/kubenfv.kubevim.flavour.v1.VirtualCpuPinningData",
+            "description": "CPU pinning."
+          }
+        },
+        "required": [
+          "numVirtualCpu"
+        ],
+        "type": "object"
+      },
+      "kubenfv.kubevim.flavour.v1.VirtualCpuPinningData": {
+        "description": "CPU pinning of a flavour.",
+        "properties": {
+          "virtualCpuPinningPolicy": {
+            "$ref": "#/components/schemas/kubenfv.kubevim.common.v1.VirtualCpuPinningPolicy",
+            "description": "Pinning policy."
+          }
+        },
+        "required": [
+          "virtualCpuPinningPolicy"
+        ],
+        "type": "object"
+      },
+      "kubenfv.kubevim.flavour.v1.VirtualMemoryData": {
+        "description": "Virtual memory of a flavour.",
+        "properties": {
+          "hugepageSize": {
+            "description": "Hugepage size backing the memory, \"2Mi\" or \"1Gi\"; regular pages when unset.",
+            "type": "string"
+          },
+          "numaEnabled": {
+            "description": "Memory is allocated on the NUMA nodes of the pinned CPUs; needs dynamic pinning and hugepages.",
+            "type": "boolean"
+          },
+          "virtualMemOversubscriptionPolicy": {
+            "description": "Memory oversubscription as \"<virtual>:<physical>\", at least 1:1, e.g. \"2:1\" (KubeVirt overcommitPercent).",
+            "type": "string"
+          },
+          "virtualMemSize": {
+            "description": "Amount of memory, in Kubernetes quantity format (e.g. \"4Gi\").",
+            "type": "string"
+          }
+        },
+        "required": [
+          "virtualMemSize"
+        ],
+        "type": "object"
+      }
+    },
+    "securitySchemes": {
+      "oauth2": {
+        "description": "OAuth 2.0 client credentials (SOL 013 8.3). The token URL is deployment specific.",
+        "flows": {
+          "clientCredentials": {
+            "scopes": {
+              "flavour:v1:create": "Create compute flavours",
+              "flavour:v1:delete": "Delete compute flavours",
+              "flavour:v1:query": "Query compute flavours"
+            },
+            "tokenUrl": "https://idp.example.com/oauth2/token"
+          }
+        },
+        "type": "oauth2"
+      }
+    }
+  },
+  "info": {
+    "title": "Kube-VIM compute flavour API",
+    "version": "0.0.0-dev"
+  },
+  "openapi": "3.1.0",
+  "paths": {
+    "/flavour/v1/flavours": {
+      "get": {
+        "operationId": "FlavourService_ListFlavours",
+        "parameters": [
+          {
+            "description": "Attribute-based filter expression (SOL 013 5.2).",
+            "in": "query",
+            "name": "filter",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Marker of the page to return, from a previous response (SOL 013 5.4).",
+            "in": "query",
+            "name": "nextpage_opaque_marker",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/kubenfv.kubevim.flavour.v1.Flavour"
+                  },
+                  "type": "array"
+                }
+              }
+            },
+            "description": "A successful response.",
+            "headers": {
+              "Link": {
+                "description": "URI of the next page, rel=\"next\", carrying nextpage_opaque_marker; absent on the last page (SOL 013 5.4.2).",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Error (SOL 013 6)."
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "flavour:v1:query"
+            ]
+          }
+        ],
+        "summary": "Returns the compute flavours matching a filter.",
+        "tags": [
+          "FlavourService"
+        ]
+      },
+      "post": {
+        "operationId": "FlavourService_CreateFlavour",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "flavour": {
+                    "$ref": "#/components/schemas/kubenfv.kubevim.flavour.v1.Flavour",
+                    "description": "Flavour to create."
+                  }
+                },
+                "required": [
+                  "flavour"
+                ],
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/kubenfv.kubevim.flavour.v1.Flavour"
+                }
+              }
+            },
+            "description": "Memory, CPU and storage of the compute resources created from it.",
+            "headers": {
+              "Location": {
+                "description": "URI of the created resource.",
+                "schema": {
+                  "format": "uri",
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Error (SOL 013 6)."
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "flavour:v1:create"
+            ]
+          }
+        ],
+        "summary": "Creates a compute flavour.",
+        "tags": [
+          "FlavourService"
+        ]
+      }
+    },
+    "/flavour/v1/flavours/{flavour_id}": {
+      "delete": {
+        "operationId": "FlavourService_DeleteFlavour",
+        "parameters": [
+          {
+            "description": "Identifier of the flavour.",
+            "in": "path",
+            "name": "flavour_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Error (SOL 013 6)."
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "flavour:v1:delete"
+            ]
+          }
+        ],
+        "summary": "Deletes a compute flavour. Compute resources already created from it are not affected.",
+        "tags": [
+          "FlavourService"
+        ]
+      },
+      "get": {
+        "operationId": "FlavourService_GetFlavour",
+        "parameters": [
+          {
+            "description": "Identifier of the flavour.",
+            "in": "path",
+            "name": "flavour_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/kubenfv.kubevim.flavour.v1.Flavour"
+                }
+              }
+            },
+            "description": "Memory, CPU and storage of the compute resources created from it."
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Error (SOL 013 6)."
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "flavour:v1:query"
+            ]
+          }
+        ],
+        "summary": "Returns one compute flavour.",
+        "tags": [
+          "FlavourService"
+        ]
+      }
+    }
+  },
+  "tags": [
+    {
+      "description": "Compute flavour management.",
+      "name": "FlavourService"
+    }
+  ]
+}

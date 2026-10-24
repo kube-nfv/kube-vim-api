@@ -1,22 +1,20 @@
 # VirtualCpuData
 
-Information describing a virtual CPU.
+Virtual CPUs of a flavour.
 
 ## Properties
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**cpu_architecture** | **str** | CPU architecture type. Examples are x86, ARM. The cardinality can be 0 during the allocation request, if no particular CPU architecture type is requested. | [optional] 
+**cpu_architecture** | [**CpuArchitecture**](CpuArchitecture.md) | CPU architecture; the VIM default when unset. | [optional] 
 **num_virtual_cpu** | **int** | Number of virtual CPUs. | 
-**cpu_clock** | **float** | Minimum CPU clock rate (e.g. in MHz) available for the virtualised CPU resources. The cardinality can be 0 during the allocation request, if no particular value is requested. | [optional] 
-**virtual_cpu_oversubscription_policy** | **str** |  | [optional] 
-**virtual_cpu_pinning** | [**VirtualCpuDataVirtualCpuPinningData**](VirtualCpuDataVirtualCpuPinningData.md) |  | [optional] 
-**power_state_reqs** | **str** | Virtual CPU power (state) requirements for the virtualised compute resource. | [optional] 
+**topology** | [**CpuTopology**](CpuTopology.md) | Guest CPU topology; the product of its fields equals num_virtual_cpu. The VIM rejects a topology its backend cannot express (KubeVirt takes the vCPU count and a preferred layout). | [optional] 
+**virtual_cpu_pinning** | [**VirtualCpuPinningData**](VirtualCpuPinningData.md) | CPU pinning. | [optional] 
 
 ## Example
 
 ```python
-from kubevim_vivnfm_client.models.virtual_cpu_data import VirtualCpuData
+from kubevim_client.models.virtual_cpu_data import VirtualCpuData
 
 # TODO update the JSON string below
 json = "{}"

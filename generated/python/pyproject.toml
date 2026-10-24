@@ -1,29 +1,33 @@
-[tool.poetry]
-name = "kubevim_vivnfm_client"
+[project]
+name = "kubevim_client"
 version = "0.0.0.dev0"
-description = "Python client for KubeVIM VI-VNFM API - ETSI NFV MANO interface"
-authors = ["Dmytro Malovanyi <dmitrymalovanyy@gmail.com>"]
-license = "Apache-2.0"
+description = "Kube-VIM API"
+authors = [
+  {name = "OpenAPI Generator Community",email = "team@openapitools.org"},
+]
 readme = "README.md"
-repository = "https://github.com/kube-nfv/kube-vim-api"
-keywords = ["etsi", "nfv", "mano", "vim", "vnfm", "kubevim", "kubernetes", "virtualization", "openapi", "grpc", "cloud-native"]
-include = ["kubevim_vivnfm_client/py.typed"]
+keywords = ["OpenAPI", "OpenAPI-Generator", "Kube-VIM API"]
+requires-python = ">=3.10"
 
-[tool.poetry.dependencies]
-python = "^3.8"
+dependencies = [
+  "urllib3 (>=2.7.0,<3.0.0)",
+  "python-dateutil (>=2.8.2)",
+  "pydantic (>=2.11)",
+  "typing-extensions (>=4.7.1)",
+]
 
-urllib3 = ">= 1.25.3, < 3.0.0"
-python-dateutil = ">= 2.8.2"
-pydantic = ">= 2"
-typing-extensions = ">= 4.7.1"
+[project.urls]
+Repository = "https://github.com/GIT_USER_ID/GIT_REPO_ID"
 
-[tool.poetry.dev-dependencies]
-pytest = ">= 7.2.1"
-pytest-cov = ">= 2.8.1"
-tox = ">= 3.9.0"
-flake8 = ">= 4.0.0"
-types-python-dateutil = ">= 2.8.19.14"
-mypy = ">= 1.5"
+[dependency-groups]
+dev = [
+  "pytest>=9.0.3",
+  "pytest-cov>=2.8.1",
+  "tox>=3.9.0",
+  "flake8>=4.0.0",
+  "types-python-dateutil>=2.8.19.14",
+  "mypy>=1.5",
+]
 
 
 [build-system]
@@ -35,7 +39,7 @@ extension-pkg-whitelist = "pydantic"
 
 [tool.mypy]
 files = [
-  "kubevim_vivnfm_client",
+  "kubevim_client",
   #"test",  # auto-generated tests
   "tests", # hand-written tests
 ]
@@ -73,7 +77,7 @@ disallow_any_generics = true
 
 [[tool.mypy.overrides]]
 module = [
-  "kubevim_vivnfm_client.configuration",
+  "kubevim_client.configuration",
 ]
 warn_unused_ignores = true
 strict_equality = true

@@ -1,0 +1,341 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "compute_service",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/compute/v1/computes": {
+      "get": {
+        "tags": [
+          "ComputeService"
+        ],
+        "summary": "IFA 006 7.3.1.3 Query Virtualised Compute Resource, with a filter.",
+        "operationId": "ComputeService_ListComputes",
+        "parameters": [
+          {
+            "name": "filter",
+            "in": "query",
+            "description": "SOL 013 5.2.2 attribute-based filter expression.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "nextpage_opaque_marker",
+            "in": "query",
+            "description": "SOL 013 5.4.2.3 paging marker.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/kubenfv.kubevim.compute.v1.ListComputesResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "compute:v1:query"
+            ]
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "ComputeService"
+        ],
+        "summary": "IFA 006 7.3.1.2 Allocate Virtualised Compute Resource.",
+        "operationId": "ComputeService_CreateCompute",
+        "parameters": [
+          {
+            "name": "requestId",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/kubenfv.kubevim.compute.v1.Compute"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/kubenfv.kubevim.compute.v1.Compute"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "compute:v1:allocate"
+            ]
+          }
+        ]
+      }
+    },
+    "/compute/v1/computes/{compute_id}": {
+      "get": {
+        "tags": [
+          "ComputeService"
+        ],
+        "summary": "IFA 006 7.3.1.3 Query Virtualised Compute Resource, by identifier.",
+        "operationId": "ComputeService_GetCompute",
+        "parameters": [
+          {
+            "name": "compute_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/kubenfv.kubevim.compute.v1.Compute"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "compute:v1:query"
+            ]
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "ComputeService"
+        ],
+        "summary": "IFA 006 7.3.1.5 Terminate Virtualised Compute Resource.",
+        "operationId": "ComputeService_DeleteCompute",
+        "parameters": [
+          {
+            "name": "compute_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A generic empty message that you can re-use to avoid defining duplicated\nempty messages in your APIs. A typical example is to use it as the request\nor the response type of an API method. For instance:\n\n    service Foo {\n      rpc Bar(google.protobuf.Empty) returns (google.protobuf.Empty);\n    }",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "compute:v1:terminate"
+            ]
+          }
+        ]
+      }
+    },
+    "/compute/v1/computes/{compute_id}/operate": {
+      "post": {
+        "tags": [
+          "ComputeService"
+        ],
+        "summary": "IFA 006 7.3.1.6 Operate Virtualised Compute Resource.",
+        "operationId": "ComputeService_OperateCompute",
+        "parameters": [
+          {
+            "name": "compute_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "computeOperation": {
+                    "$ref": "#/components/schemas/kubenfv.kubevim.compute.v1.ComputeOperation"
+                  },
+                  "computeOperationInputData": {
+                    "type": "object",
+                    "additionalProperties": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "required": [
+                  "computeOperation"
+                ]
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/kubenfv.kubevim.compute.v1.OperateComputeResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "compute:v1:operate"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "kubenfv.kubevim.compute.v1.Compute": {
+        "type": "object",
+        "properties": {
+          "computeId": {
+            "type": "string",
+            "readOnly": true
+          },
+          "computeName": {
+            "type": "string"
+          },
+          "flavourId": {
+            "type": "string"
+          },
+          "memorySize": {
+            "type": "string",
+            "readOnly": true
+          },
+          "metadata": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "runningState": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/kubenfv.kubevim.compute.v1.ComputeRunningState"
+              }
+            ],
+            "readOnly": true
+          }
+        },
+        "required": [
+          "flavourId"
+        ]
+      },
+      "kubenfv.kubevim.compute.v1.ComputeOperation": {
+        "type": "string",
+        "enum": [
+          "COMPUTE_OPERATION_UNSPECIFIED",
+          "COMPUTE_OPERATION_START",
+          "COMPUTE_OPERATION_STOP",
+          "COMPUTE_OPERATION_REBOOT"
+        ]
+      },
+      "kubenfv.kubevim.compute.v1.ComputeRunningState": {
+        "type": "string",
+        "enum": [
+          "COMPUTE_RUNNING_STATE_UNSPECIFIED",
+          "COMPUTE_RUNNING_STATE_STARTING",
+          "COMPUTE_RUNNING_STATE_RUNNING",
+          "COMPUTE_RUNNING_STATE_STOPPED"
+        ]
+      },
+      "kubenfv.kubevim.compute.v1.ListComputesResponse": {
+        "type": "object",
+        "properties": {
+          "computes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/kubenfv.kubevim.compute.v1.Compute"
+            }
+          }
+        }
+      },
+      "kubenfv.kubevim.compute.v1.OperateComputeResponse": {
+        "type": "object",
+        "properties": {
+          "compute": {
+            "$ref": "#/components/schemas/kubenfv.kubevim.compute.v1.Compute"
+          },
+          "computeOperationOutputData": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "oauth2": {
+        "type": "oauth2",
+        "flows": {
+          "clientCredentials": {
+            "tokenUrl": "https://idp.example.com/token",
+            "scopes": {
+              "compute:v1:allocate": "Allocate compute resources",
+              "compute:v1:operate": "Operate compute resources",
+              "compute:v1:query": "Query compute resources",
+              "compute:v1:terminate": "Terminate compute resources"
+            }
+          }
+        }
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "ComputeService",
+      "description": "Virtualised compute resources management (IFA 006 7.3.1)."
+    }
+  ]
+}

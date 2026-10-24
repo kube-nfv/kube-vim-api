@@ -1,0 +1,28 @@
+{
+  "imageId": "5f0c9d2e-3a4b-4c1d-9e8f-0a1b2c3d4e5f",
+  "name": "ubuntu-24.04",
+  "provider": "Canonical",
+  "version": "24.04",
+  "containerFormat": "CONTAINER_FORMAT_BARE",
+  "diskFormat": "DISK_FORMAT_QCOW2",
+  "createdAt": "2026-10-20T10:00:00Z",
+  "updatedAt": "2026-10-20T10:05:00Z",
+  "minDisk": "10Gi",
+  "minRam": "2Gi",
+  "size": "3584Mi",
+  "status": "IMAGE_STATUS_AVAILABLE",
+  "progress": 100,
+  "metadata": {
+    "osm.etsi.org/vnfd": "ubuntu-vnf",
+    "kubevim.kubenfv.io/pvc-name": "image-ubuntu-24-04"
+  },
+  "source": {
+    "http": {
+      "url": "https://cloud-images.ubuntu.com/noble/current/noble-server-cloudimg-amd64.img",
+      "credentialsRef": "ubuntu-mirror"
+    }
+  },
+  "importPolicy": "IMPORT_POLICY_EAGER",
+  "firmware": "FIRMWARE_EFI",
+  "diskBus": "DISK_BUS_VIRTIO"
+}

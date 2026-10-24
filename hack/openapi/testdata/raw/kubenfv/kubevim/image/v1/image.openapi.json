@@ -1,0 +1,1291 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Kube-VIM software image API",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/image/v1/images": {
+      "get": {
+        "tags": [
+          "ImageService"
+        ],
+        "summary": "Returns the software images matching a filter.",
+        "operationId": "ImageService_ListImages",
+        "parameters": [
+          {
+            "name": "filter",
+            "in": "query",
+            "description": "Attribute-based filter expression (SOL 013 5.2).",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "nextpage_opaque_marker",
+            "in": "query",
+            "description": "Marker of the page to return, from a previous response (SOL 013 5.4).",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/kubenfv.kubevim.image.v1.ListImagesResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "image:v1:query"
+            ]
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "ImageService"
+        ],
+        "summary": "Adds a software image to the image repository managed by the VIM.",
+        "operationId": "ImageService_CreateImage",
+        "parameters": [
+          {
+            "name": "requestId",
+            "in": "query",
+            "description": "Client-chosen UUID that makes the request idempotent (AIP-155).",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/kubenfv.kubevim.image.v1.Image"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "A software image in the image repository managed by the VIM.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/kubenfv.kubevim.image.v1.Image"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "image:v1:add"
+            ]
+          }
+        ]
+      }
+    },
+    "/image/v1/images/{software_image_id}": {
+      "get": {
+        "tags": [
+          "ImageService"
+        ],
+        "summary": "Returns one software image.",
+        "operationId": "ImageService_GetImage",
+        "parameters": [
+          {
+            "name": "software_image_id",
+            "in": "path",
+            "description": "Identifier of the software image.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A software image in the image repository managed by the VIM.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/kubenfv.kubevim.image.v1.Image"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "image:v1:query"
+            ]
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "ImageService"
+        ],
+        "summary": "Deletes a software image.",
+        "operationId": "ImageService_DeleteImage",
+        "parameters": [
+          {
+            "name": "software_image_id",
+            "in": "path",
+            "description": "Identifier of the software image.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A generic empty message that you can re-use to avoid defining duplicated\nempty messages in your APIs. A typical example is to use it as the request\nor the response type of an API method. For instance:\n\n    service Foo {\n      rpc Bar(google.protobuf.Empty) returns (google.protobuf.Empty);\n    }",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "image:v1:delete"
+            ]
+          }
+        ]
+      },
+      "patch": {
+        "tags": [
+          "ImageService"
+        ],
+        "summary": "Updates the metadata of a software image.",
+        "operationId": "ImageService_UpdateImage",
+        "parameters": [
+          {
+            "name": "software_image_id",
+            "in": "path",
+            "description": "Identifier of the software image.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/kubenfv.kubevim.image.v1.ImageUpdate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "A software image in the image repository managed by the VIM.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/kubenfv.kubevim.image.v1.Image"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "image:v1:update"
+            ]
+          }
+        ]
+      }
+    },
+    "/image/v1/imageSources": {
+      "get": {
+        "tags": [
+          "ImageService"
+        ],
+        "summary": "Returns the image source types this VIM accepts.",
+        "operationId": "ImageService_ListImageSources",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/kubenfv.kubevim.image.v1.ListImageSourcesResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "image:v1:query"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "kubenfv.kubevim.image.v1.BasicAuth": {
+        "type": "object",
+        "description": "Username and password for a source that needs them.",
+        "properties": {
+          "password": {
+            "type": "string",
+            "writeOnly": true
+          },
+          "username": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "username",
+          "password"
+        ]
+      },
+      "kubenfv.kubevim.image.v1.BlankSource": {
+        "type": "object",
+        "description": "Empty disk.",
+        "properties": {
+          "size": {
+            "type": "string",
+            "description": "Disk size in Kubernetes quantity format, e.g. \"20Gi\"."
+          }
+        },
+        "required": [
+          "size"
+        ]
+      },
+      "kubenfv.kubevim.image.v1.Checksum": {
+        "type": "object",
+        "description": "Checksum of a file (SOL 013 7.1.7).",
+        "properties": {
+          "algorithm": {
+            "type": "string",
+            "description": "Hash algorithm, e.g. \"SHA-256\".",
+            "readOnly": true
+          },
+          "hash": {
+            "type": "string",
+            "description": "Hexadecimal hash value.",
+            "readOnly": true
+          }
+        }
+      },
+      "kubenfv.kubevim.image.v1.ContainerFormat": {
+        "type": "string",
+        "description": "Container format of a software image file.\nValues may be added as CDI support grows; clients should accept unknown values.",
+        "enum": [
+          "CONTAINER_FORMAT_UNSPECIFIED",
+          "CONTAINER_FORMAT_BARE",
+          "CONTAINER_FORMAT_CONTAINER_DISK"
+        ]
+      },
+      "kubenfv.kubevim.image.v1.DiskFormat": {
+        "type": "string",
+        "description": "Disk format of a software image.\nValues may be added as CDI support grows; clients should accept unknown values.",
+        "enum": [
+          "DISK_FORMAT_UNSPECIFIED",
+          "DISK_FORMAT_RAW",
+          "DISK_FORMAT_QCOW2",
+          "DISK_FORMAT_ISO",
+          "DISK_FORMAT_VMDK"
+        ]
+      },
+      "kubenfv.kubevim.image.v1.GcsSource": {
+        "type": "object",
+        "description": "Google Cloud Storage download.",
+        "properties": {
+          "credentialsRef": {
+            "type": "string",
+            "description": "Name of a credential set the VIM loads from its own environment or files; the request carries no secret."
+          },
+          "serviceAccountKey": {
+            "type": "string",
+            "description": "Inline service account key in JSON.",
+            "writeOnly": true
+          },
+          "url": {
+            "type": "string",
+            "description": "URL of the object, e.g. \"gs://bucket/image.qcow2\"."
+          }
+        },
+        "required": [
+          "url"
+        ],
+        "oneOf": [
+          {
+            "type": "object",
+            "not": {
+              "anyOf": [
+                {
+                  "required": [
+                    "serviceAccountKey"
+                  ]
+                },
+                {
+                  "required": [
+                    "credentialsRef"
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "type": "object",
+            "properties": {
+              "serviceAccountKey": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "serviceAccountKey"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "credentialsRef": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "credentialsRef"
+            ]
+          }
+        ]
+      },
+      "kubenfv.kubevim.image.v1.HttpSource": {
+        "type": "object",
+        "description": "HTTP or HTTPS download.",
+        "properties": {
+          "basicAuth": {
+            "$ref": "#/components/schemas/kubenfv.kubevim.image.v1.BasicAuth",
+            "description": "Inline username and password."
+          },
+          "caBundle": {
+            "type": "string",
+            "description": "PEM CA bundle to verify the server certificate."
+          },
+          "credentialsRef": {
+            "type": "string",
+            "description": "Name of a credential set the VIM loads from its own environment or files; the request carries no secret."
+          },
+          "extraHeaders": {
+            "type": "array",
+            "description": "Extra request headers, as \"Name: value\".",
+            "items": {
+              "type": "string"
+            }
+          },
+          "url": {
+            "type": "string",
+            "description": "URL of the image file."
+          }
+        },
+        "required": [
+          "url"
+        ],
+        "oneOf": [
+          {
+            "type": "object",
+            "not": {
+              "anyOf": [
+                {
+                  "required": [
+                    "basicAuth"
+                  ]
+                },
+                {
+                  "required": [
+                    "credentialsRef"
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "type": "object",
+            "properties": {
+              "basicAuth": {
+                "$ref": "#/components/schemas/kubenfv.kubevim.image.v1.BasicAuth"
+              }
+            },
+            "required": [
+              "basicAuth"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "credentialsRef": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "credentialsRef"
+            ]
+          }
+        ]
+      },
+      "kubenfv.kubevim.image.v1.Image": {
+        "type": "object",
+        "description": "A software image in the image repository managed by the VIM.",
+        "properties": {
+          "checksum": {
+            "description": "Checksum of the software image file.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/kubenfv.kubevim.image.v1.Checksum"
+              }
+            ],
+            "readOnly": true
+          },
+          "containerFormat": {
+            "description": "Container format of the software image file.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/kubenfv.kubevim.image.v1.ContainerFormat"
+              }
+            ],
+            "readOnly": true
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Time the software image was created.",
+            "readOnly": true
+          },
+          "diskFormat": {
+            "description": "Disk format of the software image.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/kubenfv.kubevim.image.v1.DiskFormat"
+              }
+            ],
+            "readOnly": true
+          },
+          "minDisk": {
+            "type": "string",
+            "description": "Minimal disk size for the software image, in Kubernetes quantity format (e.g. \"10Gi\")."
+          },
+          "minRam": {
+            "type": "string",
+            "description": "Minimal RAM size for the software image, in Kubernetes quantity format (e.g. \"2Gi\")."
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the software image."
+          },
+          "progress": {
+            "type": "integer",
+            "format": "int32",
+            "description": "Import progress in percent while the status is IMAGE_STATUS_IMPORTING.",
+            "readOnly": true
+          },
+          "provider": {
+            "type": "string",
+            "description": "Provider of the software image."
+          },
+          "resourceGroupId": {
+            "type": "string",
+            "description": "Infrastructure resource group the software image belongs to."
+          },
+          "size": {
+            "type": "string",
+            "description": "Size of the software image, in Kubernetes quantity format.",
+            "readOnly": true
+          },
+          "softwareImageId": {
+            "type": "string",
+            "description": "Identifier of the software image.",
+            "readOnly": true
+          },
+          "source": {
+            "$ref": "#/components/schemas/kubenfv.kubevim.image.v1.ImageSource",
+            "description": "Where the VIM imports the software image from."
+          },
+          "status": {
+            "description": "Status of the software image.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/kubenfv.kubevim.image.v1.ImageStatus"
+              }
+            ],
+            "readOnly": true
+          },
+          "statusDetail": {
+            "type": "string",
+            "description": "Human-readable reason when the status is IMAGE_STATUS_FAILED.",
+            "readOnly": true
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Time the software image was last updated.",
+            "readOnly": true
+          },
+          "userMetadata": {
+            "type": "object",
+            "description": "User-defined metadata, owned by the consumer and never interpreted by the VIM.",
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "version": {
+            "type": "string",
+            "description": "Version of the software image."
+          },
+          "visibility": {
+            "$ref": "#/components/schemas/kubenfv.kubevim.image.v1.Visibility",
+            "description": "Visibility of the software image."
+          }
+        },
+        "required": [
+          "name",
+          "provider",
+          "version",
+          "source"
+        ]
+      },
+      "kubenfv.kubevim.image.v1.ImageIoSource": {
+        "type": "object",
+        "description": "oVirt ImageIO import.",
+        "properties": {
+          "basicAuth": {
+            "$ref": "#/components/schemas/kubenfv.kubevim.image.v1.BasicAuth",
+            "description": "Inline username and password."
+          },
+          "caBundle": {
+            "type": "string",
+            "description": "PEM CA bundle to verify the engine certificate."
+          },
+          "credentialsRef": {
+            "type": "string",
+            "description": "Name of a credential set the VIM loads from its own environment or files; the request carries no secret."
+          },
+          "diskId": {
+            "type": "string",
+            "description": "Identifier of the oVirt disk."
+          },
+          "url": {
+            "type": "string",
+            "description": "URL of the oVirt engine API."
+          }
+        },
+        "required": [
+          "url",
+          "diskId"
+        ],
+        "oneOf": [
+          {
+            "type": "object",
+            "not": {
+              "anyOf": [
+                {
+                  "required": [
+                    "basicAuth"
+                  ]
+                },
+                {
+                  "required": [
+                    "credentialsRef"
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "type": "object",
+            "properties": {
+              "basicAuth": {
+                "$ref": "#/components/schemas/kubenfv.kubevim.image.v1.BasicAuth"
+              }
+            },
+            "required": [
+              "basicAuth"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "credentialsRef": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "credentialsRef"
+            ]
+          }
+        ]
+      },
+      "kubenfv.kubevim.image.v1.ImageSource": {
+        "type": "object",
+        "description": "Source of a software image; exactly one member is set.",
+        "properties": {
+          "blank": {
+            "$ref": "#/components/schemas/kubenfv.kubevim.image.v1.BlankSource",
+            "description": "Create an empty disk."
+          },
+          "gcs": {
+            "$ref": "#/components/schemas/kubenfv.kubevim.image.v1.GcsSource",
+            "description": "Download from Google Cloud Storage."
+          },
+          "http": {
+            "$ref": "#/components/schemas/kubenfv.kubevim.image.v1.HttpSource",
+            "description": "Download over HTTP or HTTPS."
+          },
+          "imageio": {
+            "$ref": "#/components/schemas/kubenfv.kubevim.image.v1.ImageIoSource",
+            "description": "Import from oVirt ImageIO."
+          },
+          "pvc": {
+            "$ref": "#/components/schemas/kubenfv.kubevim.image.v1.PvcSource",
+            "description": "Clone an existing persistent volume claim."
+          },
+          "registry": {
+            "$ref": "#/components/schemas/kubenfv.kubevim.image.v1.RegistrySource",
+            "description": "Pull from a container registry."
+          },
+          "s3": {
+            "$ref": "#/components/schemas/kubenfv.kubevim.image.v1.S3Source",
+            "description": "Download from an S3-compatible object store."
+          },
+          "snapshot": {
+            "$ref": "#/components/schemas/kubenfv.kubevim.image.v1.SnapshotSource",
+            "description": "Restore an existing volume snapshot."
+          },
+          "upload": {
+            "$ref": "#/components/schemas/kubenfv.kubevim.image.v1.UploadSource",
+            "description": "Upload by the client after creation."
+          },
+          "vddk": {
+            "$ref": "#/components/schemas/kubenfv.kubevim.image.v1.VddkSource",
+            "description": "Import from VMware through VDDK."
+          }
+        },
+        "oneOf": [
+          {
+            "type": "object",
+            "not": {
+              "anyOf": [
+                {
+                  "required": [
+                    "http"
+                  ]
+                },
+                {
+                  "required": [
+                    "s3"
+                  ]
+                },
+                {
+                  "required": [
+                    "gcs"
+                  ]
+                },
+                {
+                  "required": [
+                    "registry"
+                  ]
+                },
+                {
+                  "required": [
+                    "pvc"
+                  ]
+                },
+                {
+                  "required": [
+                    "snapshot"
+                  ]
+                },
+                {
+                  "required": [
+                    "upload"
+                  ]
+                },
+                {
+                  "required": [
+                    "blank"
+                  ]
+                },
+                {
+                  "required": [
+                    "imageio"
+                  ]
+                },
+                {
+                  "required": [
+                    "vddk"
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "type": "object",
+            "properties": {
+              "http": {
+                "$ref": "#/components/schemas/kubenfv.kubevim.image.v1.HttpSource"
+              }
+            },
+            "required": [
+              "http"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "s3": {
+                "$ref": "#/components/schemas/kubenfv.kubevim.image.v1.S3Source"
+              }
+            },
+            "required": [
+              "s3"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "gcs": {
+                "$ref": "#/components/schemas/kubenfv.kubevim.image.v1.GcsSource"
+              }
+            },
+            "required": [
+              "gcs"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "registry": {
+                "$ref": "#/components/schemas/kubenfv.kubevim.image.v1.RegistrySource"
+              }
+            },
+            "required": [
+              "registry"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "pvc": {
+                "$ref": "#/components/schemas/kubenfv.kubevim.image.v1.PvcSource"
+              }
+            },
+            "required": [
+              "pvc"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "snapshot": {
+                "$ref": "#/components/schemas/kubenfv.kubevim.image.v1.SnapshotSource"
+              }
+            },
+            "required": [
+              "snapshot"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "upload": {
+                "$ref": "#/components/schemas/kubenfv.kubevim.image.v1.UploadSource"
+              }
+            },
+            "required": [
+              "upload"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "blank": {
+                "$ref": "#/components/schemas/kubenfv.kubevim.image.v1.BlankSource"
+              }
+            },
+            "required": [
+              "blank"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "imageio": {
+                "$ref": "#/components/schemas/kubenfv.kubevim.image.v1.ImageIoSource"
+              }
+            },
+            "required": [
+              "imageio"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "vddk": {
+                "$ref": "#/components/schemas/kubenfv.kubevim.image.v1.VddkSource"
+              }
+            },
+            "required": [
+              "vddk"
+            ]
+          }
+        ]
+      },
+      "kubenfv.kubevim.image.v1.ImageSourceType": {
+        "type": "string",
+        "description": "Image source type, as reported by ListImageSources.\nValues may be added as CDI support grows; clients should accept unknown values.",
+        "enum": [
+          "IMAGE_SOURCE_TYPE_UNSPECIFIED",
+          "IMAGE_SOURCE_TYPE_HTTP",
+          "IMAGE_SOURCE_TYPE_S3",
+          "IMAGE_SOURCE_TYPE_GCS",
+          "IMAGE_SOURCE_TYPE_REGISTRY",
+          "IMAGE_SOURCE_TYPE_PVC",
+          "IMAGE_SOURCE_TYPE_SNAPSHOT",
+          "IMAGE_SOURCE_TYPE_UPLOAD",
+          "IMAGE_SOURCE_TYPE_BLANK",
+          "IMAGE_SOURCE_TYPE_IMAGEIO",
+          "IMAGE_SOURCE_TYPE_VDDK"
+        ]
+      },
+      "kubenfv.kubevim.image.v1.ImageStatus": {
+        "type": "string",
+        "description": "Status of a software image.\nValues may be added as CDI support grows; clients should accept unknown values.",
+        "enum": [
+          "IMAGE_STATUS_UNSPECIFIED",
+          "IMAGE_STATUS_PENDING",
+          "IMAGE_STATUS_IMPORTING",
+          "IMAGE_STATUS_UPLOAD_PENDING",
+          "IMAGE_STATUS_AVAILABLE",
+          "IMAGE_STATUS_FAILED"
+        ]
+      },
+      "kubenfv.kubevim.image.v1.ImageUpdate": {
+        "type": "object",
+        "description": "Changes to a software image. Each field that is set replaces the current value.",
+        "properties": {
+          "minDisk": {
+            "type": "string"
+          },
+          "minRam": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "provider": {
+            "type": "string"
+          },
+          "userMetadata": {
+            "type": "object",
+            "description": "User metadata entries to add or replace.",
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "userMetadataKeysToRemove": {
+            "type": "array",
+            "description": "User metadata keys to remove.",
+            "items": {
+              "type": "string"
+            }
+          },
+          "version": {
+            "type": "string"
+          },
+          "visibility": {
+            "$ref": "#/components/schemas/kubenfv.kubevim.image.v1.Visibility"
+          }
+        }
+      },
+      "kubenfv.kubevim.image.v1.ListImageSourcesResponse": {
+        "type": "object",
+        "properties": {
+          "sources": {
+            "type": "array",
+            "description": "Source types this VIM accepts.",
+            "items": {
+              "$ref": "#/components/schemas/kubenfv.kubevim.image.v1.ImageSourceType"
+            }
+          }
+        }
+      },
+      "kubenfv.kubevim.image.v1.ListImagesResponse": {
+        "type": "object",
+        "properties": {
+          "images": {
+            "type": "array",
+            "description": "Software images matching the filter.",
+            "items": {
+              "$ref": "#/components/schemas/kubenfv.kubevim.image.v1.Image"
+            }
+          },
+          "nextpage_opaque_marker": {
+            "type": "string",
+            "description": "Marker of the next page; empty on the last page (SOL 013 5.4)."
+          }
+        }
+      },
+      "kubenfv.kubevim.image.v1.PvcSource": {
+        "type": "object",
+        "description": "Clone of a Kubernetes persistent volume claim.",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "namespace": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "namespace",
+          "name"
+        ]
+      },
+      "kubenfv.kubevim.image.v1.RegistrySource": {
+        "type": "object",
+        "description": "Container registry pull.",
+        "properties": {
+          "basicAuth": {
+            "$ref": "#/components/schemas/kubenfv.kubevim.image.v1.BasicAuth",
+            "description": "Inline username and password."
+          },
+          "caBundle": {
+            "type": "string",
+            "description": "PEM CA bundle to verify the registry certificate."
+          },
+          "credentialsRef": {
+            "type": "string",
+            "description": "Name of a credential set the VIM loads from its own environment or files; the request carries no secret."
+          },
+          "platform": {
+            "type": "string",
+            "description": "Platform of a multi-architecture image, e.g. \"linux/arm64\"."
+          },
+          "pullMethod": {
+            "$ref": "#/components/schemas/kubenfv.kubevim.image.v1.RegistrySource.PullMethod",
+            "description": "Pull method; the VIM default when unset."
+          },
+          "url": {
+            "type": "string",
+            "description": "Image reference, e.g. \"docker://registry.example.com/images/ubuntu:24.04\"."
+          }
+        },
+        "required": [
+          "url"
+        ],
+        "oneOf": [
+          {
+            "type": "object",
+            "not": {
+              "anyOf": [
+                {
+                  "required": [
+                    "basicAuth"
+                  ]
+                },
+                {
+                  "required": [
+                    "credentialsRef"
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "type": "object",
+            "properties": {
+              "basicAuth": {
+                "$ref": "#/components/schemas/kubenfv.kubevim.image.v1.BasicAuth"
+              }
+            },
+            "required": [
+              "basicAuth"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "credentialsRef": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "credentialsRef"
+            ]
+          }
+        ]
+      },
+      "kubenfv.kubevim.image.v1.RegistrySource.PullMethod": {
+        "type": "string",
+        "description": "How the image is pulled.",
+        "enum": [
+          "PULL_METHOD_UNSPECIFIED",
+          "PULL_METHOD_POD",
+          "PULL_METHOD_NODE"
+        ]
+      },
+      "kubenfv.kubevim.image.v1.S3AccessKey": {
+        "type": "object",
+        "description": "Access key for an S3-compatible object store.",
+        "properties": {
+          "accessKeyId": {
+            "type": "string"
+          },
+          "secretAccessKey": {
+            "type": "string",
+            "writeOnly": true
+          }
+        },
+        "required": [
+          "accessKeyId",
+          "secretAccessKey"
+        ]
+      },
+      "kubenfv.kubevim.image.v1.S3Source": {
+        "type": "object",
+        "description": "S3-compatible object store download.",
+        "properties": {
+          "accessKey": {
+            "$ref": "#/components/schemas/kubenfv.kubevim.image.v1.S3AccessKey",
+            "description": "Inline access key."
+          },
+          "caBundle": {
+            "type": "string",
+            "description": "PEM CA bundle to verify the endpoint certificate."
+          },
+          "credentialsRef": {
+            "type": "string",
+            "description": "Name of a credential set the VIM loads from its own environment or files; the request carries no secret."
+          },
+          "url": {
+            "type": "string",
+            "description": "URL of the object, e.g. \"https://s3.example.com/bucket/image.qcow2\"."
+          }
+        },
+        "required": [
+          "url"
+        ],
+        "oneOf": [
+          {
+            "type": "object",
+            "not": {
+              "anyOf": [
+                {
+                  "required": [
+                    "accessKey"
+                  ]
+                },
+                {
+                  "required": [
+                    "credentialsRef"
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "type": "object",
+            "properties": {
+              "accessKey": {
+                "$ref": "#/components/schemas/kubenfv.kubevim.image.v1.S3AccessKey"
+              }
+            },
+            "required": [
+              "accessKey"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "credentialsRef": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "credentialsRef"
+            ]
+          }
+        ]
+      },
+      "kubenfv.kubevim.image.v1.SnapshotSource": {
+        "type": "object",
+        "description": "Restore of a Kubernetes volume snapshot.",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "namespace": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "namespace",
+          "name"
+        ]
+      },
+      "kubenfv.kubevim.image.v1.UploadSource": {
+        "type": "object",
+        "description": "Upload by the client. Create the image with this source, then send the\nimage file to upload_url with upload_token before upload_expire_time.",
+        "properties": {
+          "uploadExpireTime": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Time after which the token is no longer accepted.",
+            "readOnly": true
+          },
+          "uploadToken": {
+            "type": "string",
+            "description": "Bearer token for the upload request.",
+            "readOnly": true
+          },
+          "uploadUrl": {
+            "type": "string",
+            "description": "URL to upload the image file to.",
+            "readOnly": true
+          }
+        }
+      },
+      "kubenfv.kubevim.image.v1.VddkSource": {
+        "type": "object",
+        "description": "VMware import through VDDK.",
+        "properties": {
+          "backingFile": {
+            "type": "string",
+            "description": "Path of the virtual disk backing file."
+          },
+          "basicAuth": {
+            "$ref": "#/components/schemas/kubenfv.kubevim.image.v1.BasicAuth",
+            "description": "Inline username and password."
+          },
+          "credentialsRef": {
+            "type": "string",
+            "description": "Name of a credential set the VIM loads from its own environment or files; the request carries no secret."
+          },
+          "initImageUrl": {
+            "type": "string",
+            "description": "Container image with the VDDK library; the VIM default when unset."
+          },
+          "thumbprint": {
+            "type": "string",
+            "description": "SHA-1 thumbprint of the endpoint certificate."
+          },
+          "url": {
+            "type": "string",
+            "description": "URL of the vCenter or ESXi endpoint."
+          },
+          "uuid": {
+            "type": "string",
+            "description": "UUID of the virtual machine."
+          }
+        },
+        "required": [
+          "url",
+          "uuid",
+          "backingFile"
+        ],
+        "oneOf": [
+          {
+            "type": "object",
+            "not": {
+              "anyOf": [
+                {
+                  "required": [
+                    "basicAuth"
+                  ]
+                },
+                {
+                  "required": [
+                    "credentialsRef"
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "type": "object",
+            "properties": {
+              "basicAuth": {
+                "$ref": "#/components/schemas/kubenfv.kubevim.image.v1.BasicAuth"
+              }
+            },
+            "required": [
+              "basicAuth"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "credentialsRef": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "credentialsRef"
+            ]
+          }
+        ]
+      },
+      "kubenfv.kubevim.image.v1.Visibility": {
+        "type": "string",
+        "description": "Visibility of a software image (IFA005 7.2.2.2).",
+        "enum": [
+          "VISIBILITY_UNSPECIFIED",
+          "VISIBILITY_PRIVATE",
+          "VISIBILITY_PUBLIC"
+        ]
+      }
+    },
+    "securitySchemes": {
+      "oauth2": {
+        "type": "oauth2",
+        "description": "OAuth 2.0 client credentials (SOL 013 8.3). The token URL is deployment specific.",
+        "flows": {
+          "clientCredentials": {
+            "tokenUrl": "https://idp.example.com/oauth2/token",
+            "scopes": {
+              "image:v1:add": "Add software images",
+              "image:v1:delete": "Delete software images",
+              "image:v1:query": "Query software images",
+              "image:v1:update": "Update software images"
+            }
+          }
+        }
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "ImageService",
+      "description": "Software image management."
+    }
+  ]
+}

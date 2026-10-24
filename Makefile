@@ -1,84 +1,101 @@
-KUBE_VIM_API_URL=github.com/kube-nfv/kube-vim-api
+LOCALBIN ?= $(shell pwd)/bin
 
-KUBE_VIM_API_VERSION ?= $(shell git describe --tags --abbrev=0)
-
-PROTOC_VERSION ?= 25.1
-K8S_APIMACHINERY_VERSION ?= 0.31.0
-GRPC_GATEWAY_VERSION ?= 2.26.1
-
-OPENAPI_GEN_IMAGE ?= openapitools/openapi-generator-cli
-OPENAPI_GEN_VERSION ?= v7.11.0
-
+OPENAPI_RAW_DIR ?= $(LOCALBIN)/openapi-raw
 OPENAPI_DIR ?= generated/openapi
-GENERATED_DIR ?= generated
-PYTHON_GEN_DIR = $(GENERATED_DIR)/python
+PYTHON_DIR ?= generated/python
 
-LICENSE_FILE ?= LICENSE
+# Version stamped into the bundle and the Python client; release.yml sets it from the tag.
+VERSION ?= 0.0.0-dev
+PYTHON_PACKAGE_VERSION ?= 0.0.0.dev0
+OPENAPI_GENERATOR_IMAGE ?= openapitools/openapi-generator-cli:v7.26.0
+PYTHON ?= python3
+PYTHON_VENV ?= $(LOCALBIN)/python-venv
+
+BUF ?= $(LOCALBIN)/buf
+PROTOC_GEN_GO ?= $(LOCALBIN)/protoc-gen-go
+PROTOC_GEN_GO_GRPC ?= $(LOCALBIN)/protoc-gen-go-grpc
+PROTOC_GEN_GRPC_GATEWAY ?= $(LOCALBIN)/protoc-gen-grpc-gateway
+PROTOC_GEN_OPENAPIV3 ?= $(LOCALBIN)/protoc-gen-openapiv3
+
+BUF_VERSION ?= v1.74.0
+PROTOC_GEN_GO_VERSION ?= v1.36.12
+PROTOC_GEN_GO_GRPC_VERSION ?= v1.6.2
+GRPC_GATEWAY_VERSION ?= v2.32.0
 
 .PHONY: all
-all: proto-compile python-gen
+all: generate
 
 .PHONY: help
 help: ## Display available commands.
 	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_-]+:.*?## / {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
 
-.PHONY: proto-clean
-proto-clean: ## Clean generated proto.
-	rm -rf pkg/apis $(GENERATED_DIR)
+.PHONY: generate
+generate: buf protoc-gen-go protoc-gen-go-grpc protoc-gen-grpc-gateway protoc-gen-openapiv3 ## Generate Go code, OpenAPI schemas and the Python client from the protos.
+	PATH="$(LOCALBIN):$$PATH" $(BUF) generate
+	rm -rf $(OPENAPI_DIR)
+	GOWORK=off go run ./hack/openapi -in $(OPENAPI_RAW_DIR) -out $(OPENAPI_DIR) -version $(VERSION)
+	$(MAKE) generate-python
 
-.PHONY: proto-dirs
-proto-dirs: ## Create proto output directories.
-	mkdir -p pkg/apis/vivnfm pkg/apis/admin $(OPENAPI_DIR)
+.PHONY: generate-python
+generate-python: ## Generate the Python client from the bundled schema (needs Docker).
+	rm -rf $(PYTHON_DIR)
+	mkdir -p $(PYTHON_DIR)
+	cp hack/python/openapi-generator-ignore $(PYTHON_DIR)/.openapi-generator-ignore
+	docker run --rm -u $$(id -u):$$(id -g) -v $(CURDIR):/work -w /work $(OPENAPI_GENERATOR_IMAGE) generate \
+		-g python -i $(OPENAPI_DIR)/kubevim.openapi.json -o $(PYTHON_DIR) \
+		-t hack/python/templates \
+		--package-name kubevim_client \
+		--additional-properties=projectName=kubevim-client,packageVersion=$(PYTHON_PACKAGE_VERSION),enumUnknownDefaultCase=true
 
-.PHONY: proto-compile
-$(OPENAPI_DIR):
-	mkdir -p $(OPENAPI_DIR)
+.PHONY: lint
+lint: buf ## Lint and format-check the protos.
+	$(BUF) lint
+	$(BUF) format --diff --exit-code
 
-proto-compile: proto-dirs proto-image-build $(OPENAPI_DIR) ## Compile message protobuf and gRPC service files.
-	docker run --rm \
-	  -v "$(PWD):/workspace" \
-	  -v "$(PWD)/$(OPENAPI_DIR):/api" \
-	  -w "/workspace/api" \
-	  protogen-image \
-	  bash -c "protoc common/common.proto --proto_path=. \
-	  --go_out=/workspace --go_opt=module=$(KUBE_VIM_API_URL) && \
-	  protoc vivnfm/types.proto vivnfm/vi-vnfm.proto --proto_path=. \
-	  --go_out=/workspace --go_opt=module=$(KUBE_VIM_API_URL) \
-	  --go-grpc_out=/workspace --go-grpc_opt=module=$(KUBE_VIM_API_URL) \
-	  --grpc-gateway_out=/workspace --grpc-gateway_opt=module=$(KUBE_VIM_API_URL) \
-	  --grpc-gateway_opt=Mvivnfm/vi-vnfm.proto=$(KUBE_VIM_API_URL)/pkg/apis/vivnfm \
-	  --openapiv2_out=/api && \
-	  protoc admin/types.proto admin/kubevim-admin.proto --proto_path=. \
-	  --go_out=/workspace --go_opt=module=$(KUBE_VIM_API_URL) \
-	  --go-grpc_out=/workspace --go-grpc_opt=module=$(KUBE_VIM_API_URL) \
-	  --grpc-gateway_out=/workspace --grpc-gateway_opt=module=$(KUBE_VIM_API_URL) \
-	  --grpc-gateway_opt=Madmin/kubevim-admin.proto=$(KUBE_VIM_API_URL)/pkg/apis/admin"
+.PHONY: breaking
+breaking: buf ## Check for breaking changes against BREAKING_AGAINST, e.g. .git#tag=v1.0.0-rc.1.
+	$(BUF) breaking --against "$(BREAKING_AGAINST)"
 
-.PHONY: proto-image-build
-proto-image-build: ## Build docker image with all nececary dependencies to compile message protobuf and gRPC service files.
-	docker build \
-	  --build-arg PLATFORM=$(shell uname -m) \
-	  --build-arg PROTOC_VERSION=$(PROTOC_VERSION) \
-	  --build-arg K8S_APIMACHINERY_VERSION=$(K8S_APIMACHINERY_VERSION) \
-	  --build-arg GRPC_GATEWAY_VERSION=$(GRPC_GATEWAY_VERSION) \
-	  -t protogen-image \
-	  -f docker/Dockerfile docker/
+.PHONY: test
+test: ## Run Go tests.
+	GOWORK=off go test ./...
 
-.PHONY: python-gen
-python-gen: $(PYTHON_GEN_DIR) ## Generate python stubs from the openapi schema.
+.PHONY: test-python
+test-python: ## Test the generated Python client against a stub server.
+	$(PYTHON) -m venv $(PYTHON_VENV)
+	$(PYTHON_VENV)/bin/pip install -q ./$(PYTHON_DIR) pytest
+	$(PYTHON_VENV)/bin/pytest -q test/python
 
-$(PYTHON_GEN_DIR): $(OPENAPI_DIR) proto-compile
-	mkdir -p $@
-	docker run --rm \
-	--user $(shell id -u):$(shell id -g) \
-	-v "$(PWD)/$(OPENAPI_DIR):/$(OPENAPI_DIR)" \
-	-v "$(PWD)/$(PYTHON_GEN_DIR):/$(PYTHON_GEN_DIR)" \
-	$(OPENAPI_GEN_IMAGE):$(OPENAPI_GEN_VERSION) \
-	generate -i /$(OPENAPI_DIR)/vivnfm/vi-vnfm.swagger.json \
-	-g python -o /$(PYTHON_GEN_DIR) \
-	--additional-properties=\
-	packageUrl=$(KUBE_VIM_API_URL),\
-	packageVersion=0.0.0.dev0,\
-	packageName=kubevim_vivnfm_client,\
-	projectDescription="Python client for VI-VNFM API"
-	python3 ./hack/prepare_oapi_py_package.py $(PYTHON_GEN_DIR) $(LICENSE_FILE)
+.PHONY: clean
+clean: ## Remove generated code and local tools.
+	rm -rf pkg/apis generated $(LOCALBIN)
+
+$(LOCALBIN):
+	mkdir -p $(LOCALBIN)
+
+.PHONY: buf
+buf: $(LOCALBIN)
+	@test -x $(BUF) && $(BUF) --version | grep -q $(BUF_VERSION:v%=%) || \
+	GOBIN=$(LOCALBIN) go install github.com/bufbuild/buf/cmd/buf@$(BUF_VERSION)
+
+.PHONY: protoc-gen-go
+protoc-gen-go: $(LOCALBIN)
+	@test -x $(PROTOC_GEN_GO) && $(PROTOC_GEN_GO) --version | grep -q $(PROTOC_GEN_GO_VERSION) || \
+	GOBIN=$(LOCALBIN) go install google.golang.org/protobuf/cmd/protoc-gen-go@$(PROTOC_GEN_GO_VERSION)
+
+.PHONY: protoc-gen-go-grpc
+protoc-gen-go-grpc: $(LOCALBIN)
+	@test -x $(PROTOC_GEN_GO_GRPC) && $(PROTOC_GEN_GO_GRPC) --version | grep -q $(PROTOC_GEN_GO_GRPC_VERSION:v%=%) || \
+	GOBIN=$(LOCALBIN) go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@$(PROTOC_GEN_GO_GRPC_VERSION)
+
+.PHONY: protoc-gen-grpc-gateway
+protoc-gen-grpc-gateway: $(LOCALBIN)
+	@test -x $(PROTOC_GEN_GRPC_GATEWAY) && $(PROTOC_GEN_GRPC_GATEWAY) --version | grep -q $(GRPC_GATEWAY_VERSION) || \
+	GOBIN=$(LOCALBIN) go install github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-grpc-gateway@$(GRPC_GATEWAY_VERSION)
+
+# protoc-gen-openapiv3 has no version flag; a marker file records the installed version.
+.PHONY: protoc-gen-openapiv3
+protoc-gen-openapiv3: $(LOCALBIN)
+	@test -x $(PROTOC_GEN_OPENAPIV3) && test -f $(LOCALBIN)/.protoc-gen-openapiv3-$(GRPC_GATEWAY_VERSION) || \
+	{ GOBIN=$(LOCALBIN) go install github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv3@$(GRPC_GATEWAY_VERSION) && \
+	rm -f $(LOCALBIN)/.protoc-gen-openapiv3-* && touch $(LOCALBIN)/.protoc-gen-openapiv3-$(GRPC_GATEWAY_VERSION); }

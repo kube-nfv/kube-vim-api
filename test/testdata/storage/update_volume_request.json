@@ -1,0 +1,9 @@
+{
+  "volumeId": "a7b8c9d0-e1f2-4a3b-8c4d-5e6f7a8b9c0d",
+  "update": {
+    "volumeName": "router-1-data-renamed",
+    "metadata": {
+      "owner": "team-a"
+    }
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "flavourId": "9a8b7c6d-5e4f-4a3b-9c2d-1e0f9a8b7c6d",
+  "flavourName": "dataplane.large",
+  "virtualMemory": {
+    "virtualMemSize": "16Gi",
+    "virtualMemOversubscriptionPolicy": "1:1",
+    "numaEnabled": true,
+    "hugepageSize": "1Gi"
+  },
+  "virtualCpu": {
+    "cpuArchitecture": "CPU_ARCHITECTURE_X86_64",
+    "numVirtualCpu": 8,
+    "virtualCpuPinning": {
+      "virtualCpuPinningPolicy": "VIRTUAL_CPU_PINNING_POLICY_DYNAMIC"
+    },
+    "topology": {
+      "sockets": 1,
+      "cores": 4,
+      "threads": 2
+    }
+  },
+  "storageAttributes": [
+    {
+      "typeOfStorage": "TYPE_OF_STORAGE_VOLUME",
+      "sizeOfStorage": "40Gi",
+      "isBoot": true
+    },
+    {
+      "typeOfStorage": "TYPE_OF_STORAGE_EPHEMERAL",
+      "sizeOfStorage": "10Gi"
+    }
+  ],
+  "metadata": {
+    "osm.etsi.org/flavour": "dp-large",
+    "kubevim.kubenfv.io/instancetype": "flavour-9a8b7c6d"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "networkId": "3e2d1c0b-9a8f-4e7d-8c6b-5a4f3e2d1c0b",
+  "update": {
+    "networkName": "data-100-renamed",
+    "metadata": {
+      "owner": "team-a"
+    }
+  }
+}

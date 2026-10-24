@@ -1,0 +1,838 @@
+{
+  "components": {
+    "schemas": {
+      "ProblemDetails": {
+        "description": "Error details (SOL 013 6.3, RFC 9457).",
+        "properties": {
+          "detail": {
+            "type": "string"
+          },
+          "instance": {
+            "format": "uri",
+            "type": "string"
+          },
+          "status": {
+            "type": "integer"
+          },
+          "title": {
+            "type": "string"
+          },
+          "type": {
+            "description": "https://kubevim.kubenfv.io/problems/<reason>, the error reason (ErrorReason in the protos) in kebab case, e.g. .../problems/resource-in-use; about:blank for authentication and authorisation errors. Clients should accept unknown types.",
+            "format": "uri",
+            "type": "string"
+          }
+        },
+        "required": [
+          "status",
+          "detail"
+        ],
+        "type": "object"
+      },
+      "kubenfv.kubevim.common.v1.IpVersion": {
+        "description": "IP version of a network or subnet (IFA006 8.4.4.4).",
+        "enum": [
+          "IP_VERSION_UNSPECIFIED",
+          "IP_VERSION_IPV4",
+          "IP_VERSION_IPV6"
+        ],
+        "type": "string"
+      },
+      "kubenfv.kubevim.common.v1.OperationalState": {
+        "description": "Operational state of a virtualised resource (IFA006).",
+        "enum": [
+          "OPERATIONAL_STATE_UNSPECIFIED",
+          "OPERATIONAL_STATE_ENABLED",
+          "OPERATIONAL_STATE_DISABLED"
+        ],
+        "type": "string"
+      },
+      "kubenfv.kubevim.network.v1.IpAddressPool": {
+        "description": "Range of addresses a subnet allocates from.",
+        "properties": {
+          "endIp": {
+            "description": "Last address of the pool.",
+            "type": "string"
+          },
+          "startIp": {
+            "description": "First address of the pool.",
+            "type": "string"
+          }
+        },
+        "required": [
+          "startIp",
+          "endIp"
+        ],
+        "type": "object"
+      },
+      "kubenfv.kubevim.network.v1.Network": {
+        "description": "A virtualised network: one layer 2 segment, with at most one IPv4 and one IPv6 subnet.",
+        "properties": {
+          "layer3Attributes": {
+            "description": "Subnets created with the network, in one call that rolls back as a whole: at most one per\nIP version. A Kube-OVN network needs at least one; GENEVE networks always use Kube-OVN.",
+            "items": {
+              "$ref": "#/components/schemas/kubenfv.kubevim.network.v1.SubnetData"
+            },
+            "type": "array",
+            "writeOnly": true
+          },
+          "metadata": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Metadata set by the consumer and by the VIM; for keys under \"kubevim.kubenfv.io/\" that the VIM maintains, its value wins.",
+            "type": "object"
+          },
+          "mtu": {
+            "description": "MTU of the network in bytes; the VIM default when unset.",
+            "format": "int64",
+            "type": "integer"
+          },
+          "networkId": {
+            "description": "Identifier of the network: a UUID assigned by the VIM.",
+            "readOnly": true,
+            "type": "string"
+          },
+          "networkName": {
+            "description": "Name of the network, given by the consumer; not unique.",
+            "type": "string"
+          },
+          "networkType": {
+            "$ref": "#/components/schemas/kubenfv.kubevim.network.v1.NetworkType",
+            "description": "How traffic of the network is separated."
+          },
+          "operationalState": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/kubenfv.kubevim.common.v1.OperationalState"
+              }
+            ],
+            "description": "Operational state of the network.",
+            "readOnly": true
+          },
+          "providerNetwork": {
+            "description": "Name of a provider network known to the VIM; required for VLAN and FLAT networks, absent for GENEVE.",
+            "type": "string"
+          },
+          "segmentationId": {
+            "description": "VLAN ID of a VLAN network; absent for GENEVE and FLAT networks.",
+            "format": "int64",
+            "type": "integer"
+          },
+          "subnetIds": {
+            "description": "Subnets of the network: at most one per IP version.",
+            "items": {
+              "type": "string"
+            },
+            "readOnly": true,
+            "type": "array"
+          }
+        },
+        "required": [
+          "networkType"
+        ],
+        "type": "object"
+      },
+      "kubenfv.kubevim.network.v1.NetworkType": {
+        "description": "How traffic of a network is separated.\nValues may be added as backends grow; clients should accept unknown values.",
+        "enum": [
+          "NETWORK_TYPE_UNSPECIFIED",
+          "NETWORK_TYPE_GENEVE",
+          "NETWORK_TYPE_VLAN",
+          "NETWORK_TYPE_FLAT"
+        ],
+        "type": "string"
+      },
+      "kubenfv.kubevim.network.v1.NetworkUpdate": {
+        "description": "Changes to a network: a patch. The name is replaced when set; metadata entries are merged.",
+        "properties": {
+          "metadata": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Metadata entries to add, or to overwrite when the key exists; keys not given are kept, and none is removed.",
+            "type": "object"
+          },
+          "networkName": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "kubenfv.kubevim.network.v1.Subnet": {
+        "description": "A virtualised subnet: one IP version of a network.",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/kubenfv.kubevim.network.v1.SubnetData",
+            "description": "Layer 3 attributes."
+          },
+          "metadata": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Metadata set by the consumer and by the VIM; for keys under \"kubevim.kubenfv.io/\" that the VIM maintains, its value wins.",
+            "type": "object"
+          },
+          "networkId": {
+            "description": "Network the subnet belongs to.",
+            "type": "string"
+          },
+          "subnetId": {
+            "description": "Identifier of the subnet: a UUID assigned by the VIM.",
+            "readOnly": true,
+            "type": "string"
+          },
+          "subnetName": {
+            "description": "Name of the subnet, given by the consumer; not unique.",
+            "type": "string"
+          }
+        },
+        "required": [
+          "networkId",
+          "data"
+        ],
+        "type": "object"
+      },
+      "kubenfv.kubevim.network.v1.SubnetData": {
+        "description": "Layer 3 attributes of a subnet: one IP version of its network.",
+        "properties": {
+          "addressPools": {
+            "description": "Address pools the VIM allocates from; the whole CIDR except the gateway when empty.",
+            "items": {
+              "$ref": "#/components/schemas/kubenfv.kubevim.network.v1.IpAddressPool"
+            },
+            "type": "array"
+          },
+          "cidr": {
+            "description": "Network address and prefix length, e.g. \"10.0.0.0/24\".",
+            "type": "string"
+          },
+          "dnsServers": {
+            "description": "DNS servers handed out by DHCP.",
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "gatewayIp": {
+            "description": "Gateway address; the VIM picks one when unset.",
+            "type": "string"
+          },
+          "ipVersion": {
+            "$ref": "#/components/schemas/kubenfv.kubevim.common.v1.IpVersion",
+            "description": "IP version."
+          },
+          "isDhcpEnabled": {
+            "description": "DHCP is enabled; unset means true.",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "ipVersion",
+          "cidr"
+        ],
+        "type": "object"
+      },
+      "kubenfv.kubevim.network.v1.SubnetUpdate": {
+        "description": "Changes to a subnet: a patch. The name is replaced when set; metadata entries are merged.",
+        "properties": {
+          "metadata": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Metadata entries to add, or to overwrite when the key exists; keys not given are kept, and none is removed.",
+            "type": "object"
+          },
+          "subnetName": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      }
+    },
+    "securitySchemes": {
+      "oauth2": {
+        "description": "OAuth 2.0 client credentials (SOL 013 8.3). The token URL is deployment specific.",
+        "flows": {
+          "clientCredentials": {
+            "scopes": {
+              "network:v1:allocate": "Allocate network resources",
+              "network:v1:query": "Query network resources",
+              "network:v1:terminate": "Terminate network resources",
+              "network:v1:update": "Update network resources"
+            },
+            "tokenUrl": "https://idp.example.com/oauth2/token"
+          }
+        },
+        "type": "oauth2"
+      }
+    }
+  },
+  "info": {
+    "title": "Kube-VIM virtualised network API",
+    "version": "0.0.0-dev"
+  },
+  "openapi": "3.1.0",
+  "paths": {
+    "/network/v1/networks": {
+      "get": {
+        "operationId": "NetworkService_ListNetworks",
+        "parameters": [
+          {
+            "description": "Attribute-based filter expression (SOL 013 5.2).",
+            "in": "query",
+            "name": "filter",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Marker of the page to return, from a previous response (SOL 013 5.4).",
+            "in": "query",
+            "name": "nextpage_opaque_marker",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/kubenfv.kubevim.network.v1.Network"
+                  },
+                  "type": "array"
+                }
+              }
+            },
+            "description": "A successful response.",
+            "headers": {
+              "Link": {
+                "description": "URI of the next page, rel=\"next\", carrying nextpage_opaque_marker; absent on the last page (SOL 013 5.4.2).",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Error (SOL 013 6)."
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "network:v1:query"
+            ]
+          }
+        ],
+        "summary": "Returns the networks matching a filter.",
+        "tags": [
+          "NetworkService"
+        ]
+      },
+      "post": {
+        "operationId": "NetworkService_CreateNetwork",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "network": {
+                    "$ref": "#/components/schemas/kubenfv.kubevim.network.v1.Network",
+                    "description": "Network to create."
+                  }
+                },
+                "required": [
+                  "network"
+                ],
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/kubenfv.kubevim.network.v1.Network"
+                }
+              }
+            },
+            "description": "A virtualised network: one layer 2 segment, with at most one IPv4 and one IPv6 subnet.",
+            "headers": {
+              "Location": {
+                "description": "URI of the created resource.",
+                "schema": {
+                  "format": "uri",
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Error (SOL 013 6)."
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "network:v1:allocate"
+            ]
+          }
+        ],
+        "summary": "Creates a network.",
+        "tags": [
+          "NetworkService"
+        ]
+      }
+    },
+    "/network/v1/networks/{network_id}": {
+      "delete": {
+        "operationId": "NetworkService_DeleteNetwork",
+        "parameters": [
+          {
+            "description": "Identifier of the network.",
+            "in": "path",
+            "name": "network_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Error (SOL 013 6)."
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "network:v1:terminate"
+            ]
+          }
+        ],
+        "summary": "Deletes a network and its subnets; may fail with RESOURCE_IN_USE while interfaces use the network.",
+        "tags": [
+          "NetworkService"
+        ]
+      },
+      "get": {
+        "operationId": "NetworkService_GetNetwork",
+        "parameters": [
+          {
+            "description": "Identifier of the network.",
+            "in": "path",
+            "name": "network_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/kubenfv.kubevim.network.v1.Network"
+                }
+              }
+            },
+            "description": "A virtualised network: one layer 2 segment, with at most one IPv4 and one IPv6 subnet."
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Error (SOL 013 6)."
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "network:v1:query"
+            ]
+          }
+        ],
+        "summary": "Returns one network.",
+        "tags": [
+          "NetworkService"
+        ]
+      },
+      "patch": {
+        "operationId": "NetworkService_UpdateNetwork",
+        "parameters": [
+          {
+            "description": "Identifier of the network.",
+            "in": "path",
+            "name": "network_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/kubenfv.kubevim.network.v1.NetworkUpdate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/kubenfv.kubevim.network.v1.Network"
+                }
+              }
+            },
+            "description": "A virtualised network: one layer 2 segment, with at most one IPv4 and one IPv6 subnet."
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Error (SOL 013 6)."
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "network:v1:update"
+            ]
+          }
+        ],
+        "summary": "Updates the name and metadata of a network.",
+        "tags": [
+          "NetworkService"
+        ]
+      }
+    },
+    "/network/v1/subnets": {
+      "get": {
+        "operationId": "NetworkService_ListSubnets",
+        "parameters": [
+          {
+            "description": "Attribute-based filter expression (SOL 013 5.2).",
+            "in": "query",
+            "name": "filter",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Marker of the page to return, from a previous response (SOL 013 5.4).",
+            "in": "query",
+            "name": "nextpage_opaque_marker",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/kubenfv.kubevim.network.v1.Subnet"
+                  },
+                  "type": "array"
+                }
+              }
+            },
+            "description": "A successful response.",
+            "headers": {
+              "Link": {
+                "description": "URI of the next page, rel=\"next\", carrying nextpage_opaque_marker; absent on the last page (SOL 013 5.4.2).",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Error (SOL 013 6)."
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "network:v1:query"
+            ]
+          }
+        ],
+        "summary": "Returns the subnets matching a filter.",
+        "tags": [
+          "NetworkService"
+        ]
+      },
+      "post": {
+        "operationId": "NetworkService_CreateSubnet",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "subnet": {
+                    "$ref": "#/components/schemas/kubenfv.kubevim.network.v1.Subnet",
+                    "description": "Subnet to create; adds an IP version to a network that no interface uses yet."
+                  }
+                },
+                "required": [
+                  "subnet"
+                ],
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/kubenfv.kubevim.network.v1.Subnet"
+                }
+              }
+            },
+            "description": "A virtualised subnet: one IP version of a network.",
+            "headers": {
+              "Location": {
+                "description": "URI of the created resource.",
+                "schema": {
+                  "format": "uri",
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Error (SOL 013 6)."
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "network:v1:allocate"
+            ]
+          }
+        ],
+        "summary": "Creates a subnet.",
+        "tags": [
+          "NetworkService"
+        ]
+      }
+    },
+    "/network/v1/subnets/{subnet_id}": {
+      "delete": {
+        "operationId": "NetworkService_DeleteSubnet",
+        "parameters": [
+          {
+            "description": "Identifier of the subnet.",
+            "in": "path",
+            "name": "subnet_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Error (SOL 013 6)."
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "network:v1:terminate"
+            ]
+          }
+        ],
+        "summary": "Deletes a subnet: one IP version of a network. May fail with RESOURCE_IN_USE while interfaces\nuse the network; the last subnet of a Kube-OVN network cannot be deleted (delete the network instead).",
+        "tags": [
+          "NetworkService"
+        ]
+      },
+      "get": {
+        "operationId": "NetworkService_GetSubnet",
+        "parameters": [
+          {
+            "description": "Identifier of the subnet.",
+            "in": "path",
+            "name": "subnet_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/kubenfv.kubevim.network.v1.Subnet"
+                }
+              }
+            },
+            "description": "A virtualised subnet: one IP version of a network."
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Error (SOL 013 6)."
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "network:v1:query"
+            ]
+          }
+        ],
+        "summary": "Returns one subnet.",
+        "tags": [
+          "NetworkService"
+        ]
+      },
+      "patch": {
+        "operationId": "NetworkService_UpdateSubnet",
+        "parameters": [
+          {
+            "description": "Identifier of the subnet.",
+            "in": "path",
+            "name": "subnet_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/kubenfv.kubevim.network.v1.SubnetUpdate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/kubenfv.kubevim.network.v1.Subnet"
+                }
+              }
+            },
+            "description": "A virtualised subnet: one IP version of a network."
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Error (SOL 013 6)."
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "network:v1:update"
+            ]
+          }
+        ],
+        "summary": "Updates the name and metadata of a subnet.",
+        "tags": [
+          "NetworkService"
+        ]
+      }
+    }
+  },
+  "tags": [
+    {
+      "description": "Virtualised network resources management: networks and their subnets.",
+      "name": "NetworkService"
+    }
+  ]
+}

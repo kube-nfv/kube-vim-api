@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package kubenfv.kubevim.common.v1;
+
+// CPU architecture.
+// Values may be added as KubeVirt support grows; clients should accept unknown values.
+enum CpuArchitecture {
+  CPU_ARCHITECTURE_UNSPECIFIED = 0;
+  CPU_ARCHITECTURE_X86_64 = 1;
+  CPU_ARCHITECTURE_AARCH64 = 2;
+  CPU_ARCHITECTURE_S390X = 3;
+}
+
+// CPU pinning policy (IFA006 8.4.2.4). IFA's STATIC policy with explicit rules is left out:
+// KubeVirt places dedicated CPUs itself.
+enum VirtualCpuPinningPolicy {
+  VIRTUAL_CPU_PINNING_POLICY_UNSPECIFIED = 0;
+  // Pinned to dedicated logical CPUs that the VIM chooses (KubeVirt dedicated CPU placement).
+  VIRTUAL_CPU_PINNING_POLICY_DYNAMIC = 1;
+}

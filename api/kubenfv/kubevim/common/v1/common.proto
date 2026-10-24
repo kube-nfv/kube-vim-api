@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+package kubenfv.kubevim.common.v1;
+
+// Operational state of a virtualised resource (IFA006).
+enum OperationalState {
+  OPERATIONAL_STATE_UNSPECIFIED = 0;
+  OPERATIONAL_STATE_ENABLED = 1;
+  OPERATIONAL_STATE_DISABLED = 2;
+}
+
+// IP version of a network or subnet (IFA006 8.4.4.4).
+enum IpVersion {
+  IP_VERSION_UNSPECIFIED = 0;
+  IP_VERSION_IPV4 = 1;
+  IP_VERSION_IPV6 = 2;
+}
+
+// Status of a snapshot.
+// Values may be added as snapshot support grows; clients should accept unknown values.
+enum SnapshotStatus {
+  SNAPSHOT_STATUS_UNSPECIFIED = 0;
+  SNAPSHOT_STATUS_CREATING = 1;
+  SNAPSHOT_STATUS_READY = 2;
+  SNAPSHOT_STATUS_FAILED = 3;
+}

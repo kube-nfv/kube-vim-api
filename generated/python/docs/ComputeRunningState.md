@@ -1,24 +1,28 @@
 # ComputeRunningState
 
-Note: ETSI GS NFV-IFA 006 define another set of the states.   - STARTING: VM is requested to start, but VMI isn't running yet  - STOPPED: VM is administratively stopped and not running  - RUNNING: VM is up and running normally  - FAILED: VM instance failed to start or crashed  - PAUSED: VM is paused  - SUSPENDED: VM paused and memory saved to disk  - TERMINATING: VM is shutting down or being deleted  - UNKNOWN: VMI status cannot be determined  TBD: Think if rebooting state is need
+Running state of a compute resource. Values may be added as KubeVirt support grows; clients should accept unknown values.
 
 ## Enum
 
-* `STARTING` (value: `'STARTING'`)
+* `COMPUTE_RUNNING_STATE_UNSPECIFIED` (value: `'COMPUTE_RUNNING_STATE_UNSPECIFIED'`)
 
-* `STOPPED` (value: `'STOPPED'`)
+* `COMPUTE_RUNNING_STATE_STARTING` (value: `'COMPUTE_RUNNING_STATE_STARTING'`)
 
-* `RUNNING` (value: `'RUNNING'`)
+* `COMPUTE_RUNNING_STATE_STARTED` (value: `'COMPUTE_RUNNING_STATE_STARTED'`)
 
-* `FAILED` (value: `'FAILED'`)
+* `COMPUTE_RUNNING_STATE_STOPPING` (value: `'COMPUTE_RUNNING_STATE_STOPPING'`)
 
-* `PAUSED` (value: `'PAUSED'`)
+* `COMPUTE_RUNNING_STATE_STOPPED` (value: `'COMPUTE_RUNNING_STATE_STOPPED'`)
 
-* `SUSPENDED` (value: `'SUSPENDED'`)
+* `COMPUTE_RUNNING_STATE_PAUSED` (value: `'COMPUTE_RUNNING_STATE_PAUSED'`)
 
-* `TERMINATING` (value: `'TERMINATING'`)
+* `COMPUTE_RUNNING_STATE_MIGRATING` (value: `'COMPUTE_RUNNING_STATE_MIGRATING'`)
 
-* `UNKNOWN` (value: `'UNKNOWN'`)
+* `COMPUTE_RUNNING_STATE_FAILED` (value: `'COMPUTE_RUNNING_STATE_FAILED'`)
+
+* `COMPUTE_RUNNING_STATE_TERMINATING` (value: `'COMPUTE_RUNNING_STATE_TERMINATING'`)
+
+* `UNKNOWN_DEFAULT_OPEN_API` (value: `'unknown_default_open_api'`)
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

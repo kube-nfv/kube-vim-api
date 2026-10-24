@@ -1,18 +1,18 @@
 # UserData
 
+User data passed to the compute resource at boot time.
 
 ## Properties
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**content** | **str** | Contains the user data to customize a virtualised compute resource at boot-time. | 
-**method** | [**UserDataUserDataTransportationMethod**](UserDataUserDataTransportationMethod.md) |  | [optional] [default to UserDataUserDataTransportationMethod.CONFIG_DRIVE_PLAINTEXT]
-**certificate_data** | [**List[CertificateData]**](CertificateData.md) | Contains the additional user data to store certificate data for the VNF composed of (fully or partially) virtualised compute resource at boot-time. Shall be present if delegation-mode is used. Otherwise it shall be absent. | [optional] 
+**content** | **str** | User data, e.g. a cloud-init document; transparent to the VIM. | 
+**method** | [**UserDataTransportationMethod**](UserDataTransportationMethod.md) | How the content reaches the guest; NoCloud when unset. | [optional] 
 
 ## Example
 
 ```python
-from kubevim_vivnfm_client.models.user_data import UserData
+from kubevim_client.models.user_data import UserData
 
 # TODO update the JSON string below
 json = "{}"

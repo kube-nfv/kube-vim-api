@@ -1,0 +1,32 @@
+{
+  "images": [
+    {
+      "imageId": "7c21a9e4-6b5d-4f3e-8a2b-1c0d9e8f7a6b",
+      "name": "router",
+      "provider": "Retelith",
+      "version": "2.1.0",
+      "status": "IMAGE_STATUS_IMPORTING",
+      "progress": 42,
+      "source": {
+        "registry": {
+          "url": "docker://registry.example.com/images/router:2.1.0",
+          "pullMethod": "PULL_METHOD_NODE",
+          "credentialsRef": "corp-registry"
+        }
+      },
+      "importPolicy": "IMPORT_POLICY_EAGER"
+    },
+    {
+      "imageId": "0e9d8c7b-6a5f-4e3d-9c2b-1a0f9e8d7c6b",
+      "name": "cirros-0.6.2",
+      "status": "IMAGE_STATUS_PENDING",
+      "source": {
+        "glance": {
+          "glanceImageId": "2b1c0d9e-8f7a-4b6c-9d5e-4f3a2b1c0d9e"
+        }
+      },
+      "importPolicy": "IMPORT_POLICY_ON_FIRST_USE"
+    }
+  ],
+  "nextpage_opaque_marker": "c2Vjb25kLXBhZ2U"
+}

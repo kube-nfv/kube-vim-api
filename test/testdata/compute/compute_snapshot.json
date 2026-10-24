@@ -1,0 +1,7 @@
+{
+  "snapshotId": "8e7d6c5b-4a3f-4e2d-9c1b-0a9f8e7d6c5b",
+  "snapshotName": "before-upgrade",
+  "computeId": "c0ffee00-1234-4abc-8def-0123456789ab",
+  "createdAt": "2026-10-23T09:00:00Z",
+  "status": "SNAPSHOT_STATUS_READY"
+}

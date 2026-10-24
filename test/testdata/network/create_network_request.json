@@ -1,0 +1,27 @@
+{
+  "network": {
+    "networkName": "mgmt",
+    "networkType": "NETWORK_TYPE_GENEVE",
+    "layer3Attributes": [
+      {
+        "ipVersion": "IP_VERSION_IPV4",
+        "gatewayIp": "10.10.0.1",
+        "cidr": "10.10.0.0/24",
+        "isDhcpEnabled": true,
+        "addressPools": [
+          {
+            "startIp": "10.10.0.10",
+            "endIp": "10.10.0.200"
+          }
+        ],
+        "dnsServers": [
+          "10.10.0.2"
+        ]
+      },
+      {
+        "ipVersion": "IP_VERSION_IPV6",
+        "cidr": "fd00:10:10::/64"
+      }
+    ]
+  }
+}

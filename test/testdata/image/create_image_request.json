@@ -1,0 +1,15 @@
+{
+  "image": {
+    "name": "vnf-disk",
+    "provider": "Retelith",
+    "version": "1.0.0",
+    "source": {
+      "http": {
+        "url": "https://images.example.com/vnf-disk.qcow2"
+      }
+    },
+    "importPolicy": "IMPORT_POLICY_ON_FIRST_USE",
+    "firmware": "FIRMWARE_BIOS",
+    "diskBus": "DISK_BUS_SATA"
+  }
+}

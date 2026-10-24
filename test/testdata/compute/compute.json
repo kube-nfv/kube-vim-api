@@ -1,0 +1,76 @@
+{
+  "computeId": "c0ffee00-1234-4abc-8def-0123456789ab",
+  "computeName": "router-1",
+  "flavourId": "9a8b7c6d-5e4f-4a3b-9c2d-1e0f9a8b7c6d",
+  "imageId": "5f0c9d2e-3a4b-4c1d-9e8f-0a1b2c3d4e5f",
+  "virtualCpu": {
+    "cpuArchitecture": "CPU_ARCHITECTURE_X86_64",
+    "numVirtualCpu": 8,
+    "virtualCpuPinning": {
+      "cpuPinningPolicy": "VIRTUAL_CPU_PINNING_POLICY_DYNAMIC"
+    }
+  },
+  "virtualMemory": {
+    "virtualMemSize": "16Gi",
+    "numaEnabled": true,
+    "hugepageSize": "1Gi"
+  },
+  "networkInterfaces": [
+    {
+      "name": "default",
+      "computeId": "c0ffee00-1234-4abc-8def-0123456789ab",
+      "ipAddresses": [
+        "10.16.0.23"
+      ],
+      "typeVirtualNic": "TYPE_VIRTUAL_NIC_MASQUERADE",
+      "model": "NIC_MODEL_VIRTIO",
+      "macAddress": "02:00:00:aa:bb:00",
+      "operationalState": "OPERATIONAL_STATE_ENABLED",
+      "isManagement": true,
+      "guestPciAddress": "0000:01:00.0",
+      "guestInterfaceName": "eth0"
+    },
+    {
+      "name": "data0",
+      "computeId": "c0ffee00-1234-4abc-8def-0123456789ab",
+      "networkId": "3e2d1c0b-9a8f-4e7d-8c6b-5a4f3e2d1c0b",
+      "ipAddresses": [
+        "192.168.100.10",
+        "fd00:100::10"
+      ],
+      "typeVirtualNic": "TYPE_VIRTUAL_NIC_SRIOV",
+      "model": "NIC_MODEL_VIRTIO",
+      "macAddress": "02:00:00:aa:bb:01",
+      "bandwidth": 1000,
+      "operationalState": "OPERATIONAL_STATE_ENABLED",
+      "hostPciAddress": "0000:3b:02.1",
+      "guestPciAddress": "0000:02:01.0",
+      "guestInterfaceName": "eth1"
+    }
+  ],
+  "disks": [
+    {
+      "volumeId": "boot",
+      "volumeName": "router-1-boot",
+      "storageData": {
+        "typeOfStorage": "TYPE_OF_STORAGE_VOLUME",
+        "sizeOfStorage": "40Gi",
+        "isBoot": true
+      },
+      "computeId": "c0ffee00-1234-4abc-8def-0123456789ab",
+      "operationalState": "OPERATIONAL_STATE_ENABLED"
+    }
+  ],
+  "zoneId": "edge-1",
+  "hostId": "worker-2",
+  "operationalState": "OPERATIONAL_STATE_ENABLED",
+  "runningState": "COMPUTE_RUNNING_STATE_STARTED",
+  "restartRequired": true,
+  "placementGroupIds": [
+    "d4e5f6a7-b8c9-4d0e-9f1a-2b3c4d5e6f7a"
+  ],
+  "metadata": {
+    "osm.etsi.org/vdu": "router",
+    "kubevim.kubenfv.io/launcher-pod": "virt-launcher-router-1-abcde"
+  }
+}

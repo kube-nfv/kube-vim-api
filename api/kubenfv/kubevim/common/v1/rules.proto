@@ -1,0 +1,31 @@
+// proto2: predefined protovalidate rules extend buf.validate rule messages, which proto3 cannot.
+syntax = "proto2";
+
+package kubenfv.kubevim.common.v1;
+
+import "buf/validate/validate.proto";
+
+// Extension number 51391 as in kubenfv.kubevim.options.v1.
+
+extend buf.validate.StringRules {
+  // The string is a positive Kubernetes resource quantity, e.g. "10Gi" or "500M".
+  optional bool quantity = 51391 [(buf.validate.predefined).cel = {
+    id: "string.quantity"
+    expression: "!rule || (this.matches(r'^(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))))?$') && !this.matches(r'^((0+(\\.0*)?)|(\\.0+))(([KMGTPE]i)|[numkMGTPE]|([eE](\\+|-)?[0-9]+))?$')) ? '' : 'must be a positive Kubernetes quantity, e.g. \"10Gi\"'"
+  }];
+}
+
+extend buf.validate.MapRules {
+  // The map is consumer metadata: at most 64 entries, keys of 1 to 256 characters,
+  // values of at most 2048 characters.
+  optional bool metadata = 51391 [
+    (buf.validate.predefined).cel = {
+      id: "map.metadata.size"
+      expression: "!rule || this.size() <= 64 ? '' : 'must have at most 64 entries'"
+    },
+    (buf.validate.predefined).cel = {
+      id: "map.metadata.length"
+      expression: "!rule || this.all(k, k.size() >= 1 && k.size() <= 256 && this[k].size() <= 2048) ? '' : 'keys must have 1 to 256 characters and values at most 2048'"
+    }
+  ];
+}

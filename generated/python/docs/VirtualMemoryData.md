@@ -1,19 +1,20 @@
 # VirtualMemoryData
 
-Information describing virtual memory.
+Virtual memory of a flavour.
 
 ## Properties
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**virtual_mem_size** | [**ResourceQuantity**](ResourceQuantity.md) |  | 
-**virtual_mem_oversubscription_policy** | **str** | Memory core oversubscription policy in terms of virtual memory to physical memory on the platform. The cardinality can be 0 during the allocation request, if no particular value is requested. | [optional] 
-**numa_enabled** | **bool** |  | [optional] 
+**hugepage_size** | **str** | Hugepage size backing the memory, \&quot;2Mi\&quot; or \&quot;1Gi\&quot;; regular pages when unset. | [optional] 
+**numa_enabled** | **bool** | Memory is allocated on the NUMA nodes of the pinned CPUs; needs dynamic pinning and hugepages. | [optional] 
+**virtual_mem_oversubscription_policy** | **str** | Memory oversubscription as \&quot;&lt;virtual&gt;:&lt;physical&gt;\&quot;, at least 1:1, e.g. \&quot;2:1\&quot; (KubeVirt overcommitPercent). | [optional] 
+**virtual_mem_size** | **str** | Amount of memory, in Kubernetes quantity format (e.g. \&quot;4Gi\&quot;). | 
 
 ## Example
 
 ```python
-from kubevim_vivnfm_client.models.virtual_memory_data import VirtualMemoryData
+from kubevim_client.models.virtual_memory_data import VirtualMemoryData
 
 # TODO update the JSON string below
 json = "{}"

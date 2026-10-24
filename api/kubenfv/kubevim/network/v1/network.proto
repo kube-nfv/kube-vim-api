@@ -1,0 +1,731 @@
+syntax = "proto3";
+
+package kubenfv.kubevim.network.v1;
+
+import "buf/validate/validate.proto";
+import "google/api/annotations.proto";
+import "google/api/field_behavior.proto";
+import "google/protobuf/empty.proto";
+import "kubenfv/kubevim/common/v1/common.proto";
+import "kubenfv/kubevim/common/v1/rules.proto";
+import "kubenfv/kubevim/options/v1/options.proto";
+import "protoc-gen-openapiv3/options/annotations.proto";
+
+option (grpc.gateway.protoc_gen_openapiv3.options.openapiv3_document) = {
+  info: {title: "Kube-VIM virtualised network API"}
+  components: {
+    security_schemes: {
+      key: "oauth2"
+      value: {
+        type: TYPE_OAUTH2
+        description: "OAuth 2.0 client credentials (SOL 013 8.3). The token URL is deployment specific."
+        flows: {
+          client_credentials: {
+            token_url: "https://idp.example.com/oauth2/token"
+            scopes: {
+              key: "network:v1:allocate"
+              value: "Allocate network resources"
+            }
+            scopes: {
+              key: "network:v1:query"
+              value: "Query network resources"
+            }
+            scopes: {
+              key: "network:v1:update"
+              value: "Update network resources"
+            }
+            scopes: {
+              key: "network:v1:terminate"
+              value: "Terminate network resources"
+            }
+          }
+        }
+      }
+    }
+  }
+};
+option (kubenfv.kubevim.options.v1.api) = {name: "network"};
+
+// Virtualised network resources management: networks and their subnets.
+service NetworkService {
+  option (kubenfv.kubevim.options.v1.ifa_service) = {ref: "IFA006 7.4.1 Virtualised Network Resources Management Interface"};
+
+  // Creates a network.
+  rpc CreateNetwork(CreateNetworkRequest) returns (Network) {
+    option (google.api.http) = {
+      post: "/network/v1/networks"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv3.options.openapiv3_operation) = {
+      security: {
+        schemes: {
+          key: "oauth2"
+          value: {scopes: "network:v1:allocate"}
+        }
+      }
+    };
+    option (kubenfv.kubevim.options.v1.ifa_method) = {
+      ref: "IFA006 7.4.1.2 Allocate Virtualised Network Resource"
+      departure: {
+        kind: KIND_DEVIATION
+        translates: true
+        rationale: "Allocate with networkResourceType NETWORK, as its own method."
+      }
+    };
+  }
+
+  // Returns one network.
+  rpc GetNetwork(GetNetworkRequest) returns (Network) {
+    option (google.api.http) = {get: "/network/v1/networks/{network_id}"};
+    option (grpc.gateway.protoc_gen_openapiv3.options.openapiv3_operation) = {
+      security: {
+        schemes: {
+          key: "oauth2"
+          value: {scopes: "network:v1:query"}
+        }
+      }
+    };
+    option (kubenfv.kubevim.options.v1.ifa_method) = {
+      ref: "IFA006 7.4.1.3 Query Virtualised Network Resource"
+      departure: {
+        kind: KIND_DEVIATION
+        translates: true
+        rationale: "Query filtered by identifier, as a read by identifier."
+      }
+    };
+  }
+
+  // Returns the networks matching a filter.
+  rpc ListNetworks(ListNetworksRequest) returns (ListNetworksResponse) {
+    option (google.api.http) = {
+      get: "/network/v1/networks"
+      response_body: "networks"
+    };
+    option (grpc.gateway.protoc_gen_openapiv3.options.openapiv3_operation) = {
+      security: {
+        schemes: {
+          key: "oauth2"
+          value: {scopes: "network:v1:query"}
+        }
+      }
+    };
+    option (kubenfv.kubevim.options.v1.ifa_method) = {ref: "IFA006 7.4.1.3 Query Virtualised Network Resource"};
+  }
+
+  // Updates the name and metadata of a network.
+  rpc UpdateNetwork(UpdateNetworkRequest) returns (Network) {
+    option (google.api.http) = {
+      patch: "/network/v1/networks/{network_id}"
+      body: "update"
+    };
+    option (grpc.gateway.protoc_gen_openapiv3.options.openapiv3_operation) = {
+      security: {
+        schemes: {
+          key: "oauth2"
+          value: {scopes: "network:v1:update"}
+        }
+      }
+    };
+    option (kubenfv.kubevim.options.v1.ifa_method) = {
+      ref: "IFA006 7.4.1.4 Update Virtualised Network Resource"
+      departure: {
+        kind: KIND_DEVIATION
+        translates: true
+        rationale: "Changes the name and metadata only, and only what is set."
+      }
+    };
+  }
+
+  // Deletes a network and its subnets; may fail with RESOURCE_IN_USE while interfaces use the network.
+  rpc DeleteNetwork(DeleteNetworkRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {delete: "/network/v1/networks/{network_id}"};
+    option (grpc.gateway.protoc_gen_openapiv3.options.openapiv3_operation) = {
+      security: {
+        schemes: {
+          key: "oauth2"
+          value: {scopes: "network:v1:terminate"}
+        }
+      }
+    };
+    option (kubenfv.kubevim.options.v1.ifa_method) = {
+      ref: "IFA006 7.4.1.5 Terminate Virtualised Network Resource"
+      departure: {
+        kind: KIND_DEVIATION
+        translates: true
+        rationale: "One resource per request (the path identifies it) instead of a list of identifiers; returns no body (204)."
+      }
+    };
+  }
+
+  // Creates a subnet.
+  rpc CreateSubnet(CreateSubnetRequest) returns (Subnet) {
+    option (google.api.http) = {
+      post: "/network/v1/subnets"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv3.options.openapiv3_operation) = {
+      security: {
+        schemes: {
+          key: "oauth2"
+          value: {scopes: "network:v1:allocate"}
+        }
+      }
+    };
+    option (kubenfv.kubevim.options.v1.ifa_method) = {
+      ref: "IFA006 7.4.1.2 Allocate Virtualised Network Resource"
+      departure: {
+        kind: KIND_DEVIATION
+        translates: true
+        rationale: "Allocate with networkResourceType SUBNET, as its own method."
+      }
+    };
+  }
+
+  // Returns one subnet.
+  rpc GetSubnet(GetSubnetRequest) returns (Subnet) {
+    option (google.api.http) = {get: "/network/v1/subnets/{subnet_id}"};
+    option (grpc.gateway.protoc_gen_openapiv3.options.openapiv3_operation) = {
+      security: {
+        schemes: {
+          key: "oauth2"
+          value: {scopes: "network:v1:query"}
+        }
+      }
+    };
+    option (kubenfv.kubevim.options.v1.ifa_method) = {
+      ref: "IFA006 7.4.1.3 Query Virtualised Network Resource"
+      departure: {
+        kind: KIND_DEVIATION
+        translates: true
+        rationale: "Query filtered by identifier, as a read by identifier."
+      }
+    };
+  }
+
+  // Returns the subnets matching a filter.
+  rpc ListSubnets(ListSubnetsRequest) returns (ListSubnetsResponse) {
+    option (google.api.http) = {
+      get: "/network/v1/subnets"
+      response_body: "subnets"
+    };
+    option (grpc.gateway.protoc_gen_openapiv3.options.openapiv3_operation) = {
+      security: {
+        schemes: {
+          key: "oauth2"
+          value: {scopes: "network:v1:query"}
+        }
+      }
+    };
+    option (kubenfv.kubevim.options.v1.ifa_method) = {
+      ref: "IFA006 7.4.1.3 Query Virtualised Network Resource"
+      departure: {
+        kind: KIND_DEVIATION
+        translates: true
+        rationale: "Query per resource type; IFA returns all resource types from one query."
+      }
+    };
+  }
+
+  // Updates the name and metadata of a subnet.
+  rpc UpdateSubnet(UpdateSubnetRequest) returns (Subnet) {
+    option (google.api.http) = {
+      patch: "/network/v1/subnets/{subnet_id}"
+      body: "update"
+    };
+    option (grpc.gateway.protoc_gen_openapiv3.options.openapiv3_operation) = {
+      security: {
+        schemes: {
+          key: "oauth2"
+          value: {scopes: "network:v1:update"}
+        }
+      }
+    };
+    option (kubenfv.kubevim.options.v1.ifa_method) = {
+      ref: "IFA006 7.4.1.4 Update Virtualised Network Resource"
+      departure: {
+        kind: KIND_DEVIATION
+        translates: true
+        rationale: "Changes the name and metadata only, and only what is set."
+      }
+    };
+  }
+
+  // Deletes a subnet: one IP version of a network. May fail with RESOURCE_IN_USE while interfaces
+  // use the network; the last subnet of a Kube-OVN network cannot be deleted (delete the network instead).
+  rpc DeleteSubnet(DeleteSubnetRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {delete: "/network/v1/subnets/{subnet_id}"};
+    option (grpc.gateway.protoc_gen_openapiv3.options.openapiv3_operation) = {
+      security: {
+        schemes: {
+          key: "oauth2"
+          value: {scopes: "network:v1:terminate"}
+        }
+      }
+    };
+    option (kubenfv.kubevim.options.v1.ifa_method) = {
+      ref: "IFA006 7.4.1.5 Terminate Virtualised Network Resource"
+      departure: {
+        kind: KIND_DEVIATION
+        translates: true
+        rationale: "One resource per request (the path identifies it) instead of a list of identifiers; returns no body (204)."
+      }
+    };
+  }
+}
+
+// A virtualised network: one layer 2 segment, with at most one IPv4 and one IPv6 subnet.
+message Network {
+  option (kubenfv.kubevim.options.v1.ifa_message) = {ref: "IFA006 8.4.5.2 VirtualNetwork, 8.4.4.2 VirtualNetworkData"};
+
+  // Identifier of the network: a UUID assigned by the VIM.
+  string network_id = 1 [
+    (google.api.field_behavior) = OUTPUT_ONLY,
+    (kubenfv.kubevim.options.v1.ifa_field) = {
+      ref: "IFA006 8.4.5.2 VirtualNetwork.networkResourceId"
+      departure: {
+        kind: KIND_DEVIATION
+        translates: true
+        rationale: "Renamed to the resource name; identifiers are <resource>_id."
+      }
+    }
+  ];
+  // Name of the network, given by the consumer; not unique.
+  string network_name = 2 [
+    (google.api.field_behavior) = OPTIONAL,
+    (kubenfv.kubevim.options.v1.ifa_field) = {
+      ref: "IFA006 8.4.5.2 VirtualNetwork.networkResourceName"
+      departure: {
+        kind: KIND_DEVIATION
+        translates: true
+        rationale: "Renamed to the resource name; names are <resource>_name."
+      }
+    }
+  ];
+  // Subnets of the network: at most one per IP version.
+  repeated string subnet_ids = 3 [
+    (google.api.field_behavior) = OUTPUT_ONLY,
+    (kubenfv.kubevim.options.v1.ifa_field) = {
+      ref: "IFA006 8.4.5.2 VirtualNetwork.subnetId"
+      departure: {
+        kind: KIND_DEVIATION
+        translates: true
+        rationale: "Plural name for a list."
+      }
+    }
+  ];
+  // How traffic of the network is separated.
+  NetworkType network_type = 4 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.field_behavior) = IMMUTABLE,
+    (buf.validate.field).enum = {
+      defined_only: true
+      not_in: [0]
+    },
+    (kubenfv.kubevim.options.v1.ifa_field) = {
+      ref: "IFA006 8.4.4.2 VirtualNetworkData.networkType"
+      departure: {
+        kind: KIND_DEVIATION
+        translates: true
+        rationale: "A closed enumeration instead of an extensible string."
+      }
+    }
+  ];
+  // Name of a provider network known to the VIM; required for VLAN and FLAT networks, absent for GENEVE.
+  string provider_network = 5 [
+    (google.api.field_behavior) = OPTIONAL,
+    (google.api.field_behavior) = IMMUTABLE,
+    (kubenfv.kubevim.options.v1.ifa_field) = {ref: "IFA006 8.4.4.2 VirtualNetworkData.providerNetwork"}
+  ];
+  // VLAN ID of a VLAN network; absent for GENEVE and FLAT networks.
+  uint32 segmentation_id = 6 [
+    (google.api.field_behavior) = OPTIONAL,
+    (google.api.field_behavior) = IMMUTABLE,
+    (kubenfv.kubevim.options.v1.ifa_field) = {ref: "IFA006 8.4.4.2 VirtualNetworkData.segmentationId"}
+  ];
+  // MTU of the network in bytes; the VIM default when unset.
+  uint32 mtu = 7 [
+    (google.api.field_behavior) = OPTIONAL,
+    (google.api.field_behavior) = IMMUTABLE,
+    (buf.validate.field).uint32 = {
+      gte: 68
+      lte: 9216
+    },
+    (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE,
+    (kubenfv.kubevim.options.v1.ifa_field) = {
+      departure: {
+        kind: KIND_EXTENSION
+        translates: true
+        rationale: "Data-plane networks need jumbo frames; IFA has no MTU attribute."
+      }
+    }
+  ];
+  // Subnets created with the network, in one call that rolls back as a whole: at most one per
+  // IP version. A Kube-OVN network needs at least one; GENEVE networks always use Kube-OVN.
+  repeated SubnetData layer3_attributes = 8 [
+    (google.api.field_behavior) = INPUT_ONLY,
+    (buf.validate.field).repeated.max_items = 2,
+    (buf.validate.field).cel = {
+      id: "network.one_subnet_per_ip_version"
+      message: "at most one subnet per IP version"
+      expression: "this.size() < 2 || this[0].ip_version != this[1].ip_version"
+    },
+    (kubenfv.kubevim.options.v1.ifa_field) = {ref: "IFA006 8.4.4.2 VirtualNetworkData.layer3Attributes"}
+  ];
+  reserved 9;
+  // Operational state of the network.
+  kubenfv.kubevim.common.v1.OperationalState operational_state = 10 [
+    (google.api.field_behavior) = OUTPUT_ONLY,
+    (kubenfv.kubevim.options.v1.ifa_field) = {ref: "IFA006 8.4.5.2 VirtualNetwork.operationalState"}
+  ];
+  // Metadata set by the consumer and by the VIM; for keys under "kubevim.kubenfv.io/" that the VIM maintains, its value wins.
+  map<string, string> metadata = 11 [
+    (google.api.field_behavior) = OPTIONAL,
+    (buf.validate.field).map.(kubenfv.kubevim.common.v1.metadata) = true,
+    (kubenfv.kubevim.options.v1.ifa_field) = {
+      ref: "IFA006 8.4.5.2 VirtualNetwork.metadata"
+      departure: {
+        kind: KIND_RESTRICTION
+        translates: true
+        rationale: "String values only, where IFA KeyValuePair allows any JSON value."
+      }
+    }
+  ];
+
+  option (buf.validate.message).cel = {
+    id: "network.provider"
+    message: "VLAN and FLAT networks need a providerNetwork; GENEVE networks take none"
+    expression: "this.network_type == 1 ? this.provider_network == '' : this.provider_network != ''"
+  };
+  option (buf.validate.message).cel = {
+    id: "network.segmentation"
+    message: "VLAN networks need a segmentationId from 1 to 4094; GENEVE and FLAT networks take none"
+    expression: "this.network_type == 2 ? (this.segmentation_id >= 1u && this.segmentation_id <= 4094u) : this.segmentation_id == 0u"
+  };
+}
+
+// How traffic of a network is separated.
+// Values may be added as backends grow; clients should accept unknown values.
+enum NetworkType {
+  NETWORK_TYPE_UNSPECIFIED = 0;
+  // Kube-OVN overlay with Geneve encapsulation.
+  NETWORK_TYPE_GENEVE = 1;
+  // 802.1Q VLAN on a provider network.
+  NETWORK_TYPE_VLAN = 2;
+  // Untagged traffic on a provider network.
+  NETWORK_TYPE_FLAT = 3;
+}
+
+// Layer 3 attributes of a subnet: one IP version of its network.
+message SubnetData {
+  option (kubenfv.kubevim.options.v1.ifa_message) = {ref: "IFA006 8.4.4.4 NetworkSubnetData"};
+
+  // IP version.
+  kubenfv.kubevim.common.v1.IpVersion ip_version = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).enum = {
+      defined_only: true
+      not_in: [0]
+    },
+    (kubenfv.kubevim.options.v1.ifa_field) = {ref: "IFA006 8.4.4.4 NetworkSubnetData.ipVersion"}
+  ];
+  // Gateway address; the VIM picks one when unset.
+  string gateway_ip = 2 [
+    (google.api.field_behavior) = OPTIONAL,
+    (buf.validate.field).string.ip = true,
+    (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE,
+    (kubenfv.kubevim.options.v1.ifa_field) = {ref: "IFA006 8.4.4.4 NetworkSubnetData.gatewayIp"}
+  ];
+  // Network address and prefix length, e.g. "10.0.0.0/24".
+  string cidr = 3 [
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).string.ip_prefix = true,
+    (kubenfv.kubevim.options.v1.ifa_field) = {ref: "IFA006 8.4.4.4 NetworkSubnetData.cidr"}
+  ];
+  // DHCP is enabled; unset means true.
+  optional bool is_dhcp_enabled = 4 [
+    (google.api.field_behavior) = OPTIONAL,
+    (kubenfv.kubevim.options.v1.ifa_field) = {ref: "IFA006 8.4.4.4 NetworkSubnetData.isDhcpEnabled"}
+  ];
+  // Address pools the VIM allocates from; the whole CIDR except the gateway when empty.
+  repeated IpAddressPool address_pools = 5 [
+    (google.api.field_behavior) = OPTIONAL,
+    (kubenfv.kubevim.options.v1.ifa_field) = {
+      ref: "IFA006 8.4.4.4 NetworkSubnetData.addressPool"
+      departure: {
+        kind: KIND_DEVIATION
+        translates: true
+        rationale: "Plural name for a list."
+      }
+    }
+  ];
+  // DNS servers handed out by DHCP.
+  repeated string dns_servers = 6 [
+    (google.api.field_behavior) = OPTIONAL,
+    (buf.validate.field).repeated.items.string.ip = true,
+    (kubenfv.kubevim.options.v1.ifa_field) = {
+      departure: {
+        kind: KIND_EXTENSION
+        translates: true
+        rationale: "Guests on DHCP subnets need DNS servers; IFA has no DNS attribute."
+      }
+    }
+  ];
+
+  option (buf.validate.message).cel = {
+    id: "subnet.ip_version"
+    message: "cidr and gatewayIp must match ipVersion"
+    expression: "(this.ip_version == 1 ? this.cidr.isIpPrefix(4) : this.cidr.isIpPrefix(6)) && (this.gateway_ip == '' || this.gateway_ip.isIp(this.ip_version == 1 ? 4 : 6))"
+  };
+}
+
+// A virtualised subnet: one IP version of a network.
+message Subnet {
+  option (kubenfv.kubevim.options.v1.ifa_message) = {ref: "IFA006 8.4.5.3 NetworkSubnet, 8.4.4.4 NetworkSubnetData"};
+
+  // Identifier of the subnet: a UUID assigned by the VIM.
+  string subnet_id = 1 [
+    (google.api.field_behavior) = OUTPUT_ONLY,
+    (kubenfv.kubevim.options.v1.ifa_field) = {
+      ref: "IFA006 8.4.5.3 NetworkSubnet.resourceId"
+      departure: {
+        kind: KIND_DEVIATION
+        translates: true
+        rationale: "Renamed to the resource name; identifiers are <resource>_id."
+      }
+    }
+  ];
+  // Name of the subnet, given by the consumer; not unique.
+  string subnet_name = 2 [
+    (google.api.field_behavior) = OPTIONAL,
+    (kubenfv.kubevim.options.v1.ifa_field) = {
+      departure: {
+        kind: KIND_EXTENSION
+        translates: true
+        rationale: "Every resource has an optional consumer name; IFA subnets have none."
+      }
+    }
+  ];
+  // Network the subnet belongs to.
+  string network_id = 3 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.field_behavior) = IMMUTABLE,
+    (buf.validate.field).string.uuid = true,
+    (kubenfv.kubevim.options.v1.ifa_field) = {ref: "IFA006 8.4.5.3 NetworkSubnet.networkId"}
+  ];
+  // Layer 3 attributes.
+  SubnetData data = 4 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.field_behavior) = IMMUTABLE,
+    (buf.validate.field).required = true,
+    (kubenfv.kubevim.options.v1.ifa_field) = {
+      ref: "IFA006 8.4.5.3 NetworkSubnet"
+      departure: {
+        kind: KIND_DEVIATION
+        translates: true
+        rationale: "The NetworkSubnet attributes are grouped in one message shared with layer3Attributes."
+      }
+    }
+  ];
+  // Metadata set by the consumer and by the VIM; for keys under "kubevim.kubenfv.io/" that the VIM maintains, its value wins.
+  map<string, string> metadata = 5 [
+    (google.api.field_behavior) = OPTIONAL,
+    (buf.validate.field).map.(kubenfv.kubevim.common.v1.metadata) = true,
+    (kubenfv.kubevim.options.v1.ifa_field) = {
+      ref: "IFA006 8.4.4.4 NetworkSubnetData.metadata"
+      departure: {
+        kind: KIND_DEVIATION
+        translates: true
+        rationale: "On the subnet rather than its layer 3 attributes; string values only, where IFA KeyValuePair allows any JSON value."
+      }
+    }
+  ];
+}
+
+// Range of addresses a subnet allocates from.
+message IpAddressPool {
+  option (kubenfv.kubevim.options.v1.ifa_message) = {
+    ref: "IFA006 8.4.4.4 NetworkSubnetData.addressPool"
+    departure: {
+      kind: KIND_DEVIATION
+      translates: true
+      rationale: "IFA leaves the content unspecified; a first and last address."
+    }
+  };
+
+  // First address of the pool.
+  string start_ip = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).string.ip = true
+  ];
+  // Last address of the pool.
+  string end_ip = 2 [
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).string.ip = true
+  ];
+}
+
+message CreateNetworkRequest {
+  // Network to create.
+  Network network = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).required = true,
+    (kubenfv.kubevim.options.v1.ifa_field) = {ref: "IFA006 7.4.1.2.2 AllocateNetworkRequest.typeNetworkData"}
+  ];
+
+  option (buf.validate.message).cel = {
+    id: "network.geneve_needs_subnet"
+    message: "a GENEVE network needs at least one subnet in layer3Attributes"
+    expression: "!has(this.network) || this.network.network_type != 1 || this.network.layer3_attributes.size() >= 1"
+  };
+}
+
+message CreateSubnetRequest {
+  // Subnet to create; adds an IP version to a network that no interface uses yet.
+  Subnet subnet = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).required = true,
+    (kubenfv.kubevim.options.v1.ifa_field) = {ref: "IFA006 7.4.1.2.2 AllocateNetworkRequest.typeSubnetData"}
+  ];
+}
+
+message GetNetworkRequest {
+  // Identifier of the network.
+  string network_id = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).string.uuid = true
+  ];
+}
+
+message ListNetworksRequest {
+  // Attribute-based filter expression (SOL 013 5.2).
+  string filter = 1 [
+    (google.api.field_behavior) = OPTIONAL,
+    (kubenfv.kubevim.options.v1.ifa_field) = {ref: "IFA006 7.4.1.3.2 QueryNetworkRequest.queryNetworkFilter"}
+  ];
+  // Marker of the page to return, from a previous response (SOL 013 5.4).
+  string nextpage_opaque_marker = 2 [
+    json_name = "nextpage_opaque_marker",
+    (google.api.field_behavior) = OPTIONAL
+  ];
+}
+
+message ListNetworksResponse {
+  // Networks matching the filter.
+  repeated Network networks = 1 [(kubenfv.kubevim.options.v1.ifa_field) = {ref: "IFA006 7.4.1.3.3 QueryNetworkResponse.queryResult"}];
+  // Marker of the next page; empty on the last page (SOL 013 5.4).
+  string nextpage_opaque_marker = 2 [json_name = "nextpage_opaque_marker"];
+}
+
+message UpdateNetworkRequest {
+  // Identifier of the network.
+  string network_id = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).string.uuid = true
+  ];
+  // Changes to apply; fields left unset keep their value.
+  NetworkUpdate update = 2 [
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).required = true
+  ];
+}
+
+// Changes to a network: a patch. The name is replaced when set; metadata entries are merged.
+message NetworkUpdate {
+  option (kubenfv.kubevim.options.v1.ifa_message) = {
+    ref: "IFA006 7.4.1.4.2 UpdateNetworkRequest"
+    departure: {
+      kind: KIND_DEVIATION
+      translates: true
+      rationale: "Name and metadata only, each optional; the other attributes need a new network."
+    }
+  };
+
+  optional string network_name = 1 [
+    (google.api.field_behavior) = OPTIONAL,
+    (buf.validate.field).string.min_len = 1
+  ];
+  // Metadata entries to add, or to overwrite when the key exists; keys not given are kept, and none is removed.
+  map<string, string> metadata = 2 [
+    (google.api.field_behavior) = OPTIONAL,
+    (buf.validate.field).map.(kubenfv.kubevim.common.v1.metadata) = true
+  ];
+}
+
+message DeleteNetworkRequest {
+  // Identifier of the network.
+  string network_id = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).string.uuid = true
+  ];
+}
+
+message GetSubnetRequest {
+  // Identifier of the subnet.
+  string subnet_id = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).string.uuid = true
+  ];
+}
+
+message ListSubnetsRequest {
+  // Attribute-based filter expression (SOL 013 5.2).
+  string filter = 1 [
+    (google.api.field_behavior) = OPTIONAL,
+    (kubenfv.kubevim.options.v1.ifa_field) = {ref: "IFA006 7.4.1.3.2 QueryNetworkRequest.queryNetworkFilter"}
+  ];
+  // Marker of the page to return, from a previous response (SOL 013 5.4).
+  string nextpage_opaque_marker = 2 [
+    json_name = "nextpage_opaque_marker",
+    (google.api.field_behavior) = OPTIONAL
+  ];
+}
+
+message ListSubnetsResponse {
+  // Subnets matching the filter.
+  repeated Subnet subnets = 1 [(kubenfv.kubevim.options.v1.ifa_field) = {ref: "IFA006 7.4.1.3.3 QueryNetworkResponse.queryResult"}];
+  // Marker of the next page; empty on the last page (SOL 013 5.4).
+  string nextpage_opaque_marker = 2 [json_name = "nextpage_opaque_marker"];
+}
+
+message UpdateSubnetRequest {
+  // Identifier of the subnet.
+  string subnet_id = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).string.uuid = true
+  ];
+  // Changes to apply; fields left unset keep their value.
+  SubnetUpdate update = 2 [
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).required = true
+  ];
+}
+
+// Changes to a subnet: a patch. The name is replaced when set; metadata entries are merged.
+message SubnetUpdate {
+  option (kubenfv.kubevim.options.v1.ifa_message) = {
+    ref: "IFA006 7.4.1.4.2 UpdateNetworkRequest"
+    departure: {
+      kind: KIND_DEVIATION
+      translates: true
+      rationale: "Name and metadata only, each optional; the other attributes need a new subnet."
+    }
+  };
+
+  optional string subnet_name = 1 [
+    (google.api.field_behavior) = OPTIONAL,
+    (buf.validate.field).string.min_len = 1
+  ];
+  // Metadata entries to add, or to overwrite when the key exists; keys not given are kept, and none is removed.
+  map<string, string> metadata = 2 [
+    (google.api.field_behavior) = OPTIONAL,
+    (buf.validate.field).map.(kubenfv.kubevim.common.v1.metadata) = true
+  ];
+}
+
+message DeleteSubnetRequest {
+  // Identifier of the subnet.
+  string subnet_id = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).string.uuid = true
+  ];
+}

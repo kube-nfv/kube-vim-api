@@ -1,0 +1,1481 @@
+syntax = "proto3";
+
+package kubenfv.kubevim.compute.v1;
+
+import "buf/validate/validate.proto";
+import "google/api/annotations.proto";
+import "google/api/field_behavior.proto";
+import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
+import "kubenfv/kubevim/common/v1/common.proto";
+import "kubenfv/kubevim/common/v1/cpu.proto";
+import "kubenfv/kubevim/common/v1/rules.proto";
+import "kubenfv/kubevim/common/v1/volume.proto";
+import "kubenfv/kubevim/options/v1/options.proto";
+import "protoc-gen-openapiv3/options/annotations.proto";
+
+option (grpc.gateway.protoc_gen_openapiv3.options.openapiv3_document) = {
+  info: {title: "Kube-VIM virtualised compute API"}
+  components: {
+    security_schemes: {
+      key: "oauth2"
+      value: {
+        type: TYPE_OAUTH2
+        description: "OAuth 2.0 client credentials (SOL 013 8.3). The token URL is deployment specific."
+        flows: {
+          client_credentials: {
+            token_url: "https://idp.example.com/oauth2/token"
+            scopes: {
+              key: "compute:v1:allocate"
+              value: "Allocate compute resources"
+            }
+            scopes: {
+              key: "compute:v1:query"
+              value: "Query compute resources"
+            }
+            scopes: {
+              key: "compute:v1:update"
+              value: "Update compute resources and attach or detach volumes"
+            }
+            scopes: {
+              key: "compute:v1:terminate"
+              value: "Terminate compute resources"
+            }
+            scopes: {
+              key: "compute:v1:operate"
+              value: "Operate compute resources"
+            }
+            scopes: {
+              key: "compute:v1:scale"
+              value: "Scale compute resources"
+            }
+            scopes: {
+              key: "compute:v1:migrate"
+              value: "Migrate compute resources"
+            }
+          }
+        }
+      }
+    }
+  }
+};
+option (kubenfv.kubevim.options.v1.api) = {name: "compute"};
+
+// Virtualised compute resources management.
+service ComputeService {
+  option (kubenfv.kubevim.options.v1.ifa_service) = {ref: "IFA006 7.3.1 Virtualised Compute Resources Management Interface"};
+
+  // Creates a compute resource.
+  rpc CreateCompute(CreateComputeRequest) returns (Compute) {
+    option (google.api.http) = {
+      post: "/compute/v1/computes"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv3.options.openapiv3_operation) = {
+      security: {
+        schemes: {
+          key: "oauth2"
+          value: {scopes: "compute:v1:allocate"}
+        }
+      }
+    };
+    option (kubenfv.kubevim.options.v1.ifa_method) = {ref: "IFA006 7.3.1.2 Allocate Virtualised Compute Resource"};
+  }
+
+  // Returns one compute resource.
+  rpc GetCompute(GetComputeRequest) returns (Compute) {
+    option (google.api.http) = {get: "/compute/v1/computes/{compute_id}"};
+    option (grpc.gateway.protoc_gen_openapiv3.options.openapiv3_operation) = {
+      security: {
+        schemes: {
+          key: "oauth2"
+          value: {scopes: "compute:v1:query"}
+        }
+      }
+    };
+    option (kubenfv.kubevim.options.v1.ifa_method) = {
+      ref: "IFA006 7.3.1.3 Query Virtualised Compute Resource"
+      departure: {
+        kind: KIND_DEVIATION
+        translates: true
+        rationale: "Query filtered by computeId, as a read by identifier."
+      }
+    };
+  }
+
+  // Returns the compute resources matching a filter.
+  rpc ListComputes(ListComputesRequest) returns (ListComputesResponse) {
+    option (google.api.http) = {
+      get: "/compute/v1/computes"
+      response_body: "computes"
+    };
+    option (grpc.gateway.protoc_gen_openapiv3.options.openapiv3_operation) = {
+      security: {
+        schemes: {
+          key: "oauth2"
+          value: {scopes: "compute:v1:query"}
+        }
+      }
+    };
+    option (kubenfv.kubevim.options.v1.ifa_method) = {ref: "IFA006 7.3.1.3 Query Virtualised Compute Resource"};
+  }
+
+  // Updates a compute resource: its name and metadata, and adds or removes network interfaces.
+  rpc UpdateCompute(UpdateComputeRequest) returns (Compute) {
+    option (google.api.http) = {
+      patch: "/compute/v1/computes/{compute_id}"
+      body: "update"
+    };
+    option (grpc.gateway.protoc_gen_openapiv3.options.openapiv3_operation) = {
+      security: {
+        schemes: {
+          key: "oauth2"
+          value: {scopes: "compute:v1:update"}
+        }
+      }
+    };
+    option (kubenfv.kubevim.options.v1.ifa_method) = {
+      ref: "IFA006 7.3.1.4 Update Virtualised Compute Resource"
+      departure: {
+        kind: KIND_DEVIATION
+        translates: true
+        rationale: "Only the changes set in ComputeUpdate apply."
+      }
+    };
+  }
+
+  // Deletes a compute resource with its boot disk and the disks from its flavour. Attached volumes
+  // are detached and kept unless delete_volumes is set; snapshots are kept.
+  rpc DeleteCompute(DeleteComputeRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {delete: "/compute/v1/computes/{compute_id}"};
+    option (grpc.gateway.protoc_gen_openapiv3.options.openapiv3_operation) = {
+      security: {
+        schemes: {
+          key: "oauth2"
+          value: {scopes: "compute:v1:terminate"}
+        }
+      }
+    };
+    option (kubenfv.kubevim.options.v1.ifa_method) = {
+      ref: "IFA006 7.3.1.5 Terminate Virtualised Compute Resource"
+      departure: {
+        kind: KIND_DEVIATION
+        translates: true
+        rationale: "One resource per request (the path identifies it) instead of a list of identifiers; returns no body (204)."
+      }
+    };
+  }
+
+  // Changes the running state of a compute resource, e.g. start, stop or reboot.
+  rpc OperateCompute(OperateComputeRequest) returns (Compute) {
+    option (google.api.http) = {
+      post: "/compute/v1/computes/{compute_id}/operate"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv3.options.openapiv3_operation) = {
+      security: {
+        schemes: {
+          key: "oauth2"
+          value: {scopes: "compute:v1:operate"}
+        }
+      }
+    };
+    option (kubenfv.kubevim.options.v1.ifa_method) = {
+      ref: "IFA006 7.3.1.6 Operate Virtualised Compute Resource"
+      departure: {
+        kind: KIND_DEVIATION
+        translates: true
+        rationale: "Returns the compute resource; snapshot operations are the snapshot methods."
+      }
+    };
+  }
+
+  // Changes the flavour of a compute resource; live where KubeVirt can hotplug, otherwise restart_required is set.
+  // Disks that are larger in the new flavour are grown; shrinking a disk or changing the number, type,
+  // boot flag or storage class of the disks is rejected.
+  rpc ScaleCompute(ScaleComputeRequest) returns (Compute) {
+    option (google.api.http) = {
+      post: "/compute/v1/computes/{compute_id}/scale"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv3.options.openapiv3_operation) = {
+      security: {
+        schemes: {
+          key: "oauth2"
+          value: {scopes: "compute:v1:scale"}
+        }
+      }
+    };
+    option (kubenfv.kubevim.options.v1.ifa_method) = {ref: "IFA006 7.3.1.7 Scale Virtualised Compute Resource"};
+  }
+
+  // Moves a running compute resource to another host (live migration).
+  rpc MigrateCompute(MigrateComputeRequest) returns (Compute) {
+    option (google.api.http) = {
+      post: "/compute/v1/computes/{compute_id}/migrate"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv3.options.openapiv3_operation) = {
+      security: {
+        schemes: {
+          key: "oauth2"
+          value: {scopes: "compute:v1:migrate"}
+        }
+      }
+    };
+    option (kubenfv.kubevim.options.v1.ifa_method) = {
+      ref: "IFA006 7.3.1.8 Migrate Virtualised Compute Resource"
+      departure: {
+        kind: KIND_RESTRICTION
+        translates: false
+        rationale: "Live migration only; the scheduler picks the target host."
+      }
+    };
+  }
+
+  // Attaches a volume to a compute resource.
+  rpc AttachVolume(AttachVolumeRequest) returns (Compute) {
+    option (google.api.http) = {
+      post: "/compute/v1/computes/{compute_id}/attachVolume"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv3.options.openapiv3_operation) = {
+      security: {
+        schemes: {
+          key: "oauth2"
+          value: {scopes: "compute:v1:update"}
+        }
+      }
+    };
+    option (kubenfv.kubevim.options.v1.ifa_method) = {ref: "IFA006 7.3.1.10 Attach Virtualised Storage Resource"};
+  }
+
+  // Detaches a volume from a compute resource.
+  rpc DetachVolume(DetachVolumeRequest) returns (Compute) {
+    option (google.api.http) = {
+      post: "/compute/v1/computes/{compute_id}/detachVolume"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv3.options.openapiv3_operation) = {
+      security: {
+        schemes: {
+          key: "oauth2"
+          value: {scopes: "compute:v1:update"}
+        }
+      }
+    };
+    option (kubenfv.kubevim.options.v1.ifa_method) = {
+      ref: "IFA006 7.3.1.11 Detach Virtualised Storage Resource"
+      departure: {
+        kind: KIND_DEVIATION
+        translates: true
+        rationale: "Returns the updated compute resource; IFA returns nothing."
+      }
+    };
+  }
+
+  // Creates a snapshot of a compute resource.
+  rpc CreateComputeSnapshot(CreateComputeSnapshotRequest) returns (ComputeSnapshot) {
+    option (google.api.http) = {
+      post: "/compute/v1/computes/{compute_id}/snapshots"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv3.options.openapiv3_operation) = {
+      security: {
+        schemes: {
+          key: "oauth2"
+          value: {scopes: "compute:v1:operate"}
+        }
+      }
+    };
+    option (kubenfv.kubevim.options.v1.ifa_method) = {
+      ref: "IFA006 7.3.1.6 Operate Virtualised Compute Resource (createSnapshot, revertToSnapshot, deleteSnapshot)"
+      departure: {
+        kind: KIND_DEVIATION
+        translates: true
+        rationale: "Operate with createSnapshot, as a sub-resource."
+      }
+    };
+  }
+
+  // Returns one snapshot of a compute resource, also after the compute resource is deleted.
+  rpc GetComputeSnapshot(GetComputeSnapshotRequest) returns (ComputeSnapshot) {
+    option (google.api.http) = {get: "/compute/v1/computes/{compute_id}/snapshots/{snapshot_id}"};
+    option (grpc.gateway.protoc_gen_openapiv3.options.openapiv3_operation) = {
+      security: {
+        schemes: {
+          key: "oauth2"
+          value: {scopes: "compute:v1:query"}
+        }
+      }
+    };
+    option (kubenfv.kubevim.options.v1.ifa_method) = {
+      departure: {
+        kind: KIND_EXTENSION
+        translates: true
+        rationale: "IFA cannot read snapshots back."
+      }
+    };
+  }
+
+  // Returns the snapshots of a compute resource, or of all compute resources with compute_id "-".
+  rpc ListComputeSnapshots(ListComputeSnapshotsRequest) returns (ListComputeSnapshotsResponse) {
+    option (google.api.http) = {
+      get: "/compute/v1/computes/{compute_id}/snapshots"
+      response_body: "snapshots"
+    };
+    option (grpc.gateway.protoc_gen_openapiv3.options.openapiv3_operation) = {
+      security: {
+        schemes: {
+          key: "oauth2"
+          value: {scopes: "compute:v1:query"}
+        }
+      }
+    };
+    option (kubenfv.kubevim.options.v1.ifa_method) = {
+      departure: {
+        kind: KIND_EXTENSION
+        translates: true
+        rationale: "IFA cannot list snapshots."
+      }
+    };
+  }
+
+  // Deletes a snapshot of a compute resource.
+  rpc DeleteComputeSnapshot(DeleteComputeSnapshotRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {delete: "/compute/v1/computes/{compute_id}/snapshots/{snapshot_id}"};
+    option (grpc.gateway.protoc_gen_openapiv3.options.openapiv3_operation) = {
+      security: {
+        schemes: {
+          key: "oauth2"
+          value: {scopes: "compute:v1:operate"}
+        }
+      }
+    };
+    option (kubenfv.kubevim.options.v1.ifa_method) = {
+      ref: "IFA006 7.3.1.6 Operate Virtualised Compute Resource (createSnapshot, revertToSnapshot, deleteSnapshot)"
+      departure: {
+        kind: KIND_DEVIATION
+        translates: true
+        rationale: "Operate with deleteSnapshot, as a sub-resource."
+      }
+    };
+  }
+
+  // Reverts a stopped compute resource to a snapshot; not possible once the compute resource is deleted.
+  rpc RevertComputeSnapshot(RevertComputeSnapshotRequest) returns (Compute) {
+    option (google.api.http) = {
+      post: "/compute/v1/computes/{compute_id}/snapshots/{snapshot_id}/revert"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv3.options.openapiv3_operation) = {
+      security: {
+        schemes: {
+          key: "oauth2"
+          value: {scopes: "compute:v1:operate"}
+        }
+      }
+    };
+    option (kubenfv.kubevim.options.v1.ifa_method) = {
+      ref: "IFA006 7.3.1.6 Operate Virtualised Compute Resource (createSnapshot, revertToSnapshot, deleteSnapshot)"
+      departure: {
+        kind: KIND_DEVIATION
+        translates: true
+        rationale: "Operate with revertToSnapshot, as a task on the snapshot."
+      }
+    };
+  }
+
+  // Creates a placement group.
+  rpc CreatePlacementGroup(CreatePlacementGroupRequest) returns (PlacementGroup) {
+    option (google.api.http) = {
+      post: "/compute/v1/placementGroups"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv3.options.openapiv3_operation) = {
+      security: {
+        schemes: {
+          key: "oauth2"
+          value: {scopes: "compute:v1:allocate"}
+        }
+      }
+    };
+    option (kubenfv.kubevim.options.v1.ifa_method) = {
+      ref: "IFA006 7.3.1.9 Create Virtualised Compute Resource Affinity Or AntiAffinity Constraints Group"
+      departure: {
+        kind: KIND_DEVIATION
+        translates: true
+        rationale: "A placement group with a policy instead of an IFA affinity group."
+      }
+    };
+  }
+
+  // Returns one placement group.
+  rpc GetPlacementGroup(GetPlacementGroupRequest) returns (PlacementGroup) {
+    option (google.api.http) = {get: "/compute/v1/placementGroups/{placement_group_id}"};
+    option (grpc.gateway.protoc_gen_openapiv3.options.openapiv3_operation) = {
+      security: {
+        schemes: {
+          key: "oauth2"
+          value: {scopes: "compute:v1:query"}
+        }
+      }
+    };
+    option (kubenfv.kubevim.options.v1.ifa_method) = {
+      departure: {
+        kind: KIND_EXTENSION
+        translates: true
+        rationale: "IFA can create groups but not read them back."
+      }
+    };
+  }
+
+  // Returns the placement groups.
+  rpc ListPlacementGroups(ListPlacementGroupsRequest) returns (ListPlacementGroupsResponse) {
+    option (google.api.http) = {
+      get: "/compute/v1/placementGroups"
+      response_body: "placement_groups"
+    };
+    option (grpc.gateway.protoc_gen_openapiv3.options.openapiv3_operation) = {
+      security: {
+        schemes: {
+          key: "oauth2"
+          value: {scopes: "compute:v1:query"}
+        }
+      }
+    };
+    option (kubenfv.kubevim.options.v1.ifa_method) = {
+      departure: {
+        kind: KIND_EXTENSION
+        translates: true
+        rationale: "IFA can create groups but not list them."
+      }
+    };
+  }
+
+  // Deletes a placement group that has no members.
+  rpc DeletePlacementGroup(DeletePlacementGroupRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {delete: "/compute/v1/placementGroups/{placement_group_id}"};
+    option (grpc.gateway.protoc_gen_openapiv3.options.openapiv3_operation) = {
+      security: {
+        schemes: {
+          key: "oauth2"
+          value: {scopes: "compute:v1:terminate"}
+        }
+      }
+    };
+    option (kubenfv.kubevim.options.v1.ifa_method) = {
+      departure: {
+        kind: KIND_EXTENSION
+        translates: true
+        rationale: "IFA can create groups but not delete them."
+      }
+    };
+  }
+}
+
+// A virtualised compute resource: a virtual machine.
+message Compute {
+  option (kubenfv.kubevim.options.v1.ifa_message) = {ref: "IFA006 8.4.3.2 VirtualCompute"};
+
+  // Identifier of the compute resource: a UUID assigned by the VIM.
+  string compute_id = 1 [
+    (google.api.field_behavior) = OUTPUT_ONLY,
+    (kubenfv.kubevim.options.v1.ifa_field) = {ref: "IFA006 8.4.3.2 VirtualCompute.computeId"}
+  ];
+  // Name of the compute resource, given by the consumer; not unique.
+  string compute_name = 2 [
+    (google.api.field_behavior) = OPTIONAL,
+    (kubenfv.kubevim.options.v1.ifa_field) = {ref: "IFA006 8.4.3.2 VirtualCompute.computeName"}
+  ];
+  // Flavour the compute resource is sized by; it needs exactly one boot storage attribute.
+  string flavour_id = 3 [
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).string.uuid = true,
+    (kubenfv.kubevim.options.v1.ifa_field) = {ref: "IFA006 8.4.3.2 VirtualCompute.flavourId"}
+  ];
+  // Software image the compute resource boots from.
+  string image_id = 4 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.field_behavior) = IMMUTABLE,
+    (buf.validate.field).string.uuid = true,
+    (kubenfv.kubevim.options.v1.ifa_field) = {
+      ref: "IFA006 8.4.3.2 VirtualCompute.vcImageId"
+      departure: {
+        kind: KIND_DEVIATION
+        translates: true
+        rationale: "Renamed to the referenced resource's identifier; required, since a compute resource boots from an image."
+      }
+    }
+  ];
+  // Virtual CPUs of the compute resource.
+  VirtualCpu virtual_cpu = 5 [
+    (google.api.field_behavior) = OUTPUT_ONLY,
+    (kubenfv.kubevim.options.v1.ifa_field) = {ref: "IFA006 8.4.3.2 VirtualCompute.virtualCpu"}
+  ];
+  // Virtual memory of the compute resource.
+  VirtualMemory virtual_memory = 6 [
+    (google.api.field_behavior) = OUTPUT_ONLY,
+    (kubenfv.kubevim.options.v1.ifa_field) = {ref: "IFA006 8.4.3.2 VirtualCompute.virtualMemory"}
+  ];
+  // Network interfaces, the management interface first; no other order is guaranteed, in the response
+  // or in the guest. Match interfaces by name, MAC address or guest PCI address.
+  repeated VirtualNetworkInterface network_interfaces = 7 [
+    (google.api.field_behavior) = OUTPUT_ONLY,
+    (kubenfv.kubevim.options.v1.ifa_field) = {
+      ref: "IFA006 8.4.3.2 VirtualCompute.virtualNetworkInterface"
+      departure: {
+        kind: KIND_DEVIATION
+        translates: true
+        rationale: "Shorter name without the repeated context."
+      }
+    }
+  ];
+  // Disks of the compute resource: its own disks (the boot disk and the disks from the flavour,
+  // identified by disk name, deleted with the compute resource and not in the storage API) and
+  // attached volumes (identified by their volume_id).
+  repeated kubenfv.kubevim.common.v1.Volume disks = 8 [
+    (google.api.field_behavior) = OUTPUT_ONLY,
+    (kubenfv.kubevim.options.v1.ifa_field) = {
+      ref: "IFA006 8.4.3.2 VirtualCompute.virtualDisks"
+      departure: {
+        kind: KIND_DEVIATION
+        translates: true
+        rationale: "Shorter name without the repeated context."
+      }
+    }
+  ];
+  // Resource zone of the compute resource.
+  string zone_id = 9 [
+    (google.api.field_behavior) = OUTPUT_ONLY,
+    (kubenfv.kubevim.options.v1.ifa_field) = {ref: "IFA006 8.4.3.2 VirtualCompute.zoneId"}
+  ];
+  // Host the compute resource runs on (the Kubernetes node).
+  string host_id = 10 [
+    (google.api.field_behavior) = OUTPUT_ONLY,
+    (kubenfv.kubevim.options.v1.ifa_field) = {ref: "IFA006 8.4.3.2 VirtualCompute.hostId"}
+  ];
+  // Operational state of the compute resource.
+  kubenfv.kubevim.common.v1.OperationalState operational_state = 11 [
+    (google.api.field_behavior) = OUTPUT_ONLY,
+    (kubenfv.kubevim.options.v1.ifa_field) = {ref: "IFA006 8.4.3.2 VirtualCompute.operationalState"}
+  ];
+  // Running state of the compute resource.
+  ComputeRunningState running_state = 12 [
+    (google.api.field_behavior) = OUTPUT_ONLY,
+    (kubenfv.kubevim.options.v1.ifa_field) = {
+      ref: "IFA006 8.4.3.2 VirtualCompute.runningState"
+      departure: {
+        kind: KIND_DEVIATION
+        translates: true
+        rationale: "Adds transitional and failure states; each maps to the nearest IFA state."
+      }
+    }
+  ];
+  // Human-readable reason when the running state is FAILED.
+  string status_detail = 13 [
+    (google.api.field_behavior) = OUTPUT_ONLY,
+    (kubenfv.kubevim.options.v1.ifa_field) = {
+      departure: {
+        kind: KIND_EXTENSION
+        translates: true
+        rationale: "Reports why a compute resource failed; replaces the v0 failure-reason metadata key."
+      }
+    }
+  ];
+  // A change (a flavour beyond the hotplug limits, or interfaces of a VM that cannot live-migrate) applies on the next restart.
+  bool restart_required = 14 [
+    (google.api.field_behavior) = OUTPUT_ONLY,
+    (kubenfv.kubevim.options.v1.ifa_field) = {
+      departure: {
+        kind: KIND_EXTENSION
+        translates: true
+        rationale: "KubeVirt applies some changes only on restart; consumers need to know."
+      }
+    }
+  ];
+  // Placement groups the compute resource belongs to, joined at creation.
+  repeated string placement_group_ids = 15 [
+    (google.api.field_behavior) = OPTIONAL,
+    (google.api.field_behavior) = IMMUTABLE,
+    (buf.validate.field).repeated.items.string.uuid = true,
+    (kubenfv.kubevim.options.v1.ifa_field) = {
+      departure: {
+        kind: KIND_EXTENSION
+        translates: true
+        rationale: "Placement groups replace IFA affinity constraints."
+      }
+    }
+  ];
+  // Metadata set by the consumer and by the VIM; for keys under "kubevim.kubenfv.io/" that the VIM maintains, its value wins.
+  map<string, string> metadata = 16 [
+    (google.api.field_behavior) = OPTIONAL,
+    (buf.validate.field).map.(kubenfv.kubevim.common.v1.metadata) = true,
+    (kubenfv.kubevim.options.v1.ifa_field) = {
+      ref: "IFA006 8.4.3.2 VirtualCompute.metadata"
+      departure: {
+        kind: KIND_RESTRICTION
+        translates: true
+        rationale: "String values only, where IFA KeyValuePair allows any JSON value."
+      }
+    }
+  ];
+}
+
+// Running state of a compute resource.
+// Values may be added as KubeVirt support grows; clients should accept unknown values.
+enum ComputeRunningState {
+  // The VIM cannot determine the state.
+  COMPUTE_RUNNING_STATE_UNSPECIFIED = 0;
+  // Requested to start, not running yet. IFA: STOPPED.
+  COMPUTE_RUNNING_STATE_STARTING = 1;
+  // Running. IFA: STARTED.
+  COMPUTE_RUNNING_STATE_STARTED = 2;
+  // Requested to stop, still running. IFA: STARTED.
+  COMPUTE_RUNNING_STATE_STOPPING = 3;
+  // Stopped. IFA: STOPPED.
+  COMPUTE_RUNNING_STATE_STOPPED = 4;
+  // Paused, memory kept. IFA: PAUSED.
+  COMPUTE_RUNNING_STATE_PAUSED = 5;
+  reserved 6;
+  // Moving to another host while running. IFA: STARTED.
+  COMPUTE_RUNNING_STATE_MIGRATING = 7;
+  // Failed to start or crashed; see status_detail. IFA: STOPPED.
+  COMPUTE_RUNNING_STATE_FAILED = 8;
+  // Being deleted. IFA: STOPPED.
+  COMPUTE_RUNNING_STATE_TERMINATING = 9;
+}
+
+// Virtual CPUs of a compute resource.
+message VirtualCpu {
+  option (kubenfv.kubevim.options.v1.ifa_message) = {ref: "IFA006 8.4.3.3 VirtualCpu"};
+
+  kubenfv.kubevim.common.v1.CpuArchitecture cpu_architecture = 1 [(kubenfv.kubevim.options.v1.ifa_field) = {
+    ref: "IFA006 8.4.3.3 VirtualCpu.cpuArchitecture"
+    departure: {
+      kind: KIND_DEVIATION
+      translates: true
+      rationale: "A closed enumeration instead of a free string."
+    }
+  }];
+  uint32 num_virtual_cpu = 2 [(kubenfv.kubevim.options.v1.ifa_field) = {ref: "IFA006 8.4.3.3 VirtualCpu.numVirtualCpu"}];
+  VirtualCpuPinning virtual_cpu_pinning = 3 [(kubenfv.kubevim.options.v1.ifa_field) = {ref: "IFA006 8.4.3.3 VirtualCpu.virtualCpuPinning"}];
+}
+
+// CPU pinning of a compute resource.
+message VirtualCpuPinning {
+  option (kubenfv.kubevim.options.v1.ifa_message) = {ref: "IFA006 8.4.3.4 VirtualCpuPinning"};
+
+  kubenfv.kubevim.common.v1.VirtualCpuPinningPolicy cpu_pinning_policy = 1 [(kubenfv.kubevim.options.v1.ifa_field) = {ref: "IFA006 8.4.3.4 VirtualCpuPinning.cpuPinningPolicy"}];
+  reserved 2;
+}
+
+// Virtual memory of a compute resource.
+message VirtualMemory {
+  option (kubenfv.kubevim.options.v1.ifa_message) = {ref: "IFA006 8.4.3.5 VirtualMemory"};
+
+  // Amount of memory, in Kubernetes quantity format.
+  string virtual_mem_size = 1 [(kubenfv.kubevim.options.v1.ifa_field) = {
+    ref: "IFA006 8.4.3.5 VirtualMemory.virtualMemSize"
+    departure: {
+      kind: KIND_DEVIATION
+      translates: true
+      rationale: "Kubernetes quantity string instead of a number in MB."
+    }
+  }];
+  string virtual_mem_oversubscription_policy = 2 [(kubenfv.kubevim.options.v1.ifa_field) = {ref: "IFA006 8.4.3.5 VirtualMemory.virtualMemOversubscriptionPolicy"}];
+  bool numa_enabled = 3 [(kubenfv.kubevim.options.v1.ifa_field) = {ref: "IFA006 8.4.3.5 VirtualMemory.numaEnabled"}];
+  // Hugepage size backing the memory; empty for regular pages.
+  string hugepage_size = 4 [(kubenfv.kubevim.options.v1.ifa_field) = {
+    departure: {
+      kind: KIND_EXTENSION
+      translates: true
+      rationale: "Reports the hugepages requested by the flavour."
+    }
+  }];
+}
+
+// A network interface of a compute resource.
+message VirtualNetworkInterface {
+  option (kubenfv.kubevim.options.v1.ifa_message) = {ref: "IFA006 8.4.3.6 VirtualNetworkInterface"};
+
+  // Name of the interface, unique within the compute resource: the one given at creation, or one the VIM chose.
+  string name = 1 [(kubenfv.kubevim.options.v1.ifa_field) = {
+    ref: "IFA006 8.4.3.6 VirtualNetworkInterface.resourceId"
+    departure: {
+      kind: KIND_DEVIATION
+      translates: true
+      rationale: "Interfaces are parts of the compute resource, identified by a name the consumer may choose."
+    }
+  }];
+  // Compute resource the interface belongs to.
+  string compute_id = 2 [(kubenfv.kubevim.options.v1.ifa_field) = {
+    ref: "IFA006 8.4.3.6 VirtualNetworkInterface.ownerId"
+    departure: {
+      kind: KIND_DEVIATION
+      translates: true
+      rationale: "Renamed to the referenced resource's identifier."
+    }
+  }];
+  // Network the interface is attached to; empty for the management interface.
+  string network_id = 3 [(kubenfv.kubevim.options.v1.ifa_field) = {ref: "IFA006 8.4.3.6 VirtualNetworkInterface.networkId"}];
+  // Addresses of the interface, one per subnet of its network; may be empty until DHCP or the guest configures them.
+  repeated string ip_addresses = 4 [(kubenfv.kubevim.options.v1.ifa_field) = {
+    ref: "IFA006 8.4.3.6 VirtualNetworkInterface.ipAddress"
+    departure: {
+      kind: KIND_DEVIATION
+      translates: true
+      rationale: "Plural name for a list."
+    }
+  }];
+  TypeVirtualNic type_virtual_nic = 5 [(kubenfv.kubevim.options.v1.ifa_field) = {
+    ref: "IFA006 8.4.3.6 VirtualNetworkInterface.typeVirtualNic"
+    departure: {
+      kind: KIND_DEVIATION
+      translates: true
+      rationale: "IFA leaves the type unspecified; a closed enumeration."
+    }
+  }];
+  // NIC model the guest sees.
+  NicModel model = 6 [(kubenfv.kubevim.options.v1.ifa_field) = {
+    departure: {
+      kind: KIND_EXTENSION
+      translates: true
+      rationale: "Guests without virtio drivers need an emulated NIC model."
+    }
+  }];
+  // MAC address; empty until known.
+  string mac_address = 7 [(kubenfv.kubevim.options.v1.ifa_field) = {ref: "IFA006 8.4.3.6 VirtualNetworkInterface.macAddress"}];
+  // Rate limit in Mbps; 0 when not limited.
+  uint32 bandwidth = 8 [(kubenfv.kubevim.options.v1.ifa_field) = {
+    ref: "IFA006 8.4.3.6 VirtualNetworkInterface.bandwidth"
+    departure: {
+      kind: KIND_DEVIATION
+      translates: true
+      rationale: "A rate limit, where IFA leaves the meaning open."
+    }
+  }];
+  // ENABLED once the interface is attached and ready.
+  kubenfv.kubevim.common.v1.OperationalState operational_state = 9 [(kubenfv.kubevim.options.v1.ifa_field) = {ref: "IFA006 8.4.3.6 VirtualNetworkInterface.operationalState"}];
+  // The management interface every compute resource gets on the pod network.
+  bool is_management = 10 [(kubenfv.kubevim.options.v1.ifa_field) = {
+    departure: {
+      kind: KIND_EXTENSION
+      translates: true
+      rationale: "Marks the management interface; replaces the v0 network.vm.kubevirt.io/management metadata key."
+    }
+  }];
+  // PCI address of the device on the host, for SR-IOV interfaces.
+  string host_pci_address = 11 [(kubenfv.kubevim.options.v1.ifa_field) = {
+    departure: {
+      kind: KIND_EXTENSION
+      translates: true
+      rationale: "Lets the consumer correlate an SR-IOV VF with the host NIC; replaces the v0 host-pci-address metadata key."
+    }
+  }];
+  // PCI address of the device in the guest; empty until known.
+  string guest_pci_address = 12 [(kubenfv.kubevim.options.v1.ifa_field) = {
+    departure: {
+      kind: KIND_EXTENSION
+      translates: true
+      rationale: "Lets the consumer find the interface in the guest; the guest device order is not guaranteed."
+    }
+  }];
+  // Interface name in the guest, e.g. "eth1"; empty when the guest agent does not report it.
+  string guest_interface_name = 13 [(kubenfv.kubevim.options.v1.ifa_field) = {
+    departure: {
+      kind: KIND_EXTENSION
+      translates: true
+      rationale: "Lets the consumer find the interface in the guest; the guest device order is not guaranteed."
+    }
+  }];
+}
+
+// How a network interface is realised.
+// Values may be added as KubeVirt support grows; clients should accept unknown values.
+enum TypeVirtualNic {
+  TYPE_VIRTUAL_NIC_UNSPECIFIED = 0;
+  // Virtual NIC bridged to the network.
+  TYPE_VIRTUAL_NIC_BRIDGE = 1;
+  // SR-IOV virtual function.
+  TYPE_VIRTUAL_NIC_SRIOV = 2;
+  // NAT to the pod network; the management interface.
+  TYPE_VIRTUAL_NIC_MASQUERADE = 3;
+}
+
+// NIC model the guest sees.
+// Values may be added as KubeVirt support grows; clients should accept unknown values.
+enum NicModel {
+  NIC_MODEL_UNSPECIFIED = 0;
+  NIC_MODEL_VIRTIO = 1;
+  NIC_MODEL_E1000 = 2;
+  NIC_MODEL_E1000E = 3;
+}
+
+// A network interface requested for a compute resource.
+message NetworkInterfaceData {
+  option (kubenfv.kubevim.options.v1.ifa_message) = {
+    ref: "IFA006 8.4.3.7 VirtualInterfaceData, 8.4.2.6 VirtualNetworkInterfaceData"
+    departure: {
+      kind: KIND_DEVIATION
+      translates: true
+      rationale: "One list on allocation: IFA's per-instance VirtualInterfaceData merged with the flavour-level VirtualNetworkInterfaceData."
+    }
+  };
+
+  // Name of the interface, unique within the compute resource; the VIM chooses one when unset.
+  string name = 1 [
+    (google.api.field_behavior) = OPTIONAL,
+    (buf.validate.field).string = {
+      max_len: 63
+      pattern: "^[a-z0-9]([-a-z0-9]*[a-z0-9])?$"
+    },
+    (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE,
+    (kubenfv.kubevim.options.v1.ifa_field) = {
+      departure: {
+        kind: KIND_EXTENSION
+        translates: true
+        rationale: "Lets the consumer match interfaces in responses, e.g. two interfaces on one network."
+      }
+    }
+  ];
+  // Network to attach to; the interface gets one address per subnet of the network.
+  string network_id = 2 [
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).string.uuid = true,
+    (kubenfv.kubevim.options.v1.ifa_field) = {ref: "IFA006 8.4.3.7 VirtualInterfaceData.networkId"}
+  ];
+  reserved 3;
+  // NIC model the guest sees; virtio when unset.
+  NicModel model = 4 [
+    (google.api.field_behavior) = OPTIONAL,
+    (buf.validate.field).enum.defined_only = true,
+    (kubenfv.kubevim.options.v1.ifa_field) = {
+      departure: {
+        kind: KIND_EXTENSION
+        translates: true
+        rationale: "Guests without virtio drivers need an emulated NIC model."
+      }
+    }
+  ];
+  // Rate limit in Mbps; 0 means no limit.
+  uint32 bandwidth = 5 [
+    (google.api.field_behavior) = OPTIONAL,
+    (kubenfv.kubevim.options.v1.ifa_field) = {
+      ref: "IFA006 8.4.2.6 VirtualNetworkInterfaceData.bandwidth"
+      departure: {
+        kind: KIND_DEVIATION
+        translates: true
+        rationale: "A rate limit, where IFA leaves the meaning open."
+      }
+    }
+  ];
+  // How the interface gets its addresses; automatic when unset.
+  IpAssignment ip_assignment = 6 [
+    (google.api.field_behavior) = OPTIONAL,
+    (buf.validate.field).enum.defined_only = true,
+    (kubenfv.kubevim.options.v1.ifa_field) = {
+      departure: {
+        kind: KIND_EXTENSION
+        translates: true
+        rationale: "Replaces the v0 network.subnet.assignment metadata key; IFA implies the mode from whether addresses are given."
+      }
+    }
+  ];
+  // Addresses for the static assignment: at most one per IP version; a family left out is allocated automatically.
+  repeated string ip_addresses = 7 [
+    (google.api.field_behavior) = OPTIONAL,
+    (buf.validate.field).repeated = {
+      max_items: 2
+      items: {
+        string: {ip: true}
+      }
+    },
+    (kubenfv.kubevim.options.v1.ifa_field) = {
+      ref: "IFA006 8.4.3.7 VirtualInterfaceData.ipAddress"
+      departure: {
+        kind: KIND_DEVIATION
+        translates: true
+        rationale: "Plural name for a list."
+      }
+    }
+  ];
+  // MAC address; the VIM assigns one when unset.
+  string mac_address = 8 [
+    (google.api.field_behavior) = OPTIONAL,
+    (buf.validate.field).string.pattern = "^([0-9a-fA-F]{2}:){5}[0-9a-fA-F]{2}$",
+    (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE,
+    (kubenfv.kubevim.options.v1.ifa_field) = {ref: "IFA006 8.4.3.7 VirtualInterfaceData.macAddress"}
+  ];
+
+  option (buf.validate.message).cel = {
+    id: "interface.ip_assignment"
+    message: "ipAddresses is required for STATIC assignment and not allowed otherwise"
+    expression: "this.ip_assignment == 2 ? this.ip_addresses.size() > 0 : this.ip_addresses.size() == 0"
+  };
+  option (buf.validate.message).cel = {
+    id: "interface.one_address_per_ip_version"
+    message: "at most one address per IP version"
+    expression: "this.ip_addresses.size() < 2 || this.ip_addresses[0].isIp(4) != this.ip_addresses[1].isIp(4)"
+  };
+}
+
+// How a network interface gets its addresses.
+enum IpAssignment {
+  IP_ASSIGNMENT_UNSPECIFIED = 0;
+  // The VIM allocates one address from each subnet of the network; the default.
+  IP_ASSIGNMENT_AUTOMATIC = 1;
+  // The addresses in ip_addresses are used; subnets of the network with no address given are allocated automatically.
+  IP_ASSIGNMENT_STATIC = 2;
+  // No addresses: a layer 2 interface, or the guest configures its own. Not available on Kube-OVN networks yet.
+  IP_ASSIGNMENT_NONE = 3;
+}
+
+// User data passed to the compute resource at boot time.
+message UserData {
+  option (kubenfv.kubevim.options.v1.ifa_message) = {ref: "IFA006 8.4.10 UserData"};
+
+  // User data, e.g. a cloud-init document; transparent to the VIM.
+  string content = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.field_behavior) = INPUT_ONLY,
+    (buf.validate.field).string.min_len = 1,
+    (kubenfv.kubevim.options.v1.ifa_field) = {ref: "IFA006 8.4.10 UserData.content"}
+  ];
+  // How the content reaches the guest; NoCloud when unset.
+  UserDataTransportationMethod method = 2 [
+    (google.api.field_behavior) = OPTIONAL,
+    (buf.validate.field).enum.defined_only = true,
+    (kubenfv.kubevim.options.v1.ifa_field) = {ref: "IFA006 8.4.10 UserData.method"}
+  ];
+}
+
+// How user data reaches the guest.
+// Values may be added as KubeVirt support grows; clients should accept unknown values.
+enum UserDataTransportationMethod {
+  USER_DATA_TRANSPORTATION_METHOD_UNSPECIFIED = 0;
+  // Config drive with plain-text cloud-init content.
+  USER_DATA_TRANSPORTATION_METHOD_CONFIG_DRIVE = 1;
+  // Config drive with MIME multipart content.
+  USER_DATA_TRANSPORTATION_METHOD_CONFIG_DRIVE_MIME_MULTIPART = 2;
+  // Local disk in cloud-init NoCloud format.
+  USER_DATA_TRANSPORTATION_METHOD_NO_CLOUD = 3;
+}
+
+message CreateComputeRequest {
+  // Compute resource to create: name, flavour, image, placement groups and metadata.
+  Compute compute = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).required = true
+  ];
+  // Network interfaces in addition to the management interface.
+  repeated NetworkInterfaceData network_interfaces = 3 [
+    (google.api.field_behavior) = OPTIONAL,
+    (buf.validate.field).cel = {
+      id: "compute.unique_interface_names"
+      message: "interface names must be unique"
+      expression: "this.filter(i, i.name != '').map(i, i.name).unique()"
+    },
+    (kubenfv.kubevim.options.v1.ifa_field) = {
+      ref: "IFA006 7.3.1.2.2 AllocateComputeRequest.interfaceData"
+      departure: {
+        kind: KIND_DEVIATION
+        translates: true
+        rationale: "Plural name for a list; carries the flavour-level interface attributes too."
+      }
+    }
+  ];
+  // User data passed at boot time.
+  UserData user_data = 4 [
+    (google.api.field_behavior) = OPTIONAL,
+    (kubenfv.kubevim.options.v1.ifa_field) = {ref: "IFA006 7.3.1.2.2 AllocateComputeRequest.userData"}
+  ];
+  // Start the compute resource once created; unset means true.
+  optional bool start = 5 [
+    (google.api.field_behavior) = OPTIONAL,
+    (kubenfv.kubevim.options.v1.ifa_field) = {
+      departure: {
+        kind: KIND_EXTENSION
+        translates: true
+        rationale: "Creates a compute resource without starting it, e.g. to attach volumes first."
+      }
+    }
+  ];
+}
+
+message GetComputeRequest {
+  // Identifier of the compute resource.
+  string compute_id = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).string.uuid = true
+  ];
+}
+
+message ListComputesRequest {
+  // Attribute-based filter expression (SOL 013 5.2).
+  string filter = 1 [
+    (google.api.field_behavior) = OPTIONAL,
+    (kubenfv.kubevim.options.v1.ifa_field) = {ref: "IFA006 7.3.1.3.2 QueryComputeRequest.queryComputeFilter"}
+  ];
+  // Marker of the page to return, from a previous response (SOL 013 5.4).
+  string nextpage_opaque_marker = 2 [
+    json_name = "nextpage_opaque_marker",
+    (google.api.field_behavior) = OPTIONAL
+  ];
+}
+
+message ListComputesResponse {
+  // Compute resources matching the filter.
+  repeated Compute computes = 1 [(kubenfv.kubevim.options.v1.ifa_field) = {ref: "IFA006 7.3.1.3.3 QueryComputeResponse.queryResult"}];
+  // Marker of the next page; empty on the last page (SOL 013 5.4).
+  string nextpage_opaque_marker = 2 [json_name = "nextpage_opaque_marker"];
+}
+
+message UpdateComputeRequest {
+  // Identifier of the compute resource.
+  string compute_id = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).string.uuid = true
+  ];
+  // Changes to apply; fields left unset keep their value.
+  ComputeUpdate update = 2 [
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).required = true
+  ];
+}
+
+// Changes to a compute resource: a patch. The name is replaced when set, metadata entries are
+// merged, and interfaces are added (hotplug) or removed by name.
+message ComputeUpdate {
+  option (kubenfv.kubevim.options.v1.ifa_message) = {
+    ref: "IFA006 7.3.1.4.2 UpdateComputeRequest"
+    departure: {
+      kind: KIND_DEVIATION
+      translates: true
+      rationale: "Interfaces to add and to remove by name; IFA's in-place interface updates and power state are left out."
+    }
+  };
+
+  optional string compute_name = 1 [
+    (google.api.field_behavior) = OPTIONAL,
+    (buf.validate.field).string.min_len = 1
+  ];
+  // Metadata entries to add, or to overwrite when the key exists; keys not given are kept, and none is removed.
+  map<string, string> metadata = 2 [
+    (google.api.field_behavior) = OPTIONAL,
+    (buf.validate.field).map.(kubenfv.kubevim.common.v1.metadata) = true,
+    (kubenfv.kubevim.options.v1.ifa_field) = {ref: "IFA006 7.3.1.4.2 UpdateComputeRequest.metaData"}
+  ];
+  // Network interfaces to add.
+  repeated NetworkInterfaceData network_interfaces_to_add = 3 [
+    (google.api.field_behavior) = OPTIONAL,
+    (buf.validate.field).cel = {
+      id: "compute.unique_interface_names"
+      message: "interface names must be unique"
+      expression: "this.filter(i, i.name != '').map(i, i.name).unique()"
+    },
+    (kubenfv.kubevim.options.v1.ifa_field) = {ref: "IFA006 7.3.1.4.2 UpdateComputeRequest.networkInterfaceNew"}
+  ];
+  // Names of network interfaces to remove.
+  repeated string network_interface_names_to_remove = 4 [
+    (google.api.field_behavior) = OPTIONAL,
+    (buf.validate.field).repeated.items.string.min_len = 1,
+    (kubenfv.kubevim.options.v1.ifa_field) = {
+      departure: {
+        kind: KIND_EXTENSION
+        translates: true
+        rationale: "Removes interfaces; IFA only updates them in place."
+      }
+    }
+  ];
+}
+
+message DeleteComputeRequest {
+  // Identifier of the compute resource.
+  string compute_id = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).string.uuid = true,
+    (kubenfv.kubevim.options.v1.ifa_field) = {ref: "IFA006 7.3.1.5.2 TerminateComputeRequest.computeId"}
+  ];
+  // Also delete the attached volumes created with the storage API; they are detached and kept when unset.
+  bool delete_volumes = 2 [
+    (google.api.field_behavior) = OPTIONAL,
+    (kubenfv.kubevim.options.v1.ifa_field) = {
+      departure: {
+        kind: KIND_EXTENSION
+        translates: true
+        rationale: "Lets a consumer tear down a compute resource with its volumes in one call; IFA terminates only the compute resource."
+      }
+    }
+  ];
+}
+
+message OperateComputeRequest {
+  // Identifier of the compute resource.
+  string compute_id = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).string.uuid = true,
+    (kubenfv.kubevim.options.v1.ifa_field) = {ref: "IFA006 7.3.1.6.2 OperateComputeRequest.computeId"}
+  ];
+  // Operation to run.
+  ComputeOperation compute_operation = 2 [
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).enum = {
+      defined_only: true
+      not_in: [0]
+    },
+    (kubenfv.kubevim.options.v1.ifa_field) = {
+      ref: "IFA006 7.3.1.6.2 OperateComputeRequest.computeOperation"
+      departure: {
+        kind: KIND_DEVIATION
+        translates: true
+        rationale: "A closed enumeration of the running-state operations, plus RESUME; snapshot operations are the snapshot methods."
+      }
+    }
+  ];
+}
+
+// Operation on the running state of a compute resource (IFA006 7.3.1.6).
+// Values may be added as KubeVirt support grows; clients should accept unknown values.
+enum ComputeOperation {
+  COMPUTE_OPERATION_UNSPECIFIED = 0;
+  COMPUTE_OPERATION_START = 1;
+  COMPUTE_OPERATION_STOP = 2;
+  // Pause, keeping memory.
+  COMPUTE_OPERATION_PAUSE = 3;
+  // Resume after PAUSE; Kube-VIM extension, IFA has no inverse.
+  COMPUTE_OPERATION_RESUME = 4;
+  COMPUTE_OPERATION_REBOOT = 5;
+  // Freeze guest file systems (needs the guest agent).
+  COMPUTE_OPERATION_QUIESCE = 6;
+  // Thaw guest file systems.
+  COMPUTE_OPERATION_UNQUIESCE = 7;
+}
+
+message ScaleComputeRequest {
+  // Identifier of the compute resource.
+  string compute_id = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).string.uuid = true,
+    (kubenfv.kubevim.options.v1.ifa_field) = {ref: "IFA006 7.3.1.7.2 ScaleComputeRequest.computeId"}
+  ];
+  // Flavour to resize to.
+  string flavour_id = 2 [
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).string.uuid = true,
+    (kubenfv.kubevim.options.v1.ifa_field) = {
+      ref: "IFA006 7.3.1.7.2 ScaleComputeRequest.computeFlavourId"
+      departure: {
+        kind: KIND_DEVIATION
+        translates: true
+        rationale: "Renamed to the referenced resource's identifier."
+      }
+    }
+  ];
+}
+
+message MigrateComputeRequest {
+  // Identifier of the compute resource.
+  string compute_id = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).string.uuid = true,
+    (kubenfv.kubevim.options.v1.ifa_field) = {ref: "IFA006 7.3.1.8.2 MigrateComputeRequest.computeId"}
+  ];
+}
+
+message AttachVolumeRequest {
+  // Identifier of the compute resource.
+  string compute_id = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).string.uuid = true,
+    (kubenfv.kubevim.options.v1.ifa_field) = {ref: "IFA006 7.3.1.10.2 AttachVirtualisedStorageResourceRequest.computeId"}
+  ];
+  // Identifier of the volume to attach.
+  string volume_id = 2 [
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).string.uuid = true,
+    (kubenfv.kubevim.options.v1.ifa_field) = {
+      ref: "IFA006 7.3.1.10.2 AttachVirtualisedStorageResourceRequest.storageId"
+      departure: {
+        kind: KIND_DEVIATION
+        translates: true
+        rationale: "Renamed to the referenced resource's identifier."
+      }
+    }
+  ];
+}
+
+message DetachVolumeRequest {
+  // Identifier of the compute resource.
+  string compute_id = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).string.uuid = true,
+    (kubenfv.kubevim.options.v1.ifa_field) = {ref: "IFA006 7.3.1.11.2 DetachVirtualisedStorageResourceRequest.computeId"}
+  ];
+  // Identifier of the volume to detach.
+  string volume_id = 2 [
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).string.uuid = true,
+    (kubenfv.kubevim.options.v1.ifa_field) = {
+      ref: "IFA006 7.3.1.11.2 DetachVirtualisedStorageResourceRequest.storageId"
+      departure: {
+        kind: KIND_DEVIATION
+        translates: true
+        rationale: "Renamed to the referenced resource's identifier."
+      }
+    }
+  ];
+}
+
+// A snapshot of a compute resource (KubeVirt VirtualMachineSnapshot).
+message ComputeSnapshot {
+  option (kubenfv.kubevim.options.v1.ifa_message) = {
+    departure: {
+      kind: KIND_DEVIATION
+      translates: true
+      rationale: "IFA handles snapshots through Operate with a snapshotId in the data maps."
+    }
+  };
+
+  // Identifier of the snapshot: a UUID assigned by the VIM.
+  string snapshot_id = 1 [(google.api.field_behavior) = OUTPUT_ONLY];
+  // Name of the snapshot, given by the consumer; not unique.
+  string snapshot_name = 2 [(google.api.field_behavior) = OPTIONAL];
+  // Compute resource the snapshot was taken of. The snapshot is kept when the compute resource is
+  // deleted; the VIM then sets the metadata key "kubevim.kubenfv.io/source-deleted" to "true".
+  string compute_id = 3 [(google.api.field_behavior) = OUTPUT_ONLY];
+  // Time the snapshot was taken.
+  google.protobuf.Timestamp created_at = 4 [(google.api.field_behavior) = OUTPUT_ONLY];
+  // Status of the snapshot.
+  kubenfv.kubevim.common.v1.SnapshotStatus status = 5 [(google.api.field_behavior) = OUTPUT_ONLY];
+  // Metadata set by the consumer and by the VIM; for keys under "kubevim.kubenfv.io/" that the VIM maintains, its value wins.
+  map<string, string> metadata = 6 [
+    (google.api.field_behavior) = OPTIONAL,
+    (buf.validate.field).map.(kubenfv.kubevim.common.v1.metadata) = true
+  ];
+}
+
+message CreateComputeSnapshotRequest {
+  // Compute resource to take the snapshot of.
+  string compute_id = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).string.uuid = true
+  ];
+  // Snapshot to create: name and metadata.
+  ComputeSnapshot snapshot = 2 [(google.api.field_behavior) = OPTIONAL];
+}
+
+message GetComputeSnapshotRequest {
+  // Compute resource the snapshot belongs to.
+  string compute_id = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).string.uuid = true
+  ];
+  // Identifier of the snapshot.
+  string snapshot_id = 2 [
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).string.uuid = true
+  ];
+}
+
+message ListComputeSnapshotsRequest {
+  // Compute resource the snapshots belong to, or "-" for all compute resources (AIP-159).
+  string compute_id = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).cel = {
+      id: "compute_id.uuid_or_wildcard"
+      message: "must be a UUID or \"-\""
+      expression: "this == '-' || this.matches('^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$')"
+    }
+  ];
+  // Attribute-based filter expression (SOL 013 5.2).
+  string filter = 2 [(google.api.field_behavior) = OPTIONAL];
+  // Marker of the page to return, from a previous response (SOL 013 5.4).
+  string nextpage_opaque_marker = 3 [
+    json_name = "nextpage_opaque_marker",
+    (google.api.field_behavior) = OPTIONAL
+  ];
+}
+
+message ListComputeSnapshotsResponse {
+  // Snapshots matching the filter.
+  repeated ComputeSnapshot snapshots = 1;
+  // Marker of the next page; empty on the last page (SOL 013 5.4).
+  string nextpage_opaque_marker = 2 [json_name = "nextpage_opaque_marker"];
+}
+
+message DeleteComputeSnapshotRequest {
+  // Compute resource the snapshot belongs to.
+  string compute_id = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).string.uuid = true
+  ];
+  // Identifier of the snapshot.
+  string snapshot_id = 2 [
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).string.uuid = true
+  ];
+}
+
+message RevertComputeSnapshotRequest {
+  // Compute resource to revert; it must be stopped.
+  string compute_id = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).string.uuid = true
+  ];
+  // Identifier of the snapshot to revert to.
+  string snapshot_id = 2 [
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).string.uuid = true
+  ];
+}
+
+// A group of compute resources placed together or apart.
+message PlacementGroup {
+  option (kubenfv.kubevim.options.v1.ifa_message) = {
+    ref: "IFA006 7.3.1.9 Create Compute Resource Affinity Or AntiAffinity Constraints Group"
+    departure: {
+      kind: KIND_DEVIATION
+      translates: true
+      rationale: "A resource with a placement policy and members; IFA groups have only a type and scope, and cannot be read or deleted."
+    }
+  };
+
+  // Identifier of the group: a UUID assigned by the VIM.
+  string placement_group_id = 1 [
+    (google.api.field_behavior) = OUTPUT_ONLY,
+    (kubenfv.kubevim.options.v1.ifa_field) = {
+      ref: "IFA006 7.3.1.9.3 groupId"
+      departure: {
+        kind: KIND_DEVIATION
+        translates: true
+        rationale: "Renamed to the resource name; identifiers are <resource>_id."
+      }
+    }
+  ];
+  // Name of the group, given by the consumer; not unique.
+  string placement_group_name = 2 [
+    (google.api.field_behavior) = OPTIONAL,
+    (kubenfv.kubevim.options.v1.ifa_field) = {
+      ref: "IFA006 7.3.1.9.2 groupName"
+      departure: {
+        kind: KIND_DEVIATION
+        translates: true
+        rationale: "Renamed to the resource name; names are <resource>_name."
+      }
+    }
+  ];
+  // Whether members are placed together or apart.
+  PlacementType type = 3 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.field_behavior) = IMMUTABLE,
+    (buf.validate.field).enum = {
+      defined_only: true
+      not_in: [0]
+    },
+    (kubenfv.kubevim.options.v1.ifa_field) = {ref: "IFA006 7.3.1.9.2 type"}
+  ];
+  // Topology domain the policy applies to; PLACEMENT_SCOPE_NODE when unset.
+  PlacementScope scope = 4 [
+    (google.api.field_behavior) = OPTIONAL,
+    (google.api.field_behavior) = IMMUTABLE,
+    (buf.validate.field).enum.defined_only = true,
+    (kubenfv.kubevim.options.v1.ifa_field) = {
+      ref: "IFA006 7.3.1.9.2 scope"
+      departure: {
+        kind: KIND_DEVIATION
+        translates: true
+        rationale: "Node and zone; IFA's NFVI-PoP is the whole VIM, and the port and network scopes have no Kubernetes meaning."
+      }
+    }
+  ];
+  // Whether the policy must hold or is applied when possible; PLACEMENT_ENFORCEMENT_REQUIRED when unset.
+  PlacementEnforcement enforcement = 5 [
+    (google.api.field_behavior) = OPTIONAL,
+    (google.api.field_behavior) = IMMUTABLE,
+    (buf.validate.field).enum.defined_only = true,
+    (kubenfv.kubevim.options.v1.ifa_field) = {
+      departure: {
+        kind: KIND_EXTENSION
+        translates: true
+        rationale: "Soft rules spread VNF components where possible; IFA constraints are hard only."
+      }
+    }
+  ];
+  // Compute resources in the group.
+  repeated string compute_ids = 6 [(google.api.field_behavior) = OUTPUT_ONLY];
+  // Metadata set by the consumer and by the VIM; for keys under "kubevim.kubenfv.io/" that the VIM maintains, its value wins.
+  map<string, string> metadata = 7 [
+    (google.api.field_behavior) = OPTIONAL,
+    (buf.validate.field).map.(kubenfv.kubevim.common.v1.metadata) = true
+  ];
+}
+
+// Whether members of a placement group are placed together or apart.
+enum PlacementType {
+  PLACEMENT_TYPE_UNSPECIFIED = 0;
+  // In the same topology domain.
+  PLACEMENT_TYPE_AFFINITY = 1;
+  // In different topology domains.
+  PLACEMENT_TYPE_ANTI_AFFINITY = 2;
+}
+
+// Topology domain a placement policy applies to.
+// Values may be added; clients should accept unknown values.
+enum PlacementScope {
+  PLACEMENT_SCOPE_UNSPECIFIED = 0;
+  // A Kubernetes node.
+  PLACEMENT_SCOPE_NODE = 1;
+  // A Kubernetes zone (topology.kubernetes.io/zone).
+  PLACEMENT_SCOPE_ZONE = 2;
+}
+
+// Whether a placement policy must hold.
+enum PlacementEnforcement {
+  PLACEMENT_ENFORCEMENT_UNSPECIFIED = 0;
+  // A compute resource that cannot meet the policy is not scheduled.
+  PLACEMENT_ENFORCEMENT_REQUIRED = 1;
+  // The policy is met when possible.
+  PLACEMENT_ENFORCEMENT_PREFERRED = 2;
+}
+
+message CreatePlacementGroupRequest {
+  // Group to create.
+  PlacementGroup placement_group = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).required = true
+  ];
+}
+
+message GetPlacementGroupRequest {
+  // Identifier of the group.
+  string placement_group_id = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).string.uuid = true
+  ];
+}
+
+message ListPlacementGroupsRequest {
+  // Attribute-based filter expression (SOL 013 5.2).
+  string filter = 1 [(google.api.field_behavior) = OPTIONAL];
+  // Marker of the page to return, from a previous response (SOL 013 5.4).
+  string nextpage_opaque_marker = 2 [
+    json_name = "nextpage_opaque_marker",
+    (google.api.field_behavior) = OPTIONAL
+  ];
+}
+
+message ListPlacementGroupsResponse {
+  // Groups matching the filter.
+  repeated PlacementGroup placement_groups = 1;
+  // Marker of the next page; empty on the last page (SOL 013 5.4).
+  string nextpage_opaque_marker = 2 [json_name = "nextpage_opaque_marker"];
+}
+
+message DeletePlacementGroupRequest {
+  // Identifier of the group.
+  string placement_group_id = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).string.uuid = true
+  ];
+}

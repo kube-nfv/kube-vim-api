@@ -1,0 +1,968 @@
+{
+  "components": {
+    "schemas": {
+      "ProblemDetails": {
+        "description": "Error details (SOL 013 6.3, RFC 9457).",
+        "properties": {
+          "detail": {
+            "type": "string"
+          },
+          "instance": {
+            "format": "uri",
+            "type": "string"
+          },
+          "status": {
+            "type": "integer"
+          },
+          "title": {
+            "type": "string"
+          },
+          "type": {
+            "description": "https://kubevim.kubenfv.io/problems/<reason>, the error reason (ErrorReason in the protos) in kebab case, e.g. .../problems/resource-in-use; about:blank for authentication and authorisation errors. Clients should accept unknown types.",
+            "format": "uri",
+            "type": "string"
+          }
+        },
+        "required": [
+          "status",
+          "detail"
+        ],
+        "type": "object"
+      },
+      "kubenfv.kubevim.common.v1.OperationalState": {
+        "description": "Operational state of a virtualised resource (IFA006).",
+        "enum": [
+          "OPERATIONAL_STATE_UNSPECIFIED",
+          "OPERATIONAL_STATE_ENABLED",
+          "OPERATIONAL_STATE_DISABLED"
+        ],
+        "type": "string"
+      },
+      "kubenfv.kubevim.common.v1.SnapshotStatus": {
+        "description": "Status of a snapshot.\nValues may be added as snapshot support grows; clients should accept unknown values.",
+        "enum": [
+          "SNAPSHOT_STATUS_UNSPECIFIED",
+          "SNAPSHOT_STATUS_CREATING",
+          "SNAPSHOT_STATUS_READY",
+          "SNAPSHOT_STATUS_FAILED"
+        ],
+        "type": "string"
+      },
+      "kubenfv.kubevim.common.v1.TypeOfStorage": {
+        "description": "Type of a virtualised storage resource.\nValues may be added as Kubernetes storage support grows; clients should accept unknown values.",
+        "enum": [
+          "TYPE_OF_STORAGE_UNSPECIFIED",
+          "TYPE_OF_STORAGE_VOLUME",
+          "TYPE_OF_STORAGE_EPHEMERAL"
+        ],
+        "type": "string"
+      },
+      "kubenfv.kubevim.common.v1.VirtualStorageData": {
+        "description": "Size, type and capabilities of a virtualised storage resource.",
+        "properties": {
+          "isBoot": {
+            "description": "The software image is copied to this storage and the compute resource boots from it.",
+            "type": "boolean"
+          },
+          "sizeOfStorage": {
+            "description": "Size of the storage resource, in Kubernetes quantity format (e.g. \"20Gi\").",
+            "type": "string"
+          },
+          "storageClass": {
+            "description": "Kubernetes storage class of the storage, one labelled kubevim.kubenfv.io/storage=true; the VIM default when unset.",
+            "type": "string"
+          },
+          "typeOfStorage": {
+            "$ref": "#/components/schemas/kubenfv.kubevim.common.v1.TypeOfStorage",
+            "description": "Type of the storage resource."
+          }
+        },
+        "required": [
+          "typeOfStorage",
+          "sizeOfStorage"
+        ],
+        "type": "object"
+      },
+      "kubenfv.kubevim.common.v1.Volume": {
+        "description": "A virtualised storage resource, e.g. a disk of a compute resource.",
+        "properties": {
+          "computeId": {
+            "description": "Compute resource that uses the volume; empty when not attached.",
+            "readOnly": true,
+            "type": "string"
+          },
+          "hostId": {
+            "description": "Host of the volume; empty for distributed storage.",
+            "readOnly": true,
+            "type": "string"
+          },
+          "metadata": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Metadata set by the consumer and by the VIM; for keys under \"kubevim.kubenfv.io/\" that the VIM maintains, its value wins.",
+            "type": "object"
+          },
+          "operationalState": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/kubenfv.kubevim.common.v1.OperationalState"
+              }
+            ],
+            "description": "Operational state of the volume.",
+            "readOnly": true
+          },
+          "storageData": {
+            "$ref": "#/components/schemas/kubenfv.kubevim.common.v1.VirtualStorageData",
+            "description": "Size, type and capabilities of the volume."
+          },
+          "volumeId": {
+            "description": "Identifier of the volume: a UUID assigned by the VIM for volumes created with the storage API.\nThe own disks of a compute resource (its boot disk and the disks from its flavour) are not\nresources of their own and use their disk name instead.",
+            "readOnly": true,
+            "type": "string"
+          },
+          "volumeName": {
+            "description": "Name of the volume, given by the consumer; not unique.",
+            "type": "string"
+          },
+          "zoneId": {
+            "description": "Resource zone of the volume.",
+            "readOnly": true,
+            "type": "string"
+          }
+        },
+        "required": [
+          "storageData"
+        ],
+        "type": "object"
+      },
+      "kubenfv.kubevim.storage.v1.VolumeSnapshot": {
+        "description": "A snapshot of a volume (Kubernetes VolumeSnapshot).",
+        "properties": {
+          "createdAt": {
+            "description": "Time the snapshot was taken.",
+            "format": "date-time",
+            "readOnly": true,
+            "type": "string"
+          },
+          "metadata": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Metadata set by the consumer and by the VIM; for keys under \"kubevim.kubenfv.io/\" that the VIM maintains, its value wins.",
+            "type": "object"
+          },
+          "snapshotId": {
+            "description": "Identifier of the snapshot: a UUID assigned by the VIM.",
+            "readOnly": true,
+            "type": "string"
+          },
+          "snapshotName": {
+            "description": "Name of the snapshot, given by the consumer; not unique.",
+            "type": "string"
+          },
+          "status": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/kubenfv.kubevim.common.v1.SnapshotStatus"
+              }
+            ],
+            "description": "Status of the snapshot.",
+            "readOnly": true
+          },
+          "volumeId": {
+            "description": "Volume the snapshot was taken of. The snapshot is kept when the volume is deleted; the VIM\nthen sets the metadata key \"kubevim.kubenfv.io/source-deleted\" to \"true\".",
+            "readOnly": true,
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "kubenfv.kubevim.storage.v1.VolumeUpdate": {
+        "description": "Changes to a volume: a patch. The name is replaced when set; metadata entries are merged.",
+        "properties": {
+          "metadata": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Metadata entries to add, or to overwrite when the key exists; keys not given are kept, and none is removed.",
+            "type": "object"
+          },
+          "volumeName": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      }
+    },
+    "securitySchemes": {
+      "oauth2": {
+        "description": "OAuth 2.0 client credentials (SOL 013 8.3). The token URL is deployment specific.",
+        "flows": {
+          "clientCredentials": {
+            "scopes": {
+              "storage:v1:allocate": "Allocate volumes",
+              "storage:v1:migrate": "Migrate volumes",
+              "storage:v1:operate": "Snapshot volumes",
+              "storage:v1:query": "Query volumes",
+              "storage:v1:scale": "Resize volumes",
+              "storage:v1:terminate": "Terminate volumes",
+              "storage:v1:update": "Update volumes"
+            },
+            "tokenUrl": "https://idp.example.com/oauth2/token"
+          }
+        },
+        "type": "oauth2"
+      }
+    }
+  },
+  "info": {
+    "title": "Kube-VIM virtualised storage API",
+    "version": "0.0.0-dev"
+  },
+  "openapi": "3.1.0",
+  "paths": {
+    "/storage/v1/volumes": {
+      "get": {
+        "operationId": "StorageService_ListVolumes",
+        "parameters": [
+          {
+            "description": "Attribute-based filter expression (SOL 013 5.2).",
+            "in": "query",
+            "name": "filter",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Marker of the page to return, from a previous response (SOL 013 5.4).",
+            "in": "query",
+            "name": "nextpage_opaque_marker",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/kubenfv.kubevim.common.v1.Volume"
+                  },
+                  "type": "array"
+                }
+              }
+            },
+            "description": "A successful response.",
+            "headers": {
+              "Link": {
+                "description": "URI of the next page, rel=\"next\", carrying nextpage_opaque_marker; absent on the last page (SOL 013 5.4.2).",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Error (SOL 013 6)."
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "storage:v1:query"
+            ]
+          }
+        ],
+        "summary": "Returns the volumes matching a filter; the own disks of compute resources are not volumes (see Compute.disks).",
+        "tags": [
+          "StorageService"
+        ]
+      },
+      "post": {
+        "operationId": "StorageService_CreateVolume",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "volume": {
+                    "$ref": "#/components/schemas/kubenfv.kubevim.common.v1.Volume",
+                    "description": "Volume to create: name, size, type, storage class and metadata. Only TYPE_OF_STORAGE_VOLUME,\nwithout is_boot: ephemeral and boot disks belong to a compute resource."
+                  }
+                },
+                "required": [
+                  "volume"
+                ],
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/kubenfv.kubevim.common.v1.Volume"
+                }
+              }
+            },
+            "description": "A virtualised storage resource, e.g. a disk of a compute resource.",
+            "headers": {
+              "Location": {
+                "description": "URI of the created resource.",
+                "schema": {
+                  "format": "uri",
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Error (SOL 013 6)."
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "storage:v1:allocate"
+            ]
+          }
+        ],
+        "summary": "Creates a volume.",
+        "tags": [
+          "StorageService"
+        ]
+      }
+    },
+    "/storage/v1/volumes/{volume_id}": {
+      "delete": {
+        "operationId": "StorageService_DeleteVolume",
+        "parameters": [
+          {
+            "description": "Identifier of the volume.",
+            "in": "path",
+            "name": "volume_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Error (SOL 013 6)."
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "storage:v1:terminate"
+            ]
+          }
+        ],
+        "summary": "Deletes a volume; may fail with RESOURCE_IN_USE while the volume is attached. Snapshots are kept.",
+        "tags": [
+          "StorageService"
+        ]
+      },
+      "get": {
+        "operationId": "StorageService_GetVolume",
+        "parameters": [
+          {
+            "description": "Identifier of the volume.",
+            "in": "path",
+            "name": "volume_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/kubenfv.kubevim.common.v1.Volume"
+                }
+              }
+            },
+            "description": "A virtualised storage resource, e.g. a disk of a compute resource."
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Error (SOL 013 6)."
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "storage:v1:query"
+            ]
+          }
+        ],
+        "summary": "Returns one volume.",
+        "tags": [
+          "StorageService"
+        ]
+      },
+      "patch": {
+        "operationId": "StorageService_UpdateVolume",
+        "parameters": [
+          {
+            "description": "Identifier of the volume.",
+            "in": "path",
+            "name": "volume_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/kubenfv.kubevim.storage.v1.VolumeUpdate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/kubenfv.kubevim.common.v1.Volume"
+                }
+              }
+            },
+            "description": "A virtualised storage resource, e.g. a disk of a compute resource."
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Error (SOL 013 6)."
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "storage:v1:update"
+            ]
+          }
+        ],
+        "summary": "Updates the name and metadata of a volume.",
+        "tags": [
+          "StorageService"
+        ]
+      }
+    },
+    "/storage/v1/volumes/{volume_id}/migrate": {
+      "post": {
+        "operationId": "StorageService_MigrateVolume",
+        "parameters": [
+          {
+            "description": "Identifier of the volume.",
+            "in": "path",
+            "name": "volume_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "storageClass": {
+                    "description": "Storage class to move the volume to, one labelled kubevim.kubenfv.io/storage=true.",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "storageClass"
+                ],
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/kubenfv.kubevim.common.v1.Volume"
+                }
+              }
+            },
+            "description": "A virtualised storage resource, e.g. a disk of a compute resource."
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Error (SOL 013 6)."
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "storage:v1:migrate"
+            ]
+          }
+        ],
+        "summary": "Moves a volume to another storage class.",
+        "tags": [
+          "StorageService"
+        ]
+      }
+    },
+    "/storage/v1/volumes/{volume_id}/scale": {
+      "post": {
+        "operationId": "StorageService_ScaleVolume",
+        "parameters": [
+          {
+            "description": "Identifier of the volume.",
+            "in": "path",
+            "name": "volume_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "newSize": {
+                    "description": "New size in Kubernetes quantity format; volumes can only grow (persistent volume claim expansion).",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "newSize"
+                ],
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/kubenfv.kubevim.common.v1.Volume"
+                }
+              }
+            },
+            "description": "A virtualised storage resource, e.g. a disk of a compute resource."
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Error (SOL 013 6)."
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "storage:v1:scale"
+            ]
+          }
+        ],
+        "summary": "Grows a volume.",
+        "tags": [
+          "StorageService"
+        ]
+      }
+    },
+    "/storage/v1/volumes/{volume_id}/snapshots": {
+      "get": {
+        "operationId": "StorageService_ListVolumeSnapshots",
+        "parameters": [
+          {
+            "description": "Volume the snapshots belong to, or \"-\" for all volumes (AIP-159).",
+            "in": "path",
+            "name": "volume_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Attribute-based filter expression (SOL 013 5.2).",
+            "in": "query",
+            "name": "filter",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Marker of the page to return, from a previous response (SOL 013 5.4).",
+            "in": "query",
+            "name": "nextpage_opaque_marker",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/kubenfv.kubevim.storage.v1.VolumeSnapshot"
+                  },
+                  "type": "array"
+                }
+              }
+            },
+            "description": "A successful response.",
+            "headers": {
+              "Link": {
+                "description": "URI of the next page, rel=\"next\", carrying nextpage_opaque_marker; absent on the last page (SOL 013 5.4.2).",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Error (SOL 013 6)."
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "storage:v1:query"
+            ]
+          }
+        ],
+        "summary": "Returns the snapshots of a volume, or of all volumes with volume_id \"-\".",
+        "tags": [
+          "StorageService"
+        ]
+      },
+      "post": {
+        "operationId": "StorageService_CreateVolumeSnapshot",
+        "parameters": [
+          {
+            "description": "Volume to take the snapshot of.",
+            "in": "path",
+            "name": "volume_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "snapshot": {
+                    "$ref": "#/components/schemas/kubenfv.kubevim.storage.v1.VolumeSnapshot",
+                    "description": "Snapshot to create: name and metadata."
+                  }
+                },
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/kubenfv.kubevim.storage.v1.VolumeSnapshot"
+                }
+              }
+            },
+            "description": "A snapshot of a volume (Kubernetes VolumeSnapshot).",
+            "headers": {
+              "Location": {
+                "description": "URI of the created resource.",
+                "schema": {
+                  "format": "uri",
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Error (SOL 013 6)."
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "storage:v1:operate"
+            ]
+          }
+        ],
+        "summary": "Creates a snapshot of a volume.",
+        "tags": [
+          "StorageService"
+        ]
+      }
+    },
+    "/storage/v1/volumes/{volume_id}/snapshots/{snapshot_id}": {
+      "delete": {
+        "operationId": "StorageService_DeleteVolumeSnapshot",
+        "parameters": [
+          {
+            "description": "Volume the snapshot belongs to.",
+            "in": "path",
+            "name": "volume_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Identifier of the snapshot.",
+            "in": "path",
+            "name": "snapshot_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Error (SOL 013 6)."
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "storage:v1:operate"
+            ]
+          }
+        ],
+        "summary": "Deletes a snapshot of a volume.",
+        "tags": [
+          "StorageService"
+        ]
+      },
+      "get": {
+        "operationId": "StorageService_GetVolumeSnapshot",
+        "parameters": [
+          {
+            "description": "Volume the snapshot belongs to.",
+            "in": "path",
+            "name": "volume_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Identifier of the snapshot.",
+            "in": "path",
+            "name": "snapshot_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/kubenfv.kubevim.storage.v1.VolumeSnapshot"
+                }
+              }
+            },
+            "description": "A snapshot of a volume (Kubernetes VolumeSnapshot)."
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Error (SOL 013 6)."
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "storage:v1:query"
+            ]
+          }
+        ],
+        "summary": "Returns one snapshot of a volume, also after the volume is deleted.",
+        "tags": [
+          "StorageService"
+        ]
+      }
+    },
+    "/storage/v1/volumes/{volume_id}/snapshots/{snapshot_id}/revert": {
+      "post": {
+        "operationId": "StorageService_RevertVolumeSnapshot",
+        "parameters": [
+          {
+            "description": "Volume to revert; no running compute resource may use it.",
+            "in": "path",
+            "name": "volume_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Identifier of the snapshot to revert to.",
+            "in": "path",
+            "name": "snapshot_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/kubenfv.kubevim.common.v1.Volume"
+                }
+              }
+            },
+            "description": "A virtualised storage resource, e.g. a disk of a compute resource."
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Error (SOL 013 6)."
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "storage:v1:operate"
+            ]
+          }
+        ],
+        "summary": "Reverts a volume that no running compute resource uses to a snapshot; not possible once the volume is deleted.",
+        "tags": [
+          "StorageService"
+        ]
+      }
+    }
+  },
+  "tags": [
+    {
+      "description": "Virtualised storage resources management: volumes.",
+      "name": "StorageService"
+    }
+  ]
+}

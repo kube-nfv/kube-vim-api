@@ -1,0 +1,709 @@
+syntax = "proto3";
+
+package kubenfv.kubevim.image.v1;
+
+import "buf/validate/validate.proto";
+import "google/api/annotations.proto";
+import "google/api/field_behavior.proto";
+import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
+import "kubenfv/kubevim/common/v1/rules.proto";
+import "kubenfv/kubevim/options/v1/options.proto";
+import "protoc-gen-openapiv3/options/annotations.proto";
+
+option (grpc.gateway.protoc_gen_openapiv3.options.openapiv3_document) = {
+  info: {title: "Kube-VIM software image API"}
+  components: {
+    security_schemes: {
+      key: "oauth2"
+      value: {
+        type: TYPE_OAUTH2
+        description: "OAuth 2.0 client credentials (SOL 013 8.3). The token URL is deployment specific."
+        flows: {
+          client_credentials: {
+            token_url: "https://idp.example.com/oauth2/token"
+            scopes: {
+              key: "image:v1:add"
+              value: "Add software images"
+            }
+            scopes: {
+              key: "image:v1:query"
+              value: "Query software images"
+            }
+            scopes: {
+              key: "image:v1:update"
+              value: "Update software images"
+            }
+            scopes: {
+              key: "image:v1:delete"
+              value: "Delete software images"
+            }
+          }
+        }
+      }
+    }
+  }
+};
+option (kubenfv.kubevim.options.v1.api) = {name: "image"};
+
+// Software image management.
+service ImageService {
+  option (kubenfv.kubevim.options.v1.ifa_service) = {ref: "IFA005 7.2 Software Image Management interface"};
+
+  // Adds a software image to the image repository managed by the VIM.
+  rpc CreateImage(CreateImageRequest) returns (Image) {
+    option (google.api.http) = {
+      post: "/image/v1/images"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv3.options.openapiv3_operation) = {
+      security: {
+        schemes: {
+          key: "oauth2"
+          value: {scopes: "image:v1:add"}
+        }
+      }
+    };
+    option (kubenfv.kubevim.options.v1.ifa_method) = {ref: "IFA005 7.2.2 Add Image"};
+  }
+
+  // Returns one software image.
+  rpc GetImage(GetImageRequest) returns (Image) {
+    option (google.api.http) = {get: "/image/v1/images/{image_id}"};
+    option (grpc.gateway.protoc_gen_openapiv3.options.openapiv3_operation) = {
+      security: {
+        schemes: {
+          key: "oauth2"
+          value: {scopes: "image:v1:query"}
+        }
+      }
+    };
+    option (kubenfv.kubevim.options.v1.ifa_method) = {ref: "IFA005 7.2.4 Query Image"};
+  }
+
+  // Returns the software images matching a filter, including images of catalog backends.
+  rpc ListImages(ListImagesRequest) returns (ListImagesResponse) {
+    option (google.api.http) = {
+      get: "/image/v1/images"
+      response_body: "images"
+    };
+    option (grpc.gateway.protoc_gen_openapiv3.options.openapiv3_operation) = {
+      security: {
+        schemes: {
+          key: "oauth2"
+          value: {scopes: "image:v1:query"}
+        }
+      }
+    };
+    option (kubenfv.kubevim.options.v1.ifa_method) = {ref: "IFA005 7.2.3 Query Images"};
+  }
+
+  // Updates the name and metadata of a software image.
+  rpc UpdateImage(UpdateImageRequest) returns (Image) {
+    option (google.api.http) = {
+      patch: "/image/v1/images/{image_id}"
+      body: "update"
+    };
+    option (grpc.gateway.protoc_gen_openapiv3.options.openapiv3_operation) = {
+      security: {
+        schemes: {
+          key: "oauth2"
+          value: {scopes: "image:v1:update"}
+        }
+      }
+    };
+    option (kubenfv.kubevim.options.v1.ifa_method) = {
+      ref: "IFA005 7.2.5 Update Image"
+      departure: {
+        kind: KIND_DEVIATION
+        translates: true
+        rationale: "Changes the name and metadata only, and only what is set, instead of sending the full userMetadata and softwareImageMetadata."
+      }
+    };
+  }
+
+  // Deletes a software image and its imported copies; compute resources created from it keep their disks.
+  rpc DeleteImage(DeleteImageRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {delete: "/image/v1/images/{image_id}"};
+    option (grpc.gateway.protoc_gen_openapiv3.options.openapiv3_operation) = {
+      security: {
+        schemes: {
+          key: "oauth2"
+          value: {scopes: "image:v1:delete"}
+        }
+      }
+    };
+    option (kubenfv.kubevim.options.v1.ifa_method) = {
+      ref: "IFA005 7.2.6 Delete Image"
+      departure: {
+        kind: KIND_DEVIATION
+        translates: true
+        rationale: "Returns no body (204) instead of deletedId; the deleted identifier is the one in the request."
+      }
+    };
+  }
+
+  // Returns the image source types this VIM accepts.
+  rpc ListImageSources(ListImageSourcesRequest) returns (ListImageSourcesResponse) {
+    option (google.api.http) = {
+      get: "/image/v1/imageSources"
+      response_body: "sources"
+    };
+    option (grpc.gateway.protoc_gen_openapiv3.options.openapiv3_operation) = {
+      security: {
+        schemes: {
+          key: "oauth2"
+          value: {scopes: "image:v1:query"}
+        }
+      }
+    };
+    option (kubenfv.kubevim.options.v1.ifa_method) = {
+      departure: {
+        kind: KIND_EXTENSION
+        translates: true
+        rationale: "Image sources are separate features; clients discover which are enabled."
+      }
+    };
+  }
+}
+
+// A software image in the image repository managed by the VIM.
+message Image {
+  option (kubenfv.kubevim.options.v1.ifa_message) = {ref: "IFA005 8.2.2 SoftwareImageInformation"};
+
+  reserved 5;
+
+  // Identifier of the software image: a UUID assigned by the VIM.
+  string image_id = 1 [
+    (google.api.field_behavior) = OUTPUT_ONLY,
+    (kubenfv.kubevim.options.v1.ifa_field) = {
+      ref: "IFA005 8.2.2 SoftwareImageInformation.softwareImageId"
+      departure: {
+        kind: KIND_DEVIATION
+        translates: true
+        rationale: "Renamed to the resource name; identifiers are <resource>_id."
+      }
+    }
+  ];
+  // Name of the software image, given by the consumer; not unique.
+  string name = 2 [
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).string.min_len = 1,
+    (kubenfv.kubevim.options.v1.ifa_field) = {ref: "IFA005 8.2.2 SoftwareImageInformation.name"}
+  ];
+  // Provider of the software image.
+  string provider = 3 [
+    (google.api.field_behavior) = OPTIONAL,
+    (kubenfv.kubevim.options.v1.ifa_field) = {
+      ref: "IFA005 8.2.2 SoftwareImageInformation.provider"
+      departure: {
+        kind: KIND_DEVIATION
+        translates: true
+        rationale: "Optional, where Add Image requires it; consumers such as OSM do not have it, and catalog images may not either."
+      }
+    }
+  ];
+  // Version of the software image.
+  string version = 4 [
+    (google.api.field_behavior) = OPTIONAL,
+    (kubenfv.kubevim.options.v1.ifa_field) = {
+      ref: "IFA005 8.2.2 SoftwareImageInformation.version"
+      departure: {
+        kind: KIND_DEVIATION
+        translates: true
+        rationale: "Optional, where Add Image requires it; consumers such as OSM do not have it, and catalog images may not either."
+      }
+    }
+  ];
+  // Container format of the software image file; unspecified when the VIM cannot tell.
+  ContainerFormat container_format = 6 [
+    (google.api.field_behavior) = OUTPUT_ONLY,
+    (kubenfv.kubevim.options.v1.ifa_field) = {
+      ref: "IFA005 8.2.2 SoftwareImageInformation.containerFormat"
+      departure: {
+        kind: KIND_DEVIATION
+        translates: true
+        rationale: "IFA leaves the type unspecified; a closed enumeration."
+      }
+    }
+  ];
+  // Disk format of the software image; unspecified when the VIM cannot tell.
+  DiskFormat disk_format = 7 [
+    (google.api.field_behavior) = OUTPUT_ONLY,
+    (kubenfv.kubevim.options.v1.ifa_field) = {
+      ref: "IFA005 8.2.2 SoftwareImageInformation.diskFormat"
+      departure: {
+        kind: KIND_DEVIATION
+        translates: true
+        rationale: "IFA leaves the type unspecified; a closed enumeration."
+      }
+    }
+  ];
+  // Time the software image was created.
+  google.protobuf.Timestamp created_at = 8 [
+    (google.api.field_behavior) = OUTPUT_ONLY,
+    (kubenfv.kubevim.options.v1.ifa_field) = {ref: "IFA005 8.2.2 SoftwareImageInformation.createdAt"}
+  ];
+  // Time the software image was last updated.
+  google.protobuf.Timestamp updated_at = 9 [
+    (google.api.field_behavior) = OUTPUT_ONLY,
+    (kubenfv.kubevim.options.v1.ifa_field) = {ref: "IFA005 8.2.2 SoftwareImageInformation.updatedAt"}
+  ];
+  // Minimal disk size for the software image, in Kubernetes quantity format (e.g. "10Gi"); the VIM rejects a
+  // compute resource whose boot disk is smaller.
+  string min_disk = 10 [
+    (google.api.field_behavior) = OPTIONAL,
+    (buf.validate.field).string.(kubenfv.kubevim.common.v1.quantity) = true,
+    (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE,
+    (kubenfv.kubevim.options.v1.ifa_field) = {
+      ref: "IFA005 8.2.2 SoftwareImageInformation.minDisk"
+      departure: {
+        kind: KIND_DEVIATION
+        translates: true
+        rationale: "Kubernetes quantity string instead of a number with an implied unit."
+      }
+    }
+  ];
+  // Minimal RAM size for the software image, in Kubernetes quantity format (e.g. "2Gi"); the VIM rejects a
+  // compute resource with less memory.
+  string min_ram = 11 [
+    (google.api.field_behavior) = OPTIONAL,
+    (buf.validate.field).string.(kubenfv.kubevim.common.v1.quantity) = true,
+    (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE,
+    (kubenfv.kubevim.options.v1.ifa_field) = {
+      ref: "IFA005 8.2.2 SoftwareImageInformation.minRam"
+      departure: {
+        kind: KIND_DEVIATION
+        translates: true
+        rationale: "Kubernetes quantity string instead of a number with an implied unit."
+      }
+    }
+  ];
+  // Size of the software image, in Kubernetes quantity format; empty until imported.
+  string size = 12 [
+    (google.api.field_behavior) = OUTPUT_ONLY,
+    (kubenfv.kubevim.options.v1.ifa_field) = {
+      ref: "IFA005 8.2.2 SoftwareImageInformation.size"
+      departure: {
+        kind: KIND_DEVIATION
+        translates: true
+        rationale: "Kubernetes quantity string instead of a number with an implied unit."
+      }
+    }
+  ];
+  // Status of the software image.
+  ImageStatus status = 13 [
+    (google.api.field_behavior) = OUTPUT_ONLY,
+    (kubenfv.kubevim.options.v1.ifa_field) = {
+      ref: "IFA005 8.2.2 SoftwareImageInformation.status"
+      departure: {
+        kind: KIND_DEVIATION
+        translates: true
+        rationale: "IFA leaves the type unspecified; a closed enumeration."
+      }
+    }
+  ];
+  // Import progress in percent while the status is IMAGE_STATUS_IMPORTING.
+  int32 progress = 14 [
+    (google.api.field_behavior) = OUTPUT_ONLY,
+    (kubenfv.kubevim.options.v1.ifa_field) = {
+      departure: {
+        kind: KIND_EXTENSION
+        translates: true
+        rationale: "Imports run asynchronously; clients poll progress on the resource."
+      }
+    }
+  ];
+  // Human-readable reason when the status is IMAGE_STATUS_FAILED.
+  string status_detail = 15 [
+    (google.api.field_behavior) = OUTPUT_ONLY,
+    (kubenfv.kubevim.options.v1.ifa_field) = {
+      departure: {
+        kind: KIND_EXTENSION
+        translates: true
+        rationale: "Reports why an import failed."
+      }
+    }
+  ];
+  // Metadata set by the consumer and by the VIM; for keys under "kubevim.kubenfv.io/" that the VIM maintains, its value wins.
+  map<string, string> metadata = 16 [
+    (google.api.field_behavior) = OPTIONAL,
+    (buf.validate.field).map.(kubenfv.kubevim.common.v1.metadata) = true,
+    (kubenfv.kubevim.options.v1.ifa_field) = {
+      ref: "IFA005 8.2.2 SoftwareImageInformation.userMetadata"
+      departure: {
+        kind: KIND_DEVIATION
+        translates: true
+        rationale: "Named metadata as on every resource; string values only, where IFA KeyValuePair allows any JSON value."
+      }
+    }
+  ];
+  // Where the VIM imports the software image from; images of a catalog backend name their catalog entry.
+  ImageSource source = 17 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.field_behavior) = IMMUTABLE,
+    (buf.validate.field).required = true,
+    (kubenfv.kubevim.options.v1.ifa_field) = {
+      ref: "IFA005 7.2.2.2 AddImageRequest.softwareImage"
+      departure: {
+        kind: KIND_DEVIATION
+        translates: true
+        rationale: "A source to import from, or an upload, instead of the image binary in the request."
+      }
+    }
+  ];
+  // When the VIM imports the software image; IMPORT_POLICY_EAGER when unset on creation.
+  ImportPolicy import_policy = 18 [
+    (google.api.field_behavior) = OPTIONAL,
+    (google.api.field_behavior) = IMMUTABLE,
+    (buf.validate.field).enum.defined_only = true,
+    (kubenfv.kubevim.options.v1.ifa_field) = {
+      departure: {
+        kind: KIND_EXTENSION
+        translates: true
+        rationale: "Lets an image be imported ahead of time or when a compute resource first uses it."
+      }
+    }
+  ];
+  // Firmware the image boots with; the VIM default (EFI) when unset.
+  Firmware firmware = 19 [
+    (google.api.field_behavior) = OPTIONAL,
+    (google.api.field_behavior) = IMMUTABLE,
+    (buf.validate.field).enum.defined_only = true,
+    (kubenfv.kubevim.options.v1.ifa_field) = {
+      departure: {
+        kind: KIND_EXTENSION
+        translates: true
+        rationale: "Some VNF images boot only with BIOS or need secure boot; IFA has no firmware attribute."
+      }
+    }
+  ];
+  // Bus the boot disk is attached to; virtio when unset.
+  DiskBus disk_bus = 20 [
+    (google.api.field_behavior) = OPTIONAL,
+    (google.api.field_behavior) = IMMUTABLE,
+    (buf.validate.field).enum.defined_only = true,
+    (kubenfv.kubevim.options.v1.ifa_field) = {
+      departure: {
+        kind: KIND_EXTENSION
+        translates: true
+        rationale: "Images without virtio drivers need a SATA or SCSI boot disk; IFA has no disk bus attribute."
+      }
+    }
+  ];
+}
+
+// Container format of a software image file.
+// Values may be added as CDI support grows; clients should accept unknown values.
+enum ContainerFormat {
+  CONTAINER_FORMAT_UNSPECIFIED = 0;
+  // A plain disk image without a container.
+  CONTAINER_FORMAT_BARE = 1;
+  // A disk image inside a container image (KubeVirt containerDisk).
+  CONTAINER_FORMAT_CONTAINER_DISK = 2;
+}
+
+// Disk format of a software image.
+// Values may be added as CDI support grows; clients should accept unknown values.
+enum DiskFormat {
+  DISK_FORMAT_UNSPECIFIED = 0;
+  DISK_FORMAT_RAW = 1;
+  DISK_FORMAT_QCOW2 = 2;
+  DISK_FORMAT_ISO = 3;
+  DISK_FORMAT_VMDK = 4;
+}
+
+// Status of a software image.
+// Values may be added as CDI support grows; clients should accept unknown values.
+enum ImageStatus {
+  IMAGE_STATUS_UNSPECIFIED = 0;
+  // Accepted; the import has not started, or waits for the first compute resource (IMPORT_POLICY_ON_FIRST_USE).
+  IMAGE_STATUS_PENDING = 1;
+  // Importing from the source.
+  IMAGE_STATUS_IMPORTING = 2;
+  // Waiting for the client to upload the image.
+  IMAGE_STATUS_UPLOAD_PENDING = 3;
+  // Ready to be used by compute resources.
+  IMAGE_STATUS_AVAILABLE = 4;
+  // Import or upload failed; see status_detail.
+  IMAGE_STATUS_FAILED = 5;
+}
+
+// When the VIM imports a software image.
+enum ImportPolicy {
+  IMPORT_POLICY_UNSPECIFIED = 0;
+  // Imported when the image is created.
+  IMPORT_POLICY_EAGER = 1;
+  // Imported when the first compute resource uses the image; the default for catalog images.
+  IMPORT_POLICY_ON_FIRST_USE = 2;
+}
+
+// Firmware a software image boots with.
+// Values may be added as KubeVirt support grows; clients should accept unknown values.
+enum Firmware {
+  FIRMWARE_UNSPECIFIED = 0;
+  FIRMWARE_BIOS = 1;
+  FIRMWARE_EFI = 2;
+  // EFI with secure boot.
+  FIRMWARE_EFI_SECURE_BOOT = 3;
+}
+
+// Bus a boot disk is attached to.
+// Values may be added as KubeVirt support grows; clients should accept unknown values.
+enum DiskBus {
+  DISK_BUS_UNSPECIFIED = 0;
+  DISK_BUS_VIRTIO = 1;
+  DISK_BUS_SATA = 2;
+  DISK_BUS_SCSI = 3;
+}
+
+// Source of a software image; exactly one member is set.
+message ImageSource {
+  reserved 5;
+
+  oneof source {
+    option (buf.validate.oneof).required = true;
+
+    // Download over HTTP or HTTPS.
+    HttpSource http = 1;
+    // Download from an S3-compatible object store.
+    S3Source s3 = 2;
+    // Pull from a container registry.
+    RegistrySource registry = 3;
+    // Upload by the client after creation.
+    UploadSource upload = 4;
+    // Import an image of the Glance catalog configured in the VIM.
+    GlanceSource glance = 6;
+    // Import an image file of the local catalog configured in the VIM.
+    LocalSource local = 7;
+  }
+}
+
+// Username and password for a source that needs them.
+message BasicAuth {
+  string username = 1 [(google.api.field_behavior) = REQUIRED];
+  string password = 2 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.field_behavior) = INPUT_ONLY
+  ];
+}
+
+// HTTP or HTTPS download.
+message HttpSource {
+  // URL of the image file.
+  string url = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).string.uri = true
+  ];
+  // Credentials for the server, inline or by reference; at most one.
+  oneof credentials {
+    // Inline username and password; never returned.
+    BasicAuth basic_auth = 2 [(google.api.field_behavior) = INPUT_ONLY];
+    // Name of a credential set the VIM loads from its own environment or files; the request carries no secret.
+    string credentials_ref = 3 [(buf.validate.field).string.min_len = 1];
+  }
+  // PEM CA bundle to verify the server certificate.
+  string ca_bundle = 4 [(google.api.field_behavior) = OPTIONAL];
+  // Extra request headers, as "Name: value"; never returned, since they may carry secrets.
+  repeated string extra_headers = 5 [
+    (google.api.field_behavior) = OPTIONAL,
+    (google.api.field_behavior) = INPUT_ONLY
+  ];
+}
+
+// S3-compatible object store download.
+message S3Source {
+  // URL of the object, e.g. "https://s3.example.com/bucket/image.qcow2".
+  string url = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).string.uri = true
+  ];
+  // Credentials for the object store, inline or by reference; at most one.
+  oneof credentials {
+    // Inline access key; never returned.
+    S3AccessKey access_key = 2 [(google.api.field_behavior) = INPUT_ONLY];
+    // Name of a credential set the VIM loads from its own environment or files; the request carries no secret.
+    string credentials_ref = 3 [(buf.validate.field).string.min_len = 1];
+  }
+  // PEM CA bundle to verify the endpoint certificate.
+  string ca_bundle = 4 [(google.api.field_behavior) = OPTIONAL];
+}
+
+// Access key for an S3-compatible object store.
+message S3AccessKey {
+  string access_key_id = 1 [(google.api.field_behavior) = REQUIRED];
+  string secret_access_key = 2 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.field_behavior) = INPUT_ONLY
+  ];
+}
+
+// Container registry pull.
+message RegistrySource {
+  // How the image is pulled.
+  enum PullMethod {
+    PULL_METHOD_UNSPECIFIED = 0;
+    // An importer pod pulls the image.
+    PULL_METHOD_POD = 1;
+    // The node container runtime pulls the image and reuses its cache.
+    PULL_METHOD_NODE = 2;
+  }
+
+  // Image reference, e.g. "docker://registry.example.com/images/ubuntu:24.04".
+  string url = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).string.min_len = 1
+  ];
+  // Pull method; the VIM default when unset.
+  PullMethod pull_method = 2 [
+    (google.api.field_behavior) = OPTIONAL,
+    (buf.validate.field).enum.defined_only = true
+  ];
+  // Credentials for the registry, inline or by reference; at most one.
+  oneof credentials {
+    // Inline username and password; never returned.
+    BasicAuth basic_auth = 3 [(google.api.field_behavior) = INPUT_ONLY];
+    // Name of a credential set the VIM loads from its own environment or files; the request carries no secret.
+    string credentials_ref = 4 [(buf.validate.field).string.min_len = 1];
+  }
+  // PEM CA bundle to verify the registry certificate.
+  string ca_bundle = 5 [(google.api.field_behavior) = OPTIONAL];
+  // Platform of a multi-architecture image, e.g. "linux/arm64".
+  string platform = 6 [(google.api.field_behavior) = OPTIONAL];
+}
+
+// Upload by the client. Create the image with this source, then send the
+// image file to upload_url with upload_token before upload_expire_time.
+message UploadSource {
+  // URL to upload the image file to.
+  string upload_url = 1 [(google.api.field_behavior) = OUTPUT_ONLY];
+  // Bearer token for the upload request.
+  string upload_token = 2 [(google.api.field_behavior) = OUTPUT_ONLY];
+  // Time after which the token is no longer accepted.
+  google.protobuf.Timestamp upload_expire_time = 3 [(google.api.field_behavior) = OUTPUT_ONLY];
+}
+
+// Image in the Glance catalog configured in the VIM; the VIM holds the Glance endpoint and credentials.
+message GlanceSource {
+  // Identifier of the image in Glance.
+  string glance_image_id = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).string.uuid = true
+  ];
+}
+
+// Image file in the local catalog directory configured in the VIM.
+message LocalSource {
+  // Name of the file in the catalog directory, without a path.
+  string file_name = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).string = {
+      min_len: 1
+      max_len: 255
+      pattern: "^[^/]+$"
+      not_in: [
+        ".",
+        ".."
+      ]
+    }
+  ];
+}
+
+// Image source type, as reported by ListImageSources.
+// Values may be added as CDI support grows; clients should accept unknown values.
+enum ImageSourceType {
+  IMAGE_SOURCE_TYPE_UNSPECIFIED = 0;
+  IMAGE_SOURCE_TYPE_HTTP = 1;
+  IMAGE_SOURCE_TYPE_S3 = 2;
+  IMAGE_SOURCE_TYPE_REGISTRY = 3;
+  IMAGE_SOURCE_TYPE_UPLOAD = 4;
+  reserved 5;
+  IMAGE_SOURCE_TYPE_GLANCE = 6;
+  IMAGE_SOURCE_TYPE_LOCAL = 7;
+}
+
+message CreateImageRequest {
+  // Software image to add.
+  Image image = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).required = true
+  ];
+}
+
+message GetImageRequest {
+  // Identifier of the software image.
+  string image_id = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).string.uuid = true
+  ];
+}
+
+message ListImagesRequest {
+  // Attribute-based filter expression (SOL 013 5.2).
+  string filter = 1 [
+    (google.api.field_behavior) = OPTIONAL,
+    (kubenfv.kubevim.options.v1.ifa_field) = {ref: "IFA005 7.2.3.2 QueryImagesRequest.imageQueryFilter"}
+  ];
+  // Marker of the page to return, from a previous response (SOL 013 5.4).
+  string nextpage_opaque_marker = 2 [
+    json_name = "nextpage_opaque_marker",
+    (google.api.field_behavior) = OPTIONAL
+  ];
+}
+
+message ListImagesResponse {
+  // Software images matching the filter.
+  repeated Image images = 1 [(kubenfv.kubevim.options.v1.ifa_field) = {ref: "IFA005 7.2.3.3 QueryImagesResponse.softwareImageInformation"}];
+  // Marker of the next page; empty on the last page (SOL 013 5.4).
+  string nextpage_opaque_marker = 2 [json_name = "nextpage_opaque_marker"];
+}
+
+message UpdateImageRequest {
+  // Identifier of the software image.
+  string image_id = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).string.uuid = true
+  ];
+  // Changes to apply; fields left unset keep their value.
+  ImageUpdate update = 2 [
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).required = true
+  ];
+}
+
+// Changes to a software image: a patch. The name is replaced when set; metadata entries are merged.
+message ImageUpdate {
+  option (kubenfv.kubevim.options.v1.ifa_message) = {
+    ref: "IFA005 7.2.5.2 UpdateImageRequest"
+    departure: {
+      kind: KIND_DEVIATION
+      translates: true
+      rationale: "Name and metadata only, each optional, instead of the full softwareImageMetadata."
+    }
+  };
+
+  optional string name = 1 [
+    (google.api.field_behavior) = OPTIONAL,
+    (buf.validate.field).string.min_len = 1
+  ];
+  // Metadata entries to add, or to overwrite when the key exists; keys not given are kept, and none is removed.
+  map<string, string> metadata = 2 [
+    (google.api.field_behavior) = OPTIONAL,
+    (buf.validate.field).map.(kubenfv.kubevim.common.v1.metadata) = true
+  ];
+}
+
+message DeleteImageRequest {
+  // Identifier of the software image.
+  string image_id = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).string.uuid = true
+  ];
+}
+
+message ListImageSourcesRequest {}
+
+message ListImageSourcesResponse {
+  // Source types this VIM accepts.
+  repeated ImageSourceType sources = 1;
+}

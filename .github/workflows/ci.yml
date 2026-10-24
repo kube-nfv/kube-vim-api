@@ -5,36 +5,80 @@ on:
   push:
     branches: [main]
 
+env:
+  # buf and the grpc-gateway plugins need a newer Go than go.mod; let Go fetch it.
+  GOTOOLCHAIN: auto
+
 jobs:
-  proto-drift:
-    name: Generated code drift check
+  proto:
+    name: Proto lint and generated code drift
+    # make generate runs the Python client generator in Docker, available on ubuntu-latest.
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
 
-      - name: Cache Docker layers
+      - name: Cache tools
         uses: actions/cache@v4
         with:
-          path: /tmp/.buildx-cache
-          key: ${{ runner.os }}-buildx-${{ hashFiles('docker/**') }}
-          restore-keys: |
-            ${{ runner.os }}-buildx-
+          path: bin
+          key: ${{ runner.os }}-tools-${{ hashFiles('Makefile') }}
 
-      - name: Regenerate all artifacts
-        run: make proto-clean && make all
+      - name: Lint
+        run: make lint
+
+      - name: Regenerate
+        run: make generate
 
       - name: Check for drift
         run: |
-          git diff --exit-code || {
-            echo "Generated files are out of sync with source."
-            echo "Run 'make all' locally and commit the result."
+          if [ -n "$(git status --porcelain -- pkg generated)" ]; then
+            git status --porcelain -- pkg generated
+            echo "Generated files are out of sync with the protos. Run 'make generate' and commit the result."
             exit 1
-          }
+          fi
 
-  go-build:
+  breaking:
+    name: Breaking changes against the last rc or stable tag
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+
+      # alpha and beta tags may break; rc and stable tags may not.
+      - name: Find baseline
+        id: base
+        run: echo "tag=$(git tag --list 'v1.*' --sort=-creatordate | grep -E '^v1\.[0-9]+\.[0-9]+(-rc\.[0-9]+)?$' | head -1)" >> "$GITHUB_OUTPUT"
+
+      - name: buf breaking
+        if: steps.base.outputs.tag != ''
+        run: make breaking BREAKING_AGAINST=".git#tag=${{ steps.base.outputs.tag }}"
+
+  python:
+    name: Python client (${{ matrix.python }})
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: ['3.10', '3.13']
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+
+      - name: Test
+        run: make test-python PYTHON=python
+
+  go:
     name: Go build and test
     runs-on: ubuntu-latest
     steps:
@@ -48,7 +92,7 @@ jobs:
         run: go build ./...
 
       - name: Test
-        run: go test ./pkg/apis/...
+        run: go test ./...
 
       - name: Build kube-ovn-api
         working-directory: kube-ovn-api
@@ -57,20 +101,3 @@ jobs:
       - name: Test kube-ovn-api
         working-directory: kube-ovn-api
         run: go test ./...
-
-  python-smoke:
-    name: Python smoke test
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-
-      - name: Install package
-        working-directory: generated/python
-        run: pip install -e .
-
-      - name: Import check
-        run: python -c "import kubevim_vivnfm_client; print('ok')"

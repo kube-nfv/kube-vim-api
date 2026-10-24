@@ -1,0 +1,4595 @@
+{
+  "components": {
+    "schemas": {
+      "BasicAuth": {
+        "description": "Username and password for a source that needs them.",
+        "properties": {
+          "password": {
+            "type": "string",
+            "writeOnly": true
+          },
+          "username": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "username",
+          "password"
+        ],
+        "type": "object"
+      },
+      "Compute": {
+        "description": "A virtualised compute resource: a virtual machine.",
+        "properties": {
+          "computeId": {
+            "description": "Identifier of the compute resource: a UUID assigned by the VIM.",
+            "readOnly": true,
+            "type": "string"
+          },
+          "computeName": {
+            "description": "Name of the compute resource, given by the consumer; not unique.",
+            "type": "string"
+          },
+          "disks": {
+            "description": "Disks of the compute resource: its own disks (the boot disk and the disks from the flavour,\nidentified by disk name, deleted with the compute resource and not in the storage API) and\nattached volumes (identified by their volume_id).",
+            "items": {
+              "$ref": "#/components/schemas/Volume"
+            },
+            "readOnly": true,
+            "type": "array"
+          },
+          "flavourId": {
+            "description": "Flavour the compute resource is sized by; it needs exactly one boot storage attribute.",
+            "type": "string"
+          },
+          "hostId": {
+            "description": "Host the compute resource runs on (the Kubernetes node).",
+            "readOnly": true,
+            "type": "string"
+          },
+          "imageId": {
+            "description": "Software image the compute resource boots from.",
+            "type": "string"
+          },
+          "metadata": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Metadata set by the consumer and by the VIM; for keys under \"kubevim.kubenfv.io/\" that the VIM maintains, its value wins.",
+            "type": "object"
+          },
+          "networkInterfaces": {
+            "description": "Network interfaces, the management interface first; no other order is guaranteed, in the response\nor in the guest. Match interfaces by name, MAC address or guest PCI address.",
+            "items": {
+              "$ref": "#/components/schemas/VirtualNetworkInterface"
+            },
+            "readOnly": true,
+            "type": "array"
+          },
+          "operationalState": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/OperationalState"
+              }
+            ],
+            "description": "Operational state of the compute resource.",
+            "readOnly": true
+          },
+          "placementGroupIds": {
+            "description": "Placement groups the compute resource belongs to, joined at creation.",
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "restartRequired": {
+            "description": "A change (a flavour beyond the hotplug limits, or interfaces of a VM that cannot live-migrate) applies on the next restart.",
+            "readOnly": true,
+            "type": "boolean"
+          },
+          "runningState": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ComputeRunningState"
+              }
+            ],
+            "description": "Running state of the compute resource.",
+            "readOnly": true
+          },
+          "statusDetail": {
+            "description": "Human-readable reason when the running state is FAILED.",
+            "readOnly": true,
+            "type": "string"
+          },
+          "virtualCpu": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/VirtualCpu"
+              }
+            ],
+            "description": "Virtual CPUs of the compute resource.",
+            "readOnly": true
+          },
+          "virtualMemory": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/VirtualMemory"
+              }
+            ],
+            "description": "Virtual memory of the compute resource.",
+            "readOnly": true
+          },
+          "zoneId": {
+            "description": "Resource zone of the compute resource.",
+            "readOnly": true,
+            "type": "string"
+          }
+        },
+        "required": [
+          "flavourId",
+          "imageId"
+        ],
+        "type": "object"
+      },
+      "ComputeOperation": {
+        "description": "Operation on the running state of a compute resource (IFA006 7.3.1.6).\nValues may be added as KubeVirt support grows; clients should accept unknown values.",
+        "enum": [
+          "COMPUTE_OPERATION_UNSPECIFIED",
+          "COMPUTE_OPERATION_START",
+          "COMPUTE_OPERATION_STOP",
+          "COMPUTE_OPERATION_PAUSE",
+          "COMPUTE_OPERATION_RESUME",
+          "COMPUTE_OPERATION_REBOOT",
+          "COMPUTE_OPERATION_QUIESCE",
+          "COMPUTE_OPERATION_UNQUIESCE"
+        ],
+        "type": "string"
+      },
+      "ComputeRunningState": {
+        "description": "Running state of a compute resource.\nValues may be added as KubeVirt support grows; clients should accept unknown values.",
+        "enum": [
+          "COMPUTE_RUNNING_STATE_UNSPECIFIED",
+          "COMPUTE_RUNNING_STATE_STARTING",
+          "COMPUTE_RUNNING_STATE_STARTED",
+          "COMPUTE_RUNNING_STATE_STOPPING",
+          "COMPUTE_RUNNING_STATE_STOPPED",
+          "COMPUTE_RUNNING_STATE_PAUSED",
+          "COMPUTE_RUNNING_STATE_MIGRATING",
+          "COMPUTE_RUNNING_STATE_FAILED",
+          "COMPUTE_RUNNING_STATE_TERMINATING"
+        ],
+        "type": "string"
+      },
+      "ComputeSnapshot": {
+        "description": "A snapshot of a compute resource (KubeVirt VirtualMachineSnapshot).",
+        "properties": {
+          "computeId": {
+            "description": "Compute resource the snapshot was taken of. The snapshot is kept when the compute resource is\ndeleted; the VIM then sets the metadata key \"kubevim.kubenfv.io/source-deleted\" to \"true\".",
+            "readOnly": true,
+            "type": "string"
+          },
+          "createdAt": {
+            "description": "Time the snapshot was taken.",
+            "format": "date-time",
+            "readOnly": true,
+            "type": "string"
+          },
+          "metadata": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Metadata set by the consumer and by the VIM; for keys under \"kubevim.kubenfv.io/\" that the VIM maintains, its value wins.",
+            "type": "object"
+          },
+          "snapshotId": {
+            "description": "Identifier of the snapshot: a UUID assigned by the VIM.",
+            "readOnly": true,
+            "type": "string"
+          },
+          "snapshotName": {
+            "description": "Name of the snapshot, given by the consumer; not unique.",
+            "type": "string"
+          },
+          "status": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SnapshotStatus"
+              }
+            ],
+            "description": "Status of the snapshot.",
+            "readOnly": true
+          }
+        },
+        "type": "object"
+      },
+      "ComputeUpdate": {
+        "description": "Changes to a compute resource: a patch. The name is replaced when set, metadata entries are\nmerged, and interfaces are added (hotplug) or removed by name.",
+        "properties": {
+          "computeName": {
+            "type": "string"
+          },
+          "metadata": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Metadata entries to add, or to overwrite when the key exists; keys not given are kept, and none is removed.",
+            "type": "object"
+          },
+          "networkInterfaceNamesToRemove": {
+            "description": "Names of network interfaces to remove.",
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "networkInterfacesToAdd": {
+            "description": "Network interfaces to add.",
+            "items": {
+              "$ref": "#/components/schemas/NetworkInterfaceData"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "ContainerFormat": {
+        "description": "Container format of a software image file.\nValues may be added as CDI support grows; clients should accept unknown values.",
+        "enum": [
+          "CONTAINER_FORMAT_UNSPECIFIED",
+          "CONTAINER_FORMAT_BARE",
+          "CONTAINER_FORMAT_CONTAINER_DISK"
+        ],
+        "type": "string"
+      },
+      "CpuArchitecture": {
+        "description": "CPU architecture.\nValues may be added as KubeVirt support grows; clients should accept unknown values.",
+        "enum": [
+          "CPU_ARCHITECTURE_UNSPECIFIED",
+          "CPU_ARCHITECTURE_X86_64",
+          "CPU_ARCHITECTURE_AARCH64",
+          "CPU_ARCHITECTURE_S390X"
+        ],
+        "type": "string"
+      },
+      "CpuTopology": {
+        "description": "Guest CPU topology.",
+        "properties": {
+          "cores": {
+            "format": "int64",
+            "type": "integer"
+          },
+          "sockets": {
+            "format": "int64",
+            "type": "integer"
+          },
+          "threads": {
+            "format": "int64",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "sockets",
+          "cores",
+          "threads"
+        ],
+        "type": "object"
+      },
+      "DiskBus": {
+        "description": "Bus a boot disk is attached to.\nValues may be added as KubeVirt support grows; clients should accept unknown values.",
+        "enum": [
+          "DISK_BUS_UNSPECIFIED",
+          "DISK_BUS_VIRTIO",
+          "DISK_BUS_SATA",
+          "DISK_BUS_SCSI"
+        ],
+        "type": "string"
+      },
+      "DiskFormat": {
+        "description": "Disk format of a software image.\nValues may be added as CDI support grows; clients should accept unknown values.",
+        "enum": [
+          "DISK_FORMAT_UNSPECIFIED",
+          "DISK_FORMAT_RAW",
+          "DISK_FORMAT_QCOW2",
+          "DISK_FORMAT_ISO",
+          "DISK_FORMAT_VMDK"
+        ],
+        "type": "string"
+      },
+      "Firmware": {
+        "description": "Firmware a software image boots with.\nValues may be added as KubeVirt support grows; clients should accept unknown values.",
+        "enum": [
+          "FIRMWARE_UNSPECIFIED",
+          "FIRMWARE_BIOS",
+          "FIRMWARE_EFI",
+          "FIRMWARE_EFI_SECURE_BOOT"
+        ],
+        "type": "string"
+      },
+      "Flavour": {
+        "description": "Memory, CPU and storage of the compute resources created from it.",
+        "properties": {
+          "flavourId": {
+            "description": "Identifier of the flavour: a UUID assigned by the VIM.",
+            "readOnly": true,
+            "type": "string"
+          },
+          "flavourName": {
+            "description": "Name of the flavour, given by the consumer; not unique.",
+            "type": "string"
+          },
+          "metadata": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Metadata set by the consumer and by the VIM; for keys under \"kubevim.kubenfv.io/\" that the VIM maintains, its value wins.",
+            "type": "object"
+          },
+          "storageAttributes": {
+            "description": "Storage of the compute resource: the boot disk (is_boot) and further disks, created with\neach compute resource. A compute resource needs exactly one boot disk.",
+            "items": {
+              "$ref": "#/components/schemas/VirtualStorageData"
+            },
+            "type": "array"
+          },
+          "virtualCpu": {
+            "$ref": "#/components/schemas/VirtualCpuData",
+            "description": "Virtual CPUs."
+          },
+          "virtualMemory": {
+            "$ref": "#/components/schemas/VirtualMemoryData",
+            "description": "Virtual memory."
+          }
+        },
+        "required": [
+          "virtualMemory",
+          "virtualCpu"
+        ],
+        "type": "object"
+      },
+      "GlanceSource": {
+        "description": "Image in the Glance catalog configured in the VIM; the VIM holds the Glance endpoint and credentials.",
+        "properties": {
+          "glanceImageId": {
+            "description": "Identifier of the image in Glance.",
+            "type": "string"
+          }
+        },
+        "required": [
+          "glanceImageId"
+        ],
+        "type": "object"
+      },
+      "HttpSource": {
+        "description": "HTTP or HTTPS download. Only one of basicAuth, credentialsRef may be set.",
+        "properties": {
+          "basicAuth": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BasicAuth"
+              }
+            ],
+            "description": "Inline username and password; never returned.",
+            "writeOnly": true
+          },
+          "caBundle": {
+            "description": "PEM CA bundle to verify the server certificate.",
+            "type": "string"
+          },
+          "credentialsRef": {
+            "description": "Name of a credential set the VIM loads from its own environment or files; the request carries no secret.",
+            "type": "string"
+          },
+          "extraHeaders": {
+            "description": "Extra request headers, as \"Name: value\"; never returned, since they may carry secrets.",
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "writeOnly": true
+          },
+          "url": {
+            "description": "URL of the image file.",
+            "type": "string"
+          }
+        },
+        "required": [
+          "url"
+        ],
+        "type": "object"
+      },
+      "Image": {
+        "description": "A software image in the image repository managed by the VIM.",
+        "properties": {
+          "containerFormat": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ContainerFormat"
+              }
+            ],
+            "description": "Container format of the software image file; unspecified when the VIM cannot tell.",
+            "readOnly": true
+          },
+          "createdAt": {
+            "description": "Time the software image was created.",
+            "format": "date-time",
+            "readOnly": true,
+            "type": "string"
+          },
+          "diskBus": {
+            "$ref": "#/components/schemas/DiskBus",
+            "description": "Bus the boot disk is attached to; virtio when unset."
+          },
+          "diskFormat": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/DiskFormat"
+              }
+            ],
+            "description": "Disk format of the software image; unspecified when the VIM cannot tell.",
+            "readOnly": true
+          },
+          "firmware": {
+            "$ref": "#/components/schemas/Firmware",
+            "description": "Firmware the image boots with; the VIM default (EFI) when unset."
+          },
+          "imageId": {
+            "description": "Identifier of the software image: a UUID assigned by the VIM.",
+            "readOnly": true,
+            "type": "string"
+          },
+          "importPolicy": {
+            "$ref": "#/components/schemas/ImportPolicy",
+            "description": "When the VIM imports the software image; IMPORT_POLICY_EAGER when unset on creation."
+          },
+          "metadata": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Metadata set by the consumer and by the VIM; for keys under \"kubevim.kubenfv.io/\" that the VIM maintains, its value wins.",
+            "type": "object"
+          },
+          "minDisk": {
+            "description": "Minimal disk size for the software image, in Kubernetes quantity format (e.g. \"10Gi\"); the VIM rejects a\ncompute resource whose boot disk is smaller.",
+            "type": "string"
+          },
+          "minRam": {
+            "description": "Minimal RAM size for the software image, in Kubernetes quantity format (e.g. \"2Gi\"); the VIM rejects a\ncompute resource with less memory.",
+            "type": "string"
+          },
+          "name": {
+            "description": "Name of the software image, given by the consumer; not unique.",
+            "type": "string"
+          },
+          "progress": {
+            "description": "Import progress in percent while the status is IMAGE_STATUS_IMPORTING.",
+            "format": "int32",
+            "readOnly": true,
+            "type": "integer"
+          },
+          "provider": {
+            "description": "Provider of the software image.",
+            "type": "string"
+          },
+          "size": {
+            "description": "Size of the software image, in Kubernetes quantity format; empty until imported.",
+            "readOnly": true,
+            "type": "string"
+          },
+          "source": {
+            "$ref": "#/components/schemas/ImageSource",
+            "description": "Where the VIM imports the software image from; images of a catalog backend name their catalog entry."
+          },
+          "status": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ImageStatus"
+              }
+            ],
+            "description": "Status of the software image.",
+            "readOnly": true
+          },
+          "statusDetail": {
+            "description": "Human-readable reason when the status is IMAGE_STATUS_FAILED.",
+            "readOnly": true,
+            "type": "string"
+          },
+          "updatedAt": {
+            "description": "Time the software image was last updated.",
+            "format": "date-time",
+            "readOnly": true,
+            "type": "string"
+          },
+          "version": {
+            "description": "Version of the software image.",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "source"
+        ],
+        "type": "object"
+      },
+      "ImageSource": {
+        "description": "Source of a software image; exactly one member is set.",
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/ImageSourceHttp"
+          },
+          {
+            "$ref": "#/components/schemas/ImageSourceS3"
+          },
+          {
+            "$ref": "#/components/schemas/ImageSourceRegistry"
+          },
+          {
+            "$ref": "#/components/schemas/ImageSourceUpload"
+          },
+          {
+            "$ref": "#/components/schemas/ImageSourceGlance"
+          },
+          {
+            "$ref": "#/components/schemas/ImageSourceLocal"
+          }
+        ]
+      },
+      "ImageSourceGlance": {
+        "additionalProperties": false,
+        "properties": {
+          "glance": {
+            "$ref": "#/components/schemas/GlanceSource",
+            "description": "Import an image of the Glance catalog configured in the VIM."
+          }
+        },
+        "required": [
+          "glance"
+        ],
+        "type": "object"
+      },
+      "ImageSourceHttp": {
+        "additionalProperties": false,
+        "properties": {
+          "http": {
+            "$ref": "#/components/schemas/HttpSource",
+            "description": "Download over HTTP or HTTPS."
+          }
+        },
+        "required": [
+          "http"
+        ],
+        "type": "object"
+      },
+      "ImageSourceLocal": {
+        "additionalProperties": false,
+        "properties": {
+          "local": {
+            "$ref": "#/components/schemas/LocalSource",
+            "description": "Import an image file of the local catalog configured in the VIM."
+          }
+        },
+        "required": [
+          "local"
+        ],
+        "type": "object"
+      },
+      "ImageSourceRegistry": {
+        "additionalProperties": false,
+        "properties": {
+          "registry": {
+            "$ref": "#/components/schemas/RegistrySource",
+            "description": "Pull from a container registry."
+          }
+        },
+        "required": [
+          "registry"
+        ],
+        "type": "object"
+      },
+      "ImageSourceS3": {
+        "additionalProperties": false,
+        "properties": {
+          "s3": {
+            "$ref": "#/components/schemas/S3Source",
+            "description": "Download from an S3-compatible object store."
+          }
+        },
+        "required": [
+          "s3"
+        ],
+        "type": "object"
+      },
+      "ImageSourceType": {
+        "description": "Image source type, as reported by ListImageSources.\nValues may be added as CDI support grows; clients should accept unknown values.",
+        "enum": [
+          "IMAGE_SOURCE_TYPE_UNSPECIFIED",
+          "IMAGE_SOURCE_TYPE_HTTP",
+          "IMAGE_SOURCE_TYPE_S3",
+          "IMAGE_SOURCE_TYPE_REGISTRY",
+          "IMAGE_SOURCE_TYPE_UPLOAD",
+          "IMAGE_SOURCE_TYPE_GLANCE",
+          "IMAGE_SOURCE_TYPE_LOCAL"
+        ],
+        "type": "string"
+      },
+      "ImageSourceUpload": {
+        "additionalProperties": false,
+        "properties": {
+          "upload": {
+            "$ref": "#/components/schemas/UploadSource",
+            "description": "Upload by the client after creation."
+          }
+        },
+        "required": [
+          "upload"
+        ],
+        "type": "object"
+      },
+      "ImageStatus": {
+        "description": "Status of a software image.\nValues may be added as CDI support grows; clients should accept unknown values.",
+        "enum": [
+          "IMAGE_STATUS_UNSPECIFIED",
+          "IMAGE_STATUS_PENDING",
+          "IMAGE_STATUS_IMPORTING",
+          "IMAGE_STATUS_UPLOAD_PENDING",
+          "IMAGE_STATUS_AVAILABLE",
+          "IMAGE_STATUS_FAILED"
+        ],
+        "type": "string"
+      },
+      "ImageUpdate": {
+        "description": "Changes to a software image: a patch. The name is replaced when set; metadata entries are merged.",
+        "properties": {
+          "metadata": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Metadata entries to add, or to overwrite when the key exists; keys not given are kept, and none is removed.",
+            "type": "object"
+          },
+          "name": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "ImportPolicy": {
+        "description": "When the VIM imports a software image.",
+        "enum": [
+          "IMPORT_POLICY_UNSPECIFIED",
+          "IMPORT_POLICY_EAGER",
+          "IMPORT_POLICY_ON_FIRST_USE"
+        ],
+        "type": "string"
+      },
+      "IpAddressPool": {
+        "description": "Range of addresses a subnet allocates from.",
+        "properties": {
+          "endIp": {
+            "description": "Last address of the pool.",
+            "type": "string"
+          },
+          "startIp": {
+            "description": "First address of the pool.",
+            "type": "string"
+          }
+        },
+        "required": [
+          "startIp",
+          "endIp"
+        ],
+        "type": "object"
+      },
+      "IpAssignment": {
+        "description": "How a network interface gets its addresses.",
+        "enum": [
+          "IP_ASSIGNMENT_UNSPECIFIED",
+          "IP_ASSIGNMENT_AUTOMATIC",
+          "IP_ASSIGNMENT_STATIC",
+          "IP_ASSIGNMENT_NONE"
+        ],
+        "type": "string"
+      },
+      "IpVersion": {
+        "description": "IP version of a network or subnet (IFA006 8.4.4.4).",
+        "enum": [
+          "IP_VERSION_UNSPECIFIED",
+          "IP_VERSION_IPV4",
+          "IP_VERSION_IPV6"
+        ],
+        "type": "string"
+      },
+      "LocalSource": {
+        "description": "Image file in the local catalog directory configured in the VIM.",
+        "properties": {
+          "fileName": {
+            "description": "Name of the file in the catalog directory, without a path.",
+            "type": "string"
+          }
+        },
+        "required": [
+          "fileName"
+        ],
+        "type": "object"
+      },
+      "Network": {
+        "description": "A virtualised network: one layer 2 segment, with at most one IPv4 and one IPv6 subnet.",
+        "properties": {
+          "layer3Attributes": {
+            "description": "Subnets created with the network, in one call that rolls back as a whole: at most one per\nIP version. A Kube-OVN network needs at least one; GENEVE networks always use Kube-OVN.",
+            "items": {
+              "$ref": "#/components/schemas/SubnetData"
+            },
+            "type": "array",
+            "writeOnly": true
+          },
+          "metadata": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Metadata set by the consumer and by the VIM; for keys under \"kubevim.kubenfv.io/\" that the VIM maintains, its value wins.",
+            "type": "object"
+          },
+          "mtu": {
+            "description": "MTU of the network in bytes; the VIM default when unset.",
+            "format": "int64",
+            "type": "integer"
+          },
+          "networkId": {
+            "description": "Identifier of the network: a UUID assigned by the VIM.",
+            "readOnly": true,
+            "type": "string"
+          },
+          "networkName": {
+            "description": "Name of the network, given by the consumer; not unique.",
+            "type": "string"
+          },
+          "networkType": {
+            "$ref": "#/components/schemas/NetworkType",
+            "description": "How traffic of the network is separated."
+          },
+          "operationalState": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/OperationalState"
+              }
+            ],
+            "description": "Operational state of the network.",
+            "readOnly": true
+          },
+          "providerNetwork": {
+            "description": "Name of a provider network known to the VIM; required for VLAN and FLAT networks, absent for GENEVE.",
+            "type": "string"
+          },
+          "segmentationId": {
+            "description": "VLAN ID of a VLAN network; absent for GENEVE and FLAT networks.",
+            "format": "int64",
+            "type": "integer"
+          },
+          "subnetIds": {
+            "description": "Subnets of the network: at most one per IP version.",
+            "items": {
+              "type": "string"
+            },
+            "readOnly": true,
+            "type": "array"
+          }
+        },
+        "required": [
+          "networkType"
+        ],
+        "type": "object"
+      },
+      "NetworkInterfaceData": {
+        "description": "A network interface requested for a compute resource.",
+        "properties": {
+          "bandwidth": {
+            "description": "Rate limit in Mbps; 0 means no limit.",
+            "format": "int64",
+            "type": "integer"
+          },
+          "ipAddresses": {
+            "description": "Addresses for the static assignment: at most one per IP version; a family left out is allocated automatically.",
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "ipAssignment": {
+            "$ref": "#/components/schemas/IpAssignment",
+            "description": "How the interface gets its addresses; automatic when unset."
+          },
+          "macAddress": {
+            "description": "MAC address; the VIM assigns one when unset.",
+            "type": "string"
+          },
+          "model": {
+            "$ref": "#/components/schemas/NicModel",
+            "description": "NIC model the guest sees; virtio when unset."
+          },
+          "name": {
+            "description": "Name of the interface, unique within the compute resource; the VIM chooses one when unset.",
+            "type": "string"
+          },
+          "networkId": {
+            "description": "Network to attach to; the interface gets one address per subnet of the network.",
+            "type": "string"
+          }
+        },
+        "required": [
+          "networkId"
+        ],
+        "type": "object"
+      },
+      "NetworkType": {
+        "description": "How traffic of a network is separated.\nValues may be added as backends grow; clients should accept unknown values.",
+        "enum": [
+          "NETWORK_TYPE_UNSPECIFIED",
+          "NETWORK_TYPE_GENEVE",
+          "NETWORK_TYPE_VLAN",
+          "NETWORK_TYPE_FLAT"
+        ],
+        "type": "string"
+      },
+      "NetworkUpdate": {
+        "description": "Changes to a network: a patch. The name is replaced when set; metadata entries are merged.",
+        "properties": {
+          "metadata": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Metadata entries to add, or to overwrite when the key exists; keys not given are kept, and none is removed.",
+            "type": "object"
+          },
+          "networkName": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "NicModel": {
+        "description": "NIC model the guest sees.\nValues may be added as KubeVirt support grows; clients should accept unknown values.",
+        "enum": [
+          "NIC_MODEL_UNSPECIFIED",
+          "NIC_MODEL_VIRTIO",
+          "NIC_MODEL_E1000",
+          "NIC_MODEL_E1000E"
+        ],
+        "type": "string"
+      },
+      "OperationalState": {
+        "description": "Operational state of a virtualised resource (IFA006).",
+        "enum": [
+          "OPERATIONAL_STATE_UNSPECIFIED",
+          "OPERATIONAL_STATE_ENABLED",
+          "OPERATIONAL_STATE_DISABLED"
+        ],
+        "type": "string"
+      },
+      "PlacementEnforcement": {
+        "description": "Whether a placement policy must hold.",
+        "enum": [
+          "PLACEMENT_ENFORCEMENT_UNSPECIFIED",
+          "PLACEMENT_ENFORCEMENT_REQUIRED",
+          "PLACEMENT_ENFORCEMENT_PREFERRED"
+        ],
+        "type": "string"
+      },
+      "PlacementGroup": {
+        "description": "A group of compute resources placed together or apart.",
+        "properties": {
+          "computeIds": {
+            "description": "Compute resources in the group.",
+            "items": {
+              "type": "string"
+            },
+            "readOnly": true,
+            "type": "array"
+          },
+          "enforcement": {
+            "$ref": "#/components/schemas/PlacementEnforcement",
+            "description": "Whether the policy must hold or is applied when possible; PLACEMENT_ENFORCEMENT_REQUIRED when unset."
+          },
+          "metadata": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Metadata set by the consumer and by the VIM; for keys under \"kubevim.kubenfv.io/\" that the VIM maintains, its value wins.",
+            "type": "object"
+          },
+          "placementGroupId": {
+            "description": "Identifier of the group: a UUID assigned by the VIM.",
+            "readOnly": true,
+            "type": "string"
+          },
+          "placementGroupName": {
+            "description": "Name of the group, given by the consumer; not unique.",
+            "type": "string"
+          },
+          "scope": {
+            "$ref": "#/components/schemas/PlacementScope",
+            "description": "Topology domain the policy applies to; PLACEMENT_SCOPE_NODE when unset."
+          },
+          "type": {
+            "$ref": "#/components/schemas/PlacementType",
+            "description": "Whether members are placed together or apart."
+          }
+        },
+        "required": [
+          "type"
+        ],
+        "type": "object"
+      },
+      "PlacementScope": {
+        "description": "Topology domain a placement policy applies to.\nValues may be added; clients should accept unknown values.",
+        "enum": [
+          "PLACEMENT_SCOPE_UNSPECIFIED",
+          "PLACEMENT_SCOPE_NODE",
+          "PLACEMENT_SCOPE_ZONE"
+        ],
+        "type": "string"
+      },
+      "PlacementType": {
+        "description": "Whether members of a placement group are placed together or apart.",
+        "enum": [
+          "PLACEMENT_TYPE_UNSPECIFIED",
+          "PLACEMENT_TYPE_AFFINITY",
+          "PLACEMENT_TYPE_ANTI_AFFINITY"
+        ],
+        "type": "string"
+      },
+      "ProblemDetails": {
+        "description": "Error details (SOL 013 6.3, RFC 9457).",
+        "properties": {
+          "detail": {
+            "type": "string"
+          },
+          "instance": {
+            "format": "uri",
+            "type": "string"
+          },
+          "status": {
+            "type": "integer"
+          },
+          "title": {
+            "type": "string"
+          },
+          "type": {
+            "description": "https://kubevim.kubenfv.io/problems/<reason>, the error reason (ErrorReason in the protos) in kebab case, e.g. .../problems/resource-in-use; about:blank for authentication and authorisation errors. Clients should accept unknown types.",
+            "format": "uri",
+            "type": "string"
+          }
+        },
+        "required": [
+          "status",
+          "detail"
+        ],
+        "type": "object"
+      },
+      "RegistrySource": {
+        "description": "Container registry pull. Only one of basicAuth, credentialsRef may be set.",
+        "properties": {
+          "basicAuth": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BasicAuth"
+              }
+            ],
+            "description": "Inline username and password; never returned.",
+            "writeOnly": true
+          },
+          "caBundle": {
+            "description": "PEM CA bundle to verify the registry certificate.",
+            "type": "string"
+          },
+          "credentialsRef": {
+            "description": "Name of a credential set the VIM loads from its own environment or files; the request carries no secret.",
+            "type": "string"
+          },
+          "platform": {
+            "description": "Platform of a multi-architecture image, e.g. \"linux/arm64\".",
+            "type": "string"
+          },
+          "pullMethod": {
+            "$ref": "#/components/schemas/RegistrySource.PullMethod",
+            "description": "Pull method; the VIM default when unset."
+          },
+          "url": {
+            "description": "Image reference, e.g. \"docker://registry.example.com/images/ubuntu:24.04\".",
+            "type": "string"
+          }
+        },
+        "required": [
+          "url"
+        ],
+        "type": "object"
+      },
+      "RegistrySource.PullMethod": {
+        "description": "How the image is pulled.",
+        "enum": [
+          "PULL_METHOD_UNSPECIFIED",
+          "PULL_METHOD_POD",
+          "PULL_METHOD_NODE"
+        ],
+        "type": "string"
+      },
+      "S3AccessKey": {
+        "description": "Access key for an S3-compatible object store.",
+        "properties": {
+          "accessKeyId": {
+            "type": "string"
+          },
+          "secretAccessKey": {
+            "type": "string",
+            "writeOnly": true
+          }
+        },
+        "required": [
+          "accessKeyId",
+          "secretAccessKey"
+        ],
+        "type": "object"
+      },
+      "S3Source": {
+        "description": "S3-compatible object store download. Only one of accessKey, credentialsRef may be set.",
+        "properties": {
+          "accessKey": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/S3AccessKey"
+              }
+            ],
+            "description": "Inline access key; never returned.",
+            "writeOnly": true
+          },
+          "caBundle": {
+            "description": "PEM CA bundle to verify the endpoint certificate.",
+            "type": "string"
+          },
+          "credentialsRef": {
+            "description": "Name of a credential set the VIM loads from its own environment or files; the request carries no secret.",
+            "type": "string"
+          },
+          "url": {
+            "description": "URL of the object, e.g. \"https://s3.example.com/bucket/image.qcow2\".",
+            "type": "string"
+          }
+        },
+        "required": [
+          "url"
+        ],
+        "type": "object"
+      },
+      "SnapshotStatus": {
+        "description": "Status of a snapshot.\nValues may be added as snapshot support grows; clients should accept unknown values.",
+        "enum": [
+          "SNAPSHOT_STATUS_UNSPECIFIED",
+          "SNAPSHOT_STATUS_CREATING",
+          "SNAPSHOT_STATUS_READY",
+          "SNAPSHOT_STATUS_FAILED"
+        ],
+        "type": "string"
+      },
+      "Subnet": {
+        "description": "A virtualised subnet: one IP version of a network.",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/SubnetData",
+            "description": "Layer 3 attributes."
+          },
+          "metadata": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Metadata set by the consumer and by the VIM; for keys under \"kubevim.kubenfv.io/\" that the VIM maintains, its value wins.",
+            "type": "object"
+          },
+          "networkId": {
+            "description": "Network the subnet belongs to.",
+            "type": "string"
+          },
+          "subnetId": {
+            "description": "Identifier of the subnet: a UUID assigned by the VIM.",
+            "readOnly": true,
+            "type": "string"
+          },
+          "subnetName": {
+            "description": "Name of the subnet, given by the consumer; not unique.",
+            "type": "string"
+          }
+        },
+        "required": [
+          "networkId",
+          "data"
+        ],
+        "type": "object"
+      },
+      "SubnetData": {
+        "description": "Layer 3 attributes of a subnet: one IP version of its network.",
+        "properties": {
+          "addressPools": {
+            "description": "Address pools the VIM allocates from; the whole CIDR except the gateway when empty.",
+            "items": {
+              "$ref": "#/components/schemas/IpAddressPool"
+            },
+            "type": "array"
+          },
+          "cidr": {
+            "description": "Network address and prefix length, e.g. \"10.0.0.0/24\".",
+            "type": "string"
+          },
+          "dnsServers": {
+            "description": "DNS servers handed out by DHCP.",
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "gatewayIp": {
+            "description": "Gateway address; the VIM picks one when unset.",
+            "type": "string"
+          },
+          "ipVersion": {
+            "$ref": "#/components/schemas/IpVersion",
+            "description": "IP version."
+          },
+          "isDhcpEnabled": {
+            "description": "DHCP is enabled; unset means true.",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "ipVersion",
+          "cidr"
+        ],
+        "type": "object"
+      },
+      "SubnetUpdate": {
+        "description": "Changes to a subnet: a patch. The name is replaced when set; metadata entries are merged.",
+        "properties": {
+          "metadata": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Metadata entries to add, or to overwrite when the key exists; keys not given are kept, and none is removed.",
+            "type": "object"
+          },
+          "subnetName": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "TypeOfStorage": {
+        "description": "Type of a virtualised storage resource.\nValues may be added as Kubernetes storage support grows; clients should accept unknown values.",
+        "enum": [
+          "TYPE_OF_STORAGE_UNSPECIFIED",
+          "TYPE_OF_STORAGE_VOLUME",
+          "TYPE_OF_STORAGE_EPHEMERAL"
+        ],
+        "type": "string"
+      },
+      "TypeVirtualNic": {
+        "description": "How a network interface is realised.\nValues may be added as KubeVirt support grows; clients should accept unknown values.",
+        "enum": [
+          "TYPE_VIRTUAL_NIC_UNSPECIFIED",
+          "TYPE_VIRTUAL_NIC_BRIDGE",
+          "TYPE_VIRTUAL_NIC_SRIOV",
+          "TYPE_VIRTUAL_NIC_MASQUERADE"
+        ],
+        "type": "string"
+      },
+      "UploadSource": {
+        "description": "Upload by the client. Create the image with this source, then send the\nimage file to upload_url with upload_token before upload_expire_time.",
+        "properties": {
+          "uploadExpireTime": {
+            "description": "Time after which the token is no longer accepted.",
+            "format": "date-time",
+            "readOnly": true,
+            "type": "string"
+          },
+          "uploadToken": {
+            "description": "Bearer token for the upload request.",
+            "readOnly": true,
+            "type": "string"
+          },
+          "uploadUrl": {
+            "description": "URL to upload the image file to.",
+            "readOnly": true,
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "UserData": {
+        "description": "User data passed to the compute resource at boot time.",
+        "properties": {
+          "content": {
+            "description": "User data, e.g. a cloud-init document; transparent to the VIM.",
+            "type": "string",
+            "writeOnly": true
+          },
+          "method": {
+            "$ref": "#/components/schemas/UserDataTransportationMethod",
+            "description": "How the content reaches the guest; NoCloud when unset."
+          }
+        },
+        "required": [
+          "content"
+        ],
+        "type": "object"
+      },
+      "UserDataTransportationMethod": {
+        "description": "How user data reaches the guest.\nValues may be added as KubeVirt support grows; clients should accept unknown values.",
+        "enum": [
+          "USER_DATA_TRANSPORTATION_METHOD_UNSPECIFIED",
+          "USER_DATA_TRANSPORTATION_METHOD_CONFIG_DRIVE",
+          "USER_DATA_TRANSPORTATION_METHOD_CONFIG_DRIVE_MIME_MULTIPART",
+          "USER_DATA_TRANSPORTATION_METHOD_NO_CLOUD"
+        ],
+        "type": "string"
+      },
+      "VirtualCpu": {
+        "description": "Virtual CPUs of a compute resource.",
+        "properties": {
+          "cpuArchitecture": {
+            "$ref": "#/components/schemas/CpuArchitecture"
+          },
+          "numVirtualCpu": {
+            "format": "int64",
+            "type": "integer"
+          },
+          "virtualCpuPinning": {
+            "$ref": "#/components/schemas/VirtualCpuPinning"
+          }
+        },
+        "type": "object"
+      },
+      "VirtualCpuData": {
+        "description": "Virtual CPUs of a flavour.",
+        "properties": {
+          "cpuArchitecture": {
+            "$ref": "#/components/schemas/CpuArchitecture",
+            "description": "CPU architecture; the VIM default when unset."
+          },
+          "numVirtualCpu": {
+            "description": "Number of virtual CPUs.",
+            "format": "int64",
+            "type": "integer"
+          },
+          "topology": {
+            "$ref": "#/components/schemas/CpuTopology",
+            "description": "Guest CPU topology; the product of its fields equals num_virtual_cpu. The VIM rejects a\ntopology its backend cannot express (KubeVirt takes the vCPU count and a preferred layout)."
+          },
+          "virtualCpuPinning": {
+            "$ref": "#/components/schemas/VirtualCpuPinningData",
+            "description": "CPU pinning."
+          }
+        },
+        "required": [
+          "numVirtualCpu"
+        ],
+        "type": "object"
+      },
+      "VirtualCpuPinning": {
+        "description": "CPU pinning of a compute resource.",
+        "properties": {
+          "cpuPinningPolicy": {
+            "$ref": "#/components/schemas/VirtualCpuPinningPolicy"
+          }
+        },
+        "type": "object"
+      },
+      "VirtualCpuPinningData": {
+        "description": "CPU pinning of a flavour.",
+        "properties": {
+          "virtualCpuPinningPolicy": {
+            "$ref": "#/components/schemas/VirtualCpuPinningPolicy",
+            "description": "Pinning policy."
+          }
+        },
+        "required": [
+          "virtualCpuPinningPolicy"
+        ],
+        "type": "object"
+      },
+      "VirtualCpuPinningPolicy": {
+        "description": "CPU pinning policy (IFA006 8.4.2.4). IFA's STATIC policy with explicit rules is left out:\nKubeVirt places dedicated CPUs itself.",
+        "enum": [
+          "VIRTUAL_CPU_PINNING_POLICY_UNSPECIFIED",
+          "VIRTUAL_CPU_PINNING_POLICY_DYNAMIC"
+        ],
+        "type": "string"
+      },
+      "VirtualMemory": {
+        "description": "Virtual memory of a compute resource.",
+        "properties": {
+          "hugepageSize": {
+            "description": "Hugepage size backing the memory; empty for regular pages.",
+            "type": "string"
+          },
+          "numaEnabled": {
+            "type": "boolean"
+          },
+          "virtualMemOversubscriptionPolicy": {
+            "type": "string"
+          },
+          "virtualMemSize": {
+            "description": "Amount of memory, in Kubernetes quantity format.",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "VirtualMemoryData": {
+        "description": "Virtual memory of a flavour.",
+        "properties": {
+          "hugepageSize": {
+            "description": "Hugepage size backing the memory, \"2Mi\" or \"1Gi\"; regular pages when unset.",
+            "type": "string"
+          },
+          "numaEnabled": {
+            "description": "Memory is allocated on the NUMA nodes of the pinned CPUs; needs dynamic pinning and hugepages.",
+            "type": "boolean"
+          },
+          "virtualMemOversubscriptionPolicy": {
+            "description": "Memory oversubscription as \"<virtual>:<physical>\", at least 1:1, e.g. \"2:1\" (KubeVirt overcommitPercent).",
+            "type": "string"
+          },
+          "virtualMemSize": {
+            "description": "Amount of memory, in Kubernetes quantity format (e.g. \"4Gi\").",
+            "type": "string"
+          }
+        },
+        "required": [
+          "virtualMemSize"
+        ],
+        "type": "object"
+      },
+      "VirtualNetworkInterface": {
+        "description": "A network interface of a compute resource.",
+        "properties": {
+          "bandwidth": {
+            "description": "Rate limit in Mbps; 0 when not limited.",
+            "format": "int64",
+            "type": "integer"
+          },
+          "computeId": {
+            "description": "Compute resource the interface belongs to.",
+            "type": "string"
+          },
+          "guestInterfaceName": {
+            "description": "Interface name in the guest, e.g. \"eth1\"; empty when the guest agent does not report it.",
+            "type": "string"
+          },
+          "guestPciAddress": {
+            "description": "PCI address of the device in the guest; empty until known.",
+            "type": "string"
+          },
+          "hostPciAddress": {
+            "description": "PCI address of the device on the host, for SR-IOV interfaces.",
+            "type": "string"
+          },
+          "ipAddresses": {
+            "description": "Addresses of the interface, one per subnet of its network; may be empty until DHCP or the guest configures them.",
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "isManagement": {
+            "description": "The management interface every compute resource gets on the pod network.",
+            "type": "boolean"
+          },
+          "macAddress": {
+            "description": "MAC address; empty until known.",
+            "type": "string"
+          },
+          "model": {
+            "$ref": "#/components/schemas/NicModel",
+            "description": "NIC model the guest sees."
+          },
+          "name": {
+            "description": "Name of the interface, unique within the compute resource: the one given at creation, or one the VIM chose.",
+            "type": "string"
+          },
+          "networkId": {
+            "description": "Network the interface is attached to; empty for the management interface.",
+            "type": "string"
+          },
+          "operationalState": {
+            "$ref": "#/components/schemas/OperationalState",
+            "description": "ENABLED once the interface is attached and ready."
+          },
+          "typeVirtualNic": {
+            "$ref": "#/components/schemas/TypeVirtualNic"
+          }
+        },
+        "type": "object"
+      },
+      "VirtualStorageData": {
+        "description": "Size, type and capabilities of a virtualised storage resource.",
+        "properties": {
+          "isBoot": {
+            "description": "The software image is copied to this storage and the compute resource boots from it.",
+            "type": "boolean"
+          },
+          "sizeOfStorage": {
+            "description": "Size of the storage resource, in Kubernetes quantity format (e.g. \"20Gi\").",
+            "type": "string"
+          },
+          "storageClass": {
+            "description": "Kubernetes storage class of the storage, one labelled kubevim.kubenfv.io/storage=true; the VIM default when unset.",
+            "type": "string"
+          },
+          "typeOfStorage": {
+            "$ref": "#/components/schemas/TypeOfStorage",
+            "description": "Type of the storage resource."
+          }
+        },
+        "required": [
+          "typeOfStorage",
+          "sizeOfStorage"
+        ],
+        "type": "object"
+      },
+      "Volume": {
+        "description": "A virtualised storage resource, e.g. a disk of a compute resource.",
+        "properties": {
+          "computeId": {
+            "description": "Compute resource that uses the volume; empty when not attached.",
+            "readOnly": true,
+            "type": "string"
+          },
+          "hostId": {
+            "description": "Host of the volume; empty for distributed storage.",
+            "readOnly": true,
+            "type": "string"
+          },
+          "metadata": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Metadata set by the consumer and by the VIM; for keys under \"kubevim.kubenfv.io/\" that the VIM maintains, its value wins.",
+            "type": "object"
+          },
+          "operationalState": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/OperationalState"
+              }
+            ],
+            "description": "Operational state of the volume.",
+            "readOnly": true
+          },
+          "storageData": {
+            "$ref": "#/components/schemas/VirtualStorageData",
+            "description": "Size, type and capabilities of the volume."
+          },
+          "volumeId": {
+            "description": "Identifier of the volume: a UUID assigned by the VIM for volumes created with the storage API.\nThe own disks of a compute resource (its boot disk and the disks from its flavour) are not\nresources of their own and use their disk name instead.",
+            "readOnly": true,
+            "type": "string"
+          },
+          "volumeName": {
+            "description": "Name of the volume, given by the consumer; not unique.",
+            "type": "string"
+          },
+          "zoneId": {
+            "description": "Resource zone of the volume.",
+            "readOnly": true,
+            "type": "string"
+          }
+        },
+        "required": [
+          "storageData"
+        ],
+        "type": "object"
+      },
+      "VolumeSnapshot": {
+        "description": "A snapshot of a volume (Kubernetes VolumeSnapshot).",
+        "properties": {
+          "createdAt": {
+            "description": "Time the snapshot was taken.",
+            "format": "date-time",
+            "readOnly": true,
+            "type": "string"
+          },
+          "metadata": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Metadata set by the consumer and by the VIM; for keys under \"kubevim.kubenfv.io/\" that the VIM maintains, its value wins.",
+            "type": "object"
+          },
+          "snapshotId": {
+            "description": "Identifier of the snapshot: a UUID assigned by the VIM.",
+            "readOnly": true,
+            "type": "string"
+          },
+          "snapshotName": {
+            "description": "Name of the snapshot, given by the consumer; not unique.",
+            "type": "string"
+          },
+          "status": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SnapshotStatus"
+              }
+            ],
+            "description": "Status of the snapshot.",
+            "readOnly": true
+          },
+          "volumeId": {
+            "description": "Volume the snapshot was taken of. The snapshot is kept when the volume is deleted; the VIM\nthen sets the metadata key \"kubevim.kubenfv.io/source-deleted\" to \"true\".",
+            "readOnly": true,
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "VolumeUpdate": {
+        "description": "Changes to a volume: a patch. The name is replaced when set; metadata entries are merged.",
+        "properties": {
+          "metadata": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Metadata entries to add, or to overwrite when the key exists; keys not given are kept, and none is removed.",
+            "type": "object"
+          },
+          "volumeName": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      }
+    },
+    "securitySchemes": {
+      "oauth2": {
+        "description": "OAuth 2.0 client credentials (SOL 013 8.3). The token URL is deployment specific.",
+        "flows": {
+          "clientCredentials": {
+            "scopes": {
+              "compute:v1:allocate": "Allocate compute resources",
+              "compute:v1:migrate": "Migrate compute resources",
+              "compute:v1:operate": "Operate compute resources",
+              "compute:v1:query": "Query compute resources",
+              "compute:v1:scale": "Scale compute resources",
+              "compute:v1:terminate": "Terminate compute resources",
+              "compute:v1:update": "Update compute resources and attach or detach volumes",
+              "flavour:v1:create": "Create compute flavours",
+              "flavour:v1:delete": "Delete compute flavours",
+              "flavour:v1:query": "Query compute flavours",
+              "image:v1:add": "Add software images",
+              "image:v1:delete": "Delete software images",
+              "image:v1:query": "Query software images",
+              "image:v1:update": "Update software images",
+              "network:v1:allocate": "Allocate network resources",
+              "network:v1:query": "Query network resources",
+              "network:v1:terminate": "Terminate network resources",
+              "network:v1:update": "Update network resources",
+              "storage:v1:allocate": "Allocate volumes",
+              "storage:v1:migrate": "Migrate volumes",
+              "storage:v1:operate": "Snapshot volumes",
+              "storage:v1:query": "Query volumes",
+              "storage:v1:scale": "Resize volumes",
+              "storage:v1:terminate": "Terminate volumes",
+              "storage:v1:update": "Update volumes"
+            },
+            "tokenUrl": "https://idp.example.com/oauth2/token"
+          }
+        },
+        "type": "oauth2"
+      }
+    }
+  },
+  "info": {
+    "title": "Kube-VIM API",
+    "version": "0.0.0-dev"
+  },
+  "openapi": "3.1.0",
+  "paths": {
+    "/compute/v1/computes": {
+      "get": {
+        "operationId": "ListComputes",
+        "parameters": [
+          {
+            "description": "Attribute-based filter expression (SOL 013 5.2).",
+            "in": "query",
+            "name": "filter",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Marker of the page to return, from a previous response (SOL 013 5.4).",
+            "in": "query",
+            "name": "nextpage_opaque_marker",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/Compute"
+                  },
+                  "type": "array"
+                }
+              }
+            },
+            "description": "A successful response.",
+            "headers": {
+              "Link": {
+                "description": "URI of the next page, rel=\"next\", carrying nextpage_opaque_marker; absent on the last page (SOL 013 5.4.2).",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Error (SOL 013 6)."
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "compute:v1:query"
+            ]
+          }
+        ],
+        "summary": "Returns the compute resources matching a filter.",
+        "tags": [
+          "ComputeService"
+        ]
+      },
+      "post": {
+        "operationId": "CreateCompute",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "compute": {
+                    "$ref": "#/components/schemas/Compute",
+                    "description": "Compute resource to create: name, flavour, image, placement groups and metadata."
+                  },
+                  "networkInterfaces": {
+                    "description": "Network interfaces in addition to the management interface.",
+                    "items": {
+                      "$ref": "#/components/schemas/NetworkInterfaceData"
+                    },
+                    "type": "array"
+                  },
+                  "start": {
+                    "description": "Start the compute resource once created; unset means true.",
+                    "type": "boolean"
+                  },
+                  "userData": {
+                    "$ref": "#/components/schemas/UserData",
+                    "description": "User data passed at boot time."
+                  }
+                },
+                "required": [
+                  "compute"
+                ],
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Compute"
+                }
+              }
+            },
+            "description": "A virtualised compute resource: a virtual machine.",
+            "headers": {
+              "Location": {
+                "description": "URI of the created resource.",
+                "schema": {
+                  "format": "uri",
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Error (SOL 013 6)."
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "compute:v1:allocate"
+            ]
+          }
+        ],
+        "summary": "Creates a compute resource.",
+        "tags": [
+          "ComputeService"
+        ]
+      }
+    },
+    "/compute/v1/computes/{compute_id}": {
+      "delete": {
+        "operationId": "DeleteCompute",
+        "parameters": [
+          {
+            "description": "Identifier of the compute resource.",
+            "in": "path",
+            "name": "compute_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Also delete the attached volumes created with the storage API; they are detached and kept when unset.",
+            "in": "query",
+            "name": "deleteVolumes",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Error (SOL 013 6)."
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "compute:v1:terminate"
+            ]
+          }
+        ],
+        "summary": "Deletes a compute resource with its boot disk and the disks from its flavour. Attached volumes\nare detached and kept unless delete_volumes is set; snapshots are kept.",
+        "tags": [
+          "ComputeService"
+        ]
+      },
+      "get": {
+        "operationId": "GetCompute",
+        "parameters": [
+          {
+            "description": "Identifier of the compute resource.",
+            "in": "path",
+            "name": "compute_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Compute"
+                }
+              }
+            },
+            "description": "A virtualised compute resource: a virtual machine."
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Error (SOL 013 6)."
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "compute:v1:query"
+            ]
+          }
+        ],
+        "summary": "Returns one compute resource.",
+        "tags": [
+          "ComputeService"
+        ]
+      },
+      "patch": {
+        "operationId": "UpdateCompute",
+        "parameters": [
+          {
+            "description": "Identifier of the compute resource.",
+            "in": "path",
+            "name": "compute_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ComputeUpdate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Compute"
+                }
+              }
+            },
+            "description": "A virtualised compute resource: a virtual machine."
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Error (SOL 013 6)."
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "compute:v1:update"
+            ]
+          }
+        ],
+        "summary": "Updates a compute resource: its name and metadata, and adds or removes network interfaces.",
+        "tags": [
+          "ComputeService"
+        ]
+      }
+    },
+    "/compute/v1/computes/{compute_id}/attachVolume": {
+      "post": {
+        "operationId": "AttachVolume",
+        "parameters": [
+          {
+            "description": "Identifier of the compute resource.",
+            "in": "path",
+            "name": "compute_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "volumeId": {
+                    "description": "Identifier of the volume to attach.",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "volumeId"
+                ],
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Compute"
+                }
+              }
+            },
+            "description": "A virtualised compute resource: a virtual machine."
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Error (SOL 013 6)."
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "compute:v1:update"
+            ]
+          }
+        ],
+        "summary": "Attaches a volume to a compute resource.",
+        "tags": [
+          "ComputeService"
+        ]
+      }
+    },
+    "/compute/v1/computes/{compute_id}/detachVolume": {
+      "post": {
+        "operationId": "DetachVolume",
+        "parameters": [
+          {
+            "description": "Identifier of the compute resource.",
+            "in": "path",
+            "name": "compute_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "volumeId": {
+                    "description": "Identifier of the volume to detach.",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "volumeId"
+                ],
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Compute"
+                }
+              }
+            },
+            "description": "A virtualised compute resource: a virtual machine."
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Error (SOL 013 6)."
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "compute:v1:update"
+            ]
+          }
+        ],
+        "summary": "Detaches a volume from a compute resource.",
+        "tags": [
+          "ComputeService"
+        ]
+      }
+    },
+    "/compute/v1/computes/{compute_id}/migrate": {
+      "post": {
+        "operationId": "MigrateCompute",
+        "parameters": [
+          {
+            "description": "Identifier of the compute resource.",
+            "in": "path",
+            "name": "compute_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Compute"
+                }
+              }
+            },
+            "description": "A virtualised compute resource: a virtual machine."
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Error (SOL 013 6)."
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "compute:v1:migrate"
+            ]
+          }
+        ],
+        "summary": "Moves a running compute resource to another host (live migration).",
+        "tags": [
+          "ComputeService"
+        ]
+      }
+    },
+    "/compute/v1/computes/{compute_id}/operate": {
+      "post": {
+        "operationId": "OperateCompute",
+        "parameters": [
+          {
+            "description": "Identifier of the compute resource.",
+            "in": "path",
+            "name": "compute_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "computeOperation": {
+                    "$ref": "#/components/schemas/ComputeOperation",
+                    "description": "Operation to run."
+                  }
+                },
+                "required": [
+                  "computeOperation"
+                ],
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Compute"
+                }
+              }
+            },
+            "description": "A virtualised compute resource: a virtual machine."
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Error (SOL 013 6)."
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "compute:v1:operate"
+            ]
+          }
+        ],
+        "summary": "Changes the running state of a compute resource, e.g. start, stop or reboot.",
+        "tags": [
+          "ComputeService"
+        ]
+      }
+    },
+    "/compute/v1/computes/{compute_id}/scale": {
+      "post": {
+        "operationId": "ScaleCompute",
+        "parameters": [
+          {
+            "description": "Identifier of the compute resource.",
+            "in": "path",
+            "name": "compute_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "flavourId": {
+                    "description": "Flavour to resize to.",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "flavourId"
+                ],
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Compute"
+                }
+              }
+            },
+            "description": "A virtualised compute resource: a virtual machine."
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Error (SOL 013 6)."
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "compute:v1:scale"
+            ]
+          }
+        ],
+        "summary": "Changes the flavour of a compute resource; live where KubeVirt can hotplug, otherwise restart_required is set.\nDisks that are larger in the new flavour are grown; shrinking a disk or changing the number, type,\nboot flag or storage class of the disks is rejected.",
+        "tags": [
+          "ComputeService"
+        ]
+      }
+    },
+    "/compute/v1/computes/{compute_id}/snapshots": {
+      "get": {
+        "operationId": "ListComputeSnapshots",
+        "parameters": [
+          {
+            "description": "Compute resource the snapshots belong to, or \"-\" for all compute resources (AIP-159).",
+            "in": "path",
+            "name": "compute_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Attribute-based filter expression (SOL 013 5.2).",
+            "in": "query",
+            "name": "filter",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Marker of the page to return, from a previous response (SOL 013 5.4).",
+            "in": "query",
+            "name": "nextpage_opaque_marker",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/ComputeSnapshot"
+                  },
+                  "type": "array"
+                }
+              }
+            },
+            "description": "A successful response.",
+            "headers": {
+              "Link": {
+                "description": "URI of the next page, rel=\"next\", carrying nextpage_opaque_marker; absent on the last page (SOL 013 5.4.2).",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Error (SOL 013 6)."
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "compute:v1:query"
+            ]
+          }
+        ],
+        "summary": "Returns the snapshots of a compute resource, or of all compute resources with compute_id \"-\".",
+        "tags": [
+          "ComputeService"
+        ]
+      },
+      "post": {
+        "operationId": "CreateComputeSnapshot",
+        "parameters": [
+          {
+            "description": "Compute resource to take the snapshot of.",
+            "in": "path",
+            "name": "compute_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "snapshot": {
+                    "$ref": "#/components/schemas/ComputeSnapshot",
+                    "description": "Snapshot to create: name and metadata."
+                  }
+                },
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ComputeSnapshot"
+                }
+              }
+            },
+            "description": "A snapshot of a compute resource (KubeVirt VirtualMachineSnapshot).",
+            "headers": {
+              "Location": {
+                "description": "URI of the created resource.",
+                "schema": {
+                  "format": "uri",
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Error (SOL 013 6)."
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "compute:v1:operate"
+            ]
+          }
+        ],
+        "summary": "Creates a snapshot of a compute resource.",
+        "tags": [
+          "ComputeService"
+        ]
+      }
+    },
+    "/compute/v1/computes/{compute_id}/snapshots/{snapshot_id}": {
+      "delete": {
+        "operationId": "DeleteComputeSnapshot",
+        "parameters": [
+          {
+            "description": "Compute resource the snapshot belongs to.",
+            "in": "path",
+            "name": "compute_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Identifier of the snapshot.",
+            "in": "path",
+            "name": "snapshot_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Error (SOL 013 6)."
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "compute:v1:operate"
+            ]
+          }
+        ],
+        "summary": "Deletes a snapshot of a compute resource.",
+        "tags": [
+          "ComputeService"
+        ]
+      },
+      "get": {
+        "operationId": "GetComputeSnapshot",
+        "parameters": [
+          {
+            "description": "Compute resource the snapshot belongs to.",
+            "in": "path",
+            "name": "compute_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Identifier of the snapshot.",
+            "in": "path",
+            "name": "snapshot_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ComputeSnapshot"
+                }
+              }
+            },
+            "description": "A snapshot of a compute resource (KubeVirt VirtualMachineSnapshot)."
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Error (SOL 013 6)."
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "compute:v1:query"
+            ]
+          }
+        ],
+        "summary": "Returns one snapshot of a compute resource, also after the compute resource is deleted.",
+        "tags": [
+          "ComputeService"
+        ]
+      }
+    },
+    "/compute/v1/computes/{compute_id}/snapshots/{snapshot_id}/revert": {
+      "post": {
+        "operationId": "RevertComputeSnapshot",
+        "parameters": [
+          {
+            "description": "Compute resource to revert; it must be stopped.",
+            "in": "path",
+            "name": "compute_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Identifier of the snapshot to revert to.",
+            "in": "path",
+            "name": "snapshot_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Compute"
+                }
+              }
+            },
+            "description": "A virtualised compute resource: a virtual machine."
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Error (SOL 013 6)."
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "compute:v1:operate"
+            ]
+          }
+        ],
+        "summary": "Reverts a stopped compute resource to a snapshot; not possible once the compute resource is deleted.",
+        "tags": [
+          "ComputeService"
+        ]
+      }
+    },
+    "/compute/v1/placementGroups": {
+      "get": {
+        "operationId": "ListPlacementGroups",
+        "parameters": [
+          {
+            "description": "Attribute-based filter expression (SOL 013 5.2).",
+            "in": "query",
+            "name": "filter",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Marker of the page to return, from a previous response (SOL 013 5.4).",
+            "in": "query",
+            "name": "nextpage_opaque_marker",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/PlacementGroup"
+                  },
+                  "type": "array"
+                }
+              }
+            },
+            "description": "A successful response.",
+            "headers": {
+              "Link": {
+                "description": "URI of the next page, rel=\"next\", carrying nextpage_opaque_marker; absent on the last page (SOL 013 5.4.2).",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Error (SOL 013 6)."
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "compute:v1:query"
+            ]
+          }
+        ],
+        "summary": "Returns the placement groups.",
+        "tags": [
+          "ComputeService"
+        ]
+      },
+      "post": {
+        "operationId": "CreatePlacementGroup",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "placementGroup": {
+                    "$ref": "#/components/schemas/PlacementGroup",
+                    "description": "Group to create."
+                  }
+                },
+                "required": [
+                  "placementGroup"
+                ],
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlacementGroup"
+                }
+              }
+            },
+            "description": "A group of compute resources placed together or apart.",
+            "headers": {
+              "Location": {
+                "description": "URI of the created resource.",
+                "schema": {
+                  "format": "uri",
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Error (SOL 013 6)."
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "compute:v1:allocate"
+            ]
+          }
+        ],
+        "summary": "Creates a placement group.",
+        "tags": [
+          "ComputeService"
+        ]
+      }
+    },
+    "/compute/v1/placementGroups/{placement_group_id}": {
+      "delete": {
+        "operationId": "DeletePlacementGroup",
+        "parameters": [
+          {
+            "description": "Identifier of the group.",
+            "in": "path",
+            "name": "placement_group_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Error (SOL 013 6)."
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "compute:v1:terminate"
+            ]
+          }
+        ],
+        "summary": "Deletes a placement group that has no members.",
+        "tags": [
+          "ComputeService"
+        ]
+      },
+      "get": {
+        "operationId": "GetPlacementGroup",
+        "parameters": [
+          {
+            "description": "Identifier of the group.",
+            "in": "path",
+            "name": "placement_group_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlacementGroup"
+                }
+              }
+            },
+            "description": "A group of compute resources placed together or apart."
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Error (SOL 013 6)."
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "compute:v1:query"
+            ]
+          }
+        ],
+        "summary": "Returns one placement group.",
+        "tags": [
+          "ComputeService"
+        ]
+      }
+    },
+    "/flavour/v1/flavours": {
+      "get": {
+        "operationId": "ListFlavours",
+        "parameters": [
+          {
+            "description": "Attribute-based filter expression (SOL 013 5.2).",
+            "in": "query",
+            "name": "filter",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Marker of the page to return, from a previous response (SOL 013 5.4).",
+            "in": "query",
+            "name": "nextpage_opaque_marker",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/Flavour"
+                  },
+                  "type": "array"
+                }
+              }
+            },
+            "description": "A successful response.",
+            "headers": {
+              "Link": {
+                "description": "URI of the next page, rel=\"next\", carrying nextpage_opaque_marker; absent on the last page (SOL 013 5.4.2).",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Error (SOL 013 6)."
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "flavour:v1:query"
+            ]
+          }
+        ],
+        "summary": "Returns the compute flavours matching a filter.",
+        "tags": [
+          "FlavourService"
+        ]
+      },
+      "post": {
+        "operationId": "CreateFlavour",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "flavour": {
+                    "$ref": "#/components/schemas/Flavour",
+                    "description": "Flavour to create."
+                  }
+                },
+                "required": [
+                  "flavour"
+                ],
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Flavour"
+                }
+              }
+            },
+            "description": "Memory, CPU and storage of the compute resources created from it.",
+            "headers": {
+              "Location": {
+                "description": "URI of the created resource.",
+                "schema": {
+                  "format": "uri",
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Error (SOL 013 6)."
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "flavour:v1:create"
+            ]
+          }
+        ],
+        "summary": "Creates a compute flavour.",
+        "tags": [
+          "FlavourService"
+        ]
+      }
+    },
+    "/flavour/v1/flavours/{flavour_id}": {
+      "delete": {
+        "operationId": "DeleteFlavour",
+        "parameters": [
+          {
+            "description": "Identifier of the flavour.",
+            "in": "path",
+            "name": "flavour_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Error (SOL 013 6)."
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "flavour:v1:delete"
+            ]
+          }
+        ],
+        "summary": "Deletes a compute flavour. Compute resources already created from it are not affected.",
+        "tags": [
+          "FlavourService"
+        ]
+      },
+      "get": {
+        "operationId": "GetFlavour",
+        "parameters": [
+          {
+            "description": "Identifier of the flavour.",
+            "in": "path",
+            "name": "flavour_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Flavour"
+                }
+              }
+            },
+            "description": "Memory, CPU and storage of the compute resources created from it."
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Error (SOL 013 6)."
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "flavour:v1:query"
+            ]
+          }
+        ],
+        "summary": "Returns one compute flavour.",
+        "tags": [
+          "FlavourService"
+        ]
+      }
+    },
+    "/image/v1/imageSources": {
+      "get": {
+        "operationId": "ListImageSources",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/ImageSourceType"
+                  },
+                  "type": "array"
+                }
+              }
+            },
+            "description": "A successful response."
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Error (SOL 013 6)."
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "image:v1:query"
+            ]
+          }
+        ],
+        "summary": "Returns the image source types this VIM accepts.",
+        "tags": [
+          "ImageService"
+        ]
+      }
+    },
+    "/image/v1/images": {
+      "get": {
+        "operationId": "ListImages",
+        "parameters": [
+          {
+            "description": "Attribute-based filter expression (SOL 013 5.2).",
+            "in": "query",
+            "name": "filter",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Marker of the page to return, from a previous response (SOL 013 5.4).",
+            "in": "query",
+            "name": "nextpage_opaque_marker",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/Image"
+                  },
+                  "type": "array"
+                }
+              }
+            },
+            "description": "A successful response.",
+            "headers": {
+              "Link": {
+                "description": "URI of the next page, rel=\"next\", carrying nextpage_opaque_marker; absent on the last page (SOL 013 5.4.2).",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Error (SOL 013 6)."
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "image:v1:query"
+            ]
+          }
+        ],
+        "summary": "Returns the software images matching a filter, including images of catalog backends.",
+        "tags": [
+          "ImageService"
+        ]
+      },
+      "post": {
+        "operationId": "CreateImage",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "image": {
+                    "$ref": "#/components/schemas/Image",
+                    "description": "Software image to add."
+                  }
+                },
+                "required": [
+                  "image"
+                ],
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Image"
+                }
+              }
+            },
+            "description": "A software image in the image repository managed by the VIM.",
+            "headers": {
+              "Location": {
+                "description": "URI of the created resource.",
+                "schema": {
+                  "format": "uri",
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Error (SOL 013 6)."
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "image:v1:add"
+            ]
+          }
+        ],
+        "summary": "Adds a software image to the image repository managed by the VIM.",
+        "tags": [
+          "ImageService"
+        ]
+      }
+    },
+    "/image/v1/images/{image_id}": {
+      "delete": {
+        "operationId": "DeleteImage",
+        "parameters": [
+          {
+            "description": "Identifier of the software image.",
+            "in": "path",
+            "name": "image_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Error (SOL 013 6)."
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "image:v1:delete"
+            ]
+          }
+        ],
+        "summary": "Deletes a software image and its imported copies; compute resources created from it keep their disks.",
+        "tags": [
+          "ImageService"
+        ]
+      },
+      "get": {
+        "operationId": "GetImage",
+        "parameters": [
+          {
+            "description": "Identifier of the software image.",
+            "in": "path",
+            "name": "image_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Image"
+                }
+              }
+            },
+            "description": "A software image in the image repository managed by the VIM."
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Error (SOL 013 6)."
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "image:v1:query"
+            ]
+          }
+        ],
+        "summary": "Returns one software image.",
+        "tags": [
+          "ImageService"
+        ]
+      },
+      "patch": {
+        "operationId": "UpdateImage",
+        "parameters": [
+          {
+            "description": "Identifier of the software image.",
+            "in": "path",
+            "name": "image_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ImageUpdate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Image"
+                }
+              }
+            },
+            "description": "A software image in the image repository managed by the VIM."
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Error (SOL 013 6)."
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "image:v1:update"
+            ]
+          }
+        ],
+        "summary": "Updates the name and metadata of a software image.",
+        "tags": [
+          "ImageService"
+        ]
+      }
+    },
+    "/network/v1/networks": {
+      "get": {
+        "operationId": "ListNetworks",
+        "parameters": [
+          {
+            "description": "Attribute-based filter expression (SOL 013 5.2).",
+            "in": "query",
+            "name": "filter",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Marker of the page to return, from a previous response (SOL 013 5.4).",
+            "in": "query",
+            "name": "nextpage_opaque_marker",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/Network"
+                  },
+                  "type": "array"
+                }
+              }
+            },
+            "description": "A successful response.",
+            "headers": {
+              "Link": {
+                "description": "URI of the next page, rel=\"next\", carrying nextpage_opaque_marker; absent on the last page (SOL 013 5.4.2).",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Error (SOL 013 6)."
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "network:v1:query"
+            ]
+          }
+        ],
+        "summary": "Returns the networks matching a filter.",
+        "tags": [
+          "NetworkService"
+        ]
+      },
+      "post": {
+        "operationId": "CreateNetwork",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "network": {
+                    "$ref": "#/components/schemas/Network",
+                    "description": "Network to create."
+                  }
+                },
+                "required": [
+                  "network"
+                ],
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Network"
+                }
+              }
+            },
+            "description": "A virtualised network: one layer 2 segment, with at most one IPv4 and one IPv6 subnet.",
+            "headers": {
+              "Location": {
+                "description": "URI of the created resource.",
+                "schema": {
+                  "format": "uri",
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Error (SOL 013 6)."
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "network:v1:allocate"
+            ]
+          }
+        ],
+        "summary": "Creates a network.",
+        "tags": [
+          "NetworkService"
+        ]
+      }
+    },
+    "/network/v1/networks/{network_id}": {
+      "delete": {
+        "operationId": "DeleteNetwork",
+        "parameters": [
+          {
+            "description": "Identifier of the network.",
+            "in": "path",
+            "name": "network_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Error (SOL 013 6)."
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "network:v1:terminate"
+            ]
+          }
+        ],
+        "summary": "Deletes a network and its subnets; may fail with RESOURCE_IN_USE while interfaces use the network.",
+        "tags": [
+          "NetworkService"
+        ]
+      },
+      "get": {
+        "operationId": "GetNetwork",
+        "parameters": [
+          {
+            "description": "Identifier of the network.",
+            "in": "path",
+            "name": "network_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Network"
+                }
+              }
+            },
+            "description": "A virtualised network: one layer 2 segment, with at most one IPv4 and one IPv6 subnet."
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Error (SOL 013 6)."
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "network:v1:query"
+            ]
+          }
+        ],
+        "summary": "Returns one network.",
+        "tags": [
+          "NetworkService"
+        ]
+      },
+      "patch": {
+        "operationId": "UpdateNetwork",
+        "parameters": [
+          {
+            "description": "Identifier of the network.",
+            "in": "path",
+            "name": "network_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NetworkUpdate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Network"
+                }
+              }
+            },
+            "description": "A virtualised network: one layer 2 segment, with at most one IPv4 and one IPv6 subnet."
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Error (SOL 013 6)."
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "network:v1:update"
+            ]
+          }
+        ],
+        "summary": "Updates the name and metadata of a network.",
+        "tags": [
+          "NetworkService"
+        ]
+      }
+    },
+    "/network/v1/subnets": {
+      "get": {
+        "operationId": "ListSubnets",
+        "parameters": [
+          {
+            "description": "Attribute-based filter expression (SOL 013 5.2).",
+            "in": "query",
+            "name": "filter",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Marker of the page to return, from a previous response (SOL 013 5.4).",
+            "in": "query",
+            "name": "nextpage_opaque_marker",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/Subnet"
+                  },
+                  "type": "array"
+                }
+              }
+            },
+            "description": "A successful response.",
+            "headers": {
+              "Link": {
+                "description": "URI of the next page, rel=\"next\", carrying nextpage_opaque_marker; absent on the last page (SOL 013 5.4.2).",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Error (SOL 013 6)."
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "network:v1:query"
+            ]
+          }
+        ],
+        "summary": "Returns the subnets matching a filter.",
+        "tags": [
+          "NetworkService"
+        ]
+      },
+      "post": {
+        "operationId": "CreateSubnet",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "subnet": {
+                    "$ref": "#/components/schemas/Subnet",
+                    "description": "Subnet to create; adds an IP version to a network that no interface uses yet."
+                  }
+                },
+                "required": [
+                  "subnet"
+                ],
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Subnet"
+                }
+              }
+            },
+            "description": "A virtualised subnet: one IP version of a network.",
+            "headers": {
+              "Location": {
+                "description": "URI of the created resource.",
+                "schema": {
+                  "format": "uri",
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Error (SOL 013 6)."
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "network:v1:allocate"
+            ]
+          }
+        ],
+        "summary": "Creates a subnet.",
+        "tags": [
+          "NetworkService"
+        ]
+      }
+    },
+    "/network/v1/subnets/{subnet_id}": {
+      "delete": {
+        "operationId": "DeleteSubnet",
+        "parameters": [
+          {
+            "description": "Identifier of the subnet.",
+            "in": "path",
+            "name": "subnet_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Error (SOL 013 6)."
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "network:v1:terminate"
+            ]
+          }
+        ],
+        "summary": "Deletes a subnet: one IP version of a network. May fail with RESOURCE_IN_USE while interfaces\nuse the network; the last subnet of a Kube-OVN network cannot be deleted (delete the network instead).",
+        "tags": [
+          "NetworkService"
+        ]
+      },
+      "get": {
+        "operationId": "GetSubnet",
+        "parameters": [
+          {
+            "description": "Identifier of the subnet.",
+            "in": "path",
+            "name": "subnet_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Subnet"
+                }
+              }
+            },
+            "description": "A virtualised subnet: one IP version of a network."
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Error (SOL 013 6)."
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "network:v1:query"
+            ]
+          }
+        ],
+        "summary": "Returns one subnet.",
+        "tags": [
+          "NetworkService"
+        ]
+      },
+      "patch": {
+        "operationId": "UpdateSubnet",
+        "parameters": [
+          {
+            "description": "Identifier of the subnet.",
+            "in": "path",
+            "name": "subnet_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubnetUpdate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Subnet"
+                }
+              }
+            },
+            "description": "A virtualised subnet: one IP version of a network."
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Error (SOL 013 6)."
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "network:v1:update"
+            ]
+          }
+        ],
+        "summary": "Updates the name and metadata of a subnet.",
+        "tags": [
+          "NetworkService"
+        ]
+      }
+    },
+    "/storage/v1/volumes": {
+      "get": {
+        "operationId": "ListVolumes",
+        "parameters": [
+          {
+            "description": "Attribute-based filter expression (SOL 013 5.2).",
+            "in": "query",
+            "name": "filter",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Marker of the page to return, from a previous response (SOL 013 5.4).",
+            "in": "query",
+            "name": "nextpage_opaque_marker",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/Volume"
+                  },
+                  "type": "array"
+                }
+              }
+            },
+            "description": "A successful response.",
+            "headers": {
+              "Link": {
+                "description": "URI of the next page, rel=\"next\", carrying nextpage_opaque_marker; absent on the last page (SOL 013 5.4.2).",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Error (SOL 013 6)."
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "storage:v1:query"
+            ]
+          }
+        ],
+        "summary": "Returns the volumes matching a filter; the own disks of compute resources are not volumes (see Compute.disks).",
+        "tags": [
+          "StorageService"
+        ]
+      },
+      "post": {
+        "operationId": "CreateVolume",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "volume": {
+                    "$ref": "#/components/schemas/Volume",
+                    "description": "Volume to create: name, size, type, storage class and metadata. Only TYPE_OF_STORAGE_VOLUME,\nwithout is_boot: ephemeral and boot disks belong to a compute resource."
+                  }
+                },
+                "required": [
+                  "volume"
+                ],
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volume"
+                }
+              }
+            },
+            "description": "A virtualised storage resource, e.g. a disk of a compute resource.",
+            "headers": {
+              "Location": {
+                "description": "URI of the created resource.",
+                "schema": {
+                  "format": "uri",
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Error (SOL 013 6)."
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "storage:v1:allocate"
+            ]
+          }
+        ],
+        "summary": "Creates a volume.",
+        "tags": [
+          "StorageService"
+        ]
+      }
+    },
+    "/storage/v1/volumes/{volume_id}": {
+      "delete": {
+        "operationId": "DeleteVolume",
+        "parameters": [
+          {
+            "description": "Identifier of the volume.",
+            "in": "path",
+            "name": "volume_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Error (SOL 013 6)."
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "storage:v1:terminate"
+            ]
+          }
+        ],
+        "summary": "Deletes a volume; may fail with RESOURCE_IN_USE while the volume is attached. Snapshots are kept.",
+        "tags": [
+          "StorageService"
+        ]
+      },
+      "get": {
+        "operationId": "GetVolume",
+        "parameters": [
+          {
+            "description": "Identifier of the volume.",
+            "in": "path",
+            "name": "volume_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volume"
+                }
+              }
+            },
+            "description": "A virtualised storage resource, e.g. a disk of a compute resource."
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Error (SOL 013 6)."
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "storage:v1:query"
+            ]
+          }
+        ],
+        "summary": "Returns one volume.",
+        "tags": [
+          "StorageService"
+        ]
+      },
+      "patch": {
+        "operationId": "UpdateVolume",
+        "parameters": [
+          {
+            "description": "Identifier of the volume.",
+            "in": "path",
+            "name": "volume_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VolumeUpdate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volume"
+                }
+              }
+            },
+            "description": "A virtualised storage resource, e.g. a disk of a compute resource."
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Error (SOL 013 6)."
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "storage:v1:update"
+            ]
+          }
+        ],
+        "summary": "Updates the name and metadata of a volume.",
+        "tags": [
+          "StorageService"
+        ]
+      }
+    },
+    "/storage/v1/volumes/{volume_id}/migrate": {
+      "post": {
+        "operationId": "MigrateVolume",
+        "parameters": [
+          {
+            "description": "Identifier of the volume.",
+            "in": "path",
+            "name": "volume_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "storageClass": {
+                    "description": "Storage class to move the volume to, one labelled kubevim.kubenfv.io/storage=true.",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "storageClass"
+                ],
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volume"
+                }
+              }
+            },
+            "description": "A virtualised storage resource, e.g. a disk of a compute resource."
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Error (SOL 013 6)."
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "storage:v1:migrate"
+            ]
+          }
+        ],
+        "summary": "Moves a volume to another storage class.",
+        "tags": [
+          "StorageService"
+        ]
+      }
+    },
+    "/storage/v1/volumes/{volume_id}/scale": {
+      "post": {
+        "operationId": "ScaleVolume",
+        "parameters": [
+          {
+            "description": "Identifier of the volume.",
+            "in": "path",
+            "name": "volume_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "newSize": {
+                    "description": "New size in Kubernetes quantity format; volumes can only grow (persistent volume claim expansion).",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "newSize"
+                ],
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volume"
+                }
+              }
+            },
+            "description": "A virtualised storage resource, e.g. a disk of a compute resource."
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Error (SOL 013 6)."
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "storage:v1:scale"
+            ]
+          }
+        ],
+        "summary": "Grows a volume.",
+        "tags": [
+          "StorageService"
+        ]
+      }
+    },
+    "/storage/v1/volumes/{volume_id}/snapshots": {
+      "get": {
+        "operationId": "ListVolumeSnapshots",
+        "parameters": [
+          {
+            "description": "Volume the snapshots belong to, or \"-\" for all volumes (AIP-159).",
+            "in": "path",
+            "name": "volume_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Attribute-based filter expression (SOL 013 5.2).",
+            "in": "query",
+            "name": "filter",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Marker of the page to return, from a previous response (SOL 013 5.4).",
+            "in": "query",
+            "name": "nextpage_opaque_marker",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/VolumeSnapshot"
+                  },
+                  "type": "array"
+                }
+              }
+            },
+            "description": "A successful response.",
+            "headers": {
+              "Link": {
+                "description": "URI of the next page, rel=\"next\", carrying nextpage_opaque_marker; absent on the last page (SOL 013 5.4.2).",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Error (SOL 013 6)."
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "storage:v1:query"
+            ]
+          }
+        ],
+        "summary": "Returns the snapshots of a volume, or of all volumes with volume_id \"-\".",
+        "tags": [
+          "StorageService"
+        ]
+      },
+      "post": {
+        "operationId": "CreateVolumeSnapshot",
+        "parameters": [
+          {
+            "description": "Volume to take the snapshot of.",
+            "in": "path",
+            "name": "volume_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "snapshot": {
+                    "$ref": "#/components/schemas/VolumeSnapshot",
+                    "description": "Snapshot to create: name and metadata."
+                  }
+                },
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VolumeSnapshot"
+                }
+              }
+            },
+            "description": "A snapshot of a volume (Kubernetes VolumeSnapshot).",
+            "headers": {
+              "Location": {
+                "description": "URI of the created resource.",
+                "schema": {
+                  "format": "uri",
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Error (SOL 013 6)."
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "storage:v1:operate"
+            ]
+          }
+        ],
+        "summary": "Creates a snapshot of a volume.",
+        "tags": [
+          "StorageService"
+        ]
+      }
+    },
+    "/storage/v1/volumes/{volume_id}/snapshots/{snapshot_id}": {
+      "delete": {
+        "operationId": "DeleteVolumeSnapshot",
+        "parameters": [
+          {
+            "description": "Volume the snapshot belongs to.",
+            "in": "path",
+            "name": "volume_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Identifier of the snapshot.",
+            "in": "path",
+            "name": "snapshot_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Error (SOL 013 6)."
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "storage:v1:operate"
+            ]
+          }
+        ],
+        "summary": "Deletes a snapshot of a volume.",
+        "tags": [
+          "StorageService"
+        ]
+      },
+      "get": {
+        "operationId": "GetVolumeSnapshot",
+        "parameters": [
+          {
+            "description": "Volume the snapshot belongs to.",
+            "in": "path",
+            "name": "volume_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Identifier of the snapshot.",
+            "in": "path",
+            "name": "snapshot_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VolumeSnapshot"
+                }
+              }
+            },
+            "description": "A snapshot of a volume (Kubernetes VolumeSnapshot)."
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Error (SOL 013 6)."
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "storage:v1:query"
+            ]
+          }
+        ],
+        "summary": "Returns one snapshot of a volume, also after the volume is deleted.",
+        "tags": [
+          "StorageService"
+        ]
+      }
+    },
+    "/storage/v1/volumes/{volume_id}/snapshots/{snapshot_id}/revert": {
+      "post": {
+        "operationId": "RevertVolumeSnapshot",
+        "parameters": [
+          {
+            "description": "Volume to revert; no running compute resource may use it.",
+            "in": "path",
+            "name": "volume_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Identifier of the snapshot to revert to.",
+            "in": "path",
+            "name": "snapshot_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volume"
+                }
+              }
+            },
+            "description": "A virtualised storage resource, e.g. a disk of a compute resource."
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Error (SOL 013 6)."
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "storage:v1:operate"
+            ]
+          }
+        ],
+        "summary": "Reverts a volume that no running compute resource uses to a snapshot; not possible once the volume is deleted.",
+        "tags": [
+          "StorageService"
+        ]
+      }
+    }
+  }
+}
