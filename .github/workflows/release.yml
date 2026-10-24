@@ -12,6 +12,8 @@ jobs:
   release:
     name: Build and publish
     runs-on: ubuntu-latest
+    # PyPI trusted publisher for kubevim-client is bound to this environment.
+    environment: pypi
     permissions:
       contents: write   # create GitHub Release
       id-token: write   # PyPI trusted publishing
