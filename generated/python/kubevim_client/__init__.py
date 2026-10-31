@@ -94,6 +94,7 @@ __all__ = [
     "ScaleComputeRequest",
     "ScaleVolumeRequest",
     "SnapshotStatus",
+    "SriovSettings",
     "Subnet",
     "SubnetData",
     "SubnetUpdate",
@@ -197,6 +198,7 @@ from kubevim_client.models.s3_source import S3Source as S3Source
 from kubevim_client.models.scale_compute_request import ScaleComputeRequest as ScaleComputeRequest
 from kubevim_client.models.scale_volume_request import ScaleVolumeRequest as ScaleVolumeRequest
 from kubevim_client.models.snapshot_status import SnapshotStatus as SnapshotStatus
+from kubevim_client.models.sriov_settings import SriovSettings as SriovSettings
 from kubevim_client.models.subnet import Subnet as Subnet
 from kubevim_client.models.subnet_data import SubnetData as SubnetData
 from kubevim_client.models.subnet_update import SubnetUpdate as SubnetUpdate

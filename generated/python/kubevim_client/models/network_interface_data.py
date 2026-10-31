@@ -21,6 +21,7 @@ from pydantic import BaseModel, ConfigDict, Field, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from kubevim_client.models.ip_assignment import IpAssignment
 from kubevim_client.models.nic_model import NicModel
+from kubevim_client.models.type_virtual_nic import TypeVirtualNic
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -36,7 +37,8 @@ class NetworkInterfaceData(BaseModel):
     model: Optional[NicModel] = Field(default=None, description="NIC model the guest sees; virtio when unset.")
     name: Optional[StrictStr] = Field(default=None, description="Name of the interface, unique within the compute resource; the VIM chooses one when unset.")
     network_id: StrictStr = Field(description="Network to attach to; the interface gets one address per subnet of the network.", alias="networkId")
-    __properties: ClassVar[List[str]] = ["bandwidth", "ipAddresses", "ipAssignment", "macAddress", "model", "name", "networkId"]
+    type_virtual_nic: Optional[TypeVirtualNic] = Field(default=None, description="How the interface is attached to its network; BRIDGE when unset. SRIOV needs a network with sriov settings and takes no addresses from the VIM.", alias="typeVirtualNic")
+    __properties: ClassVar[List[str]] = ["bandwidth", "ipAddresses", "ipAssignment", "macAddress", "model", "name", "networkId", "typeVirtualNic"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -95,7 +97,8 @@ class NetworkInterfaceData(BaseModel):
             "macAddress": obj.get("macAddress"),
             "model": obj.get("model"),
             "name": obj.get("name"),
-            "networkId": obj.get("networkId")
+            "networkId": obj.get("networkId"),
+            "typeVirtualNic": obj.get("typeVirtualNic")
         })
         return _obj
 

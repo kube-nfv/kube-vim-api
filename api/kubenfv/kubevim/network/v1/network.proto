@@ -390,7 +390,24 @@ message Network {
       }
     }
   ];
+  // Settings for SRIOV interfaces on the network; an SRIOV interface needs them. Only for VLAN and FLAT networks.
+  SriovSettings sriov = 12 [
+    (google.api.field_behavior) = OPTIONAL,
+    (google.api.field_behavior) = IMMUTABLE,
+    (kubenfv.kubevim.options.v1.ifa_field) = {
+      departure: {
+        kind: KIND_EXTENSION
+        translates: true
+        rationale: "SR-IOV interfaces take virtual functions from a pool on the provider network's uplink; IFA has no such attribute."
+      }
+    }
+  ];
 
+  option (buf.validate.message).cel = {
+    id: "network.sriov"
+    message: "sriov settings are only for VLAN and FLAT networks"
+    expression: "this.network_type != 1 || !has(this.sriov)"
+  };
   option (buf.validate.message).cel = {
     id: "network.provider"
     message: "VLAN and FLAT networks need a providerNetwork; GENEVE networks take none"
@@ -401,6 +418,18 @@ message Network {
     message: "VLAN networks need a segmentationId from 1 to 4094; GENEVE and FLAT networks take none"
     expression: "this.network_type == 2 ? (this.segmentation_id >= 1u && this.segmentation_id <= 4094u) : this.segmentation_id == 0u"
   };
+}
+
+// Settings for SRIOV interfaces on a network.
+message SriovSettings {
+  // Name of the pool of SR-IOV virtual functions on the provider network's uplink, known to the VIM.
+  string pool = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).string = {
+      min_len: 1
+      max_len: 253
+    }
+  ];
 }
 
 // How traffic of a network is separated.

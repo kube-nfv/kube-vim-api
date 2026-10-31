@@ -15,6 +15,7 @@ Name | Type | Description | Notes
 **operational_state** | [**OperationalState**](OperationalState.md) | Operational state of the network. | [optional] [readonly] 
 **provider_network** | **str** | Name of a provider network known to the VIM; required for VLAN and FLAT networks, absent for GENEVE. | [optional] 
 **segmentation_id** | **int** | VLAN ID of a VLAN network; absent for GENEVE and FLAT networks. | [optional] 
+**sriov** | [**SriovSettings**](SriovSettings.md) | Settings for SRIOV interfaces on the network; an SRIOV interface needs them. Only for VLAN and FLAT networks. | [optional] 
 **subnet_ids** | **List[str]** | Subnets of the network: at most one per IP version. | [optional] [readonly] 
 
 ## Example

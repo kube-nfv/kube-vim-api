@@ -42,6 +42,17 @@ func TestNetworkValidation(t *testing.T) {
 			msg:   &networkv1.CreateNetworkRequest{},
 			valid: true,
 		},
+		"vlan with sriov pool": {
+			json:  network(`{"networkType":"NETWORK_TYPE_VLAN","providerNetwork":"physnet1","segmentationId":100,"sriov":{"pool":"physnet1_vfio"}}`),
+			msg:   &networkv1.CreateNetworkRequest{},
+			valid: true,
+		},
+		"sriov without pool": {
+			json: network(`{"networkType":"NETWORK_TYPE_FLAT","providerNetwork":"physnet1","sriov":{}}`), msg: &networkv1.CreateNetworkRequest{},
+		},
+		"geneve with sriov": {
+			json: network(`{"networkType":"NETWORK_TYPE_GENEVE","sriov":{"pool":"physnet1_vfio"},"layer3Attributes":[` + v4 + `]}`), msg: &networkv1.CreateNetworkRequest{},
+		},
 		"no network type": {
 			json: network(`{"networkName":"x"}`), msg: &networkv1.CreateNetworkRequest{},
 		},

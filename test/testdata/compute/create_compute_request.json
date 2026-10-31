@@ -23,9 +23,16 @@
     {
       "name": "data1",
       "networkId": "3e2d1c0b-9a8f-4e7d-8c6b-5a4f3e2d1c0b",
+      "typeVirtualNic": "TYPE_VIRTUAL_NIC_BRIDGE",
       "model": "NIC_MODEL_E1000",
       "bandwidth": 1000,
       "macAddress": "02:00:00:aa:bb:02"
+    },
+    {
+      "name": "data2",
+      "networkId": "3e2d1c0b-9a8f-4e7d-8c6b-5a4f3e2d1c0b",
+      "typeVirtualNic": "TYPE_VIRTUAL_NIC_SRIOV",
+      "ipAssignment": "IP_ASSIGNMENT_NONE"
     }
   ],
   "userData": {

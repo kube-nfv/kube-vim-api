@@ -797,7 +797,7 @@ enum TypeVirtualNic {
   TYPE_VIRTUAL_NIC_UNSPECIFIED = 0;
   // Virtual NIC bridged to the network.
   TYPE_VIRTUAL_NIC_BRIDGE = 1;
-  // SR-IOV virtual function.
+  // SR-IOV virtual function from the pool in the network's sriov settings.
   TYPE_VIRTUAL_NIC_SRIOV = 2;
   // NAT to the pod network; the management interface.
   TYPE_VIRTUAL_NIC_MASQUERADE = 3;
@@ -845,7 +845,23 @@ message NetworkInterfaceData {
     (buf.validate.field).string.uuid = true,
     (kubenfv.kubevim.options.v1.ifa_field) = {ref: "IFA006 8.4.3.7 VirtualInterfaceData.networkId"}
   ];
-  reserved 3;
+  // How the interface is attached to its network; BRIDGE when unset. SRIOV needs a network with sriov
+  // settings and takes no addresses from the VIM.
+  TypeVirtualNic type_virtual_nic = 3 [
+    (google.api.field_behavior) = OPTIONAL,
+    (buf.validate.field).enum = {
+      defined_only: true
+      not_in: [3]
+    },
+    (kubenfv.kubevim.options.v1.ifa_field) = {
+      ref: "IFA006 8.4.2.6 VirtualNetworkInterfaceData.typeVirtualNic"
+      departure: {
+        kind: KIND_DEVIATION
+        translates: true
+        rationale: "IFA leaves the type unspecified; a closed enumeration."
+      }
+    }
+  ];
   // NIC model the guest sees; virtio when unset.
   NicModel model = 4 [
     (google.api.field_behavior) = OPTIONAL,
@@ -918,6 +934,11 @@ message NetworkInterfaceData {
     message: "at most one address per IP version"
     expression: "this.ip_addresses.size() < 2 || this.ip_addresses[0].isIp(4) != this.ip_addresses[1].isIp(4)"
   };
+  option (buf.validate.message).cel = {
+    id: "interface.sriov_no_addresses"
+    message: "SRIOV interfaces need ipAssignment IP_ASSIGNMENT_NONE"
+    expression: "this.type_virtual_nic != 2 || this.ip_assignment == 3"
+  };
 }
 
 // How a network interface gets its addresses.
@@ -927,7 +948,8 @@ enum IpAssignment {
   IP_ASSIGNMENT_AUTOMATIC = 1;
   // The addresses in ip_addresses are used; subnets of the network with no address given are allocated automatically.
   IP_ASSIGNMENT_STATIC = 2;
-  // No addresses: a layer 2 interface, or the guest configures its own. Not available on Kube-OVN networks yet.
+  // No addresses: a layer 2 interface, or the guest configures its own. The only mode for SRIOV interfaces;
+  // not available for BRIDGE interfaces yet.
   IP_ASSIGNMENT_NONE = 3;
 }
 

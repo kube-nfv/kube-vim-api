@@ -412,6 +412,10 @@
           "networkId": {
             "description": "Network to attach to; the interface gets one address per subnet of the network.",
             "type": "string"
+          },
+          "typeVirtualNic": {
+            "$ref": "#/components/schemas/kubenfv.kubevim.compute.v1.TypeVirtualNic",
+            "description": "How the interface is attached to its network; BRIDGE when unset. SRIOV needs a network with sriov\nsettings and takes no addresses from the VIM."
           }
         },
         "required": [

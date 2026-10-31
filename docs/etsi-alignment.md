@@ -54,7 +54,7 @@ What Kube-VIM adds to the IFA model.
 - Hugepages and guest CPU topology (sockets, cores, threads).
 
 **Networks**
-- Provider networks by name; Kube-VIM decides how each is realised.
+- Provider networks by name, and a pool of SR-IOV virtual functions per network for VMs that attach to it with SR-IOV.
 - Dual-stack: a network holds one IPv4 and one IPv6 subnet, and an interface gets an address from each.
 - MTU and DNS servers.
 

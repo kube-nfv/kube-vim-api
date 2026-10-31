@@ -66,6 +66,7 @@ docs/S3Source.md
 docs/ScaleComputeRequest.md
 docs/ScaleVolumeRequest.md
 docs/SnapshotStatus.md
+docs/SriovSettings.md
 docs/StorageServiceApi.md
 docs/Subnet.md
 docs/SubnetData.md
@@ -161,6 +162,7 @@ kubevim_client/models/s3_source.py
 kubevim_client/models/scale_compute_request.py
 kubevim_client/models/scale_volume_request.py
 kubevim_client/models/snapshot_status.py
+kubevim_client/models/sriov_settings.py
 kubevim_client/models/subnet.py
 kubevim_client/models/subnet_data.py
 kubevim_client/models/subnet_update.py

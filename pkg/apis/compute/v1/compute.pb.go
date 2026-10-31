@@ -114,7 +114,7 @@ const (
 	TypeVirtualNic_TYPE_VIRTUAL_NIC_UNSPECIFIED TypeVirtualNic = 0
 	// Virtual NIC bridged to the network.
 	TypeVirtualNic_TYPE_VIRTUAL_NIC_BRIDGE TypeVirtualNic = 1
-	// SR-IOV virtual function.
+	// SR-IOV virtual function from the pool in the network's sriov settings.
 	TypeVirtualNic_TYPE_VIRTUAL_NIC_SRIOV TypeVirtualNic = 2
 	// NAT to the pod network; the management interface.
 	TypeVirtualNic_TYPE_VIRTUAL_NIC_MASQUERADE TypeVirtualNic = 3
@@ -226,7 +226,8 @@ const (
 	IpAssignment_IP_ASSIGNMENT_AUTOMATIC IpAssignment = 1
 	// The addresses in ip_addresses are used; subnets of the network with no address given are allocated automatically.
 	IpAssignment_IP_ASSIGNMENT_STATIC IpAssignment = 2
-	// No addresses: a layer 2 interface, or the guest configures its own. Not available on Kube-OVN networks yet.
+	// No addresses: a layer 2 interface, or the guest configures its own. The only mode for SRIOV interfaces;
+	// not available for BRIDGE interfaces yet.
 	IpAssignment_IP_ASSIGNMENT_NONE IpAssignment = 3
 )
 
@@ -1078,6 +1079,9 @@ type NetworkInterfaceData struct {
 	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	// Network to attach to; the interface gets one address per subnet of the network.
 	NetworkId string `protobuf:"bytes,2,opt,name=network_id,json=networkId,proto3" json:"network_id,omitempty"`
+	// How the interface is attached to its network; BRIDGE when unset. SRIOV needs a network with sriov
+	// settings and takes no addresses from the VIM.
+	TypeVirtualNic TypeVirtualNic `protobuf:"varint,3,opt,name=type_virtual_nic,json=typeVirtualNic,proto3,enum=kubenfv.kubevim.compute.v1.TypeVirtualNic" json:"type_virtual_nic,omitempty"`
 	// NIC model the guest sees; virtio when unset.
 	Model NicModel `protobuf:"varint,4,opt,name=model,proto3,enum=kubenfv.kubevim.compute.v1.NicModel" json:"model,omitempty"`
 	// Rate limit in Mbps; 0 means no limit.
@@ -1134,6 +1138,13 @@ func (x *NetworkInterfaceData) GetNetworkId() string {
 		return x.NetworkId
 	}
 	return ""
+}
+
+func (x *NetworkInterfaceData) GetTypeVirtualNic() TypeVirtualNic {
+	if x != nil {
+		return x.TypeVirtualNic
+	}
+	return TypeVirtualNic_TYPE_VIRTUAL_NIC_UNSPECIFIED
 }
 
 func (x *NetworkInterfaceData) GetModel() NicModel {
@@ -2753,12 +2764,14 @@ const file_kubenfv_kubevim_compute_v1_compute_proto_rawDesc = "" +
 	"\x10host_pci_address\x18\v \x01(\tBv\xfa\x8b\x19r\x12p\b\x01\x10\x01\x1ajLets the consumer correlate an SR-IOV VF with the host NIC; replaces the v0 host-pci-address metadata key.R\x0ehostPciAddress\x12\x94\x01\n" +
 	"\x11guest_pci_address\x18\f \x01(\tBh\xfa\x8b\x19d\x12b\b\x01\x10\x01\x1a\\Lets the consumer find the interface in the guest; the guest device order is not guaranteed.R\x0fguestPciAddress\x12\x9a\x01\n" +
 	"\x14guest_interface_name\x18\r \x01(\tBh\xfa\x8b\x19d\x12b\b\x01\x10\x01\x1a\\Lets the consumer find the interface in the guest; the guest device order is not guaranteed.R\x12guestInterfaceName:,\xfa\x8b\x19(\n" +
-	"&IFA006 8.4.3.6 VirtualNetworkInterface\"\xf8\f\n" +
+	"&IFA006 8.4.3.6 VirtualNetworkInterface\"\xe6\x0f\n" +
 	"\x14NetworkInterfaceData\x12\xa4\x01\n" +
 	"\x04name\x18\x01 \x01(\tB\x8f\x01\xe2A\x01\x01\xbaH(\xd8\x01\x01r#\x18?2\x1f^[a-z0-9]([-a-z0-9]*[a-z0-9])?$\xfa\x8b\x19\\\x12Z\b\x01\x10\x01\x1aTLets the consumer match interfaces in responses, e.g. two interfaces on one network.R\x04name\x12^\n" +
 	"\n" +
 	"network_id\x18\x02 \x01(\tB?\xe2A\x01\x02\xbaH\x05r\x03\xb0\x01\x01\xfa\x8b\x19/\n" +
-	"-IFA006 8.4.3.7 VirtualInterfaceData.networkIdR\tnetworkId\x12\x8d\x01\n" +
+	"-IFA006 8.4.3.7 VirtualInterfaceData.networkIdR\tnetworkId\x12\xe2\x01\n" +
+	"\x10type_virtual_nic\x18\x03 \x01(\x0e2*.kubenfv.kubevim.compute.v1.TypeVirtualNicB\x8b\x01\xe2A\x01\x01\xbaH\a\x82\x01\x04\x10\x01 \x03\xfa\x8b\x19y\n" +
+	"9IFA006 8.4.2.6 VirtualNetworkInterfaceData.typeVirtualNic\x12<\b\x03\x10\x01\x1a6IFA leaves the type unspecified; a closed enumeration.R\x0etypeVirtualNic\x12\x8d\x01\n" +
 	"\x05model\x18\x04 \x01(\x0e2$.kubenfv.kubevim.compute.v1.NicModelBQ\xe2A\x01\x01\xbaH\x05\x82\x01\x02\x10\x01\xfa\x8b\x19A\x12?\b\x01\x10\x01\x1a9Guests without virtio drivers need an emulated NIC model.R\x05model\x12\x94\x01\n" +
 	"\tbandwidth\x18\x05 \x01(\rBv\xe2A\x01\x01\xfa\x8b\x19n\n" +
 	"4IFA006 8.4.2.6 VirtualNetworkInterfaceData.bandwidth\x126\b\x03\x10\x01\x1a0A rate limit, where IFA leaves the meaning open.R\tbandwidth\x12\xd6\x01\n" +
@@ -2767,10 +2780,11 @@ const file_kubenfv_kubevim_compute_v1_compute_proto_rawDesc = "" +
 	"-IFA006 8.4.3.7 VirtualInterfaceData.ipAddress\x12\x1d\b\x03\x10\x01\x1a\x17Plural name for a list.R\vipAddresses\x12\x87\x01\n" +
 	"\vmac_address\x18\b \x01(\tBf\xe2A\x01\x01\xbaH+\xd8\x01\x01r&2$^([0-9a-fA-F]{2}:){5}[0-9a-fA-F]{2}$\xfa\x8b\x190\n" +
 	".IFA006 8.4.3.7 VirtualInterfaceData.macAddressR\n" +
-	"macAddress:\xbe\x04\xbaH\xe8\x02\x1a\xba\x01\n" +
+	"macAddress:\xcd\x05\xbaH\xf7\x03\x1a\xba\x01\n" +
 	"\x17interface.ip_assignment\x12GipAddresses is required for STATIC assignment and not allowed otherwise\x1aVthis.ip_assignment == 2 ? this.ip_addresses.size() > 0 : this.ip_addresses.size() == 0\x1a\xa8\x01\n" +
-	"$interface.one_address_per_ip_version\x12\"at most one address per IP version\x1a\\this.ip_addresses.size() < 2 || this.ip_addresses[0].isIp(4) != this.ip_addresses[1].isIp(4)\xfa\x8b\x19\xcd\x01\n" +
-	"HIFA006 8.4.3.7 VirtualInterfaceData, 8.4.2.6 VirtualNetworkInterfaceData\x12\x80\x01\b\x03\x10\x01\x1azOne list on allocation: IFA's per-instance VirtualInterfaceData merged with the flavour-level VirtualNetworkInterfaceData.J\x04\b\x03\x10\x04\"\xf8\x01\n" +
+	"$interface.one_address_per_ip_version\x12\"at most one address per IP version\x1a\\this.ip_addresses.size() < 2 || this.ip_addresses[0].isIp(4) != this.ip_addresses[1].isIp(4)\x1a\x8c\x01\n" +
+	"\x1cinterface.sriov_no_addresses\x125SRIOV interfaces need ipAssignment IP_ASSIGNMENT_NONE\x1a5this.type_virtual_nic != 2 || this.ip_assignment == 3\xfa\x8b\x19\xcd\x01\n" +
+	"HIFA006 8.4.3.7 VirtualInterfaceData, 8.4.2.6 VirtualNetworkInterfaceData\x12\x80\x01\b\x03\x10\x01\x1azOne list on allocation: IFA's per-instance VirtualInterfaceData merged with the flavour-level VirtualNetworkInterfaceData.\"\xf8\x01\n" +
 	"\bUserData\x12J\n" +
 	"\acontent\x18\x01 \x01(\tB0\xe2A\x02\x02\x04\xbaH\x04r\x02\x10\x01\xfa\x8b\x19 \n" +
 	"\x1eIFA006 8.4.10 UserData.contentR\acontent\x12\x81\x01\n" +
@@ -3161,71 +3175,72 @@ var file_kubenfv_kubevim_compute_v1_compute_proto_depIdxs = []int32{
 	1,  // 10: kubenfv.kubevim.compute.v1.VirtualNetworkInterface.type_virtual_nic:type_name -> kubenfv.kubevim.compute.v1.TypeVirtualNic
 	2,  // 11: kubenfv.kubevim.compute.v1.VirtualNetworkInterface.model:type_name -> kubenfv.kubevim.compute.v1.NicModel
 	46, // 12: kubenfv.kubevim.compute.v1.VirtualNetworkInterface.operational_state:type_name -> kubenfv.kubevim.common.v1.OperationalState
-	2,  // 13: kubenfv.kubevim.compute.v1.NetworkInterfaceData.model:type_name -> kubenfv.kubevim.compute.v1.NicModel
-	3,  // 14: kubenfv.kubevim.compute.v1.NetworkInterfaceData.ip_assignment:type_name -> kubenfv.kubevim.compute.v1.IpAssignment
-	4,  // 15: kubenfv.kubevim.compute.v1.UserData.method:type_name -> kubenfv.kubevim.compute.v1.UserDataTransportationMethod
-	9,  // 16: kubenfv.kubevim.compute.v1.CreateComputeRequest.compute:type_name -> kubenfv.kubevim.compute.v1.Compute
-	14, // 17: kubenfv.kubevim.compute.v1.CreateComputeRequest.network_interfaces:type_name -> kubenfv.kubevim.compute.v1.NetworkInterfaceData
-	15, // 18: kubenfv.kubevim.compute.v1.CreateComputeRequest.user_data:type_name -> kubenfv.kubevim.compute.v1.UserData
-	9,  // 19: kubenfv.kubevim.compute.v1.ListComputesResponse.computes:type_name -> kubenfv.kubevim.compute.v1.Compute
-	21, // 20: kubenfv.kubevim.compute.v1.UpdateComputeRequest.update:type_name -> kubenfv.kubevim.compute.v1.ComputeUpdate
-	42, // 21: kubenfv.kubevim.compute.v1.ComputeUpdate.metadata:type_name -> kubenfv.kubevim.compute.v1.ComputeUpdate.MetadataEntry
-	14, // 22: kubenfv.kubevim.compute.v1.ComputeUpdate.network_interfaces_to_add:type_name -> kubenfv.kubevim.compute.v1.NetworkInterfaceData
-	5,  // 23: kubenfv.kubevim.compute.v1.OperateComputeRequest.compute_operation:type_name -> kubenfv.kubevim.compute.v1.ComputeOperation
-	49, // 24: kubenfv.kubevim.compute.v1.ComputeSnapshot.created_at:type_name -> google.protobuf.Timestamp
-	50, // 25: kubenfv.kubevim.compute.v1.ComputeSnapshot.status:type_name -> kubenfv.kubevim.common.v1.SnapshotStatus
-	43, // 26: kubenfv.kubevim.compute.v1.ComputeSnapshot.metadata:type_name -> kubenfv.kubevim.compute.v1.ComputeSnapshot.MetadataEntry
-	28, // 27: kubenfv.kubevim.compute.v1.CreateComputeSnapshotRequest.snapshot:type_name -> kubenfv.kubevim.compute.v1.ComputeSnapshot
-	28, // 28: kubenfv.kubevim.compute.v1.ListComputeSnapshotsResponse.snapshots:type_name -> kubenfv.kubevim.compute.v1.ComputeSnapshot
-	6,  // 29: kubenfv.kubevim.compute.v1.PlacementGroup.type:type_name -> kubenfv.kubevim.compute.v1.PlacementType
-	7,  // 30: kubenfv.kubevim.compute.v1.PlacementGroup.scope:type_name -> kubenfv.kubevim.compute.v1.PlacementScope
-	8,  // 31: kubenfv.kubevim.compute.v1.PlacementGroup.enforcement:type_name -> kubenfv.kubevim.compute.v1.PlacementEnforcement
-	44, // 32: kubenfv.kubevim.compute.v1.PlacementGroup.metadata:type_name -> kubenfv.kubevim.compute.v1.PlacementGroup.MetadataEntry
-	35, // 33: kubenfv.kubevim.compute.v1.CreatePlacementGroupRequest.placement_group:type_name -> kubenfv.kubevim.compute.v1.PlacementGroup
-	35, // 34: kubenfv.kubevim.compute.v1.ListPlacementGroupsResponse.placement_groups:type_name -> kubenfv.kubevim.compute.v1.PlacementGroup
-	16, // 35: kubenfv.kubevim.compute.v1.ComputeService.CreateCompute:input_type -> kubenfv.kubevim.compute.v1.CreateComputeRequest
-	17, // 36: kubenfv.kubevim.compute.v1.ComputeService.GetCompute:input_type -> kubenfv.kubevim.compute.v1.GetComputeRequest
-	18, // 37: kubenfv.kubevim.compute.v1.ComputeService.ListComputes:input_type -> kubenfv.kubevim.compute.v1.ListComputesRequest
-	20, // 38: kubenfv.kubevim.compute.v1.ComputeService.UpdateCompute:input_type -> kubenfv.kubevim.compute.v1.UpdateComputeRequest
-	22, // 39: kubenfv.kubevim.compute.v1.ComputeService.DeleteCompute:input_type -> kubenfv.kubevim.compute.v1.DeleteComputeRequest
-	23, // 40: kubenfv.kubevim.compute.v1.ComputeService.OperateCompute:input_type -> kubenfv.kubevim.compute.v1.OperateComputeRequest
-	24, // 41: kubenfv.kubevim.compute.v1.ComputeService.ScaleCompute:input_type -> kubenfv.kubevim.compute.v1.ScaleComputeRequest
-	25, // 42: kubenfv.kubevim.compute.v1.ComputeService.MigrateCompute:input_type -> kubenfv.kubevim.compute.v1.MigrateComputeRequest
-	26, // 43: kubenfv.kubevim.compute.v1.ComputeService.AttachVolume:input_type -> kubenfv.kubevim.compute.v1.AttachVolumeRequest
-	27, // 44: kubenfv.kubevim.compute.v1.ComputeService.DetachVolume:input_type -> kubenfv.kubevim.compute.v1.DetachVolumeRequest
-	29, // 45: kubenfv.kubevim.compute.v1.ComputeService.CreateComputeSnapshot:input_type -> kubenfv.kubevim.compute.v1.CreateComputeSnapshotRequest
-	30, // 46: kubenfv.kubevim.compute.v1.ComputeService.GetComputeSnapshot:input_type -> kubenfv.kubevim.compute.v1.GetComputeSnapshotRequest
-	31, // 47: kubenfv.kubevim.compute.v1.ComputeService.ListComputeSnapshots:input_type -> kubenfv.kubevim.compute.v1.ListComputeSnapshotsRequest
-	33, // 48: kubenfv.kubevim.compute.v1.ComputeService.DeleteComputeSnapshot:input_type -> kubenfv.kubevim.compute.v1.DeleteComputeSnapshotRequest
-	34, // 49: kubenfv.kubevim.compute.v1.ComputeService.RevertComputeSnapshot:input_type -> kubenfv.kubevim.compute.v1.RevertComputeSnapshotRequest
-	36, // 50: kubenfv.kubevim.compute.v1.ComputeService.CreatePlacementGroup:input_type -> kubenfv.kubevim.compute.v1.CreatePlacementGroupRequest
-	37, // 51: kubenfv.kubevim.compute.v1.ComputeService.GetPlacementGroup:input_type -> kubenfv.kubevim.compute.v1.GetPlacementGroupRequest
-	38, // 52: kubenfv.kubevim.compute.v1.ComputeService.ListPlacementGroups:input_type -> kubenfv.kubevim.compute.v1.ListPlacementGroupsRequest
-	40, // 53: kubenfv.kubevim.compute.v1.ComputeService.DeletePlacementGroup:input_type -> kubenfv.kubevim.compute.v1.DeletePlacementGroupRequest
-	9,  // 54: kubenfv.kubevim.compute.v1.ComputeService.CreateCompute:output_type -> kubenfv.kubevim.compute.v1.Compute
-	9,  // 55: kubenfv.kubevim.compute.v1.ComputeService.GetCompute:output_type -> kubenfv.kubevim.compute.v1.Compute
-	19, // 56: kubenfv.kubevim.compute.v1.ComputeService.ListComputes:output_type -> kubenfv.kubevim.compute.v1.ListComputesResponse
-	9,  // 57: kubenfv.kubevim.compute.v1.ComputeService.UpdateCompute:output_type -> kubenfv.kubevim.compute.v1.Compute
-	51, // 58: kubenfv.kubevim.compute.v1.ComputeService.DeleteCompute:output_type -> google.protobuf.Empty
-	9,  // 59: kubenfv.kubevim.compute.v1.ComputeService.OperateCompute:output_type -> kubenfv.kubevim.compute.v1.Compute
-	9,  // 60: kubenfv.kubevim.compute.v1.ComputeService.ScaleCompute:output_type -> kubenfv.kubevim.compute.v1.Compute
-	9,  // 61: kubenfv.kubevim.compute.v1.ComputeService.MigrateCompute:output_type -> kubenfv.kubevim.compute.v1.Compute
-	9,  // 62: kubenfv.kubevim.compute.v1.ComputeService.AttachVolume:output_type -> kubenfv.kubevim.compute.v1.Compute
-	9,  // 63: kubenfv.kubevim.compute.v1.ComputeService.DetachVolume:output_type -> kubenfv.kubevim.compute.v1.Compute
-	28, // 64: kubenfv.kubevim.compute.v1.ComputeService.CreateComputeSnapshot:output_type -> kubenfv.kubevim.compute.v1.ComputeSnapshot
-	28, // 65: kubenfv.kubevim.compute.v1.ComputeService.GetComputeSnapshot:output_type -> kubenfv.kubevim.compute.v1.ComputeSnapshot
-	32, // 66: kubenfv.kubevim.compute.v1.ComputeService.ListComputeSnapshots:output_type -> kubenfv.kubevim.compute.v1.ListComputeSnapshotsResponse
-	51, // 67: kubenfv.kubevim.compute.v1.ComputeService.DeleteComputeSnapshot:output_type -> google.protobuf.Empty
-	9,  // 68: kubenfv.kubevim.compute.v1.ComputeService.RevertComputeSnapshot:output_type -> kubenfv.kubevim.compute.v1.Compute
-	35, // 69: kubenfv.kubevim.compute.v1.ComputeService.CreatePlacementGroup:output_type -> kubenfv.kubevim.compute.v1.PlacementGroup
-	35, // 70: kubenfv.kubevim.compute.v1.ComputeService.GetPlacementGroup:output_type -> kubenfv.kubevim.compute.v1.PlacementGroup
-	39, // 71: kubenfv.kubevim.compute.v1.ComputeService.ListPlacementGroups:output_type -> kubenfv.kubevim.compute.v1.ListPlacementGroupsResponse
-	51, // 72: kubenfv.kubevim.compute.v1.ComputeService.DeletePlacementGroup:output_type -> google.protobuf.Empty
-	54, // [54:73] is the sub-list for method output_type
-	35, // [35:54] is the sub-list for method input_type
-	35, // [35:35] is the sub-list for extension type_name
-	35, // [35:35] is the sub-list for extension extendee
-	0,  // [0:35] is the sub-list for field type_name
+	1,  // 13: kubenfv.kubevim.compute.v1.NetworkInterfaceData.type_virtual_nic:type_name -> kubenfv.kubevim.compute.v1.TypeVirtualNic
+	2,  // 14: kubenfv.kubevim.compute.v1.NetworkInterfaceData.model:type_name -> kubenfv.kubevim.compute.v1.NicModel
+	3,  // 15: kubenfv.kubevim.compute.v1.NetworkInterfaceData.ip_assignment:type_name -> kubenfv.kubevim.compute.v1.IpAssignment
+	4,  // 16: kubenfv.kubevim.compute.v1.UserData.method:type_name -> kubenfv.kubevim.compute.v1.UserDataTransportationMethod
+	9,  // 17: kubenfv.kubevim.compute.v1.CreateComputeRequest.compute:type_name -> kubenfv.kubevim.compute.v1.Compute
+	14, // 18: kubenfv.kubevim.compute.v1.CreateComputeRequest.network_interfaces:type_name -> kubenfv.kubevim.compute.v1.NetworkInterfaceData
+	15, // 19: kubenfv.kubevim.compute.v1.CreateComputeRequest.user_data:type_name -> kubenfv.kubevim.compute.v1.UserData
+	9,  // 20: kubenfv.kubevim.compute.v1.ListComputesResponse.computes:type_name -> kubenfv.kubevim.compute.v1.Compute
+	21, // 21: kubenfv.kubevim.compute.v1.UpdateComputeRequest.update:type_name -> kubenfv.kubevim.compute.v1.ComputeUpdate
+	42, // 22: kubenfv.kubevim.compute.v1.ComputeUpdate.metadata:type_name -> kubenfv.kubevim.compute.v1.ComputeUpdate.MetadataEntry
+	14, // 23: kubenfv.kubevim.compute.v1.ComputeUpdate.network_interfaces_to_add:type_name -> kubenfv.kubevim.compute.v1.NetworkInterfaceData
+	5,  // 24: kubenfv.kubevim.compute.v1.OperateComputeRequest.compute_operation:type_name -> kubenfv.kubevim.compute.v1.ComputeOperation
+	49, // 25: kubenfv.kubevim.compute.v1.ComputeSnapshot.created_at:type_name -> google.protobuf.Timestamp
+	50, // 26: kubenfv.kubevim.compute.v1.ComputeSnapshot.status:type_name -> kubenfv.kubevim.common.v1.SnapshotStatus
+	43, // 27: kubenfv.kubevim.compute.v1.ComputeSnapshot.metadata:type_name -> kubenfv.kubevim.compute.v1.ComputeSnapshot.MetadataEntry
+	28, // 28: kubenfv.kubevim.compute.v1.CreateComputeSnapshotRequest.snapshot:type_name -> kubenfv.kubevim.compute.v1.ComputeSnapshot
+	28, // 29: kubenfv.kubevim.compute.v1.ListComputeSnapshotsResponse.snapshots:type_name -> kubenfv.kubevim.compute.v1.ComputeSnapshot
+	6,  // 30: kubenfv.kubevim.compute.v1.PlacementGroup.type:type_name -> kubenfv.kubevim.compute.v1.PlacementType
+	7,  // 31: kubenfv.kubevim.compute.v1.PlacementGroup.scope:type_name -> kubenfv.kubevim.compute.v1.PlacementScope
+	8,  // 32: kubenfv.kubevim.compute.v1.PlacementGroup.enforcement:type_name -> kubenfv.kubevim.compute.v1.PlacementEnforcement
+	44, // 33: kubenfv.kubevim.compute.v1.PlacementGroup.metadata:type_name -> kubenfv.kubevim.compute.v1.PlacementGroup.MetadataEntry
+	35, // 34: kubenfv.kubevim.compute.v1.CreatePlacementGroupRequest.placement_group:type_name -> kubenfv.kubevim.compute.v1.PlacementGroup
+	35, // 35: kubenfv.kubevim.compute.v1.ListPlacementGroupsResponse.placement_groups:type_name -> kubenfv.kubevim.compute.v1.PlacementGroup
+	16, // 36: kubenfv.kubevim.compute.v1.ComputeService.CreateCompute:input_type -> kubenfv.kubevim.compute.v1.CreateComputeRequest
+	17, // 37: kubenfv.kubevim.compute.v1.ComputeService.GetCompute:input_type -> kubenfv.kubevim.compute.v1.GetComputeRequest
+	18, // 38: kubenfv.kubevim.compute.v1.ComputeService.ListComputes:input_type -> kubenfv.kubevim.compute.v1.ListComputesRequest
+	20, // 39: kubenfv.kubevim.compute.v1.ComputeService.UpdateCompute:input_type -> kubenfv.kubevim.compute.v1.UpdateComputeRequest
+	22, // 40: kubenfv.kubevim.compute.v1.ComputeService.DeleteCompute:input_type -> kubenfv.kubevim.compute.v1.DeleteComputeRequest
+	23, // 41: kubenfv.kubevim.compute.v1.ComputeService.OperateCompute:input_type -> kubenfv.kubevim.compute.v1.OperateComputeRequest
+	24, // 42: kubenfv.kubevim.compute.v1.ComputeService.ScaleCompute:input_type -> kubenfv.kubevim.compute.v1.ScaleComputeRequest
+	25, // 43: kubenfv.kubevim.compute.v1.ComputeService.MigrateCompute:input_type -> kubenfv.kubevim.compute.v1.MigrateComputeRequest
+	26, // 44: kubenfv.kubevim.compute.v1.ComputeService.AttachVolume:input_type -> kubenfv.kubevim.compute.v1.AttachVolumeRequest
+	27, // 45: kubenfv.kubevim.compute.v1.ComputeService.DetachVolume:input_type -> kubenfv.kubevim.compute.v1.DetachVolumeRequest
+	29, // 46: kubenfv.kubevim.compute.v1.ComputeService.CreateComputeSnapshot:input_type -> kubenfv.kubevim.compute.v1.CreateComputeSnapshotRequest
+	30, // 47: kubenfv.kubevim.compute.v1.ComputeService.GetComputeSnapshot:input_type -> kubenfv.kubevim.compute.v1.GetComputeSnapshotRequest
+	31, // 48: kubenfv.kubevim.compute.v1.ComputeService.ListComputeSnapshots:input_type -> kubenfv.kubevim.compute.v1.ListComputeSnapshotsRequest
+	33, // 49: kubenfv.kubevim.compute.v1.ComputeService.DeleteComputeSnapshot:input_type -> kubenfv.kubevim.compute.v1.DeleteComputeSnapshotRequest
+	34, // 50: kubenfv.kubevim.compute.v1.ComputeService.RevertComputeSnapshot:input_type -> kubenfv.kubevim.compute.v1.RevertComputeSnapshotRequest
+	36, // 51: kubenfv.kubevim.compute.v1.ComputeService.CreatePlacementGroup:input_type -> kubenfv.kubevim.compute.v1.CreatePlacementGroupRequest
+	37, // 52: kubenfv.kubevim.compute.v1.ComputeService.GetPlacementGroup:input_type -> kubenfv.kubevim.compute.v1.GetPlacementGroupRequest
+	38, // 53: kubenfv.kubevim.compute.v1.ComputeService.ListPlacementGroups:input_type -> kubenfv.kubevim.compute.v1.ListPlacementGroupsRequest
+	40, // 54: kubenfv.kubevim.compute.v1.ComputeService.DeletePlacementGroup:input_type -> kubenfv.kubevim.compute.v1.DeletePlacementGroupRequest
+	9,  // 55: kubenfv.kubevim.compute.v1.ComputeService.CreateCompute:output_type -> kubenfv.kubevim.compute.v1.Compute
+	9,  // 56: kubenfv.kubevim.compute.v1.ComputeService.GetCompute:output_type -> kubenfv.kubevim.compute.v1.Compute
+	19, // 57: kubenfv.kubevim.compute.v1.ComputeService.ListComputes:output_type -> kubenfv.kubevim.compute.v1.ListComputesResponse
+	9,  // 58: kubenfv.kubevim.compute.v1.ComputeService.UpdateCompute:output_type -> kubenfv.kubevim.compute.v1.Compute
+	51, // 59: kubenfv.kubevim.compute.v1.ComputeService.DeleteCompute:output_type -> google.protobuf.Empty
+	9,  // 60: kubenfv.kubevim.compute.v1.ComputeService.OperateCompute:output_type -> kubenfv.kubevim.compute.v1.Compute
+	9,  // 61: kubenfv.kubevim.compute.v1.ComputeService.ScaleCompute:output_type -> kubenfv.kubevim.compute.v1.Compute
+	9,  // 62: kubenfv.kubevim.compute.v1.ComputeService.MigrateCompute:output_type -> kubenfv.kubevim.compute.v1.Compute
+	9,  // 63: kubenfv.kubevim.compute.v1.ComputeService.AttachVolume:output_type -> kubenfv.kubevim.compute.v1.Compute
+	9,  // 64: kubenfv.kubevim.compute.v1.ComputeService.DetachVolume:output_type -> kubenfv.kubevim.compute.v1.Compute
+	28, // 65: kubenfv.kubevim.compute.v1.ComputeService.CreateComputeSnapshot:output_type -> kubenfv.kubevim.compute.v1.ComputeSnapshot
+	28, // 66: kubenfv.kubevim.compute.v1.ComputeService.GetComputeSnapshot:output_type -> kubenfv.kubevim.compute.v1.ComputeSnapshot
+	32, // 67: kubenfv.kubevim.compute.v1.ComputeService.ListComputeSnapshots:output_type -> kubenfv.kubevim.compute.v1.ListComputeSnapshotsResponse
+	51, // 68: kubenfv.kubevim.compute.v1.ComputeService.DeleteComputeSnapshot:output_type -> google.protobuf.Empty
+	9,  // 69: kubenfv.kubevim.compute.v1.ComputeService.RevertComputeSnapshot:output_type -> kubenfv.kubevim.compute.v1.Compute
+	35, // 70: kubenfv.kubevim.compute.v1.ComputeService.CreatePlacementGroup:output_type -> kubenfv.kubevim.compute.v1.PlacementGroup
+	35, // 71: kubenfv.kubevim.compute.v1.ComputeService.GetPlacementGroup:output_type -> kubenfv.kubevim.compute.v1.PlacementGroup
+	39, // 72: kubenfv.kubevim.compute.v1.ComputeService.ListPlacementGroups:output_type -> kubenfv.kubevim.compute.v1.ListPlacementGroupsResponse
+	51, // 73: kubenfv.kubevim.compute.v1.ComputeService.DeletePlacementGroup:output_type -> google.protobuf.Empty
+	55, // [55:74] is the sub-list for method output_type
+	36, // [36:55] is the sub-list for method input_type
+	36, // [36:36] is the sub-list for extension type_name
+	36, // [36:36] is the sub-list for extension extendee
+	0,  // [0:36] is the sub-list for field type_name
 }
 
 func init() { file_kubenfv_kubevim_compute_v1_compute_proto_init() }
