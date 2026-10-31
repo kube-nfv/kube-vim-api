@@ -21,6 +21,7 @@ from pydantic import BaseModel, ConfigDict, Field, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from kubevim_client.models.network_type import NetworkType
 from kubevim_client.models.operational_state import OperationalState
+from kubevim_client.models.sriov_settings import SriovSettings
 from kubevim_client.models.subnet_data import SubnetData
 from typing import Optional, Set
 from typing_extensions import Self
@@ -39,8 +40,9 @@ class Network(BaseModel):
     operational_state: Optional[OperationalState] = Field(default=None, description="Operational state of the network.", alias="operationalState")
     provider_network: Optional[StrictStr] = Field(default=None, description="Name of a provider network known to the VIM; required for VLAN and FLAT networks, absent for GENEVE.", alias="providerNetwork")
     segmentation_id: Optional[StrictInt] = Field(default=None, description="VLAN ID of a VLAN network; absent for GENEVE and FLAT networks.", alias="segmentationId")
+    sriov: Optional[SriovSettings] = Field(default=None, description="Settings for SRIOV interfaces on the network; an SRIOV interface needs them. Only for VLAN and FLAT networks.")
     subnet_ids: Optional[List[StrictStr]] = Field(default=None, description="Subnets of the network: at most one per IP version.", alias="subnetIds")
-    __properties: ClassVar[List[str]] = ["layer3Attributes", "metadata", "mtu", "networkId", "networkName", "networkType", "operationalState", "providerNetwork", "segmentationId", "subnetIds"]
+    __properties: ClassVar[List[str]] = ["layer3Attributes", "metadata", "mtu", "networkId", "networkName", "networkType", "operationalState", "providerNetwork", "segmentationId", "sriov", "subnetIds"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -93,6 +95,9 @@ class Network(BaseModel):
             for _item_layer3_attributes in self.layer3_attributes:
                 _items.append(_item_layer3_attributes.to_dict() if _item_layer3_attributes is not None else None)
             _dict['layer3Attributes'] = _items
+        # override the default output from pydantic by calling `to_dict()` of sriov
+        if self.sriov:
+            _dict['sriov'] = self.sriov.to_dict()
         return _dict
 
     @classmethod
@@ -114,6 +119,7 @@ class Network(BaseModel):
             "operationalState": obj.get("operationalState"),
             "providerNetwork": obj.get("providerNetwork"),
             "segmentationId": obj.get("segmentationId"),
+            "sriov": SriovSettings.from_dict(obj["sriov"]) if obj.get("sriov") is not None else None,
             "subnetIds": obj.get("subnetIds")
         })
         return _obj

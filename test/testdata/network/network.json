@@ -9,6 +9,9 @@
   "providerNetwork": "physnet1",
   "segmentationId": 100,
   "mtu": 9000,
+  "sriov": {
+    "pool": "physnet1_vfio"
+  },
   "operationalState": "OPERATIONAL_STATE_ENABLED",
   "metadata": {
     "osm.etsi.org/vld": "data",

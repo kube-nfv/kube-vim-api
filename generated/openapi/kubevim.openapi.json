@@ -765,6 +765,10 @@
             "format": "int64",
             "type": "integer"
           },
+          "sriov": {
+            "$ref": "#/components/schemas/SriovSettings",
+            "description": "Settings for SRIOV interfaces on the network; an SRIOV interface needs them. Only for VLAN and FLAT networks."
+          },
           "subnetIds": {
             "description": "Subnets of the network: at most one per IP version.",
             "items": {
@@ -813,6 +817,10 @@
           "networkId": {
             "description": "Network to attach to; the interface gets one address per subnet of the network.",
             "type": "string"
+          },
+          "typeVirtualNic": {
+            "$ref": "#/components/schemas/TypeVirtualNic",
+            "description": "How the interface is attached to its network; BRIDGE when unset. SRIOV needs a network with sriov\nsettings and takes no addresses from the VIM."
           }
         },
         "required": [
@@ -1068,6 +1076,19 @@
           "SNAPSHOT_STATUS_FAILED"
         ],
         "type": "string"
+      },
+      "SriovSettings": {
+        "description": "Settings for SRIOV interfaces on a network.",
+        "properties": {
+          "pool": {
+            "description": "Name of the pool of SR-IOV virtual functions on the provider network's uplink, known to the VIM.",
+            "type": "string"
+          }
+        },
+        "required": [
+          "pool"
+        ],
+        "type": "object"
       },
       "Subnet": {
         "description": "A virtualised subnet: one IP version of a network.",

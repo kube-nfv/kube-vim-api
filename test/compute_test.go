@@ -75,6 +75,12 @@ func TestComputeValidation(t *testing.T) {
 		"bad mac address": {
 			json: iface(`,"macAddress":"02-00-00-aa-bb-01"`), msg: &computev1.CreateComputeRequest{},
 		},
+		"sriov interface with automatic addresses": {
+			json: iface(`,"typeVirtualNic":"TYPE_VIRTUAL_NIC_SRIOV"`), msg: &computev1.CreateComputeRequest{},
+		},
+		"masquerade interface": {
+			json: iface(`,"typeVirtualNic":"TYPE_VIRTUAL_NIC_MASQUERADE"`), msg: &computev1.CreateComputeRequest{},
+		},
 		"empty user data": {
 			json: create(`,"userData":{"content":""}`), msg: &computev1.CreateComputeRequest{},
 		},

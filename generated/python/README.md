@@ -214,6 +214,7 @@ Class | Method | HTTP request | Description
  - [ScaleComputeRequest](docs/ScaleComputeRequest.md)
  - [ScaleVolumeRequest](docs/ScaleVolumeRequest.md)
  - [SnapshotStatus](docs/SnapshotStatus.md)
+ - [SriovSettings](docs/SriovSettings.md)
  - [Subnet](docs/Subnet.md)
  - [SubnetData](docs/SubnetData.md)
  - [SubnetUpdate](docs/SubnetUpdate.md)

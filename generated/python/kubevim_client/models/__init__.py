@@ -75,6 +75,7 @@ from kubevim_client.models.s3_source import S3Source
 from kubevim_client.models.scale_compute_request import ScaleComputeRequest
 from kubevim_client.models.scale_volume_request import ScaleVolumeRequest
 from kubevim_client.models.snapshot_status import SnapshotStatus
+from kubevim_client.models.sriov_settings import SriovSettings
 from kubevim_client.models.subnet import Subnet
 from kubevim_client.models.subnet_data import SubnetData
 from kubevim_client.models.subnet_update import SubnetUpdate

@@ -107,7 +107,9 @@ type Network struct {
 	// Operational state of the network.
 	OperationalState v1.OperationalState `protobuf:"varint,10,opt,name=operational_state,json=operationalState,proto3,enum=kubenfv.kubevim.common.v1.OperationalState" json:"operational_state,omitempty"`
 	// Metadata set by the consumer and by the VIM; for keys under "kubevim.kubenfv.io/" that the VIM maintains, its value wins.
-	Metadata      map[string]string `protobuf:"bytes,11,rep,name=metadata,proto3" json:"metadata,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	Metadata map[string]string `protobuf:"bytes,11,rep,name=metadata,proto3" json:"metadata,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	// Settings for SRIOV interfaces on the network; an SRIOV interface needs them. Only for VLAN and FLAT networks.
+	Sriov         *SriovSettings `protobuf:"bytes,12,opt,name=sriov,proto3" json:"sriov,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -212,6 +214,59 @@ func (x *Network) GetMetadata() map[string]string {
 	return nil
 }
 
+func (x *Network) GetSriov() *SriovSettings {
+	if x != nil {
+		return x.Sriov
+	}
+	return nil
+}
+
+// Settings for SRIOV interfaces on a network.
+type SriovSettings struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Name of the pool of SR-IOV virtual functions on the provider network's uplink, known to the VIM.
+	Pool          string `protobuf:"bytes,1,opt,name=pool,proto3" json:"pool,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SriovSettings) Reset() {
+	*x = SriovSettings{}
+	mi := &file_kubenfv_kubevim_network_v1_network_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SriovSettings) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SriovSettings) ProtoMessage() {}
+
+func (x *SriovSettings) ProtoReflect() protoreflect.Message {
+	mi := &file_kubenfv_kubevim_network_v1_network_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SriovSettings.ProtoReflect.Descriptor instead.
+func (*SriovSettings) Descriptor() ([]byte, []int) {
+	return file_kubenfv_kubevim_network_v1_network_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *SriovSettings) GetPool() string {
+	if x != nil {
+		return x.Pool
+	}
+	return ""
+}
+
 // Layer 3 attributes of a subnet: one IP version of its network.
 type SubnetData struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
@@ -233,7 +288,7 @@ type SubnetData struct {
 
 func (x *SubnetData) Reset() {
 	*x = SubnetData{}
-	mi := &file_kubenfv_kubevim_network_v1_network_proto_msgTypes[1]
+	mi := &file_kubenfv_kubevim_network_v1_network_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -245,7 +300,7 @@ func (x *SubnetData) String() string {
 func (*SubnetData) ProtoMessage() {}
 
 func (x *SubnetData) ProtoReflect() protoreflect.Message {
-	mi := &file_kubenfv_kubevim_network_v1_network_proto_msgTypes[1]
+	mi := &file_kubenfv_kubevim_network_v1_network_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -258,7 +313,7 @@ func (x *SubnetData) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SubnetData.ProtoReflect.Descriptor instead.
 func (*SubnetData) Descriptor() ([]byte, []int) {
-	return file_kubenfv_kubevim_network_v1_network_proto_rawDescGZIP(), []int{1}
+	return file_kubenfv_kubevim_network_v1_network_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *SubnetData) GetIpVersion() v1.IpVersion {
@@ -322,7 +377,7 @@ type Subnet struct {
 
 func (x *Subnet) Reset() {
 	*x = Subnet{}
-	mi := &file_kubenfv_kubevim_network_v1_network_proto_msgTypes[2]
+	mi := &file_kubenfv_kubevim_network_v1_network_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -334,7 +389,7 @@ func (x *Subnet) String() string {
 func (*Subnet) ProtoMessage() {}
 
 func (x *Subnet) ProtoReflect() protoreflect.Message {
-	mi := &file_kubenfv_kubevim_network_v1_network_proto_msgTypes[2]
+	mi := &file_kubenfv_kubevim_network_v1_network_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -347,7 +402,7 @@ func (x *Subnet) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Subnet.ProtoReflect.Descriptor instead.
 func (*Subnet) Descriptor() ([]byte, []int) {
-	return file_kubenfv_kubevim_network_v1_network_proto_rawDescGZIP(), []int{2}
+	return file_kubenfv_kubevim_network_v1_network_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *Subnet) GetSubnetId() string {
@@ -398,7 +453,7 @@ type IpAddressPool struct {
 
 func (x *IpAddressPool) Reset() {
 	*x = IpAddressPool{}
-	mi := &file_kubenfv_kubevim_network_v1_network_proto_msgTypes[3]
+	mi := &file_kubenfv_kubevim_network_v1_network_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -410,7 +465,7 @@ func (x *IpAddressPool) String() string {
 func (*IpAddressPool) ProtoMessage() {}
 
 func (x *IpAddressPool) ProtoReflect() protoreflect.Message {
-	mi := &file_kubenfv_kubevim_network_v1_network_proto_msgTypes[3]
+	mi := &file_kubenfv_kubevim_network_v1_network_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -423,7 +478,7 @@ func (x *IpAddressPool) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use IpAddressPool.ProtoReflect.Descriptor instead.
 func (*IpAddressPool) Descriptor() ([]byte, []int) {
-	return file_kubenfv_kubevim_network_v1_network_proto_rawDescGZIP(), []int{3}
+	return file_kubenfv_kubevim_network_v1_network_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *IpAddressPool) GetStartIp() string {
@@ -450,7 +505,7 @@ type CreateNetworkRequest struct {
 
 func (x *CreateNetworkRequest) Reset() {
 	*x = CreateNetworkRequest{}
-	mi := &file_kubenfv_kubevim_network_v1_network_proto_msgTypes[4]
+	mi := &file_kubenfv_kubevim_network_v1_network_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -462,7 +517,7 @@ func (x *CreateNetworkRequest) String() string {
 func (*CreateNetworkRequest) ProtoMessage() {}
 
 func (x *CreateNetworkRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_kubenfv_kubevim_network_v1_network_proto_msgTypes[4]
+	mi := &file_kubenfv_kubevim_network_v1_network_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -475,7 +530,7 @@ func (x *CreateNetworkRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateNetworkRequest.ProtoReflect.Descriptor instead.
 func (*CreateNetworkRequest) Descriptor() ([]byte, []int) {
-	return file_kubenfv_kubevim_network_v1_network_proto_rawDescGZIP(), []int{4}
+	return file_kubenfv_kubevim_network_v1_network_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *CreateNetworkRequest) GetNetwork() *Network {
@@ -495,7 +550,7 @@ type CreateSubnetRequest struct {
 
 func (x *CreateSubnetRequest) Reset() {
 	*x = CreateSubnetRequest{}
-	mi := &file_kubenfv_kubevim_network_v1_network_proto_msgTypes[5]
+	mi := &file_kubenfv_kubevim_network_v1_network_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -507,7 +562,7 @@ func (x *CreateSubnetRequest) String() string {
 func (*CreateSubnetRequest) ProtoMessage() {}
 
 func (x *CreateSubnetRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_kubenfv_kubevim_network_v1_network_proto_msgTypes[5]
+	mi := &file_kubenfv_kubevim_network_v1_network_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -520,7 +575,7 @@ func (x *CreateSubnetRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateSubnetRequest.ProtoReflect.Descriptor instead.
 func (*CreateSubnetRequest) Descriptor() ([]byte, []int) {
-	return file_kubenfv_kubevim_network_v1_network_proto_rawDescGZIP(), []int{5}
+	return file_kubenfv_kubevim_network_v1_network_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *CreateSubnetRequest) GetSubnet() *Subnet {
@@ -540,7 +595,7 @@ type GetNetworkRequest struct {
 
 func (x *GetNetworkRequest) Reset() {
 	*x = GetNetworkRequest{}
-	mi := &file_kubenfv_kubevim_network_v1_network_proto_msgTypes[6]
+	mi := &file_kubenfv_kubevim_network_v1_network_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -552,7 +607,7 @@ func (x *GetNetworkRequest) String() string {
 func (*GetNetworkRequest) ProtoMessage() {}
 
 func (x *GetNetworkRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_kubenfv_kubevim_network_v1_network_proto_msgTypes[6]
+	mi := &file_kubenfv_kubevim_network_v1_network_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -565,7 +620,7 @@ func (x *GetNetworkRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetNetworkRequest.ProtoReflect.Descriptor instead.
 func (*GetNetworkRequest) Descriptor() ([]byte, []int) {
-	return file_kubenfv_kubevim_network_v1_network_proto_rawDescGZIP(), []int{6}
+	return file_kubenfv_kubevim_network_v1_network_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *GetNetworkRequest) GetNetworkId() string {
@@ -587,7 +642,7 @@ type ListNetworksRequest struct {
 
 func (x *ListNetworksRequest) Reset() {
 	*x = ListNetworksRequest{}
-	mi := &file_kubenfv_kubevim_network_v1_network_proto_msgTypes[7]
+	mi := &file_kubenfv_kubevim_network_v1_network_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -599,7 +654,7 @@ func (x *ListNetworksRequest) String() string {
 func (*ListNetworksRequest) ProtoMessage() {}
 
 func (x *ListNetworksRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_kubenfv_kubevim_network_v1_network_proto_msgTypes[7]
+	mi := &file_kubenfv_kubevim_network_v1_network_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -612,7 +667,7 @@ func (x *ListNetworksRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListNetworksRequest.ProtoReflect.Descriptor instead.
 func (*ListNetworksRequest) Descriptor() ([]byte, []int) {
-	return file_kubenfv_kubevim_network_v1_network_proto_rawDescGZIP(), []int{7}
+	return file_kubenfv_kubevim_network_v1_network_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *ListNetworksRequest) GetFilter() string {
@@ -641,7 +696,7 @@ type ListNetworksResponse struct {
 
 func (x *ListNetworksResponse) Reset() {
 	*x = ListNetworksResponse{}
-	mi := &file_kubenfv_kubevim_network_v1_network_proto_msgTypes[8]
+	mi := &file_kubenfv_kubevim_network_v1_network_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -653,7 +708,7 @@ func (x *ListNetworksResponse) String() string {
 func (*ListNetworksResponse) ProtoMessage() {}
 
 func (x *ListNetworksResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_kubenfv_kubevim_network_v1_network_proto_msgTypes[8]
+	mi := &file_kubenfv_kubevim_network_v1_network_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -666,7 +721,7 @@ func (x *ListNetworksResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListNetworksResponse.ProtoReflect.Descriptor instead.
 func (*ListNetworksResponse) Descriptor() ([]byte, []int) {
-	return file_kubenfv_kubevim_network_v1_network_proto_rawDescGZIP(), []int{8}
+	return file_kubenfv_kubevim_network_v1_network_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *ListNetworksResponse) GetNetworks() []*Network {
@@ -695,7 +750,7 @@ type UpdateNetworkRequest struct {
 
 func (x *UpdateNetworkRequest) Reset() {
 	*x = UpdateNetworkRequest{}
-	mi := &file_kubenfv_kubevim_network_v1_network_proto_msgTypes[9]
+	mi := &file_kubenfv_kubevim_network_v1_network_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -707,7 +762,7 @@ func (x *UpdateNetworkRequest) String() string {
 func (*UpdateNetworkRequest) ProtoMessage() {}
 
 func (x *UpdateNetworkRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_kubenfv_kubevim_network_v1_network_proto_msgTypes[9]
+	mi := &file_kubenfv_kubevim_network_v1_network_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -720,7 +775,7 @@ func (x *UpdateNetworkRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateNetworkRequest.ProtoReflect.Descriptor instead.
 func (*UpdateNetworkRequest) Descriptor() ([]byte, []int) {
-	return file_kubenfv_kubevim_network_v1_network_proto_rawDescGZIP(), []int{9}
+	return file_kubenfv_kubevim_network_v1_network_proto_rawDescGZIP(), []int{10}
 }
 
 func (x *UpdateNetworkRequest) GetNetworkId() string {
@@ -749,7 +804,7 @@ type NetworkUpdate struct {
 
 func (x *NetworkUpdate) Reset() {
 	*x = NetworkUpdate{}
-	mi := &file_kubenfv_kubevim_network_v1_network_proto_msgTypes[10]
+	mi := &file_kubenfv_kubevim_network_v1_network_proto_msgTypes[11]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -761,7 +816,7 @@ func (x *NetworkUpdate) String() string {
 func (*NetworkUpdate) ProtoMessage() {}
 
 func (x *NetworkUpdate) ProtoReflect() protoreflect.Message {
-	mi := &file_kubenfv_kubevim_network_v1_network_proto_msgTypes[10]
+	mi := &file_kubenfv_kubevim_network_v1_network_proto_msgTypes[11]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -774,7 +829,7 @@ func (x *NetworkUpdate) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use NetworkUpdate.ProtoReflect.Descriptor instead.
 func (*NetworkUpdate) Descriptor() ([]byte, []int) {
-	return file_kubenfv_kubevim_network_v1_network_proto_rawDescGZIP(), []int{10}
+	return file_kubenfv_kubevim_network_v1_network_proto_rawDescGZIP(), []int{11}
 }
 
 func (x *NetworkUpdate) GetNetworkName() string {
@@ -801,7 +856,7 @@ type DeleteNetworkRequest struct {
 
 func (x *DeleteNetworkRequest) Reset() {
 	*x = DeleteNetworkRequest{}
-	mi := &file_kubenfv_kubevim_network_v1_network_proto_msgTypes[11]
+	mi := &file_kubenfv_kubevim_network_v1_network_proto_msgTypes[12]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -813,7 +868,7 @@ func (x *DeleteNetworkRequest) String() string {
 func (*DeleteNetworkRequest) ProtoMessage() {}
 
 func (x *DeleteNetworkRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_kubenfv_kubevim_network_v1_network_proto_msgTypes[11]
+	mi := &file_kubenfv_kubevim_network_v1_network_proto_msgTypes[12]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -826,7 +881,7 @@ func (x *DeleteNetworkRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteNetworkRequest.ProtoReflect.Descriptor instead.
 func (*DeleteNetworkRequest) Descriptor() ([]byte, []int) {
-	return file_kubenfv_kubevim_network_v1_network_proto_rawDescGZIP(), []int{11}
+	return file_kubenfv_kubevim_network_v1_network_proto_rawDescGZIP(), []int{12}
 }
 
 func (x *DeleteNetworkRequest) GetNetworkId() string {
@@ -846,7 +901,7 @@ type GetSubnetRequest struct {
 
 func (x *GetSubnetRequest) Reset() {
 	*x = GetSubnetRequest{}
-	mi := &file_kubenfv_kubevim_network_v1_network_proto_msgTypes[12]
+	mi := &file_kubenfv_kubevim_network_v1_network_proto_msgTypes[13]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -858,7 +913,7 @@ func (x *GetSubnetRequest) String() string {
 func (*GetSubnetRequest) ProtoMessage() {}
 
 func (x *GetSubnetRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_kubenfv_kubevim_network_v1_network_proto_msgTypes[12]
+	mi := &file_kubenfv_kubevim_network_v1_network_proto_msgTypes[13]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -871,7 +926,7 @@ func (x *GetSubnetRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetSubnetRequest.ProtoReflect.Descriptor instead.
 func (*GetSubnetRequest) Descriptor() ([]byte, []int) {
-	return file_kubenfv_kubevim_network_v1_network_proto_rawDescGZIP(), []int{12}
+	return file_kubenfv_kubevim_network_v1_network_proto_rawDescGZIP(), []int{13}
 }
 
 func (x *GetSubnetRequest) GetSubnetId() string {
@@ -893,7 +948,7 @@ type ListSubnetsRequest struct {
 
 func (x *ListSubnetsRequest) Reset() {
 	*x = ListSubnetsRequest{}
-	mi := &file_kubenfv_kubevim_network_v1_network_proto_msgTypes[13]
+	mi := &file_kubenfv_kubevim_network_v1_network_proto_msgTypes[14]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -905,7 +960,7 @@ func (x *ListSubnetsRequest) String() string {
 func (*ListSubnetsRequest) ProtoMessage() {}
 
 func (x *ListSubnetsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_kubenfv_kubevim_network_v1_network_proto_msgTypes[13]
+	mi := &file_kubenfv_kubevim_network_v1_network_proto_msgTypes[14]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -918,7 +973,7 @@ func (x *ListSubnetsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListSubnetsRequest.ProtoReflect.Descriptor instead.
 func (*ListSubnetsRequest) Descriptor() ([]byte, []int) {
-	return file_kubenfv_kubevim_network_v1_network_proto_rawDescGZIP(), []int{13}
+	return file_kubenfv_kubevim_network_v1_network_proto_rawDescGZIP(), []int{14}
 }
 
 func (x *ListSubnetsRequest) GetFilter() string {
@@ -947,7 +1002,7 @@ type ListSubnetsResponse struct {
 
 func (x *ListSubnetsResponse) Reset() {
 	*x = ListSubnetsResponse{}
-	mi := &file_kubenfv_kubevim_network_v1_network_proto_msgTypes[14]
+	mi := &file_kubenfv_kubevim_network_v1_network_proto_msgTypes[15]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -959,7 +1014,7 @@ func (x *ListSubnetsResponse) String() string {
 func (*ListSubnetsResponse) ProtoMessage() {}
 
 func (x *ListSubnetsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_kubenfv_kubevim_network_v1_network_proto_msgTypes[14]
+	mi := &file_kubenfv_kubevim_network_v1_network_proto_msgTypes[15]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -972,7 +1027,7 @@ func (x *ListSubnetsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListSubnetsResponse.ProtoReflect.Descriptor instead.
 func (*ListSubnetsResponse) Descriptor() ([]byte, []int) {
-	return file_kubenfv_kubevim_network_v1_network_proto_rawDescGZIP(), []int{14}
+	return file_kubenfv_kubevim_network_v1_network_proto_rawDescGZIP(), []int{15}
 }
 
 func (x *ListSubnetsResponse) GetSubnets() []*Subnet {
@@ -1001,7 +1056,7 @@ type UpdateSubnetRequest struct {
 
 func (x *UpdateSubnetRequest) Reset() {
 	*x = UpdateSubnetRequest{}
-	mi := &file_kubenfv_kubevim_network_v1_network_proto_msgTypes[15]
+	mi := &file_kubenfv_kubevim_network_v1_network_proto_msgTypes[16]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1013,7 +1068,7 @@ func (x *UpdateSubnetRequest) String() string {
 func (*UpdateSubnetRequest) ProtoMessage() {}
 
 func (x *UpdateSubnetRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_kubenfv_kubevim_network_v1_network_proto_msgTypes[15]
+	mi := &file_kubenfv_kubevim_network_v1_network_proto_msgTypes[16]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1026,7 +1081,7 @@ func (x *UpdateSubnetRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateSubnetRequest.ProtoReflect.Descriptor instead.
 func (*UpdateSubnetRequest) Descriptor() ([]byte, []int) {
-	return file_kubenfv_kubevim_network_v1_network_proto_rawDescGZIP(), []int{15}
+	return file_kubenfv_kubevim_network_v1_network_proto_rawDescGZIP(), []int{16}
 }
 
 func (x *UpdateSubnetRequest) GetSubnetId() string {
@@ -1055,7 +1110,7 @@ type SubnetUpdate struct {
 
 func (x *SubnetUpdate) Reset() {
 	*x = SubnetUpdate{}
-	mi := &file_kubenfv_kubevim_network_v1_network_proto_msgTypes[16]
+	mi := &file_kubenfv_kubevim_network_v1_network_proto_msgTypes[17]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1067,7 +1122,7 @@ func (x *SubnetUpdate) String() string {
 func (*SubnetUpdate) ProtoMessage() {}
 
 func (x *SubnetUpdate) ProtoReflect() protoreflect.Message {
-	mi := &file_kubenfv_kubevim_network_v1_network_proto_msgTypes[16]
+	mi := &file_kubenfv_kubevim_network_v1_network_proto_msgTypes[17]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1080,7 +1135,7 @@ func (x *SubnetUpdate) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SubnetUpdate.ProtoReflect.Descriptor instead.
 func (*SubnetUpdate) Descriptor() ([]byte, []int) {
-	return file_kubenfv_kubevim_network_v1_network_proto_rawDescGZIP(), []int{16}
+	return file_kubenfv_kubevim_network_v1_network_proto_rawDescGZIP(), []int{17}
 }
 
 func (x *SubnetUpdate) GetSubnetName() string {
@@ -1107,7 +1162,7 @@ type DeleteSubnetRequest struct {
 
 func (x *DeleteSubnetRequest) Reset() {
 	*x = DeleteSubnetRequest{}
-	mi := &file_kubenfv_kubevim_network_v1_network_proto_msgTypes[17]
+	mi := &file_kubenfv_kubevim_network_v1_network_proto_msgTypes[18]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1119,7 +1174,7 @@ func (x *DeleteSubnetRequest) String() string {
 func (*DeleteSubnetRequest) ProtoMessage() {}
 
 func (x *DeleteSubnetRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_kubenfv_kubevim_network_v1_network_proto_msgTypes[17]
+	mi := &file_kubenfv_kubevim_network_v1_network_proto_msgTypes[18]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1132,7 +1187,7 @@ func (x *DeleteSubnetRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteSubnetRequest.ProtoReflect.Descriptor instead.
 func (*DeleteSubnetRequest) Descriptor() ([]byte, []int) {
-	return file_kubenfv_kubevim_network_v1_network_proto_rawDescGZIP(), []int{17}
+	return file_kubenfv_kubevim_network_v1_network_proto_rawDescGZIP(), []int{18}
 }
 
 func (x *DeleteSubnetRequest) GetSubnetId() string {
@@ -1146,7 +1201,7 @@ var File_kubenfv_kubevim_network_v1_network_proto protoreflect.FileDescriptor
 
 const file_kubenfv_kubevim_network_v1_network_proto_rawDesc = "" +
 	"\n" +
-	"(kubenfv/kubevim/network/v1/network.proto\x12\x1akubenfv.kubevim.network.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a&kubenfv/kubevim/common/v1/common.proto\x1a%kubenfv/kubevim/common/v1/rules.proto\x1a(kubenfv/kubevim/options/v1/options.proto\x1a.protoc-gen-openapiv3/options/annotations.proto\"\xfa\x10\n" +
+	"(kubenfv/kubevim/network/v1/network.proto\x12\x1akubenfv.kubevim.network.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a&kubenfv/kubevim/common/v1/common.proto\x1a%kubenfv/kubevim/common/v1/rules.proto\x1a(kubenfv/kubevim/options/v1/options.proto\x1a.protoc-gen-openapiv3/options/annotations.proto\"\xb2\x13\n" +
 	"\aNetwork\x12\x9c\x01\n" +
 	"\n" +
 	"network_id\x18\x01 \x01(\tB}\xe2A\x01\x03\xfa\x8b\x19u\n" +
@@ -1171,14 +1226,18 @@ const file_kubenfv_kubevim_network_v1_network_proto_rawDesc = "" +
 	" \x01(\x0e2+.kubenfv.kubevim.common.v1.OperationalStateB8\xe2A\x01\x03\xfa\x8b\x190\n" +
 	".IFA006 8.4.5.2 VirtualNetwork.operationalStateR\x10operationalState\x12\xd3\x01\n" +
 	"\bmetadata\x18\v \x03(\v21.kubenfv.kubevim.network.v1.Network.MetadataEntryB\x83\x01\xe2A\x01\x01\xbaH\a\x9a\x01\x04\xf8\x8b\x19\x01\xfa\x8b\x19q\n" +
-	"&IFA006 8.4.5.2 VirtualNetwork.metadata\x12G\b\x02\x10\x01\x1aAString values only, where IFA KeyValuePair allows any JSON value.R\bmetadata\x1a;\n" +
+	"&IFA006 8.4.5.2 VirtualNetwork.metadata\x12G\b\x02\x10\x01\x1aAString values only, where IFA KeyValuePair allows any JSON value.R\bmetadata\x12\xc4\x01\n" +
+	"\x05sriov\x18\f \x01(\v2).kubenfv.kubevim.network.v1.SriovSettingsB\x82\x01\xe2A\x02\x01\x05\xfa\x8b\x19y\x12w\b\x01\x10\x01\x1aqSR-IOV interfaces take virtual functions from a pool on the provider network's uplink; IFA has no such attribute.R\x05sriov\x1a;\n" +
 	"\rMetadataEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01:\xdc\x03\xbaH\x99\x03\x1a\xb0\x01\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01:\xcd\x04\xbaH\x8a\x04\x1ao\n" +
+	"\rnetwork.sriov\x122sriov settings are only for VLAN and FLAT networks\x1a*this.network_type != 1 || !has(this.sriov)\x1a\xb0\x01\n" +
 	"\x10network.provider\x12HVLAN and FLAT networks need a providerNetwork; GENEVE networks take none\x1aRthis.network_type == 1 ? this.provider_network == '' : this.provider_network != ''\x1a\xe3\x01\n" +
 	"\x14network.segmentation\x12VVLAN networks need a segmentationId from 1 to 4094; GENEVE and FLAT networks take none\x1asthis.network_type == 2 ? (this.segmentation_id >= 1u && this.segmentation_id <= 4094u) : this.segmentation_id == 0u\xfa\x8b\x19;\n" +
 	"9IFA006 8.4.5.2 VirtualNetwork, 8.4.4.2 VirtualNetworkDataJ\x04\b\t\x10\n" +
-	"\"\xec\a\n" +
+	"\"3\n" +
+	"\rSriovSettings\x12\"\n" +
+	"\x04pool\x18\x01 \x01(\tB\x0e\xe2A\x01\x02\xbaH\ar\x05\x10\x01\x18\xfd\x01R\x04pool\"\xec\a\n" +
 	"\n" +
 	"SubnetData\x12\x83\x01\n" +
 	"\n" +
@@ -1359,77 +1418,79 @@ func file_kubenfv_kubevim_network_v1_network_proto_rawDescGZIP() []byte {
 }
 
 var file_kubenfv_kubevim_network_v1_network_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_kubenfv_kubevim_network_v1_network_proto_msgTypes = make([]protoimpl.MessageInfo, 22)
+var file_kubenfv_kubevim_network_v1_network_proto_msgTypes = make([]protoimpl.MessageInfo, 23)
 var file_kubenfv_kubevim_network_v1_network_proto_goTypes = []any{
 	(NetworkType)(0),             // 0: kubenfv.kubevim.network.v1.NetworkType
 	(*Network)(nil),              // 1: kubenfv.kubevim.network.v1.Network
-	(*SubnetData)(nil),           // 2: kubenfv.kubevim.network.v1.SubnetData
-	(*Subnet)(nil),               // 3: kubenfv.kubevim.network.v1.Subnet
-	(*IpAddressPool)(nil),        // 4: kubenfv.kubevim.network.v1.IpAddressPool
-	(*CreateNetworkRequest)(nil), // 5: kubenfv.kubevim.network.v1.CreateNetworkRequest
-	(*CreateSubnetRequest)(nil),  // 6: kubenfv.kubevim.network.v1.CreateSubnetRequest
-	(*GetNetworkRequest)(nil),    // 7: kubenfv.kubevim.network.v1.GetNetworkRequest
-	(*ListNetworksRequest)(nil),  // 8: kubenfv.kubevim.network.v1.ListNetworksRequest
-	(*ListNetworksResponse)(nil), // 9: kubenfv.kubevim.network.v1.ListNetworksResponse
-	(*UpdateNetworkRequest)(nil), // 10: kubenfv.kubevim.network.v1.UpdateNetworkRequest
-	(*NetworkUpdate)(nil),        // 11: kubenfv.kubevim.network.v1.NetworkUpdate
-	(*DeleteNetworkRequest)(nil), // 12: kubenfv.kubevim.network.v1.DeleteNetworkRequest
-	(*GetSubnetRequest)(nil),     // 13: kubenfv.kubevim.network.v1.GetSubnetRequest
-	(*ListSubnetsRequest)(nil),   // 14: kubenfv.kubevim.network.v1.ListSubnetsRequest
-	(*ListSubnetsResponse)(nil),  // 15: kubenfv.kubevim.network.v1.ListSubnetsResponse
-	(*UpdateSubnetRequest)(nil),  // 16: kubenfv.kubevim.network.v1.UpdateSubnetRequest
-	(*SubnetUpdate)(nil),         // 17: kubenfv.kubevim.network.v1.SubnetUpdate
-	(*DeleteSubnetRequest)(nil),  // 18: kubenfv.kubevim.network.v1.DeleteSubnetRequest
-	nil,                          // 19: kubenfv.kubevim.network.v1.Network.MetadataEntry
-	nil,                          // 20: kubenfv.kubevim.network.v1.Subnet.MetadataEntry
-	nil,                          // 21: kubenfv.kubevim.network.v1.NetworkUpdate.MetadataEntry
-	nil,                          // 22: kubenfv.kubevim.network.v1.SubnetUpdate.MetadataEntry
-	(v1.OperationalState)(0),     // 23: kubenfv.kubevim.common.v1.OperationalState
-	(v1.IpVersion)(0),            // 24: kubenfv.kubevim.common.v1.IpVersion
-	(*emptypb.Empty)(nil),        // 25: google.protobuf.Empty
+	(*SriovSettings)(nil),        // 2: kubenfv.kubevim.network.v1.SriovSettings
+	(*SubnetData)(nil),           // 3: kubenfv.kubevim.network.v1.SubnetData
+	(*Subnet)(nil),               // 4: kubenfv.kubevim.network.v1.Subnet
+	(*IpAddressPool)(nil),        // 5: kubenfv.kubevim.network.v1.IpAddressPool
+	(*CreateNetworkRequest)(nil), // 6: kubenfv.kubevim.network.v1.CreateNetworkRequest
+	(*CreateSubnetRequest)(nil),  // 7: kubenfv.kubevim.network.v1.CreateSubnetRequest
+	(*GetNetworkRequest)(nil),    // 8: kubenfv.kubevim.network.v1.GetNetworkRequest
+	(*ListNetworksRequest)(nil),  // 9: kubenfv.kubevim.network.v1.ListNetworksRequest
+	(*ListNetworksResponse)(nil), // 10: kubenfv.kubevim.network.v1.ListNetworksResponse
+	(*UpdateNetworkRequest)(nil), // 11: kubenfv.kubevim.network.v1.UpdateNetworkRequest
+	(*NetworkUpdate)(nil),        // 12: kubenfv.kubevim.network.v1.NetworkUpdate
+	(*DeleteNetworkRequest)(nil), // 13: kubenfv.kubevim.network.v1.DeleteNetworkRequest
+	(*GetSubnetRequest)(nil),     // 14: kubenfv.kubevim.network.v1.GetSubnetRequest
+	(*ListSubnetsRequest)(nil),   // 15: kubenfv.kubevim.network.v1.ListSubnetsRequest
+	(*ListSubnetsResponse)(nil),  // 16: kubenfv.kubevim.network.v1.ListSubnetsResponse
+	(*UpdateSubnetRequest)(nil),  // 17: kubenfv.kubevim.network.v1.UpdateSubnetRequest
+	(*SubnetUpdate)(nil),         // 18: kubenfv.kubevim.network.v1.SubnetUpdate
+	(*DeleteSubnetRequest)(nil),  // 19: kubenfv.kubevim.network.v1.DeleteSubnetRequest
+	nil,                          // 20: kubenfv.kubevim.network.v1.Network.MetadataEntry
+	nil,                          // 21: kubenfv.kubevim.network.v1.Subnet.MetadataEntry
+	nil,                          // 22: kubenfv.kubevim.network.v1.NetworkUpdate.MetadataEntry
+	nil,                          // 23: kubenfv.kubevim.network.v1.SubnetUpdate.MetadataEntry
+	(v1.OperationalState)(0),     // 24: kubenfv.kubevim.common.v1.OperationalState
+	(v1.IpVersion)(0),            // 25: kubenfv.kubevim.common.v1.IpVersion
+	(*emptypb.Empty)(nil),        // 26: google.protobuf.Empty
 }
 var file_kubenfv_kubevim_network_v1_network_proto_depIdxs = []int32{
 	0,  // 0: kubenfv.kubevim.network.v1.Network.network_type:type_name -> kubenfv.kubevim.network.v1.NetworkType
-	2,  // 1: kubenfv.kubevim.network.v1.Network.layer3_attributes:type_name -> kubenfv.kubevim.network.v1.SubnetData
-	23, // 2: kubenfv.kubevim.network.v1.Network.operational_state:type_name -> kubenfv.kubevim.common.v1.OperationalState
-	19, // 3: kubenfv.kubevim.network.v1.Network.metadata:type_name -> kubenfv.kubevim.network.v1.Network.MetadataEntry
-	24, // 4: kubenfv.kubevim.network.v1.SubnetData.ip_version:type_name -> kubenfv.kubevim.common.v1.IpVersion
-	4,  // 5: kubenfv.kubevim.network.v1.SubnetData.address_pools:type_name -> kubenfv.kubevim.network.v1.IpAddressPool
-	2,  // 6: kubenfv.kubevim.network.v1.Subnet.data:type_name -> kubenfv.kubevim.network.v1.SubnetData
-	20, // 7: kubenfv.kubevim.network.v1.Subnet.metadata:type_name -> kubenfv.kubevim.network.v1.Subnet.MetadataEntry
-	1,  // 8: kubenfv.kubevim.network.v1.CreateNetworkRequest.network:type_name -> kubenfv.kubevim.network.v1.Network
-	3,  // 9: kubenfv.kubevim.network.v1.CreateSubnetRequest.subnet:type_name -> kubenfv.kubevim.network.v1.Subnet
-	1,  // 10: kubenfv.kubevim.network.v1.ListNetworksResponse.networks:type_name -> kubenfv.kubevim.network.v1.Network
-	11, // 11: kubenfv.kubevim.network.v1.UpdateNetworkRequest.update:type_name -> kubenfv.kubevim.network.v1.NetworkUpdate
-	21, // 12: kubenfv.kubevim.network.v1.NetworkUpdate.metadata:type_name -> kubenfv.kubevim.network.v1.NetworkUpdate.MetadataEntry
-	3,  // 13: kubenfv.kubevim.network.v1.ListSubnetsResponse.subnets:type_name -> kubenfv.kubevim.network.v1.Subnet
-	17, // 14: kubenfv.kubevim.network.v1.UpdateSubnetRequest.update:type_name -> kubenfv.kubevim.network.v1.SubnetUpdate
-	22, // 15: kubenfv.kubevim.network.v1.SubnetUpdate.metadata:type_name -> kubenfv.kubevim.network.v1.SubnetUpdate.MetadataEntry
-	5,  // 16: kubenfv.kubevim.network.v1.NetworkService.CreateNetwork:input_type -> kubenfv.kubevim.network.v1.CreateNetworkRequest
-	7,  // 17: kubenfv.kubevim.network.v1.NetworkService.GetNetwork:input_type -> kubenfv.kubevim.network.v1.GetNetworkRequest
-	8,  // 18: kubenfv.kubevim.network.v1.NetworkService.ListNetworks:input_type -> kubenfv.kubevim.network.v1.ListNetworksRequest
-	10, // 19: kubenfv.kubevim.network.v1.NetworkService.UpdateNetwork:input_type -> kubenfv.kubevim.network.v1.UpdateNetworkRequest
-	12, // 20: kubenfv.kubevim.network.v1.NetworkService.DeleteNetwork:input_type -> kubenfv.kubevim.network.v1.DeleteNetworkRequest
-	6,  // 21: kubenfv.kubevim.network.v1.NetworkService.CreateSubnet:input_type -> kubenfv.kubevim.network.v1.CreateSubnetRequest
-	13, // 22: kubenfv.kubevim.network.v1.NetworkService.GetSubnet:input_type -> kubenfv.kubevim.network.v1.GetSubnetRequest
-	14, // 23: kubenfv.kubevim.network.v1.NetworkService.ListSubnets:input_type -> kubenfv.kubevim.network.v1.ListSubnetsRequest
-	16, // 24: kubenfv.kubevim.network.v1.NetworkService.UpdateSubnet:input_type -> kubenfv.kubevim.network.v1.UpdateSubnetRequest
-	18, // 25: kubenfv.kubevim.network.v1.NetworkService.DeleteSubnet:input_type -> kubenfv.kubevim.network.v1.DeleteSubnetRequest
-	1,  // 26: kubenfv.kubevim.network.v1.NetworkService.CreateNetwork:output_type -> kubenfv.kubevim.network.v1.Network
-	1,  // 27: kubenfv.kubevim.network.v1.NetworkService.GetNetwork:output_type -> kubenfv.kubevim.network.v1.Network
-	9,  // 28: kubenfv.kubevim.network.v1.NetworkService.ListNetworks:output_type -> kubenfv.kubevim.network.v1.ListNetworksResponse
-	1,  // 29: kubenfv.kubevim.network.v1.NetworkService.UpdateNetwork:output_type -> kubenfv.kubevim.network.v1.Network
-	25, // 30: kubenfv.kubevim.network.v1.NetworkService.DeleteNetwork:output_type -> google.protobuf.Empty
-	3,  // 31: kubenfv.kubevim.network.v1.NetworkService.CreateSubnet:output_type -> kubenfv.kubevim.network.v1.Subnet
-	3,  // 32: kubenfv.kubevim.network.v1.NetworkService.GetSubnet:output_type -> kubenfv.kubevim.network.v1.Subnet
-	15, // 33: kubenfv.kubevim.network.v1.NetworkService.ListSubnets:output_type -> kubenfv.kubevim.network.v1.ListSubnetsResponse
-	3,  // 34: kubenfv.kubevim.network.v1.NetworkService.UpdateSubnet:output_type -> kubenfv.kubevim.network.v1.Subnet
-	25, // 35: kubenfv.kubevim.network.v1.NetworkService.DeleteSubnet:output_type -> google.protobuf.Empty
-	26, // [26:36] is the sub-list for method output_type
-	16, // [16:26] is the sub-list for method input_type
-	16, // [16:16] is the sub-list for extension type_name
-	16, // [16:16] is the sub-list for extension extendee
-	0,  // [0:16] is the sub-list for field type_name
+	3,  // 1: kubenfv.kubevim.network.v1.Network.layer3_attributes:type_name -> kubenfv.kubevim.network.v1.SubnetData
+	24, // 2: kubenfv.kubevim.network.v1.Network.operational_state:type_name -> kubenfv.kubevim.common.v1.OperationalState
+	20, // 3: kubenfv.kubevim.network.v1.Network.metadata:type_name -> kubenfv.kubevim.network.v1.Network.MetadataEntry
+	2,  // 4: kubenfv.kubevim.network.v1.Network.sriov:type_name -> kubenfv.kubevim.network.v1.SriovSettings
+	25, // 5: kubenfv.kubevim.network.v1.SubnetData.ip_version:type_name -> kubenfv.kubevim.common.v1.IpVersion
+	5,  // 6: kubenfv.kubevim.network.v1.SubnetData.address_pools:type_name -> kubenfv.kubevim.network.v1.IpAddressPool
+	3,  // 7: kubenfv.kubevim.network.v1.Subnet.data:type_name -> kubenfv.kubevim.network.v1.SubnetData
+	21, // 8: kubenfv.kubevim.network.v1.Subnet.metadata:type_name -> kubenfv.kubevim.network.v1.Subnet.MetadataEntry
+	1,  // 9: kubenfv.kubevim.network.v1.CreateNetworkRequest.network:type_name -> kubenfv.kubevim.network.v1.Network
+	4,  // 10: kubenfv.kubevim.network.v1.CreateSubnetRequest.subnet:type_name -> kubenfv.kubevim.network.v1.Subnet
+	1,  // 11: kubenfv.kubevim.network.v1.ListNetworksResponse.networks:type_name -> kubenfv.kubevim.network.v1.Network
+	12, // 12: kubenfv.kubevim.network.v1.UpdateNetworkRequest.update:type_name -> kubenfv.kubevim.network.v1.NetworkUpdate
+	22, // 13: kubenfv.kubevim.network.v1.NetworkUpdate.metadata:type_name -> kubenfv.kubevim.network.v1.NetworkUpdate.MetadataEntry
+	4,  // 14: kubenfv.kubevim.network.v1.ListSubnetsResponse.subnets:type_name -> kubenfv.kubevim.network.v1.Subnet
+	18, // 15: kubenfv.kubevim.network.v1.UpdateSubnetRequest.update:type_name -> kubenfv.kubevim.network.v1.SubnetUpdate
+	23, // 16: kubenfv.kubevim.network.v1.SubnetUpdate.metadata:type_name -> kubenfv.kubevim.network.v1.SubnetUpdate.MetadataEntry
+	6,  // 17: kubenfv.kubevim.network.v1.NetworkService.CreateNetwork:input_type -> kubenfv.kubevim.network.v1.CreateNetworkRequest
+	8,  // 18: kubenfv.kubevim.network.v1.NetworkService.GetNetwork:input_type -> kubenfv.kubevim.network.v1.GetNetworkRequest
+	9,  // 19: kubenfv.kubevim.network.v1.NetworkService.ListNetworks:input_type -> kubenfv.kubevim.network.v1.ListNetworksRequest
+	11, // 20: kubenfv.kubevim.network.v1.NetworkService.UpdateNetwork:input_type -> kubenfv.kubevim.network.v1.UpdateNetworkRequest
+	13, // 21: kubenfv.kubevim.network.v1.NetworkService.DeleteNetwork:input_type -> kubenfv.kubevim.network.v1.DeleteNetworkRequest
+	7,  // 22: kubenfv.kubevim.network.v1.NetworkService.CreateSubnet:input_type -> kubenfv.kubevim.network.v1.CreateSubnetRequest
+	14, // 23: kubenfv.kubevim.network.v1.NetworkService.GetSubnet:input_type -> kubenfv.kubevim.network.v1.GetSubnetRequest
+	15, // 24: kubenfv.kubevim.network.v1.NetworkService.ListSubnets:input_type -> kubenfv.kubevim.network.v1.ListSubnetsRequest
+	17, // 25: kubenfv.kubevim.network.v1.NetworkService.UpdateSubnet:input_type -> kubenfv.kubevim.network.v1.UpdateSubnetRequest
+	19, // 26: kubenfv.kubevim.network.v1.NetworkService.DeleteSubnet:input_type -> kubenfv.kubevim.network.v1.DeleteSubnetRequest
+	1,  // 27: kubenfv.kubevim.network.v1.NetworkService.CreateNetwork:output_type -> kubenfv.kubevim.network.v1.Network
+	1,  // 28: kubenfv.kubevim.network.v1.NetworkService.GetNetwork:output_type -> kubenfv.kubevim.network.v1.Network
+	10, // 29: kubenfv.kubevim.network.v1.NetworkService.ListNetworks:output_type -> kubenfv.kubevim.network.v1.ListNetworksResponse
+	1,  // 30: kubenfv.kubevim.network.v1.NetworkService.UpdateNetwork:output_type -> kubenfv.kubevim.network.v1.Network
+	26, // 31: kubenfv.kubevim.network.v1.NetworkService.DeleteNetwork:output_type -> google.protobuf.Empty
+	4,  // 32: kubenfv.kubevim.network.v1.NetworkService.CreateSubnet:output_type -> kubenfv.kubevim.network.v1.Subnet
+	4,  // 33: kubenfv.kubevim.network.v1.NetworkService.GetSubnet:output_type -> kubenfv.kubevim.network.v1.Subnet
+	16, // 34: kubenfv.kubevim.network.v1.NetworkService.ListSubnets:output_type -> kubenfv.kubevim.network.v1.ListSubnetsResponse
+	4,  // 35: kubenfv.kubevim.network.v1.NetworkService.UpdateSubnet:output_type -> kubenfv.kubevim.network.v1.Subnet
+	26, // 36: kubenfv.kubevim.network.v1.NetworkService.DeleteSubnet:output_type -> google.protobuf.Empty
+	27, // [27:37] is the sub-list for method output_type
+	17, // [17:27] is the sub-list for method input_type
+	17, // [17:17] is the sub-list for extension type_name
+	17, // [17:17] is the sub-list for extension extendee
+	0,  // [0:17] is the sub-list for field type_name
 }
 
 func init() { file_kubenfv_kubevim_network_v1_network_proto_init() }
@@ -1437,16 +1498,16 @@ func file_kubenfv_kubevim_network_v1_network_proto_init() {
 	if File_kubenfv_kubevim_network_v1_network_proto != nil {
 		return
 	}
-	file_kubenfv_kubevim_network_v1_network_proto_msgTypes[1].OneofWrappers = []any{}
-	file_kubenfv_kubevim_network_v1_network_proto_msgTypes[10].OneofWrappers = []any{}
-	file_kubenfv_kubevim_network_v1_network_proto_msgTypes[16].OneofWrappers = []any{}
+	file_kubenfv_kubevim_network_v1_network_proto_msgTypes[2].OneofWrappers = []any{}
+	file_kubenfv_kubevim_network_v1_network_proto_msgTypes[11].OneofWrappers = []any{}
+	file_kubenfv_kubevim_network_v1_network_proto_msgTypes[17].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_kubenfv_kubevim_network_v1_network_proto_rawDesc), len(file_kubenfv_kubevim_network_v1_network_proto_rawDesc)),
 			NumEnums:      1,
-			NumMessages:   22,
+			NumMessages:   23,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
