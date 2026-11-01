@@ -38,7 +38,7 @@ class VirtualNetworkInterface(BaseModel):
     ip_addresses: Optional[List[StrictStr]] = Field(default=None, description="Addresses of the interface, one per subnet of its network; may be empty until DHCP or the guest configures them.", alias="ipAddresses")
     is_management: Optional[StrictBool] = Field(default=None, description="The management interface every compute resource gets on the pod network.", alias="isManagement")
     mac_address: Optional[StrictStr] = Field(default=None, description="MAC address; empty until known.", alias="macAddress")
-    model: Optional[NicModel] = Field(default=None, description="NIC model the guest sees.")
+    model: Optional[NicModel] = Field(default=None, description="NIC model the guest sees; unspecified for SRIOV and MASQUERADE interfaces.")
     name: Optional[StrictStr] = Field(default=None, description="Name of the interface, unique within the compute resource: the one given at creation, or one the VIM chose.")
     network_id: Optional[StrictStr] = Field(default=None, description="Network the interface is attached to; empty for the management interface.", alias="networkId")
     operational_state: Optional[OperationalState] = Field(default=None, description="ENABLED once the interface is attached and ready.", alias="operationalState")

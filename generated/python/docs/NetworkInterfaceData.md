@@ -10,7 +10,7 @@ Name | Type | Description | Notes
 **ip_addresses** | **List[str]** | Addresses for the static assignment: at most one per IP version; a family left out is allocated automatically. | [optional] 
 **ip_assignment** | [**IpAssignment**](IpAssignment.md) | How the interface gets its addresses; automatic when unset. | [optional] 
 **mac_address** | **str** | MAC address; the VIM assigns one when unset. | [optional] 
-**model** | [**NicModel**](NicModel.md) | NIC model the guest sees; virtio when unset. | [optional] 
+**model** | [**NicModel**](NicModel.md) | NIC model the guest sees; virtio when unset. Not for SRIOV interfaces: the guest sees the virtual function. | [optional] 
 **name** | **str** | Name of the interface, unique within the compute resource; the VIM chooses one when unset. | [optional] 
 **network_id** | **str** | Network to attach to; the interface gets one address per subnet of the network. | 
 **type_virtual_nic** | [**TypeVirtualNic**](TypeVirtualNic.md) | How the interface is attached to its network; BRIDGE when unset. SRIOV needs a network with sriov settings and takes no addresses from the VIM. | [optional] 

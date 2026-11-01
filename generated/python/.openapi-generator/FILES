@@ -26,6 +26,7 @@ docs/DiskFormat.md
 docs/Firmware.md
 docs/Flavour.md
 docs/FlavourServiceApi.md
+docs/GatewayMode.md
 docs/GlanceSource.md
 docs/HttpSource.md
 docs/Image.md
@@ -124,6 +125,7 @@ kubevim_client/models/disk_bus.py
 kubevim_client/models/disk_format.py
 kubevim_client/models/firmware.py
 kubevim_client/models/flavour.py
+kubevim_client/models/gateway_mode.py
 kubevim_client/models/glance_source.py
 kubevim_client/models/http_source.py
 kubevim_client/models/image.py

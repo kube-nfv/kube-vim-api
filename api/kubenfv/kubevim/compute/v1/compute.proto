@@ -736,7 +736,7 @@ message VirtualNetworkInterface {
       rationale: "IFA leaves the type unspecified; a closed enumeration."
     }
   }];
-  // NIC model the guest sees.
+  // NIC model the guest sees; unspecified for SRIOV and MASQUERADE interfaces.
   NicModel model = 6 [(kubenfv.kubevim.options.v1.ifa_field) = {
     departure: {
       kind: KIND_EXTENSION
@@ -862,7 +862,7 @@ message NetworkInterfaceData {
       }
     }
   ];
-  // NIC model the guest sees; virtio when unset.
+  // NIC model the guest sees; virtio when unset. Not for SRIOV interfaces: the guest sees the virtual function.
   NicModel model = 4 [
     (google.api.field_behavior) = OPTIONAL,
     (buf.validate.field).enum.defined_only = true,
@@ -938,6 +938,11 @@ message NetworkInterfaceData {
     id: "interface.sriov_no_addresses"
     message: "SRIOV interfaces need ipAssignment IP_ASSIGNMENT_NONE"
     expression: "this.type_virtual_nic != 2 || this.ip_assignment == 3"
+  };
+  option (buf.validate.message).cel = {
+    id: "interface.sriov_no_model"
+    message: "SRIOV interfaces take no model"
+    expression: "this.type_virtual_nic != 2 || this.model == 0"
   };
 }
 

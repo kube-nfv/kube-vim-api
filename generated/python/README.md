@@ -176,6 +176,7 @@ Class | Method | HTTP request | Description
  - [DiskFormat](docs/DiskFormat.md)
  - [Firmware](docs/Firmware.md)
  - [Flavour](docs/Flavour.md)
+ - [GatewayMode](docs/GatewayMode.md)
  - [GlanceSource](docs/GlanceSource.md)
  - [HttpSource](docs/HttpSource.md)
  - [Image](docs/Image.md)

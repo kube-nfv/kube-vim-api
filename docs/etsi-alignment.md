@@ -57,6 +57,7 @@ What Kube-VIM adds to the IFA model.
 - Provider networks by name, and a pool of SR-IOV virtual functions per network for VMs that attach to it with SR-IOV.
 - Dual-stack: a network holds one IPv4 and one IPv6 subnet, and an interface gets an address from each.
 - MTU and DNS servers.
+- The gateway of a VLAN or FLAT subnet: none, a router on the segment, or Kube-VIM.
 
 **Compute**
 - Placement groups: affinity or anti-affinity per node or zone, required or preferred.
