@@ -403,7 +403,7 @@
           },
           "model": {
             "$ref": "#/components/schemas/kubenfv.kubevim.compute.v1.NicModel",
-            "description": "NIC model the guest sees; virtio when unset."
+            "description": "NIC model the guest sees; virtio when unset. Not for SRIOV interfaces: the guest sees the virtual function."
           },
           "name": {
             "description": "Name of the interface, unique within the compute resource; the VIM chooses one when unset.",
@@ -629,7 +629,7 @@
           },
           "model": {
             "$ref": "#/components/schemas/kubenfv.kubevim.compute.v1.NicModel",
-            "description": "NIC model the guest sees."
+            "description": "NIC model the guest sees; unspecified for SRIOV and MASQUERADE interfaces."
           },
           "name": {
             "description": "Name of the interface, unique within the compute resource: the one given at creation, or one the VIM chose.",

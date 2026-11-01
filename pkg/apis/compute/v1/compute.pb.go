@@ -931,7 +931,7 @@ type VirtualNetworkInterface struct {
 	// Addresses of the interface, one per subnet of its network; may be empty until DHCP or the guest configures them.
 	IpAddresses    []string       `protobuf:"bytes,4,rep,name=ip_addresses,json=ipAddresses,proto3" json:"ip_addresses,omitempty"`
 	TypeVirtualNic TypeVirtualNic `protobuf:"varint,5,opt,name=type_virtual_nic,json=typeVirtualNic,proto3,enum=kubenfv.kubevim.compute.v1.TypeVirtualNic" json:"type_virtual_nic,omitempty"`
-	// NIC model the guest sees.
+	// NIC model the guest sees; unspecified for SRIOV and MASQUERADE interfaces.
 	Model NicModel `protobuf:"varint,6,opt,name=model,proto3,enum=kubenfv.kubevim.compute.v1.NicModel" json:"model,omitempty"`
 	// MAC address; empty until known.
 	MacAddress string `protobuf:"bytes,7,opt,name=mac_address,json=macAddress,proto3" json:"mac_address,omitempty"`
@@ -1082,7 +1082,7 @@ type NetworkInterfaceData struct {
 	// How the interface is attached to its network; BRIDGE when unset. SRIOV needs a network with sriov
 	// settings and takes no addresses from the VIM.
 	TypeVirtualNic TypeVirtualNic `protobuf:"varint,3,opt,name=type_virtual_nic,json=typeVirtualNic,proto3,enum=kubenfv.kubevim.compute.v1.TypeVirtualNic" json:"type_virtual_nic,omitempty"`
-	// NIC model the guest sees; virtio when unset.
+	// NIC model the guest sees; virtio when unset. Not for SRIOV interfaces: the guest sees the virtual function.
 	Model NicModel `protobuf:"varint,4,opt,name=model,proto3,enum=kubenfv.kubevim.compute.v1.NicModel" json:"model,omitempty"`
 	// Rate limit in Mbps; 0 means no limit.
 	Bandwidth uint32 `protobuf:"varint,5,opt,name=bandwidth,proto3" json:"bandwidth,omitempty"`
@@ -2764,7 +2764,7 @@ const file_kubenfv_kubevim_compute_v1_compute_proto_rawDesc = "" +
 	"\x10host_pci_address\x18\v \x01(\tBv\xfa\x8b\x19r\x12p\b\x01\x10\x01\x1ajLets the consumer correlate an SR-IOV VF with the host NIC; replaces the v0 host-pci-address metadata key.R\x0ehostPciAddress\x12\x94\x01\n" +
 	"\x11guest_pci_address\x18\f \x01(\tBh\xfa\x8b\x19d\x12b\b\x01\x10\x01\x1a\\Lets the consumer find the interface in the guest; the guest device order is not guaranteed.R\x0fguestPciAddress\x12\x9a\x01\n" +
 	"\x14guest_interface_name\x18\r \x01(\tBh\xfa\x8b\x19d\x12b\b\x01\x10\x01\x1a\\Lets the consumer find the interface in the guest; the guest device order is not guaranteed.R\x12guestInterfaceName:,\xfa\x8b\x19(\n" +
-	"&IFA006 8.4.3.6 VirtualNetworkInterface\"\xe6\x0f\n" +
+	"&IFA006 8.4.3.6 VirtualNetworkInterface\"\xd1\x10\n" +
 	"\x14NetworkInterfaceData\x12\xa4\x01\n" +
 	"\x04name\x18\x01 \x01(\tB\x8f\x01\xe2A\x01\x01\xbaH(\xd8\x01\x01r#\x18?2\x1f^[a-z0-9]([-a-z0-9]*[a-z0-9])?$\xfa\x8b\x19\\\x12Z\b\x01\x10\x01\x1aTLets the consumer match interfaces in responses, e.g. two interfaces on one network.R\x04name\x12^\n" +
 	"\n" +
@@ -2780,10 +2780,11 @@ const file_kubenfv_kubevim_compute_v1_compute_proto_rawDesc = "" +
 	"-IFA006 8.4.3.7 VirtualInterfaceData.ipAddress\x12\x1d\b\x03\x10\x01\x1a\x17Plural name for a list.R\vipAddresses\x12\x87\x01\n" +
 	"\vmac_address\x18\b \x01(\tBf\xe2A\x01\x01\xbaH+\xd8\x01\x01r&2$^([0-9a-fA-F]{2}:){5}[0-9a-fA-F]{2}$\xfa\x8b\x190\n" +
 	".IFA006 8.4.3.7 VirtualInterfaceData.macAddressR\n" +
-	"macAddress:\xcd\x05\xbaH\xf7\x03\x1a\xba\x01\n" +
+	"macAddress:\xb8\x06\xbaH\xe2\x04\x1a\xba\x01\n" +
 	"\x17interface.ip_assignment\x12GipAddresses is required for STATIC assignment and not allowed otherwise\x1aVthis.ip_assignment == 2 ? this.ip_addresses.size() > 0 : this.ip_addresses.size() == 0\x1a\xa8\x01\n" +
 	"$interface.one_address_per_ip_version\x12\"at most one address per IP version\x1a\\this.ip_addresses.size() < 2 || this.ip_addresses[0].isIp(4) != this.ip_addresses[1].isIp(4)\x1a\x8c\x01\n" +
-	"\x1cinterface.sriov_no_addresses\x125SRIOV interfaces need ipAssignment IP_ASSIGNMENT_NONE\x1a5this.type_virtual_nic != 2 || this.ip_assignment == 3\xfa\x8b\x19\xcd\x01\n" +
+	"\x1cinterface.sriov_no_addresses\x125SRIOV interfaces need ipAssignment IP_ASSIGNMENT_NONE\x1a5this.type_virtual_nic != 2 || this.ip_assignment == 3\x1ai\n" +
+	"\x18interface.sriov_no_model\x12\x1eSRIOV interfaces take no model\x1a-this.type_virtual_nic != 2 || this.model == 0\xfa\x8b\x19\xcd\x01\n" +
 	"HIFA006 8.4.3.7 VirtualInterfaceData, 8.4.2.6 VirtualNetworkInterfaceData\x12\x80\x01\b\x03\x10\x01\x1azOne list on allocation: IFA's per-instance VirtualInterfaceData merged with the flavour-level VirtualNetworkInterfaceData.\"\xf8\x01\n" +
 	"\bUserData\x12J\n" +
 	"\acontent\x18\x01 \x01(\tB0\xe2A\x02\x02\x04\xbaH\x04r\x02\x10\x01\xfa\x8b\x19 \n" +

@@ -34,7 +34,7 @@ class NetworkInterfaceData(BaseModel):
     ip_addresses: Optional[List[StrictStr]] = Field(default=None, description="Addresses for the static assignment: at most one per IP version; a family left out is allocated automatically.", alias="ipAddresses")
     ip_assignment: Optional[IpAssignment] = Field(default=None, description="How the interface gets its addresses; automatic when unset.", alias="ipAssignment")
     mac_address: Optional[StrictStr] = Field(default=None, description="MAC address; the VIM assigns one when unset.", alias="macAddress")
-    model: Optional[NicModel] = Field(default=None, description="NIC model the guest sees; virtio when unset.")
+    model: Optional[NicModel] = Field(default=None, description="NIC model the guest sees; virtio when unset. Not for SRIOV interfaces: the guest sees the virtual function.")
     name: Optional[StrictStr] = Field(default=None, description="Name of the interface, unique within the compute resource; the VIM chooses one when unset.")
     network_id: StrictStr = Field(description="Network to attach to; the interface gets one address per subnet of the network.", alias="networkId")
     type_virtual_nic: Optional[TypeVirtualNic] = Field(default=None, description="How the interface is attached to its network; BRIDGE when unset. SRIOV needs a network with sriov settings and takes no addresses from the VIM.", alias="typeVirtualNic")
