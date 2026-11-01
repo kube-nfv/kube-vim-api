@@ -19,6 +19,7 @@ import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
+from kubevim_client.models.gateway_mode import GatewayMode
 from kubevim_client.models.ip_address_pool import IpAddressPool
 from kubevim_client.models.ip_version import IpVersion
 from typing import Optional, Set
@@ -27,15 +28,16 @@ from pydantic_core import to_jsonable_python
 
 class SubnetData(BaseModel):
     """
-    Layer 3 attributes of a subnet: one IP version of its network.
+    SubnetData
     """ # noqa: E501
     address_pools: Optional[List[IpAddressPool]] = Field(default=None, description="Address pools the VIM allocates from; the whole CIDR except the gateway when empty.", alias="addressPools")
     cidr: StrictStr = Field(description="Network address and prefix length, e.g. \"10.0.0.0/24\".")
     dns_servers: Optional[List[StrictStr]] = Field(default=None, description="DNS servers handed out by DHCP.", alias="dnsServers")
     gateway_ip: Optional[StrictStr] = Field(default=None, description="Gateway address; the VIM picks one when unset.", alias="gatewayIp")
+    gateway_mode: Optional[GatewayMode] = Field(default=None, description="How a VLAN or FLAT subnet reaches its gateway; unset means NONE. GENEVE subnets are routed by the VIM.", alias="gatewayMode")
     ip_version: IpVersion = Field(description="IP version.", alias="ipVersion")
     is_dhcp_enabled: Optional[StrictBool] = Field(default=None, description="DHCP is enabled; unset means true.", alias="isDhcpEnabled")
-    __properties: ClassVar[List[str]] = ["addressPools", "cidr", "dnsServers", "gatewayIp", "ipVersion", "isDhcpEnabled"]
+    __properties: ClassVar[List[str]] = ["addressPools", "cidr", "dnsServers", "gatewayIp", "gatewayMode", "ipVersion", "isDhcpEnabled"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -98,6 +100,7 @@ class SubnetData(BaseModel):
             "cidr": obj.get("cidr"),
             "dnsServers": obj.get("dnsServers"),
             "gatewayIp": obj.get("gatewayIp"),
+            "gatewayMode": obj.get("gatewayMode"),
             "ipVersion": obj.get("ipVersion"),
             "isDhcpEnabled": obj.get("isDhcpEnabled")
         })

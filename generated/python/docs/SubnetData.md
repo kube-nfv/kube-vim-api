@@ -1,6 +1,5 @@
 # SubnetData
 
-Layer 3 attributes of a subnet: one IP version of its network.
 
 ## Properties
 
@@ -10,6 +9,7 @@ Name | Type | Description | Notes
 **cidr** | **str** | Network address and prefix length, e.g. \&quot;10.0.0.0/24\&quot;. | 
 **dns_servers** | **List[str]** | DNS servers handed out by DHCP. | [optional] 
 **gateway_ip** | **str** | Gateway address; the VIM picks one when unset. | [optional] 
+**gateway_mode** | [**GatewayMode**](GatewayMode.md) | How a VLAN or FLAT subnet reaches its gateway; unset means NONE. GENEVE subnets are routed by the VIM. | [optional] 
 **ip_version** | [**IpVersion**](IpVersion.md) | IP version. | 
 **is_dhcp_enabled** | **bool** | DHCP is enabled; unset means true. | [optional] 
 

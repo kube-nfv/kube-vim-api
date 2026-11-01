@@ -84,6 +84,63 @@ func (NetworkType) EnumDescriptor() ([]byte, []int) {
 	return file_kubenfv_kubevim_network_v1_network_proto_rawDescGZIP(), []int{0}
 }
 
+// Layer 3 attributes of a subnet: one IP version of its network.
+// How a VLAN or FLAT subnet reaches its gateway. Values may be added; clients should accept unknown values.
+type GatewayMode int32
+
+const (
+	GatewayMode_GATEWAY_MODE_UNSPECIFIED GatewayMode = 0
+	// No router on the segment; gatewayIp is not checked. Unspecified means this.
+	GatewayMode_GATEWAY_MODE_NONE GatewayMode = 1
+	// A router on the segment owns gatewayIp; the VIM checks that it answers before attaching an interface.
+	GatewayMode_GATEWAY_MODE_EXTERNAL GatewayMode = 2
+	// The VIM routes the subnet at gatewayIp.
+	GatewayMode_GATEWAY_MODE_VIM GatewayMode = 3
+)
+
+// Enum value maps for GatewayMode.
+var (
+	GatewayMode_name = map[int32]string{
+		0: "GATEWAY_MODE_UNSPECIFIED",
+		1: "GATEWAY_MODE_NONE",
+		2: "GATEWAY_MODE_EXTERNAL",
+		3: "GATEWAY_MODE_VIM",
+	}
+	GatewayMode_value = map[string]int32{
+		"GATEWAY_MODE_UNSPECIFIED": 0,
+		"GATEWAY_MODE_NONE":        1,
+		"GATEWAY_MODE_EXTERNAL":    2,
+		"GATEWAY_MODE_VIM":         3,
+	}
+)
+
+func (x GatewayMode) Enum() *GatewayMode {
+	p := new(GatewayMode)
+	*p = x
+	return p
+}
+
+func (x GatewayMode) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (GatewayMode) Descriptor() protoreflect.EnumDescriptor {
+	return file_kubenfv_kubevim_network_v1_network_proto_enumTypes[1].Descriptor()
+}
+
+func (GatewayMode) Type() protoreflect.EnumType {
+	return &file_kubenfv_kubevim_network_v1_network_proto_enumTypes[1]
+}
+
+func (x GatewayMode) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use GatewayMode.Descriptor instead.
+func (GatewayMode) EnumDescriptor() ([]byte, []int) {
+	return file_kubenfv_kubevim_network_v1_network_proto_rawDescGZIP(), []int{1}
+}
+
 // A virtualised network: one layer 2 segment, with at most one IPv4 and one IPv6 subnet.
 type Network struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
@@ -267,7 +324,6 @@ func (x *SriovSettings) GetPool() string {
 	return ""
 }
 
-// Layer 3 attributes of a subnet: one IP version of its network.
 type SubnetData struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// IP version.
@@ -281,7 +337,9 @@ type SubnetData struct {
 	// Address pools the VIM allocates from; the whole CIDR except the gateway when empty.
 	AddressPools []*IpAddressPool `protobuf:"bytes,5,rep,name=address_pools,json=addressPools,proto3" json:"address_pools,omitempty"`
 	// DNS servers handed out by DHCP.
-	DnsServers    []string `protobuf:"bytes,6,rep,name=dns_servers,json=dnsServers,proto3" json:"dns_servers,omitempty"`
+	DnsServers []string `protobuf:"bytes,6,rep,name=dns_servers,json=dnsServers,proto3" json:"dns_servers,omitempty"`
+	// How a VLAN or FLAT subnet reaches its gateway; unset means NONE. GENEVE subnets are routed by the VIM.
+	GatewayMode   GatewayMode `protobuf:"varint,7,opt,name=gateway_mode,json=gatewayMode,proto3,enum=kubenfv.kubevim.network.v1.GatewayMode" json:"gateway_mode,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -356,6 +414,13 @@ func (x *SubnetData) GetDnsServers() []string {
 		return x.DnsServers
 	}
 	return nil
+}
+
+func (x *SubnetData) GetGatewayMode() GatewayMode {
+	if x != nil {
+		return x.GatewayMode
+	}
+	return GatewayMode_GATEWAY_MODE_UNSPECIFIED
 }
 
 // A virtualised subnet: one IP version of a network.
@@ -1201,7 +1266,7 @@ var File_kubenfv_kubevim_network_v1_network_proto protoreflect.FileDescriptor
 
 const file_kubenfv_kubevim_network_v1_network_proto_rawDesc = "" +
 	"\n" +
-	"(kubenfv/kubevim/network/v1/network.proto\x12\x1akubenfv.kubevim.network.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a&kubenfv/kubevim/common/v1/common.proto\x1a%kubenfv/kubevim/common/v1/rules.proto\x1a(kubenfv/kubevim/options/v1/options.proto\x1a.protoc-gen-openapiv3/options/annotations.proto\"\xb2\x13\n" +
+	"(kubenfv/kubevim/network/v1/network.proto\x12\x1akubenfv.kubevim.network.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a&kubenfv/kubevim/common/v1/common.proto\x1a%kubenfv/kubevim/common/v1/rules.proto\x1a(kubenfv/kubevim/options/v1/options.proto\x1a.protoc-gen-openapiv3/options/annotations.proto\"\xc9\x14\n" +
 	"\aNetwork\x12\x9c\x01\n" +
 	"\n" +
 	"network_id\x18\x01 \x01(\tB}\xe2A\x01\x03\xfa\x8b\x19u\n" +
@@ -1230,14 +1295,15 @@ const file_kubenfv_kubevim_network_v1_network_proto_rawDesc = "" +
 	"\x05sriov\x18\f \x01(\v2).kubenfv.kubevim.network.v1.SriovSettingsB\x82\x01\xe2A\x02\x01\x05\xfa\x8b\x19y\x12w\b\x01\x10\x01\x1aqSR-IOV interfaces take virtual functions from a pool on the provider network's uplink; IFA has no such attribute.R\x05sriov\x1a;\n" +
 	"\rMetadataEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01:\xcd\x04\xbaH\x8a\x04\x1ao\n" +
-	"\rnetwork.sriov\x122sriov settings are only for VLAN and FLAT networks\x1a*this.network_type != 1 || !has(this.sriov)\x1a\xb0\x01\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01:\xe4\x05\xbaH\xa1\x05\x1ao\n" +
+	"\rnetwork.sriov\x122sriov settings are only for VLAN and FLAT networks\x1a*this.network_type != 1 || !has(this.sriov)\x1a\x94\x01\n" +
+	"\x14network.gateway_mode\x12.gatewayMode is only for VLAN and FLAT networks\x1aLthis.network_type != 1 || this.layer3_attributes.all(s, s.gateway_mode == 0)\x1a\xb0\x01\n" +
 	"\x10network.provider\x12HVLAN and FLAT networks need a providerNetwork; GENEVE networks take none\x1aRthis.network_type == 1 ? this.provider_network == '' : this.provider_network != ''\x1a\xe3\x01\n" +
 	"\x14network.segmentation\x12VVLAN networks need a segmentationId from 1 to 4094; GENEVE and FLAT networks take none\x1asthis.network_type == 2 ? (this.segmentation_id >= 1u && this.segmentation_id <= 4094u) : this.segmentation_id == 0u\xfa\x8b\x19;\n" +
 	"9IFA006 8.4.5.2 VirtualNetwork, 8.4.4.2 VirtualNetworkDataJ\x04\b\t\x10\n" +
 	"\"3\n" +
 	"\rSriovSettings\x12\"\n" +
-	"\x04pool\x18\x01 \x01(\tB\x0e\xe2A\x01\x02\xbaH\ar\x05\x10\x01\x18\xfd\x01R\x04pool\"\xec\a\n" +
+	"\x04pool\x18\x01 \x01(\tB\x0e\xe2A\x01\x02\xbaH\ar\x05\x10\x01\x18\xfd\x01R\x04pool\"\xc4\t\n" +
 	"\n" +
 	"SubnetData\x12\x83\x01\n" +
 	"\n" +
@@ -1253,7 +1319,8 @@ const file_kubenfv_kubevim_network_v1_network_proto_rawDesc = "" +
 	"\raddress_pools\x18\x05 \x03(\v2).kubenfv.kubevim.network.v1.IpAddressPoolBU\xe2A\x01\x01\xfa\x8b\x19M\n" +
 	",IFA006 8.4.4.4 NetworkSubnetData.addressPool\x12\x1d\b\x03\x10\x01\x1a\x17Plural name for a list.R\faddressPools\x12\x7f\n" +
 	"\vdns_servers\x18\x06 \x03(\tB^\xe2A\x01\x01\xbaH\t\x92\x01\x06\"\x04r\x02p\x01\xfa\x8b\x19J\x12H\b\x01\x10\x01\x1aBGuests on DHCP subnets need DNS servers; IFA has no DNS attribute.R\n" +
-	"dnsServers:\x87\x02\xbaH\xdd\x01\x1a\xda\x01\n" +
+	"dnsServers\x12\xd5\x01\n" +
+	"\fgateway_mode\x18\a \x01(\x0e2'.kubenfv.kubevim.network.v1.GatewayModeB\x88\x01\xe2A\x01\x01\xbaH\x05\x82\x01\x02\x10\x01\xfa\x8b\x19x\x12v\b\x01\x10\x01\x1apOn a provider network the gateway may be a router on the segment, the VIM, or absent; IFA has no such attribute.R\vgatewayMode:\x87\x02\xbaH\xdd\x01\x1a\xda\x01\n" +
 	"\x11subnet.ip_version\x12'cidr and gatewayIp must match ipVersion\x1a\x9b\x01(this.ip_version == 1 ? this.cidr.isIpPrefix(4) : this.cidr.isIpPrefix(6)) && (this.gateway_ip == '' || this.gateway_ip.isIp(this.ip_version == 1 ? 4 : 6))\xfa\x8b\x19\"\n" +
 	" IFA006 8.4.4.4 NetworkSubnetDataB\x12\n" +
 	"\x10_is_dhcp_enabled\"\xbf\a\n" +
@@ -1340,7 +1407,12 @@ const file_kubenfv_kubevim_network_v1_network_proto_rawDesc = "" +
 	"\x18NETWORK_TYPE_UNSPECIFIED\x10\x00\x12\x17\n" +
 	"\x13NETWORK_TYPE_GENEVE\x10\x01\x12\x15\n" +
 	"\x11NETWORK_TYPE_VLAN\x10\x02\x12\x15\n" +
-	"\x11NETWORK_TYPE_FLAT\x10\x032\xd9\x18\n" +
+	"\x11NETWORK_TYPE_FLAT\x10\x03*s\n" +
+	"\vGatewayMode\x12\x1c\n" +
+	"\x18GATEWAY_MODE_UNSPECIFIED\x10\x00\x12\x15\n" +
+	"\x11GATEWAY_MODE_NONE\x10\x01\x12\x19\n" +
+	"\x15GATEWAY_MODE_EXTERNAL\x10\x02\x12\x14\n" +
+	"\x10GATEWAY_MODE_VIM\x10\x032\xd9\x18\n" +
 	"\x0eNetworkService\x12\xad\x02\n" +
 	"\rCreateNetwork\x120.kubenfv.kubevim.network.v1.CreateNetworkRequest\x1a#.kubenfv.kubevim.network.v1.Network\"\xc4\x01\xfaP#J!\n" +
 	"\x1f\n" +
@@ -1417,80 +1489,82 @@ func file_kubenfv_kubevim_network_v1_network_proto_rawDescGZIP() []byte {
 	return file_kubenfv_kubevim_network_v1_network_proto_rawDescData
 }
 
-var file_kubenfv_kubevim_network_v1_network_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
+var file_kubenfv_kubevim_network_v1_network_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
 var file_kubenfv_kubevim_network_v1_network_proto_msgTypes = make([]protoimpl.MessageInfo, 23)
 var file_kubenfv_kubevim_network_v1_network_proto_goTypes = []any{
 	(NetworkType)(0),             // 0: kubenfv.kubevim.network.v1.NetworkType
-	(*Network)(nil),              // 1: kubenfv.kubevim.network.v1.Network
-	(*SriovSettings)(nil),        // 2: kubenfv.kubevim.network.v1.SriovSettings
-	(*SubnetData)(nil),           // 3: kubenfv.kubevim.network.v1.SubnetData
-	(*Subnet)(nil),               // 4: kubenfv.kubevim.network.v1.Subnet
-	(*IpAddressPool)(nil),        // 5: kubenfv.kubevim.network.v1.IpAddressPool
-	(*CreateNetworkRequest)(nil), // 6: kubenfv.kubevim.network.v1.CreateNetworkRequest
-	(*CreateSubnetRequest)(nil),  // 7: kubenfv.kubevim.network.v1.CreateSubnetRequest
-	(*GetNetworkRequest)(nil),    // 8: kubenfv.kubevim.network.v1.GetNetworkRequest
-	(*ListNetworksRequest)(nil),  // 9: kubenfv.kubevim.network.v1.ListNetworksRequest
-	(*ListNetworksResponse)(nil), // 10: kubenfv.kubevim.network.v1.ListNetworksResponse
-	(*UpdateNetworkRequest)(nil), // 11: kubenfv.kubevim.network.v1.UpdateNetworkRequest
-	(*NetworkUpdate)(nil),        // 12: kubenfv.kubevim.network.v1.NetworkUpdate
-	(*DeleteNetworkRequest)(nil), // 13: kubenfv.kubevim.network.v1.DeleteNetworkRequest
-	(*GetSubnetRequest)(nil),     // 14: kubenfv.kubevim.network.v1.GetSubnetRequest
-	(*ListSubnetsRequest)(nil),   // 15: kubenfv.kubevim.network.v1.ListSubnetsRequest
-	(*ListSubnetsResponse)(nil),  // 16: kubenfv.kubevim.network.v1.ListSubnetsResponse
-	(*UpdateSubnetRequest)(nil),  // 17: kubenfv.kubevim.network.v1.UpdateSubnetRequest
-	(*SubnetUpdate)(nil),         // 18: kubenfv.kubevim.network.v1.SubnetUpdate
-	(*DeleteSubnetRequest)(nil),  // 19: kubenfv.kubevim.network.v1.DeleteSubnetRequest
-	nil,                          // 20: kubenfv.kubevim.network.v1.Network.MetadataEntry
-	nil,                          // 21: kubenfv.kubevim.network.v1.Subnet.MetadataEntry
-	nil,                          // 22: kubenfv.kubevim.network.v1.NetworkUpdate.MetadataEntry
-	nil,                          // 23: kubenfv.kubevim.network.v1.SubnetUpdate.MetadataEntry
-	(v1.OperationalState)(0),     // 24: kubenfv.kubevim.common.v1.OperationalState
-	(v1.IpVersion)(0),            // 25: kubenfv.kubevim.common.v1.IpVersion
-	(*emptypb.Empty)(nil),        // 26: google.protobuf.Empty
+	(GatewayMode)(0),             // 1: kubenfv.kubevim.network.v1.GatewayMode
+	(*Network)(nil),              // 2: kubenfv.kubevim.network.v1.Network
+	(*SriovSettings)(nil),        // 3: kubenfv.kubevim.network.v1.SriovSettings
+	(*SubnetData)(nil),           // 4: kubenfv.kubevim.network.v1.SubnetData
+	(*Subnet)(nil),               // 5: kubenfv.kubevim.network.v1.Subnet
+	(*IpAddressPool)(nil),        // 6: kubenfv.kubevim.network.v1.IpAddressPool
+	(*CreateNetworkRequest)(nil), // 7: kubenfv.kubevim.network.v1.CreateNetworkRequest
+	(*CreateSubnetRequest)(nil),  // 8: kubenfv.kubevim.network.v1.CreateSubnetRequest
+	(*GetNetworkRequest)(nil),    // 9: kubenfv.kubevim.network.v1.GetNetworkRequest
+	(*ListNetworksRequest)(nil),  // 10: kubenfv.kubevim.network.v1.ListNetworksRequest
+	(*ListNetworksResponse)(nil), // 11: kubenfv.kubevim.network.v1.ListNetworksResponse
+	(*UpdateNetworkRequest)(nil), // 12: kubenfv.kubevim.network.v1.UpdateNetworkRequest
+	(*NetworkUpdate)(nil),        // 13: kubenfv.kubevim.network.v1.NetworkUpdate
+	(*DeleteNetworkRequest)(nil), // 14: kubenfv.kubevim.network.v1.DeleteNetworkRequest
+	(*GetSubnetRequest)(nil),     // 15: kubenfv.kubevim.network.v1.GetSubnetRequest
+	(*ListSubnetsRequest)(nil),   // 16: kubenfv.kubevim.network.v1.ListSubnetsRequest
+	(*ListSubnetsResponse)(nil),  // 17: kubenfv.kubevim.network.v1.ListSubnetsResponse
+	(*UpdateSubnetRequest)(nil),  // 18: kubenfv.kubevim.network.v1.UpdateSubnetRequest
+	(*SubnetUpdate)(nil),         // 19: kubenfv.kubevim.network.v1.SubnetUpdate
+	(*DeleteSubnetRequest)(nil),  // 20: kubenfv.kubevim.network.v1.DeleteSubnetRequest
+	nil,                          // 21: kubenfv.kubevim.network.v1.Network.MetadataEntry
+	nil,                          // 22: kubenfv.kubevim.network.v1.Subnet.MetadataEntry
+	nil,                          // 23: kubenfv.kubevim.network.v1.NetworkUpdate.MetadataEntry
+	nil,                          // 24: kubenfv.kubevim.network.v1.SubnetUpdate.MetadataEntry
+	(v1.OperationalState)(0),     // 25: kubenfv.kubevim.common.v1.OperationalState
+	(v1.IpVersion)(0),            // 26: kubenfv.kubevim.common.v1.IpVersion
+	(*emptypb.Empty)(nil),        // 27: google.protobuf.Empty
 }
 var file_kubenfv_kubevim_network_v1_network_proto_depIdxs = []int32{
 	0,  // 0: kubenfv.kubevim.network.v1.Network.network_type:type_name -> kubenfv.kubevim.network.v1.NetworkType
-	3,  // 1: kubenfv.kubevim.network.v1.Network.layer3_attributes:type_name -> kubenfv.kubevim.network.v1.SubnetData
-	24, // 2: kubenfv.kubevim.network.v1.Network.operational_state:type_name -> kubenfv.kubevim.common.v1.OperationalState
-	20, // 3: kubenfv.kubevim.network.v1.Network.metadata:type_name -> kubenfv.kubevim.network.v1.Network.MetadataEntry
-	2,  // 4: kubenfv.kubevim.network.v1.Network.sriov:type_name -> kubenfv.kubevim.network.v1.SriovSettings
-	25, // 5: kubenfv.kubevim.network.v1.SubnetData.ip_version:type_name -> kubenfv.kubevim.common.v1.IpVersion
-	5,  // 6: kubenfv.kubevim.network.v1.SubnetData.address_pools:type_name -> kubenfv.kubevim.network.v1.IpAddressPool
-	3,  // 7: kubenfv.kubevim.network.v1.Subnet.data:type_name -> kubenfv.kubevim.network.v1.SubnetData
-	21, // 8: kubenfv.kubevim.network.v1.Subnet.metadata:type_name -> kubenfv.kubevim.network.v1.Subnet.MetadataEntry
-	1,  // 9: kubenfv.kubevim.network.v1.CreateNetworkRequest.network:type_name -> kubenfv.kubevim.network.v1.Network
-	4,  // 10: kubenfv.kubevim.network.v1.CreateSubnetRequest.subnet:type_name -> kubenfv.kubevim.network.v1.Subnet
-	1,  // 11: kubenfv.kubevim.network.v1.ListNetworksResponse.networks:type_name -> kubenfv.kubevim.network.v1.Network
-	12, // 12: kubenfv.kubevim.network.v1.UpdateNetworkRequest.update:type_name -> kubenfv.kubevim.network.v1.NetworkUpdate
-	22, // 13: kubenfv.kubevim.network.v1.NetworkUpdate.metadata:type_name -> kubenfv.kubevim.network.v1.NetworkUpdate.MetadataEntry
-	4,  // 14: kubenfv.kubevim.network.v1.ListSubnetsResponse.subnets:type_name -> kubenfv.kubevim.network.v1.Subnet
-	18, // 15: kubenfv.kubevim.network.v1.UpdateSubnetRequest.update:type_name -> kubenfv.kubevim.network.v1.SubnetUpdate
-	23, // 16: kubenfv.kubevim.network.v1.SubnetUpdate.metadata:type_name -> kubenfv.kubevim.network.v1.SubnetUpdate.MetadataEntry
-	6,  // 17: kubenfv.kubevim.network.v1.NetworkService.CreateNetwork:input_type -> kubenfv.kubevim.network.v1.CreateNetworkRequest
-	8,  // 18: kubenfv.kubevim.network.v1.NetworkService.GetNetwork:input_type -> kubenfv.kubevim.network.v1.GetNetworkRequest
-	9,  // 19: kubenfv.kubevim.network.v1.NetworkService.ListNetworks:input_type -> kubenfv.kubevim.network.v1.ListNetworksRequest
-	11, // 20: kubenfv.kubevim.network.v1.NetworkService.UpdateNetwork:input_type -> kubenfv.kubevim.network.v1.UpdateNetworkRequest
-	13, // 21: kubenfv.kubevim.network.v1.NetworkService.DeleteNetwork:input_type -> kubenfv.kubevim.network.v1.DeleteNetworkRequest
-	7,  // 22: kubenfv.kubevim.network.v1.NetworkService.CreateSubnet:input_type -> kubenfv.kubevim.network.v1.CreateSubnetRequest
-	14, // 23: kubenfv.kubevim.network.v1.NetworkService.GetSubnet:input_type -> kubenfv.kubevim.network.v1.GetSubnetRequest
-	15, // 24: kubenfv.kubevim.network.v1.NetworkService.ListSubnets:input_type -> kubenfv.kubevim.network.v1.ListSubnetsRequest
-	17, // 25: kubenfv.kubevim.network.v1.NetworkService.UpdateSubnet:input_type -> kubenfv.kubevim.network.v1.UpdateSubnetRequest
-	19, // 26: kubenfv.kubevim.network.v1.NetworkService.DeleteSubnet:input_type -> kubenfv.kubevim.network.v1.DeleteSubnetRequest
-	1,  // 27: kubenfv.kubevim.network.v1.NetworkService.CreateNetwork:output_type -> kubenfv.kubevim.network.v1.Network
-	1,  // 28: kubenfv.kubevim.network.v1.NetworkService.GetNetwork:output_type -> kubenfv.kubevim.network.v1.Network
-	10, // 29: kubenfv.kubevim.network.v1.NetworkService.ListNetworks:output_type -> kubenfv.kubevim.network.v1.ListNetworksResponse
-	1,  // 30: kubenfv.kubevim.network.v1.NetworkService.UpdateNetwork:output_type -> kubenfv.kubevim.network.v1.Network
-	26, // 31: kubenfv.kubevim.network.v1.NetworkService.DeleteNetwork:output_type -> google.protobuf.Empty
-	4,  // 32: kubenfv.kubevim.network.v1.NetworkService.CreateSubnet:output_type -> kubenfv.kubevim.network.v1.Subnet
-	4,  // 33: kubenfv.kubevim.network.v1.NetworkService.GetSubnet:output_type -> kubenfv.kubevim.network.v1.Subnet
-	16, // 34: kubenfv.kubevim.network.v1.NetworkService.ListSubnets:output_type -> kubenfv.kubevim.network.v1.ListSubnetsResponse
-	4,  // 35: kubenfv.kubevim.network.v1.NetworkService.UpdateSubnet:output_type -> kubenfv.kubevim.network.v1.Subnet
-	26, // 36: kubenfv.kubevim.network.v1.NetworkService.DeleteSubnet:output_type -> google.protobuf.Empty
-	27, // [27:37] is the sub-list for method output_type
-	17, // [17:27] is the sub-list for method input_type
-	17, // [17:17] is the sub-list for extension type_name
-	17, // [17:17] is the sub-list for extension extendee
-	0,  // [0:17] is the sub-list for field type_name
+	4,  // 1: kubenfv.kubevim.network.v1.Network.layer3_attributes:type_name -> kubenfv.kubevim.network.v1.SubnetData
+	25, // 2: kubenfv.kubevim.network.v1.Network.operational_state:type_name -> kubenfv.kubevim.common.v1.OperationalState
+	21, // 3: kubenfv.kubevim.network.v1.Network.metadata:type_name -> kubenfv.kubevim.network.v1.Network.MetadataEntry
+	3,  // 4: kubenfv.kubevim.network.v1.Network.sriov:type_name -> kubenfv.kubevim.network.v1.SriovSettings
+	26, // 5: kubenfv.kubevim.network.v1.SubnetData.ip_version:type_name -> kubenfv.kubevim.common.v1.IpVersion
+	6,  // 6: kubenfv.kubevim.network.v1.SubnetData.address_pools:type_name -> kubenfv.kubevim.network.v1.IpAddressPool
+	1,  // 7: kubenfv.kubevim.network.v1.SubnetData.gateway_mode:type_name -> kubenfv.kubevim.network.v1.GatewayMode
+	4,  // 8: kubenfv.kubevim.network.v1.Subnet.data:type_name -> kubenfv.kubevim.network.v1.SubnetData
+	22, // 9: kubenfv.kubevim.network.v1.Subnet.metadata:type_name -> kubenfv.kubevim.network.v1.Subnet.MetadataEntry
+	2,  // 10: kubenfv.kubevim.network.v1.CreateNetworkRequest.network:type_name -> kubenfv.kubevim.network.v1.Network
+	5,  // 11: kubenfv.kubevim.network.v1.CreateSubnetRequest.subnet:type_name -> kubenfv.kubevim.network.v1.Subnet
+	2,  // 12: kubenfv.kubevim.network.v1.ListNetworksResponse.networks:type_name -> kubenfv.kubevim.network.v1.Network
+	13, // 13: kubenfv.kubevim.network.v1.UpdateNetworkRequest.update:type_name -> kubenfv.kubevim.network.v1.NetworkUpdate
+	23, // 14: kubenfv.kubevim.network.v1.NetworkUpdate.metadata:type_name -> kubenfv.kubevim.network.v1.NetworkUpdate.MetadataEntry
+	5,  // 15: kubenfv.kubevim.network.v1.ListSubnetsResponse.subnets:type_name -> kubenfv.kubevim.network.v1.Subnet
+	19, // 16: kubenfv.kubevim.network.v1.UpdateSubnetRequest.update:type_name -> kubenfv.kubevim.network.v1.SubnetUpdate
+	24, // 17: kubenfv.kubevim.network.v1.SubnetUpdate.metadata:type_name -> kubenfv.kubevim.network.v1.SubnetUpdate.MetadataEntry
+	7,  // 18: kubenfv.kubevim.network.v1.NetworkService.CreateNetwork:input_type -> kubenfv.kubevim.network.v1.CreateNetworkRequest
+	9,  // 19: kubenfv.kubevim.network.v1.NetworkService.GetNetwork:input_type -> kubenfv.kubevim.network.v1.GetNetworkRequest
+	10, // 20: kubenfv.kubevim.network.v1.NetworkService.ListNetworks:input_type -> kubenfv.kubevim.network.v1.ListNetworksRequest
+	12, // 21: kubenfv.kubevim.network.v1.NetworkService.UpdateNetwork:input_type -> kubenfv.kubevim.network.v1.UpdateNetworkRequest
+	14, // 22: kubenfv.kubevim.network.v1.NetworkService.DeleteNetwork:input_type -> kubenfv.kubevim.network.v1.DeleteNetworkRequest
+	8,  // 23: kubenfv.kubevim.network.v1.NetworkService.CreateSubnet:input_type -> kubenfv.kubevim.network.v1.CreateSubnetRequest
+	15, // 24: kubenfv.kubevim.network.v1.NetworkService.GetSubnet:input_type -> kubenfv.kubevim.network.v1.GetSubnetRequest
+	16, // 25: kubenfv.kubevim.network.v1.NetworkService.ListSubnets:input_type -> kubenfv.kubevim.network.v1.ListSubnetsRequest
+	18, // 26: kubenfv.kubevim.network.v1.NetworkService.UpdateSubnet:input_type -> kubenfv.kubevim.network.v1.UpdateSubnetRequest
+	20, // 27: kubenfv.kubevim.network.v1.NetworkService.DeleteSubnet:input_type -> kubenfv.kubevim.network.v1.DeleteSubnetRequest
+	2,  // 28: kubenfv.kubevim.network.v1.NetworkService.CreateNetwork:output_type -> kubenfv.kubevim.network.v1.Network
+	2,  // 29: kubenfv.kubevim.network.v1.NetworkService.GetNetwork:output_type -> kubenfv.kubevim.network.v1.Network
+	11, // 30: kubenfv.kubevim.network.v1.NetworkService.ListNetworks:output_type -> kubenfv.kubevim.network.v1.ListNetworksResponse
+	2,  // 31: kubenfv.kubevim.network.v1.NetworkService.UpdateNetwork:output_type -> kubenfv.kubevim.network.v1.Network
+	27, // 32: kubenfv.kubevim.network.v1.NetworkService.DeleteNetwork:output_type -> google.protobuf.Empty
+	5,  // 33: kubenfv.kubevim.network.v1.NetworkService.CreateSubnet:output_type -> kubenfv.kubevim.network.v1.Subnet
+	5,  // 34: kubenfv.kubevim.network.v1.NetworkService.GetSubnet:output_type -> kubenfv.kubevim.network.v1.Subnet
+	17, // 35: kubenfv.kubevim.network.v1.NetworkService.ListSubnets:output_type -> kubenfv.kubevim.network.v1.ListSubnetsResponse
+	5,  // 36: kubenfv.kubevim.network.v1.NetworkService.UpdateSubnet:output_type -> kubenfv.kubevim.network.v1.Subnet
+	27, // 37: kubenfv.kubevim.network.v1.NetworkService.DeleteSubnet:output_type -> google.protobuf.Empty
+	28, // [28:38] is the sub-list for method output_type
+	18, // [18:28] is the sub-list for method input_type
+	18, // [18:18] is the sub-list for extension type_name
+	18, // [18:18] is the sub-list for extension extendee
+	0,  // [0:18] is the sub-list for field type_name
 }
 
 func init() { file_kubenfv_kubevim_network_v1_network_proto_init() }
@@ -1506,7 +1580,7 @@ func file_kubenfv_kubevim_network_v1_network_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_kubenfv_kubevim_network_v1_network_proto_rawDesc), len(file_kubenfv_kubevim_network_v1_network_proto_rawDesc)),
-			NumEnums:      1,
+			NumEnums:      2,
 			NumMessages:   23,
 			NumExtensions: 0,
 			NumServices:   1,
