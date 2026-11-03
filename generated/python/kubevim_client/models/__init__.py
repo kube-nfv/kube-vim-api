@@ -37,6 +37,7 @@ from kubevim_client.models.disk_bus import DiskBus
 from kubevim_client.models.disk_format import DiskFormat
 from kubevim_client.models.firmware import Firmware
 from kubevim_client.models.flavour import Flavour
+from kubevim_client.models.gateway_mode import GatewayMode
 from kubevim_client.models.glance_source import GlanceSource
 from kubevim_client.models.http_source import HttpSource
 from kubevim_client.models.image import Image

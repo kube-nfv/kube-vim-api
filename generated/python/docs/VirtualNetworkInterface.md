@@ -14,7 +14,7 @@ Name | Type | Description | Notes
 **ip_addresses** | **List[str]** | Addresses of the interface, one per subnet of its network; may be empty until DHCP or the guest configures them. | [optional] 
 **is_management** | **bool** | The management interface every compute resource gets on the pod network. | [optional] 
 **mac_address** | **str** | MAC address; empty until known. | [optional] 
-**model** | [**NicModel**](NicModel.md) | NIC model the guest sees. | [optional] 
+**model** | [**NicModel**](NicModel.md) | NIC model the guest sees; unspecified for SRIOV and MASQUERADE interfaces. | [optional] 
 **name** | **str** | Name of the interface, unique within the compute resource: the one given at creation, or one the VIM chose. | [optional] 
 **network_id** | **str** | Network the interface is attached to; empty for the management interface. | [optional] 
 **operational_state** | [**OperationalState**](OperationalState.md) | ENABLED once the interface is attached and ready. | [optional] 

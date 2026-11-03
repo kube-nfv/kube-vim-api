@@ -50,6 +50,14 @@ func TestNetworkValidation(t *testing.T) {
 		"sriov without pool": {
 			json: network(`{"networkType":"NETWORK_TYPE_FLAT","providerNetwork":"physnet1","sriov":{}}`), msg: &networkv1.CreateNetworkRequest{},
 		},
+		"vlan with an external gateway": {
+			json:  network(`{"networkType":"NETWORK_TYPE_VLAN","providerNetwork":"physnet1","segmentationId":100,"layer3Attributes":[{"ipVersion":"IP_VERSION_IPV4","cidr":"10.0.0.0/24","gatewayMode":"GATEWAY_MODE_EXTERNAL"}]}`),
+			msg:   &networkv1.CreateNetworkRequest{},
+			valid: true,
+		},
+		"geneve with a gateway mode": {
+			json: network(`{"networkType":"NETWORK_TYPE_GENEVE","layer3Attributes":[{"ipVersion":"IP_VERSION_IPV4","cidr":"10.0.0.0/24","gatewayMode":"GATEWAY_MODE_VIM"}]}`), msg: &networkv1.CreateNetworkRequest{},
+		},
 		"geneve with sriov": {
 			json: network(`{"networkType":"NETWORK_TYPE_GENEVE","sriov":{"pool":"physnet1_vfio"},"layer3Attributes":[` + v4 + `]}`), msg: &networkv1.CreateNetworkRequest{},
 		},

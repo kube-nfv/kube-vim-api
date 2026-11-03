@@ -78,6 +78,9 @@ func TestComputeValidation(t *testing.T) {
 		"sriov interface with automatic addresses": {
 			json: iface(`,"typeVirtualNic":"TYPE_VIRTUAL_NIC_SRIOV"`), msg: &computev1.CreateComputeRequest{},
 		},
+		"sriov interface with a model": {
+			json: iface(`,"typeVirtualNic":"TYPE_VIRTUAL_NIC_SRIOV","ipAssignment":"IP_ASSIGNMENT_NONE","model":"NIC_MODEL_VIRTIO"`), msg: &computev1.CreateComputeRequest{},
+		},
 		"masquerade interface": {
 			json: iface(`,"typeVirtualNic":"TYPE_VIRTUAL_NIC_MASQUERADE"`), msg: &computev1.CreateComputeRequest{},
 		},

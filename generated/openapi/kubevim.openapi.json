@@ -346,6 +346,16 @@
         ],
         "type": "object"
       },
+      "GatewayMode": {
+        "description": "Layer 3 attributes of a subnet: one IP version of its network.\nHow a VLAN or FLAT subnet reaches its gateway. Values may be added; clients should accept unknown values.",
+        "enum": [
+          "GATEWAY_MODE_UNSPECIFIED",
+          "GATEWAY_MODE_NONE",
+          "GATEWAY_MODE_EXTERNAL",
+          "GATEWAY_MODE_VIM"
+        ],
+        "type": "string"
+      },
       "GlanceSource": {
         "description": "Image in the Glance catalog configured in the VIM; the VIM holds the Glance endpoint and credentials.",
         "properties": {
@@ -808,7 +818,7 @@
           },
           "model": {
             "$ref": "#/components/schemas/NicModel",
-            "description": "NIC model the guest sees; virtio when unset."
+            "description": "NIC model the guest sees; virtio when unset. Not for SRIOV interfaces: the guest sees the virtual function."
           },
           "name": {
             "description": "Name of the interface, unique within the compute resource; the VIM chooses one when unset.",
@@ -1125,7 +1135,6 @@
         "type": "object"
       },
       "SubnetData": {
-        "description": "Layer 3 attributes of a subnet: one IP version of its network.",
         "properties": {
           "addressPools": {
             "description": "Address pools the VIM allocates from; the whole CIDR except the gateway when empty.",
@@ -1148,6 +1157,10 @@
           "gatewayIp": {
             "description": "Gateway address; the VIM picks one when unset.",
             "type": "string"
+          },
+          "gatewayMode": {
+            "$ref": "#/components/schemas/GatewayMode",
+            "description": "How a VLAN or FLAT subnet reaches its gateway; unset means NONE. GENEVE subnets are routed by the VIM."
           },
           "ipVersion": {
             "$ref": "#/components/schemas/IpVersion",
@@ -1407,7 +1420,7 @@
           },
           "model": {
             "$ref": "#/components/schemas/NicModel",
-            "description": "NIC model the guest sees."
+            "description": "NIC model the guest sees; unspecified for SRIOV and MASQUERADE interfaces."
           },
           "name": {
             "description": "Name of the interface, unique within the compute resource: the one given at creation, or one the VIM chose.",

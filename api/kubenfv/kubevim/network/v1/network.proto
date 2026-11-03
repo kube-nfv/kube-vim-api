@@ -409,6 +409,11 @@ message Network {
     expression: "this.network_type != 1 || !has(this.sriov)"
   };
   option (buf.validate.message).cel = {
+    id: "network.gateway_mode"
+    message: "gatewayMode is only for VLAN and FLAT networks"
+    expression: "this.network_type != 1 || this.layer3_attributes.all(s, s.gateway_mode == 0)"
+  };
+  option (buf.validate.message).cel = {
     id: "network.provider"
     message: "VLAN and FLAT networks need a providerNetwork; GENEVE networks take none"
     expression: "this.network_type == 1 ? this.provider_network == '' : this.provider_network != ''"
@@ -445,6 +450,17 @@ enum NetworkType {
 }
 
 // Layer 3 attributes of a subnet: one IP version of its network.
+// How a VLAN or FLAT subnet reaches its gateway. Values may be added; clients should accept unknown values.
+enum GatewayMode {
+  GATEWAY_MODE_UNSPECIFIED = 0;
+  // No router on the segment; gatewayIp is not checked. Unspecified means this.
+  GATEWAY_MODE_NONE = 1;
+  // A router on the segment owns gatewayIp; the VIM checks that it answers before attaching an interface.
+  GATEWAY_MODE_EXTERNAL = 2;
+  // The VIM routes the subnet at gatewayIp.
+  GATEWAY_MODE_VIM = 3;
+}
+
 message SubnetData {
   option (kubenfv.kubevim.options.v1.ifa_message) = {ref: "IFA006 8.4.4.4 NetworkSubnetData"};
 
@@ -496,6 +512,18 @@ message SubnetData {
         kind: KIND_EXTENSION
         translates: true
         rationale: "Guests on DHCP subnets need DNS servers; IFA has no DNS attribute."
+      }
+    }
+  ];
+  // How a VLAN or FLAT subnet reaches its gateway; unset means NONE. GENEVE subnets are routed by the VIM.
+  GatewayMode gateway_mode = 7 [
+    (google.api.field_behavior) = OPTIONAL,
+    (buf.validate.field).enum.defined_only = true,
+    (kubenfv.kubevim.options.v1.ifa_field) = {
+      departure: {
+        kind: KIND_EXTENSION
+        translates: true
+        rationale: "On a provider network the gateway may be a router on the segment, the VIM, or absent; IFA has no such attribute."
       }
     }
   ];

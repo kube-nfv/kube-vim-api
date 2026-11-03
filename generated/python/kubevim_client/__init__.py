@@ -56,6 +56,7 @@ __all__ = [
     "DiskFormat",
     "Firmware",
     "Flavour",
+    "GatewayMode",
     "GlanceSource",
     "HttpSource",
     "Image",
@@ -160,6 +161,7 @@ from kubevim_client.models.disk_bus import DiskBus as DiskBus
 from kubevim_client.models.disk_format import DiskFormat as DiskFormat
 from kubevim_client.models.firmware import Firmware as Firmware
 from kubevim_client.models.flavour import Flavour as Flavour
+from kubevim_client.models.gateway_mode import GatewayMode as GatewayMode
 from kubevim_client.models.glance_source import GlanceSource as GlanceSource
 from kubevim_client.models.http_source import HttpSource as HttpSource
 from kubevim_client.models.image import Image as Image
