@@ -5,16 +5,26 @@ package v1
 // OvnDnatRuleStatusApplyConfiguration represents a declarative configuration of the OvnDnatRuleStatus type for use
 // with apply.
 type OvnDnatRuleStatusApplyConfiguration struct {
-	Vpc          *string `json:"vpc,omitempty"`
-	V4Eip        *string `json:"v4Eip,omitempty"`
-	V6Eip        *string `json:"v6Eip,omitempty"`
+	// VPC name where the DNAT rule is configured
+	Vpc *string `json:"vpc,omitempty"`
+	// V4Eip is the IPv4 EIP address
+	V4Eip *string `json:"v4Eip,omitempty"`
+	// V6Eip is the IPv6 EIP address
+	V6Eip *string `json:"v6Eip,omitempty"`
+	// ExternalPort is the external port of the DNAT rule
 	ExternalPort *string `json:"externalPort,omitempty"`
-	V4Ip         *string `json:"v4Ip,omitempty"`
-	V6Ip         *string `json:"v6Ip,omitempty"`
+	// V4Ip is the IPv4 address of the DNAT rule
+	V4Ip *string `json:"v4Ip,omitempty"`
+	// V6Ip is the IPv6 address of the DNAT rule
+	V6Ip *string `json:"v6Ip,omitempty"`
+	// InternalPort is the internal port of the DNAT rule
 	InternalPort *string `json:"internalPort,omitempty"`
-	Protocol     *string `json:"protocol,omitempty"`
-	IPName       *string `json:"ipName,omitempty"`
-	Ready        *bool   `json:"ready,omitempty"`
+	// Protocol of the DNAT rule
+	Protocol *string `json:"protocol,omitempty"`
+	// IP resource name
+	IPName *string `json:"ipName,omitempty"`
+	// Indicates whether the DNAT rule is ready
+	Ready *bool `json:"ready,omitempty"`
 	// Conditions represents the latest state of the object
 	Conditions []ConditionApplyConfiguration `json:"conditions,omitempty"`
 }

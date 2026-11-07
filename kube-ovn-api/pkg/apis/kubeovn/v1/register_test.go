@@ -16,7 +16,7 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-    "github.com/kube-nfv/kube-vim-api/kube-ovn-api/pkg/apis/kubeovn"
+	"github.com/kube-nfv/kube-vim-api/kube-ovn-api/pkg/apis/kubeovn"
 )
 
 func TestKind(t *testing.T) {
@@ -81,8 +81,7 @@ func TestAddResources(t *testing.T) {
 		}
 
 		var hasTypeMeta, hasObjMeta, hasListMeta bool
-		for i := range st.NumFields() {
-			v := st.Field(i)
+		for v := range st.Fields() {
 			if !v.Embedded() || !v.Exported() {
 				continue
 			}

@@ -5,7 +5,7 @@ import (
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-    "github.com/kube-nfv/kube-vim-api/kube-ovn-api/pkg/apis/kubeovn"
+	"github.com/kube-nfv/kube-vim-api/kube-ovn-api/pkg/apis/kubeovn"
 )
 
 // SchemeGroupVersion is group version used to register these objects
@@ -31,6 +31,12 @@ var (
 // Adds the list of known types to Scheme.
 func addKnownTypes(scheme *runtime.Scheme) error {
 	scheme.AddKnownTypes(SchemeGroupVersion,
+		&BgpConf{},
+		&BgpConfList{},
+		&DNSNameResolver{},
+		&DNSNameResolverList{},
+		&EvpnConf{},
+		&EvpnConfList{},
 		&IP{},
 		&IPList{},
 		&IPPool{},
@@ -59,6 +65,8 @@ func addKnownTypes(scheme *runtime.Scheme) error {
 		&SecurityGroupList{},
 		&Subnet{},
 		&SubnetList{},
+		&RouterLBRule{},
+		&RouterLBRuleList{},
 		&SwitchLBRule{},
 		&SwitchLBRuleList{},
 		&Vip{},

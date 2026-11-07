@@ -5,9 +5,14 @@ package v1
 // VpcDNSSpecApplyConfiguration represents a declarative configuration of the VpcDNSSpec type for use
 // with apply.
 type VpcDNSSpecApplyConfiguration struct {
-	Replicas *int32  `json:"replicas,omitempty"`
-	Vpc      *string `json:"vpc,omitempty"`
-	Subnet   *string `json:"subnet,omitempty"`
+	// Number of DNS server replicas (1-3)
+	Replicas *int32 `json:"replicas,omitempty"`
+	// VPC name for the DNS service. This field is immutable after creation.
+	Vpc *string `json:"vpc,omitempty"`
+	// Subnet name for the DNS service. This field is immutable after creation.
+	Subnet *string `json:"subnet,omitempty"`
+	// CoreDNS corefile configuration
+	Corefile *string `json:"corefile,omitempty"`
 }
 
 // VpcDNSSpecApplyConfiguration constructs a declarative configuration of the VpcDNSSpec type for use with
@@ -37,5 +42,13 @@ func (b *VpcDNSSpecApplyConfiguration) WithVpc(value string) *VpcDNSSpecApplyCon
 // If called multiple times, the Subnet field is set to the value of the last call.
 func (b *VpcDNSSpecApplyConfiguration) WithSubnet(value string) *VpcDNSSpecApplyConfiguration {
 	b.Subnet = &value
+	return b
+}
+
+// WithCorefile sets the Corefile field in the declarative configuration to the given value
+// and returns the receiver, so that objects can be built by chaining "With" function invocations.
+// If called multiple times, the Corefile field is set to the value of the last call.
+func (b *VpcDNSSpecApplyConfiguration) WithCorefile(value string) *VpcDNSSpecApplyConfiguration {
+	b.Corefile = &value
 	return b
 }

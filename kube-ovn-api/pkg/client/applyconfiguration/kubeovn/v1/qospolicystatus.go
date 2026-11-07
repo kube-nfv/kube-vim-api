@@ -9,9 +9,12 @@ import (
 // QoSPolicyStatusApplyConfiguration represents a declarative configuration of the QoSPolicyStatus type for use
 // with apply.
 type QoSPolicyStatusApplyConfiguration struct {
+	// Active bandwidth limit rules
 	BandwidthLimitRules *kubeovnv1.QoSPolicyBandwidthLimitRules `json:"bandwidthLimitRules,omitempty"`
-	Shared              *bool                                   `json:"shared,omitempty"`
-	BindingType         *kubeovnv1.QoSPolicyBindingType         `json:"bindingType,omitempty"`
+	// Whether the QoS policy is shared
+	Shared *bool `json:"shared,omitempty"`
+	// Binding type of the QoS policy
+	BindingType *kubeovnv1.QoSPolicyBindingType `json:"bindingType,omitempty"`
 	// Conditions represents the latest state of the object
 	Conditions []ConditionApplyConfiguration `json:"conditions,omitempty"`
 }

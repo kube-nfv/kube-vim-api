@@ -12,6 +12,18 @@ type FakeKubeovnV1 struct {
 	*testing.Fake
 }
 
+func (c *FakeKubeovnV1) BgpConves() v1.BgpConfInterface {
+	return newFakeBgpConves(c)
+}
+
+func (c *FakeKubeovnV1) DNSNameResolvers() v1.DNSNameResolverInterface {
+	return newFakeDNSNameResolvers(c)
+}
+
+func (c *FakeKubeovnV1) EvpnConves() v1.EvpnConfInterface {
+	return newFakeEvpnConves(c)
+}
+
 func (c *FakeKubeovnV1) IPs() v1.IPInterface {
 	return newFakeIPs(c)
 }
@@ -58,6 +70,10 @@ func (c *FakeKubeovnV1) ProviderNetworks() v1.ProviderNetworkInterface {
 
 func (c *FakeKubeovnV1) QoSPolicies() v1.QoSPolicyInterface {
 	return newFakeQoSPolicies(c)
+}
+
+func (c *FakeKubeovnV1) RouterLBRules() v1.RouterLBRuleInterface {
+	return newFakeRouterLBRules(c)
 }
 
 func (c *FakeKubeovnV1) SecurityGroups() v1.SecurityGroupInterface {

@@ -2,11 +2,18 @@
 
 package v1
 
+import (
+	kubeovnv1 "github.com/kube-nfv/kube-vim-api/kube-ovn-api/pkg/apis/kubeovn/v1"
+	corev1 "k8s.io/api/core/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+)
+
 // ProviderNetworkConditionApplyConfiguration represents a declarative configuration of the ProviderNetworkCondition type for use
 // with apply.
 type ProviderNetworkConditionApplyConfiguration struct {
 	// Node name
-	Node *string `json:"node,omitempty"`
+	Node                        *string `json:"node,omitempty"`
+	ConditionApplyConfiguration `json:",inline"`
 }
 
 // ProviderNetworkConditionApplyConfiguration constructs a declarative configuration of the ProviderNetworkCondition type for use with
@@ -20,5 +27,61 @@ func ProviderNetworkCondition() *ProviderNetworkConditionApplyConfiguration {
 // If called multiple times, the Node field is set to the value of the last call.
 func (b *ProviderNetworkConditionApplyConfiguration) WithNode(value string) *ProviderNetworkConditionApplyConfiguration {
 	b.Node = &value
+	return b
+}
+
+// WithType sets the Type field in the declarative configuration to the given value
+// and returns the receiver, so that objects can be built by chaining "With" function invocations.
+// If called multiple times, the Type field is set to the value of the last call.
+func (b *ProviderNetworkConditionApplyConfiguration) WithType(value kubeovnv1.ConditionType) *ProviderNetworkConditionApplyConfiguration {
+	b.ConditionApplyConfiguration.Type = &value
+	return b
+}
+
+// WithStatus sets the Status field in the declarative configuration to the given value
+// and returns the receiver, so that objects can be built by chaining "With" function invocations.
+// If called multiple times, the Status field is set to the value of the last call.
+func (b *ProviderNetworkConditionApplyConfiguration) WithStatus(value corev1.ConditionStatus) *ProviderNetworkConditionApplyConfiguration {
+	b.ConditionApplyConfiguration.Status = &value
+	return b
+}
+
+// WithReason sets the Reason field in the declarative configuration to the given value
+// and returns the receiver, so that objects can be built by chaining "With" function invocations.
+// If called multiple times, the Reason field is set to the value of the last call.
+func (b *ProviderNetworkConditionApplyConfiguration) WithReason(value string) *ProviderNetworkConditionApplyConfiguration {
+	b.ConditionApplyConfiguration.Reason = &value
+	return b
+}
+
+// WithMessage sets the Message field in the declarative configuration to the given value
+// and returns the receiver, so that objects can be built by chaining "With" function invocations.
+// If called multiple times, the Message field is set to the value of the last call.
+func (b *ProviderNetworkConditionApplyConfiguration) WithMessage(value string) *ProviderNetworkConditionApplyConfiguration {
+	b.ConditionApplyConfiguration.Message = &value
+	return b
+}
+
+// WithObservedGeneration sets the ObservedGeneration field in the declarative configuration to the given value
+// and returns the receiver, so that objects can be built by chaining "With" function invocations.
+// If called multiple times, the ObservedGeneration field is set to the value of the last call.
+func (b *ProviderNetworkConditionApplyConfiguration) WithObservedGeneration(value int64) *ProviderNetworkConditionApplyConfiguration {
+	b.ConditionApplyConfiguration.ObservedGeneration = &value
+	return b
+}
+
+// WithLastUpdateTime sets the LastUpdateTime field in the declarative configuration to the given value
+// and returns the receiver, so that objects can be built by chaining "With" function invocations.
+// If called multiple times, the LastUpdateTime field is set to the value of the last call.
+func (b *ProviderNetworkConditionApplyConfiguration) WithLastUpdateTime(value metav1.Time) *ProviderNetworkConditionApplyConfiguration {
+	b.ConditionApplyConfiguration.LastUpdateTime = &value
+	return b
+}
+
+// WithLastTransitionTime sets the LastTransitionTime field in the declarative configuration to the given value
+// and returns the receiver, so that objects can be built by chaining "With" function invocations.
+// If called multiple times, the LastTransitionTime field is set to the value of the last call.
+func (b *ProviderNetworkConditionApplyConfiguration) WithLastTransitionTime(value metav1.Time) *ProviderNetworkConditionApplyConfiguration {
+	b.ConditionApplyConfiguration.LastTransitionTime = &value
 	return b
 }

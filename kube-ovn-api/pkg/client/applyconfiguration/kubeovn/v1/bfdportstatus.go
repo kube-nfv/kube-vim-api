@@ -5,8 +5,11 @@ package v1
 // BFDPortStatusApplyConfiguration represents a declarative configuration of the BFDPortStatus type for use
 // with apply.
 type BFDPortStatusApplyConfiguration struct {
-	Name  *string  `json:"name,omitempty"`
-	IP    *string  `json:"ip,omitempty"`
+	// BFD port name
+	Name *string `json:"name,omitempty"`
+	// BFD port IP address
+	IP *string `json:"ip,omitempty"`
+	// Nodes where BFD port is deployed
 	Nodes []string `json:"nodes,omitempty"`
 }
 

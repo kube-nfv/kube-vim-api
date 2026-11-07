@@ -6,23 +6,26 @@ package v1
 // with apply.
 type VpcStatusApplyConfiguration struct {
 	// Conditions represents the latest state of the object
-	Conditions              []ConditionApplyConfiguration    `json:"conditions,omitempty"`
-	Standby                 *bool                            `json:"standby,omitempty"`
-	Default                 *bool                            `json:"default,omitempty"`
-	DefaultLogicalSwitch    *string                          `json:"defaultLogicalSwitch,omitempty"`
-	Router                  *string                          `json:"router,omitempty"`
-	TCPLoadBalancer         *string                          `json:"tcpLoadBalancer,omitempty"`
-	UDPLoadBalancer         *string                          `json:"udpLoadBalancer,omitempty"`
-	SctpLoadBalancer        *string                          `json:"sctpLoadBalancer,omitempty"`
-	TCPSessionLoadBalancer  *string                          `json:"tcpSessionLoadBalancer,omitempty"`
-	UDPSessionLoadBalancer  *string                          `json:"udpSessionLoadBalancer,omitempty"`
-	SctpSessionLoadBalancer *string                          `json:"sctpSessionLoadBalancer,omitempty"`
-	Subnets                 []string                         `json:"subnets,omitempty"`
-	VpcPeerings             []string                         `json:"vpcPeerings,omitempty"`
-	EnableExternal          *bool                            `json:"enableExternal,omitempty"`
-	ExtraExternalSubnets    []string                         `json:"extraExternalSubnets,omitempty"`
-	EnableBfd               *bool                            `json:"enableBfd,omitempty"`
-	BFDPort                 *BFDPortStatusApplyConfiguration `json:"bfdPort,omitempty"`
+	Conditions []ConditionApplyConfiguration `json:"conditions,omitempty"`
+	Standby    *bool                         `json:"standby,omitempty"`
+	// Whether this is the default VPC.
+	Default                 *bool    `json:"default,omitempty"`
+	DefaultLogicalSwitch    *string  `json:"defaultLogicalSwitch,omitempty"`
+	Router                  *string  `json:"router,omitempty"`
+	TCPLoadBalancer         *string  `json:"tcpLoadBalancer,omitempty"`
+	UDPLoadBalancer         *string  `json:"udpLoadBalancer,omitempty"`
+	SctpLoadBalancer        *string  `json:"sctpLoadBalancer,omitempty"`
+	TCPSessionLoadBalancer  *string  `json:"tcpSessionLoadBalancer,omitempty"`
+	UDPSessionLoadBalancer  *string  `json:"udpSessionLoadBalancer,omitempty"`
+	SctpSessionLoadBalancer *string  `json:"sctpSessionLoadBalancer,omitempty"`
+	Subnets                 []string `json:"subnets,omitempty"`
+	// VPC peering configurations.
+	VpcPeerings    []string `json:"vpcPeerings,omitempty"`
+	EnableExternal *bool    `json:"enableExternal,omitempty"`
+	// Extra external subnets for provider-network VLAN. Immutable after creation.
+	ExtraExternalSubnets []string                         `json:"extraExternalSubnets,omitempty"`
+	EnableBfd            *bool                            `json:"enableBfd,omitempty"`
+	BFDPort              *BFDPortStatusApplyConfiguration `json:"bfdPort,omitempty"`
 }
 
 // VpcStatusApplyConfiguration constructs a declarative configuration of the VpcStatus type for use with

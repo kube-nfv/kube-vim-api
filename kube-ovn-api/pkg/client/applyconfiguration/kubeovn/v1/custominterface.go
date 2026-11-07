@@ -5,8 +5,10 @@ package v1
 // CustomInterfaceApplyConfiguration represents a declarative configuration of the CustomInterface type for use
 // with apply.
 type CustomInterfaceApplyConfiguration struct {
-	Interface *string  `json:"interface,omitempty"`
-	Nodes     []string `json:"nodes,omitempty"`
+	// Interface name
+	Interface *string `json:"interface,omitempty"`
+	// Nodes that use this custom interface
+	Nodes []string `json:"nodes,omitempty"`
 }
 
 // CustomInterfaceApplyConfiguration constructs a declarative configuration of the CustomInterface type for use with

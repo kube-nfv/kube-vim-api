@@ -7,12 +7,18 @@ package v1
 type OvnEipStatusApplyConfiguration struct {
 	// Conditions represents the latest state of the object
 	Conditions []ConditionApplyConfiguration `json:"conditions,omitempty"`
-	Type       *string                       `json:"type,omitempty"`
-	Nat        *string                       `json:"nat,omitempty"`
-	Ready      *bool                         `json:"ready,omitempty"`
-	V4Ip       *string                       `json:"v4Ip,omitempty"`
-	V6Ip       *string                       `json:"v6Ip,omitempty"`
-	MacAddress *string                       `json:"macAddress,omitempty"`
+	// Type of the OVN EIP
+	Type *string `json:"type,omitempty"`
+	// NAT configuration status
+	Nat *string `json:"nat,omitempty"`
+	// Indicates whether the EIP is ready
+	Ready *bool `json:"ready,omitempty"`
+	// IPv4 address assigned to the EIP
+	V4Ip *string `json:"v4Ip,omitempty"`
+	// IPv6 address assigned to the EIP
+	V6Ip *string `json:"v6Ip,omitempty"`
+	// MAC address assigned to the EIP
+	MacAddress *string `json:"macAddress,omitempty"`
 }
 
 // OvnEipStatusApplyConfiguration constructs a declarative configuration of the OvnEipStatus type for use with

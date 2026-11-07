@@ -2,25 +2,35 @@
 
 package v1
 
+import (
+	internal "github.com/kube-nfv/kube-vim-api/kube-ovn-api/pkg/internal"
+)
+
 // SubnetStatusApplyConfiguration represents a declarative configuration of the SubnetStatus type for use
 // with apply.
 type SubnetStatusApplyConfiguration struct {
 	// Conditions represents the latest state of the object
-	Conditions             []ConditionApplyConfiguration                   `json:"conditions,omitempty"`
-	V4AvailableIPs         *float64                                        `json:"v4availableIPs,omitempty"`
-	V4AvailableIPRange     *string                                         `json:"v4availableIPrange,omitempty"`
-	V4UsingIPs             *float64                                        `json:"v4usingIPs,omitempty"`
-	V4UsingIPRange         *string                                         `json:"v4usingIPrange,omitempty"`
-	V6AvailableIPs         *float64                                        `json:"v6availableIPs,omitempty"`
-	V6AvailableIPRange     *string                                         `json:"v6availableIPrange,omitempty"`
-	V6UsingIPs             *float64                                        `json:"v6usingIPs,omitempty"`
-	V6UsingIPRange         *string                                         `json:"v6usingIPrange,omitempty"`
-	ActivateGateway        *string                                         `json:"activateGateway,omitempty"`
-	DHCPv4OptionsUUID      *string                                         `json:"dhcpV4OptionsUUID,omitempty"`
-	DHCPv6OptionsUUID      *string                                         `json:"dhcpV6OptionsUUID,omitempty"`
-	U2OInterconnectionIP   *string                                         `json:"u2oInterconnectionIP,omitempty"`
-	U2OInterconnectionMAC  *string                                         `json:"u2oInterconnectionMAC,omitempty"`
-	U2OInterconnectionVPC  *string                                         `json:"u2oInterconnectionVPC,omitempty"`
+	Conditions         []ConditionApplyConfiguration `json:"conditions,omitempty"`
+	V4AvailableIPs     *internal.BigInt              `json:"v4availableIPs,omitempty"`
+	V4AvailableIPRange *string                       `json:"v4availableIPrange,omitempty"`
+	V4UsingIPs         *internal.BigInt              `json:"v4usingIPs,omitempty"`
+	V4UsingIPRange     *string                       `json:"v4usingIPrange,omitempty"`
+	V6AvailableIPs     *internal.BigInt              `json:"v6availableIPs,omitempty"`
+	V6AvailableIPRange *string                       `json:"v6availableIPrange,omitempty"`
+	V6UsingIPs         *internal.BigInt              `json:"v6usingIPs,omitempty"`
+	V6UsingIPRange     *string                       `json:"v6usingIPrange,omitempty"`
+	ActivateGateway    *string                       `json:"activateGateway,omitempty"`
+	DHCPv4OptionsUUID  *string                       `json:"dhcpV4OptionsUUID,omitempty"`
+	DHCPv6OptionsUUID  *string                       `json:"dhcpV6OptionsUUID,omitempty"`
+	// GatewayMAC is the mac address of the subnet's logical router port, recorded so
+	// the validating webhook can independently verify a switch_lb_rule vip mac repair
+	// (see pkg/webhook/vip.go) without needing access to the controller's in-memory IPAM.
+	GatewayMAC *string `json:"gatewayMAC,omitempty"`
+	// Underlay to overlay interconnection IP.
+	U2OInterconnectionIP  *string `json:"u2oInterconnectionIP,omitempty"`
+	U2OInterconnectionMAC *string `json:"u2oInterconnectionMAC,omitempty"`
+	U2OInterconnectionVPC *string `json:"u2oInterconnectionVPC,omitempty"`
+	// NAT outgoing policy rules.
 	NatOutgoingPolicyRules []NatOutgoingPolicyRuleStatusApplyConfiguration `json:"natOutgoingPolicyRules,omitempty"`
 	McastQuerierIP         *string                                         `json:"mcastQuerierIP,omitempty"`
 	McastQuerierMAC        *string                                         `json:"mcastQuerierMAC,omitempty"`
@@ -48,7 +58,7 @@ func (b *SubnetStatusApplyConfiguration) WithConditions(values ...*ConditionAppl
 // WithV4AvailableIPs sets the V4AvailableIPs field in the declarative configuration to the given value
 // and returns the receiver, so that objects can be built by chaining "With" function invocations.
 // If called multiple times, the V4AvailableIPs field is set to the value of the last call.
-func (b *SubnetStatusApplyConfiguration) WithV4AvailableIPs(value float64) *SubnetStatusApplyConfiguration {
+func (b *SubnetStatusApplyConfiguration) WithV4AvailableIPs(value internal.BigInt) *SubnetStatusApplyConfiguration {
 	b.V4AvailableIPs = &value
 	return b
 }
@@ -64,7 +74,7 @@ func (b *SubnetStatusApplyConfiguration) WithV4AvailableIPRange(value string) *S
 // WithV4UsingIPs sets the V4UsingIPs field in the declarative configuration to the given value
 // and returns the receiver, so that objects can be built by chaining "With" function invocations.
 // If called multiple times, the V4UsingIPs field is set to the value of the last call.
-func (b *SubnetStatusApplyConfiguration) WithV4UsingIPs(value float64) *SubnetStatusApplyConfiguration {
+func (b *SubnetStatusApplyConfiguration) WithV4UsingIPs(value internal.BigInt) *SubnetStatusApplyConfiguration {
 	b.V4UsingIPs = &value
 	return b
 }
@@ -80,7 +90,7 @@ func (b *SubnetStatusApplyConfiguration) WithV4UsingIPRange(value string) *Subne
 // WithV6AvailableIPs sets the V6AvailableIPs field in the declarative configuration to the given value
 // and returns the receiver, so that objects can be built by chaining "With" function invocations.
 // If called multiple times, the V6AvailableIPs field is set to the value of the last call.
-func (b *SubnetStatusApplyConfiguration) WithV6AvailableIPs(value float64) *SubnetStatusApplyConfiguration {
+func (b *SubnetStatusApplyConfiguration) WithV6AvailableIPs(value internal.BigInt) *SubnetStatusApplyConfiguration {
 	b.V6AvailableIPs = &value
 	return b
 }
@@ -96,7 +106,7 @@ func (b *SubnetStatusApplyConfiguration) WithV6AvailableIPRange(value string) *S
 // WithV6UsingIPs sets the V6UsingIPs field in the declarative configuration to the given value
 // and returns the receiver, so that objects can be built by chaining "With" function invocations.
 // If called multiple times, the V6UsingIPs field is set to the value of the last call.
-func (b *SubnetStatusApplyConfiguration) WithV6UsingIPs(value float64) *SubnetStatusApplyConfiguration {
+func (b *SubnetStatusApplyConfiguration) WithV6UsingIPs(value internal.BigInt) *SubnetStatusApplyConfiguration {
 	b.V6UsingIPs = &value
 	return b
 }
@@ -130,6 +140,14 @@ func (b *SubnetStatusApplyConfiguration) WithDHCPv4OptionsUUID(value string) *Su
 // If called multiple times, the DHCPv6OptionsUUID field is set to the value of the last call.
 func (b *SubnetStatusApplyConfiguration) WithDHCPv6OptionsUUID(value string) *SubnetStatusApplyConfiguration {
 	b.DHCPv6OptionsUUID = &value
+	return b
+}
+
+// WithGatewayMAC sets the GatewayMAC field in the declarative configuration to the given value
+// and returns the receiver, so that objects can be built by chaining "With" function invocations.
+// If called multiple times, the GatewayMAC field is set to the value of the last call.
+func (b *SubnetStatusApplyConfiguration) WithGatewayMAC(value string) *SubnetStatusApplyConfiguration {
+	b.GatewayMAC = &value
 	return b
 }
 

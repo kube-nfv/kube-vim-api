@@ -5,9 +5,25 @@ package v1
 // IPPoolSpecApplyConfiguration represents a declarative configuration of the IPPoolSpec type for use
 // with apply.
 type IPPoolSpecApplyConfiguration struct {
-	Subnet     *string  `json:"subnet,omitempty"`
+	// Subnet name for the IP pool. This field is immutable.
+	Subnet *string `json:"subnet,omitempty"`
+	// Namespaces that can use this IP pool
 	Namespaces []string `json:"namespaces,omitempty"`
-	IPs        []string `json:"ips,omitempty"`
+	// IP addresses or ranges in the pool (IPv4/IPv6 addresses or CIDR ranges).
+	// Mutually exclusive with ipCount.
+	IPs []string `json:"ips,omitempty"`
+	// Number of addresses to pick automatically from the subnet's free addresses,
+	// per IP family (a dual-stack subnet yields ipCount IPv4 plus ipCount IPv6 addresses).
+	// The picked addresses are recorded in status.ips and stay stable; increasing the
+	// value appends addresses, decreasing it releases the most recently added ones first.
+	// Mutually exclusive with ips.
+	// An ippool carves a small set of addresses out of a subnet; needing more than a few
+	// dozen is better served by a dedicated subnet, or by spelling out ranges in ips.
+	// This bound must stay in sync with maxIPPoolIPCount in the controller, which still
+	// guards pools created before the limit was introduced.
+	IPCount *int32 `json:"ipCount,omitempty"`
+	// EnableAddressSet to work with policy-based routing and ACL
+	EnableAddressSet *bool `json:"enableAddressSet,omitempty"`
 }
 
 // IPPoolSpecApplyConfiguration constructs a declarative configuration of the IPPoolSpec type for use with
@@ -41,5 +57,21 @@ func (b *IPPoolSpecApplyConfiguration) WithIPs(values ...string) *IPPoolSpecAppl
 	for i := range values {
 		b.IPs = append(b.IPs, values[i])
 	}
+	return b
+}
+
+// WithIPCount sets the IPCount field in the declarative configuration to the given value
+// and returns the receiver, so that objects can be built by chaining "With" function invocations.
+// If called multiple times, the IPCount field is set to the value of the last call.
+func (b *IPPoolSpecApplyConfiguration) WithIPCount(value int32) *IPPoolSpecApplyConfiguration {
+	b.IPCount = &value
+	return b
+}
+
+// WithEnableAddressSet sets the EnableAddressSet field in the declarative configuration to the given value
+// and returns the receiver, so that objects can be built by chaining "With" function invocations.
+// If called multiple times, the EnableAddressSet field is set to the value of the last call.
+func (b *IPPoolSpecApplyConfiguration) WithEnableAddressSet(value bool) *IPPoolSpecApplyConfiguration {
+	b.EnableAddressSet = &value
 	return b
 }

@@ -5,11 +5,16 @@ package v1
 // ProviderNetworkStatusApplyConfiguration represents a declarative configuration of the ProviderNetworkStatus type for use
 // with apply.
 type ProviderNetworkStatusApplyConfiguration struct {
-	Ready         *bool    `json:"ready,omitempty"`
-	ReadyNodes    []string `json:"readyNodes,omitempty"`
+	// Whether the provider network is ready
+	Ready *bool `json:"ready,omitempty"`
+	// Nodes that are ready
+	ReadyNodes []string `json:"readyNodes,omitempty"`
+	// Nodes that are not ready
 	NotReadyNodes []string `json:"notReadyNodes,omitempty"`
-	Vlans         []string `json:"vlans,omitempty"`
+	// VLANs in use by this provider network
+	Vlans []string `json:"vlans,omitempty"`
 	// Conditions represents the latest state of the object
+	// Conditions of nodes in the provider network
 	Conditions []ProviderNetworkConditionApplyConfiguration `json:"conditions,omitempty"`
 }
 

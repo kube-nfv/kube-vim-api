@@ -5,11 +5,17 @@ package v1
 // IptablesFIPRuleStatusApplyConfiguration represents a declarative configuration of the IptablesFIPRuleStatus type for use
 // with apply.
 type IptablesFIPRuleStatusApplyConfiguration struct {
-	Ready      *bool   `json:"ready,omitempty"`
-	V4ip       *string `json:"v4ip,omitempty"`
-	V6ip       *string `json:"v6ip,omitempty"`
-	NatGwDp    *string `json:"natGwDp,omitempty"`
-	Redo       *string `json:"redo,omitempty"`
+	// Indicates whether the FIP rule is ready
+	Ready *bool `json:"ready,omitempty"`
+	// IPv4 address of the EIP
+	V4ip *string `json:"v4ip,omitempty"`
+	// IPv6 address of the EIP
+	V6ip *string `json:"v6ip,omitempty"`
+	// NAT gateway datapath where the FIP is configured
+	NatGwDp *string `json:"natGwDp,omitempty"`
+	// Redo operation status
+	Redo *string `json:"redo,omitempty"`
+	// Internal IP address mapped to the FIP
 	InternalIP *string `json:"internalIp,omitempty"`
 	// Conditions represents the latest state of the object
 	Conditions []ConditionApplyConfiguration `json:"conditions,omitempty"`

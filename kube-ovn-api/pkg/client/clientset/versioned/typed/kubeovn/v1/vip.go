@@ -24,8 +24,6 @@ type VipsGetter interface {
 type VipInterface interface {
 	Create(ctx context.Context, vip *kubeovnv1.Vip, opts metav1.CreateOptions) (*kubeovnv1.Vip, error)
 	Update(ctx context.Context, vip *kubeovnv1.Vip, opts metav1.UpdateOptions) (*kubeovnv1.Vip, error)
-	// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-	UpdateStatus(ctx context.Context, vip *kubeovnv1.Vip, opts metav1.UpdateOptions) (*kubeovnv1.Vip, error)
 	Delete(ctx context.Context, name string, opts metav1.DeleteOptions) error
 	DeleteCollection(ctx context.Context, opts metav1.DeleteOptions, listOpts metav1.ListOptions) error
 	Get(ctx context.Context, name string, opts metav1.GetOptions) (*kubeovnv1.Vip, error)
@@ -33,8 +31,6 @@ type VipInterface interface {
 	Watch(ctx context.Context, opts metav1.ListOptions) (watch.Interface, error)
 	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts metav1.PatchOptions, subresources ...string) (result *kubeovnv1.Vip, err error)
 	Apply(ctx context.Context, vip *applyconfigurationkubeovnv1.VipApplyConfiguration, opts metav1.ApplyOptions) (result *kubeovnv1.Vip, err error)
-	// Add a +genclient:noStatus comment above the type to avoid generating ApplyStatus().
-	ApplyStatus(ctx context.Context, vip *applyconfigurationkubeovnv1.VipApplyConfiguration, opts metav1.ApplyOptions) (result *kubeovnv1.Vip, err error)
 	VipExpansion
 }
 

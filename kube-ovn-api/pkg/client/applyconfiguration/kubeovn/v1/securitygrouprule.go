@@ -9,15 +9,30 @@ import (
 // SecurityGroupRuleApplyConfiguration represents a declarative configuration of the SecurityGroupRule type for use
 // with apply.
 type SecurityGroupRuleApplyConfiguration struct {
-	IPVersion           *string                 `json:"ipVersion,omitempty"`
-	Protocol            *kubeovnv1.SgProtocol   `json:"protocol,omitempty"`
-	Priority            *int                    `json:"priority,omitempty"`
-	RemoteType          *kubeovnv1.SgRemoteType `json:"remoteType,omitempty"`
-	RemoteAddress       *string                 `json:"remoteAddress,omitempty"`
-	RemoteSecurityGroup *string                 `json:"remoteSecurityGroup,omitempty"`
-	PortRangeMin        *int                    `json:"portRangeMin,omitempty"`
-	PortRangeMax        *int                    `json:"portRangeMax,omitempty"`
-	Policy              *kubeovnv1.SgPolicy     `json:"policy,omitempty"`
+	// IP version (IPv4 or IPv6)
+	IPVersion *string `json:"ipVersion,omitempty"`
+	// Protocol (tcp, udp, icmp, or all)
+	Protocol *kubeovnv1.SgProtocol `json:"protocol,omitempty"`
+	// Rule priority (1-16384)
+	Priority *int `json:"priority,omitempty"`
+	// Type of remote (address, cidr, or securityGroup)
+	RemoteType *kubeovnv1.SgRemoteType `json:"remoteType,omitempty"`
+	// Remote address or CIDR
+	RemoteAddress *string `json:"remoteAddress,omitempty"`
+	// Remote security group name
+	RemoteSecurityGroup *string `json:"remoteSecurityGroup,omitempty"`
+	// Start of port range (1-65535)
+	PortRangeMin *int `json:"portRangeMin,omitempty"`
+	// End of port range (1-65535)
+	PortRangeMax *int `json:"portRangeMax,omitempty"`
+	// Local address or CIDR
+	LocalAddress *string `json:"localAddress,omitempty"`
+	// Start of source port range (1-65535)
+	SourcePortRangeMin *int `json:"sourcePortRangeMin,omitempty"`
+	// End of source port range (1-65535)
+	SourcePortRangeMax *int `json:"sourcePortRangeMax,omitempty"`
+	// Policy action (allow, pass or deny)
+	Policy *kubeovnv1.SgPolicy `json:"policy,omitempty"`
 }
 
 // SecurityGroupRuleApplyConfiguration constructs a declarative configuration of the SecurityGroupRule type for use with
@@ -87,6 +102,30 @@ func (b *SecurityGroupRuleApplyConfiguration) WithPortRangeMin(value int) *Secur
 // If called multiple times, the PortRangeMax field is set to the value of the last call.
 func (b *SecurityGroupRuleApplyConfiguration) WithPortRangeMax(value int) *SecurityGroupRuleApplyConfiguration {
 	b.PortRangeMax = &value
+	return b
+}
+
+// WithLocalAddress sets the LocalAddress field in the declarative configuration to the given value
+// and returns the receiver, so that objects can be built by chaining "With" function invocations.
+// If called multiple times, the LocalAddress field is set to the value of the last call.
+func (b *SecurityGroupRuleApplyConfiguration) WithLocalAddress(value string) *SecurityGroupRuleApplyConfiguration {
+	b.LocalAddress = &value
+	return b
+}
+
+// WithSourcePortRangeMin sets the SourcePortRangeMin field in the declarative configuration to the given value
+// and returns the receiver, so that objects can be built by chaining "With" function invocations.
+// If called multiple times, the SourcePortRangeMin field is set to the value of the last call.
+func (b *SecurityGroupRuleApplyConfiguration) WithSourcePortRangeMin(value int) *SecurityGroupRuleApplyConfiguration {
+	b.SourcePortRangeMin = &value
+	return b
+}
+
+// WithSourcePortRangeMax sets the SourcePortRangeMax field in the declarative configuration to the given value
+// and returns the receiver, so that objects can be built by chaining "With" function invocations.
+// If called multiple times, the SourcePortRangeMax field is set to the value of the last call.
+func (b *SecurityGroupRuleApplyConfiguration) WithSourcePortRangeMax(value int) *SecurityGroupRuleApplyConfiguration {
+	b.SourcePortRangeMax = &value
 	return b
 }
 

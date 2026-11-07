@@ -5,11 +5,41 @@ package v1
 // IptablesDnatRuleSpecApplyConfiguration represents a declarative configuration of the IptablesDnatRuleSpec type for use
 // with apply.
 type IptablesDnatRuleSpecApplyConfiguration struct {
-	EIP          *string `json:"eip,omitempty"`
+	// Name of the EIP used as the rule's external address. Optional when ClusterIP is set.
+	EIP *string `json:"eip,omitempty"`
+	// Kubernetes Service ClusterIP served by this rule for traffic from within the VPC.
+	ClusterIP *string `json:"clusterIP,omitempty"`
+	// External port number
 	ExternalPort *string `json:"externalPort,omitempty"`
-	Protocol     *string `json:"protocol,omitempty"`
-	InternalIP   *string `json:"internalIp,omitempty"`
+	// Protocol type (TCP or UDP)
+	Protocol *string `json:"protocol,omitempty"`
+	// Internal IP address to forward traffic to
+	InternalIP *string `json:"internalIp,omitempty"`
+	// Internal port number to forward traffic to
 	InternalPort *string `json:"internalPort,omitempty"`
+	// Type of the DNAT rule, controls whether the EIP:Port identity can be shared
+	// by multiple internal backends:
+	// - "exclusive" (default): The EIP:Port is exclusively owned by this single DNAT rule.
+	// Uses iptables DNAT for 1:1 port forwarding. This was the only mode before the
+	// nft LB feature was introduced; any duplicate identity is rejected.
+	// - "share": Multiple DNAT rules may share the same EIP:Port identity, each
+	// contributing a different internal IP:Port as a backend. Traffic is distributed
+	// across backends using nftables numgen random map-based DNAT: each new connection
+	// picks a backend at random and is then pinned by conntrack (connection-level
+	// balancing, no client-IP affinity).
+	Type *string `json:"type,omitempty"`
+	// SessionAffinity controls client-IP session affinity for share type DNAT. Only "" (none,
+	// default) and "ClientIP" are supported, and it is rejected for exclusive type. It is
+	// immutable after creation because it applies to the whole share DNAT identity; change it
+	// by deleting and recreating the rule (the nftable LB service controller does this when a
+	// Service's session affinity changes). When set to "ClientIP", connections from the same
+	// client IP are pinned to the same backend for SessionAffinityTimeoutSeconds, implemented
+	// with per-backend nftables affinity sets (kube-proxy nftables pattern).
+	SessionAffinity *string `json:"sessionAffinity,omitempty"`
+	// SessionAffinityTimeoutSeconds is the sticky window, in seconds, for ClientIP affinity.
+	// It is only used when SessionAffinity is "ClientIP"; when unset (0) the controller applies
+	// the default of 10800 (3h). Non-zero values must be in the range 1-86400.
+	SessionAffinityTimeoutSeconds *int32 `json:"sessionAffinityTimeoutSeconds,omitempty"`
 }
 
 // IptablesDnatRuleSpecApplyConfiguration constructs a declarative configuration of the IptablesDnatRuleSpec type for use with
@@ -23,6 +53,14 @@ func IptablesDnatRuleSpec() *IptablesDnatRuleSpecApplyConfiguration {
 // If called multiple times, the EIP field is set to the value of the last call.
 func (b *IptablesDnatRuleSpecApplyConfiguration) WithEIP(value string) *IptablesDnatRuleSpecApplyConfiguration {
 	b.EIP = &value
+	return b
+}
+
+// WithClusterIP sets the ClusterIP field in the declarative configuration to the given value
+// and returns the receiver, so that objects can be built by chaining "With" function invocations.
+// If called multiple times, the ClusterIP field is set to the value of the last call.
+func (b *IptablesDnatRuleSpecApplyConfiguration) WithClusterIP(value string) *IptablesDnatRuleSpecApplyConfiguration {
+	b.ClusterIP = &value
 	return b
 }
 
@@ -55,5 +93,29 @@ func (b *IptablesDnatRuleSpecApplyConfiguration) WithInternalIP(value string) *I
 // If called multiple times, the InternalPort field is set to the value of the last call.
 func (b *IptablesDnatRuleSpecApplyConfiguration) WithInternalPort(value string) *IptablesDnatRuleSpecApplyConfiguration {
 	b.InternalPort = &value
+	return b
+}
+
+// WithType sets the Type field in the declarative configuration to the given value
+// and returns the receiver, so that objects can be built by chaining "With" function invocations.
+// If called multiple times, the Type field is set to the value of the last call.
+func (b *IptablesDnatRuleSpecApplyConfiguration) WithType(value string) *IptablesDnatRuleSpecApplyConfiguration {
+	b.Type = &value
+	return b
+}
+
+// WithSessionAffinity sets the SessionAffinity field in the declarative configuration to the given value
+// and returns the receiver, so that objects can be built by chaining "With" function invocations.
+// If called multiple times, the SessionAffinity field is set to the value of the last call.
+func (b *IptablesDnatRuleSpecApplyConfiguration) WithSessionAffinity(value string) *IptablesDnatRuleSpecApplyConfiguration {
+	b.SessionAffinity = &value
+	return b
+}
+
+// WithSessionAffinityTimeoutSeconds sets the SessionAffinityTimeoutSeconds field in the declarative configuration to the given value
+// and returns the receiver, so that objects can be built by chaining "With" function invocations.
+// If called multiple times, the SessionAffinityTimeoutSeconds field is set to the value of the last call.
+func (b *IptablesDnatRuleSpecApplyConfiguration) WithSessionAffinityTimeoutSeconds(value int32) *IptablesDnatRuleSpecApplyConfiguration {
+	b.SessionAffinityTimeoutSeconds = &value
 	return b
 }

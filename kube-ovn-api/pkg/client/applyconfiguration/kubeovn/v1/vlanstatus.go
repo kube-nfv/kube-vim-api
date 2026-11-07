@@ -5,8 +5,10 @@ package v1
 // VlanStatusApplyConfiguration represents a declarative configuration of the VlanStatus type for use
 // with apply.
 type VlanStatusApplyConfiguration struct {
-	Subnets  []string `json:"subnets,omitempty"`
-	Conflict *bool    `json:"conflict,omitempty"`
+	// List of subnet names using this VLAN
+	Subnets []string `json:"subnets,omitempty"`
+	// Whether there is a conflict with this VLAN
+	Conflict *bool `json:"conflict,omitempty"`
 	// Conditions represents the latest state of the object
 	Conditions []ConditionApplyConfiguration `json:"conditions,omitempty"`
 }

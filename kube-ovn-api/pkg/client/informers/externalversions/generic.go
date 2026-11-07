@@ -37,6 +37,12 @@ func (f *genericInformer) Lister() cache.GenericLister {
 func (f *sharedInformerFactory) ForResource(resource schema.GroupVersionResource) (GenericInformer, error) {
 	switch resource {
 	// Group=kubeovn.io, Version=v1
+	case v1.SchemeGroupVersion.WithResource("bgp-confs"):
+		return &genericInformer{resource: resource.GroupResource(), informer: f.Kubeovn().V1().BgpConves().Informer()}, nil
+	case v1.SchemeGroupVersion.WithResource("dnsnameresolvers"):
+		return &genericInformer{resource: resource.GroupResource(), informer: f.Kubeovn().V1().DNSNameResolvers().Informer()}, nil
+	case v1.SchemeGroupVersion.WithResource("evpn-confs"):
+		return &genericInformer{resource: resource.GroupResource(), informer: f.Kubeovn().V1().EvpnConves().Informer()}, nil
 	case v1.SchemeGroupVersion.WithResource("ips"):
 		return &genericInformer{resource: resource.GroupResource(), informer: f.Kubeovn().V1().IPs().Informer()}, nil
 	case v1.SchemeGroupVersion.WithResource("ippools"):
@@ -61,6 +67,8 @@ func (f *sharedInformerFactory) ForResource(resource schema.GroupVersionResource
 		return &genericInformer{resource: resource.GroupResource(), informer: f.Kubeovn().V1().ProviderNetworks().Informer()}, nil
 	case v1.SchemeGroupVersion.WithResource("qos-policies"):
 		return &genericInformer{resource: resource.GroupResource(), informer: f.Kubeovn().V1().QoSPolicies().Informer()}, nil
+	case v1.SchemeGroupVersion.WithResource("router-lb-rules"):
+		return &genericInformer{resource: resource.GroupResource(), informer: f.Kubeovn().V1().RouterLBRules().Informer()}, nil
 	case v1.SchemeGroupVersion.WithResource("security-groups"):
 		return &genericInformer{resource: resource.GroupResource(), informer: f.Kubeovn().V1().SecurityGroups().Informer()}, nil
 	case v1.SchemeGroupVersion.WithResource("subnets"):

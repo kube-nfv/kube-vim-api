@@ -5,7 +5,9 @@ package v1
 // IptablesSnatRuleSpecApplyConfiguration represents a declarative configuration of the IptablesSnatRuleSpec type for use
 // with apply.
 type IptablesSnatRuleSpecApplyConfiguration struct {
-	EIP          *string `json:"eip,omitempty"`
+	// EIP name for SNAT rule
+	EIP *string `json:"eip,omitempty"`
+	// Internal CIDR to be translated via SNAT
 	InternalCIDR *string `json:"internalCIDR,omitempty"`
 }
 

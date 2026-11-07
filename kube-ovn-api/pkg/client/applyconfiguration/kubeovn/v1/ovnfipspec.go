@@ -5,14 +5,19 @@ package v1
 // OvnFipSpecApplyConfiguration represents a declarative configuration of the OvnFipSpec type for use
 // with apply.
 type OvnFipSpecApplyConfiguration struct {
+	// OVN EIP name to use for floating IP
 	OvnEip *string `json:"ovnEip,omitempty"`
+	// IP type (e.g., ipv4, ipv6, dual)
 	IPType *string `json:"ipType,omitempty"`
-	// vip, ip
+	// IP resource name
 	IPName *string `json:"ipName,omitempty"`
-	// vip, ip crd name
-	Vpc  *string `json:"vpc,omitempty"`
+	// VPC name. This field is immutable after creation.
+	Vpc *string `json:"vpc,omitempty"`
+	// IPv4 address for the floating IP
 	V4Ip *string `json:"v4Ip,omitempty"`
+	// IPv6 address for the floating IP
 	V6Ip *string `json:"v6Ip,omitempty"`
+	// FIP type
 	Type *string `json:"type,omitempty"`
 }
 

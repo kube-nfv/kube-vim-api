@@ -9,15 +9,24 @@ import (
 // VpcBgpSpeakerApplyConfiguration represents a declarative configuration of the VpcBgpSpeaker type for use
 // with apply.
 type VpcBgpSpeakerApplyConfiguration struct {
-	Enabled               *bool            `json:"enabled,omitempty"`
-	ASN                   *uint32          `json:"asn,omitempty"`
-	RemoteASN             *uint32          `json:"remoteAsn,omitempty"`
-	Neighbors             []string         `json:"neighbors,omitempty"`
-	HoldTime              *metav1.Duration `json:"holdTime,omitempty"`
-	RouterID              *string          `json:"routerId,omitempty"`
-	Password              *string          `json:"password,omitempty"`
-	EnableGracefulRestart *bool            `json:"enableGracefulRestart,omitempty"`
-	ExtraArgs             []string         `json:"extraArgs,omitempty"`
+	// Whether to enable BGP speaker
+	Enabled *bool `json:"enabled,omitempty"`
+	// BGP ASN
+	ASN *uint32 `json:"asn,omitempty"`
+	// BGP remote ASN
+	RemoteASN *uint32 `json:"remoteAsn,omitempty"`
+	// BGP neighbors
+	Neighbors []string `json:"neighbors,omitempty"`
+	// BGP hold time
+	HoldTime *metav1.Duration `json:"holdTime,omitempty"`
+	// BGP router ID
+	RouterID *string `json:"routerId,omitempty"`
+	// BGP password
+	Password *string `json:"password,omitempty"`
+	// Enable graceful restart
+	EnableGracefulRestart *bool `json:"enableGracefulRestart,omitempty"`
+	// Extra arguments for BGP speaker
+	ExtraArgs []string `json:"extraArgs,omitempty"`
 }
 
 // VpcBgpSpeakerApplyConfiguration constructs a declarative configuration of the VpcBgpSpeaker type for use with

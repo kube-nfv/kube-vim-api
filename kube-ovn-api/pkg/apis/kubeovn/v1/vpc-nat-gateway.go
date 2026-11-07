@@ -21,6 +21,30 @@ type VpcNatGatewayList struct {
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +genclient:nonNamespaced
 // +resourceName=vpc-nat-gateways
+// +kubebuilder:resource:scope="Cluster",shortName="vpc-nat-gw",path="vpc-nat-gateways",singular="vpc-nat-gateway"
+// +kubebuilder:subresource:status
+// +kubebuilder:printcolumn:name="Namespace",type="string",JSONPath=".spec.namespace"
+// +kubebuilder:printcolumn:name="Vpc",type="string",JSONPath=".spec.vpc"
+// +kubebuilder:printcolumn:name="Subnet",type="string",JSONPath=".spec.subnet"
+// +kubebuilder:printcolumn:name="IPs",type="string",JSONPath=".status.lanIp"
+// +kubebuilder:printcolumn:name="Replicas",type="integer",JSONPath=".spec.replicas"
+// +kubebuilder:printcolumn:name="Ready",type="boolean",JSONPath=".status.ready"
+// +kubebuilder:printcolumn:name="BFD",type="boolean",JSONPath=".spec.bfd.enabled"
+// +kubebuilder:printcolumn:name="Age",type="date",JSONPath=".metadata.creationTimestamp"
+//
+// VpcNatGateway represents a NAT gateway for a VPC, implemented by a StatefulSet in non-HA mode or a Deployment in HA mode.
+//
+// Architecture note:
+// The NAT gateway Pod does NOT support hot updates. Any changes to Spec fields (ExternalSubnets,
+// Selector, Tolerations, Affinity, etc.) will trigger a StatefulSet template update,
+// which causes the Pod to be recreated via RollingUpdate strategy. This is by design because:
+//  1. Network configuration (routes, iptables rules) is initialized at Pod startup
+//  2. Runtime state (vpc_cidrs, init status) is managed by separate handlers and will be
+//     automatically restored after Pod recreation through the normal reconciliation flow
+//
+// QoSPolicy updates are applied without restarting the Pod. Every other Spec change,
+// including the one-time persistence of a dynamically allocated LanIP, updates the
+// workload template and therefore recreates the Pod.
 type VpcNatGateway struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata"`
@@ -30,35 +54,151 @@ type VpcNatGateway struct {
 }
 
 type VpcNatGatewaySpec struct {
-	Vpc             string              `json:"vpc"`
-	Subnet          string              `json:"subnet"`
-	ExternalSubnets []string            `json:"externalSubnets"`
-	LanIP           string              `json:"lanIp"`
-	Selector        []string            `json:"selector"`
-	Tolerations     []corev1.Toleration `json:"tolerations"`
-	Affinity        corev1.Affinity     `json:"affinity"`
-	QoSPolicy       string              `json:"qosPolicy"`
-	BgpSpeaker      VpcBgpSpeaker       `json:"bgpSpeaker"`
+	// Namespace where the NAT gateway StatefulSet/Pod will be created.
+	// If empty, defaults to the kube-ovn controller's own namespace (typically kube-system).
+	// +kubebuilder:validation:Optional
+	Namespace string `json:"namespace,omitempty"`
+	// VPC name for the NAT gateway. This field is immutable after creation.
+	Vpc string `json:"vpc"`
+	// Subnet name for the NAT gateway. This field is immutable after creation.
+	Subnet string `json:"subnet"`
+	// External subnets accessible through the NAT gateway
+	ExternalSubnets []string `json:"externalSubnets"`
+	// LAN IP address for the NAT gateway. Used only when Replicas = 1 (non-HA mode).
+	// If empty, an address is allocated dynamically and persisted here after it is observed on the Pod.
+	// Once set, this field is immutable.
+	// In HA mode (Replicas > 1) this field is ignored and cannot be used to pin addresses: every
+	// replica allocates its own address dynamically, and the controller re-points the OVN policy
+	// routes and BFD sessions whenever a replica is replaced.
+	// iptables EIP/FIP/DNAT/SNAT do not fully support IPv6 yet. Once they do, consider
+	// adding a v6LanIp field to pin the IPv6 LAN address separately.
+	LanIP string `json:"lanIp"`
+	// Number of gateway replicas for HA support.
+	// When > 1, uses Deployment workload with pod anti-affinity to distribute instances across nodes.
+	// When = 1 or unset, uses StatefulSet workload (legacy mode) for backward compatibility.
+	// +kubebuilder:default=1
+	// +kubebuilder:validation:Minimum=1
+	Replicas int32 `json:"replicas,omitempty"`
+	// Pod selector for the NAT gateway
+	Selector    []string            `json:"selector"`
+	Tolerations []corev1.Toleration `json:"tolerations"`
+	Affinity    corev1.Affinity     `json:"affinity"`
+	// QoS policy name to apply to the NAT gateway
+	QoSPolicy string `json:"qosPolicy"`
+	// BGP speaker configuration
+	BgpSpeaker VpcBgpSpeaker `json:"bgpSpeaker"`
+	// BFD configuration for health monitoring and automatic failover (HA mode only)
+	BFD VpcNatGatewayBFDConfig `json:"bfd,omitempty"`
+	// Internal subnets by name (resolved to CIDRs) for OVN route injection.
+	// Traffic from these subnets destined for 0.0.0.0/0 or ::/0 will be routed to NAT gateway instances.
+	// This field is cumulative with internalCIDRs.
+	InternalSubnets []string `json:"internalSubnets,omitempty"`
+	// Internal CIDRs for OVN route injection.
+	// Traffic from these CIDRs destined for 0.0.0.0/0 or ::/0 will be routed to NAT gateway instances.
+	// This field is cumulative with internalSubnets.
+	InternalCIDRs []string `json:"internalCIDRs,omitempty"`
+	// Static routes for the NAT gateway
+	Routes []Route `json:"routes"`
+	// Disable default EIP assignment
+	NoDefaultEIP bool `json:"noDefaultEIP"`
+	// User-defined annotations for the StatefulSet NAT gateway Pod template.
+	// Only effective at creation time; updates to this field are not detected.
+	Annotations map[string]string `json:"annotations,omitempty"`
 }
 
 type VpcBgpSpeaker struct {
-	Enabled               bool            `json:"enabled"`
-	ASN                   uint32          `json:"asn"`
-	RemoteASN             uint32          `json:"remoteAsn"`
-	Neighbors             []string        `json:"neighbors"`
-	HoldTime              metav1.Duration `json:"holdTime"`
-	RouterID              string          `json:"routerId"`
-	Password              string          `json:"password"`
-	EnableGracefulRestart bool            `json:"enableGracefulRestart"`
-	ExtraArgs             []string        `json:"extraArgs"`
+	// Whether to enable BGP speaker
+	Enabled bool `json:"enabled"`
+	// BGP ASN
+	ASN uint32 `json:"asn"`
+	// BGP remote ASN
+	RemoteASN uint32 `json:"remoteAsn"`
+	// BGP neighbors
+	Neighbors []string `json:"neighbors"`
+	// BGP hold time
+	HoldTime metav1.Duration `json:"holdTime"`
+	// BGP router ID
+	RouterID string `json:"routerId"`
+	// BGP password
+	Password string `json:"password"` // #nosec G117
+	// Enable graceful restart
+	EnableGracefulRestart bool `json:"enableGracefulRestart"`
+	// Extra arguments for BGP speaker
+	ExtraArgs []string `json:"extraArgs"`
 }
 
+// VpcNatGatewayBFDConfig configures BFD (Bidirectional Forwarding Detection) for health monitoring.
+// BFD enables fast failure detection and automatic failover in HA mode.
+type VpcNatGatewayBFDConfig struct {
+	// Enable BFD health monitoring
+	// When enabled, each gateway instance establishes a BFD session with the VPC's BFD port.
+	// The VPC's spec.bfd.enabled must also be set to true.
+	// +kubebuilder:default=false
+	Enabled bool `json:"enabled"`
+	// BFD minimum receive interval in milliseconds
+	// This is the minimum interval at which this gateway expects to receive BFD control packets.
+	// +kubebuilder:default=1000
+	// +kubebuilder:validation:Minimum=1
+	// +kubebuilder:validation:Maximum=3600000
+	MinRX int32 `json:"minRX,omitempty"`
+	// BFD minimum transmit interval in milliseconds
+	// This is the minimum interval at which this gateway will send BFD control packets.
+	// +kubebuilder:default=1000
+	// +kubebuilder:validation:Minimum=1
+	// +kubebuilder:validation:Maximum=3600000
+	MinTX int32 `json:"minTX,omitempty"`
+	// BFD detection multiplier
+	// Number of missed BFD packets before declaring the session down.
+	// Detection time = MinRX * Multiplier
+	// +kubebuilder:default=3
+	// +kubebuilder:validation:Minimum=1
+	// +kubebuilder:validation:Maximum=255
+	Multiplier int32 `json:"multiplier,omitempty"`
+}
+
+// TODO: Consider removing redundant Status fields since statefulset template changes always trigger Pod recreation.
 type VpcNatGatewayStatus struct {
-	QoSPolicy       string              `json:"qosPolicy" patchStrategy:"merge"`
-	ExternalSubnets []string            `json:"externalSubnets" patchStrategy:"merge"`
-	Selector        []string            `json:"selector" patchStrategy:"merge"`
-	Tolerations     []corev1.Toleration `json:"tolerations" patchStrategy:"merge"`
-	Affinity        corev1.Affinity     `json:"affinity" patchStrategy:"merge"`
+	// QoS policy applied to the NAT gateway
+	QoSPolicy string `json:"qosPolicy" patchStrategy:"merge"`
+	// External subnets configured for the NAT gateway
+	ExternalSubnets []string `json:"externalSubnets" patchStrategy:"merge"`
+	// Pod selector configured for the NAT gateway
+	Selector []string `json:"selector" patchStrategy:"merge"`
+	// Number of gateway replicas
+	Replicas int32 `json:"replicas"`
+	// Ready state of the NAT gateway
+	Ready bool `json:"ready"`
+	// LAN IP address(es) observed on the NAT gateway Pods.
+	// For non-HA, this is the single address persisted to spec.lanIp.
+	// For HA, this is a comma-separated, sorted list of all observed addresses.
+	LanIP       string              `json:"lanIp"`
+	Tolerations []corev1.Toleration `json:"tolerations" patchStrategy:"merge"`
+	Affinity    corev1.Affinity     `json:"affinity" patchStrategy:"merge"`
+	// Workload information (Deployment or StatefulSet)
+	Workload VpcNatWorkload `json:"workload,omitempty"`
+	// Internal subnets configured for OVN route injection
+	InternalSubnets []string `json:"internalSubnets,omitempty"`
+	// Internal CIDRs configured for OVN route injection
+	InternalCIDRs []string `json:"internalCIDRs,omitempty"`
+}
+
+// VpcNatWorkload contains information about the underlying Kubernetes workload (Deployment or StatefulSet)
+type VpcNatWorkload struct {
+	// API version of the workload (e.g., "apps/v1")
+	APIVersion string `json:"apiVersion,omitempty"`
+	// Kind of the workload ("Deployment" or "StatefulSet")
+	Kind string `json:"kind,omitempty"`
+	// Name of the workload
+	Name string `json:"name,omitempty"`
+	// Nodes where gateway instances are running
+	Nodes []string `json:"nodes,omitempty"`
+}
+
+type Route struct {
+	// Route CIDR
+	CIDR string `json:"cidr"`
+	// Next hop IP
+	NextHopIP string `json:"nextHopIP"`
 }
 
 func (s *VpcNatGatewayStatus) Bytes() ([]byte, error) {

@@ -2,12 +2,22 @@
 
 package v1
 
+import (
+	corev1 "k8s.io/api/core/v1"
+)
+
 // VpcEgressGatewaySpecApplyConfiguration represents a declarative configuration of the VpcEgressGatewaySpec type for use
 // with apply.
 type VpcEgressGatewaySpecApplyConfiguration struct {
 	// optional VPC name
 	// if not specified, the default VPC will be used
 	VPC *string `json:"vpc,omitempty"`
+	// optional BGP configuration name
+	// it references a cluster-scoped BgpConf resource
+	BgpConf *string `json:"bgpConf,omitempty"`
+	// optional EVPN configuration name
+	// it references a cluster-scoped EvpnConf resource
+	EvpnConf *string `json:"evpnConf,omitempty"`
 	// workload replicas
 	Replicas *int32 `json:"replicas,omitempty"`
 	// optional name prefix used to generate the workload
@@ -19,13 +29,26 @@ type VpcEgressGatewaySpecApplyConfiguration struct {
 	// optional internal subnet used to create the workload
 	// if not specified, the workload will be created in the default subnet of the VPC
 	InternalSubnet *string `json:"internalSubnet,omitempty"`
-	// external subnet used to create the workload
+	// External network mode. Attachment uses externalSubnet; PrimaryCNI uses the pod's primary network.
+	ExternalNetworkMode *string `json:"externalNetworkMode,omitempty"`
+	// External subnet used to create the workload in Attachment mode.
 	ExternalSubnet *string `json:"externalSubnet,omitempty"`
 	// optional internal/external IPs used to create the workload
 	// these IPs must be in the internal/external subnet
-	// the IPs count must NOT be less than the replicas count
+	// when specified, the IPs count must NOT be less than the replicas count
+	// mutually exclusive with internalIPPool
 	InternalIPs []string `json:"internalIPs,omitempty"`
+	// External IP addresses for the egress gateway
+	// mutually exclusive with externalIPPool
 	ExternalIPs []string `json:"externalIPs,omitempty"`
+	// optional name of an IPPool resource used to allocate the internal IP for the workload
+	// the referenced IPPool's subnet must match the internal subnet
+	// mutually exclusive with internalIPs
+	InternalIPPool *string `json:"internalIPPool,omitempty"`
+	// optional name of an IPPool resource used to allocate the external IP for the workload
+	// the referenced IPPool's subnet must match the external subnet
+	// mutually exclusive with externalIPs
+	ExternalIPPool *string `json:"externalIPPool,omitempty"`
 	// namespace/pod selectors
 	Selectors []VpcEgressGatewaySelectorApplyConfiguration `json:"selectors,omitempty"`
 	// optional traffic policy used to control the traffic routing
@@ -33,13 +56,31 @@ type VpcEgressGatewaySpecApplyConfiguration struct {
 	// if set to "Local", traffic will be routed to the gateway pod/instance on the same node when available
 	// currently it works only for the default vpc
 	TrafficPolicy *string `json:"trafficPolicy,omitempty"`
+	// Pod anti-affinity mode for gateway workload replicas.
+	// Required spreads replicas across nodes and is the default. Preferred allows
+	// co-located replicas but does not provide node-level HA. Changing from
+	// Preferred to Required only takes effect when pods are recreated.
+	PodAntiAffinity *string `json:"podAntiAffinity,omitempty"`
 	// BFD configuration
 	BFD *VpcEgressGatewayBFDConfigApplyConfiguration `json:"bfd,omitempty"`
 	// egress policies
-	// at least one policy must be specified
+	// at least one policy or selector must be specified
 	Policies []VpcEgressGatewayPolicyApplyConfiguration `json:"policies,omitempty"`
 	// optional node selector used to select the nodes where the workload will be running
 	NodeSelector []VpcEgressGatewayNodeSelectorApplyConfiguration `json:"nodeSelector,omitempty"`
+	// optional tolerations applied to the workload pods
+	Tolerations []corev1.Toleration `json:"tolerations,omitempty"`
+	// Optional PriorityClass name applied to the workload pods.
+	// If not specified, the cluster's default Pod priority applies.
+	PriorityClassName *string `json:"priorityClassName,omitempty"`
+	// Compute Resources required for the container. If not specified, the controller will set a default value.
+	// If specified, the controller will not set any default value and use the specified value directly.
+	Resources *corev1.ResourceRequirements `json:"resources,omitempty"`
+	// Optional bandwidth limit for each egress gateway instance in both ingress and egress directions.
+	// If not specified, there will be no bandwidth limit.
+	Bandwidth *BandwidthLimitApplyConfiguration `json:"bandwidth,omitempty"`
+	// Optional observability configuration for the gateway workload.
+	Observability *VpcEgressGatewayObservabilityApplyConfiguration `json:"observability,omitempty"`
 }
 
 // VpcEgressGatewaySpecApplyConfiguration constructs a declarative configuration of the VpcEgressGatewaySpec type for use with
@@ -53,6 +94,22 @@ func VpcEgressGatewaySpec() *VpcEgressGatewaySpecApplyConfiguration {
 // If called multiple times, the VPC field is set to the value of the last call.
 func (b *VpcEgressGatewaySpecApplyConfiguration) WithVPC(value string) *VpcEgressGatewaySpecApplyConfiguration {
 	b.VPC = &value
+	return b
+}
+
+// WithBgpConf sets the BgpConf field in the declarative configuration to the given value
+// and returns the receiver, so that objects can be built by chaining "With" function invocations.
+// If called multiple times, the BgpConf field is set to the value of the last call.
+func (b *VpcEgressGatewaySpecApplyConfiguration) WithBgpConf(value string) *VpcEgressGatewaySpecApplyConfiguration {
+	b.BgpConf = &value
+	return b
+}
+
+// WithEvpnConf sets the EvpnConf field in the declarative configuration to the given value
+// and returns the receiver, so that objects can be built by chaining "With" function invocations.
+// If called multiple times, the EvpnConf field is set to the value of the last call.
+func (b *VpcEgressGatewaySpecApplyConfiguration) WithEvpnConf(value string) *VpcEgressGatewaySpecApplyConfiguration {
+	b.EvpnConf = &value
 	return b
 }
 
@@ -88,6 +145,14 @@ func (b *VpcEgressGatewaySpecApplyConfiguration) WithInternalSubnet(value string
 	return b
 }
 
+// WithExternalNetworkMode sets the ExternalNetworkMode field in the declarative configuration to the given value
+// and returns the receiver, so that objects can be built by chaining "With" function invocations.
+// If called multiple times, the ExternalNetworkMode field is set to the value of the last call.
+func (b *VpcEgressGatewaySpecApplyConfiguration) WithExternalNetworkMode(value string) *VpcEgressGatewaySpecApplyConfiguration {
+	b.ExternalNetworkMode = &value
+	return b
+}
+
 // WithExternalSubnet sets the ExternalSubnet field in the declarative configuration to the given value
 // and returns the receiver, so that objects can be built by chaining "With" function invocations.
 // If called multiple times, the ExternalSubnet field is set to the value of the last call.
@@ -116,6 +181,22 @@ func (b *VpcEgressGatewaySpecApplyConfiguration) WithExternalIPs(values ...strin
 	return b
 }
 
+// WithInternalIPPool sets the InternalIPPool field in the declarative configuration to the given value
+// and returns the receiver, so that objects can be built by chaining "With" function invocations.
+// If called multiple times, the InternalIPPool field is set to the value of the last call.
+func (b *VpcEgressGatewaySpecApplyConfiguration) WithInternalIPPool(value string) *VpcEgressGatewaySpecApplyConfiguration {
+	b.InternalIPPool = &value
+	return b
+}
+
+// WithExternalIPPool sets the ExternalIPPool field in the declarative configuration to the given value
+// and returns the receiver, so that objects can be built by chaining "With" function invocations.
+// If called multiple times, the ExternalIPPool field is set to the value of the last call.
+func (b *VpcEgressGatewaySpecApplyConfiguration) WithExternalIPPool(value string) *VpcEgressGatewaySpecApplyConfiguration {
+	b.ExternalIPPool = &value
+	return b
+}
+
 // WithSelectors adds the given value to the Selectors field in the declarative configuration
 // and returns the receiver, so that objects can be build by chaining "With" function invocations.
 // If called multiple times, values provided by each call will be appended to the Selectors field.
@@ -134,6 +215,14 @@ func (b *VpcEgressGatewaySpecApplyConfiguration) WithSelectors(values ...*VpcEgr
 // If called multiple times, the TrafficPolicy field is set to the value of the last call.
 func (b *VpcEgressGatewaySpecApplyConfiguration) WithTrafficPolicy(value string) *VpcEgressGatewaySpecApplyConfiguration {
 	b.TrafficPolicy = &value
+	return b
+}
+
+// WithPodAntiAffinity sets the PodAntiAffinity field in the declarative configuration to the given value
+// and returns the receiver, so that objects can be built by chaining "With" function invocations.
+// If called multiple times, the PodAntiAffinity field is set to the value of the last call.
+func (b *VpcEgressGatewaySpecApplyConfiguration) WithPodAntiAffinity(value string) *VpcEgressGatewaySpecApplyConfiguration {
+	b.PodAntiAffinity = &value
 	return b
 }
 
@@ -168,5 +257,47 @@ func (b *VpcEgressGatewaySpecApplyConfiguration) WithNodeSelector(values ...*Vpc
 		}
 		b.NodeSelector = append(b.NodeSelector, *values[i])
 	}
+	return b
+}
+
+// WithTolerations adds the given value to the Tolerations field in the declarative configuration
+// and returns the receiver, so that objects can be build by chaining "With" function invocations.
+// If called multiple times, values provided by each call will be appended to the Tolerations field.
+func (b *VpcEgressGatewaySpecApplyConfiguration) WithTolerations(values ...corev1.Toleration) *VpcEgressGatewaySpecApplyConfiguration {
+	for i := range values {
+		b.Tolerations = append(b.Tolerations, values[i])
+	}
+	return b
+}
+
+// WithPriorityClassName sets the PriorityClassName field in the declarative configuration to the given value
+// and returns the receiver, so that objects can be built by chaining "With" function invocations.
+// If called multiple times, the PriorityClassName field is set to the value of the last call.
+func (b *VpcEgressGatewaySpecApplyConfiguration) WithPriorityClassName(value string) *VpcEgressGatewaySpecApplyConfiguration {
+	b.PriorityClassName = &value
+	return b
+}
+
+// WithResources sets the Resources field in the declarative configuration to the given value
+// and returns the receiver, so that objects can be built by chaining "With" function invocations.
+// If called multiple times, the Resources field is set to the value of the last call.
+func (b *VpcEgressGatewaySpecApplyConfiguration) WithResources(value corev1.ResourceRequirements) *VpcEgressGatewaySpecApplyConfiguration {
+	b.Resources = &value
+	return b
+}
+
+// WithBandwidth sets the Bandwidth field in the declarative configuration to the given value
+// and returns the receiver, so that objects can be built by chaining "With" function invocations.
+// If called multiple times, the Bandwidth field is set to the value of the last call.
+func (b *VpcEgressGatewaySpecApplyConfiguration) WithBandwidth(value *BandwidthLimitApplyConfiguration) *VpcEgressGatewaySpecApplyConfiguration {
+	b.Bandwidth = value
+	return b
+}
+
+// WithObservability sets the Observability field in the declarative configuration to the given value
+// and returns the receiver, so that objects can be built by chaining "With" function invocations.
+// If called multiple times, the Observability field is set to the value of the last call.
+func (b *VpcEgressGatewaySpecApplyConfiguration) WithObservability(value *VpcEgressGatewayObservabilityApplyConfiguration) *VpcEgressGatewaySpecApplyConfiguration {
+	b.Observability = value
 	return b
 }

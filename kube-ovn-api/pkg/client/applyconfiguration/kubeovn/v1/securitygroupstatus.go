@@ -5,12 +5,18 @@ package v1
 // SecurityGroupStatusApplyConfiguration represents a declarative configuration of the SecurityGroupStatus type for use
 // with apply.
 type SecurityGroupStatusApplyConfiguration struct {
-	PortGroup              *string `json:"portGroup,omitempty"`
-	AllowSameGroupTraffic  *bool   `json:"allowSameGroupTraffic,omitempty"`
-	IngressMd5             *string `json:"ingressMd5,omitempty"`
-	EgressMd5              *string `json:"egressMd5,omitempty"`
-	IngressLastSyncSuccess *bool   `json:"ingressLastSyncSuccess,omitempty"`
-	EgressLastSyncSuccess  *bool   `json:"egressLastSyncSuccess,omitempty"`
+	// OVN port group name
+	PortGroup *string `json:"portGroup,omitempty"`
+	// Current allow same group traffic setting
+	AllowSameGroupTraffic *bool `json:"allowSameGroupTraffic,omitempty"`
+	// MD5 hash of ingress rules
+	IngressMd5 *string `json:"ingressMd5,omitempty"`
+	// MD5 hash of egress rules
+	EgressMd5 *string `json:"egressMd5,omitempty"`
+	// Last ingress sync success status
+	IngressLastSyncSuccess *bool `json:"ingressLastSyncSuccess,omitempty"`
+	// Last egress sync success status
+	EgressLastSyncSuccess *bool `json:"egressLastSyncSuccess,omitempty"`
 }
 
 // SecurityGroupStatusApplyConfiguration constructs a declarative configuration of the SecurityGroupStatus type for use with

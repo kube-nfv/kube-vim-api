@@ -5,23 +5,45 @@ package v1
 // IptablesDnatRuleStatusApplyConfiguration represents a declarative configuration of the IptablesDnatRuleStatus type for use
 // with apply.
 type IptablesDnatRuleStatusApplyConfiguration struct {
-	Ready        *bool   `json:"ready,omitempty"`
-	V4ip         *string `json:"v4ip,omitempty"`
-	V6ip         *string `json:"v6ip,omitempty"`
-	NatGwDp      *string `json:"natGwDp,omitempty"`
-	Redo         *string `json:"redo,omitempty"`
-	Protocol     *string `json:"protocol,omitempty"`
-	InternalIP   *string `json:"internalIp,omitempty"`
-	InternalPort *string `json:"internalPort,omitempty"`
-	ExternalPort *string `json:"externalPort,omitempty"`
 	// Conditions represents the latest state of the object
 	Conditions []ConditionApplyConfiguration `json:"conditions,omitempty"`
+	// Indicates whether the DNAT rule is ready
+	Ready *bool `json:"ready,omitempty"`
+	// V4ip is the IPv4 address of the DNAT rule
+	V4ip *string `json:"v4ip,omitempty"`
+	// V6ip is the IPv6 address of the DNAT rule
+	V6ip *string `json:"v6ip,omitempty"`
+	// NatGwDp is the NAT gateway data path
+	NatGwDp *string `json:"natGwDp,omitempty"`
+	// Redo operation status
+	Redo *string `json:"redo,omitempty"`
+	// Protocol type of the DNAT rule
+	Protocol *string `json:"protocol,omitempty"`
+	// Internal IP address configured in the DNAT rule
+	InternalIP *string `json:"internalIp,omitempty"`
+	// Internal port configured in the DNAT rule
+	InternalPort *string `json:"internalPort,omitempty"`
+	// External port configured in the DNAT rule
+	ExternalPort *string `json:"externalPort,omitempty"`
 }
 
 // IptablesDnatRuleStatusApplyConfiguration constructs a declarative configuration of the IptablesDnatRuleStatus type for use with
 // apply.
 func IptablesDnatRuleStatus() *IptablesDnatRuleStatusApplyConfiguration {
 	return &IptablesDnatRuleStatusApplyConfiguration{}
+}
+
+// WithConditions adds the given value to the Conditions field in the declarative configuration
+// and returns the receiver, so that objects can be build by chaining "With" function invocations.
+// If called multiple times, values provided by each call will be appended to the Conditions field.
+func (b *IptablesDnatRuleStatusApplyConfiguration) WithConditions(values ...*ConditionApplyConfiguration) *IptablesDnatRuleStatusApplyConfiguration {
+	for i := range values {
+		if values[i] == nil {
+			panic("nil value passed to WithConditions")
+		}
+		b.Conditions = append(b.Conditions, *values[i])
+	}
+	return b
 }
 
 // WithReady sets the Ready field in the declarative configuration to the given value
@@ -93,18 +115,5 @@ func (b *IptablesDnatRuleStatusApplyConfiguration) WithInternalPort(value string
 // If called multiple times, the ExternalPort field is set to the value of the last call.
 func (b *IptablesDnatRuleStatusApplyConfiguration) WithExternalPort(value string) *IptablesDnatRuleStatusApplyConfiguration {
 	b.ExternalPort = &value
-	return b
-}
-
-// WithConditions adds the given value to the Conditions field in the declarative configuration
-// and returns the receiver, so that objects can be build by chaining "With" function invocations.
-// If called multiple times, values provided by each call will be appended to the Conditions field.
-func (b *IptablesDnatRuleStatusApplyConfiguration) WithConditions(values ...*ConditionApplyConfiguration) *IptablesDnatRuleStatusApplyConfiguration {
-	for i := range values {
-		if values[i] == nil {
-			panic("nil value passed to WithConditions")
-		}
-		b.Conditions = append(b.Conditions, *values[i])
-	}
 	return b
 }

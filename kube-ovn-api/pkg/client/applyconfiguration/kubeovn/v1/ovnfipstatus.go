@@ -5,20 +5,49 @@ package v1
 // OvnFipStatusApplyConfiguration represents a declarative configuration of the OvnFipStatus type for use
 // with apply.
 type OvnFipStatusApplyConfiguration struct {
-	Vpc   *string `json:"vpc,omitempty"`
-	V4Eip *string `json:"v4Eip,omitempty"`
-	V6Eip *string `json:"v6Eip,omitempty"`
-	V4Ip  *string `json:"v4Ip,omitempty"`
-	V6Ip  *string `json:"v6Ip,omitempty"`
-	Ready *bool   `json:"ready,omitempty"`
 	// Conditions represents the latest state of the object
 	Conditions []ConditionApplyConfiguration `json:"conditions,omitempty"`
+	// Indicates whether the FIP rule is ready
+	Ready *bool `json:"ready,omitempty"`
+	// VPC name where the FIP is configured
+	Vpc *string `json:"vpc,omitempty"`
+	// V4Eip is the IPv4 EIP address
+	V4Eip *string `json:"v4Eip,omitempty"`
+	// V6Eip is the IPv6 EIP address
+	V6Eip *string `json:"v6Eip,omitempty"`
+	// V4Ip is the IPv4 address of the FIP
+	V4Ip *string `json:"v4Ip,omitempty"`
+	// V6Ip is the IPv6 address of the FIP
+	V6Ip *string `json:"v6Ip,omitempty"`
+	// MacAddress of the FIP
+	MacAddress *string `json:"macAddress,omitempty"`
 }
 
 // OvnFipStatusApplyConfiguration constructs a declarative configuration of the OvnFipStatus type for use with
 // apply.
 func OvnFipStatus() *OvnFipStatusApplyConfiguration {
 	return &OvnFipStatusApplyConfiguration{}
+}
+
+// WithConditions adds the given value to the Conditions field in the declarative configuration
+// and returns the receiver, so that objects can be build by chaining "With" function invocations.
+// If called multiple times, values provided by each call will be appended to the Conditions field.
+func (b *OvnFipStatusApplyConfiguration) WithConditions(values ...*ConditionApplyConfiguration) *OvnFipStatusApplyConfiguration {
+	for i := range values {
+		if values[i] == nil {
+			panic("nil value passed to WithConditions")
+		}
+		b.Conditions = append(b.Conditions, *values[i])
+	}
+	return b
+}
+
+// WithReady sets the Ready field in the declarative configuration to the given value
+// and returns the receiver, so that objects can be built by chaining "With" function invocations.
+// If called multiple times, the Ready field is set to the value of the last call.
+func (b *OvnFipStatusApplyConfiguration) WithReady(value bool) *OvnFipStatusApplyConfiguration {
+	b.Ready = &value
+	return b
 }
 
 // WithVpc sets the Vpc field in the declarative configuration to the given value
@@ -61,23 +90,10 @@ func (b *OvnFipStatusApplyConfiguration) WithV6Ip(value string) *OvnFipStatusApp
 	return b
 }
 
-// WithReady sets the Ready field in the declarative configuration to the given value
+// WithMacAddress sets the MacAddress field in the declarative configuration to the given value
 // and returns the receiver, so that objects can be built by chaining "With" function invocations.
-// If called multiple times, the Ready field is set to the value of the last call.
-func (b *OvnFipStatusApplyConfiguration) WithReady(value bool) *OvnFipStatusApplyConfiguration {
-	b.Ready = &value
-	return b
-}
-
-// WithConditions adds the given value to the Conditions field in the declarative configuration
-// and returns the receiver, so that objects can be build by chaining "With" function invocations.
-// If called multiple times, values provided by each call will be appended to the Conditions field.
-func (b *OvnFipStatusApplyConfiguration) WithConditions(values ...*ConditionApplyConfiguration) *OvnFipStatusApplyConfiguration {
-	for i := range values {
-		if values[i] == nil {
-			panic("nil value passed to WithConditions")
-		}
-		b.Conditions = append(b.Conditions, *values[i])
-	}
+// If called multiple times, the MacAddress field is set to the value of the last call.
+func (b *OvnFipStatusApplyConfiguration) WithMacAddress(value string) *OvnFipStatusApplyConfiguration {
+	b.MacAddress = &value
 	return b
 }

@@ -5,11 +5,16 @@ package v1
 // OvnEipSpecApplyConfiguration represents a declarative configuration of the OvnEipSpec type for use
 // with apply.
 type OvnEipSpecApplyConfiguration struct {
+	// External subnet name. This field is immutable after creation.
 	ExternalSubnet *string `json:"externalSubnet,omitempty"`
-	V4Ip           *string `json:"v4Ip,omitempty"`
-	V6Ip           *string `json:"v6Ip,omitempty"`
-	MacAddress     *string `json:"macAddress,omitempty"`
-	Type           *string `json:"type,omitempty"`
+	// IPv4 address for the EIP
+	V4Ip *string `json:"v4Ip,omitempty"`
+	// IPv6 address for the EIP
+	V6Ip *string `json:"v6Ip,omitempty"`
+	// MAC address for the EIP
+	MacAddress *string `json:"macAddress,omitempty"`
+	// Type of the OVN EIP (e.g., normal, distributed)
+	Type *string `json:"type,omitempty"`
 }
 
 // OvnEipSpecApplyConfiguration constructs a declarative configuration of the OvnEipSpec type for use with
