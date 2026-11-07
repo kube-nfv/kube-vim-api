@@ -9,16 +9,24 @@ import (
 // QoSPolicyBandwidthLimitRuleApplyConfiguration represents a declarative configuration of the QoSPolicyBandwidthLimitRule type for use
 // with apply.
 //
-// BandwidthLimitRule describes the rule of an bandwidth limit.
+// BandwidthLimitRule describes the rule of a bandwidth limit.
 type QoSPolicyBandwidthLimitRuleApplyConfiguration struct {
-	Name       *string                           `json:"name,omitempty"`
-	Interface  *string                           `json:"interface,omitempty"`
-	RateMax    *string                           `json:"rateMax,omitempty"`
-	BurstMax   *string                           `json:"burstMax,omitempty"`
-	Priority   *int                              `json:"priority,omitempty"`
-	Direction  *kubeovnv1.QoSPolicyRuleDirection `json:"direction,omitempty"`
-	MatchType  *kubeovnv1.QoSPolicyRuleMatchType `json:"matchType,omitempty"`
-	MatchValue *string                           `json:"matchValue,omitempty"`
+	// Rule name
+	Name *string `json:"name,omitempty"`
+	// Interface name
+	Interface *string `json:"interface,omitempty"`
+	// Maximum rate in Mbps (e.g., 100 or 0.5 for 500Kbps)
+	RateMax *string `json:"rateMax,omitempty"`
+	// Maximum burst in MB (e.g., 10 or 0.5 for 500KB)
+	BurstMax *string `json:"burstMax,omitempty"`
+	// Rule priority
+	Priority *int `json:"priority,omitempty"`
+	// Traffic direction (ingress/egress)
+	Direction *kubeovnv1.QoSPolicyRuleDirection `json:"direction,omitempty"`
+	// Match type
+	MatchType *kubeovnv1.QoSPolicyRuleMatchType `json:"matchType,omitempty"`
+	// Match value
+	MatchValue *string `json:"matchValue,omitempty"`
 }
 
 // QoSPolicyBandwidthLimitRuleApplyConfiguration constructs a declarative configuration of the QoSPolicyBandwidthLimitRule type for use with

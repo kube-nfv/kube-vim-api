@@ -9,44 +9,94 @@ import (
 // SubnetSpecApplyConfiguration represents a declarative configuration of the SubnetSpec type for use
 // with apply.
 type SubnetSpecApplyConfiguration struct {
-	Default                 *bool                                     `json:"default,omitempty"`
-	Vpc                     *string                                   `json:"vpc,omitempty"`
-	Protocol                *string                                   `json:"protocol,omitempty"`
-	Namespaces              []string                                  `json:"namespaces,omitempty"`
-	CIDRBlock               *string                                   `json:"cidrBlock,omitempty"`
-	Gateway                 *string                                   `json:"gateway,omitempty"`
-	ExcludeIps              []string                                  `json:"excludeIps,omitempty"`
-	Provider                *string                                   `json:"provider,omitempty"`
-	GatewayType             *string                                   `json:"gatewayType,omitempty"`
-	GatewayNode             *string                                   `json:"gatewayNode,omitempty"`
-	NatOutgoing             *bool                                     `json:"natOutgoing,omitempty"`
-	ExternalEgressGateway   *string                                   `json:"externalEgressGateway,omitempty"`
-	PolicyRoutingPriority   *uint32                                   `json:"policyRoutingPriority,omitempty"`
-	PolicyRoutingTableID    *uint32                                   `json:"policyRoutingTableID,omitempty"`
-	Mtu                     *uint32                                   `json:"mtu,omitempty"`
-	Private                 *bool                                     `json:"private,omitempty"`
-	AllowSubnets            []string                                  `json:"allowSubnets,omitempty"`
-	Vlan                    *string                                   `json:"vlan,omitempty"`
-	Vips                    []string                                  `json:"vips,omitempty"`
-	LogicalGateway          *bool                                     `json:"logicalGateway,omitempty"`
-	DisableGatewayCheck     *bool                                     `json:"disableGatewayCheck,omitempty"`
-	DisableInterConnection  *bool                                     `json:"disableInterConnection,omitempty"`
-	EnableDHCP              *bool                                     `json:"enableDHCP,omitempty"`
-	DHCPv4Options           *string                                   `json:"dhcpV4Options,omitempty"`
-	DHCPv6Options           *string                                   `json:"dhcpV6Options,omitempty"`
-	EnableIPv6RA            *bool                                     `json:"enableIPv6RA,omitempty"`
-	IPv6RAConfigs           *string                                   `json:"ipv6RAConfigs,omitempty"`
-	Acls                    []ACLApplyConfiguration                   `json:"acls,omitempty"`
-	AllowEWTraffic          *bool                                     `json:"allowEWTraffic,omitempty"`
-	NatOutgoingPolicyRules  []NatOutgoingPolicyRuleApplyConfiguration `json:"natOutgoingPolicyRules,omitempty"`
-	U2OInterconnectionIP    *string                                   `json:"u2oInterconnectionIP,omitempty"`
-	U2OInterconnection      *bool                                     `json:"u2oInterconnection,omitempty"`
-	EnableLb                *bool                                     `json:"enableLb,omitempty"`
-	EnableEcmp              *bool                                     `json:"enableEcmp,omitempty"`
-	EnableMulticastSnoop    *bool                                     `json:"enableMulticastSnoop,omitempty"`
-	EnableExternalLBAddress *bool                                     `json:"enableExternalLBAddress,omitempty"`
-	RouteTable              *string                                   `json:"routeTable,omitempty"`
-	NamespaceSelectors      []metav1.LabelSelectorApplyConfiguration  `json:"namespaceSelectors,omitempty"`
+	// Whether this is the default subnet.
+	Default *bool `json:"default,omitempty"`
+	// VPC name for the subnet. Immutable after creation.
+	Vpc *string `json:"vpc,omitempty"`
+	// Network protocol (IPv4, IPv6, or Dual). Immutable after creation.
+	Protocol *string `json:"protocol,omitempty"`
+	// List of namespaces associated with this subnet.
+	Namespaces []string `json:"namespaces,omitempty"`
+	// CIDR block for the subnet. Immutable after creation.
+	CIDRBlock *string `json:"cidrBlock,omitempty"`
+	// Gateway IP address for the subnet.
+	Gateway *string `json:"gateway,omitempty"`
+	// IP addresses to exclude from allocation.
+	ExcludeIps []string `json:"excludeIps,omitempty"`
+	// Provider network name.
+	Provider *string `json:"provider,omitempty"`
+	// Gateway type (distributed or centralized).
+	GatewayType *string `json:"gatewayType,omitempty"`
+	// Gateway node(s) for centralized gateway type.
+	GatewayNode *string `json:"gatewayNode,omitempty"`
+	// Selectors to choose gateway nodes.
+	GatewayNodeSelectors []metav1.LabelSelectorApplyConfiguration `json:"gatewayNodeSelectors,omitempty"`
+	// Enable NAT outgoing for the subnet.
+	NatOutgoing *bool `json:"natOutgoing,omitempty"`
+	// External egress gateway IPs.
+	ExternalEgressGateway *string `json:"externalEgressGateway,omitempty"`
+	// Policy routing priority.
+	PolicyRoutingPriority *uint32 `json:"policyRoutingPriority,omitempty"`
+	// Policy routing table ID.
+	PolicyRoutingTableID *uint32 `json:"policyRoutingTableID,omitempty"`
+	// MTU for pods in this subnet.
+	Mtu *uint32 `json:"mtu,omitempty"`
+	// Whether the subnet is private.
+	Private *bool `json:"private,omitempty"`
+	// Routed configures pods with /32 (IPv4) or /128 (IPv6) addresses and
+	// on-link routes to the gateway. Same-subnet traffic is forced through the
+	// OVN logical router instead of direct L2. Requires an OVN logical router
+	// port (overlay, or underlay with logicalGateway / u2oInterconnection).
+	// Existing pods must be recreated after enabling or disabling this field.
+	Routed *bool `json:"routed,omitempty"`
+	// Allowed subnets for east-west traffic.
+	AllowSubnets []string `json:"allowSubnets,omitempty"`
+	// VLAN ID or provider network name.
+	Vlan *string `json:"vlan,omitempty"`
+	// Virtual IP addresses for the subnet.
+	Vips []string `json:"vips,omitempty"`
+	// Enable logical gateway.
+	LogicalGateway *bool `json:"logicalGateway,omitempty"`
+	// Disable gateway readiness check.
+	DisableGatewayCheck *bool `json:"disableGatewayCheck,omitempty"`
+	// Disable interconnection for the subnet.
+	DisableInterConnection *bool `json:"disableInterConnection,omitempty"`
+	// Enable DHCP for the subnet.
+	EnableDHCP *bool `json:"enableDHCP,omitempty"`
+	// DHCPv4 options UUID.
+	DHCPv4Options *string `json:"dhcpV4Options,omitempty"`
+	// DHCPv6 options UUID.
+	DHCPv6Options *string `json:"dhcpV6Options,omitempty"`
+	// Enable IPv6 Router Advertisement.
+	EnableIPv6RA *bool `json:"enableIPv6RA,omitempty"`
+	// IPv6 RA configuration options.
+	IPv6RAConfigs *string `json:"ipv6RAConfigs,omitempty"`
+	// ACL rules for the subnet.
+	Acls []ACLApplyConfiguration `json:"acls,omitempty"`
+	// Allow east-west traffic across subnets.
+	AllowEWTraffic *bool `json:"allowEWTraffic,omitempty"`
+	// NAT outgoing policy rules.
+	NatOutgoingPolicyRules []NatOutgoingPolicyRuleApplyConfiguration `json:"natOutgoingPolicyRules,omitempty"`
+	// Underlay to overlay interconnection IP.
+	U2OInterconnectionIP *string `json:"u2oInterconnectionIP,omitempty"`
+	// Enable underlay to overlay interconnection.
+	U2OInterconnection *bool `json:"u2oInterconnection,omitempty"`
+	// Feature configurations for underlay to overlay interconnection.
+	U2OFeatures *U2OFeaturesApplyConfiguration `json:"u2oFeatures,omitempty"`
+	// Enable LoadBalancer on this subnet.
+	EnableLb *bool `json:"enableLb,omitempty"`
+	// Enable ECMP for centralized gateway.
+	EnableEcmp *bool `json:"enableEcmp,omitempty"`
+	// Enable multicast snoop.
+	EnableMulticastSnoop *bool `json:"enableMulticastSnoop,omitempty"`
+	// Enable external LB address support.
+	EnableExternalLBAddress *bool `json:"enableExternalLBAddress,omitempty"`
+	// Route table associated with the subnet.
+	RouteTable *string `json:"routeTable,omitempty"`
+	// Namespace label selectors to associate with this subnet.
+	NamespaceSelectors []metav1.LabelSelectorApplyConfiguration `json:"namespaceSelectors,omitempty"`
+	// Node network name for underlay.
+	NodeNetwork *string `json:"nodeNetwork,omitempty"`
 }
 
 // SubnetSpecApplyConfiguration constructs a declarative configuration of the SubnetSpec type for use with
@@ -139,6 +189,19 @@ func (b *SubnetSpecApplyConfiguration) WithGatewayNode(value string) *SubnetSpec
 	return b
 }
 
+// WithGatewayNodeSelectors adds the given value to the GatewayNodeSelectors field in the declarative configuration
+// and returns the receiver, so that objects can be build by chaining "With" function invocations.
+// If called multiple times, values provided by each call will be appended to the GatewayNodeSelectors field.
+func (b *SubnetSpecApplyConfiguration) WithGatewayNodeSelectors(values ...*metav1.LabelSelectorApplyConfiguration) *SubnetSpecApplyConfiguration {
+	for i := range values {
+		if values[i] == nil {
+			panic("nil value passed to WithGatewayNodeSelectors")
+		}
+		b.GatewayNodeSelectors = append(b.GatewayNodeSelectors, *values[i])
+	}
+	return b
+}
+
 // WithNatOutgoing sets the NatOutgoing field in the declarative configuration to the given value
 // and returns the receiver, so that objects can be built by chaining "With" function invocations.
 // If called multiple times, the NatOutgoing field is set to the value of the last call.
@@ -184,6 +247,14 @@ func (b *SubnetSpecApplyConfiguration) WithMtu(value uint32) *SubnetSpecApplyCon
 // If called multiple times, the Private field is set to the value of the last call.
 func (b *SubnetSpecApplyConfiguration) WithPrivate(value bool) *SubnetSpecApplyConfiguration {
 	b.Private = &value
+	return b
+}
+
+// WithRouted sets the Routed field in the declarative configuration to the given value
+// and returns the receiver, so that objects can be built by chaining "With" function invocations.
+// If called multiple times, the Routed field is set to the value of the last call.
+func (b *SubnetSpecApplyConfiguration) WithRouted(value bool) *SubnetSpecApplyConfiguration {
+	b.Routed = &value
 	return b
 }
 
@@ -329,6 +400,14 @@ func (b *SubnetSpecApplyConfiguration) WithU2OInterconnection(value bool) *Subne
 	return b
 }
 
+// WithU2OFeatures sets the U2OFeatures field in the declarative configuration to the given value
+// and returns the receiver, so that objects can be built by chaining "With" function invocations.
+// If called multiple times, the U2OFeatures field is set to the value of the last call.
+func (b *SubnetSpecApplyConfiguration) WithU2OFeatures(value *U2OFeaturesApplyConfiguration) *SubnetSpecApplyConfiguration {
+	b.U2OFeatures = value
+	return b
+}
+
 // WithEnableLb sets the EnableLb field in the declarative configuration to the given value
 // and returns the receiver, so that objects can be built by chaining "With" function invocations.
 // If called multiple times, the EnableLb field is set to the value of the last call.
@@ -379,5 +458,13 @@ func (b *SubnetSpecApplyConfiguration) WithNamespaceSelectors(values ...*metav1.
 		}
 		b.NamespaceSelectors = append(b.NamespaceSelectors, *values[i])
 	}
+	return b
+}
+
+// WithNodeNetwork sets the NodeNetwork field in the declarative configuration to the given value
+// and returns the receiver, so that objects can be built by chaining "With" function invocations.
+// If called multiple times, the NodeNetwork field is set to the value of the last call.
+func (b *SubnetSpecApplyConfiguration) WithNodeNetwork(value string) *SubnetSpecApplyConfiguration {
+	b.NodeNetwork = &value
 	return b
 }

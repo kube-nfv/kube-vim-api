@@ -18,14 +18,34 @@ func ForKind(kind schema.GroupVersionKind) interface{} {
 	// Group=kubeovn.io, Version=v1
 	case v1.SchemeGroupVersion.WithKind("ACL"):
 		return &kubeovnv1.ACLApplyConfiguration{}
+	case v1.SchemeGroupVersion.WithKind("BandwidthLimit"):
+		return &kubeovnv1.BandwidthLimitApplyConfiguration{}
 	case v1.SchemeGroupVersion.WithKind("BFDPort"):
 		return &kubeovnv1.BFDPortApplyConfiguration{}
 	case v1.SchemeGroupVersion.WithKind("BFDPortStatus"):
 		return &kubeovnv1.BFDPortStatusApplyConfiguration{}
+	case v1.SchemeGroupVersion.WithKind("BgpConf"):
+		return &kubeovnv1.BgpConfApplyConfiguration{}
+	case v1.SchemeGroupVersion.WithKind("BgpConfSpec"):
+		return &kubeovnv1.BgpConfSpecApplyConfiguration{}
 	case v1.SchemeGroupVersion.WithKind("Condition"):
 		return &kubeovnv1.ConditionApplyConfiguration{}
 	case v1.SchemeGroupVersion.WithKind("CustomInterface"):
 		return &kubeovnv1.CustomInterfaceApplyConfiguration{}
+	case v1.SchemeGroupVersion.WithKind("DNSNameResolver"):
+		return &kubeovnv1.DNSNameResolverApplyConfiguration{}
+	case v1.SchemeGroupVersion.WithKind("DNSNameResolverResolvedAddress"):
+		return &kubeovnv1.DNSNameResolverResolvedAddressApplyConfiguration{}
+	case v1.SchemeGroupVersion.WithKind("DNSNameResolverResolvedName"):
+		return &kubeovnv1.DNSNameResolverResolvedNameApplyConfiguration{}
+	case v1.SchemeGroupVersion.WithKind("DNSNameResolverSpec"):
+		return &kubeovnv1.DNSNameResolverSpecApplyConfiguration{}
+	case v1.SchemeGroupVersion.WithKind("DNSNameResolverStatus"):
+		return &kubeovnv1.DNSNameResolverStatusApplyConfiguration{}
+	case v1.SchemeGroupVersion.WithKind("EvpnConf"):
+		return &kubeovnv1.EvpnConfApplyConfiguration{}
+	case v1.SchemeGroupVersion.WithKind("EvpnConfSpec"):
+		return &kubeovnv1.EvpnConfSpecApplyConfiguration{}
 	case v1.SchemeGroupVersion.WithKind("IP"):
 		return &kubeovnv1.IPApplyConfiguration{}
 	case v1.SchemeGroupVersion.WithKind("IPPool"):
@@ -108,6 +128,16 @@ func ForKind(kind schema.GroupVersionKind) interface{} {
 		return &kubeovnv1.QoSPolicySpecApplyConfiguration{}
 	case v1.SchemeGroupVersion.WithKind("QoSPolicyStatus"):
 		return &kubeovnv1.QoSPolicyStatusApplyConfiguration{}
+	case v1.SchemeGroupVersion.WithKind("Route"):
+		return &kubeovnv1.RouteApplyConfiguration{}
+	case v1.SchemeGroupVersion.WithKind("RouterLBRule"):
+		return &kubeovnv1.RouterLBRuleApplyConfiguration{}
+	case v1.SchemeGroupVersion.WithKind("RouterLBRulePort"):
+		return &kubeovnv1.RouterLBRulePortApplyConfiguration{}
+	case v1.SchemeGroupVersion.WithKind("RouterLBRuleSpec"):
+		return &kubeovnv1.RouterLBRuleSpecApplyConfiguration{}
+	case v1.SchemeGroupVersion.WithKind("RouterLBRuleStatus"):
+		return &kubeovnv1.RouterLBRuleStatusApplyConfiguration{}
 	case v1.SchemeGroupVersion.WithKind("SecurityGroup"):
 		return &kubeovnv1.SecurityGroupApplyConfiguration{}
 	case v1.SchemeGroupVersion.WithKind("SecurityGroupRule"):
@@ -132,6 +162,8 @@ func ForKind(kind schema.GroupVersionKind) interface{} {
 		return &kubeovnv1.SwitchLBRuleSpecApplyConfiguration{}
 	case v1.SchemeGroupVersion.WithKind("SwitchLBRuleStatus"):
 		return &kubeovnv1.SwitchLBRuleStatusApplyConfiguration{}
+	case v1.SchemeGroupVersion.WithKind("U2OFeatures"):
+		return &kubeovnv1.U2OFeaturesApplyConfiguration{}
 	case v1.SchemeGroupVersion.WithKind("Vip"):
 		return &kubeovnv1.VipApplyConfiguration{}
 	case v1.SchemeGroupVersion.WithKind("VipSpec"):
@@ -158,12 +190,32 @@ func ForKind(kind schema.GroupVersionKind) interface{} {
 		return &kubeovnv1.VpcEgressGatewayApplyConfiguration{}
 	case v1.SchemeGroupVersion.WithKind("VpcEgressGatewayBFDConfig"):
 		return &kubeovnv1.VpcEgressGatewayBFDConfigApplyConfiguration{}
+	case v1.SchemeGroupVersion.WithKind("VpcEgressGatewayConntrackLog"):
+		return &kubeovnv1.VpcEgressGatewayConntrackLogApplyConfiguration{}
+	case v1.SchemeGroupVersion.WithKind("VpcEgressGatewayConntrackLogFilter"):
+		return &kubeovnv1.VpcEgressGatewayConntrackLogFilterApplyConfiguration{}
+	case v1.SchemeGroupVersion.WithKind("VpcEgressGatewayConntrackLogFilters"):
+		return &kubeovnv1.VpcEgressGatewayConntrackLogFiltersApplyConfiguration{}
+	case v1.SchemeGroupVersion.WithKind("VpcEgressGatewayConntrackLogRateLimit"):
+		return &kubeovnv1.VpcEgressGatewayConntrackLogRateLimitApplyConfiguration{}
+	case v1.SchemeGroupVersion.WithKind("VpcEgressGatewayConntrackObservability"):
+		return &kubeovnv1.VpcEgressGatewayConntrackObservabilityApplyConfiguration{}
+	case v1.SchemeGroupVersion.WithKind("VpcEgressGatewayConntrackTupleFilter"):
+		return &kubeovnv1.VpcEgressGatewayConntrackTupleFilterApplyConfiguration{}
 	case v1.SchemeGroupVersion.WithKind("VpcEgressGatewayNodeSelector"):
 		return &kubeovnv1.VpcEgressGatewayNodeSelectorApplyConfiguration{}
+	case v1.SchemeGroupVersion.WithKind("VpcEgressGatewayObservability"):
+		return &kubeovnv1.VpcEgressGatewayObservabilityApplyConfiguration{}
+	case v1.SchemeGroupVersion.WithKind("VpcEgressGatewayObservabilityFeature"):
+		return &kubeovnv1.VpcEgressGatewayObservabilityFeatureApplyConfiguration{}
 	case v1.SchemeGroupVersion.WithKind("VpcEgressGatewayPolicy"):
 		return &kubeovnv1.VpcEgressGatewayPolicyApplyConfiguration{}
+	case v1.SchemeGroupVersion.WithKind("VpcEgressGatewayPortRange"):
+		return &kubeovnv1.VpcEgressGatewayPortRangeApplyConfiguration{}
 	case v1.SchemeGroupVersion.WithKind("VpcEgressGatewaySelector"):
 		return &kubeovnv1.VpcEgressGatewaySelectorApplyConfiguration{}
+	case v1.SchemeGroupVersion.WithKind("VpcEgressGatewayServiceMonitor"):
+		return &kubeovnv1.VpcEgressGatewayServiceMonitorApplyConfiguration{}
 	case v1.SchemeGroupVersion.WithKind("VpcEgressGatewaySpec"):
 		return &kubeovnv1.VpcEgressGatewaySpecApplyConfiguration{}
 	case v1.SchemeGroupVersion.WithKind("VpcEgressGatewayStatus"):
@@ -172,10 +224,14 @@ func ForKind(kind schema.GroupVersionKind) interface{} {
 		return &kubeovnv1.VpcEgressWorkloadApplyConfiguration{}
 	case v1.SchemeGroupVersion.WithKind("VpcNatGateway"):
 		return &kubeovnv1.VpcNatGatewayApplyConfiguration{}
+	case v1.SchemeGroupVersion.WithKind("VpcNatGatewayBFDConfig"):
+		return &kubeovnv1.VpcNatGatewayBFDConfigApplyConfiguration{}
 	case v1.SchemeGroupVersion.WithKind("VpcNatGatewaySpec"):
 		return &kubeovnv1.VpcNatGatewaySpecApplyConfiguration{}
 	case v1.SchemeGroupVersion.WithKind("VpcNatGatewayStatus"):
 		return &kubeovnv1.VpcNatGatewayStatusApplyConfiguration{}
+	case v1.SchemeGroupVersion.WithKind("VpcNatWorkload"):
+		return &kubeovnv1.VpcNatWorkloadApplyConfiguration{}
 	case v1.SchemeGroupVersion.WithKind("VpcPeering"):
 		return &kubeovnv1.VpcPeeringApplyConfiguration{}
 	case v1.SchemeGroupVersion.WithKind("VpcSpec"):

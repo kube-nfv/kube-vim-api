@@ -9,9 +9,12 @@ import (
 // PolicyRouteApplyConfiguration represents a declarative configuration of the PolicyRoute type for use
 // with apply.
 type PolicyRouteApplyConfiguration struct {
-	Priority *int                         `json:"priority,omitempty"`
-	Match    *string                      `json:"match,omitempty"`
-	Action   *kubeovnv1.PolicyRouteAction `json:"action,omitempty"`
+	// Priority of the policy route (0-32767)
+	Priority *int `json:"priority,omitempty"`
+	// Match of the policy route
+	Match *string `json:"match,omitempty"`
+	// Action of the policy route
+	Action *kubeovnv1.PolicyRouteAction `json:"action,omitempty"`
 	// NextHopIP is an optional parameter. It needs to be provided only when 'action' is 'reroute'.
 	NextHopIP *string `json:"nextHopIP,omitempty"`
 }

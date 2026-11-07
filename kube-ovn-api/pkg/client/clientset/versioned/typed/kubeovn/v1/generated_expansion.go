@@ -2,6 +2,12 @@
 
 package v1
 
+type BgpConfExpansion interface{}
+
+type DNSNameResolverExpansion interface{}
+
+type EvpnConfExpansion interface{}
+
 type IPExpansion interface{}
 
 type IPPoolExpansion interface{}
@@ -25,6 +31,8 @@ type OvnSnatRuleExpansion interface{}
 type ProviderNetworkExpansion interface{}
 
 type QoSPolicyExpansion interface{}
+
+type RouterLBRuleExpansion interface{}
 
 type SecurityGroupExpansion interface{}
 

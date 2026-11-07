@@ -9,21 +9,67 @@ import (
 // VpcNatGatewaySpecApplyConfiguration represents a declarative configuration of the VpcNatGatewaySpec type for use
 // with apply.
 type VpcNatGatewaySpecApplyConfiguration struct {
-	Vpc             *string                          `json:"vpc,omitempty"`
-	Subnet          *string                          `json:"subnet,omitempty"`
-	ExternalSubnets []string                         `json:"externalSubnets,omitempty"`
-	LanIP           *string                          `json:"lanIp,omitempty"`
-	Selector        []string                         `json:"selector,omitempty"`
-	Tolerations     []corev1.Toleration              `json:"tolerations,omitempty"`
-	Affinity        *corev1.Affinity                 `json:"affinity,omitempty"`
-	QoSPolicy       *string                          `json:"qosPolicy,omitempty"`
-	BgpSpeaker      *VpcBgpSpeakerApplyConfiguration `json:"bgpSpeaker,omitempty"`
+	// Namespace where the NAT gateway StatefulSet/Pod will be created.
+	// If empty, defaults to the kube-ovn controller's own namespace (typically kube-system).
+	Namespace *string `json:"namespace,omitempty"`
+	// VPC name for the NAT gateway. This field is immutable after creation.
+	Vpc *string `json:"vpc,omitempty"`
+	// Subnet name for the NAT gateway. This field is immutable after creation.
+	Subnet *string `json:"subnet,omitempty"`
+	// External subnets accessible through the NAT gateway
+	ExternalSubnets []string `json:"externalSubnets,omitempty"`
+	// LAN IP address for the NAT gateway. Used only when Replicas = 1 (non-HA mode).
+	// If empty, an address is allocated dynamically and persisted here after it is observed on the Pod.
+	// Once set, this field is immutable.
+	// In HA mode (Replicas > 1) this field is ignored and cannot be used to pin addresses: every
+	// replica allocates its own address dynamically, and the controller re-points the OVN policy
+	// routes and BFD sessions whenever a replica is replaced.
+	// iptables EIP/FIP/DNAT/SNAT do not fully support IPv6 yet. Once they do, consider
+	// adding a v6LanIp field to pin the IPv6 LAN address separately.
+	LanIP *string `json:"lanIp,omitempty"`
+	// Number of gateway replicas for HA support.
+	// When > 1, uses Deployment workload with pod anti-affinity to distribute instances across nodes.
+	// When = 1 or unset, uses StatefulSet workload (legacy mode) for backward compatibility.
+	Replicas *int32 `json:"replicas,omitempty"`
+	// Pod selector for the NAT gateway
+	Selector    []string            `json:"selector,omitempty"`
+	Tolerations []corev1.Toleration `json:"tolerations,omitempty"`
+	Affinity    *corev1.Affinity    `json:"affinity,omitempty"`
+	// QoS policy name to apply to the NAT gateway
+	QoSPolicy *string `json:"qosPolicy,omitempty"`
+	// BGP speaker configuration
+	BgpSpeaker *VpcBgpSpeakerApplyConfiguration `json:"bgpSpeaker,omitempty"`
+	// BFD configuration for health monitoring and automatic failover (HA mode only)
+	BFD *VpcNatGatewayBFDConfigApplyConfiguration `json:"bfd,omitempty"`
+	// Internal subnets by name (resolved to CIDRs) for OVN route injection.
+	// Traffic from these subnets destined for 0.0.0.0/0 or ::/0 will be routed to NAT gateway instances.
+	// This field is cumulative with internalCIDRs.
+	InternalSubnets []string `json:"internalSubnets,omitempty"`
+	// Internal CIDRs for OVN route injection.
+	// Traffic from these CIDRs destined for 0.0.0.0/0 or ::/0 will be routed to NAT gateway instances.
+	// This field is cumulative with internalSubnets.
+	InternalCIDRs []string `json:"internalCIDRs,omitempty"`
+	// Static routes for the NAT gateway
+	Routes []RouteApplyConfiguration `json:"routes,omitempty"`
+	// Disable default EIP assignment
+	NoDefaultEIP *bool `json:"noDefaultEIP,omitempty"`
+	// User-defined annotations for the StatefulSet NAT gateway Pod template.
+	// Only effective at creation time; updates to this field are not detected.
+	Annotations map[string]string `json:"annotations,omitempty"`
 }
 
 // VpcNatGatewaySpecApplyConfiguration constructs a declarative configuration of the VpcNatGatewaySpec type for use with
 // apply.
 func VpcNatGatewaySpec() *VpcNatGatewaySpecApplyConfiguration {
 	return &VpcNatGatewaySpecApplyConfiguration{}
+}
+
+// WithNamespace sets the Namespace field in the declarative configuration to the given value
+// and returns the receiver, so that objects can be built by chaining "With" function invocations.
+// If called multiple times, the Namespace field is set to the value of the last call.
+func (b *VpcNatGatewaySpecApplyConfiguration) WithNamespace(value string) *VpcNatGatewaySpecApplyConfiguration {
+	b.Namespace = &value
+	return b
 }
 
 // WithVpc sets the Vpc field in the declarative configuration to the given value
@@ -57,6 +103,14 @@ func (b *VpcNatGatewaySpecApplyConfiguration) WithExternalSubnets(values ...stri
 // If called multiple times, the LanIP field is set to the value of the last call.
 func (b *VpcNatGatewaySpecApplyConfiguration) WithLanIP(value string) *VpcNatGatewaySpecApplyConfiguration {
 	b.LanIP = &value
+	return b
+}
+
+// WithReplicas sets the Replicas field in the declarative configuration to the given value
+// and returns the receiver, so that objects can be built by chaining "With" function invocations.
+// If called multiple times, the Replicas field is set to the value of the last call.
+func (b *VpcNatGatewaySpecApplyConfiguration) WithReplicas(value int32) *VpcNatGatewaySpecApplyConfiguration {
+	b.Replicas = &value
 	return b
 }
 
@@ -101,5 +155,68 @@ func (b *VpcNatGatewaySpecApplyConfiguration) WithQoSPolicy(value string) *VpcNa
 // If called multiple times, the BgpSpeaker field is set to the value of the last call.
 func (b *VpcNatGatewaySpecApplyConfiguration) WithBgpSpeaker(value *VpcBgpSpeakerApplyConfiguration) *VpcNatGatewaySpecApplyConfiguration {
 	b.BgpSpeaker = value
+	return b
+}
+
+// WithBFD sets the BFD field in the declarative configuration to the given value
+// and returns the receiver, so that objects can be built by chaining "With" function invocations.
+// If called multiple times, the BFD field is set to the value of the last call.
+func (b *VpcNatGatewaySpecApplyConfiguration) WithBFD(value *VpcNatGatewayBFDConfigApplyConfiguration) *VpcNatGatewaySpecApplyConfiguration {
+	b.BFD = value
+	return b
+}
+
+// WithInternalSubnets adds the given value to the InternalSubnets field in the declarative configuration
+// and returns the receiver, so that objects can be build by chaining "With" function invocations.
+// If called multiple times, values provided by each call will be appended to the InternalSubnets field.
+func (b *VpcNatGatewaySpecApplyConfiguration) WithInternalSubnets(values ...string) *VpcNatGatewaySpecApplyConfiguration {
+	for i := range values {
+		b.InternalSubnets = append(b.InternalSubnets, values[i])
+	}
+	return b
+}
+
+// WithInternalCIDRs adds the given value to the InternalCIDRs field in the declarative configuration
+// and returns the receiver, so that objects can be build by chaining "With" function invocations.
+// If called multiple times, values provided by each call will be appended to the InternalCIDRs field.
+func (b *VpcNatGatewaySpecApplyConfiguration) WithInternalCIDRs(values ...string) *VpcNatGatewaySpecApplyConfiguration {
+	for i := range values {
+		b.InternalCIDRs = append(b.InternalCIDRs, values[i])
+	}
+	return b
+}
+
+// WithRoutes adds the given value to the Routes field in the declarative configuration
+// and returns the receiver, so that objects can be build by chaining "With" function invocations.
+// If called multiple times, values provided by each call will be appended to the Routes field.
+func (b *VpcNatGatewaySpecApplyConfiguration) WithRoutes(values ...*RouteApplyConfiguration) *VpcNatGatewaySpecApplyConfiguration {
+	for i := range values {
+		if values[i] == nil {
+			panic("nil value passed to WithRoutes")
+		}
+		b.Routes = append(b.Routes, *values[i])
+	}
+	return b
+}
+
+// WithNoDefaultEIP sets the NoDefaultEIP field in the declarative configuration to the given value
+// and returns the receiver, so that objects can be built by chaining "With" function invocations.
+// If called multiple times, the NoDefaultEIP field is set to the value of the last call.
+func (b *VpcNatGatewaySpecApplyConfiguration) WithNoDefaultEIP(value bool) *VpcNatGatewaySpecApplyConfiguration {
+	b.NoDefaultEIP = &value
+	return b
+}
+
+// WithAnnotations puts the entries into the Annotations field in the declarative configuration
+// and returns the receiver, so that objects can be build by chaining "With" function invocations.
+// If called multiple times, the entries provided by each call will be put on the Annotations field,
+// overwriting an existing map entries in Annotations field with the same key.
+func (b *VpcNatGatewaySpecApplyConfiguration) WithAnnotations(entries map[string]string) *VpcNatGatewaySpecApplyConfiguration {
+	if b.Annotations == nil && len(entries) > 0 {
+		b.Annotations = make(map[string]string, len(entries))
+	}
+	for k, v := range entries {
+		b.Annotations[k] = v
+	}
 	return b
 }

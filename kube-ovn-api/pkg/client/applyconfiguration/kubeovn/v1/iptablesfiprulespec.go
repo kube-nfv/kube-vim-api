@@ -5,7 +5,9 @@ package v1
 // IptablesFIPRuleSpecApplyConfiguration represents a declarative configuration of the IptablesFIPRuleSpec type for use
 // with apply.
 type IptablesFIPRuleSpecApplyConfiguration struct {
-	EIP        *string `json:"eip,omitempty"`
+	// EIP name to use for floating IP
+	EIP *string `json:"eip,omitempty"`
+	// Internal IP address to map to the floating IP
 	InternalIP *string `json:"internalIp,omitempty"`
 }
 

@@ -9,9 +9,12 @@ import (
 // QoSPolicySpecApplyConfiguration represents a declarative configuration of the QoSPolicySpec type for use
 // with apply.
 type QoSPolicySpecApplyConfiguration struct {
+	// Bandwidth limit rules to apply
 	BandwidthLimitRules *kubeovnv1.QoSPolicyBandwidthLimitRules `json:"bandwidthLimitRules,omitempty"`
-	Shared              *bool                                   `json:"shared,omitempty"`
-	BindingType         *kubeovnv1.QoSPolicyBindingType         `json:"bindingType,omitempty"`
+	// Whether the QoS policy is shared across multiple pods
+	Shared *bool `json:"shared,omitempty"`
+	// Binding type (e.g., pod, namespace)
+	BindingType *kubeovnv1.QoSPolicyBindingType `json:"bindingType,omitempty"`
 }
 
 // QoSPolicySpecApplyConfiguration constructs a declarative configuration of the QoSPolicySpec type for use with

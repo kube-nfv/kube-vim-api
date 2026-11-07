@@ -5,8 +5,10 @@ package v1
 // VpcDNSStatusApplyConfiguration represents a declarative configuration of the VpcDNSStatus type for use
 // with apply.
 type VpcDNSStatusApplyConfiguration struct {
+	// Conditions represent the latest state of the VPC DNS
 	Conditions []ConditionApplyConfiguration `json:"conditions,omitempty"`
-	Active     *bool                         `json:"active,omitempty"`
+	// Whether the VPC DNS service is active
+	Active *bool `json:"active,omitempty"`
 }
 
 // VpcDNSStatusApplyConfiguration constructs a declarative configuration of the VpcDNSStatus type for use with

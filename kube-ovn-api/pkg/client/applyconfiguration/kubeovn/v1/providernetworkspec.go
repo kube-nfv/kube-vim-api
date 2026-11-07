@@ -2,13 +2,29 @@
 
 package v1
 
+import (
+	metav1 "k8s.io/client-go/applyconfigurations/meta/v1"
+)
+
 // ProviderNetworkSpecApplyConfiguration represents a declarative configuration of the ProviderNetworkSpec type for use
 // with apply.
 type ProviderNetworkSpecApplyConfiguration struct {
-	DefaultInterface *string                             `json:"defaultInterface,omitempty"`
+	// Default interface name for the provider network. This field is immutable after creation.
+	DefaultInterface *string `json:"defaultInterface,omitempty"`
+	// Custom interface configurations for specific nodes
 	CustomInterfaces []CustomInterfaceApplyConfiguration `json:"customInterfaces,omitempty"`
-	ExcludeNodes     []string                            `json:"excludeNodes,omitempty"`
-	ExchangeLinkName *bool                               `json:"exchangeLinkName,omitempty"`
+	// Node selector for targeting specific nodes
+	NodeSelector *metav1.LabelSelectorApplyConfiguration `json:"nodeSelector,omitempty"`
+	// Nodes to exclude from this provider network
+	ExcludeNodes []string `json:"excludeNodes,omitempty"`
+	// Exchange link name between host and container
+	ExchangeLinkName *bool `json:"exchangeLinkName,omitempty"`
+	// Automatically create VLAN subinterfaces
+	AutoCreateVlanSubinterfaces *bool `json:"autoCreateVlanSubinterfaces,omitempty"`
+	// Enable automatic detection and preservation of VLAN interfaces
+	PreserveVlanInterfaces *bool `json:"preserveVlanInterfaces,omitempty"`
+	// Optional explicit list of VLAN interface names to preserve (e.g., eth0.10, bond0.20)
+	VlanInterfaces []string `json:"vlanInterfaces,omitempty"`
 }
 
 // ProviderNetworkSpecApplyConfiguration constructs a declarative configuration of the ProviderNetworkSpec type for use with
@@ -38,6 +54,14 @@ func (b *ProviderNetworkSpecApplyConfiguration) WithCustomInterfaces(values ...*
 	return b
 }
 
+// WithNodeSelector sets the NodeSelector field in the declarative configuration to the given value
+// and returns the receiver, so that objects can be built by chaining "With" function invocations.
+// If called multiple times, the NodeSelector field is set to the value of the last call.
+func (b *ProviderNetworkSpecApplyConfiguration) WithNodeSelector(value *metav1.LabelSelectorApplyConfiguration) *ProviderNetworkSpecApplyConfiguration {
+	b.NodeSelector = value
+	return b
+}
+
 // WithExcludeNodes adds the given value to the ExcludeNodes field in the declarative configuration
 // and returns the receiver, so that objects can be build by chaining "With" function invocations.
 // If called multiple times, values provided by each call will be appended to the ExcludeNodes field.
@@ -53,5 +77,31 @@ func (b *ProviderNetworkSpecApplyConfiguration) WithExcludeNodes(values ...strin
 // If called multiple times, the ExchangeLinkName field is set to the value of the last call.
 func (b *ProviderNetworkSpecApplyConfiguration) WithExchangeLinkName(value bool) *ProviderNetworkSpecApplyConfiguration {
 	b.ExchangeLinkName = &value
+	return b
+}
+
+// WithAutoCreateVlanSubinterfaces sets the AutoCreateVlanSubinterfaces field in the declarative configuration to the given value
+// and returns the receiver, so that objects can be built by chaining "With" function invocations.
+// If called multiple times, the AutoCreateVlanSubinterfaces field is set to the value of the last call.
+func (b *ProviderNetworkSpecApplyConfiguration) WithAutoCreateVlanSubinterfaces(value bool) *ProviderNetworkSpecApplyConfiguration {
+	b.AutoCreateVlanSubinterfaces = &value
+	return b
+}
+
+// WithPreserveVlanInterfaces sets the PreserveVlanInterfaces field in the declarative configuration to the given value
+// and returns the receiver, so that objects can be built by chaining "With" function invocations.
+// If called multiple times, the PreserveVlanInterfaces field is set to the value of the last call.
+func (b *ProviderNetworkSpecApplyConfiguration) WithPreserveVlanInterfaces(value bool) *ProviderNetworkSpecApplyConfiguration {
+	b.PreserveVlanInterfaces = &value
+	return b
+}
+
+// WithVlanInterfaces adds the given value to the VlanInterfaces field in the declarative configuration
+// and returns the receiver, so that objects can be build by chaining "With" function invocations.
+// If called multiple times, values provided by each call will be appended to the VlanInterfaces field.
+func (b *ProviderNetworkSpecApplyConfiguration) WithVlanInterfaces(values ...string) *ProviderNetworkSpecApplyConfiguration {
+	for i := range values {
+		b.VlanInterfaces = append(b.VlanInterfaces, values[i])
+	}
 	return b
 }

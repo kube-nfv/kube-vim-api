@@ -12,6 +12,7 @@ import (
 )
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
 type IPPoolList struct {
 	metav1.TypeMeta `json:",inline"`
 	metav1.ListMeta `json:"metadata"`
@@ -22,6 +23,15 @@ type IPPoolList struct {
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +genclient:nonNamespaced
+// +kubebuilder:resource:scope="Cluster",shortName="ippool",path="ippools"
+// +kubebuilder:subresource:status
+// +kubebuilder:printcolumn:name="Subnet",type="string",JSONPath=".spec.subnet"
+// +kubebuilder:printcolumn:name="enableAddressSet",type="boolean",JSONPath=".spec.enableAddressSet"
+// +kubebuilder:printcolumn:name="IPs",type="string",JSONPath=".spec.ips"
+// +kubebuilder:printcolumn:name="V4Used",type="number",JSONPath=".status.v4UsingIPs"
+// +kubebuilder:printcolumn:name="V4Available",type="number",JSONPath=".status.v4AvailableIPs"
+// +kubebuilder:printcolumn:name="V6Used",type="number",JSONPath=".status.v6UsingIPs"
+// +kubebuilder:printcolumn:name="V6Available",type="number",JSONPath=".status.v6AvailableIPs"
 type IPPool struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata"`
@@ -30,21 +40,56 @@ type IPPool struct {
 	Status IPPoolStatus `json:"status"`
 }
 
+// +kubebuilder:validation:XValidation:rule="has(self.ips) != has(self.ipCount)",message="exactly one of spec.ips and spec.ipCount must be set"
 type IPPoolSpec struct {
-	Subnet     string   `json:"subnet,omitempty"`
+	// Subnet name for the IP pool. This field is immutable.
+	// +kubebuilder:validation:Required
+	Subnet string `json:"subnet,omitempty"`
+	// Namespaces that can use this IP pool
 	Namespaces []string `json:"namespaces,omitempty"`
-	IPs        []string `json:"ips,omitempty"`
+	// IP addresses or ranges in the pool (IPv4/IPv6 addresses or CIDR ranges).
+	// Mutually exclusive with ipCount.
+	IPs []string `json:"ips,omitempty"`
+	// Number of addresses to pick automatically from the subnet's free addresses,
+	// per IP family (a dual-stack subnet yields ipCount IPv4 plus ipCount IPv6 addresses).
+	// The picked addresses are recorded in status.ips and stay stable; increasing the
+	// value appends addresses, decreasing it releases the most recently added ones first.
+	// Mutually exclusive with ips.
+	// An ippool carves a small set of addresses out of a subnet; needing more than a few
+	// dozen is better served by a dedicated subnet, or by spelling out ranges in ips.
+	// This bound must stay in sync with maxIPPoolIPCount in the controller, which still
+	// guards pools created before the limit was introduced.
+	// +kubebuilder:validation:Minimum=1
+	// +kubebuilder:validation:Maximum=32
+	IPCount int32 `json:"ipCount,omitempty"`
+	// EnableAddressSet to work with policy-based routing and ACL
+	// +kubebuilder:default=false
+	EnableAddressSet bool `json:"enableAddressSet,omitempty"`
 }
 
 type IPPoolStatus struct {
-	V4AvailableIPs     internal.BigInt `json:"v4AvailableIPs"`
-	V4AvailableIPRange string          `json:"v4AvailableIPRange"`
-	V4UsingIPs         internal.BigInt `json:"v4UsingIPs"`
-	V4UsingIPRange     string          `json:"v4UsingIPRange"`
-	V6AvailableIPs     internal.BigInt `json:"v6AvailableIPs"`
-	V6AvailableIPRange string          `json:"v6AvailableIPRange"`
-	V6UsingIPs         internal.BigInt `json:"v6UsingIPs"`
-	V6UsingIPRange     string          `json:"v6UsingIPRange"`
+	// IP addresses the pool currently consists of, in allocation order.
+	// Maintained by the controller for pools using spec.ipCount, and cleared when the
+	// pool leaves that mode, so the recorded selection is never mistaken for the
+	// members of a pool that lists spec.ips.
+	// +optional
+	IPs []string `json:"ips,omitempty"`
+	// Number of available IPv4 addresses
+	V4AvailableIPs internal.BigInt `json:"v4AvailableIPs"`
+	// Available IPv4 address range
+	V4AvailableIPRange string `json:"v4AvailableIPRange"`
+	// Number of using IPv4 addresses
+	V4UsingIPs internal.BigInt `json:"v4UsingIPs"`
+	// IPv4 address range in use
+	V4UsingIPRange string `json:"v4UsingIPRange"`
+	// Number of available IPv6 addresses
+	V6AvailableIPs internal.BigInt `json:"v6AvailableIPs"`
+	// Available IPv6 address range
+	V6AvailableIPRange string `json:"v6AvailableIPRange"`
+	// Number of using IPv6 addresses
+	V6UsingIPs internal.BigInt `json:"v6UsingIPs"`
+	// IPv6 address range in use
+	V6UsingIPRange string `json:"v6UsingIPRange"`
 
 	// Conditions represents the latest state of the object
 	// +optional
@@ -110,7 +155,6 @@ func (s *IPPoolStatus) EnsureCondition(ctype ConditionType) {
 // EnsureStandardConditions - helper to inject standard conditions
 func (s *IPPoolStatus) EnsureStandardConditions() {
 	s.EnsureCondition(Ready)
-	s.EnsureCondition(Error)
 }
 
 // SetCondition updates or creates a new condition
@@ -136,11 +180,6 @@ func (s *IPPoolStatus) NotReady(reason, message string) {
 // SetError - shortcut to set error condition
 func (s *IPPoolStatus) SetError(reason, message string) {
 	s.SetCondition(Error, reason, message)
-}
-
-// ClearError - shortcut to set error condition
-func (s *IPPoolStatus) ClearError() {
-	s.ClearCondition(Error, "NoError", "No error seen")
 }
 
 // IsConditionTrue - if condition is true

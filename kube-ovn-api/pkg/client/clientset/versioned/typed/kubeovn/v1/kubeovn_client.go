@@ -12,6 +12,9 @@ import (
 
 type KubeovnV1Interface interface {
 	RESTClient() rest.Interface
+	BgpConvesGetter
+	DNSNameResolversGetter
+	EvpnConvesGetter
 	IPsGetter
 	IPPoolsGetter
 	IptablesDnatRulesGetter
@@ -24,6 +27,7 @@ type KubeovnV1Interface interface {
 	OvnSnatRulesGetter
 	ProviderNetworksGetter
 	QoSPoliciesGetter
+	RouterLBRulesGetter
 	SecurityGroupsGetter
 	SubnetsGetter
 	SwitchLBRulesGetter
@@ -38,6 +42,18 @@ type KubeovnV1Interface interface {
 // KubeovnV1Client is used to interact with features provided by the kubeovn.io group.
 type KubeovnV1Client struct {
 	restClient rest.Interface
+}
+
+func (c *KubeovnV1Client) BgpConves() BgpConfInterface {
+	return newBgpConves(c)
+}
+
+func (c *KubeovnV1Client) DNSNameResolvers() DNSNameResolverInterface {
+	return newDNSNameResolvers(c)
+}
+
+func (c *KubeovnV1Client) EvpnConves() EvpnConfInterface {
+	return newEvpnConves(c)
 }
 
 func (c *KubeovnV1Client) IPs() IPInterface {
@@ -86,6 +102,10 @@ func (c *KubeovnV1Client) ProviderNetworks() ProviderNetworkInterface {
 
 func (c *KubeovnV1Client) QoSPolicies() QoSPolicyInterface {
 	return newQoSPolicies(c)
+}
+
+func (c *KubeovnV1Client) RouterLBRules() RouterLBRuleInterface {
+	return newRouterLBRules(c)
 }
 
 func (c *KubeovnV1Client) SecurityGroups() SecurityGroupInterface {

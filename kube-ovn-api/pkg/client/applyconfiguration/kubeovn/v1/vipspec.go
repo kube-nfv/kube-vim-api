@@ -5,14 +5,21 @@ package v1
 // VipSpecApplyConfiguration represents a declarative configuration of the VipSpec type for use
 // with apply.
 type VipSpecApplyConfiguration struct {
+	// Namespace where the VIP is created. This field is immutable after creation.
 	Namespace *string `json:"namespace,omitempty"`
-	Subnet    *string `json:"subnet,omitempty"`
-	Type      *string `json:"type,omitempty"`
+	// Subnet name for the VIP. This field is immutable after creation.
+	Subnet *string `json:"subnet,omitempty"`
+	// Type of VIP. This field is immutable after creation.
+	Type *string `json:"type,omitempty"`
 	// usage type: switch lb vip, allowed address pair vip by default
-	V4ip          *string  `json:"v4ip,omitempty"`
-	V6ip          *string  `json:"v6ip,omitempty"`
-	MacAddress    *string  `json:"macAddress,omitempty"`
-	Selector      []string `json:"selector,omitempty"`
+	V4ip *string `json:"v4ip,omitempty"`
+	// Specific IPv6 address to use (optional, will be allocated if not specified)
+	V6ip *string `json:"v6ip,omitempty"`
+	// MAC address for the VIP
+	MacAddress *string `json:"macAddress,omitempty"`
+	// Pod names to be selected by this VIP
+	Selector []string `json:"selector,omitempty"`
+	// Additional subnets to attach
 	AttachSubnets []string `json:"attachSubnets,omitempty"`
 }
 

@@ -5,19 +5,37 @@ package v1
 // IptablesEIPStatusApplyConfiguration represents a declarative configuration of the IptablesEIPStatus type for use
 // with apply.
 type IptablesEIPStatusApplyConfiguration struct {
-	Ready     *bool   `json:"ready,omitempty"`
-	IP        *string `json:"ip,omitempty"`
-	Redo      *string `json:"redo,omitempty"`
-	Nat       *string `json:"nat,omitempty"`
-	QoSPolicy *string `json:"qosPolicy,omitempty"`
 	// Conditions represents the latest state of the object
 	Conditions []ConditionApplyConfiguration `json:"conditions,omitempty"`
+	// Indicates whether the EIP is ready
+	Ready *bool `json:"ready,omitempty"`
+	// IPv4 address of the EIP
+	IP *string `json:"ip,omitempty"`
+	// NAT type (snat or dnat)
+	Nat *string `json:"nat,omitempty"`
+	// Redo operation status
+	Redo *string `json:"redo,omitempty"`
+	// QoS policy name
+	QoSPolicy *string `json:"qosPolicy,omitempty"`
 }
 
 // IptablesEIPStatusApplyConfiguration constructs a declarative configuration of the IptablesEIPStatus type for use with
 // apply.
 func IptablesEIPStatus() *IptablesEIPStatusApplyConfiguration {
 	return &IptablesEIPStatusApplyConfiguration{}
+}
+
+// WithConditions adds the given value to the Conditions field in the declarative configuration
+// and returns the receiver, so that objects can be build by chaining "With" function invocations.
+// If called multiple times, values provided by each call will be appended to the Conditions field.
+func (b *IptablesEIPStatusApplyConfiguration) WithConditions(values ...*ConditionApplyConfiguration) *IptablesEIPStatusApplyConfiguration {
+	for i := range values {
+		if values[i] == nil {
+			panic("nil value passed to WithConditions")
+		}
+		b.Conditions = append(b.Conditions, *values[i])
+	}
+	return b
 }
 
 // WithReady sets the Ready field in the declarative configuration to the given value
@@ -36,14 +54,6 @@ func (b *IptablesEIPStatusApplyConfiguration) WithIP(value string) *IptablesEIPS
 	return b
 }
 
-// WithRedo sets the Redo field in the declarative configuration to the given value
-// and returns the receiver, so that objects can be built by chaining "With" function invocations.
-// If called multiple times, the Redo field is set to the value of the last call.
-func (b *IptablesEIPStatusApplyConfiguration) WithRedo(value string) *IptablesEIPStatusApplyConfiguration {
-	b.Redo = &value
-	return b
-}
-
 // WithNat sets the Nat field in the declarative configuration to the given value
 // and returns the receiver, so that objects can be built by chaining "With" function invocations.
 // If called multiple times, the Nat field is set to the value of the last call.
@@ -52,23 +62,18 @@ func (b *IptablesEIPStatusApplyConfiguration) WithNat(value string) *IptablesEIP
 	return b
 }
 
+// WithRedo sets the Redo field in the declarative configuration to the given value
+// and returns the receiver, so that objects can be built by chaining "With" function invocations.
+// If called multiple times, the Redo field is set to the value of the last call.
+func (b *IptablesEIPStatusApplyConfiguration) WithRedo(value string) *IptablesEIPStatusApplyConfiguration {
+	b.Redo = &value
+	return b
+}
+
 // WithQoSPolicy sets the QoSPolicy field in the declarative configuration to the given value
 // and returns the receiver, so that objects can be built by chaining "With" function invocations.
 // If called multiple times, the QoSPolicy field is set to the value of the last call.
 func (b *IptablesEIPStatusApplyConfiguration) WithQoSPolicy(value string) *IptablesEIPStatusApplyConfiguration {
 	b.QoSPolicy = &value
-	return b
-}
-
-// WithConditions adds the given value to the Conditions field in the declarative configuration
-// and returns the receiver, so that objects can be build by chaining "With" function invocations.
-// If called multiple times, values provided by each call will be appended to the Conditions field.
-func (b *IptablesEIPStatusApplyConfiguration) WithConditions(values ...*ConditionApplyConfiguration) *IptablesEIPStatusApplyConfiguration {
-	for i := range values {
-		if values[i] == nil {
-			panic("nil value passed to WithConditions")
-		}
-		b.Conditions = append(b.Conditions, *values[i])
-	}
 	return b
 }

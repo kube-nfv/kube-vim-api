@@ -5,17 +5,24 @@ package v1
 // OvnDnatRuleSpecApplyConfiguration represents a declarative configuration of the OvnDnatRuleSpec type for use
 // with apply.
 type OvnDnatRuleSpecApplyConfiguration struct {
+	// OVN EIP name for DNAT rule
 	OvnEip *string `json:"ovnEip,omitempty"`
+	// IP type (e.g., ipv4, ipv6, dual)
 	IPType *string `json:"ipType,omitempty"`
-	// vip, ip
+	// IP resource name
 	IPName *string `json:"ipName,omitempty"`
-	// vip, ip crd name
+	// Internal port number to forward traffic to
 	InternalPort *string `json:"internalPort,omitempty"`
+	// External port number
 	ExternalPort *string `json:"externalPort,omitempty"`
-	Protocol     *string `json:"protocol,omitempty"`
-	Vpc          *string `json:"vpc,omitempty"`
-	V4Ip         *string `json:"v4Ip,omitempty"`
-	V6Ip         *string `json:"v6Ip,omitempty"`
+	// Protocol type (TCP or UDP)
+	Protocol *string `json:"protocol,omitempty"`
+	// VPC name. This field is immutable after creation.
+	Vpc *string `json:"vpc,omitempty"`
+	// IPv4 address for DNAT
+	V4Ip *string `json:"v4Ip,omitempty"`
+	// IPv6 address for DNAT
+	V6Ip *string `json:"v6Ip,omitempty"`
 }
 
 // OvnDnatRuleSpecApplyConfiguration constructs a declarative configuration of the OvnDnatRuleSpec type for use with

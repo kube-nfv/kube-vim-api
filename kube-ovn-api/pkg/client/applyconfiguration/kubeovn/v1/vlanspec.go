@@ -6,10 +6,13 @@ package v1
 // with apply.
 type VlanSpecApplyConfiguration struct {
 	// deprecated fields, use ID & Provider instead
-	VlanID                *int    `json:"vlanId,omitempty"`
+	VlanID *int `json:"vlanId,omitempty"`
+	// Deprecated: in favor of provider
 	ProviderInterfaceName *string `json:"providerInterfaceName,omitempty"`
-	ID                    *int    `json:"id,omitempty"`
-	Provider              *string `json:"provider,omitempty"`
+	// VLAN ID (0-4095). This field is immutable after creation.
+	ID *int `json:"id,omitempty"`
+	// Provider network name. This field is immutable after creation.
+	Provider *string `json:"provider,omitempty"`
 }
 
 // VlanSpecApplyConfiguration constructs a declarative configuration of the VlanSpec type for use with

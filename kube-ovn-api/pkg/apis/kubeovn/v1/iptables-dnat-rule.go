@@ -20,6 +20,18 @@ type IptablesDnatRuleList struct {
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +genclient:nonNamespaced
 // +resourceName=iptables-dnat-rules
+// +kubebuilder:resource:scope="Cluster",shortName="dnat",path="iptables-dnat-rules",singular="iptables-dnat-rule"
+// +kubebuilder:subresource:status
+// +kubebuilder:printcolumn:name="Eip",type="string",JSONPath=".spec.eip"
+// +kubebuilder:printcolumn:name="Protocol",type="string",JSONPath=".spec.protocol"
+// +kubebuilder:printcolumn:name="V4ip",type="string",JSONPath=".status.v4ip"
+// +kubebuilder:printcolumn:name="V6ip",type="string",JSONPath=".status.v6ip"
+// +kubebuilder:printcolumn:name="InternalIp",type="string",JSONPath=".spec.internalIp"
+// +kubebuilder:printcolumn:name="ExternalPort",type="string",JSONPath=".spec.externalPort"
+// +kubebuilder:printcolumn:name="InternalPort",type="string",JSONPath=".spec.internalPort"
+// +kubebuilder:printcolumn:name="Type",type="string",JSONPath=".spec.type"
+// +kubebuilder:printcolumn:name="NatGwDp",type="string",JSONPath=".status.natGwDp"
+// +kubebuilder:printcolumn:name="Ready",type="boolean",JSONPath=".status.ready"
 type IptablesDnatRule struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata"`
@@ -28,32 +40,112 @@ type IptablesDnatRule struct {
 	Status IptablesDnatRuleStatus `json:"status"`
 }
 
+const (
+	// DnatRuleTypeExclusive means the EIP:Port is exclusively used by this DNAT rule.
+	// Only one internal IP:Port can be mapped to a given EIP:Port identity (eip + externalPort + protocol).
+	// This is the original (default) behavior: uses a single iptables DNAT rule for 1:1 port forwarding.
+	// Creating another DNAT rule with the same identity is rejected.
+	DnatRuleTypeExclusive = "exclusive"
+
+	// DnatRuleTypeShare means multiple DNAT rules can share the same EIP:Port identity.
+	// Each rule contributes one backend, so traffic to that address and port is load-balanced
+	// across the internal backends instead of being limited to one internal destination.
+	// Different internal IP:Port backends are allowed to coexist under the same identity,
+	// enabling load-balancing across backends. Implemented via nftables numgen random
+	// map-based DNAT: new connections are distributed randomly across backends and then
+	// pinned by conntrack (connection-level balancing, no client-IP affinity).
+	// IPv4 only: the nft rules use `ip daddr`/`ip saddr`, so share requires an EIP with an
+	// IPv4 address; the webhook rejects share on an IPv6-only EIP and the controller requeues
+	// while the EIP is still being allocated (v4 not yet assigned).
+	DnatRuleTypeShare = "share"
+
+	// DnatSessionAffinityNone disables client-IP session affinity (default): backends are
+	// selected purely by numgen random per new connection and then pinned by conntrack.
+	DnatSessionAffinityNone = ""
+
+	// DnatSessionAffinityClientIP enables client-IP session affinity for share type DNAT:
+	// connections from the same client IP are pinned to the same backend for a sticky window
+	// (see SessionAffinityTimeoutSeconds), following the kube-proxy nftables affinity pattern.
+	DnatSessionAffinityClientIP = "ClientIP"
+
+	// DefaultDnatSessionAffinityTimeoutSeconds is the default sticky window (3h, matching
+	// Kubernetes' default) applied when SessionAffinity is ClientIP but no timeout is set.
+	DefaultDnatSessionAffinityTimeoutSeconds int32 = 10800
+)
+
 type IptablesDnatRuleSpec struct {
-	EIP          string `json:"eip"`
+	// Name of the EIP used as the rule's external address. Optional when ClusterIP is set.
+	// +optional
+	EIP string `json:"eip,omitempty"`
+	// Kubernetes Service ClusterIP served by this rule for traffic from within the VPC.
+	// +optional
+	ClusterIP string `json:"clusterIP,omitempty"`
+	// External port number
 	ExternalPort string `json:"externalPort"`
-	Protocol     string `json:"protocol,omitempty"`
-	InternalIP   string `json:"internalIp"`
+	// Protocol type (TCP or UDP)
+	Protocol string `json:"protocol,omitempty"`
+	// Internal IP address to forward traffic to
+	InternalIP string `json:"internalIp"`
+	// Internal port number to forward traffic to
 	InternalPort string `json:"internalPort"`
+	// Type of the DNAT rule, controls whether the EIP:Port identity can be shared
+	// by multiple internal backends:
+	// - "exclusive" (default): The EIP:Port is exclusively owned by this single DNAT rule.
+	//   Uses iptables DNAT for 1:1 port forwarding. This was the only mode before the
+	//   nft LB feature was introduced; any duplicate identity is rejected.
+	// - "share": Multiple DNAT rules may share the same EIP:Port identity, each
+	//   contributing a different internal IP:Port as a backend. Traffic is distributed
+	//   across backends using nftables numgen random map-based DNAT: each new connection
+	//   picks a backend at random and is then pinned by conntrack (connection-level
+	//   balancing, no client-IP affinity).
+	// +kubebuilder:validation:Enum=exclusive;share
+	// +kubebuilder:default=exclusive
+	// +optional
+	Type string `json:"type,omitempty"`
+	// SessionAffinity controls client-IP session affinity for share type DNAT. Only "" (none,
+	// default) and "ClientIP" are supported, and it is rejected for exclusive type. It is
+	// immutable after creation because it applies to the whole share DNAT identity; change it
+	// by deleting and recreating the rule (the nftable LB service controller does this when a
+	// Service's session affinity changes). When set to "ClientIP", connections from the same
+	// client IP are pinned to the same backend for SessionAffinityTimeoutSeconds, implemented
+	// with per-backend nftables affinity sets (kube-proxy nftables pattern).
+	// +kubebuilder:validation:Enum="";ClientIP
+	// +optional
+	SessionAffinity string `json:"sessionAffinity,omitempty"`
+	// SessionAffinityTimeoutSeconds is the sticky window, in seconds, for ClientIP affinity.
+	// It is only used when SessionAffinity is "ClientIP"; when unset (0) the controller applies
+	// the default of 10800 (3h). Non-zero values must be in the range 1-86400.
+	// +kubebuilder:validation:Minimum=0
+	// +kubebuilder:validation:Maximum=86400
+	// +optional
+	SessionAffinityTimeoutSeconds int32 `json:"sessionAffinityTimeoutSeconds,omitempty"`
 }
 
 type IptablesDnatRuleStatus struct {
-	// +optional
-	// +patchStrategy=merge
-	Ready        bool   `json:"ready" patchStrategy:"merge"`
-	V4ip         string `json:"v4ip" patchStrategy:"merge"`
-	V6ip         string `json:"v6ip" patchStrategy:"merge"`
-	NatGwDp      string `json:"natGwDp" patchStrategy:"merge"`
-	Redo         string `json:"redo" patchStrategy:"merge"`
-	Protocol     string `json:"protocol"  patchStrategy:"merge"`
-	InternalIP   string `json:"internalIp"  patchStrategy:"merge"`
-	InternalPort string `json:"internalPort"  patchStrategy:"merge"`
-	ExternalPort string `json:"externalPort"  patchStrategy:"merge"`
-
 	// Conditions represents the latest state of the object
 	// +optional
 	// +patchMergeKey=type
 	// +patchStrategy=merge
 	Conditions []Condition `json:"conditions,omitempty" patchStrategy:"merge" patchMergeKey:"type"`
+
+	// Indicates whether the DNAT rule is ready
+	Ready bool `json:"ready" patchStrategy:"merge"`
+	// V4ip is the IPv4 address of the DNAT rule
+	V4ip string `json:"v4ip" patchStrategy:"merge"`
+	// V6ip is the IPv6 address of the DNAT rule
+	V6ip string `json:"v6ip" patchStrategy:"merge"`
+	// NatGwDp is the NAT gateway data path
+	NatGwDp string `json:"natGwDp" patchStrategy:"merge"`
+	// Redo operation status
+	Redo string `json:"redo" patchStrategy:"merge"`
+	// Protocol type of the DNAT rule
+	Protocol string `json:"protocol"  patchStrategy:"merge"`
+	// Internal IP address configured in the DNAT rule
+	InternalIP string `json:"internalIp"  patchStrategy:"merge"`
+	// Internal port configured in the DNAT rule
+	InternalPort string `json:"internalPort"  patchStrategy:"merge"`
+	// External port configured in the DNAT rule
+	ExternalPort string `json:"externalPort"  patchStrategy:"merge"`
 }
 
 func (s *IptablesDnatRuleStatus) Bytes() ([]byte, error) {

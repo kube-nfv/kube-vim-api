@@ -9,14 +9,27 @@ import (
 // IPPoolStatusApplyConfiguration represents a declarative configuration of the IPPoolStatus type for use
 // with apply.
 type IPPoolStatusApplyConfiguration struct {
-	V4AvailableIPs     *internal.BigInt `json:"v4AvailableIPs,omitempty"`
-	V4AvailableIPRange *string          `json:"v4AvailableIPRange,omitempty"`
-	V4UsingIPs         *internal.BigInt `json:"v4UsingIPs,omitempty"`
-	V4UsingIPRange     *string          `json:"v4UsingIPRange,omitempty"`
-	V6AvailableIPs     *internal.BigInt `json:"v6AvailableIPs,omitempty"`
-	V6AvailableIPRange *string          `json:"v6AvailableIPRange,omitempty"`
-	V6UsingIPs         *internal.BigInt `json:"v6UsingIPs,omitempty"`
-	V6UsingIPRange     *string          `json:"v6UsingIPRange,omitempty"`
+	// IP addresses the pool currently consists of, in allocation order.
+	// Maintained by the controller for pools using spec.ipCount, and cleared when the
+	// pool leaves that mode, so the recorded selection is never mistaken for the
+	// members of a pool that lists spec.ips.
+	IPs []string `json:"ips,omitempty"`
+	// Number of available IPv4 addresses
+	V4AvailableIPs *internal.BigInt `json:"v4AvailableIPs,omitempty"`
+	// Available IPv4 address range
+	V4AvailableIPRange *string `json:"v4AvailableIPRange,omitempty"`
+	// Number of using IPv4 addresses
+	V4UsingIPs *internal.BigInt `json:"v4UsingIPs,omitempty"`
+	// IPv4 address range in use
+	V4UsingIPRange *string `json:"v4UsingIPRange,omitempty"`
+	// Number of available IPv6 addresses
+	V6AvailableIPs *internal.BigInt `json:"v6AvailableIPs,omitempty"`
+	// Available IPv6 address range
+	V6AvailableIPRange *string `json:"v6AvailableIPRange,omitempty"`
+	// Number of using IPv6 addresses
+	V6UsingIPs *internal.BigInt `json:"v6UsingIPs,omitempty"`
+	// IPv6 address range in use
+	V6UsingIPRange *string `json:"v6UsingIPRange,omitempty"`
 	// Conditions represents the latest state of the object
 	Conditions []ConditionApplyConfiguration `json:"conditions,omitempty"`
 }
@@ -25,6 +38,16 @@ type IPPoolStatusApplyConfiguration struct {
 // apply.
 func IPPoolStatus() *IPPoolStatusApplyConfiguration {
 	return &IPPoolStatusApplyConfiguration{}
+}
+
+// WithIPs adds the given value to the IPs field in the declarative configuration
+// and returns the receiver, so that objects can be build by chaining "With" function invocations.
+// If called multiple times, values provided by each call will be appended to the IPs field.
+func (b *IPPoolStatusApplyConfiguration) WithIPs(values ...string) *IPPoolStatusApplyConfiguration {
+	for i := range values {
+		b.IPs = append(b.IPs, values[i])
+	}
+	return b
 }
 
 // WithV4AvailableIPs sets the V4AvailableIPs field in the declarative configuration to the given value

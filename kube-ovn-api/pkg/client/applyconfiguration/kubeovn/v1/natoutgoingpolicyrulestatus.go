@@ -5,7 +5,8 @@ package v1
 // NatOutgoingPolicyRuleStatusApplyConfiguration represents a declarative configuration of the NatOutgoingPolicyRuleStatus type for use
 // with apply.
 type NatOutgoingPolicyRuleStatusApplyConfiguration struct {
-	RuleID *string `json:"ruleID,omitempty"`
+	RuleID                                  *string `json:"ruleID,omitempty"`
+	NatOutgoingPolicyRuleApplyConfiguration `json:",inline"`
 }
 
 // NatOutgoingPolicyRuleStatusApplyConfiguration constructs a declarative configuration of the NatOutgoingPolicyRuleStatus type for use with
@@ -19,5 +20,21 @@ func NatOutgoingPolicyRuleStatus() *NatOutgoingPolicyRuleStatusApplyConfiguratio
 // If called multiple times, the RuleID field is set to the value of the last call.
 func (b *NatOutgoingPolicyRuleStatusApplyConfiguration) WithRuleID(value string) *NatOutgoingPolicyRuleStatusApplyConfiguration {
 	b.RuleID = &value
+	return b
+}
+
+// WithMatch sets the Match field in the declarative configuration to the given value
+// and returns the receiver, so that objects can be built by chaining "With" function invocations.
+// If called multiple times, the Match field is set to the value of the last call.
+func (b *NatOutgoingPolicyRuleStatusApplyConfiguration) WithMatch(value *NatOutGoingPolicyMatchApplyConfiguration) *NatOutgoingPolicyRuleStatusApplyConfiguration {
+	b.NatOutgoingPolicyRuleApplyConfiguration.Match = value
+	return b
+}
+
+// WithAction sets the Action field in the declarative configuration to the given value
+// and returns the receiver, so that objects can be built by chaining "With" function invocations.
+// If called multiple times, the Action field is set to the value of the last call.
+func (b *NatOutgoingPolicyRuleStatusApplyConfiguration) WithAction(value string) *NatOutgoingPolicyRuleStatusApplyConfiguration {
+	b.NatOutgoingPolicyRuleApplyConfiguration.Action = &value
 	return b
 }

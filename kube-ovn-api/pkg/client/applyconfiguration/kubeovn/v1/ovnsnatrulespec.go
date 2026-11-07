@@ -5,12 +5,17 @@ package v1
 // OvnSnatRuleSpecApplyConfiguration represents a declarative configuration of the OvnSnatRuleSpec type for use
 // with apply.
 type OvnSnatRuleSpecApplyConfiguration struct {
-	OvnEip    *string `json:"ovnEip,omitempty"`
+	// OVN EIP name for SNAT rule
+	OvnEip *string `json:"ovnEip,omitempty"`
+	// VPC subnet name for SNAT
 	VpcSubnet *string `json:"vpcSubnet,omitempty"`
-	IPName    *string `json:"ipName,omitempty"`
-	Vpc       *string `json:"vpc,omitempty"`
-	V4IpCidr  *string `json:"v4IpCidr,omitempty"`
-	// subnet cidr or pod ip address
+	// IP resource name
+	IPName *string `json:"ipName,omitempty"`
+	// VPC name. This field is immutable after creation.
+	Vpc *string `json:"vpc,omitempty"`
+	// IPv4 CIDR for SNAT
+	V4IpCidr *string `json:"v4IpCidr,omitempty"`
+	// IPv6 CIDR for SNAT
 	V6IpCidr *string `json:"v6IpCidr,omitempty"`
 }
 

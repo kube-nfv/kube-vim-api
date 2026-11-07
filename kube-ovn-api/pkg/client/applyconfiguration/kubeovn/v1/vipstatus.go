@@ -7,10 +7,16 @@ package v1
 type VipStatusApplyConfiguration struct {
 	// Conditions represents the latest state of the object
 	Conditions []ConditionApplyConfiguration `json:"conditions,omitempty"`
-	Type       *string                       `json:"type,omitempty"`
-	V4ip       *string                       `json:"v4ip,omitempty"`
-	V6ip       *string                       `json:"v6ip,omitempty"`
-	Mac        *string                       `json:"mac,omitempty"`
+	// Type of VIP (e.g., Layer2, HealthCheck)
+	Type *string `json:"type,omitempty"`
+	// Allocated IPv4 address
+	V4ip *string `json:"v4ip,omitempty"`
+	// Allocated IPv6 address
+	V6ip *string `json:"v6ip,omitempty"`
+	// MAC address associated with the VIP
+	Mac *string `json:"mac,omitempty"`
+	// Pod names selected by this VIP
+	Selector []string `json:"selector,omitempty"`
 }
 
 // VipStatusApplyConfiguration constructs a declarative configuration of the VipStatus type for use with
@@ -61,5 +67,15 @@ func (b *VipStatusApplyConfiguration) WithV6ip(value string) *VipStatusApplyConf
 // If called multiple times, the Mac field is set to the value of the last call.
 func (b *VipStatusApplyConfiguration) WithMac(value string) *VipStatusApplyConfiguration {
 	b.Mac = &value
+	return b
+}
+
+// WithSelector adds the given value to the Selector field in the declarative configuration
+// and returns the receiver, so that objects can be build by chaining "With" function invocations.
+// If called multiple times, values provided by each call will be appended to the Selector field.
+func (b *VipStatusApplyConfiguration) WithSelector(values ...string) *VipStatusApplyConfiguration {
+	for i := range values {
+		b.Selector = append(b.Selector, values[i])
+	}
 	return b
 }

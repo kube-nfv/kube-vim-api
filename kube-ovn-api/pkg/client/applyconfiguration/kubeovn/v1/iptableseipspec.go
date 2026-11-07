@@ -5,12 +5,21 @@ package v1
 // IptablesEIPSpecApplyConfiguration represents a declarative configuration of the IptablesEIPSpec type for use
 // with apply.
 type IptablesEIPSpecApplyConfiguration struct {
-	V4ip           *string `json:"v4ip,omitempty"`
-	V6ip           *string `json:"v6ip,omitempty"`
-	MacAddress     *string `json:"macAddress,omitempty"`
-	NatGwDp        *string `json:"natGwDp,omitempty"`
-	QoSPolicy      *string `json:"qosPolicy,omitempty"`
+	// IPv4 address for the EIP
+	V4ip *string `json:"v4ip,omitempty"`
+	// IPv6 address for the EIP
+	V6ip *string `json:"v6ip,omitempty"`
+	// MAC address for the EIP
+	MacAddress *string `json:"macAddress,omitempty"`
+	// NAT gateway datapath where the EIP is assigned
+	NatGwDp *string `json:"natGwDp,omitempty"`
+	// QoS policy name to apply to the EIP
+	QoSPolicy *string `json:"qosPolicy,omitempty"`
+	// External subnet name. This field is immutable after creation.
 	ExternalSubnet *string `json:"externalSubnet,omitempty"`
+	// Namespace where the NAT gateway StatefulSet/Pod for this EIP resides.
+	// If empty, defaults to the kube-ovn controller's own namespace.
+	Namespace *string `json:"namespace,omitempty"`
 }
 
 // IptablesEIPSpecApplyConfiguration constructs a declarative configuration of the IptablesEIPSpec type for use with
@@ -64,5 +73,13 @@ func (b *IptablesEIPSpecApplyConfiguration) WithQoSPolicy(value string) *Iptable
 // If called multiple times, the ExternalSubnet field is set to the value of the last call.
 func (b *IptablesEIPSpecApplyConfiguration) WithExternalSubnet(value string) *IptablesEIPSpecApplyConfiguration {
 	b.ExternalSubnet = &value
+	return b
+}
+
+// WithNamespace sets the Namespace field in the declarative configuration to the given value
+// and returns the receiver, so that objects can be built by chaining "With" function invocations.
+// If called multiple times, the Namespace field is set to the value of the last call.
+func (b *IptablesEIPSpecApplyConfiguration) WithNamespace(value string) *IptablesEIPSpecApplyConfiguration {
+	b.Namespace = &value
 	return b
 }

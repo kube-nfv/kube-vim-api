@@ -5,10 +5,14 @@ package v1
 // SwitchLBRulePortApplyConfiguration represents a declarative configuration of the SwitchLBRulePort type for use
 // with apply.
 type SwitchLBRulePortApplyConfiguration struct {
-	Name       *string `json:"name,omitempty"`
-	Port       *int32  `json:"port,omitempty"`
-	TargetPort *int32  `json:"targetPort,omitempty"`
-	Protocol   *string `json:"protocol,omitempty"`
+	// Port name
+	Name *string `json:"name,omitempty"`
+	// Service port number (1-65535)
+	Port *int32 `json:"port,omitempty"`
+	// Target port number (1-65535)
+	TargetPort *int32 `json:"targetPort,omitempty"`
+	// Protocol (TCP or UDP)
+	Protocol *string `json:"protocol,omitempty"`
 }
 
 // SwitchLBRulePortApplyConfiguration constructs a declarative configuration of the SwitchLBRulePort type for use with

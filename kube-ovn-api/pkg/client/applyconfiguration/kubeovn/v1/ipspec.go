@@ -5,19 +5,32 @@ package v1
 // IPSpecApplyConfiguration represents a declarative configuration of the IPSpec type for use
 // with apply.
 type IPSpecApplyConfiguration struct {
-	PodName       *string  `json:"podName,omitempty"`
-	Namespace     *string  `json:"namespace,omitempty"`
-	Subnet        *string  `json:"subnet,omitempty"`
+	// Pod name that this IP belongs to
+	PodName *string `json:"podName,omitempty"`
+	// Namespace of the pod
+	Namespace *string `json:"namespace,omitempty"`
+	// Primary subnet name for the IP. This field is immutable after creation.
+	Subnet *string `json:"subnet,omitempty"`
+	// Additional attached subnets
 	AttachSubnets []string `json:"attachSubnets,omitempty"`
-	NodeName      *string  `json:"nodeName,omitempty"`
-	IPAddress     *string  `json:"ipAddress,omitempty"`
-	V4IPAddress   *string  `json:"v4IpAddress,omitempty"`
-	V6IPAddress   *string  `json:"v6IpAddress,omitempty"`
-	AttachIPs     []string `json:"attachIps,omitempty"`
-	MacAddress    *string  `json:"macAddress,omitempty"`
-	AttachMacs    []string `json:"attachMacs,omitempty"`
-	ContainerID   *string  `json:"containerID,omitempty"`
-	PodType       *string  `json:"podType,omitempty"`
+	// Node name where the pod resides
+	NodeName *string `json:"nodeName,omitempty"`
+	// IP address (deprecated, use v4IpAddress or v6IpAddress)
+	IPAddress *string `json:"ipAddress,omitempty"`
+	// IPv4 address
+	V4IPAddress *string `json:"v4IpAddress,omitempty"`
+	// IPv6 address
+	V6IPAddress *string `json:"v6IpAddress,omitempty"`
+	// Additional IP addresses from attached subnets
+	AttachIPs []string `json:"attachIps,omitempty"`
+	// MAC address for the primary IP
+	MacAddress *string `json:"macAddress,omitempty"`
+	// MAC addresses for attached IPs
+	AttachMacs []string `json:"attachMacs,omitempty"`
+	// Container ID
+	ContainerID *string `json:"containerID,omitempty"`
+	// Pod type (e.g., pod, vm)
+	PodType *string `json:"podType,omitempty"`
 }
 
 // IPSpecApplyConfiguration constructs a declarative configuration of the IPSpec type for use with

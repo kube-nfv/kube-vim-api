@@ -9,11 +9,12 @@ import (
 // BFDPortApplyConfiguration represents a declarative configuration of the BFDPort type for use
 // with apply.
 type BFDPortApplyConfiguration struct {
+	// Enable BFD port
 	Enabled *bool `json:"enabled,omitempty"`
 	// ip address(es) of the BFD port
 	IP *string `json:"ip,omitempty"`
-	// optional node selector used to select the nodes where the BFD LRP will be hosted
-	// if not specified, at most 3 nodes will be selected
+	// Optional node selector used to select the nodes where the BFD LRP will be hosted.
+	// If not specified, at most 3 nodes will be selected.
 	NodeSelector *metav1.LabelSelectorApplyConfiguration `json:"nodeSelector,omitempty"`
 }
 

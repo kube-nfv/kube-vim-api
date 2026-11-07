@@ -8,6 +8,12 @@ import (
 
 // Interface provides access to all the informers in this group version.
 type Interface interface {
+	// BgpConves returns a BgpConfInformer.
+	BgpConves() BgpConfInformer
+	// DNSNameResolvers returns a DNSNameResolverInformer.
+	DNSNameResolvers() DNSNameResolverInformer
+	// EvpnConves returns a EvpnConfInformer.
+	EvpnConves() EvpnConfInformer
 	// IPs returns a IPInformer.
 	IPs() IPInformer
 	// IPPools returns a IPPoolInformer.
@@ -32,6 +38,8 @@ type Interface interface {
 	ProviderNetworks() ProviderNetworkInformer
 	// QoSPolicies returns a QoSPolicyInformer.
 	QoSPolicies() QoSPolicyInformer
+	// RouterLBRules returns a RouterLBRuleInformer.
+	RouterLBRules() RouterLBRuleInformer
 	// SecurityGroups returns a SecurityGroupInformer.
 	SecurityGroups() SecurityGroupInformer
 	// Subnets returns a SubnetInformer.
@@ -61,6 +69,21 @@ type version struct {
 // New returns a new Interface.
 func New(f internalinterfaces.SharedInformerFactory, namespace string, tweakListOptions internalinterfaces.TweakListOptionsFunc) Interface {
 	return &version{factory: f, namespace: namespace, tweakListOptions: tweakListOptions}
+}
+
+// BgpConves returns a BgpConfInformer.
+func (v *version) BgpConves() BgpConfInformer {
+	return &bgpConfInformer{factory: v.factory, tweakListOptions: v.tweakListOptions}
+}
+
+// DNSNameResolvers returns a DNSNameResolverInformer.
+func (v *version) DNSNameResolvers() DNSNameResolverInformer {
+	return &dNSNameResolverInformer{factory: v.factory, tweakListOptions: v.tweakListOptions}
+}
+
+// EvpnConves returns a EvpnConfInformer.
+func (v *version) EvpnConves() EvpnConfInformer {
+	return &evpnConfInformer{factory: v.factory, tweakListOptions: v.tweakListOptions}
 }
 
 // IPs returns a IPInformer.
@@ -121,6 +144,11 @@ func (v *version) ProviderNetworks() ProviderNetworkInformer {
 // QoSPolicies returns a QoSPolicyInformer.
 func (v *version) QoSPolicies() QoSPolicyInformer {
 	return &qoSPolicyInformer{factory: v.factory, tweakListOptions: v.tweakListOptions}
+}
+
+// RouterLBRules returns a RouterLBRuleInformer.
+func (v *version) RouterLBRules() RouterLBRuleInformer {
+	return &routerLBRuleInformer{factory: v.factory, tweakListOptions: v.tweakListOptions}
 }
 
 // SecurityGroups returns a SecurityGroupInformer.

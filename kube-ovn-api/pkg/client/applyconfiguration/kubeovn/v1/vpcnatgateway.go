@@ -10,6 +10,20 @@ import (
 
 // VpcNatGatewayApplyConfiguration represents a declarative configuration of the VpcNatGateway type for use
 // with apply.
+//
+// VpcNatGateway represents a NAT gateway for a VPC, implemented by a StatefulSet in non-HA mode or a Deployment in HA mode.
+//
+// Architecture note:
+// The NAT gateway Pod does NOT support hot updates. Any changes to Spec fields (ExternalSubnets,
+// Selector, Tolerations, Affinity, etc.) will trigger a StatefulSet template update,
+// which causes the Pod to be recreated via RollingUpdate strategy. This is by design because:
+// 1. Network configuration (routes, iptables rules) is initialized at Pod startup
+// 2. Runtime state (vpc_cidrs, init status) is managed by separate handlers and will be
+// automatically restored after Pod recreation through the normal reconciliation flow
+//
+// QoSPolicy updates are applied without restarting the Pod. Every other Spec change,
+// including the one-time persistence of a dynamically allocated LanIP, updates the
+// workload template and therefore recreates the Pod.
 type VpcNatGatewayApplyConfiguration struct {
 	metav1.TypeMetaApplyConfiguration    `json:",inline"`
 	*metav1.ObjectMetaApplyConfiguration `json:"metadata,omitempty"`

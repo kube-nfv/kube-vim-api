@@ -7,12 +7,18 @@ import (
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/klog/v2"
+
+	"github.com/kube-nfv/kube-vim-api/kube-ovn-api/pkg/internal"
 )
 
 const (
 	ProtocolIPv4 = "IPv4"
 	ProtocolIPv6 = "IPv6"
 	ProtocolDual = "Dual"
+	// ProtocolMac identifies a "mac-only" subnet: an underlay subnet created
+	// without a CIDR (BYO-DHCP / external DHCP) that allocates only a MAC address
+	// per pod NIC. The guest obtains its IP from an external DHCP server.
+	ProtocolMac = "Mac"
 )
 
 const (
@@ -21,6 +27,7 @@ const (
 )
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
 type SubnetList struct {
 	metav1.TypeMeta `json:",inline"`
 	metav1.ListMeta `json:"metadata"`
@@ -31,6 +38,23 @@ type SubnetList struct {
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +genclient:nonNamespaced
+// +kubebuilder:resource:scope="Cluster",shortName="subnet",path="subnets"
+// +kubebuilder:subresource:status
+// +kubebuilder:printcolumn:name="Provider",type="string",JSONPath=".spec.provider"
+// +kubebuilder:printcolumn:name="Vpc",type="string",JSONPath=".spec.vpc"
+// +kubebuilder:printcolumn:name="Vlan",type="string",JSONPath=".spec.vlan"
+// +kubebuilder:printcolumn:name="Protocol",type="string",JSONPath=".spec.protocol"
+// +kubebuilder:printcolumn:name="CIDR",type="string",JSONPath=".spec.cidrBlock"
+// +kubebuilder:printcolumn:name="Private",type="boolean",JSONPath=".spec.private"
+// +kubebuilder:printcolumn:name="NAT",type="boolean",JSONPath=".spec.natOutgoing"
+// +kubebuilder:printcolumn:name="Default",type="boolean",JSONPath=".spec.default"
+// +kubebuilder:printcolumn:name="GatewayType",type="string",JSONPath=".spec.gatewayType"
+// +kubebuilder:printcolumn:name="V4Used",type="number",JSONPath=".status.v4usingIPs"
+// +kubebuilder:printcolumn:name="V4Available",type="number",JSONPath=".status.v4availableIPs"
+// +kubebuilder:printcolumn:name="V6Used",type="number",JSONPath=".status.v6usingIPs"
+// +kubebuilder:printcolumn:name="V6Available",type="number",JSONPath=".status.v6availableIPs"
+// +kubebuilder:printcolumn:name="ExcludeIPs",type="string",JSONPath=".spec.excludeIps"
+// +kubebuilder:printcolumn:name="U2OInterconnectionIP",type="string",JSONPath=".status.u2oInterconnectionIP"
 type Subnet struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata"`
@@ -40,55 +64,110 @@ type Subnet struct {
 }
 
 type SubnetSpec struct {
-	Default    bool     `json:"default"`
-	Vpc        string   `json:"vpc,omitempty"`
-	Protocol   string   `json:"protocol,omitempty"`
+	// Whether this is the default subnet.
+	Default bool `json:"default"`
+	// VPC name for the subnet. Immutable after creation.
+	Vpc string `json:"vpc,omitempty"`
+	// Network protocol (IPv4, IPv6, or Dual). Immutable after creation.
+	Protocol string `json:"protocol,omitempty"`
+	// List of namespaces associated with this subnet.
 	Namespaces []string `json:"namespaces,omitempty"`
-	CIDRBlock  string   `json:"cidrBlock"`
-	Gateway    string   `json:"gateway"`
+	// CIDR block for the subnet. Immutable after creation.
+	CIDRBlock string `json:"cidrBlock,omitempty"`
+	// Gateway IP address for the subnet.
+	Gateway string `json:"gateway,omitempty"`
+	// IP addresses to exclude from allocation.
 	ExcludeIps []string `json:"excludeIps,omitempty"`
-	Provider   string   `json:"provider,omitempty"`
+	// Provider network name.
+	Provider string `json:"provider,omitempty"`
 
+	// Gateway type (distributed or centralized).
 	GatewayType string `json:"gatewayType,omitempty"`
+	// Gateway node(s) for centralized gateway type.
 	GatewayNode string `json:"gatewayNode"`
-	NatOutgoing bool   `json:"natOutgoing"`
+	// Selectors to choose gateway nodes.
+	GatewayNodeSelectors []metav1.LabelSelector `json:"gatewayNodeSelectors,omitempty"`
+	// Enable NAT outgoing for the subnet.
+	NatOutgoing bool `json:"natOutgoing"`
 
+	// External egress gateway IPs.
 	ExternalEgressGateway string `json:"externalEgressGateway,omitempty"`
+	// Policy routing priority.
 	PolicyRoutingPriority uint32 `json:"policyRoutingPriority,omitempty"`
-	PolicyRoutingTableID  uint32 `json:"policyRoutingTableID,omitempty"`
-	Mtu                   uint32 `json:"mtu,omitempty"`
+	// Policy routing table ID.
+	PolicyRoutingTableID uint32 `json:"policyRoutingTableID,omitempty"`
+	// MTU for pods in this subnet.
+	Mtu uint32 `json:"mtu,omitempty"`
 
-	Private      bool     `json:"private"`
+	// Whether the subnet is private.
+	Private bool `json:"private"`
+	// Routed configures pods with /32 (IPv4) or /128 (IPv6) addresses and
+	// on-link routes to the gateway. Same-subnet traffic is forced through the
+	// OVN logical router instead of direct L2. Requires an OVN logical router
+	// port (overlay, or underlay with logicalGateway / u2oInterconnection).
+	// Existing pods must be recreated after enabling or disabling this field.
+	Routed bool `json:"routed,omitempty"`
+	// Allowed subnets for east-west traffic.
 	AllowSubnets []string `json:"allowSubnets,omitempty"`
 
-	Vlan string   `json:"vlan,omitempty"`
+	// VLAN ID or provider network name.
+	Vlan string `json:"vlan,omitempty"`
+	// Virtual IP addresses for the subnet.
 	Vips []string `json:"vips,omitempty"`
 
-	LogicalGateway         bool `json:"logicalGateway,omitempty"`
-	DisableGatewayCheck    bool `json:"disableGatewayCheck,omitempty"`
+	// Enable logical gateway.
+	LogicalGateway bool `json:"logicalGateway,omitempty"`
+	// Disable gateway readiness check.
+	DisableGatewayCheck bool `json:"disableGatewayCheck,omitempty"`
+	// Disable interconnection for the subnet.
 	DisableInterConnection bool `json:"disableInterConnection,omitempty"`
 
-	EnableDHCP    bool   `json:"enableDHCP,omitempty"`
+	// Enable DHCP for the subnet.
+	EnableDHCP bool `json:"enableDHCP,omitempty"`
+	// DHCPv4 options UUID.
 	DHCPv4Options string `json:"dhcpV4Options,omitempty"`
+	// DHCPv6 options UUID.
 	DHCPv6Options string `json:"dhcpV6Options,omitempty"`
 
-	EnableIPv6RA  bool   `json:"enableIPv6RA,omitempty"`
+	// Enable IPv6 Router Advertisement.
+	EnableIPv6RA bool `json:"enableIPv6RA,omitempty"`
+	// IPv6 RA configuration options.
 	IPv6RAConfigs string `json:"ipv6RAConfigs,omitempty"`
 
-	Acls           []ACL `json:"acls,omitempty"`
-	AllowEWTraffic bool  `json:"allowEWTraffic,omitempty"`
+	// ACL rules for the subnet.
+	Acls []ACL `json:"acls,omitempty"`
+	// Allow east-west traffic across subnets.
+	AllowEWTraffic bool `json:"allowEWTraffic,omitempty"`
 
+	// NAT outgoing policy rules.
 	NatOutgoingPolicyRules []NatOutgoingPolicyRule `json:"natOutgoingPolicyRules,omitempty"`
 
-	U2OInterconnectionIP    string `json:"u2oInterconnectionIP,omitempty"`
-	U2OInterconnection      bool   `json:"u2oInterconnection,omitempty"`
-	EnableLb                *bool  `json:"enableLb,omitempty"`
-	EnableEcmp              bool   `json:"enableEcmp,omitempty"`
-	EnableMulticastSnoop    bool   `json:"enableMulticastSnoop,omitempty"`
-	EnableExternalLBAddress bool   `json:"enableExternalLBAddress,omitempty"`
+	// Underlay to overlay interconnection IP.
+	U2OInterconnectionIP string `json:"u2oInterconnectionIP,omitempty"`
+	// Enable underlay to overlay interconnection.
+	U2OInterconnection bool `json:"u2oInterconnection,omitempty"`
+	// Feature configurations for underlay to overlay interconnection.
+	U2OFeatures U2OFeatures `json:"u2oFeatures,omitempty"`
+	// Enable LoadBalancer on this subnet.
+	EnableLb *bool `json:"enableLb,omitempty"`
+	// Enable ECMP for centralized gateway.
+	EnableEcmp bool `json:"enableEcmp,omitempty"`
+	// Enable multicast snoop.
+	EnableMulticastSnoop bool `json:"enableMulticastSnoop,omitempty"`
+	// Enable external LB address support.
+	EnableExternalLBAddress bool `json:"enableExternalLBAddress,omitempty"`
 
-	RouteTable         string                 `json:"routeTable,omitempty"`
+	// Route table associated with the subnet.
+	RouteTable string `json:"routeTable,omitempty"`
+	// Namespace label selectors to associate with this subnet.
 	NamespaceSelectors []metav1.LabelSelector `json:"namespaceSelectors,omitempty"`
+	// Node network name for underlay.
+	NodeNetwork string `json:"nodeNetwork,omitempty"`
+}
+
+type U2OFeatures struct {
+	// OverlayOnlyRouting controls whether only overlay CIDRs use U2O routing.
+	OverlayOnlyRouting bool `json:"overlayOnlyRouting,omitempty"`
 }
 
 type ACL struct {
@@ -109,8 +188,8 @@ type NatOutGoingPolicyMatch struct {
 }
 
 type NatOutgoingPolicyRuleStatus struct {
-	RuleID string `json:"ruleID"`
-	NatOutgoingPolicyRule
+	RuleID                string `json:"ruleID"`
+	NatOutgoingPolicyRule `json:",inline"`
 }
 type SubnetStatus struct {
 	// Conditions represents the latest state of the object
@@ -119,20 +198,26 @@ type SubnetStatus struct {
 	// +patchStrategy=merge
 	Conditions []Condition `json:"conditions,omitempty" patchStrategy:"merge" patchMergeKey:"type"`
 
-	V4AvailableIPs         float64                       `json:"v4availableIPs"`
-	V4AvailableIPRange     string                        `json:"v4availableIPrange"`
-	V4UsingIPs             float64                       `json:"v4usingIPs"`
-	V4UsingIPRange         string                        `json:"v4usingIPrange"`
-	V6AvailableIPs         float64                       `json:"v6availableIPs"`
-	V6AvailableIPRange     string                        `json:"v6availableIPrange"`
-	V6UsingIPs             float64                       `json:"v6usingIPs"`
-	V6UsingIPRange         string                        `json:"v6usingIPrange"`
-	ActivateGateway        string                        `json:"activateGateway"`
-	DHCPv4OptionsUUID      string                        `json:"dhcpV4OptionsUUID"`
-	DHCPv6OptionsUUID      string                        `json:"dhcpV6OptionsUUID"`
-	U2OInterconnectionIP   string                        `json:"u2oInterconnectionIP"`
-	U2OInterconnectionMAC  string                        `json:"u2oInterconnectionMAC"`
-	U2OInterconnectionVPC  string                        `json:"u2oInterconnectionVPC"`
+	V4AvailableIPs     internal.BigInt `json:"v4availableIPs"`
+	V4AvailableIPRange string          `json:"v4availableIPrange"`
+	V4UsingIPs         internal.BigInt `json:"v4usingIPs"`
+	V4UsingIPRange     string          `json:"v4usingIPrange"`
+	V6AvailableIPs     internal.BigInt `json:"v6availableIPs"`
+	V6AvailableIPRange string          `json:"v6availableIPrange"`
+	V6UsingIPs         internal.BigInt `json:"v6usingIPs"`
+	V6UsingIPRange     string          `json:"v6usingIPrange"`
+	ActivateGateway    string          `json:"activateGateway"`
+	DHCPv4OptionsUUID  string          `json:"dhcpV4OptionsUUID"`
+	DHCPv6OptionsUUID  string          `json:"dhcpV6OptionsUUID"`
+	// GatewayMAC is the mac address of the subnet's logical router port, recorded so
+	// the validating webhook can independently verify a switch_lb_rule vip mac repair
+	// (see pkg/webhook/vip.go) without needing access to the controller's in-memory IPAM.
+	GatewayMAC string `json:"gatewayMAC,omitempty"`
+	// Underlay to overlay interconnection IP.
+	U2OInterconnectionIP  string `json:"u2oInterconnectionIP"`
+	U2OInterconnectionMAC string `json:"u2oInterconnectionMAC"`
+	U2OInterconnectionVPC string `json:"u2oInterconnectionVPC"`
+	// NAT outgoing policy rules.
 	NatOutgoingPolicyRules []NatOutgoingPolicyRuleStatus `json:"natOutgoingPolicyRules"`
 	McastQuerierIP         string                        `json:"mcastQuerierIP"`
 	McastQuerierMAC        string                        `json:"mcastQuerierMAC"`

@@ -10,15 +10,19 @@ import (
 // with apply.
 type VpcEgressGatewayStatusApplyConfiguration struct {
 	// used by the scale subresource
-	Replicas      *int32  `json:"replicas,omitempty"`
+	Replicas *int32 `json:"replicas,omitempty"`
+	// Label selector for the egress gateway
 	LabelSelector *string `json:"labelSelector,omitempty"`
 	// whether the egress gateway is ready
-	Ready *bool            `json:"ready,omitempty"`
+	Ready *bool `json:"ready,omitempty"`
+	// Current phase of the egress gateway (Pending, Processing, or Completed)
 	Phase *kubeovnv1.Phase `json:"phase,omitempty"`
 	// internal/external IPs used by the workload
-	InternalIPs []string              `json:"internalIPs,omitempty"`
-	ExternalIPs []string              `json:"externalIPs,omitempty"`
-	Conditions  *kubeovnv1.Conditions `json:"conditions,omitempty"`
+	InternalIPs []string `json:"internalIPs,omitempty"`
+	// External IP addresses assigned to the egress gateway
+	ExternalIPs []string `json:"externalIPs,omitempty"`
+	// Conditions represent the latest available observations of the egress gateway's current state
+	Conditions *kubeovnv1.Conditions `json:"conditions,omitempty"`
 	// workload information
 	Workload *VpcEgressWorkloadApplyConfiguration `json:"workload,omitempty"`
 }

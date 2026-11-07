@@ -7,8 +7,10 @@ package v1
 type SwitchLBRuleStatusApplyConfiguration struct {
 	// Conditions represents the latest state of the object
 	Conditions []ConditionApplyConfiguration `json:"conditions,omitempty"`
-	Ports      *string                       `json:"ports,omitempty"`
-	Service    *string                       `json:"service,omitempty"`
+	// Configured ports
+	Ports *string `json:"ports,omitempty"`
+	// Associated service name
+	Service *string `json:"service,omitempty"`
 }
 
 // SwitchLBRuleStatusApplyConfiguration constructs a declarative configuration of the SwitchLBRuleStatus type for use with

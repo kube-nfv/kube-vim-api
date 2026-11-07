@@ -9,14 +9,22 @@ import (
 // VpcSpecApplyConfiguration represents a declarative configuration of the VpcSpec type for use
 // with apply.
 type VpcSpecApplyConfiguration struct {
-	DefaultSubnet        *string                  `json:"defaultSubnet,omitempty"`
-	Namespaces           []string                 `json:"namespaces,omitempty"`
-	StaticRoutes         []*kubeovnv1.StaticRoute `json:"staticRoutes,omitempty"`
-	PolicyRoutes         []*kubeovnv1.PolicyRoute `json:"policyRoutes,omitempty"`
-	VpcPeerings          []*kubeovnv1.VpcPeering  `json:"vpcPeerings,omitempty"`
-	EnableExternal       *bool                    `json:"enableExternal,omitempty"`
-	ExtraExternalSubnets []string                 `json:"extraExternalSubnets,omitempty"`
-	EnableBfd            *bool                    `json:"enableBfd,omitempty"`
+	// The default subnet name for the VPC
+	DefaultSubnet *string `json:"defaultSubnet,omitempty"`
+	// List of namespaces that can use this VPC
+	Namespaces []string `json:"namespaces,omitempty"`
+	// Static routes for the VPC.
+	StaticRoutes []*kubeovnv1.StaticRoute `json:"staticRoutes,omitempty"`
+	// Policy routes for the VPC.
+	PolicyRoutes []*kubeovnv1.PolicyRoute `json:"policyRoutes,omitempty"`
+	// VPC peering configurations.
+	VpcPeerings []*kubeovnv1.VpcPeering `json:"vpcPeerings,omitempty"`
+	// Enable external network access for the VPC
+	EnableExternal *bool `json:"enableExternal,omitempty"`
+	// Extra external subnets for provider-network VLAN. Immutable after creation.
+	ExtraExternalSubnets []string `json:"extraExternalSubnets,omitempty"`
+	// Enable BFD (Bidirectional Forwarding Detection) for the VPC
+	EnableBfd *bool `json:"enableBfd,omitempty"`
 	// optional BFD LRP configuration
 	// currently the LRP is used for vpc external gateway only
 	BFDPort *BFDPortApplyConfiguration `json:"bfdPort,omitempty"`

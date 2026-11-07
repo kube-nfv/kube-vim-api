@@ -5,9 +5,14 @@ package v1
 // SecurityGroupSpecApplyConfiguration represents a declarative configuration of the SecurityGroupSpec type for use
 // with apply.
 type SecurityGroupSpecApplyConfiguration struct {
-	IngressRules          []SecurityGroupRuleApplyConfiguration `json:"ingressRules,omitempty"`
-	EgressRules           []SecurityGroupRuleApplyConfiguration `json:"egressRules,omitempty"`
-	AllowSameGroupTraffic *bool                                 `json:"allowSameGroupTraffic,omitempty"`
+	// Ingress traffic rules for the security group
+	IngressRules []SecurityGroupRuleApplyConfiguration `json:"ingressRules,omitempty"`
+	// Egress traffic rules for the security group
+	EgressRules []SecurityGroupRuleApplyConfiguration `json:"egressRules,omitempty"`
+	// Allow traffic between pods in the same security group
+	AllowSameGroupTraffic *bool `json:"allowSameGroupTraffic,omitempty"`
+	// ACL tier to which the rules are added
+	Tier *int `json:"tier,omitempty"`
 }
 
 // SecurityGroupSpecApplyConfiguration constructs a declarative configuration of the SecurityGroupSpec type for use with
@@ -47,5 +52,13 @@ func (b *SecurityGroupSpecApplyConfiguration) WithEgressRules(values ...*Securit
 // If called multiple times, the AllowSameGroupTraffic field is set to the value of the last call.
 func (b *SecurityGroupSpecApplyConfiguration) WithAllowSameGroupTraffic(value bool) *SecurityGroupSpecApplyConfiguration {
 	b.AllowSameGroupTraffic = &value
+	return b
+}
+
+// WithTier sets the Tier field in the declarative configuration to the given value
+// and returns the receiver, so that objects can be built by chaining "With" function invocations.
+// If called multiple times, the Tier field is set to the value of the last call.
+func (b *SecurityGroupSpecApplyConfiguration) WithTier(value int) *SecurityGroupSpecApplyConfiguration {
+	b.Tier = &value
 	return b
 }
